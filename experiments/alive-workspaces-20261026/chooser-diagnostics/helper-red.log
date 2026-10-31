@@ -1,0 +1,42 @@
+dbus-daemon[1902413]: [session uid=1000 pid=1902413 pidfd=5] Activating service name='org.freedesktop.portal.Desktop' requested by ':1.0' (uid=1000 pid=1902725 comm="/home/venetanji/.codex/worktrees/edd5/alive/apps/u")
+dbus-daemon[1902413]: [session uid=1000 pid=1902413 pidfd=5] Activating service name='org.freedesktop.impl.portal.PermissionStore' requested by ':1.1' (uid=1000 pid=1902732 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1902413]: [session uid=1000 pid=1902413 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.PermissionStore'
+dbus-daemon[1902413]: [session uid=1000 pid=1902413 pidfd=5] Activating service name='org.freedesktop.portal.Documents' requested by ':1.1' (uid=1000 pid=1902732 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1902413]: [session uid=1000 pid=1902413 pidfd=5] Successfully activated service 'org.freedesktop.portal.Documents'
+dbus-daemon[1902413]: [session uid=1000 pid=1902413 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1902732 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1902413]: [session uid=1000 pid=1902413 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.gtk'
+
+** (xdg-desktop-portal-gtk:1902754): WARNING **: 01:01:36.544: AT-SPI: Could not obtain desktop path or name
+
+
+** (xdg-desktop-portal-gtk:1902754): WARNING **: 01:01:36.547: atk-bridge: GetRegisteredEvents returned message with unknown signature
+
+** (xdg-desktop-portal-gtk:1902754): WARNING **: 01:01:36.547: atk-bridge: get_device_events_reply: unknown signature
+dbus-daemon[1902413]: [session uid=1000 pid=1902413 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=1902732 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1902413]: [session uid=1000 pid=1902413 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[1902413]: [session uid=1000 pid=1902413 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=1902732 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1902413]: [session uid=1000 pid=1902413 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[1902413]: [session uid=1000 pid=1902413 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=1902732 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1902413]: [session uid=1000 pid=1902413 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[1902413]: [session uid=1000 pid=1902413 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=1902732 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1902413]: [session uid=1000 pid=1902413 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[1902413]: [session uid=1000 pid=1902413 pidfd=5] Successfully activated service 'org.freedesktop.portal.Desktop'
+PASS secondary file delivery during initialization preserves main and opens its own window
+dbus-daemon[1902413]: [session uid=1000 pid=1902413 pidfd=5] Activating service name='ca.desrt.dconf' requested by ':1.110' (uid=1000 pid=1903309 comm="/home/venetanji/.codex/worktrees/edd5/alive/apps/u")
+dbus-daemon[1902413]: [session uid=1000 pid=1902413 pidfd=5] Successfully activated service 'ca.desrt.dconf'
+Traceback (most recent call last):
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_native_input.py", line 80, in <module>
+    run()
+    ~~~^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_native_input.py", line 42, in run
+    covering = alive.force_reorder_tooltip('Move Pulse Stereo Utility effect 2 earlier',
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'check_alive_desktop' has no attribute 'force_reorder_tooltip'. Did you mean: 'force_covering_tooltip'?

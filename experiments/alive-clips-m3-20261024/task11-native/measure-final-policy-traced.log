@@ -1,0 +1,230 @@
+PASS: authored-on and prearmed demo timers cleared; hosted editor ingress refused; timer bindings and autonomous signal/control route rejected
+PASS: maximum profile preparation clips=8 events=1024 roots=6 params=96 elapsed_ms=17.520 bound_ms=5000
+PASS: other saved instrument/effect chain stays sample-identical across local launch/stop and mixed partitions, including warm bypass
+saved_graph_sustain frames=1 iterations=1200 mean_us=8.741 p99_us=17.623 p999_us=18.224 max_us=26.310
+  actual_reconstruction_reads=0 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+saved_graph_sustain frames=31 iterations=1200 mean_us=60.266 p99_us=70.823 p999_us=79.561 max_us=87.716
+  actual_reconstruction_reads=0 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+saved_graph_sustain frames=64 iterations=1200 mean_us=116.925 p99_us=126.368 p999_us=169.340 max_us=217.712
+  actual_reconstruction_reads=2 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=8 root_clears=6 event_scans=8 parameter_writes=40 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+saved_graph_sustain frames=128 iterations=1200 mean_us=228.964 p99_us=345.072 p999_us=366.091 max_us=390.037
+  actual_reconstruction_reads=2 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=8 root_clears=6 event_scans=8 parameter_writes=40 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+saved_graph_sustain frames=256 iterations=1200 mean_us=445.095 p99_us=464.367 p999_us=519.251 max_us=539.329
+  actual_reconstruction_reads=2 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=8 root_clears=6 event_scans=8 parameter_writes=40 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+saved_graph_sustain frames=512 iterations=1200 mean_us=884.277 p99_us=922.943 p999_us=1013.154 max_us=1181.181
+  actual_reconstruction_reads=2 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=8 root_clears=6 event_scans=8 parameter_writes=40 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+saved_graph_sustain frames=1024 iterations=1200 mean_us=1757.373 p99_us=1820.840 p999_us=1911.030 max_us=1986.603
+  actual_reconstruction_reads=2 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=8 root_clears=6 event_scans=8 parameter_writes=40 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+saved_short_empty frames=64 iterations=1200 mean_us=103.200 p99_us=139.093 p999_us=152.718 max_us=196.752
+  actual_reconstruction_reads=0 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=0 root_clears=6 event_scans=0 parameter_writes=40 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+saved_short_empty frames=256 iterations=1200 mean_us=391.225 p99_us=435.603 p999_us=464.417 max_us=469.036
+  actual_reconstruction_reads=0 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=0 root_clears=12 event_scans=0 parameter_writes=80 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+saved_short_empty frames=1024 iterations=1200 mean_us=1543.731 p99_us=1623.788 p999_us=1685.845 max_us=1863.731
+  actual_reconstruction_reads=0 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=0 root_clears=36 event_scans=0 parameter_writes=240 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+saved_short_populated frames=64 iterations=1200 mean_us=117.509 p99_us=151.877 p999_us=164.180 max_us=212.261
+  actual_reconstruction_reads=2 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=4 root_clears=6 event_scans=4 parameter_writes=40 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+saved_short_populated frames=256 iterations=1200 mean_us=450.702 p99_us=507.499 p999_us=549.568 max_us=598.311
+  actual_reconstruction_reads=4 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=8 root_clears=12 event_scans=8 parameter_writes=80 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+saved_short_populated frames=1024 iterations=1200 mean_us=1779.411 p99_us=1872.457 p999_us=1921.139 max_us=2133.110
+  actual_reconstruction_reads=12 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=24 root_clears=36 event_scans=24 parameter_writes=240 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+saved_dense_controls frames=64 iterations=1200 mean_us=98.430 p99_us=144.213 p999_us=151.145 max_us=154.262
+  actual_reconstruction_reads=1024 preview_reads=18 fixed_preview_limit=56
+  family=0 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=1 max_events=0 root_clears=6 event_scans=1024 parameter_writes=40 guard_steps=9252
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=61 guard_steps=0
+saved_dense_controls frames=256 iterations=1200 mean_us=364.542 p99_us=414.283 p999_us=434.410 max_us=442.155
+  actual_reconstruction_reads=1024 preview_reads=18 fixed_preview_limit=56
+  family=0 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=1 max_events=0 root_clears=6 event_scans=1024 parameter_writes=40 guard_steps=9252
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=61 guard_steps=0
+saved_dense_controls frames=1024 iterations=1200 mean_us=1427.820 p99_us=1468.875 p999_us=1484.154 max_us=1568.272
+  actual_reconstruction_reads=1024 preview_reads=18 fixed_preview_limit=56
+  family=0 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=1 max_events=0 root_clears=6 event_scans=1024 parameter_writes=40 guard_steps=9252
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=61 guard_steps=0
+saved_stop_after_full_queue frames=64 iterations=1200 mean_us=94.565 p99_us=109.006 p999_us=124.816 max_us=129.715
+  actual_reconstruction_reads=0 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=6 event_scans=0 parameter_writes=20 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=64 guard_steps=0
+max_graph_sustain frames=1 iterations=1200 mean_us=10.940 p99_us=19.918 p999_us=23.294 max_us=37.591
+  actual_reconstruction_reads=0 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+max_graph_sustain frames=31 iterations=1200 mean_us=113.335 p99_us=124.715 p999_us=132.350 max_us=136.828
+  actual_reconstruction_reads=0 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+max_graph_sustain frames=64 iterations=1200 mean_us=225.701 p99_us=239.483 p999_us=255.843 max_us=292.212
+  actual_reconstruction_reads=2 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=8 root_clears=6 event_scans=8 parameter_writes=192 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+max_graph_sustain frames=128 iterations=1200 mean_us=442.980 p99_us=457.945 p999_us=489.966 max_us=508.851
+  actual_reconstruction_reads=2 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=8 root_clears=6 event_scans=8 parameter_writes=192 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+max_graph_sustain frames=256 iterations=1200 mean_us=877.489 p99_us=921.100 p999_us=946.788 max_us=974.901
+  actual_reconstruction_reads=2 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=8 root_clears=6 event_scans=8 parameter_writes=192 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+max_graph_sustain frames=512 iterations=1200 mean_us=1755.374 p99_us=1822.774 p999_us=2090.068 max_us=3349.157
+  actual_reconstruction_reads=2 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=8 root_clears=6 event_scans=8 parameter_writes=192 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+max_graph_sustain frames=1024 iterations=1200 mean_us=3475.326 p99_us=3549.094 p999_us=3638.553 max_us=3774.109
+  actual_reconstruction_reads=2 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=8 root_clears=6 event_scans=8 parameter_writes=192 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+max_short_empty frames=64 iterations=1200 mean_us=210.222 p99_us=249.041 p999_us=265.392 max_us=269.368
+  actual_reconstruction_reads=0 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=0 root_clears=6 event_scans=0 parameter_writes=192 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+max_short_empty frames=256 iterations=1200 mean_us=820.348 p99_us=875.123 p999_us=939.836 max_us=989.579
+  actual_reconstruction_reads=0 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=0 root_clears=12 event_scans=0 parameter_writes=384 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+max_short_empty frames=1024 iterations=1200 mean_us=3247.340 p99_us=3336.223 p999_us=3371.950 max_us=3411.475
+  actual_reconstruction_reads=0 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=0 root_clears=36 event_scans=0 parameter_writes=1152 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+max_short_populated frames=64 iterations=1200 mean_us=227.340 p99_us=266.724 p999_us=285.670 max_us=327.278
+  actual_reconstruction_reads=2 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=4 root_clears=6 event_scans=4 parameter_writes=192 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+max_short_populated frames=256 iterations=1200 mean_us=884.790 p99_us=937.331 p999_us=959.413 max_us=966.365
+  actual_reconstruction_reads=4 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=8 root_clears=12 event_scans=8 parameter_writes=384 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+max_short_populated frames=1024 iterations=1200 mean_us=3511.609 p99_us=3598.587 p999_us=3790.821 max_us=4447.902
+  actual_reconstruction_reads=12 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=24 root_clears=36 event_scans=24 parameter_writes=1152 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+max_dense_controls frames=64 iterations=1200 mean_us=206.319 p99_us=272.304 p999_us=283.055 max_us=305.487
+  actual_reconstruction_reads=1024 preview_reads=18 fixed_preview_limit=56
+  family=0 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=1 max_events=0 root_clears=6 event_scans=1024 parameter_writes=192 guard_steps=9252
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=61 guard_steps=0
+max_dense_controls frames=256 iterations=1200 mean_us=783.668 p99_us=839.055 p999_us=862.900 max_us=971.355
+  actual_reconstruction_reads=1024 preview_reads=18 fixed_preview_limit=56
+  family=0 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=1 max_events=0 root_clears=6 event_scans=1024 parameter_writes=192 guard_steps=9252
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=61 guard_steps=0
+max_dense_controls frames=1024 iterations=1200 mean_us=3117.309 p99_us=3183.243 p999_us=3293.361 max_us=3424.068
+  actual_reconstruction_reads=1024 preview_reads=18 fixed_preview_limit=56
+  family=0 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=1 max_events=0 root_clears=6 event_scans=1024 parameter_writes=192 guard_steps=9252
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=61 guard_steps=0
+max_stop_after_full_queue frames=64 iterations=1200 mean_us=201.003 p99_us=216.599 p999_us=233.260 max_us=235.054
+  actual_reconstruction_reads=0 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=6 event_scans=0 parameter_writes=96 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=64 guard_steps=0
+max_voice_edges_sustain frames=64 iterations=1200 mean_us=233.267 p99_us=244.352 p999_us=288.716 max_us=373.105
+  actual_reconstruction_reads=2 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=8 root_clears=6 event_scans=8 parameter_writes=40 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+max_voice_edges_sustain frames=256 iterations=1200 mean_us=907.639 p99_us=935.427 p999_us=972.847 max_us=994.629
+  actual_reconstruction_reads=2 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=8 root_clears=6 event_scans=8 parameter_writes=40 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+max_voice_edges_sustain frames=1024 iterations=1200 mean_us=3612.129 p99_us=3687.215 p999_us=3781.964 max_us=4045.852
+  actual_reconstruction_reads=2 preview_reads=0 fixed_preview_limit=56
+  family=0 max_events=8 root_clears=6 event_scans=8 parameter_writes=40 guard_steps=0
+  family=1 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=2 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+  family=3 max_events=0 root_clears=0 event_scans=0 parameter_writes=0 guard_steps=0
+combined_policy_upper_bound frames=64 iterations=1200 roots=126 writes=3904 scans=19456 extra_events=64 guard_steps=9252 mean_us=997.917 p99_us=1148.940 p999_us=1214.745 max_us=1232.879
+combined_policy_upper_bound frames=128 iterations=1200 roots=126 writes=3904 scans=19456 extra_events=64 guard_steps=9252 mean_us=1218.868 p99_us=1392.039 p999_us=1423.529 max_us=1468.374
+combined_policy_upper_bound frames=256 iterations=1200 roots=126 writes=3904 scans=19456 extra_events=64 guard_steps=9252 mean_us=1646.145 p99_us=1792.325 p999_us=1829.705 max_us=1832.692
+combined_policy_upper_bound frames=1024 iterations=1200 roots=126 writes=3904 scans=19456 extra_events=64 guard_steps=9252 mean_us=4224.133 p99_us=4348.743 p999_us=4419.407 max_us=4431.871
+PASS: actual saved and maximal admitted graph measurement, callback guards, no runtime faults

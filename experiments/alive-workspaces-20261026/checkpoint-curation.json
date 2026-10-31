@@ -1,0 +1,8 @@
+{
+  "staged_raw_evidence_whitespace_check_exit": 2,
+  "staged_raw_evidence_whitespace_output": "experiments/alive-workspaces-20261026/ci-9bf3180/intel-macos-package-failure.log:1: trailing whitespace.\n+Package x86_64-apple-darwin\tBuild unsigned or ad-hoc test packages\t2026-10-26T04:29:37.3613430Z \nexperiments/alive-workspaces-20261026/ci-9bf3180/intel-macos-package-failure.log:7: trailing whitespace.\n+Package x86_64-apple-darwin\tBuild unsigned or ad-hoc test packages\t2026-10-26T04:29:37.3617360Z \nexperiments/alive-workspaces-20261026/ci-9bf3180/intel-macos-package-failure.log:37: trailing whitespace.\n+Package x86_64-apple-darwin\tBuild unsigned or ad-hoc test packages\t2026-10-26T04:31:19.1646180Z \nexperiments/alive-workspaces-20261026/ci-9bf3180/intel-macos-package-failure.log:41: trailing whitespace.\n+Package x86_64-apple-darwin\tBuild unsigned or ad-hoc test packages\t2026-10-26T04:31:19.1650510Z \nexperiments/alive-workspaces-20261026/task2b-fix1/normal-flags.make:10: new blank line at EOF.\nexperiments/alive-workspaces-20261026/task2b/final-rust-session.log:100: new blank line at EOF.\nexperiments/alive-workspaces-20261026/task2b/normal-flags.make:10: new blank line at EOF.\n",
+  "explanation": "Verbatim generated build flags and command logs retain blank EOF lines/trailing whitespace. Evidence bytes are preserved and hashed; no production code is staged by this evidence commit.",
+  "staged_docs_json_desktop_whitespace_check_exit": 0,
+  "source_fix_whitespace_check": "git diff --check d7f8490..db39ab0 passed separately",
+  "suites_repeated_for_curation": false
+}

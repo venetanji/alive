@@ -1,0 +1,29 @@
+{
+  "evidenceType": "Actual mounted UI modules with existing synthetic DOM adapter and mocked native IPC; no native window, disk save or audio claim",
+  "steps": [
+    "Open shared saved document containing number_int value 10",
+    "Lock canvas",
+    "Focus number input, type 42, emit input; do not blur/Enter/Tab",
+    "Press Ctrl+S in the same focused input",
+    "Request existing flush-before-close callback"
+  ],
+  "beforeClose": {
+    "visibleInput": "42",
+    "saveSnapshot": 10,
+    "authoritativeValue": 10,
+    "commitRequests": 0,
+    "ownerDirty": false
+  },
+  "closeAcknowledgement": {
+    "name": "document_close_flushed",
+    "args": {
+      "requestLabel": "main",
+      "token": 1
+    }
+  },
+  "afterCloseFlush": {
+    "visibleInput": "42",
+    "authoritativeValue": 10,
+    "commitRequests": 0
+  }
+}

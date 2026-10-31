@@ -1,0 +1,57 @@
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 10:51:38] "GET /canvas.html HTTP/1.1" 200 -
+
+Running 1 test using 1 worker
+
+(node:92749) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:92749) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 10:51:39] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 10:51:39] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 10:51:39] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 10:51:39] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 10:51:39] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 10:51:39] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 10:51:39] "GET /audio-settings.mjs HTTP/1.1" 200 -
+  ✘  1 apps/ultra/tests/ci/alive-chain.spec.mjs:135:1 › hiding Session preserves an unfinished gain field without issuing a mixer mutation (617ms)
+
+
+  1) apps/ultra/tests/ci/alive-chain.spec.mjs:135:1 › hiding Session preserves an unfinished gain field without issuing a mixer mutation 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -  1[39m
+    [31m+ Received  + 12[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   Object {[39m
+    [31m+     "args": Object {[39m
+    [31m+       "gain": 0.85,[39m
+    [31m+       "generation": 1,[39m
+    [31m+       "mute": false,[39m
+    [31m+       "solo": false,[39m
+    [31m+       "track": 0,[39m
+    [31m+     },[39m
+    [31m+     "name": "alive_mixer",[39m
+    [31m+   },[39m
+    [31m+ ][39m
+
+      137 |   const gain=page.getByLabel('Pulse gain',{exact:true});await gain.fill('0.85');
+      138 |   for(let i=0;i<3;i++){await page.locator('#view-arrangement').click();await page.locator('#view-session').click();}
+    > 139 |   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);await expect(gain).toHaveValue('0.85');
+          |                                                                                     ^
+      140 | });
+      141 |
+      142 | test('maximum detail resize leaves the entire detail and workspace reachable',async({page})=>{
+        at /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/ci/alive-chain.spec.mjs:139:85
+
+    Error Context: ../../../../../../tmp/alive-workspaces-task1/browser-gain-red/alive-chain-hiding-Session-f3169-ut-issuing-a-mixer-mutation/error-context.md
+
+  1 failed
+    apps/ultra/tests/ci/alive-chain.spec.mjs:135:1 › hiding Session preserves an unfinished gain field without issuing a mixer mutation 
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report apps/ultra/tests/ci/playwright-report[39m
+[36m[39m

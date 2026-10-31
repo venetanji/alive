@@ -1,0 +1,44 @@
+stopped reductions/global slot 5/queued Start/future pending=PASS
+stopped cue -> queued Start -> future Return preserves active cue and exact absolute target=PASS
+one-shot ended cue/Stop-resume silence/natural-end restart/explicit Stop=PASS
+O=1000 strict-prefix/due automation/end-start-span/held Return/gap/stateful tails=PASS
+stopped optional refusal/live controls/member masks/global Return/full queue/receipt collision/unreachable grid=PASS
+reserved Stop epoch race/stale requests/atomic due fault/no later-fragment rearm=PASS
+authority work six roots actual-frame/admitted-frame actual-window/admitted-window: 2/12,2/24 3/30,3/48 1/10,1/16 20/200,20/320 0/0,0/0 4/34,4/40
+first-sample refusal guard=9252 placement=2058 reconstruction=0
+serial/Stop epoch saturation/final first-sample admission/rejected expensive guard=PASS
+pending boundary position=3001 action=1 slot=5 serial=306 target=1056426 placement=3 receipt_pending=2
+pending boundary position=9999 action=1 slot=5 serial=306 target=1056426 placement=3 receipt_pending=2
+pending boundary position=10000 action=1 slot=5 serial=306 target=1056426 placement=3 receipt_pending=2
+pending boundary position=10001 action=1 slot=5 serial=306 target=1056426 placement=4 receipt_pending=2
+pending boundary position=19999 action=1 slot=5 serial=306 target=1056426 placement=4 receipt_pending=2
+pending boundary position=20000 action=1 slot=5 serial=306 target=1056426 placement=4 receipt_pending=2
+pending boundary position=20001 action=1 slot=5 serial=306 target=1056426 placement=4294967295 receipt_pending=2
+pending boundary position=29999 action=1 slot=5 serial=306 target=1056426 placement=4294967295 receipt_pending=2
+pending boundary position=30000 action=1 slot=5 serial=306 target=1056426 placement=4294967295 receipt_pending=2
+pending boundary position=30001 action=1 slot=5 serial=306 target=1056426 placement=5 receipt_pending=2
+pending boundary position=47999 action=1 slot=5 serial=306 target=1056426 placement=5 receipt_pending=2
+pending boundary position=48000 action=1 slot=5 serial=306 target=1056426 placement=5 receipt_pending=2
+pending local3/global5 survives adjacent occurrence, gap entry/exit and applies at 48000=PASS
+concurrent playing pending reads=26891 boundary_mask=7 applied_reads=2
+64-command final-only lookup/coherent authority-slot-source-receipt publication=PASS
+empty/cross-track slot token/malformed action/mask/stale revision ingress=PASS
+sparse eight-track atomic scene/global Return=PASS; dense 32-slot fixture refused placement 66/64
+combined chased/ordinary events: retained28+batch4=32 accepted; retained29+batch4=33 atomic refusal=PASS
+tempo minimum suffixes 375/120BPM and188/240BPM; shorter refused; Stop/removal silent=PASS
+suffix/Seek actual-frame/admitted-frame actual-window/admitted-window: 4/13,13/32 3/15,6/24 8/40,16/64 21/101,43/164 0/0,0/0 4/17,5/20
+sparse pending Launch global5 survives repeated Arrangement source seams=PASS
+suffix L2000/O400 period1600 ordering/cutoff/adjacent occurrence/effect PCM=PASS
+Seek held/source seam/placement boundary/gap/range/stopped Session cue=PASS
+Seek retains ended one-shot silence and private restart cue=PASS
+pending-survives-refused-Seek: serial2 mask3 slot5 target48000 guard=9252 placement=2058
+Arrangement-only Seek preserves Session phase/epoch/real PCM=PASS
+song profile2 eight-track/sixteen-root conservative roots=52/48 refused
+song admitted profile1 two-track/two-root and profile2 eight-track/eight-root; profile1 six-root30/18 refused
+failed wrap+scene retains committed position/authority, cancels members, emits no events/PCM=PASS
+wrap final-first-frame refusal retains history/position/cursors; rejected guards charged; later restart=PASS
+brace/due Return-Launch-Stop/suffix/placement first-and-interior coalescing=PASS
+song six-root actual-frame/admitted-frame actual-window/admitted-window: 2/10,4/18 6/30,12/54 2/10,4/18 40/200,80/360 0/0,0/0 8/34,9/45
+partial song brace/prefix/mid-source Return/absolute targets/Session PCM=PASS
+quantized authority/endpoint coalescing/held Return/independent real PCM and partitions=PASS
+PASS: MIDI authority actions, source suffix loops and Arrangement Seek

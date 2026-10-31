@@ -1,0 +1,91 @@
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activating service name='org.freedesktop.portal.Desktop' requested by ':1.0' (uid=1000 pid=1141956 comm="/home/venetanji/.codex/worktrees/edd5/alive/apps/u")
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activating service name='org.freedesktop.impl.portal.PermissionStore' requested by ':1.1' (uid=1000 pid=1141963 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.PermissionStore'
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activating service name='org.freedesktop.portal.Documents' requested by ':1.1' (uid=1000 pid=1141963 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Successfully activated service 'org.freedesktop.portal.Documents'
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1141963 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:1141985): Gtk-WARNING **: 18:46:00.736: cannot open display: :0
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1141963 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:1141989): Gtk-WARNING **: 18:46:00.753: cannot open display: :0
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1141963 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:1141994): Gtk-WARNING **: 18:46:00.779: cannot open display: :0
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:1141963): xdg-desktop-portal-WARNING **: 18:46:00.781: Failed to create settings proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:1141963): xdg-desktop-portal-WARNING **: 18:46:00.781: Not providing Settings portal: No working backend
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1141963 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:1141997): Gtk-WARNING **: 18:46:00.796: cannot open display: :0
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:1141963): xdg-desktop-portal-WARNING **: 18:46:00.798: Failed to create file chooser proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1141963 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:1142000): Gtk-WARNING **: 18:46:00.814: cannot open display: :0
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:1141963): xdg-desktop-portal-WARNING **: 18:46:00.815: Failed to create app chooser proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1141963 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:1142003): Gtk-WARNING **: 18:46:00.831: cannot open display: :0
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:1141963): xdg-desktop-portal-WARNING **: 18:46:00.833: Failed to create print proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1141963 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:1142006): Gtk-WARNING **: 18:46:00.849: cannot open display: :0
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:1141963): xdg-desktop-portal-WARNING **: 18:46:00.850: Failed to create notification proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1141963 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:1142009): Gtk-WARNING **: 18:46:00.866: cannot open display: :0
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:1141963): xdg-desktop-portal-WARNING **: 18:46:00.868: Failed to create inhibit proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:1141963): xdg-desktop-portal-WARNING **: 18:46:00.868: The location portal requires an access impl
+
+(/usr/lib/xdg-desktop-portal:1141963): xdg-desktop-portal-WARNING **: 18:46:00.868: The camera portal requires an access impl
+
+(/usr/lib/xdg-desktop-portal:1141963): xdg-desktop-portal-WARNING **: 18:46:00.868: The screenshot portal requires an access impl
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1141963 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:1142012): Gtk-WARNING **: 18:46:00.883: cannot open display: :0
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:1141963): xdg-desktop-portal-WARNING **: 18:46:00.885: Failed to create account proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1141963 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:1142015): Gtk-WARNING **: 18:46:00.900: cannot open display: :0
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:1141963): xdg-desktop-portal-WARNING **: 18:46:00.902: Failed to create email proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=1141963 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1141963 comm="/usr/lib/xdg-desktop-portal")
+
+(xdg-desktop-portal-gtk:1142020): Gtk-WARNING **: 18:46:00.923: cannot open display: :0
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activated service 'org.freedesktop.impl.portal.desktop.gtk' failed: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+
+(/usr/lib/xdg-desktop-portal:1141963): xdg-desktop-portal-WARNING **: 18:46:00.924: Failed to create dynamic_launcher proxy: Error calling StartServiceByName for org.freedesktop.impl.portal.desktop.gtk: Process org.freedesktop.impl.portal.desktop.gtk exited with status 1
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=1141963 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=1141963 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Successfully activated service 'org.freedesktop.portal.Desktop'
+PASS secondary file delivery during initialization preserves main and opens its own window
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Activating service name='ca.desrt.dconf' requested by ':1.108' (uid=1000 pid=1142604 comm="/home/venetanji/.codex/worktrees/edd5/alive/apps/u")
+dbus-daemon[1141902]: [session uid=1000 pid=1141902 pidfd=5] Successfully activated service 'ca.desrt.dconf'

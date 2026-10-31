@@ -1,0 +1,574 @@
+(node:860066) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:13] "GET /canvas.html HTTP/1.1" 200 -
+
+Running 51 tests using 1 worker
+
+(node:860095) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:860095) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(node:860095) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:15] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:15] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:15] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:15] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:15] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:15] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:15] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:15] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:15] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:15] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓   1 alive-chain.spec.mjs:481:1 › empty body double-click creates one draft clip and never launches (2.0s)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:15] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:15] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:15] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:15] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:15] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:15] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:15] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:15] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:15] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:15] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓   2 alive-chain.spec.mjs:513:1 › scene receipts leave the visual and accessibility tree in legacy mode and refresh on return (454ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓   3 alive-chain.spec.mjs:600:1 › vertical gain fader sends one bounded change and reflects external snapshots without erasing focused numeric text (286ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓   4 alive-chain.spec.mjs:637:5 › two fixed track columns leave blank stage and expose piano roll at 1440x900 (175ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:16] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓   5 alive-chain.spec.mjs:637:5 › two fixed track columns leave blank stage and expose piano roll at 1280x800 (169ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓   6 alive-chain.spec.mjs:662:1 › Add note queued behind track removal never edits the surviving track (214ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓   7 alive-chain.spec.mjs:689:1 › selected instance controls, keyboard automation target, draft guard and desktop bounds (416ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓   8 alive-chain.spec.mjs:740:1 › long saved device names fit the minimum desktop window (144ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:17] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓   9 alive-chain.spec.mjs:752:1 › piano body, resize, velocity, cancellation and keyboard gestures are bounded transactions (750ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:18] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:18] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:18] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:18] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:18] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:18] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:18] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:18] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:18] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:18] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  10 alive-chain.spec.mjs:829:1 › four-slot bank preserves numeric note identity and fits the minimum desktop (402ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  11 alive-chain.spec.mjs:889:5 › eight columns align with four scene rows at 1440x900 (247ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  12 alive-chain.spec.mjs:889:5 › eight columns align with four scene rows at 1280x800 (258ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  13 alive-chain.spec.mjs:943:1 › view buttons preserve focused uncommitted values and native Tab navigation (215ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:19] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  14 alive-chain.spec.mjs:966:1 › hiding Session preserves an unfinished gain field without issuing a mixer mutation (330ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:20] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:20] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:20] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:20] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:20] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:20] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:20] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:20] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:20] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:20] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  15 alive-chain.spec.mjs:988:40 › detail navigation preserves an unfinished device field until one deliberate commit (8.8s)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:28] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:28] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:28] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:28] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:28] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:28] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:28] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:28] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:28] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:28] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  16 alive-chain.spec.mjs:988:40 › detail navigation preserves an unfinished note field until one deliberate commit (8.8s)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  17 alive-chain.spec.mjs:1065:1 › maximum detail resize leaves the entire detail and workspace reachable (126ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  18 alive-chain.spec.mjs:1086:1 › track name and metadata line boxes fit the fixed Session header without clipping (149ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:37] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  19 alive-chain.spec.mjs:1107:38 › v4 navigation and polling preserve unfinished gain without changing runtime authority (652ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:38] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:38] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:38] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:38] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:38] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:38] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:38] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:38] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:38] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:38] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  20 alive-chain.spec.mjs:1107:38 › v4 navigation and polling preserve unfinished note without changing runtime authority (708ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:39] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:39] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:39] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:39] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:39] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:39] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:39] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:39] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:39] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:39] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  21 alive-chain.spec.mjs:1214:3 › Arrangement pointer edits, cancellation and local view controls at 1440 (1.3s)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:40] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:40] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:40] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:40] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:40] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:40] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:40] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:40] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:40] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:40] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  22 alive-chain.spec.mjs:1306:98 › Arrangement unfinished Placement start survives hiding and polling at 1440 (930ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:41] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:41] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:41] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:41] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:41] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:41] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:41] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:41] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:41] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:41] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  23 alive-chain.spec.mjs:1306:98 › Arrangement unfinished Placement source offset survives hiding and polling at 1440 (924ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:42] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:42] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:42] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:42] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:42] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:42] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:42] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:42] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:42] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:42] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  24 alive-chain.spec.mjs:1306:98 › Arrangement unfinished Arrangement source name survives hiding and polling at 1440 (943ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:43] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:43] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:43] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:43] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:43] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:43] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:43] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:43] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:43] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:43] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  25 alive-chain.spec.mjs:1214:3 › Arrangement pointer edits, cancellation and local view controls at 1280 (1.3s)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:44] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:44] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:44] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:44] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:44] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:44] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:44] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:44] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:44] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:44] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  26 alive-chain.spec.mjs:1306:98 › Arrangement unfinished Placement start survives hiding and polling at 1280 (925ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:45] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:45] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:45] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:45] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:45] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:45] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:45] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:45] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:45] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:45] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  27 alive-chain.spec.mjs:1306:98 › Arrangement unfinished Placement source offset survives hiding and polling at 1280 (937ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:46] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:46] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:46] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:46] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:46] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:46] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:46] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:46] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:46] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:46] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  28 alive-chain.spec.mjs:1306:98 › Arrangement unfinished Arrangement source name survives hiding and polling at 1280 (915ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:47] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:47] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:47] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:47] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:47] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:47] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:47] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:47] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:47] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:47] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  29 alive-chain.spec.mjs:1337:1 › Arrangement creates separate source and occurrence history and cancels stale gestures and brace previews (1.2s)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:48] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:48] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:48] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:48] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:48] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:48] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:48] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:48] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:48] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:48] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  30 alive-chain.spec.mjs:1383:1 › Arrangement blank-lane drag selects the range after a timeline redraw (529ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  31 alive-chain.spec.mjs:1429:5 › Arrangement eight-track scrolling, long names and expanded detail stay bounded at 1440 (303ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  32 alive-chain.spec.mjs:1429:5 › Arrangement eight-track scrolling, long names and expanded detail stay bounded at 1280 (284ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:49] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  33 alive-chain.spec.mjs:1484:1 › Arrangement selection opens Clip detail and piano Delete never deletes its occurrence (405ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:50] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:50] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:50] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:50] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:50] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:50] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:50] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:50] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:50] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:50] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  34 alive-chain.spec.mjs:1512:5 › Arrangement gain preserves unfinished input and shares Session mixer at 1440 (833ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:51] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:51] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:51] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:51] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:51] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:51] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:51] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:51] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:51] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:51] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  35 alive-chain.spec.mjs:1512:5 › Arrangement gain preserves unfinished input and shares Session mixer at 1280 (723ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:51] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:51] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:51] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:51] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:51] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:51] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:51] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:51] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:51] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:51] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  36 alive-chain.spec.mjs:1547:41 › Master and compact workspace geometry v4 1440 (1.7s)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:53] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:53] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:53] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:53] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:53] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:53] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:53] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:53] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:53] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:53] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  37 alive-chain.spec.mjs:1547:41 › Master and compact workspace geometry v3 1440 (939ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:54] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:54] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:54] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:54] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:54] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:54] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:54] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:54] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:54] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:54] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  38 alive-chain.spec.mjs:1547:41 › Master and compact workspace geometry v4 1280 (1.7s)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:56] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:56] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:56] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:56] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:56] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:56] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:56] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:56] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:56] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:56] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  39 alive-chain.spec.mjs:1547:41 › Master and compact workspace geometry v3 1280 (955ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:57] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:57] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:57] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:57] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:57] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:57] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:57] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:57] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:57] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:57] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  40 alive-chain.spec.mjs:1635:1 › both Master views share native gain, interval peaks, overload reset and local selection (381ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:57] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:57] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:57] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:57] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:57] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:57] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:57] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:57] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:57] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:57] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  41 alive-chain.spec.mjs:1677:1 › vertical Session faders respond to real upward and downward pointer drags (704ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:58] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:58] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:58] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:58] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:58] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:58] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:58] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:58] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:58] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:58] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  42 alive-chain.spec.mjs:1708:1 › Master pressure retains the final intent and reports reset refusal without claiming it saved (339ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:58] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:58] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:58] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:58] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:58] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:58] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:58] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:58] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:58] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:58] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  43 alive-chain.spec.mjs:1774:1 › Master unavailable and stale observations remain explicit (335ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  44 alive-chain.spec.mjs:1798:1 › Master selection parks unfinished clip text and caret without a native edit (234ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  45 alive-chain.spec.mjs:1821:1 › browser and column widths resize locally and Master selection preserves device binding (302ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  46 alive-chain.spec.mjs:1856:1 › Master numeric validation and double-click unity use the same admission path (187ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  47 alive-chain.spec.mjs:1882:1 › Arrangement Master aligns with right track controls and source fields have visible context (157ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:43:59] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  48 alive-chain.spec.mjs:1919:1 › returning from Master to the same Arrangement occurrence retains parked text (423ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  49 alive-chain.spec.mjs:1942:1 › generation change visibly cancels a pending Master intent and ignores its late receipt (256ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  50 alive-chain.spec.mjs:1975:1 › Arrangement Master markings and meter remain separate in the right-hand control group (152ms)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:44:00] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✓  51 alive-chain.spec.mjs:2000:1 › pointer-derived track gain remains readable in both mixer and Arrangement detail (223ms)
+
+  51 passed (48.0s)

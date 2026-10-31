@@ -1,0 +1,19 @@
+# Windows resolver fixture investigation: 58be6da
+
+## Finding
+
+Job 123126096566 in run 40776217079 (head 58be6dae637b7ffca740287ab64e03e4f5ffd3b4, Windows 2022) successfully completed the unsigned package build and the fixture CMake build. Immediately after that, the first observed diagnostic is `The filename, directory name, or volume label syntax is incorrect.` The PowerShell harness then throws `probe compile failed: 1` at `apps/ultra/tests/windows/master_resolver_fixtures.ps1:32`; the step exits 1. There is no Rust compiler diagnostic in that interval. The log does not establish which path or quoting boundary produced the message, or even that rustc started.
+
+The narrow failing boundary is lines 23-32: `vswhere` finds an installation, `$vcvars`, `$rustc`, `$probeSource`, `$native` and `$probe` are interpolated into a shell command, and PowerShell invokes `cmd.exe /d /s /c` with an additional quoted command string. The script checks only the combined process exit. The log does not print the expanded command or the individual exits, so a cmd/PowerShell argument-quoting or path problem is a hypothesis, not a proven exact correction. The fixture sources are identical between 58be6da and 66249c5 (`fixture-source-diff.txt` is empty).
+
+The loop at lines 34-65 follows the failed command, so none of `real`, `full`, `old`, `partial`, `forwarded`, or `bad_limits` ran. The artifact transcript records the setup and tool versions, but not the diagnostic or fixture outcomes. The job log records that five fixture DLLs and the forward target compiled, which does not establish any resolver behavior. The Windows production runtime, direct fixture execution, cached capability, and full-host behavior have no new passing evidence from this step. No production resolver defect is established.
+
+## Narrow next step
+
+With a separate writer/Windows execution authorization, reproduce only the probe launch in the same Windows runner environment, capturing the exact expanded values and effective command, `cmd.exe` exit, and whether `vcvars64.bat` and `rustc` each begin and exit. Isolate the two command segments using the same resolved paths, preserve their individual outputs and exits, and confirm the resulting `master_resolver_probe.exe` exists. This distinguishes shell argument parsing, tool initialization, and actual compiler/linker failure before proposing a change. If quoting is confirmed, make only the corresponding harness invocation correction and rerun the six fixture cases; retain per-case output separately from any cached capability or full-host qualification. No exact source correction is justified by the retained log alone. No source, cloud, or environment mutation was performed in this investigation.
+
+## Evidence and commands
+
+Evidence: `experiments/phase2-20261028/master/windows-fixture58/`. `job.log` contains the full returned terminal log, including escape sequences; `job-response.http` and `artifacts-response.http` retain the API metadata and headers. The artifact ZIP is retained unchanged and its SHA-256 `046ab9c0b4bd5e9137eeb8dd8284ee60fd5b05a0502862beb37b80eb99331eed` matches the API digest. `artifact-report.txt` is its extracted transcript. `SHA256SUMS`, `commands.txt`, `exits.txt`, and stderr files record collection. The initial `gh api .../logs` exited 1 because gh refused terminal escape sequences; the retry with `--allow-escape-sequences` exited 0. Job metadata, artifact list, artifact download, extraction, and fixture source diff all exited 0. The raw log SHA-256 is `b05d036fe9292bac3088cc4658991c32659bc2b456f3f026b7c096795dd39c8c`.
+
+No local Windows reproduction was attempted: the brief excludes native/build execution and cloud mutations. Source authorization is needed before any diagnostic harness edit or fix; Windows execution and any cloud rerun require the appropriate separate authorization.

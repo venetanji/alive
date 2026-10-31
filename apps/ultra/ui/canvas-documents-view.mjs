@@ -5,7 +5,7 @@ import {MAX_IMPORT_LIMITS,readPatchFile} from './canvas-max-import.mjs';
 
 export function mountDocuments({doc,win,invoke,getPatch,adopt,beforeSave,beforeClose,onCloseCancelled=()=>{},inspect,notice,onDocument=()=>{},onDescriptor=()=>{},onReveal=()=>{}}){
   const $=id=>doc.querySelector('#'+id),make=(tag,className,text)=>{const e=doc.createElement(tag);if(className)e.className=className;if(text!==undefined)e.textContent=text;return e;};
-  const cleanPatch={version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]};
+  const cleanPatch={version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[],edges:[]};
   const unlisten=[];let disposed=false,returnFocus=null,readyTask=null;
   const guard=fn=>(...args)=>{try{return Promise.resolve(fn(...args)).catch(notice);}catch(error){notice(error);}};
   const pageURL=params=>{const url=new URL(win.location.href||'http://localhost/canvas.html');url.search='';url.hash='';for(const [key,value]of Object.entries(params))url.searchParams.set(key,value);return url.href;};
@@ -31,7 +31,8 @@ export function mountDocuments({doc,win,invoke,getPatch,adopt,beforeSave,beforeC
       win.setTimeout(()=>URL.revokeObjectURL(url),1000);notice('Patch download requested.');return{...descriptor,title:link.download,kind:'patch'};
     },
   };
-  const session=createDocumentSession({invoke,getPatch,adopt,beforeSave,beforeClose,inspect,notice,browser,metadata:value=>{
+  const session=createDocumentSession({invoke,getPatch,adopt,beforeSave,beforeClose,inspect,notice,browser,
+    setTimer:(fn,ms)=>win.setTimeout(fn,ms),clearTimer:id=>win.clearTimeout(id),onSaveReleased:onCloseCancelled,metadata:value=>{
     const title=value.viewTitle||value.title;
     $('document-title').textContent=title;$('document-title').title=value.path||value.title;$('document-dirty').hidden=!value.dirty;
     doc.title=`${value.dirty?'* ':''}${title} - Ultra`;onDocument(value);
@@ -95,6 +96,8 @@ export function mountDocuments({doc,win,invoke,getPatch,adopt,beforeSave,beforeC
     listen('document-action',event=>actions[event.payload]?.()),
     listen('document-save-before-close',event=>session.saveBeforeClose(event.payload)),
     listen('document-flush-before-close',async event=>{if(readyTask)await readyTask;return session.flushBeforeClose(event.payload);}),
+    listen('document-flush-before-save',async event=>{if(readyTask)await readyTask;return session.flushBeforeSave(event.payload);}),
+    listen('document-save-flush-released',event=>{const barrier=session.releaseSave(event.payload);if(barrier)return onCloseCancelled(barrier);}),
     listen('document-close-cancelled',async event=>{if(readyTask)await readyTask;session.cancelClose(event.payload);return onCloseCancelled(event.payload);}),
     listen('document-error',event=>notice(event.payload)),
     listen('document-changed',event=>{if(session.acceptDescriptor(event.payload))return onDescriptor(event.payload);}),
@@ -104,5 +107,5 @@ export function mountDocuments({doc,win,invoke,getPatch,adopt,beforeSave,beforeC
     const webview=win.__TAURI__?.webview?.getCurrentWebview?.();
     if(webview?.onDragDropEvent)webview.onDragDropEvent(guard(async event=>{if(event.payload.type==='drop')for(const path of event.payload.paths||[])await session.open(path);})).then(off=>{if(disposed)off();else unlisten.push(off);}).catch(notice);
   }
-  return{session,openLibrary,openHelp:key=>session.openHelp(key),action:action=>actions[action]?.(),ready:()=>readyTask??=(async()=>{await subscriptions;return session.ready();})(),update:()=>session.update(),isOpen:()=>$('help-library').open,dispose(){disposed=true;unlisten.splice(0).forEach(off=>off());}};
+  return{session,openLibrary,openHelp:key=>session.openHelp(key),action:action=>actions[action]?.(),ready:()=>readyTask??=(async()=>{await subscriptions;return session.ready();})(),update:()=>session.update(),isOpen:()=>$('help-library').open,dispose(){disposed=true;session.dispose();unlisten.splice(0).forEach(off=>off());}};
 }

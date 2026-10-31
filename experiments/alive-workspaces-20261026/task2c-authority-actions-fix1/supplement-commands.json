@@ -1,0 +1,67 @@
+[
+  {
+    "label": "review-green-build",
+    "command": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wno-return-type",
+      "-Wno-subobject-linkage",
+      "-pthread",
+      "-DULTRA_ALIVE_SESSION_TEST_TRACE",
+      "-DULTRA_ALIVE_SESSION_V4_PROVISIONAL",
+      "-I/tmp/alive-workspaces-task2c-authority-actions/fix-1",
+      "/tmp/alive-workspaces-task2c-authority-actions/fix-1/review-reproduction.cpp",
+      "/tmp/alive-workspaces-task2c-authority-actions/fix-1/backend.o",
+      "apps/ultra/build/core/libultra_core_bundle.a",
+      "-Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock",
+      "-ldl",
+      "-lrt",
+      "-o",
+      "/tmp/alive-workspaces-task2c-authority-actions/fix-1/review-green"
+    ],
+    "exit": 0,
+    "seconds": 8.259567362998496
+  },
+  {
+    "label": "review-green",
+    "command": [
+      "/tmp/alive-workspaces-task2c-authority-actions/fix-1/review-green"
+    ],
+    "exit": 0,
+    "seconds": 0.03870708499744069
+  },
+  {
+    "label": "shipping-build",
+    "command": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "-I/tmp/alive-workspaces-task2c-authority-actions/fix-1",
+      "apps/ultra/tests/alive_session_v4_shipping_test.cpp",
+      "apps/ultra/src-tauri/native/backend.cpp",
+      "apps/ultra/build/core/libultra_core_bundle.a",
+      "-ldl",
+      "-lrt",
+      "-o",
+      "/tmp/alive-workspaces-task2c-authority-actions/fix-1/shipping-test"
+    ],
+    "exit": 0,
+    "seconds": 17.40874872099812
+  },
+  {
+    "label": "shipping",
+    "command": [
+      "/tmp/alive-workspaces-task2c-authority-actions/fix-1/shipping-test"
+    ],
+    "exit": 0,
+    "seconds": 0.03327928400540259
+  }
+]

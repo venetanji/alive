@@ -1,0 +1,20 @@
+# M-C specification review
+
+Candidate: `36ab4502ddf4dcd25de0a42b44ab4d1f5b24e022`; base: `c6df81f2d4fd6164930bca6847faf783b1949624`. Verdict: changes required. This review does not authorize consumers.
+
+## Findings
+
+1. **P1 — Eight-track positive fixture is rejected by the existing strict score validator.** `docs/contracts/alive-master-v1-fixtures/v5-v3-eight.json:14` and `:338` reuse `legacy-90953515094fab847573782b7d46a84c` for tracks 0 and 2; the same two device IDs recur four times each. `apps/ultra/src-tauri/src/session/clips.rs:93` rejects duplicate device instance IDs across the document, before preparation. The checker at `docs/contracts/alive-master-v1-fixtures/check.py:27` only counts tracks, so it passes this invalid case. The required v5 eight-track migration/capacity witness cannot succeed. Give each replicated device a unique instance ID and update its own automation references consistently; add a fixture identity check covering all eight tracks. Keep actual decoder and admission tests prospective.
+
+2. **P1 — Positive migration fixtures have unresolvable dependencies at their committed location.** `docs/contracts/alive-master-v1-fixtures/legacy-v2.json:15` and `docs/contracts/alive-master-v1-fixtures/v5-v2.json:18` name `missing-device.ultra`, inherited from an intentionally missing-device example. Other referenced v2 assets are absent there too. `docs/contracts/alive-master-v1-fixtures/v5-v3.json:17` references a relative path containing a different worktree's release output; `docs/contracts/alive-master-v1-fixtures/v5-v4.json` similarly points outside the fixture directory. Resolving the committed paths relative to the fixture directory found none of those referenced devices. Existing preparation resolves paths relative to the document (`apps/ultra/src-tauri/src/session/prepare.rs:113`) and requires dependencies; these cannot serve as executable positive Open/prepare/save/reopen migration witnesses. Provide valid repository-contained device dependencies and correct relative paths and source digests, or a documented reproducible staging/rebasing procedure that yields valid fixtures for all score versions; check identities and dependencies separately from prospective v5 decoder tests. Retain intentionally missing assets only as explicitly negative fixtures.
+
+## Evidence and limits
+
+- Inspected candidate files through `git show`, governing spec sections 6/11 and execution runbook section 6, plus existing score validation and preparation source. No v5/native/UI implementation is claimed or tested.
+- The worker report states pinned Rust 1.85.1 is unavailable. It exists at `experiments/clockwork-faust/.deps/rust/bin/rustc`; compiling the exact `git show` candidate Rust file with `--edition=2021 --crate-type lib` succeeded using `rustc 1.85.1 (4eb161250 2025-03-15)`. Correct that report and retain cross-platform ABI/runtime gates as prospective.
+
+## Round-one scoped re-review
+
+Candidate `f06486973dcef8da515b67a32aebcdfdbb2179b9`, parent `36ab4502ddf4dcd25de0a42b44ab4d1f5b24e022`: **both findings resolved; no additional findings in the scoped changes**. The eight-track device IDs are unique and the corresponding automation references are rewired; the checker verifies identity and reference relationships. Positive score paths now resolve to repository assets and the checker verifies their fingerprints. The candidate checkout matches the committed contract files, and the fixture checker exits 0. The report corrects the pinned Rust result.
+
+The recorded probe logs show v2 success and the stated subsequent v3/v4/eight-track probe refusals; inspected source places `read` and `prepare` before those refusals. The existing binary's precise source revision is not independently established, so this is limited supporting evidence rather than an exact-base or v5 acceptance proof. Actual v5 migration/round-trip, native admission, portability, performance and UI remain prospective implementation gates. This scoped verdict does not authorize consumers.

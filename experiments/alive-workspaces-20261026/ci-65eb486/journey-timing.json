@@ -1,0 +1,82 @@
+{
+  "accounting": "inclusive wall seconds; query totals overlap; walk excludes yield suspension",
+  "events": [
+    {
+      "event": "journey-entry",
+      "control": "",
+      "utc": "2026-10-26T16:46:50.789926+00:00",
+      "monotonic": 848.90928496
+    },
+    {
+      "event": "periodic",
+      "control": "",
+      "utc": "2026-10-26T16:47:10.790458+00:00",
+      "monotonic": 868.909825369,
+      "queries": {
+        "walk": {
+          "count": 47,
+          "inclusive_elapsed_seconds": 7.916755973000818,
+          "max_seconds": 0.46595212199895286,
+          "errors": 0
+        },
+        "scoped_find": {
+          "count": 45,
+          "inclusive_elapsed_seconds": 12.361728219999804,
+          "max_seconds": 0.6750431469999967,
+          "errors": 1
+        },
+        "wait_for": {
+          "count": 43,
+          "inclusive_elapsed_seconds": 12.421891056999584,
+          "max_seconds": 0.675055274999977,
+          "errors": 0
+        }
+      },
+      "active": [],
+      "active_omitted": 0,
+      "stack": "  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 972, in <module>\n    run()\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_alive_desktop.py\", line 720, in run\n    windows.focus('Unsaved Alive Session'); ui.click('Discard'); windows.focus(MAIN)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/alive_workspace_navigation.py\", line 72, in visible_click\n    click(name)\n  File \"/home/runner/work/alive/alive/apps/ultra/tests/check_canvas_desktop.py\", line 113, in click\n    time.sleep(.15)\n"
+    },
+    {
+      "event": "failure",
+      "control": "AssertionError",
+      "utc": "2026-10-26T16:47:21.349906+00:00",
+      "monotonic": 879.469274677
+    },
+    {
+      "event": "failure",
+      "control": "AssertionError",
+      "utc": "2026-10-26T16:47:30.131149+00:00",
+      "monotonic": 888.250518977
+    },
+    {
+      "event": "observer-stop",
+      "control": "",
+      "utc": "2026-10-26T16:47:30.131853+00:00",
+      "monotonic": 888.251208112
+    }
+  ],
+  "queries": {
+    "walk": {
+      "count": 54,
+      "inclusive_elapsed_seconds": 8.562969397000302,
+      "max_seconds": 0.46595212199895286,
+      "errors": 0
+    },
+    "scoped_find": {
+      "count": 129,
+      "inclusive_elapsed_seconds": 13.04247581900006,
+      "max_seconds": 0.6750431469999967,
+      "errors": 81
+    },
+    "wait_for": {
+      "count": 48,
+      "inclusive_elapsed_seconds": 21.45055622199959,
+      "max_seconds": 8.444875215000025,
+      "errors": 1
+    }
+  },
+  "active": [],
+  "active_omitted": 0,
+  "snapshots_emitted": 1,
+  "events_dropped": 0
+}

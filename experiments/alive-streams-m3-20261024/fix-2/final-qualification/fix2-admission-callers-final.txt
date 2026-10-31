@@ -1,0 +1,66 @@
+apps/ultra/src-tauri/src/audio_instrumentation.rs:222:            crate::ultra_canvas_close_document(slot);
+apps/ultra/src-tauri/src/lib.rs:26:    fn ultra_canvas_install(graph: *const canvas::NativeGraph) -> i32;
+apps/ultra/src-tauri/src/lib.rs:46:    fn ultra_canvas_install_document(document: u32, graph: *const canvas::NativeGraph) -> i32;
+apps/ultra/src-tauri/src/lib.rs:54:    fn ultra_canvas_close_document(document: u32) -> i32;
+apps/ultra/src-tauri/src/lib.rs:393:        document_windows::commands::admit_owned(&mut io,&mut audio.graphs[owner.id as usize],owner,patch,None,Some(&hint),false)
+apps/ultra/src-tauri/src/lib.rs:421:        document_windows::commands::admit_owned(&mut io, &mut audio.graphs[owner.id as usize], owner, patch, None, None, false)
+apps/ultra/src-tauri/src/lib.rs:549:        assert_eq!(unsafe { ultra_canvas_install_document(SOURCE_DOCUMENT,&source) },1);
+apps/ultra/src-tauri/src/lib.rs:550:        assert_eq!(unsafe { ultra_canvas_install_document(RECEIVE_DOCUMENT,&receiver) },1);
+apps/ultra/src-tauri/src/lib.rs:558:        assert_eq!(unsafe { ultra_canvas_install_document(OTHER_DOCUMENT,&unrelated) },1);
+apps/ultra/src-tauri/src/lib.rs:559:        assert_eq!(unsafe { ultra_canvas_close_document(OTHER_DOCUMENT) },1);
+apps/ultra/src-tauri/src/lib.rs:571:        assert_eq!(unsafe { ultra_canvas_close_document(RECEIVE_DOCUMENT) },1);
+apps/ultra/src-tauri/src/lib.rs:573:        assert_eq!(unsafe { ultra_canvas_close_document(SOURCE_DOCUMENT) },1);
+apps/ultra/src-tauri/src/lib.rs:585:            .install(plan, |graph| unsafe { ultra_canvas_install(graph) != 0 })
+apps/ultra/src-tauri/src/lib.rs:615:        assert_eq!(unsafe { ultra_canvas_install(&invalid) }, 0);
+apps/ultra/src-tauri/src/lib.rs:653:            control.install(prepared, |graph| unsafe { ultra_canvas_install(graph) != 0 }).unwrap();
+apps/ultra/src-tauri/src/lib.rs:669:        let revision = control.install(prepared, |graph| unsafe { ultra_canvas_install(graph) != 0 }).unwrap();
+apps/ultra/src-tauri/src/lib.rs:692:        let revision = control.install(prepared, |graph| unsafe { ultra_canvas_install(graph) != 0 }).unwrap();
+apps/ultra/src-tauri/src/session/desktop.rs:569:                    unsafe { native::alive_session_stop(); native::alive_session_reset(); for slot in 0..16 { crate::ultra_canvas_close_document(slot); } }
+apps/ultra/src-tauri/src/session/tests.rs:335:    unsafe{native::alive_session_stop_v3();native::ultra_audio_stop();native::alive_session_reset();for slot in 0..16{crate::ultra_canvas_close_document(slot);}}
+apps/ultra/src-tauri/src/session/tests.rs:351:    unsafe{native::alive_session_stop();native::ultra_audio_stop();native::alive_session_reset();for slot in 0..16{crate::ultra_canvas_close_document(slot);}}std::fs::remove_dir_all(folder).unwrap();
+apps/ultra/src-tauri/src/document_windows.rs:209:        commands::admit_owned(&mut io, &mut audio.graphs[owner.id as usize], owner, owner.patch.as_ref().unwrap(), None, None, true)
+apps/ultra/src-tauri/src/document_windows.rs:570:            .and_then(|mut io| commands::close_owned(&mut io, document.id));
+apps/ultra/src-tauri/src/document_windows.rs:818:            assert!(commands::close_owned(&mut io, root.id).is_err());
+apps/ultra/src-tauri/src/session/probe.rs:11:        for slot in 0..16 { crate::ultra_canvas_close_document(slot); }
+apps/ultra/src-tauri/src/document_commands.rs:33:        admit_owned(io, &mut audio.graphs[owner.id as usize], owner, patch, Some(&parameter), None, false)
+apps/ultra/src-tauri/src/document_commands.rs:37:pub fn admit_owned(io: &mut crate::audio::Driver, control: &mut canvas::CanvasState, owner: &Document, patch: &Value,
+apps/ultra/src-tauri/src/document_commands.rs:40:    admit_message(control, owner, patch, parameter, message_text, force)
+apps/ultra/src-tauri/src/document_commands.rs:43:pub fn close_owned(io: &mut crate::audio::Driver, document: u32) -> Result<(), String> {
+apps/ultra/src-tauri/src/document_commands.rs:45:    if unsafe { crate::ultra_canvas_close_document(document) } == 0 { return Err("Patch is busy. Try closing the window again.".into()); }
+apps/ultra/src-tauri/src/document_commands.rs:50:    admit_message(control,owner,patch,parameter,None,force)
+apps/ultra/src-tauri/src/document_commands.rs:52:pub fn admit_message(control: &mut canvas::CanvasState, owner: &Document, patch: &Value, parameter: Option<&Parameter>, message_text: Option<&MessageText>, force: bool) -> Result<documents::Admission, String> {
+apps/ultra/src-tauri/src/document_commands.rs:87:    let revision=control.install(plan, |graph| unsafe { crate::ultra_canvas_install_document(owner.id, graph) != 0 })?;
+apps/ultra/src-tauri/src/document_commands.rs:174:        admit_owned(&mut io, &mut audio.graphs[owner.id as usize], owner, patch, parameter.as_ref(), message_text.as_ref(), force.unwrap_or(false))
+apps/ultra/src-tauri/src/document_commands.rs:190:        admit_owned(&mut io, &mut audio.graphs[owner.id as usize], owner, patch, None, None, false)
+apps/ultra/src-tauri/src/session/host.rs:140:                    if crate::ultra_canvas_close_document(slot as u32) == 0 { return Err(format!("Native root {slot} could not be closed")); }
+apps/ultra/src-tauri/src/session/host.rs:146:                if crate::ultra_canvas_install_document(slot as u32, graph) == 0 { return Err(format!("Native device {} installation failed", slot + 1)); }
+apps/ultra/src-tauri/src/instrument_probe.rs:17:            for document in 0..documents::MAX_DOCUMENTS as u32 { crate::ultra_canvas_close_document(document); }
+apps/ultra/src-tauri/src/instrument_probe.rs:29:        self.registry.prepare_runtime(label, |owner| commands::admit(&mut self.controls[owner.id as usize], owner,
+apps/ultra/src-tauri/src/instrument_probe.rs:49:            commands::admit(&mut self.controls[owner.id as usize],owner,patch,parameter,false))?;
+apps/ultra/src-tauri/src/instrument_probe.rs:133:        for document in 0..documents::MAX_DOCUMENTS as u32 {crate::ultra_canvas_close_document(document);}
+apps/ultra/src-tauri/src/instrument_probe.rs:165:    unsafe {require(crate::ultra_canvas_close_document(second.id)!=0,"Instance B close failed")?;}
+apps/ultra/src-tauri/src/document_commands_tests.rs:27:    let root = registry.prepare_runtime(&root.label, |owner| admit_owned(&mut io, &mut audio.graphs[8], owner, owner.patch.as_ref().unwrap(), None, None, true)).unwrap();
+apps/ultra/src-tauri/src/document_commands_tests.rs:32:    registry.history(&child.label, 2, "undo", |owner, patch| admit_owned(&mut io, &mut audio.graphs[8], owner, patch, None, None, false)).unwrap();
+apps/ultra/src-tauri/src/document_commands_tests.rs:50:        let restored = registry.history(&child.label, base, direction, |owner, patch| admit_owned(&mut io, &mut audio.graphs[8], owner, patch, None, None, false)).unwrap();
+apps/ultra/src-tauri/src/document_commands_tests.rs:62:    close_owned(&mut io, root.id).unwrap();
+apps/ultra/src-tauri/src/document_commands_tests.rs:94:    let restored = registry.history(&root.label, 1, "undo", |owner, patch| admit_owned(&mut io, &mut audio.graphs[7], owner, patch, None, None, false)).unwrap();
+apps/ultra/src-tauri/src/document_commands_tests.rs:96:    close_owned(&mut io, 7).unwrap();
+apps/ultra/src-tauri/src/document_commands_tests.rs:108:    let root = registry.prepare_runtime(&root.label, |owner| admit_owned(&mut io, &mut control, owner, &patch, None, None, true)).unwrap();
+apps/ultra/src-tauri/src/document_commands_tests.rs:111:    registry.commit(&root.label, 0, edited.clone(), true, |owner, patch| admit_owned(&mut io, &mut control, owner, patch, None, None, false)).unwrap();
+apps/ultra/src-tauri/src/document_commands_tests.rs:116:    let result = registry.commit(&root.label, 1, patch.clone(), true, |owner, patch| admit_owned(&mut io, &mut control, owner, patch, None, None, false));
+apps/ultra/src-tauri/src/document_commands_tests.rs:118:    assert!(registry.history(&root.label, 1, "undo", |owner, patch| admit_owned(&mut io, &mut control, owner, patch, None, None, false)).is_err());
+apps/ultra/src-tauri/src/document_commands_tests.rs:119:    assert!(close_owned(&mut io, root.id).is_err(), "native root close passed unresolved retirement");
+apps/ultra/src-tauri/src/document_commands_tests.rs:123:    assert!(close_owned(&mut io, root.id).is_err(), "the remaining error closure still owns the epoch");
+apps/ultra/src-tauri/src/document_commands_tests.rs:125:    close_owned(&mut io, root.id).unwrap();
+apps/ultra/src-tauri/src/document_commands_tests.rs:135:    let result = close_owned(&mut io, 14);
+apps/ultra/src-tauri/src/document_commands_tests.rs:151:    let accepted = registry.prepare_runtime(&root.label, |owner| admit_owned(&mut io, &mut control, owner, &patch, None, None, true));
+apps/ultra/src-tauri/src/document_commands_tests.rs:153:    assert!(close_owned(&mut io, accepted.id).is_ok());
+apps/ultra/src-tauri/src/document_commands_tests.rs:221:    assert_eq!(unsafe {crate::ultra_canvas_close_document(root.id)},1);
+apps/ultra/src-tauri/src/document_commands_tests.rs:309:    assert_eq!(unsafe {crate::ultra_canvas_close_document(root.id)}, 1);
+apps/ultra/src-tauri/src/document_commands_tests.rs:319:    assert!(admit_message(&mut control,&owner,owner.patch.as_ref().unwrap(),None,Some(&hint),true).is_err());
+apps/ultra/src-tauri/src/document_commands_tests.rs:343:    let restored=registry.commit(&child.label,0,root.patch.clone().unwrap(),true,|owner,patch|admit_message(&mut control,owner,patch,None,Some(&hint),false)).unwrap().document;
+apps/ultra/src-tauri/src/document_commands_tests.rs:356:    assert!(registry.commit(&root.label,3,edited,true,|owner,patch|admit_message(&mut control,owner,patch,None,Some(&hint),false)).is_err());
+apps/ultra/src-tauri/src/document_commands_tests.rs:358:    assert_eq!(unsafe {crate::ultra_canvas_close_document(root.id)},1);
+apps/ultra/src-tauri/src/document_commands_tests.rs:389:    assert_eq!(unsafe {crate::ultra_canvas_close_document(root.id)},1);
+apps/ultra/src-tauri/src/document_commands_tests.rs:453:    assert_eq!(unsafe { crate::ultra_canvas_close_document(root.id) }, 1);
+apps/ultra/src-tauri/src/document_commands_tests.rs:462:    assert_eq!(unsafe { crate::ultra_canvas_close_document(root.id) }, 1);

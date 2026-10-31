@@ -1,0 +1,34 @@
+{
+  "source_commit": "f69125cd289365424cd0661975291d8c12a96cac",
+  "command": [
+    "bash",
+    "apps/alive/build.sh"
+  ],
+  "exit": 0,
+  "seconds": 37.43,
+  "build_log_sha256": "937ba5d7ad9e7bbb131dd2f49f2b1060c7a6370df883247b2244e11f2c013e49",
+  "build_scope": "coherent root build only; native walkthrough/endurance not yet qualified",
+  "artifacts": {
+    "alive": {
+      "path": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/alive",
+      "bytes": 14520968,
+      "device": 53,
+      "inode": 8389319,
+      "sha256": "2bfdfb4c260cf32d6ba6749bf0ded2165e2f8b0ca728777db804f49a8c4782b9"
+    },
+    "ultra": {
+      "path": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/ultra",
+      "bytes": 18434912,
+      "device": 53,
+      "inode": 8389305,
+      "sha256": "9e95b66306b74ad015065bdbe1bfc93acad8b970ef7d091ad2e573320bf773d9"
+    },
+    "libultra_native.so": {
+      "path": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/libultra_native.so",
+      "bytes": 12990840,
+      "device": 53,
+      "inode": 8389321,
+      "sha256": "9fd076115b2a914fa2d156dab37b0a1d99676d40634e23f78ba2c50c110062c4"
+    }
+  }
+}

@@ -1,0 +1,447 @@
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:19:43] "GET /canvas.html HTTP/1.1" 200 -
+
+Running 2 tests using 1 worker
+
+(node:168471) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:168471) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:19:44] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:19:44] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:19:44] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:19:44] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:19:44] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:19:44] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:19:44] "GET /alive-model.mjs HTTP/1.1" 200 -
+  ✘  1 apps/ultra/tests/ci/alive-chain.spec.mjs:143:37 › detail navigation preserves an unfinished device field until one deliberate commit (521ms)
+(node:168637) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:168637) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:19:46] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:19:46] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:19:46] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:19:46] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:19:46] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:19:46] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:19:46] "GET /alive-model.mjs HTTP/1.1" 200 -
+  ✘  2 apps/ultra/tests/ci/alive-chain.spec.mjs:143:37 › detail navigation preserves an unfinished note field until one deliberate commit (773ms)
+
+
+  1) apps/ultra/tests/ci/alive-chain.spec.mjs:143:37 › detail navigation preserves an unfinished device field until one deliberate commit 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -  1[39m
+    [31m+ Received  + 11[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   Object {[39m
+    [31m+     "args": Object {[39m
+    [31m+       "generation": 1,[39m
+    [31m+       "instanceId": "instrument-0",[39m
+    [31m+       "key": "cutoff",[39m
+    [31m+       "value": 1717,[39m
+    [31m+     },[39m
+    [31m+     "name": "alive_base",[39m
+    [31m+   },[39m
+    [31m+ ][39m
+
+      151 |     const before=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length);
+      152 |     await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length)).toBeGreaterThan(before+2);
+    > 153 |     expect(await mutations()).toEqual([]);await expect(input).toHaveValue(typed);
+          |                               ^
+      154 |   };
+      155 |   await input.fill(typed);
+      156 |   for(let i=0;i<3;i++){
+        at acrossPolls (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/ci/alive-chain.spec.mjs:153:31)
+        at /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/ci/alive-chain.spec.mjs:157:50
+
+    Error Context: ../../../../../../tmp/alive-workspaces-task1-fix1/browser-red-final2/alive-chain-detail-navigat-362d4-until-one-deliberate-commit/error-context.md
+
+  2) apps/ultra/tests/ci/alive-chain.spec.mjs:143:37 › detail navigation preserves an unfinished note field until one deliberate commit 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -   1[39m
+    [31m+ Received  + 356[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   Object {[39m
+    [31m+     "args": Object {[39m
+    [31m+       "document": Object {[39m
+    [31m+         "format": "alive-session-v3",[39m
+    [31m+         "lengthBeats": 8,[39m
+    [31m+         "loopEnabled": true,[39m
+    [31m+         "tempo": 112,[39m
+    [31m+         "title": "First Light",[39m
+    [31m+         "tracks": Array [[39m
+    [31m+           Object {[39m
+    [31m+             "defaultClipId": "clip-track-1",[39m
+    [31m+             "device": Object {[39m
+    [31m+               "bypassed": false,[39m
+    [31m+               "id": "org.alive.subtractive",[39m
+    [31m+               "instanceId": "instrument-0",[39m
+    [31m+               "parameters": Object {[39m
+    [31m+                 "attack": 10,[39m
+    [31m+                 "cutoff": 2400,[39m
+    [31m+                 "decay": 150,[39m
+    [31m+                 "level": 55,[39m
+    [31m+                 "release": 300,[39m
+    [31m+                 "resonance": 0.7,[39m
+    [31m+                 "sustain": 0.65,[39m
+    [31m+               },[39m
+    [31m+               "path": "../../ultra/examples/subtractive.ultra",[39m
+    [31m+               "version": 1,[39m
+    [31m+             },[39m
+    [31m+             "effects": Array [[39m
+    [31m+               Object {[39m
+    [31m+                 "bypassed": false,[39m
+    [31m+                 "id": "org.alive.utility",[39m
+    [31m+                 "instanceId": "utility",[39m
+    [31m+                 "parameters": Object {},[39m
+    [31m+                 "path": "utility.ultra",[39m
+    [31m+               },[39m
+    [31m+               Object {[39m
+    [31m+                 "bypassed": false,[39m
+    [31m+                 "id": "org.alive.stereo-lowpass",[39m
+    [31m+                 "instanceId": "stereo-lowpass",[39m
+    [31m+                 "parameters": Object {},[39m
+    [31m+                 "path": "stereo-lowpass.ultra",[39m
+    [31m+               },[39m
+    [31m+             ],[39m
+    [31m+             "gain": 0.7,[39m
+    [31m+             "id": "track-1",[39m
+    [31m+             "mute": false,[39m
+    [31m+             "name": "Pulse",[39m
+    [31m+             "slots": Array [[39m
+    [31m+               Object {[39m
+    [31m+                 "automation": Array [[39m
+    [31m+                   Object {[39m
+    [31m+                     "enabled": true,[39m
+    [31m+                     "instanceId": "instrument-0",[39m
+    [31m+                     "key": "cutoff",[39m
+    [31m+                     "points": Array [[39m
+    [31m+                       Object {[39m
+    [31m+                         "beat": 0,[39m
+    [31m+                         "value": 900,[39m
+    [31m+                       },[39m
+    [31m+                       Object {[39m
+    [31m+                         "beat": 2,[39m
+    [31m+                         "value": 2200,[39m
+    [31m+                       },[39m
+    [31m+                       Object {[39m
+    [31m+                         "beat": 4,[39m
+    [31m+                         "value": 700,[39m
+    [31m+                       },[39m
+    [31m+                       Object {[39m
+    [31m+                         "beat": 6,[39m
+    [31m+                         "value": 3600,[39m
+    [31m+                       },[39m
+    [31m+                     ],[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "enabled": true,[39m
+    [31m+                     "instanceId": "instrument-0",[39m
+    [31m+                     "key": "level",[39m
+    [31m+                     "points": Array [[39m
+    [31m+                       Object {[39m
+    [31m+                         "beat": 0,[39m
+    [31m+                         "value": 55,[39m
+    [31m+                       },[39m
+    [31m+                       Object {[39m
+    [31m+                         "beat": 4,[39m
+    [31m+                         "value": 48,[39m
+    [31m+                       },[39m
+    [31m+                     ],[39m
+    [31m+                   },[39m
+    [31m+                 ],[39m
+    [31m+                 "id": "clip-track-1",[39m
+    [31m+                 "lengthBeats": 8,[39m
+    [31m+                 "name": "Clip 1",[39m
+    [31m+                 "notes": Array [[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 0,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-1-0",[39m
+    [31m+                     "pitch": 73,[39m
+    [31m+                     "velocity": 90,[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 0,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-1-1",[39m
+    [31m+                     "pitch": 64,[39m
+    [31m+                     "velocity": 90,[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 0,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-1-2",[39m
+    [31m+                     "pitch": 67,[39m
+    [31m+                     "velocity": 90,[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 2,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-1-3",[39m
+    [31m+                     "pitch": 57,[39m
+    [31m+                     "velocity": 90,[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 2,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-1-4",[39m
+    [31m+                     "pitch": 60,[39m
+    [31m+                     "velocity": 90,[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 2,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-1-5",[39m
+    [31m+                     "pitch": 64,[39m
+    [31m+                     "velocity": 90,[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 4,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-1-6",[39m
+    [31m+                     "pitch": 53,[39m
+    [31m+                     "velocity": 90,[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 4,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-1-7",[39m
+    [31m+                     "pitch": 57,[39m
+    [31m+                     "velocity": 90,[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 4,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-1-8",[39m
+    [31m+                     "pitch": 60,[39m
+    [31m+                     "velocity": 90,[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 6,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-1-9",[39m
+    [31m+                     "pitch": 55,[39m
+    [31m+                     "velocity": 90,[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 6,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-1-10",[39m
+    [31m+                     "pitch": 59,[39m
+    [31m+                     "velocity": 90,[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 6,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-1-11",[39m
+    [31m+                     "pitch": 62,[39m
+    [31m+                     "velocity": 90,[39m
+    [31m+                   },[39m
+    [31m+                 ],[39m
+    [31m+               },[39m
+    [31m+               null,[39m
+    [31m+               null,[39m
+    [31m+               null,[39m
+    [31m+             ],[39m
+    [31m+             "solo": false,[39m
+    [31m+           },[39m
+    [31m+           Object {[39m
+    [31m+             "defaultClipId": "clip-track-2",[39m
+    [31m+             "device": Object {[39m
+    [31m+               "bypassed": false,[39m
+    [31m+               "id": "org.alive.subtractive",[39m
+    [31m+               "instanceId": "instrument-1",[39m
+    [31m+               "parameters": Object {[39m
+    [31m+                 "attack": 10,[39m
+    [31m+                 "cutoff": 2400,[39m
+    [31m+                 "decay": 150,[39m
+    [31m+                 "level": 43,[39m
+    [31m+                 "release": 300,[39m
+    [31m+                 "resonance": 0.7,[39m
+    [31m+                 "sustain": 0.65,[39m
+    [31m+               },[39m
+    [31m+               "path": "../../ultra/examples/subtractive.ultra",[39m
+    [31m+               "version": 1,[39m
+    [31m+             },[39m
+    [31m+             "effects": Array [],[39m
+    [31m+             "gain": 0.7,[39m
+    [31m+             "id": "track-2",[39m
+    [31m+             "mute": false,[39m
+    [31m+             "name": "Harmony",[39m
+    [31m+             "slots": Array [[39m
+    [31m+               Object {[39m
+    [31m+                 "automation": Array [[39m
+    [31m+                   Object {[39m
+    [31m+                     "enabled": true,[39m
+    [31m+                     "instanceId": "instrument-1",[39m
+    [31m+                     "key": "cutoff",[39m
+    [31m+                     "points": Array [[39m
+    [31m+                       Object {[39m
+    [31m+                         "beat": 0,[39m
+    [31m+                         "value": 1300,[39m
+    [31m+                       },[39m
+    [31m+                       Object {[39m
+    [31m+                         "beat": 2,[39m
+    [31m+                         "value": 2200,[39m
+    [31m+                       },[39m
+    [31m+                       Object {[39m
+    [31m+                         "beat": 4,[39m
+    [31m+                         "value": 700,[39m
+    [31m+                       },[39m
+    [31m+                       Object {[39m
+    [31m+                         "beat": 6,[39m
+    [31m+                         "value": 3600,[39m
+    [31m+                       },[39m
+    [31m+                     ],[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "enabled": true,[39m
+    [31m+                     "instanceId": "instrument-1",[39m
+    [31m+                     "key": "level",[39m
+    [31m+                     "points": Array [[39m
+    [31m+                       Object {[39m
+    [31m+                         "beat": 0,[39m
+    [31m+                         "value": 45,[39m
+    [31m+                       },[39m
+    [31m+                       Object {[39m
+    [31m+                         "beat": 4,[39m
+    [31m+                         "value": 38,[39m
+    [31m+                       },[39m
+    [31m+                     ],[39m
+    [31m+                   },[39m
+    [31m+                 ],[39m
+    [31m+                 "id": "clip-track-2",[39m
+    [31m+                 "lengthBeats": 8,[39m
+    [31m+                 "name": "Clip 1",[39m
+    [31m+                 "notes": Array [[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 0,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-2-0",[39m
+    [31m+                     "pitch": 72,[39m
+    [31m+                     "velocity": 65,[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 0,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-2-1",[39m
+    [31m+                     "pitch": 76,[39m
+    [31m+                     "velocity": 65,[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 0,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-2-2",[39m
+    [31m+                     "pitch": 79,[39m
+    [31m+                     "velocity": 65,[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 2,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-2-3",[39m
+    [31m+                     "pitch": 69,[39m
+    [31m+                     "velocity": 65,[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 2,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-2-4",[39m
+    [31m+                     "pitch": 72,[39m
+    [31m+                     "velocity": 65,[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 2,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-2-5",[39m
+    [31m+                     "pitch": 76,[39m
+    [31m+                     "velocity": 65,[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 4,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-2-6",[39m
+    [31m+                     "pitch": 65,[39m
+    [31m+                     "velocity": 65,[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 4,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-2-7",[39m
+    [31m+                     "pitch": 69,[39m
+    [31m+                     "velocity": 65,[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 4,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-2-8",[39m
+    [31m+                     "pitch": 72,[39m
+    [31m+                     "velocity": 65,[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 6,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-2-9",[39m
+    [31m+                     "pitch": 67,[39m
+    [31m+                     "velocity": 65,[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 6,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-2-10",[39m
+    [31m+                     "pitch": 71,[39m
+    [31m+                     "velocity": 65,[39m
+    [31m+                   },[39m
+    [31m+                   Object {[39m
+    [31m+                     "beat": 6,[39m
+    [31m+                     "duration": 1.75,[39m
+    [31m+                     "id": "note-track-2-11",[39m
+    [31m+                     "pitch": 74,[39m
+    [31m+                     "velocity": 65,[39m
+    [31m+                   },[39m
+    [31m+                 ],[39m
+    [31m+               },[39m
+    [31m+               null,[39m
+    [31m+               null,[39m
+    [31m+               null,[39m
+    [31m+             ],[39m
+    [31m+             "solo": false,[39m
+    [31m+           },[39m
+    [31m+         ],[39m
+    [31m+       },[39m
+    [31m+       "draftRevision": 0,[39m
+    [31m+       "generation": 1,[39m
+    [31m+       "label": "Edit note",[39m
+    [31m+     },[39m
+    [31m+     "name": "alive_edit",[39m
+    [31m+   },[39m
+    [31m+ ][39m
+
+      151 |     const before=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length);
+      152 |     await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length)).toBeGreaterThan(before+2);
+    > 153 |     expect(await mutations()).toEqual([]);await expect(input).toHaveValue(typed);
+          |                               ^
+      154 |   };
+      155 |   await input.fill(typed);
+      156 |   for(let i=0;i<3;i++){
+        at acrossPolls (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/ci/alive-chain.spec.mjs:153:31)
+        at /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/ci/alive-chain.spec.mjs:157:50
+
+    Error Context: ../../../../../../tmp/alive-workspaces-task1-fix1/browser-red-final2/alive-chain-detail-navigat-e077c-until-one-deliberate-commit/error-context.md
+
+  2 failed
+    apps/ultra/tests/ci/alive-chain.spec.mjs:143:37 › detail navigation preserves an unfinished device field until one deliberate commit 
+    apps/ultra/tests/ci/alive-chain.spec.mjs:143:37 › detail navigation preserves an unfinished note field until one deliberate commit 
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report[39m
+[36m[39m

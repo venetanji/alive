@@ -1,0 +1,8 @@
+# Sampler consolidation spec re-review
+
+Verdict: **resolved** for both prior findings; no introduced defect found in the scoped fix. The immutable fix-round package SHA-256 is `ac0a8333bfcc9c0d240084d0b8635b28da41078cca33596fc58a3833820a9c2f`, and all three current candidate file hashes match its header. This review covers the prior findings and fix-induced defects only.
+
+- The first-call timestamp now precedes lazy writer construction in `apps/ultra/tests/check_alive_desktop.py:667` and is passed through `apps/ultra/tests/desktop_sustained.py:14` to the freshness and deadline calculation. `apps/ultra/tests/test_desktop_sustained_integration.py:493` exercises delayed initialization, signed age, exhausted request deadline, and wall failure. The report records a meaningful red (13 versus 10) and subsequent green for this correction.
+- `apps/ultra/tests/test_desktop_sustained_integration.py:534` now exercises a stale request waiting for a real fake periodic publication, compares the complete flattened payload and provenance with the sustained row, checks repeated source IDs and absence of an on-demand collection, and verifies stop produces no additional legacy row. The separate `apps/ultra/tests/test_desktop_sustained_integration.py:281` covers an in-flight sample crossing MAX_WALL without a row.
+
+The fix report records 66 scoped tests passing and states that the newly added cases for existing behavior did not each have individual red runs. I did not rerun the tests. The earlier report also discloses the prohibited recorder-helper execution; it was not repeated in the reported final scoped run. This review does not establish native Quit, a live measurement, timing improvement, a fix for the 41 processing-budget observations, or admission.

@@ -13,6 +13,11 @@ trap 'rm -rf "$TEST_DIR"' EXIT
 python3 apps/ultra/tests/check_backend.py
 python3 apps/ultra/tests/check_sequence.py
 python3 apps/ultra/tests/check_canvas.py
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -Iapps/ultra/src-tauri/native \
+  apps/ultra/tests/alive_session_master_test.cpp -L"$NATIVE_BUILD" -lultra_native \
+  -Wl,-rpath,"$NATIVE_BUILD" -ldl -o "$TEST_DIR/alive-master-test"
+"$TEST_DIR/alive-master-test"
+bash apps/ultra/tests/alive_session_master_resolver_test.sh
 for test in external_audio document_runtime document_audio signal_audio canvas_numeric_ui_backend canvas_message_ui_backend canvas_print_popup_backend; do
   c++ -std=c++20 -O2 -Wall -Wextra -Werror "apps/ultra/tests/${test}_test.cpp" \
     -L"$NATIVE_BUILD" -lultra_native -Wl,-rpath,"$NATIVE_BUILD" \
@@ -28,6 +33,84 @@ c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
   -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock \
   -ldl -lrt -o "$TEST_DIR/canvas-voice-backend-test"
 "$TEST_DIR/canvas-voice-backend-test"
+
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE \
+  apps/ultra/tests/alive_session_test.cpp apps/ultra/src-tauri/native/backend.cpp \
+  "$NATIVE_BUILD/core/libultra_core_bundle.a" \
+  -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock \
+  -ldl -lrt -o "$TEST_DIR/alive-session-test"
+"$TEST_DIR/alive-session-test"
+
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
+  apps/ultra/tests/alive_session_v2_test.cpp apps/ultra/src-tauri/native/backend.cpp \
+  "$NATIVE_BUILD/core/libultra_core_bundle.a" \
+  -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock \
+  -ldl -lrt -o "$TEST_DIR/alive-session-v2-test"
+"$TEST_DIR/alive-session-v2-test"
+
+c++ -std=c++17 -O2 -Wall -Wextra -Werror \
+  apps/ultra/tests/alive_session_v3_layout_test.cpp -o "$TEST_DIR/alive-v3-layout"
+"$TEST_DIR/alive-v3-layout"
+c++ -std=c++17 -O2 -Wall -Wextra -Werror \
+  apps/ultra/tests/alive_session_v4_layout_test.cpp -o "$TEST_DIR/alive-v4-layout"
+"$TEST_DIR/alive-v4-layout"
+c++ -std=c++17 -O2 -Wall -Wextra -Werror \
+  apps/ultra/tests/alive_session_envelope_test.cpp -o "$TEST_DIR/alive-envelope"
+c++ -std=c++17 -O2 -Wall -Wextra -Werror \
+  apps/ultra/tests/alive_session_launch_target_test.cpp -o "$TEST_DIR/alive-launch-target"
+"$TEST_DIR/alive-launch-target"
+"$TEST_DIR/alive-envelope"
+c++ -std=c++17 -O2 -Wall -Wextra -Werror \
+  apps/ultra/tests/alive_session_workspace_envelope_test.cpp -o "$TEST_DIR/alive-workspace-envelope"
+"$TEST_DIR/alive-workspace-envelope"
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE \
+  -c apps/ultra/src-tauri/native/backend.cpp -o "$TEST_DIR/alive-v3-backend.o"
+python3 apps/ultra/tests/alive_session_v3_fixtures.py "$TEST_DIR/saved_graphs.hpp"
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -I"$TEST_DIR" \
+  apps/ultra/tests/alive_session_v4_shipping_test.cpp \
+  -L"$NATIVE_BUILD" -lultra_native -Wl,-rpath,"$NATIVE_BUILD" -o "$TEST_DIR/alive-v4-shipping"
+"$TEST_DIR/alive-v4-shipping"
+# The provisional definition affects admission only, on this separate object.
+# The normal library and the v3 traced backend always retain the shipping gate.
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
+  -DULTRA_ALIVE_SESSION_TEST_TRACE -DULTRA_ALIVE_SESSION_V4_PROVISIONAL \
+  -c apps/ultra/src-tauri/native/backend.cpp -o "$TEST_DIR/alive-v4-backend.o"
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
+  -DULTRA_ALIVE_SESSION_TEST_TRACE -DULTRA_ALIVE_SESSION_V4_PROVISIONAL -I"$TEST_DIR" \
+  apps/ultra/tests/alive_session_v4_test.cpp "$TEST_DIR/alive-v4-backend.o" \
+  "$NATIVE_BUILD/core/libultra_core_bundle.a" \
+  -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock \
+  -ldl -lrt -o "$TEST_DIR/alive-v4-test"
+"$TEST_DIR/alive-v4-test"
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
+  -DULTRA_ALIVE_SESSION_TEST_TRACE -DULTRA_ALIVE_SESSION_V4_PROVISIONAL -I"$TEST_DIR" \
+  apps/ultra/tests/alive_session_v4_midi_test.cpp "$TEST_DIR/alive-v4-backend.o" \
+  "$NATIVE_BUILD/core/libultra_core_bundle.a" \
+  -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock \
+  -ldl -lrt -o "$TEST_DIR/alive-v4-midi-test"
+"$TEST_DIR/alive-v4-midi-test"
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
+  -DULTRA_ALIVE_SESSION_TEST_TRACE -I"$TEST_DIR" \
+  apps/ultra/tests/alive_session_publication_test.cpp "$TEST_DIR/alive-v3-backend.o" \
+  "$NATIVE_BUILD/core/libultra_core_bundle.a" \
+  -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock \
+  -ldl -lrt -o "$TEST_DIR/alive-publication-test"
+"$TEST_DIR/alive-publication-test"
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread \
+  -DULTRA_ALIVE_SESSION_TEST_TRACE -DULTRA_ALIVE_SESSION_V4_PROVISIONAL -I"$TEST_DIR" \
+  apps/ultra/tests/alive_session_v4_authority_test.cpp "$TEST_DIR/alive-v4-backend.o" \
+  "$NATIVE_BUILD/core/libultra_core_bundle.a" \
+  -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock \
+  -ldl -lrt -o "$TEST_DIR/alive-v4-authority-test"
+"$TEST_DIR/alive-v4-authority-test"
+for test in alive_session_v3_test alive_session_v3_measure alive_session_capacity alive_session_launch_test; do
+  c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE -DCAPACITY_GUARDS \
+    -I"$TEST_DIR" "apps/ultra/tests/${test}.cpp" "$TEST_DIR/alive-v3-backend.o" \
+    "$NATIVE_BUILD/core/libultra_core_bundle.a" \
+    -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock \
+    -ldl -lrt -o "$TEST_DIR/$test"
+  "$TEST_DIR/$test" --verify
+done
 
 # Preserve the original queued-edit Stop regression against the actual library.
 python3 experiments/ultra-astra-validation-20261024/native/run.py "$NATIVE_BUILD" \

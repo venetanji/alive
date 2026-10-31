@@ -1,0 +1,201 @@
+{
+  "commit": "db96180772e59099cc96e0bab189ba2dc8825522",
+  "scope": "Task 11 guarded offline native measurement and compatibility tests; not GUI, physical audio, eight-track, scenes or soak qualification",
+  "review_status": "reviewed_with_findings_superseded_by_fix1",
+  "rate_hz": 48000,
+  "final_measurement": "measure-final-policy-traced.log",
+  "files": {
+    "alive-task11-abi-edges-green.log": {
+      "bytes": 94,
+      "sha256": "a0d82534c1e56d2d6eb0edaef878f4b637f6481c837609253980a94aa9fd6490"
+    },
+    "alive-task11-abi-edges-red.log": {
+      "bytes": 222,
+      "sha256": "07cf3ac5b7128ddd4bc2f820cd814a075b4e9032bf7bb823f39179047b33ba6e"
+    },
+    "alive-task11-common-v2.log": {
+      "bytes": 248,
+      "sha256": "a1d1ff2b50be7fc0cb863e63d9e001025f90bbabd5a97132f2e143b960acf070"
+    },
+    "alive-task11-dependent-start-red.log": {
+      "bytes": 220,
+      "sha256": "d87c6ee7d1301e0ef79f8dcae33b7ce4345d5bbe43b8b36fffcb35b712f5e14e"
+    },
+    "alive-task11-diagnostic-red.log": {
+      "bytes": 194,
+      "sha256": "4a30241c163282c2c751c81b60752ac813581704bd7c1d5cae3df55800cff533"
+    },
+    "alive-task11-envelope-full.log": {
+      "bytes": 85,
+      "sha256": "cd4f7424a38581bed17b6f6d7ae339ce70c67aec9ea1024e034565fc6a5484b0"
+    },
+    "alive-task11-envelope-red.log": {
+      "bytes": 298,
+      "sha256": "5954eb7c47ae49e5ef8c6c70fb6168cb8ed7638b04f51e6aff325088f4b0e158"
+    },
+    "alive-task11-event-ties-red.log": {
+      "bytes": 189,
+      "sha256": "abf4dde2ffa39f083abaf43b33607dfc0ebd020f6664c40f81ee393c733aba33"
+    },
+    "alive-task11-event-ties-release-red.log": {
+      "bytes": 189,
+      "sha256": "abf4dde2ffa39f083abaf43b33607dfc0ebd020f6664c40f81ee393c733aba33"
+    },
+    "alive-task11-final-contracts-env.log": {
+      "bytes": 60867,
+      "sha256": "73f5c9163df299cf27eb352c733468e9a167f30559f3b72830c3ee3a6aea24fe"
+    },
+    "alive-task11-final-contracts.log": {
+      "bytes": 56924,
+      "sha256": "e6d633c6112ce06b3340ae3493dec2bd10b4ee6040632c4a42e560df595f667c"
+    },
+    "alive-task11-final-focused.log": {
+      "bytes": 94,
+      "sha256": "a0d82534c1e56d2d6eb0edaef878f4b637f6481c837609253980a94aa9fd6490"
+    },
+    "alive-task11-final-native-build.log": {
+      "bytes": 820,
+      "sha256": "538d971f38a1c22132a6dd3296ef13d1430cd3e3c8b655467b40c271eebeff4b"
+    },
+    "alive-task11-final-native.log": {
+      "bytes": 3499,
+      "sha256": "06f95e9563a08e86b45019e78bee3df5d41f1c89c6f1f565777343f698d66024"
+    },
+    "alive-task11-final-rust-alive.log": {
+      "bytes": 995,
+      "sha256": "b7053c0d6e6a403fa876435ba978557306c4dc9faec8a1cfc75107e5c7ec84dc"
+    },
+    "alive-task11-final-rust-ultra.log": {
+      "bytes": 18141,
+      "sha256": "c2f9cdda738e8a3055f150d5f5a827f8a36f3fe95c396432bd81e3b7c360bd0f"
+    },
+    "alive-task11-layout-red.log": {
+      "bytes": 6755,
+      "sha256": "0becd9eb680f92eb8cf8887c4b962a8f35de0fec420a7f8ab3ad3310049aa49b"
+    },
+    "alive-task11-projection-red.log": {
+      "bytes": 945,
+      "sha256": "66c7098f1718b18d21d4fd8be14973c644e3612bc0916664b72914fbcb9d2e41"
+    },
+    "alive-task11-receipt-masks-red.log": {
+      "bytes": 177,
+      "sha256": "44ebe7531031f939353b68cf78fa9222ce9f9103a783f3582b33cfcf5e610aa6"
+    },
+    "alive-task11-rust-layout-green.log": {
+      "bytes": 364,
+      "sha256": "9fe46a304b5bb41904953c8093db2071e6da008143103053f30488abb3d57f80"
+    },
+    "alive-task11-rust-layout-red.log": {
+      "bytes": 9755,
+      "sha256": "7af3c203b3eb027debcae76027b53d7d364566c8e7fe0d1668bff862f3997ef6"
+    },
+    "alive-task11-shared-scan-green.log": {
+      "bytes": 94,
+      "sha256": "a0d82534c1e56d2d6eb0edaef878f4b637f6481c837609253980a94aa9fd6490"
+    },
+    "alive-task11-shared-scan-red.log": {
+      "bytes": 197,
+      "sha256": "da1993a3a9fb5103daf0c6b276ff91d57bf1189c93c25f1b1c0cff804c5f5c16"
+    },
+    "alive-task11-storage.log": {
+      "bytes": 112,
+      "sha256": "415d1926505c4dfc9909bcc65d2220e563173b6eba14f5f85a7526be79056012"
+    },
+    "alive-task11-v3-actions-races-green.log": {
+      "bytes": 94,
+      "sha256": "a0d82534c1e56d2d6eb0edaef878f4b637f6481c837609253980a94aa9fd6490"
+    },
+    "alive-task11-v3-actions.log": {
+      "bytes": 94,
+      "sha256": "a0d82534c1e56d2d6eb0edaef878f4b637f6481c837609253980a94aa9fd6490"
+    },
+    "alive-task11-v3-basic-green.log": {
+      "bytes": 94,
+      "sha256": "a0d82534c1e56d2d6eb0edaef878f4b637f6481c837609253980a94aa9fd6490"
+    },
+    "alive-task11-v3-build.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "alive-task11-v3-capacity-ownership.log": {
+      "bytes": 156,
+      "sha256": "bf2d4de39fc4350c821ab2447499bba67209190bb920e9435a6ed391990fc3f5"
+    },
+    "alive-task11-v3-edges-green.log": {
+      "bytes": 94,
+      "sha256": "a0d82534c1e56d2d6eb0edaef878f4b637f6481c837609253980a94aa9fd6490"
+    },
+    "alive-task11-v3-edges-red.log": {
+      "bytes": 180,
+      "sha256": "2fd6ac639f894a47c669084027865fdc1183e6b2d9d532cd638c4754983c781c"
+    },
+    "alive-task11-v3-first-run.log": {
+      "bytes": 153,
+      "sha256": "aba9e221774ed03b0da3e319aa45c4bafa3cee3713e6c73d9d8fec2e5eaf7820"
+    },
+    "alive-task11-v3-red.log": {
+      "bytes": 2431,
+      "sha256": "ecb52c3b7a8b57219e7649e76f550a371a1a203b9d9ce4f69350967c1f8ede63"
+    },
+    "alive-task11-v3-symbols.log": {
+      "bytes": 362,
+      "sha256": "0c82198fdd04fa9198349648f8ade9cb471a3b1b47ea77450fb8d9577e722f69"
+    },
+    "measure-build.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "measure-final-policy-traced.log": {
+      "bytes": 20618,
+      "sha256": "322ffd32a1344a926d4dc51612ea555ee786198e9a4b8f201ebd5b42866dd962"
+    },
+    "measure-nonloop-policy-red.log": {
+      "bytes": 210,
+      "sha256": "5d76b56c06f9fa232ae2ac574d7ab372e68f200e6d599c52ffdd4af66ce1dca1"
+    },
+    "measure-policy-traced.log": {
+      "bytes": 17736,
+      "sha256": "490e205f582dc8d2bc75e2fad3f9c6755e377b3357f46afac732b71af0f91ea1"
+    },
+    "measure-probe-build.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "measure-probe-first.log": {
+      "bytes": 3811,
+      "sha256": "8cc8441c9e584f52ff94d427cc6a387e52d66042ce0eb7d0edd0efe0d6488820"
+    },
+    "saved_graphs.hpp": {
+      "bytes": 3378,
+      "sha256": "e096ba0b46205eb70ac4b0cf782783779620e50aaf8aa33f59482b64a28bb43b"
+    },
+    "earlier-64-frame-observation.txt": {
+      "bytes": 691,
+      "sha256": "a42aa6ba5aafc9e991c4b0026c8e14abf7308db39290c760874f42ee4841390a"
+    }
+  },
+  "source_files": {
+    ".superpowers/sdd/PLAN/task-11-report.md": "7bc62abccce33b767938533161c05ed30370ad2c415004490e14db269c525802",
+    "apps/ultra/src-tauri/native/alive_session.h": "718c3f6539b18cc8e5c311dd0e1baf3af5a625fe05bc32c6773bd1ca8501e646",
+    "apps/ultra/src-tauri/native/alive_session.hpp": "761550d295d76c0ace4062bf68fcda78d6e1a5e1490105f79ca9d4800e04d35c",
+    "apps/ultra/src-tauri/native/alive_session_clip_policy.hpp": "1ae80a2c8570452423af28aba2c04f40fa53c650bbbc87bc726f09ca5eb8c0a5",
+    "apps/ultra/src-tauri/native/alive_session_clips.hpp": "d2d0c008b069ee58dc2c3bdb575ef0c34f25c41eddcc39617020f4dc357b704c",
+    "apps/ultra/src-tauri/native/alive_session_envelope.hpp": "d8da367ebdce8a26dd69941a4217c7a6ece0e751d8d1a33115a9babc603405fd",
+    "apps/ultra/src-tauri/native/alive_session_v3_policy.md": "663cd7507a7212f03b94d29cc117f135a23367ca9416395eadf4c8447baf7259",
+    "apps/ultra/src-tauri/native/backend.cpp": "f5b69a2e72ade4e23a6b4b55a070bd402c8cbcab1b7ec81f468d359a0482aec1",
+    "apps/ultra/src-tauri/src/session/native.rs": "8f20e01c349cf680a05843e331b769679489561199b493a7bacb8213509ebbb7",
+    "apps/ultra/src-tauri/src/session/tests.rs": "575126da4c57e9680074d744fa56e1fe204e940875f5ecb64dadc5a343a66010",
+    "apps/ultra/tests/alive_session_envelope_test.cpp": "d46fc28506978dbed68042ef741d9906f56d2dcb3689d6bf7d6f4138dffda1c3",
+    "apps/ultra/tests/alive_session_v3_fixtures.py": "24db29015bbe20f3575ded260fd4ecca80e4764f137e9c2176560d39660a60ef",
+    "apps/ultra/tests/alive_session_v3_layout_test.cpp": "01510c60aec9727eee0b9c832b66eff1587e7df5d43d60166a42707a99e4d41c",
+    "apps/ultra/tests/alive_session_v3_measure.cpp": "3656bd21d66e17a5caf010dd13956cd7ef8abbfa30a39b6dc784dee6eaa77d76",
+    "apps/ultra/tests/alive_session_v3_test.cpp": "938f955c0969cf52e624f8c027fe2873059525d9ea660d04bdf9a2f23d0d6a66",
+    "apps/ultra/tests/ci/check-native.sh": "d9a92515f3e11113e29286840e772813740cc63f04750eb88c5b3b3832263fa5"
+  },
+  "native_build_files": {
+    "apps/ultra/build/libultra_native.so": "8d1768cedb1f5b2208f8708deb8fccb663c727dcc4ecbdf183a257cbe9755f00",
+    "apps/ultra/build/core/libultra_core_bundle.a": "23bc0108d83e4b6d6300651a2945621ed25ece9ca49bc913313b306f1f153402"
+  },
+  "earlier_outlier_evidence": "Exact directly inspected excerpt retained; complete intermediate log overwritten and exact intermediate source snapshot unavailable.",
+  "fix_commit": "1bc37b91a9a269ddc9b5450d7a8dc803dda141fd"
+}

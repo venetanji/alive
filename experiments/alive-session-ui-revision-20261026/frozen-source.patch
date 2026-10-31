@@ -1,0 +1,487 @@
+diff --git a/apps/ultra/tests/alive_workspace_navigation.py b/apps/ultra/tests/alive_workspace_navigation.py
+index 89a0677..f2ca23b 100644
+--- a/apps/ultra/tests/alive_workspace_navigation.py
++++ b/apps/ultra/tests/alive_workspace_navigation.py
+@@ -18,6 +18,15 @@ def install(ui, windows):
+     def prepare(name):
+         if windows.scope != 'Alive':
+             return
++        runtime = re.fullmatch(r'(.+) clip runtime', name)
++        if runtime:
++            expand(runtime.group(1) + ' runtime details')
++            return
++        scene = re.fullmatch(r'(?:Scene (\d+) request|Prepared scene (\d+))', name)
++        if scene:
++            expand('Scene receipts')
++            expand(f'Scene {next(value for value in scene.groups() if value)} receipt details')
++            return
+         if name in diagnostic or re.fullmatch(r'Track \d+ active voices', name):
+             expand('Audio details')
+             return
+diff --git a/apps/ultra/tests/check_alive_session_ui.py b/apps/ultra/tests/check_alive_session_ui.py
+new file mode 100644
+index 0000000..e3e9898
+--- /dev/null
++++ b/apps/ultra/tests/check_alive_session_ui.py
+@@ -0,0 +1,84 @@
++#!/usr/bin/env python3
++"""Session presentation/fader preflight followed by the original native clip journey."""
++import ctypes as C
++import json
++import time
++import check_alive_clips as clips
++from gi.repository import Atspi
++
++alive, ui, windows = clips.alive, clips.ui, clips.windows
++
++
++def main_window():
++    root, parent, count = C.c_ulong(), C.c_ulong(), C.c_uint()
++    children = C.POINTER(C.c_ulong)()
++    ui.x.XQueryTree(ui.display, ui.x.XDefaultRootWindow(ui.display), C.byref(root),
++                   C.byref(parent), C.byref(children), C.byref(count))
++    try:
++        for index in range(count.value):
++            name = C.c_char_p()
++            if ui.x.XFetchName(ui.display, children[index], C.byref(name)) and name.value:
++                title = name.value.decode().removeprefix('* ')
++                ui.x.XFree(name)
++                if title == 'Alive':
++                    return children[index]
++    finally:
++        if children:
++            ui.x.XFree(children)
++    raise AssertionError('No Alive main window')
++
++
++def capture(width, height):
++    xid = main_window()
++    ui.x.XMoveWindow(ui.display, xid, 0, 0)
++    ui.x.XResizeWindow(ui.display, xid, width, height)
++    ui.x.XFlush(ui.display)
++    time.sleep(.4)
++    for name in ('Pulse mute', 'Pulse solo', 'Harmony mute', 'Harmony solo'):
++        control = ui.wait_for(name)
++        rect = Atspi.Component.get_extents(control, Atspi.CoordType.SCREEN)
++        assert control.get_state_set().contains(Atspi.StateType.SHOWING), name
++        assert 0 <= rect.y < rect.y + rect.height <= height, (name, rect)
++    root = ui.Gdk.get_default_root_window()
++    ui.Gdk.pixbuf_get_from_window(root, 0, 0, width, height).savev(
++        str(ui.output / f'native-session-{width}x{height}.png'), 'png', [], [])
++
++
++def run():
++    windows.focus(alive.MAIN)
++    slider = ui.wait_for('Pulse gain fader')
++    before = float(alive.value('Pulse gain'))
++    Atspi.Component.grab_focus(slider)
++    ui.keys('Up')
++    after = float(alive.wait_value('Pulse gain', lambda value: float(value) != before))
++    assert before < after <= 2, (before, after)
++    alive.numeric('Pulse gain', .713)
++    slider = ui.wait_for('Pulse gain fader')
++    assert abs(Atspi.Value.get_current_value(slider) - .713) < .00001
++    (ui.output / 'native-fader.json').write_text(json.dumps(
++        {'before': before, 'arrow_up': after, 'numeric_and_fader': .713}, indent=2))
++    capture(1440, 900)
++    capture(1280, 800)
++    ui.click('Edit selected device in Ultra')
++    windows.focus('Pulse - Ultra Hosted Editor')
++    ui.wait_for('Hosted Cutoff base')
++    ui.click('Close hosted editor')
++    windows.focus(alive.MAIN)
++    assert not clips.editor_exists()
++    original_point = alive.value('Cutoff point 1 value')
++    alive.numeric('Cutoff point 1 value', 1781)
++    assert alive.value('Cutoff point 1 value') == '1781'
++    ui.click('Undo pending edit')
++    assert alive.value('Cutoff point 1 value') == original_point
++    (ui.output / 'native-preflight.json').write_text(json.dumps(
++        {'editor_open_close': True, 'automation_edit_undo': True,
++         'original_cutoff_point': original_point}, indent=2))
++    clips.run()
++
++
++if __name__ == '__main__':
++    try:
++        run()
++    except Exception:
++        alive.screenshot('session-ui-failure.png')
++        raise
+diff --git a/apps/ultra/tests/check_documents_desktop.py b/apps/ultra/tests/check_documents_desktop.py
+index 4598231..79c1d49 100644
+--- a/apps/ultra/tests/check_documents_desktop.py
++++ b/apps/ultra/tests/check_documents_desktop.py
+@@ -37,6 +37,9 @@ def app_frames():
+         try:
+             if root.get_process_id() != ui.pid: continue
+             for node in [root.get_child_at_index(i) for i in range(root.get_child_count())]:
++                # Closing native dialogs can leave a null accessibility child for one scan.
++                if node is None:
++                    continue
+                 try:
+                     if node.get_role_name() in ('frame', 'dialog', 'file chooser', 'alert'):
+                         if node not in frames:
+diff --git a/apps/ultra/tests/ci/alive-chain.spec.mjs b/apps/ultra/tests/ci/alive-chain.spec.mjs
+index 78567f1..bb215c4 100644
+--- a/apps/ultra/tests/ci/alive-chain.spec.mjs
++++ b/apps/ultra/tests/ci/alive-chain.spec.mjs
+@@ -26,6 +26,7 @@ async function openSession(page,longNames=false,clipBank=false,trackCount=2){
+     snapshot.runtime={tracks:document.tracks.map(t=>({trackId:t.id,activeClipId:t.slots[0].id,phase:'0',epoch:'1',pendingAction:null,pendingClipId:null,pendingSerial:null,pendingFrame:null})),requests:[],requestedStopEpoch:'0',appliedStopEpoch:'0'};
+   }
+   await page.addInitScript(snapshot=>{
++    window.sessionSnapshot=snapshot;
+     window.removeTrack=async trackId=>{
+       await new Promise(resolve=>{window.finishRemoval=resolve;});
+       const index=snapshot.document.tracks.findIndex(track=>track.id===trackId);
+@@ -34,10 +35,45 @@ async function openSession(page,longNames=false,clipBank=false,trackCount=2){
+     };
+     window.calls=[];const undo=[],redo=[];window.__TAURI__={core:{invoke:async(name,args)=>{window.calls.push({name,args});if(name==='alive_current')return structuredClone(snapshot);if(name==='alive_edit'){undo.push(structuredClone(snapshot.draft??snapshot.document));redo.length=0;snapshot.draft=args.document;snapshot.draftRevision++;snapshot.history={canUndo:true,canRedo:false};return structuredClone(snapshot);}if(name==='alive_history'){const from=args.direction==='undo'?undo:redo,to=args.direction==='undo'?redo:undo;to.push(structuredClone(snapshot.draft??snapshot.document));snapshot.draft=from.pop();snapshot.draftRevision++;snapshot.history={canUndo:!!undo.length,canRedo:!!redo.length};return structuredClone(snapshot);}}}};
+     const invoke=window.__TAURI__.core.invoke;window.__TAURI__.core.invoke=(name,args)=>name==='alive_device'&&args.action==='remove'?window.removeTrack(args.trackId):invoke(name,args);
++    const previous=window.__TAURI__.core.invoke;window.__TAURI__.core.invoke=async(name,args)=>{
++      if(name==='alive_mixer'){window.calls.push({name,args});for(const document of [snapshot.document,snapshot.draft])if(document)Object.assign(document.tracks[args.track],{gain:args.gain,mute:args.mute,solo:args.solo});snapshot.dirty=true;return;}
++      if(name==='alive_clip_edit'){window.calls.push({name,args});const op=args.operation;if(op.kind!=='create')throw Error('Fixture supports create only');snapshot.draft??=structuredClone(snapshot.document);const track=snapshot.draft.tracks.find(t=>t.id===op.trackId);if(track.slots[op.slot])throw Error('Slot already occupied');track.slots[op.slot]={id:`new-${track.id}-${op.slot}`,name:'New clip',lengthBeats:8,notes:[],automation:[]};snapshot.draftRevision++;snapshot.history={canUndo:true,canRedo:false};return{snapshot:structuredClone(snapshot),affected:{trackId:track.id,slot:op.slot}};}
++      return previous(name,args);
++    };
+   },snapshot);
+   await page.goto('/alive.html');await expect(page.locator('#chain-title')).toHaveText('Pulse chain');
+ }
+ 
++test('empty body double-click creates one draft clip and never launches',async({page})=>{
++  await page.setViewportSize({width:1280,height:800});await openSession(page,false,true);
++  const body=page.getByRole('button',{name:'Select Pulse slot 2',exact:true});await body.click();
++  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
++  await body.dblclick();await expect(page.getByLabel('Clip name',{exact:true})).toHaveValue('New clip');
++  const calls=await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'));expect(calls).toHaveLength(1);expect(calls[0].name).toBe('alive_clip_edit');expect(calls[0].args.operation).toEqual({kind:'create',trackId:'track-1',slot:1});
++  await expect(page.getByRole('button',{name:'Launch Pulse New clip',exact:true})).toBeDisabled();await expect(body).toHaveAttribute('aria-pressed','true');
++});
++
++test('vertical gain fader sends one bounded change and reflects external snapshots without erasing focused numeric text',async({page})=>{
++  await page.setViewportSize({width:1280,height:800});await openSession(page,false,true);
++  const slider=page.getByRole('slider',{name:'Pulse gain fader',exact:true}),number=page.getByRole('spinbutton',{name:'Pulse gain',exact:true});
++  const initial=Number(await slider.inputValue());await slider.focus();await slider.press('ArrowUp');
++  await expect(number).toHaveValue(String(Math.round((initial+.02)*100)/100));
++  expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_mixer'))).toHaveLength(1);
++  await number.fill('0.83');await page.evaluate(()=>{window.sessionSnapshot.document.tracks[0].gain=.4;});
++  await expect(slider).toHaveValue('0.4');await expect(number).toHaveValue('0.83');
++  await number.press('Tab');await expect(slider).toHaveValue('0.83');
++  expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_mixer').map(c=>c.args.gain))).toEqual([Math.round((initial+.02)*100)/100,.83]);
++});
++
++for(const size of [{width:1440,height:900},{width:1280,height:800}])test(`two fixed track columns leave blank stage and expose piano roll at ${size.width}x${size.height}`,async({page},testInfo)=>{
++  await page.setViewportSize(size);await openSession(page,false,true);
++  const geometry=await page.evaluate(()=>{const rect=e=>e.getBoundingClientRect().toJSON();return{track:[...document.querySelectorAll('.track')].map(rect),mixerControls:[...document.querySelectorAll('.mixer-toggle,.track-inspector')].map(rect),session:rect(document.querySelector('#session-workspace')),piano:rect(document.querySelector('#piano-roll')),detail:rect(document.querySelector('#detail-content')),scene:rect(document.querySelector('.scene-column'))};});
++  for(const track of geometry.track)expect(track.width).toBe(146);expect(geometry.scene.x-(geometry.track[1].x+geometry.track[1].width)).toBeGreaterThan(300);
++  for(const control of geometry.mixerControls)expect(control.bottom).toBeLessThanOrEqual(geometry.session.bottom);
++  expect(geometry.piano.y).toBeLessThan(geometry.detail.y+65);expect(Math.min(geometry.piano.bottom,geometry.detail.bottom)-geometry.piano.y).toBeGreaterThan(150);
++  await page.screenshot({path:testInfo.outputPath(`two-tracks-${size.width}x${size.height}.png`)});
++});
++
+ test('Add note queued behind track removal never edits the surviving track',async({page})=>{
+   const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:1100,height:800});await openSession(page);
+   await page.locator('.track-inspector summary').first().click();
+diff --git a/apps/ultra/tests/test_desktop_frames.py b/apps/ultra/tests/test_desktop_frames.py
+new file mode 100644
+index 0000000..2216e63
+--- /dev/null
++++ b/apps/ultra/tests/test_desktop_frames.py
+@@ -0,0 +1,24 @@
++"""Exercise frame enumeration without opening a native input session."""
++import ast
++from pathlib import Path
++from types import SimpleNamespace
++import unittest
++
++
++class FrameEnumerationTest(unittest.TestCase):
++    def test_dialog_close_null_child_keeps_other_owned_frames(self):
++        source = ast.parse(Path(__file__).with_name('check_documents_desktop.py').read_text())
++        function = next(node for node in source.body
++                        if isinstance(node, ast.FunctionDef) and node.name == 'app_frames')
++        frame = SimpleNamespace(get_role_name=lambda: 'frame')
++        root = SimpleNamespace(get_process_id=lambda: 123, get_child_count=lambda: 3,
++                               get_child_at_index=lambda index: [None, frame, frame][index])
++        unrelated = SimpleNamespace(get_process_id=lambda: 456)
++        namespace = {'ui': SimpleNamespace(pid=123, desktop_apps=lambda: [unrelated, root]),
++                     'GLib': SimpleNamespace(GError=RuntimeError)}
++        exec(compile(ast.Module(body=[function], type_ignores=[]), '<app_frames>', 'exec'), namespace)
++        self.assertEqual(namespace['app_frames'](), [frame])
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/apps/ultra/ui/alive-dom.test.mjs b/apps/ultra/ui/alive-dom.test.mjs
+index 5fd7050..08c5ec9 100644
+--- a/apps/ultra/ui/alive-dom.test.mjs
++++ b/apps/ultra/ui/alive-dom.test.mjs
+@@ -81,6 +81,40 @@ function clipState(){const s=state();s.mode='clipsV3';s.preparationRevision='1';
+   for(const t of s.document.tracks){const clip={id:`clip-${t.id}`,name:'Clip 1',lengthBeats:s.document.lengthBeats,notes:t.notes.map((n,i)=>({...n,id:`note-${t.id}-${i}`})),automation:t.automation};t.slots=[clip,null,null,null];t.defaultClipId=clip.id;delete t.notes;delete t.automation;s.preparedClips.push({trackId:t.id,clipId:clip.id,name:clip.name,slot:0,lengthFrames:'411429'});}
+   s.runtime={tracks:s.document.tracks.map(t=>({trackId:t.id,activeClipId:t.slots[0].id,phase:'0',epoch:'1',pendingAction:null,pendingClipId:null,pendingSerial:null,pendingFrame:null})),requests:[],requestedStopEpoch:'0',appliedStopEpoch:'0'};return s;}
+ 
++test('compact clip states follow native identities independently of selection and draft names',async()=>{
++  const initial=clipState();initial.draft=structuredClone(initial.document);
++  const track=initial.draft.tracks[0];track.slots[0].name='Draft rename';
++  track.slots[1]={...structuredClone(track.slots[0]),id:'draft-only',name:'Draft'};
++  initial.runtime.tracks[0].pendingClipId=track.slots[0].id;
++  const page=dom('./alive.html'),native=backend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();
++  await page.find('Select Pulse slot 3').fire('click');
++  const first=page.find('Select Pulse slot 1').parentElement,second=page.find('Select Pulse slot 2').parentElement,empty=page.find('Select Pulse slot 3').parentElement;
++  for(const state of ['occupied','playing','pending','saved-default'])assert.ok(first.classList.contains(state),state);
++  assert.equal(first.classList.contains('selected'),false);assert.ok(second.classList.contains('draft-only'));assert.ok(empty.classList.contains('empty'));assert.ok(empty.classList.contains('selected'));
++  native.snapshot.draft.tracks[0].slots[0]=null;native.snapshot.draftRevision++;native.snapshot.snapshotSequence='2';await view.refresh();
++  assert.match(page.find('Pulse clip runtime').textContent,/deleted in draft/);assert.match(page.find('Pulse clip runtime').textContent,/Playing Clip 1/);view.dispose();
++});
++
++test('gain fader commits once, synchronizes numeric and snapshots, and preserves unfinished numeric input',async()=>{
++  const page=dom('./alive.html'),native=backend(clipState()),view=mountAlive({...page,invoke:native.invoke});await settle();
++  const slider=page.find('Pulse gain fader'),number=page.find('Pulse gain');assert.ok(slider);assert.equal(slider.min,'0');assert.equal(slider.max,'2');
++  slider.focus();slider.value='.7';await slider.fire('input');assert.equal(native.calls.filter(c=>c.name==='alive_mixer').length,0);
++  await slider.fire('change');assert.equal(native.calls.filter(c=>c.name==='alive_mixer').length,1);assert.equal(Number(number.value),.7);
++  number.focus();number.value='';native.snapshot.document.tracks[0].gain=.4;native.snapshot.snapshotSequence='2';await view.refresh();assert.equal(number.value,'');assert.equal(Number(slider.value),.4);
++  number.value='.85';await number.fire('change');assert.equal(Number(slider.value),.85);number.blur();await view.refresh();assert.equal(native.calls.filter(c=>c.name==='alive_mixer').length,2);
++  const meter=page.find('Pulse stereo peak');assert.equal(meter.children[0].style.height,'10%');assert.equal(meter.children[1].style.height,'20%');assert.equal(page.find('Pulse peak').textContent,'0.100 / 0.200');view.dispose();
++});
++
++test('empty body double-click creates once with no launch and late completion preserves newer selection',async()=>{
++  const page=dom('./alive.html'),native=backend(clipState());let release;
++  const invoke=async(name,args)=>{if(name==='alive_clip_edit')await new Promise(resolve=>{release=resolve;});return native.invoke(name,args);};
++  const view=mountAlive({...page,invoke});await settle();const empty=page.find('Select Pulse slot 2');
++  await empty.fire('click');await empty.fire('click');assert.equal(native.calls.filter(c=>c.name==='alive_clip_edit').length,0);
++  await empty.fire('dblclick');await empty.fire('dblclick');await page.find('Select Harmony slot 3').fire('click');assert.ok(release);release();await settle();await settle();
++  assert.equal(native.calls.filter(c=>c.name==='alive_clip_edit').length,1);assert.equal(native.calls.filter(c=>c.name==='alive_clip_action').length,0);
++  assert.equal(page.find('Select Harmony slot 3').attrs['aria-pressed'],'true');assert.ok(view.model.document().tracks[0].slots[1]);view.dispose();
++});
++
+ test('scene controls launch a prepared row once without selection or document edits',async()=>{
+   const initial=clipState();initial.capabilities={atomicTrackActions:true};initial.state.playing=0;initial.audio.running=true;
+   initial.draft=structuredClone(initial.document);initial.draft.tracks[0].slots[0].name='Draft name';
+@@ -211,6 +245,8 @@ function backend(initial){
+   return{calls,get snapshot(){return snapshot;},async invoke(name,args={}){
+     calls.push({name,args:structuredClone(args)});
+     if(name==='alive_current')return structuredClone(snapshot);
++    if(name==='alive_mixer'){Object.assign(snapshot.document.tracks[args.track],{gain:args.gain,mute:args.mute,solo:args.solo});if(snapshot.draft)Object.assign(snapshot.draft.tracks[args.track],{gain:args.gain,mute:args.mute,solo:args.solo});return;}
++    if(name==='alive_clip_edit'){const op=args.operation;assert.equal(op.kind,'create');snapshot.draft??=structuredClone(snapshot.document);const track=snapshot.draft.tracks.find(t=>t.id===op.trackId);assert.equal(track.slots[op.slot],null);track.slots[op.slot]={id:'created-clip',name:'New clip',lengthBeats:8,notes:[],automation:[]};snapshot.draftRevision++;return{snapshot:structuredClone(snapshot),affected:{trackId:op.trackId,slot:op.slot}};}
+     if(name==='alive_edit'){assert.equal(args.draftRevision,snapshot.draftRevision);snapshot.draft=args.document;snapshot.draftRevision++;snapshot.history={canUndo:true,canRedo:false,undoLabel:args.label};return structuredClone(snapshot);}
+     if(name==='alive_discard'){snapshot.draft=null;snapshot.draftRevision++;snapshot.history={canUndo:false,canRedo:false};return structuredClone(snapshot);}
+     if(name==='alive_base'){
+diff --git a/apps/ultra/ui/alive.css b/apps/ultra/ui/alive.css
+index 9f203dd..5c18b1f 100644
+--- a/apps/ultra/ui/alive.css
++++ b/apps/ultra/ui/alive.css
+@@ -1,36 +1,27 @@
+-:root{color-scheme:dark;font:12px/1.3 "Liberation Sans","Helvetica Neue",sans-serif;color:#eeeeec;background:#373737;--chrome:#252525;--raised:#303030;--canvas:#373737;--line:#505050;--text:#eeeeec;--muted:#b4b4b0;--amber:#efbb62;--selection:#91b9ed;--error:#ffb0a4;--stereo:#88c5c7}
++/* Shared chrome and the four real Session rows. */
++:root{color-scheme:dark;font:12px/1.3 "Liberation Sans","Helvetica Neue",sans-serif;color:#eeeeec;background:#373737;--chrome:#252525;--raised:#303030;--canvas:#373737;--line:#505050;--text:#eeeeec;--muted:#b4b4b0;--amber:#efbb62;--selection:#91b9ed;--error:#ffb0a4;--stereo:#88c5c7;--slot-height:28px;--track-head:40px;--track-width:146px;--detail-height:220px}
++*{box-sizing:border-box}body{margin:0;min-width:720px;height:100vh;display:flex;flex-direction:column;overflow:hidden}
++button,input,select{font:inherit;color:inherit}button{border:1px solid #666;border-radius:2px;min-height:25px;padding:3px 7px;background:#303030;cursor:pointer;white-space:nowrap}button:hover:not(:disabled){background:#414141}button:active:not(:disabled),button[aria-pressed=true]{background:#4b4b4b;border-color:var(--amber)}button:disabled{opacity:.45;cursor:default}.primary{color:var(--amber);border-color:#85714c}
++button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--selection);outline-offset:-2px}input,select{border:1px solid #686868;border-radius:2px;background:#202020;padding:3px 5px;min-width:0;caret-color:var(--text);font-variant-numeric:tabular-nums}input[type=checkbox]{accent-color:var(--amber)}input[type=range]{accent-color:var(--selection);padding:0;width:100%;min-height:18px}input[type=number]{width:66px}::selection{color:#fff;background:#365e8d}
++svg{stroke:currentColor;fill:none}button svg{height:15px;width:15px;vertical-align:middle;stroke-width:1.4;margin-right:5px;flex:none}button:has(>.sr-only) svg{margin:0}[hidden]{display:none!important}.muted{color:var(--muted)}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}summary{cursor:pointer;color:var(--muted)}main,section,aside,details{scrollbar-color:#777 var(--chrome);scrollbar-width:thin}
++.document-bar{display:flex;align-items:center;gap:12px;padding:4px 10px;background:var(--chrome);border-bottom:1px solid var(--line);min-height:35px}.app-name{color:var(--amber);font-size:15px;font-weight:500}.document-bar nav{display:flex;gap:3px;margin-left:auto}.document-bar nav button{border-color:transparent;background:transparent}
++.transport{background:var(--chrome);display:flex;align-items:center;gap:8px;padding:5px 10px;border-bottom:1px solid var(--line);min-height:38px;flex-wrap:wrap}.transport label{display:flex;gap:5px;align-items:center}.transport #start,.transport #stop{width:29px;padding:4px}.transport #position{min-width:88px;text-align:center;font-variant-numeric:tabular-nums;color:var(--amber)}.transport #tempo,.transport #length{width:52px}.transport .seek input{width:56px}.master{margin-left:auto;display:flex;align-items:center;gap:7px}.master output{font-size:11px;width:72px;color:var(--muted)}.stereo-meter{height:22px;min-width:80px;display:flex;flex-direction:column;gap:3px;background:#171717;padding:3px}.stereo-meter i{height:6px;background:var(--stereo);width:0;max-width:100%}
++.workspace-tools{display:flex;align-items:center;gap:10px;min-height:33px;padding:3px 10px;background:var(--raised);border-bottom:1px solid var(--line)}.workspace-tools nav{display:flex;gap:3px}.workspace-authority{margin-left:auto;color:var(--stereo);font-size:11px}
++main#workspace-shell{display:flex;flex:1;min-height:0;overflow:hidden;min-width:0}#workspace-browser{flex:0 0 172px;overflow:auto;padding:10px;background:var(--chrome);border-right:1px solid var(--line)}#workspace-browser h2{font-size:12px;margin:0 0 12px}#workspace-browser button{display:flex;align-items:center;width:100%;margin-bottom:6px;text-align:left}#workspace-browser details{margin-top:22px;line-height:1.5}
++.workspace-column{display:flex;flex-direction:column;flex:1;min-width:0;min-height:0}.workspace{flex:1;min-height:150px;overflow:auto;outline-offset:-2px}.session-board{display:flex;min-width:min-content;height:100%;min-height:364px;align-items:stretch;background:#373737}#scene-help{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
++#tracks{display:flex;flex:1 0 auto;align-items:stretch;min-width:0}.track{display:flex;flex-direction:column;align-items:stretch;flex:0 0 var(--track-width);width:var(--track-width);min-width:var(--track-width);min-height:0;background:#303030;border-right:1px solid #202020}.track.selected{background:#383b3e}
++.track-name{display:flex;flex-direction:column;align-items:flex-start;height:var(--track-head);min-height:var(--track-head);width:100%;padding:5px 8px;gap:1px;background:var(--track-color);border:0;border-bottom:1px solid #252525;border-radius:0;color:#202020;overflow:hidden;text-align:left}.track-name:hover:not(:disabled),.track.selected .track-name{background:var(--track-color)}.track-name>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;flex-shrink:0;line-height:15px;min-height:15px;font-weight:600}.track-name small{color:#333;font-size:10px;flex-shrink:0;line-height:12px;min-height:12px}.track.selected .track-name{box-shadow:inset 0 -3px var(--selection)}
++.clip-bank{display:flex;flex-direction:column;gap:0;width:100%}.clip-slot{height:var(--slot-height);min-height:var(--slot-height);display:grid;grid-template-columns:23px minmax(0,1fr);position:relative;gap:0;border-bottom:1px solid #202020;border-top:1px solid #454545;background:#323232;color:#202020}.clip-slot.occupied{background:var(--track-color);border-top-color:var(--track-color)}.clip-select,.clip-launch{border:0;border-radius:0;background:transparent;color:inherit;min-height:0;height:100%;padding:3px 5px}.clip-select{min-width:0;overflow:hidden;text-overflow:ellipsis;text-align:left;padding-right:12px}.clip-launch{border-right:1px solid #20202055;padding:3px}.clip-launch svg{width:14px;height:14px;margin:0}.clip-launch:disabled{opacity:.3}.clip-slot.empty .clip-launch{visibility:hidden}.clip-slot.empty .clip-select{grid-column:2}.clip-slot.empty{color:var(--muted)}.clip-slot.occupied button:hover:not(:disabled),.clip-slot.occupied button[aria-pressed=true]{background:#ffffff20;color:#171717}.clip-slot.selected{outline:2px solid var(--selection);outline-offset:-2px;z-index:1}.clip-slot.playing .clip-launch svg{fill:currentColor}.clip-slot.cued .clip-launch svg{stroke-width:2.2}.clip-slot.pending .clip-launch{outline:2px dashed #202020;outline-offset:-3px}.clip-slot.draft-only .clip-select{border-bottom:2px dashed #202020}.clip-slot.saved-default .clip-select:after{content:"";position:absolute;right:5px;top:10px;width:5px;height:5px;border:1px solid currentColor}
++.track-stop{margin:0;min-height:27px;border:0;border-radius:0;border-bottom:1px solid var(--line);text-align:left;font-size:11px;color:var(--muted);padding:4px 7px}.track-stop svg{height:12px;width:12px}.runtime-receipt{position:relative;min-height:23px;background:#292929}.runtime-receipt>summary{padding:4px 7px;font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.clip-runtime{display:block;padding:7px;font-size:11px;line-height:1.5;color:var(--text);overflow-wrap:anywhere}.runtime-receipt[open] .clip-runtime{position:absolute;left:0;top:23px;width:250px;max-height:200px;overflow:auto;background:var(--chrome);border:1px solid #777;z-index:5}
++.track-mixer{display:grid;grid-template-rows:23px minmax(67px,1fr) 25px;gap:5px;flex:1;min-height:140px;padding:7px 12px;background:#2b2b2b;border-top:1px solid var(--line)}.track.selected .track-mixer{background:#333639}.track-gain{display:flex;align-items:center;justify-content:space-between;gap:6px;font-size:11px}.track-gain input{width:65px}.mixer-strip{display:flex;justify-content:center;gap:14px;min-height:0;height:100%;max-height:240px}.track input.gain-fader{writing-mode:vertical-lr;direction:rtl;width:24px;height:100%;min-height:0;flex:none;cursor:ns-resize}.track-meter{display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0;min-height:0;height:100%}.track-meter .vertical-meter{display:flex;flex-direction:row;align-items:flex-end;width:18px;height:0;flex:1;min-height:0;min-width:0;padding:2px;gap:2px;border:1px solid #555}.vertical-meter i{width:5px;height:0;flex:none;max-height:100%}.track-meter output{font-size:9px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}.mixer-toggles{display:flex;gap:5px}.mixer-toggle{flex:1;padding:3px;min-height:25px}.mixer-toggle[aria-pressed=true]{color:#202020;background:var(--amber)}.track-inspector{background:var(--chrome);padding:4px 8px;border-top:1px solid var(--line)}.track-inspector summary{font-size:10px}.track-actions{display:flex;flex-direction:column;gap:4px;padding-top:6px}.track-actions button{text-align:left;font-size:11px}.clip-preview{height:170px;padding:0;border:1px solid #67614e;background:#282725;margin:6px;overflow:hidden}.clip-preview svg{width:100%;height:100%}
++.scene-column{position:sticky;right:0;flex:0 0 116px;width:116px;background:var(--chrome);border-left:1px solid #777;z-index:2}.scene-column h2{height:var(--track-head);margin:0;padding:13px 9px 8px;font-size:12px;font-weight:500;border-bottom:1px solid var(--line)}#scene-controls{display:block;padding:0}.scene-row{height:var(--slot-height);min-height:var(--slot-height);border-bottom:1px solid var(--line)}.scene-launch{display:flex;align-items:center;justify-content:space-between;width:100%;height:100%;text-align:left;border:0;border-radius:0;font-size:11px;padding:3px 8px;color:var(--text)}.scene-launch svg{height:12px;width:12px}.scene-history{font-size:11px;padding:8px 6px}.scene-receipt{padding-top:7px}.scene-receipt small,.scene-result{display:block;font-size:11px;line-height:1.5;overflow-wrap:anywhere}.scene-receipt[open]{min-width:0}.unavailable{padding:28px;max-width:68ch}.unavailable h1{font-size:17px;font-weight:500;margin:0 0 14px}.unavailable p{line-height:1.5}
++.schedule-bar{display:flex;flex-shrink:0;align-items:center;min-height:33px;gap:6px;padding:4px 9px;background:#292929;border-top:1px solid var(--line);flex-wrap:wrap}.schedule-bar .muted{display:none}#draft-status{color:var(--amber);margin-right:auto;min-width:0;font-size:11px}.schedule-bar button{min-height:24px;font-size:11px;padding:3px 6px}
++#detail-panel{flex-shrink:0;min-width:0;border-top:1px solid var(--line)}#detail-resizer{height:7px;background:#262626;cursor:ns-resize;touch-action:none;position:relative}#detail-resizer:after{content:"";position:absolute;left:calc(50% - 22px);top:2px;width:44px;height:2px;background:#777}#detail-resizer:focus-visible{outline:2px solid var(--selection);outline-offset:-2px}.detail-tabs{height:31px;display:flex;gap:4px;align-items:center;padding:3px 9px;background:var(--chrome);border-bottom:1px solid var(--line)}.detail-tabs button{min-height:23px;padding:2px 9px}#toggle-detail{margin-left:auto}#detail-content{height:var(--detail-height);overflow:auto;background:#303030}#clip-detail,#device-detail{min-width:0}#clip-bank-notice:empty{display:none}#clip-bank-notice{margin:0 5px;font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}.clip-controls{display:flex;flex-wrap:wrap;align-items:center;padding:4px 10px;gap:5px;min-height:32px}.clip-controls input[aria-label="Clip name"]{width:120px}.clip-controls input,.clip-controls button,.clip-controls select{height:23px;min-height:23px;padding:2px 5px;font-size:11px}.clip-controls label{display:flex;align-items:center;gap:5px}.clip-controls input[type=number]{width:55px}
++.section-heading{min-height:27px;display:flex;align-items:center;gap:8px;padding:3px 10px;background:#303030;border-bottom:1px solid #4b4b4b}.section-heading h1,.section-heading h2{font-size:12px;font-weight:600;margin:0;color:var(--text)}.section-heading button{margin-left:auto;min-height:22px;padding:2px 7px}.section-heading .muted{font-size:10px}.clip-section>.section-heading .muted{display:none}.clip-editors{display:block}.piano-area{height:214px;border:0;position:relative;background:#272727}#piano-roll{width:100%;height:180px;display:block;touch-action:none;outline-offset:-2px;cursor:crosshair}#piano-roll:focus{outline:2px solid var(--selection)}#piano-roll [data-part="body"]{cursor:move}#piano-roll [data-part="resize"]{cursor:ew-resize}#piano-help{display:none}.note-velocity{height:34px;display:flex;align-items:center;gap:9px;margin:0;padding:4px 12px;background:#292929;font-size:11px}.note-velocity input{width:160px}.note-velocity output{min-width:70px;font-variant-numeric:tabular-nums}.note-table{max-height:240px;overflow:auto}.note-table>summary,.automation-section>summary{padding:7px 12px;background:var(--chrome);border-top:1px solid var(--line)}table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}th{position:sticky;top:0;z-index:1;background:#373737;color:var(--muted);font-weight:400;text-align:left;padding:5px 7px}td{border-top:1px solid #494949;padding:3px 7px}td input{width:100%!important;max-width:85px;height:25px}td button{min-height:23px;padding:2px 6px;color:var(--muted)}
++.automation-section,.device-section,.clip-section,.chain-section{border-bottom:1px solid var(--line)}.automation-target{display:flex;align-items:center;gap:8px;padding:6px 12px;background:var(--chrome)}.automation-target select{max-width:70%}#lanes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.lane{min-width:0;padding:7px 12px;background:#333;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}.lane-heading{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap}.lane-heading button{margin-left:auto;min-height:23px;padding:2px 7px}.lane-heading label{display:flex;align-items:center;gap:5px;overflow-wrap:anywhere}.lane-graph{height:40px;width:100%;background:#252525;display:block;margin-bottom:5px}.lane-points{display:flex;gap:6px;overflow-x:auto;max-height:68px}.lane-point{flex:0 0 auto;display:grid;grid-template-columns:52px 70px 22px;gap:3px;align-items:center}.lane-point input{width:100%;font-size:11px}.lane-point button{padding:2px;min-height:23px;color:var(--muted)}.lane-empty{color:var(--muted);padding:5px 0}
++#chain{display:flex;flex-direction:column;gap:1px;background:var(--line)}.chain-device{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:5px 12px;background:var(--raised)}.chain-device.selected{background:#393b3d}.chain-select{color:var(--amber);min-width:160px;text-align:left;margin-right:auto}.chain-device button{min-height:25px;padding:3px 7px}.chain-device .chain-select[aria-pressed=true]{border-color:var(--selection)}#chain-status{padding:6px 12px;margin:0;background:var(--chrome);line-height:1.4}.chain-section .section-heading,.device-section .section-heading{flex-wrap:wrap}#device-path{overflow-wrap:anywhere}.device-section #device-path{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:45%;margin-right:auto}#parameters{display:grid;grid-template-columns:repeat(7,minmax(100px,1fr));overflow:auto;padding:8px 12px;gap:14px}.parameter{min-width:0}.parameter label{display:block;color:var(--amber);margin-bottom:4px}.parameter .base{display:flex;align-items:center;gap:5px}.parameter input[type=number]{width:100%;max-width:86px}.parameter .unit{font-size:10px;color:var(--muted)}.parameter output{display:block;font-size:11px;color:var(--muted);margin-top:4px;font-variant-numeric:tabular-nums}.parameter.automated output{color:var(--stereo)}
++footer{flex-shrink:0;background:var(--chrome);border-top:1px solid var(--line);padding:5px 12px;display:flex;align-items:center;gap:12px;min-height:34px}#notice{margin:0;flex:1;line-height:1.4;white-space:normal;overflow-wrap:anywhere}#notice.error{color:var(--error)}#audio-details{position:relative;flex-shrink:0}#audio-details[open]{position:absolute;bottom:0;left:0;right:0;padding:10px 12px;background:#252525;border-top:1px solid #777;z-index:10}#diagnostics{display:grid;grid-template-columns:repeat(4,minmax(140px,1fr));gap:6px 20px;padding-top:10px}#diagnostics label{display:flex;justify-content:space-between;gap:8px;color:var(--muted)}#diagnostics output{color:var(--text);font-variant-numeric:tabular-nums}#audio-details p{max-width:90ch;margin:10px 0 0}
++@media(max-width:1300px){#workspace-browser{flex-basis:156px;padding:10px}.transport{gap:6px}.transport .master output{display:none}.section-heading>.muted{max-width:55%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
++@media(max-width:1000px){#parameters{grid-template-columns:repeat(4,minmax(100px,1fr))}.master{margin-left:0}.document-bar{gap:7px}.document-bar nav button svg{display:none}.transport{gap:5px}.transport #length{width:45px}.master .stereo-meter{min-width:60px}.schedule-bar button{font-size:10px}.schedule-bar button svg{display:none}.clip-controls{gap:4px}.clip-controls input[aria-label="Clip name"]{width:90px}}
+ #alive-audio-settings{position:absolute;top:37px;bottom:38px;right:0;z-index:20;width:360px;max-width:95vw;overflow:auto;background:var(--chrome);border-left:1px solid #777}
+ .audio-settings-body{padding:0 12px 12px}.audio-settings-body p{line-height:1.5}.audio-field{display:flex;flex-direction:column;gap:5px;margin-top:12px}.audio-field select{width:100%;min-height:29px;border:1px solid #686868;background:#202020;border-radius:2px;padding:3px 5px}.audio-field select:focus-visible{outline:2px solid var(--selection);outline-offset:2px}.audio-format-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.audio-settings-actions{display:flex;gap:7px;margin:16px 0 8px}.audio-live-heading{display:flex;align-items:center;justify-content:space-between;margin-top:20px}.audio-live-heading h3{font-size:12px;font-weight:600;margin:0}.audio-live{display:grid;grid-template-columns:90px minmax(0,1fr);gap:7px;margin:12px 0}.audio-live dt{color:var(--muted)}.audio-live dd{margin:0;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}#audio-settings-notice.error{color:var(--error)}#audio-settings-notice{min-height:36px}
+-*{box-sizing:border-box}body{margin:0;min-width:720px;height:100vh;display:flex;flex-direction:column;overflow:hidden}button,input,select{font:inherit;color:inherit}button{border:1px solid #666;border-radius:3px;min-height:27px;padding:4px 8px;background:#303030;cursor:pointer;white-space:nowrap}button:hover:not(:disabled){background:#414141}button:active:not(:disabled),button[aria-pressed=true]{background:#4b4b4b;border-color:var(--amber)}button:disabled{opacity:.45;cursor:default}.primary{color:var(--amber);border-color:#85714c}button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--selection);outline-offset:2px}input{border:1px solid #686868;border-radius:2px;background:#202020;padding:3px 5px;min-width:0;caret-color:var(--text);font-variant-numeric:tabular-nums}input[type=checkbox]{accent-color:var(--amber)}input[type=range]{accent-color:var(--selection);padding:0;width:100%;min-height:18px}input[type=number]{width:66px}::selection{color:#fff;background:#365e8d}svg{stroke:currentColor;fill:none}button svg{height:16px;width:16px;vertical-align:middle;stroke-width:1.4;margin-right:3px}[hidden]{display:none!important}.muted{color:var(--muted)}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}.document-bar{display:flex;align-items:center;gap:12px;padding:5px 10px;background:var(--chrome);border-bottom:1px solid var(--line);min-height:37px}.app-name{color:var(--amber);font-size:15px;font-weight:500}.document-bar nav{display:flex;gap:5px;margin-left:auto}.document-bar nav button{border-color:transparent;background:transparent}.transport{background:var(--chrome);display:flex;align-items:center;gap:8px;padding:9px 10px;border-bottom:1px solid var(--line);flex-wrap:wrap}.transport label{display:flex;gap:5px;align-items:center}.transport #position{min-width:88px;text-align:center;font-variant-numeric:tabular-nums;color:var(--amber)}.transport #tempo,.transport #length{width:52px}.transport .seek input{width:56px}.master{margin-left:auto;display:flex;align-items:center;gap:7px}.master output{font-size:11px;width:72px;color:var(--muted)}.stereo-meter{height:22px;min-width:80px;display:flex;flex-direction:column;gap:3px;background:#171717;padding:3px}.stereo-meter i{height:6px;background:var(--stereo);width:0;max-width:100%}main{flex:1;min-height:0;overflow:auto}#tracks{border-bottom:1px solid var(--line)}.track{display:grid;grid-template-columns:132px minmax(180px,1fr) 112px 29px 29px 95px 192px;align-items:center;gap:7px;min-height:75px;padding:8px 12px;background:#303030;border-bottom:1px solid #474747}.track:last-child{border-bottom:0}.track.selected{background:#393b3d}.track-name{display:flex;flex-direction:column;align-items:flex-start;gap:3px;color:var(--amber);border:0;background:none;padding-left:0}.track-name small{color:var(--muted);font-size:11px;font-weight:400}.clip-preview{height:52px;padding:0;border:1px solid #67614e;background:#282725;border-radius:1px;overflow:hidden}.clip-preview svg{display:block;width:100%;height:100%}.track.selected .clip-preview{border-color:var(--amber)}.track-gain{display:flex;align-items:center;gap:5px}.track-gain input{width:65px}.track .mixer-toggle{padding:3px;width:29px}.track-meter{display:flex;flex-direction:column;gap:3px}.track-meter output{font-size:10px;color:var(--muted);font-variant-numeric:tabular-nums}.track-actions{display:flex;gap:4px}.track-actions button{font-size:11px;padding:4px 6px}.schedule-bar{display:flex;align-items:center;gap:9px;min-height:39px;padding:5px 12px;background:#292929;border-bottom:1px solid var(--line)}#draft-status{color:var(--amber);min-width:122px}.schedule-bar .muted{margin-right:auto}.section-heading{min-height:32px;display:flex;align-items:center;gap:12px;padding:5px 12px;background:#303030;border-bottom:1px solid #4b4b4b}.section-heading h1,.section-heading h2{font-size:12px;font-weight:600;margin:0;color:var(--text)}.section-heading button{margin-left:auto;min-height:23px;padding:2px 7px}.clip-editors{display:grid;grid-template-columns:minmax(300px,1.1fr) minmax(360px,1fr);height:219px}.piano-area{background:#272727;overflow:hidden;border-right:1px solid var(--line)}#piano-roll{width:100%;height:100%;display:block}.note-table{overflow:auto}table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}th{position:sticky;top:0;z-index:1;background:#373737;color:var(--muted);font-weight:400;text-align:left;padding:5px 7px}td{border-top:1px solid #494949;padding:3px 7px}td input{width:100%!important;max-width:85px;height:25px}td button{min-height:23px;padding:2px 6px;color:var(--muted)}.automation-section,.device-section,.clip-section{border-bottom:1px solid var(--line)}#lanes{display:grid;grid-template-columns:1fr 1fr}.lane{min-width:0;padding:7px 12px;background:#333;border-right:1px solid var(--line)}.lane:last-child{border-right:0}.lane-heading{display:flex;align-items:center;gap:8px;margin-bottom:5px}.lane-heading button{margin-left:auto;min-height:23px;padding:2px 7px}.lane-heading label{display:flex;align-items:center;gap:5px}.lane-graph{height:40px;width:100%;background:#252525;display:block;margin-bottom:5px}.lane-points{display:flex;gap:6px;overflow-x:auto;max-height:68px}.lane-point{flex:0 0 auto;display:grid;grid-template-columns:52px 70px 22px;gap:3px;align-items:center}.lane-point input{width:100%;font-size:11px}.lane-point button{padding:2px;min-height:23px;color:var(--muted)}.lane-empty{color:var(--muted);padding:5px 0}.device-section #device-path{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:45%;margin-right:auto}#parameters{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));padding:8px 12px;gap:14px}.parameter{min-width:0}.parameter label{display:block;color:var(--amber);margin-bottom:4px}.parameter .base{display:flex;align-items:center;gap:5px}.parameter input[type=number]{width:100%;max-width:86px}.parameter .unit{font-size:10px;color:var(--muted)}.parameter output{display:block;font-size:11px;color:var(--muted);margin-top:4px;font-variant-numeric:tabular-nums}.parameter.automated output{color:var(--stereo)}footer{flex-shrink:0;background:var(--chrome);border-top:1px solid var(--line);padding:5px 12px;display:flex;align-items:center;gap:12px;min-height:34px}#notice{margin:0;flex:1;line-height:1.4}#notice.error{color:var(--error)}#audio-details{position:relative;flex-shrink:0}summary{cursor:pointer;color:var(--muted)}#audio-details[open]{position:absolute;bottom:0;left:0;right:0;padding:10px 12px;background:#252525;border-top:1px solid #777;z-index:10}#diagnostics{display:grid;grid-template-columns:repeat(4,minmax(140px,1fr));gap:6px 20px;padding-top:10px}#diagnostics label{display:flex;justify-content:space-between;gap:8px;color:var(--muted)}#diagnostics output{color:var(--text);font-variant-numeric:tabular-nums}#audio-details p{max-width:90ch;margin:10px 0 0}@media(max-width:1050px){.track{grid-template-columns:100px minmax(130px,1fr) 93px 26px 26px 75px 180px;gap:5px;padding:7px 9px}.track-gain input{width:55px}.stereo-meter{min-width:62px}#parameters{grid-template-columns:repeat(4,minmax(0,1fr))}.transport{gap:6px}.master{margin-left:0}.schedule-bar .muted{display:none}.schedule-bar #apply{margin-left:auto}}@media(max-width:800px){.track{grid-template-columns:85px minmax(110px,1fr) 85px 26px 26px 65px 166px}.track-actions button{padding:4px}.clip-editors{grid-template-columns:1fr 1.1fr}.document-bar{gap:7px}.transport #length{width:45px}.master output{display:none}.schedule-bar{gap:6px}}
+-.chain-section{border-bottom:1px solid var(--line)}#chain{display:flex;flex-direction:column;gap:1px;background:var(--line)}.chain-device{display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:5px 12px;background:var(--raised)}.chain-device.selected{background:#393b3d}.chain-select{color:var(--amber);min-width:200px;text-align:left;margin-right:auto}.chain-device button{min-height:25px;padding:3px 7px}.chain-device .chain-select[aria-pressed=true]{border-color:var(--selection)}#chain-status{padding:6px 12px;margin:0;background:var(--chrome);line-height:1.4}.automation-target{display:flex;align-items:center;gap:8px;padding:6px 12px;background:var(--chrome)}.automation-target select{min-width:0;max-width:70%;border:1px solid #686868;border-radius:2px;background:#202020;padding:4px 6px}.automation-target button{min-height:25px}select:focus-visible{outline:2px solid var(--selection);outline-offset:2px}#lanes{grid-template-columns:repeat(2,minmax(0,1fr))}.lane{border-bottom:1px solid var(--line)}.lane-heading{flex-wrap:wrap}.lane-heading label{overflow-wrap:anywhere}.chain-section .section-heading,.device-section .section-heading{flex-wrap:wrap}#device-path{overflow-wrap:anywhere}main{scrollbar-color:#777 var(--chrome)}
+-#piano-roll{touch-action:none;outline-offset:-2px;cursor:crosshair}#piano-roll:focus{outline:2px solid #91b9ed}#piano-roll [data-part="body"]{cursor:move}#piano-roll [data-part="resize"]{cursor:ew-resize}.note-velocity{display:flex;align-items:center;gap:8px;margin:6px 0}.note-velocity input{flex:1;min-width:40px}.note-velocity output{min-width:70px;font-variant-numeric:tabular-nums}#piano-help{margin:6px 0;max-width:70ch}.schedule-bar{flex-wrap:wrap}
+-.clip-editors{height:340px}.piano-area{overflow:auto}#piano-roll{height:218px;flex:none}#piano-help,.note-velocity{padding:0 8px}#piano-help{font-size:12px;line-height:1.35}.note-velocity{font-size:12px}
+-.clip-bank{grid-column:1/-1;display:grid;grid-template-columns:repeat(4,minmax(100px,1fr)) auto;gap:6px;padding-top:6px;border-top:1px solid var(--line,#484848)}.clip-slot{display:grid;grid-template-columns:1fr auto;gap:4px;min-width:0}.clip-slot small{grid-column:1/-1;min-height:16px;color:var(--muted,#b4b4b0);white-space:normal}.clip-slot.selected .clip-select{border-color:#91b9ed;background:#303c4b}.clip-select{overflow:hidden;text-overflow:ellipsis;text-align:left}.track-stop{align-self:start}.clip-controls{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:12px 0}.clip-controls input[aria-label="Clip name"]{width:140px}.clip-controls label{display:flex;align-items:center;gap:5px}.clip-controls .muted{flex-basis:100%}#clip-bank-notice{white-space:normal;overflow-wrap:anywhere}#notice{white-space:normal;overflow-wrap:anywhere}@media(max-width:1000px){.clip-bank{grid-template-columns:repeat(2,minmax(100px,1fr))}.track-stop{grid-column:1/-1}}
+-.track.clips-track{grid-template-columns:minmax(110px,1fr) 100px 30px 30px 100px auto}.clip-runtime{grid-column:1/-1;color:var(--text,#eeeeec)}
+-#scene-help{margin:8px 12px 4px}#scene-controls{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:4px 12px 10px;border-bottom:1px solid var(--line)}.scene-row{display:flex;flex-direction:column;align-items:flex-start;gap:5px;min-width:0}.scene-row small,.scene-result{font-size:11px;line-height:1.4;overflow-wrap:anywhere}.scene-launch{color:var(--amber)}@media(max-width:1000px){#scene-controls{grid-template-columns:repeat(2,minmax(0,1fr))}}
+-
+-/* Shared workspace shell. Track and scene rows use the same fixed geometry. */
+-:root{--slot-height:60px;--track-head:44px;--track-width:174px;--detail-height:300px}
+-.workspace-tools{display:flex;align-items:center;gap:12px;min-height:36px;padding:4px 10px;background:var(--raised);border-bottom:1px solid var(--line)}
+-.workspace-tools nav{display:flex;gap:3px}.workspace-tools .muted{font-size:11px}.workspace-authority{margin-left:auto;color:var(--stereo);font-size:11px}
+-main#workspace-shell{display:flex;overflow:hidden;min-width:0}#workspace-browser{flex:0 0 180px;overflow:auto;padding:12px;background:var(--chrome);border-right:1px solid var(--line)}
+-#workspace-browser h2{font-size:12px;margin:0 0 13px}#workspace-browser p{line-height:1.5}#workspace-browser button{display:block;width:100%;margin-bottom:7px;text-align:left}#workspace-browser details{margin-top:24px;line-height:1.5}
+-.workspace-column{display:flex;flex-direction:column;flex:1;min-width:0;min-height:0}.workspace{flex:1;min-height:150px;overflow:auto;outline-offset:-2px}.session-board{display:flex;min-width:min-content;min-height:100%;align-items:stretch;background:#292929}
+-#scene-help{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+-#tracks{display:flex;flex:1;align-items:stretch;border:0;min-width:0}.track,.track.clips-track{display:flex;flex-direction:column;align-items:stretch;flex:1 0 var(--track-width);width:var(--track-width);min-width:var(--track-width);min-height:0;gap:0;padding:0;background:#303030;border:0;border-right:1px solid var(--line)}
+-.track.selected{background:#383b3e}.track-name{height:var(--track-head);min-height:var(--track-head);width:100%;padding:6px 9px;background:#2b2b2b;border:0;border-top:2px solid var(--track-color);border-bottom:1px solid var(--line);border-radius:0;color:var(--track-color);overflow:hidden}.track-name span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}.track.selected .track-name{background:#434343}.track-name small{font-size:10px}
+-.track .clip-bank{display:flex;flex-direction:column;gap:0;grid-column:auto;padding:0;border:0;width:100%}.clip-slot{height:var(--slot-height);min-height:var(--slot-height);display:grid;grid-template-columns:minmax(0,1fr) 49px;grid-template-rows:28px minmax(0,1fr);align-items:start;gap:2px;padding:5px;border:0;border-bottom:1px solid var(--line);border-radius:0;background:#282828;overflow:hidden}.clip-slot.selected{background:#414449;outline:1px solid var(--selection);outline-offset:-2px}.clip-select{min-width:0;overflow:hidden;text-overflow:ellipsis;text-align:left;color:var(--track-color);padding:3px 5px}.clip-launch{font-size:10px;padding:3px 4px;min-width:0;max-width:49px;white-space:normal;line-height:1.1;min-height:27px}.clip-slot small{grid-column:1/-1;min-width:0;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;font-size:10px;color:var(--muted)}
+-.track-stop{margin:6px 6px 0;min-height:25px}.clip-runtime{display:block;height:42px;min-height:42px;overflow:auto;font-size:10px;line-height:1.3;padding:5px 7px;color:var(--muted);overflow-wrap:anywhere}
+-.track-mixer{display:flex;flex-direction:column;gap:10px;flex:1;padding:12px 10px;min-height:130px;background:#2b2b2b;border-top:1px solid var(--line)}.track.selected .track-mixer{background:#333639}.track-gain{justify-content:space-between}.track-gain input{width:76px}.mixer-toggles{display:flex;gap:5px}.track .mixer-toggle{flex:1;width:auto}.track-meter{gap:5px}.track-meter .stereo-meter{width:100%;min-width:0}.track-meter output{font-size:10px}
+-.track-inspector{background:var(--chrome);padding:6px 8px;border-top:1px solid var(--line)}.track-inspector summary{font-size:11px}.track-actions{flex-direction:column;padding-top:6px}.track-actions button{text-align:left}
+-.track>.clip-preview{flex-shrink:0;margin:7px;height:calc(4 * var(--slot-height) + 58px)}
+-.scene-column{position:sticky;right:0;flex:0 0 148px;width:148px;background:var(--chrome);border-left:1px solid #777;z-index:2}.scene-column h2{height:var(--track-head);margin:0;padding:14px 9px 8px;font-size:12px;font-weight:500;border-bottom:1px solid var(--line)}#scene-controls{display:block;padding:0;border:0;background:none}.scene-row{height:var(--slot-height);min-height:var(--slot-height);display:flex;flex-direction:column;gap:3px;padding:5px;border-bottom:1px solid var(--line);overflow:hidden}.scene-launch{width:100%;text-align:left;padding:4px 6px;font-size:11px}.scene-row small{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.scene-result{font-size:10px;line-height:1.2;overflow:auto;overflow-wrap:anywhere;min-height:0}
+-.unavailable{padding:28px;max-width:68ch}.unavailable h1{font-size:17px;font-weight:500;margin:0 0 14px}.unavailable p{line-height:1.5}
+-.schedule-bar{flex-shrink:0;min-height:36px;gap:7px;padding:4px 9px}.schedule-bar .muted{display:none}#draft-status{margin-right:auto;min-width:0;font-size:11px}.schedule-bar button{min-height:25px;font-size:11px;padding:3px 6px}
+-#detail-panel{flex-shrink:0;min-width:0;border-top:1px solid var(--line)}#detail-resizer{height:7px;background:#262626;cursor:ns-resize;touch-action:none;position:relative}#detail-resizer:after{content:"";position:absolute;left:calc(50% - 22px);top:2px;width:44px;height:2px;background:#777}#detail-resizer:focus-visible{outline:2px solid var(--selection);outline-offset:-2px}.detail-tabs{height:33px;display:flex;gap:4px;align-items:center;padding:3px 9px;background:var(--chrome);border-bottom:1px solid var(--line)}.detail-tabs button{min-height:24px;padding:2px 12px}#toggle-detail{margin-left:auto}#detail-content{height:var(--detail-height);overflow:auto;background:#303030}#clip-detail,#device-detail{min-width:0}#clip-bank-notice:empty{display:none}#clip-bank-notice{padding:3px 10px;margin:0}.clip-controls{padding:6px 10px;gap:6px}.clip-editors{display:block;height:auto}.piano-area{height:218px;overflow:visible;border:0;position:relative}#piano-roll{height:180px}#piano-help{display:none}.note-velocity{height:34px;display:flex;align-items:center;gap:9px;margin:0;padding:4px 12px;background:#292929;font-size:11px}.note-velocity input{width:160px}.note-table{max-height:240px;overflow:auto}.note-table>summary,.automation-section>summary{padding:7px 12px;background:var(--chrome);border-top:1px solid var(--line)}.automation-section .section-heading{flex-wrap:wrap}.section-heading{gap:8px}.section-heading .muted{font-size:10px}.device-section #parameters{grid-template-columns:repeat(7,minmax(100px,1fr));overflow:auto}.chain-select{min-width:160px}.transport{padding:6px 10px;min-height:42px}.transport button{min-height:26px}
+-@media(max-width:1300px){#workspace-browser{flex-basis:156px;padding:10px}.workspace-tools .muted{display:none}.transport{gap:6px}.transport .master{margin-left:auto}.transport .master output{display:none}:root{--track-width:164px}.section-heading>.muted{max-width:55%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.scene-column{flex-basis:140px;width:140px}}
+-/* Compact default keeps slot launches and mixer controls in the working viewport. */
+-:root{--slot-height:44px;--track-head:40px;--detail-height:220px}
+-.clip-slot{grid-template-rows:24px 10px;gap:1px;padding:3px}.clip-select,.clip-launch{min-height:24px;padding:3px 4px}.clip-slot small{font-size:9px;line-height:10px}.scene-row{padding:3px;gap:1px}.scene-launch{min-height:24px}.scene-column h2{padding-top:12px}.clip-runtime{height:26px;min-height:26px;padding:3px 7px}.track-stop{margin-top:4px;min-height:25px}.track-mixer{display:grid;grid-template-columns:minmax(0,1fr) 52px;grid-template-rows:27px 27px;align-content:start;gap:7px 5px;padding:7px;min-height:76px}.track-gain{gap:4px;font-size:11px}.track-gain input{width:53px}.mixer-toggles{gap:3px}.track .mixer-toggle{padding:3px;min-height:25px}.track-meter{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:5px}.track-meter .stereo-meter{height:18px}.track-meter .stereo-meter i{height:4px}.track-inspector{padding:5px 8px}
+-/* Two readable, nonshrinking lines inside the unchanged 40px track header. */
+-.track-name{padding:4px 8px;gap:1px}.track-name>span{flex-shrink:0;line-height:14px;min-height:14px}.track-name>small{flex-shrink:0;line-height:12px;min-height:12px}
+diff --git a/apps/ultra/ui/alive.html b/apps/ultra/ui/alive.html
+index d3b00eb..b971743 100644
+--- a/apps/ultra/ui/alive.html
++++ b/apps/ultra/ui/alive.html
+@@ -8,18 +8,18 @@
+ <output id="position" aria-label="Transport position">0.000 beats</output><label class="seek">Seek <input id="seek" type="number" value="0" min="0" step="0.25" aria-label="Seek beat"></label><button id="seek-go" aria-label="Seek transport">Go</button>
+ <div class="master"><span>Master</span><div id="master-meter" class="stereo-meter" aria-label="Master stereo peak"><i></i><i></i></div><output id="master-peak" aria-label="Master peak">0 / 0</output></div>
+ </section>
+-<div class="workspace-tools"><button id="toggle-browser" aria-label="Toggle browser" aria-controls="workspace-browser">Browser</button><nav aria-label="Workspaces"><button id="view-session" aria-label="Session workspace">Session</button><button id="view-arrangement" aria-label="Arrangement workspace">Arrangement</button></nav><span class="muted">Tab changes view outside controls</span><span class="workspace-authority">Session playback</span></div>
++<div class="workspace-tools"><button id="toggle-browser" aria-label="Toggle browser" aria-controls="workspace-browser">Browser</button><nav aria-label="Workspaces" title="Tab changes view outside controls"><button id="view-session" aria-label="Session workspace">Session</button><button id="view-arrangement" aria-label="Arrangement workspace">Arrangement</button></nav><span class="workspace-authority">Session playback</span></div>
+ <main id="workspace-shell">
+-<aside id="workspace-browser" aria-label="Device and file browser"><h2>Browser</h2><p class="muted">Saved Ultra instruments and effects</p><button id="add-track" aria-label="Add instrument track">Add instrument...</button><button id="add-effect" aria-label="Add effect">Add effect...</button><p class="muted">Choose a saved .ultra device in the native file picker. Open a session from the file bar.</p><details><summary>Supported media</summary><p>MIDI clip banks and Ultra devices. Audio clips and Arrangement playback are unavailable in this version.</p></details></aside>
++<aside id="workspace-browser" aria-label="Device and file browser"><h2>Browser</h2><button id="add-track" aria-label="Add instrument track" title="Choose a saved .ultra instrument in the native file picker">Add instrument...</button><button id="add-effect" aria-label="Add effect" title="Choose a saved .ultra effect for the selected track">Add effect...</button><details><summary>Supported media</summary><p>MIDI clip banks and saved Ultra instruments and effects. Choose a .ultra device in the native file picker. Audio clips and Arrangement playback are unavailable in this version.</p></details></aside>
+ <div class="workspace-column">
+ <section id="session-workspace" class="workspace" aria-label="Session workspace" tabindex="-1"><div class="session-board">
+ <p id="scene-help" class="muted" hidden>Launches this prepared row. Empty slots stop their tracks.</p>
+-<section id="tracks" aria-label="Instrument tracks"></section><aside class="scene-column"><h2>Scenes</h2><section id="scene-controls" aria-label="Prepared scene rows" hidden></section></aside></div></section>
++<section id="tracks" aria-label="Instrument tracks"></section><aside class="scene-column"><h2>Scenes</h2><section id="scene-controls" aria-label="Prepared scene rows" hidden></section><details class="scene-history"><summary>Scene receipts</summary><div id="scene-receipts"></div></details></aside></div></section>
+ <section id="arrangement-workspace" class="workspace" aria-label="Arrangement workspace" tabindex="-1" hidden><div class="unavailable"><h1>Arrangement</h1><p id="arrangement-unavailable">Arrangement playback and timeline editing are unavailable in this version.</p><p class="muted">Session clip banks remain active. Switch to Session to launch or edit clips.</p></div></section>
+ <div id="schedule-controls" class="schedule-bar"><span id="draft-status">Prepared schedule</span><span class="muted">Prepare / Apply requires stopped transport.</span><button id="undo" aria-label="Undo pending edit">Undo pending edit</button><button id="redo" aria-label="Redo pending edit">Redo pending edit</button><button id="apply" class="primary" aria-label="Prepare / Apply">Prepare / Apply</button><button id="discard" aria-label="Discard edits">Discard edits</button></div>
+-<section id="detail-panel" aria-label="Selected track detail"><div id="detail-resizer" role="separator" tabindex="0" aria-label="Resize detail area" aria-orientation="horizontal" aria-valuemin="160" aria-valuemax="570"></div><header id="detail-tabs" class="detail-tabs"><button id="detail-clip" aria-label="Clip detail">Clip</button><button id="detail-devices" aria-label="Devices detail">Devices</button><button id="toggle-detail" aria-label="Toggle detail" aria-controls="detail-content">Detail</button></header><div id="detail-content"><div id="device-detail" hidden><section class="chain-section" aria-labelledby="chain-title"><header class="section-heading"><h2 id="chain-title">Selected track chain</h2><span class="muted">Instrument &rarr; effects &rarr; mixer. Selection does not start playback.</span></header><div id="chain"></div><p id="chain-status" class="muted"></p></section>
++<section id="detail-panel" aria-label="Selected track detail"><div id="detail-resizer" role="separator" tabindex="0" aria-label="Resize detail area" aria-orientation="horizontal" aria-valuemin="160" aria-valuemax="570"></div><header id="detail-tabs" class="detail-tabs"><button id="detail-clip" aria-label="Clip detail">Clip</button><button id="detail-devices" aria-label="Devices detail">Devices</button><span id="clip-bank-notice" class="muted"></span><button id="toggle-detail" aria-label="Toggle detail" aria-controls="detail-content">Detail</button></header><div id="detail-content"><div id="device-detail" hidden><section class="chain-section" aria-labelledby="chain-title"><header class="section-heading"><h2 id="chain-title">Selected track chain</h2><span class="muted">Instrument &rarr; effects &rarr; mixer. Selection does not start playback.</span></header><div id="chain"></div><p id="chain-status" class="muted"></p></section>
+ <section class="device-section" aria-labelledby="device-title"><header class="section-heading"><h2 id="device-title">Device</h2><span id="device-path" class="muted"></span><span class="muted">Saved base / prepared effective</span><button id="edit-device" aria-label="Edit selected device in Ultra">Edit in Ultra</button></header><div id="parameters"></div></section>
+-</div><div id="clip-detail"><p id="clip-bank-notice" class="muted"></p><div id="clip-controls" class="clip-controls" aria-label="Selected clip controls"></div>
++</div><div id="clip-detail"><div id="clip-controls" class="clip-controls" aria-label="Selected clip controls"></div>
+ <section class="clip-section" aria-labelledby="clip-title"><header class="section-heading"><h1 id="clip-title">Clip</h1><span class="muted">Clip length is independent. Global loop wrap resets active phases.</span><button id="add-note" aria-label="Add note">Add note</button></header><div class="clip-editors"><div class="piano-area"><svg id="piano-roll" aria-label="Selected clip piano roll" aria-describedby="piano-help" role="group" tabindex="0"></svg><p id="piano-help" class="muted">1/16 grid. Double-click to add; drag to move or resize the right edge. Arrows move; Shift + Left/Right resizes. Delete removes; Escape cancels. Apply begins a new pending-edit history.</p><label class="note-velocity">Selected velocity <input id="note-velocity" type="range" min="1" max="127" step="1" aria-label="Selected note velocity"><output id="velocity-value"></output></label></div><details class="note-table"><summary>Note inspector</summary><table><thead><tr><th>Beat</th><th>Pitch</th><th>Duration</th><th>Velocity</th><th><span class="sr-only">Remove</span></th></tr></thead><tbody id="notes"></tbody></table></details></div></section>
+ <details class="automation-section" aria-label="Selected clip automation"><summary>Automation inspector</summary><header class="section-heading"><h2>Automation</h2><span class="muted">Step / hold. Prepared lanes own effective values; draft lanes apply after Prepare / Apply.</span></header><div class="automation-target"><label for="automation-target">Target</label><select id="automation-target" aria-label="Automation target"></select><button id="add-lane" aria-label="Add automation lane">Add lane</button></div><div id="lanes"></div></details></div></div></section></div>
+ </main>
+diff --git a/apps/ultra/ui/alive.mjs b/apps/ultra/ui/alive.mjs
+index 09997de..74e9c4e 100644
+--- a/apps/ultra/ui/alive.mjs
++++ b/apps/ultra/ui/alive.mjs
+@@ -22,7 +22,14 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
+     input.addEventListener('change',guard(()=>{if(input.value===''||!Number.isFinite(Number(input.value)))throw Error(`${label} requires a number.`);return change(Number(input.value));}));return input;
+   }
+   function svgElement(tag,attrs={}){const e=doc.createElementNS('http://www.w3.org/2000/svg',tag);for(const[key,value]of Object.entries(attrs))e.setAttribute(key,String(value));return e;}
+-  function meter(element,left,right){const bars=element.children;bars[0].style.width=`${Math.min(1,left)*100}%`;bars[1].style.width=`${Math.min(1,right)*100}%`;}
++  function icon(kind){
++    const paths={play:'M5 3 14 9 5 15Z',stop:'M4 4H14V14H4Z',browser:'M2 3H16V15H2ZM6 3V15M9 6H13M9 9H13',session:'M3 3H7V15H3ZM11 3H15V15H11Z',arrangement:'M3 4H15V7H3ZM3 11H11V14H3Z',clip:'M3 4H15V14H3ZM6 7H9M10 11H13',devices:'M2 5H7V13H2ZM11 5H16V13H11ZM7 9H11',detail:'M3 5 9 11 15 5M3 15H15',instrument:'M2 4H16V14H2ZM5 4V10M8 4V10M11 4V10M14 4V10',effect:'M3 5H15M3 13H15M6 2V8M12 10V16',file:'M4 2H11L15 6V16H4ZM10 2V7H15',save:'M3 2H13L16 5V16H3ZM6 2V7H12M6 11H13V16',edit:'M3 12 11 4 14 7 6 15H3ZM11 4 13 2 16 5 14 7',duplicate:'M6 6H15V15H6ZM3 11V3H11',remove:'M4 5H14M7 5V2H11V5M5 5 6 16H12L13 5',undo:'M7 3 3 7 7 11M3 7H11Q16 7 15 14',redo:'M11 3 15 7 11 11M15 7H7Q2 7 3 14'};
++    const svg=svgElement('svg',{viewBox:'0 0 18 18','aria-hidden':'true',focusable:'false'});svg.append(svgElement('path',{d:paths[kind]??paths.file}));return svg;
++  }
++  function decorate(button,kind,label,{only=false}={}){button.replaceChildren(icon(kind),make('span',only?'sr-only':'',label));button.title=button.getAttribute('aria-label')??label;}
++  for(const[id,kind]of Object.entries({'toggle-browser':'browser','view-session':'session','view-arrangement':'arrangement','detail-clip':'clip','detail-devices':'devices','toggle-detail':'detail','add-track':'instrument','add-effect':'effect','new':'file','open':'file','save':'save','save-as':'save','edit-device':'edit','undo':'undo','redo':'redo'}))decorate($(id),kind,$(id).textContent);
++  for(const[id,kind]of [['start','play'],['stop','stop']])decorate($(id),kind,id==='start'?'Start':'Stop',{only:true});
++  function meter(element,left,right){const bars=element.children,axis=element.classList.contains('vertical-meter')?'height':'width';bars[0].style[axis]=`${Math.min(1,left)*100}%`;bars[1].style[axis]=`${Math.min(1,right)*100}%`;}
+   function peak(left,right){return`${left.toFixed(3)} / ${right.toFixed(3)}`;}
+   function cancelGesture(){
+     if(!gesture&&!preview)return;
+@@ -119,10 +126,12 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
+     const enabled=snapshot.mode==='clipsV3';$('scene-controls').hidden=$('scene-help').hidden=!enabled;
+     if(!enabled)return;
+     if(!sceneViews.length)for(let slot=0;slot<4;slot++){
+-      const row=make('div','scene-row'),launch=make('button','scene-launch',`Launch scene ${slot+1}`),prepared=make('small','muted'),result=make('output','scene-result');
++      const row=make('div','scene-row'),launch=make('button','scene-launch'),prepared=make('small','muted'),result=make('output','scene-result');
++      decorate(launch,'play',String(slot+1));
+       launch.setAttribute('aria-label',`Launch scene ${slot+1}`);launch.setAttribute('aria-describedby','scene-help');launch.addEventListener('click',guard(()=>launchScene(slot)));
+       prepared.setAttribute('aria-label',`Prepared scene ${slot+1}`);result.setAttribute('aria-label',`Scene ${slot+1} request`);
+-      row.append(launch,prepared,result);$('scene-controls').append(row);sceneViews.push({slot,launch,prepared,result});
++      const receipt=make('details','scene-receipt'),summary=make('summary','',`Scene ${slot+1}`);summary.setAttribute('aria-label',`Scene ${slot+1} receipt details`);receipt.append(summary,prepared,result);$('scene-receipts').append(receipt);
++      row.append(launch);$('scene-controls').append(row);sceneViews.push({slot,launch,prepared,result});
+     }
+     for(const v of sceneViews){
+       v.launch.disabled=!snapshot.capabilities?.atomicTrackActions;
+@@ -154,49 +163,61 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
+     notice(`Transport ${requestText(request,snapshot)}`,request.status==='rejected');
+   }
+   function clipAction(action){return enqueue(async()=>{const result=await command('alive_clip_action',{action});await refresh();if(result){const observed=observedRequest(result);notice(requestText(observed,model.snapshot()),observed.status==='rejected');}});}
++  const creatingSlots=new Set();
+   function buildSlots(bank,track,index){
+     for(let slot=0;slot<4;slot++){
+-      const c=track.slots[slot],cell=make('div','clip-slot'),choose=make('button','clip-select',c?.name??`Empty ${slot+1}`),launch=make('button','clip-launch','Launch'),status=make('small');
++      const c=track.slots[slot],cell=make('div','clip-slot'),choose=make('button','clip-select',c?.name??''),launch=make('button','clip-launch'),status=make('small','sr-only');
+       choose.setAttribute('aria-label',`Select ${track.name} slot ${slot+1}`);choose.addEventListener('click',()=>{cancelGesture();selected=index;selectedSlots.set(track.id,slot);selectionToken++;selectedNote=null;musicKey=clipControlsKey='';render();});
++      choose.title=c?.name??`Empty slot ${slot+1}. Double-click to create a clip.`;
++      choose.addEventListener('dblclick',guard(async()=>{
++        const current=model.document().tracks[selected],key=`${track.id}:${slot}`;
++        if(current?.id!==track.id||slotOf(current)!==slot||current.slots[slot]||creatingSlots.has(key))return;
++        creatingSlots.add(key);try{await clipEdit({kind:'create',trackId:track.id,slot});}finally{creatingSlots.delete(key);}
++      }));
++      decorate(launch,'play','Launch',{only:true});
+       launch.setAttribute('aria-label',`Launch ${track.name} ${c?.name??`slot ${slot+1}`}`);launch.disabled=!c;launch.addEventListener('click',guard(()=>clipAction({kind:'launch',trackId:track.id,clipId:c.id})));
+-      cell.dataset.slot=String(slot);cell.append(choose,launch,status);bank.append(cell);slotViews.push({trackId:track.id,slot,clipId:c?.id,cell,choose,launch,status});
++      cell.dataset.slot=String(slot);cell.append(launch,choose,status);bank.append(cell);slotViews.push({trackId:track.id,slot,clipId:c?.id,cell,choose,launch,status});
+     }
+-    const stop=make('button','track-stop','Stop track');stop.setAttribute('aria-label',`Stop ${track.name} track`);stop.addEventListener('click',guard(()=>clipAction({kind:'stop',trackId:track.id})));bank.append(stop);
+-    const state=make('output','clip-runtime');state.setAttribute('aria-label',`${track.name} clip runtime`);bank.append(state);slotViews.push({trackId:track.id,state});
++    const stop=make('button','track-stop');stop.setAttribute('aria-label',`Stop ${track.name} track`);decorate(stop,'stop','Stop track');stop.addEventListener('click',guard(()=>clipAction({kind:'stop',trackId:track.id})));bank.append(stop);
++    const receipt=make('details','runtime-receipt'),summary=make('summary','','Runtime'),state=make('output','clip-runtime');state.setAttribute('aria-label',`${track.name} clip runtime`);summary.setAttribute('aria-label',`${track.name} runtime details`);receipt.append(summary,state);bank.append(receipt);slotViews.push({trackId:track.id,state,summary});
+   }
+   function renderClipControls(){
+     const snapshot=model.snapshot(),document=model.document(),track=document.tracks[selected],clip=selectedClip(track),enabled=document.format==='alive-session-v3',container=$('clip-controls');
+     renderScenes(snapshot);
+-    $('clip-bank-notice').textContent=snapshot.notice??'';
++    $('clip-bank-notice').textContent=snapshot.notice??'';$('clip-bank-notice').title=snapshot.notice??'';
+     $('add-note').disabled=enabled&&!clip;$('add-lane').disabled=enabled&&!clip;
+     for(const v of slotViews){
+-      if(v.state){const r=snapshot.runtime?.tracks.find(t=>t.trackId===v.trackId),name=snapshot.preparedClips?.find(c=>c.clipId===r?.activeClipId)?.name,requests=snapshot.runtime?.requests.filter(q=>q.trackId===v.trackId),last=requests?.at(-1);v.state.textContent=`${r?.activeClipId?`${snapshot.state.playing?'Playing':'Cued'} ${name}`:'Stopped'}${last?` / ${requestText(last,snapshot)}`:''}${r?.pendingAction?` / pending ${r.pendingAction} at frame ${r.pendingFrame}`:''}`;continue;}
++      if(v.state){const r=snapshot.runtime?.tracks.find(t=>t.trackId===v.trackId),name=snapshot.preparedClips?.find(c=>c.clipId===r?.activeClipId)?.name,requests=snapshot.runtime?.requests.filter(q=>q.trackId===v.trackId),last=requests?.at(-1),deleted=r?.activeClipId&&!document.tracks.find(t=>t.id===v.trackId)?.slots.some(c=>c?.id===r.activeClipId);v.state.textContent=`${r?.activeClipId?`${snapshot.state.playing?'Playing':'Cued'} ${name}${deleted?' (deleted in draft)':''}`:'Stopped'}${last?` / ${requestText(last,snapshot)}`:''}${r?.pendingAction?` / pending ${r.pendingAction} at frame ${r.pendingFrame}`:''}`;v.summary.textContent=last?.status==='rejected'?'Request rejected':r?.pendingAction?'Pending action':r?.activeClipId?`${snapshot.state.playing?'Playing':'Cued'} ${name}`:'Stopped';v.summary.title=v.state.textContent;continue;}
+       const t=document.tracks.find(t=>t.id===v.trackId),c=t?.slots[v.slot],runtime=snapshot.runtime?.tracks.find(t=>t.trackId===v.trackId),prepared=snapshot.preparedClips?.find(c=>c.clipId===v.clipId),active=runtime?.activeClipId===v.clipId&&!!v.clipId,pending=runtime?.pendingClipId===v.clipId&&!!v.clipId;
+-      v.choose.setAttribute('aria-pressed',String(t?.id===track.id&&v.slot===slotOf(track)));v.cell.classList.toggle('selected',t?.id===track.id&&v.slot===slotOf(track));v.launch.disabled=!prepared;v.launch.textContent=prepared&&model.pending()?'Launch prepared':'Launch';v.launch.title=prepared?(model.pending()?'Launch prepared version':'Launch at the next native bar boundary'):'Apply while stopped to launch';
++      v.choose.setAttribute('aria-pressed',String(t?.id===track.id&&v.slot===slotOf(track)));v.cell.classList.toggle('selected',t?.id===track.id&&v.slot===slotOf(track));v.launch.disabled=!prepared;v.launch.title=prepared?(model.pending()?'Launch prepared version':'Launch at the next native bar boundary'):'Apply while stopped to launch';
++      for(const[state,on]of Object.entries({occupied:!!c,empty:!c,prepared:!!prepared,'draft-only':!!c&&!prepared,playing:active&&!!snapshot.state.playing,cued:active&&!snapshot.state.playing,pending,'saved-default':!!c&&t.defaultClipId===c.id}))v.cell.classList.toggle(state,on);
+       const activeName=snapshot.preparedClips?.find(c=>c.clipId===runtime?.activeClipId)?.name;
+       v.status.textContent=[c&&t.defaultClipId===c.id?'Saved default':'',active?`${snapshot.state.playing?'Playing':'Cued'} ${prepared?.name??''}`:'',pending?'Pending switch':'',v.slot===0&&runtime?.pendingAction==='stop'?'Pending track Stop':'',v.slot===0&&runtime?.activeClipId&&!t.slots.some(c=>c?.id===runtime.activeClipId)?`${snapshot.state.playing?'Playing':'Cued'} prepared ${activeName} (deleted in draft)`:''].filter(Boolean).join(' / ');
++      v.choose.title=[c?.name??`Empty slot ${v.slot+1}. Double-click to create a clip.`,v.status.textContent].filter(Boolean).join(' / ');
+     }
+     const key=JSON.stringify([enabled,track.id,slotOf(track),clip?.id,clip?.name,clip?.lengthBeats,track.defaultClipId,track.slots?.map(c=>c?.id),snapshot.generation]);if(key===clipControlsKey)return;clipControlsKey=key;container.replaceChildren();
+     const button=(text,fn)=>{const b=make('button','',text);b.setAttribute('aria-label',text);b.addEventListener('click',guard(fn));container.append(b);return b;};
+     if(!enabled){const b=button('Enable clip bank',()=>enqueue(async()=>{applySnapshot(await command('alive_enable_clips'));trackKey=musicKey=clipControlsKey='';render();}));b.disabled=!!snapshot.state.playing||model.pending();return;}
+     const trackId=track.id,slot=slotOf(track);
+-    if(!clip){button('Create clip',()=>clipEdit({kind:'create',trackId,slot}));container.append(make('span','muted',`Slot ${slot+1} is empty. Create a clip to edit notes.`));return;}
++    if(!clip){button('Create clip',()=>clipEdit({kind:'create',trackId,slot}));container.append(make('span','muted',`Empty slot ${slot+1}`));return;}
+     const clipId=clip.id,name=make('input');name.value=clip.name;name.maxLength=64;name.setAttribute('aria-label','Clip name');name.addEventListener('change',guard(()=>clipEdit({kind:'rename',trackId,clipId,name:name.value})));container.append(name);
+     const label=make('label','','Clip length '),length=numeric('Selected clip length',clip.lengthBeats,{min:1/64,max:256},lengthBeats=>clipEdit({kind:'length',trackId,clipId,lengthBeats}));label.append(length);container.append(label);
+     const destination=make('select');destination.setAttribute('aria-label','Duplicate destination');track.slots.forEach((c,i)=>{if(!c){const option=make('option','',`Slot ${i+1}`);option.value=String(i);destination.append(option);}});destination.value=destination.children[0]?.value??'';container.append(destination);
+     button('Duplicate clip',()=>clipEdit({kind:'duplicate',trackId,clipId,destinationSlot:Number(destination.value)})).disabled=!destination.children.length;
+-    button('Delete clip',()=>clipEdit({kind:'delete',trackId,clipId}));button('Set Saved Default',()=>clipEdit({kind:'default',trackId,clipId}));button('Clear Saved Default',()=>clipEdit({kind:'default',trackId,clipId:null}));container.append(make('span','muted','Used after Apply and when reopened. Selection does not launch.'));
++    button('Delete clip',()=>clipEdit({kind:'delete',trackId,clipId}));button('Set Saved Default',()=>clipEdit({kind:'default',trackId,clipId})).title='Used after Apply and when reopened. Selection does not launch.';button('Clear Saved Default',()=>clipEdit({kind:'default',trackId,clipId:null}));
+   }
+   function buildTracks(document){
+     $('tracks').replaceChildren();trackViews.length=0;slotViews=[];
+     document.tracks.forEach((track,index)=>{
+-      const row=make('article','track'),name=make('button','track-name'),title=make('span','',track.name),detail=make('small','',`${track.notes.length} notes / stereo`),clip=make('button','clip-preview'),svg=svgElement('svg');
++      const row=make('article','track'),name=make('button','track-name'),title=make('span','',`${index+1}  ${track.name}`),detail=make('small','',`${track.notes.length} notes / stereo`),clip=make('button','clip-preview'),svg=svgElement('svg');
+       name.append(title,detail);name.setAttribute('aria-label',`Select ${track.name} track`);clip.setAttribute('aria-label',`${track.name} clip`);clip.append(svg);
+       const choose=()=>{if(selected!==index){cancelGesture();selectedNote=null;selectionToken++;selected=index;selectedInstance=null;}musicKey=parameterKey='';render();};name.addEventListener('click',choose);clip.addEventListener('click',choose);
+       const gainLabel=make('label','track-gain','Gain'),gain=numeric(`${track.name} gain`,track.gain,{min:0,max:2,step:.05},value=>mix(index,{gain:value}));gainLabel.append(gain);
++      const fader=make('input','gain-fader');fader.type='range';fader.min='0';fader.max='2';fader.step='any';fader.value=String(track.gain);fader.setAttribute('aria-label',`${track.name} gain fader`);fader.setAttribute('aria-orientation','vertical');fader.title='Linear gain, 0 to 2';
++      let faderEditing=false;fader.addEventListener('input',()=>{faderEditing=true;});fader.addEventListener('change',guard(()=>{faderEditing=false;return mix(index,{gain:Number(fader.value)});}));fader.addEventListener('pointercancel',()=>{faderEditing=false;render();});
+       const mute=make('button','mixer-toggle','M'),solo=make('button','mixer-toggle','S');mute.setAttribute('aria-label',`${track.name} mute`);solo.setAttribute('aria-label',`${track.name} solo`);
+       mute.addEventListener('click',guard(()=>mix(index,{mute:!model.document().tracks[index].mute})));solo.addEventListener('click',guard(()=>mix(index,{solo:!model.document().tracks[index].solo})));
+-      const meters=make('div','track-meter'),bar=make('div','stereo-meter'),readout=make('output');bar.append(make('i'),make('i'));bar.setAttribute('aria-label',`${track.name} stereo peak`);readout.setAttribute('aria-label',`${track.name} peak`);meters.append(bar,readout);
++      const meters=make('div','track-meter'),bar=make('div','stereo-meter vertical-meter'),readout=make('output');bar.append(make('i'),make('i'));bar.setAttribute('aria-label',`${track.name} stereo peak`);readout.setAttribute('aria-label',`${track.name} peak`);meters.append(bar,readout);
+       const actions=make('div','track-actions');for(const[action,label]of [['editor','Editor'],['load','Replace'],['remove','Remove track']]){
+         const button=make('button','',label);button.setAttribute('aria-label',action==='editor'?`Open ${track.name} editor`:action==='remove'?`Remove ${track.name} track`:`${label} ${track.name} device`);
+         button.addEventListener('click',guard(()=>enqueue(async()=>{
+@@ -206,8 +227,8 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
+       }
+       row.dataset.trackId=track.id;row.style.setProperty('--track-color',['#efbb62','#88c5c7','#91b9ed','#d8a0a7','#b4c98b','#d3b48a','#a5b9ce','#c5b6cf'][index%8]);
+       const mixer=make('div','track-mixer'),toggles=make('div','mixer-toggles'),inspector=make('details','track-inspector'),summary=make('summary','','Device / track');
+-      toggles.append(mute,solo);mixer.append(gainLabel,toggles,meters);inspector.append(summary,actions);
+-      row.append(name);if(track.slots){row.classList.add('clips-track');clip.hidden=true;const bank=make('div','clip-bank');row.append(bank);buildSlots(bank,track,index);}row.append(clip,mixer,inspector);$('tracks').append(row);trackViews.push({row,detail,svg,gain,mute,solo,bar,readout,actions});
++      const strip=make('div','mixer-strip');strip.append(fader,meters);toggles.append(mute,solo);mixer.append(gainLabel,strip,toggles);inspector.append(summary,actions);
++      row.append(name);if(track.slots){row.classList.add('clips-track');clip.hidden=true;const bank=make('div','clip-bank');row.append(bank);buildSlots(bank,track,index);}row.append(clip,mixer,inspector);$('tracks').append(row);trackViews.push({row,detail,svg,gain,fader,faderEditing:()=>faderEditing,mute,solo,bar,readout,actions});
+     });
+   }
+   function chainDevices(track=model.document().tracks[selected]){return [track.device,...track.effects];}
+@@ -368,6 +389,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
+     document.tracks.forEach((track,index)=>{
+       const view=trackViews[index],runtime=snapshot.state.tracks[index];view.row.classList.toggle('selected',selected===index);view.row.setAttribute('aria-label',`${track.name} track`);view.detail.textContent=`${track.notes.length} notes / stereo`;
+       if(doc.activeElement!==view.gain&&!workspace.preserves(view.gain))view.gain.value=track.gain;view.mute.setAttribute('aria-pressed',String(track.mute));view.solo.setAttribute('aria-pressed',String(track.solo));
++      if(!view.faderEditing()&&!workspace.preserves(view.fader))view.fader.value=track.gain;
+       const key=JSON.stringify([track.notes,document.lengthBeats]);if(view.paintKey!==key){view.paintKey=key;paintPiano(view.svg,track.notes,document.lengthBeats);}
+       meter(view.bar,runtime.peakLeft,runtime.peakRight);view.readout.textContent=peak(runtime.peakLeft,runtime.peakRight);
+       for(const button of [...view.actions.children].slice(1)){button.disabled=!!snapshot.state.playing||model.pending();button.title=model.pending()?'Apply or discard pending schedule edits before changing devices.':snapshot.state.playing?'Stop transport before replacing a device or removing a track.':button.textContent==='Remove track'?'Remove this whole track, its instrument, effects and automation. Keep at least one track.':'Replace this instrument from a saved Ultra source; its automation lanes are removed.';}

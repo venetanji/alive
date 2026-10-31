@@ -1,0 +1,36 @@
+{
+  "samples": 109,
+  "scope": "Observed discovered process identities, includes test interaction, setup and stopped intervals; not complete-tree CPU or a playback-only utilization claim.",
+  "roles": {
+    "app": {
+      "cpu_percent_median": 104.30590329618303,
+      "cpu_percent_max": 143.9696936605794,
+      "pss_kib_observed_min": 453185,
+      "pss_kib_observed_max": 615699,
+      "threads_observed_min": 98,
+      "threads_observed_max": 135,
+      "samples_with_coverage_gap": 8,
+      "unavailable_field_observations": 2
+    },
+    "sampler_capture": {
+      "cpu_percent_median": 27.958642824028523,
+      "cpu_percent_max": 61.246439955293255,
+      "pss_kib_observed_min": 33813,
+      "pss_kib_observed_max": 80937,
+      "threads_observed_min": 10,
+      "threads_observed_max": 18,
+      "samples_with_coverage_gap": 7,
+      "unavailable_field_observations": 0
+    },
+    "server": {
+      "cpu_percent_median": 0.0,
+      "cpu_percent_max": 2.0238705882042276,
+      "pss_kib_observed_min": 2859,
+      "pss_kib_observed_max": 5590,
+      "threads_observed_min": 2,
+      "threads_observed_max": 2,
+      "samples_with_coverage_gap": 1,
+      "unavailable_field_observations": 0
+    }
+  }
+}

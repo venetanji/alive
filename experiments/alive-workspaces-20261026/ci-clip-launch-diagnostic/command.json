@@ -1,0 +1,12 @@
+{
+  "command": "env -u ALIVE_SYSROOT PATH=/usr/bin:/bin ULTRA_TEST_ALIVE=1 ULTRA_TEST_SCRIPT=/tmp/alive-workspaces-clip-launch-diagnostic/diagnostic_driver.py PYTHONUNBUFFERED=1 timeout --signal=TERM --kill-after=10s 480s bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-workspaces-clip-launch-diagnostic/original-observed",
+  "cwd": "/home/venetanji/.codex/worktrees/edd5/alive",
+  "source_pin": "729dc9a555a389130304fe52b081bae351f814da",
+  "start_utc": "2026-10-26T05:30:49.544053+00:00",
+  "observed_head_at_start": "729dc9a555a389130304fe52b081bae351f814da",
+  "driver_sha256": "07e34d8c033c8a6f8c5c59f8b4ae2fdefb004d9d1f8b5205df8000f5e914d042",
+  "exit": 1,
+  "end_utc": "2026-10-26T05:32:43.240828+00:00",
+  "observed_head_at_end": "1194faff81170fe57d7283fac04488233610cfcd",
+  "source_binary_manifests_equal": true
+}

@@ -1,0 +1,37 @@
+{
+  "binary": "/tmp/alive-m1-final-staged-6t8eq1q0/usr/bin/alive",
+  "template": "/tmp/alive-m1-final-staged-6t8eq1q0/usr/lib/Alive/alive-session/alive/examples/two-instruments.alive",
+  "startup_used_packaged_title": true,
+  "new_reloaded_packaged_title": true,
+  "software_audio": {
+    "frames": 144384,
+    "seconds": 3.008,
+    "peak": 0.2225944548845291,
+    "one_second_peaks": [
+      0.19943729043006897,
+      0.1600058525800705,
+      0.2225944548845291,
+      0.10146215558052063
+    ],
+    "unequal_stereo_samples_after_setup": 0,
+    "sha256": "7102ad61a44e65835d8f17c98e48de55d452843bbcab4b4caafe71948c2c09c7",
+    "path": "packaged-default.f32",
+    "physical_audio": false
+  },
+  "diagnostics": {
+    "Audio backend": "PipeWire",
+    "Audio device": "default_output",
+    "Audio sample rate": "48000",
+    "Audio buffer frames": "512",
+    "Audio callbacks": "459",
+    "Audio stream errors": "0",
+    "Audio failed": "false",
+    "Audio status": "Audio output is running.",
+    "Transport playing": "true",
+    "Absolute frame": "281600",
+    "Rejected commands": "0",
+    "Native generation": "10",
+    "Track 1 active voices": "4",
+    "Track 2 active voices": "3"
+  }
+}

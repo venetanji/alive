@@ -1,0 +1,16 @@
+{
+  "scope": "private software-only CPAL PipeWire loopback, no physical outputs",
+  "rate_hz": 48000,
+  "channels": 2,
+  "frames": 147968,
+  "peaks": [
+    0.13779526948928833,
+    0.13779526948928833
+  ],
+  "all_finite": true,
+  "capture_exit_status": 1,
+  "capture_known_sigint_exit": true,
+  "capture_note": "Recording stopped with SIGINT after the passing Rust test; frame count varies. Status 1 is allowed only for the documented PipeWire 1.0.5, 1.6.9 or 1.6.10 recording shutdown, with empty stderr and valid PCM; raw status is retained.",
+  "note_score": "both channels A4 / MIDI 69 velocity 70; on at +2s, off +2.6s; score wall times approximate, not latency measurements",
+  "observed": "probe.log records requested and observed callback size; successful stop/start and saved configuration reload"
+}

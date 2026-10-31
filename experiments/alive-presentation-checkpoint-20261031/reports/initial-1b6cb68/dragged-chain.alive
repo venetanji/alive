@@ -1,0 +1,111 @@
+{
+  "format": "alive-session-v6",
+  "score": {
+    "format": "alive-session-v4",
+    "title": "Untitled",
+    "tempo": 120.0,
+    "lengthBeats": 16.0,
+    "loopEnabled": true,
+    "loopStartBeats": 0.0,
+    "loopEndBeats": 16.0,
+    "tracks": [
+      {
+        "id": "track-1",
+        "name": "MIDI 1",
+        "color": "#c77b61",
+        "chain": {
+          "kind": "midi",
+          "instrument": {
+            "instanceId": "instance-1d62bf4af8463ac5d2e2c0288300e95e",
+            "sourceSha256": "96342f492f1bd80798524bb88eb46e3d48f4b155593cd465697bbf65a0e37521",
+            "bypassed": false,
+            "path": "../../../../.local/share/alive/builds/1b6cb68/lib/Alive/alive-session/ultra/examples/subtractive.ultra",
+            "id": "org.alive.subtractive",
+            "version": 2,
+            "parameters": {
+              "attack": 10.0,
+              "cutoff": 2400.0,
+              "decay": 150.0,
+              "level": 90.0,
+              "release": 300.0,
+              "resonance": 0.7,
+              "sustain": 0.65
+            }
+          }
+        },
+        "effects": [
+          {
+            "instanceId": "instance-7fcf56664a6fcd2e1db12f6b4c857b77",
+            "sourceSha256": "fd1251b25df6f908aa4d17a52c37ca4de81a35ea82cf53e24ea75d439abd1089",
+            "bypassed": false,
+            "path": "../../../../.local/share/alive/builds/1b6cb68/lib/Alive/alive-session/ultra/examples/stereo-lowpass.ultra",
+            "id": "org.alive.stereo-lowpass",
+            "version": 2,
+            "parameters": {
+              "cutoff": 2400.0,
+              "resonance": 0.7
+            }
+          },
+          {
+            "instanceId": "instance-50e8155dddba6d973b3677212a611560",
+            "sourceSha256": "59c2092edc2d507cc1b5705f19ee698a74c9466fd76bddab146427f5954c7dde",
+            "bypassed": false,
+            "path": "../../../../.local/share/alive/builds/1b6cb68/lib/Alive/alive-session/ultra/examples/utility.ultra",
+            "id": "org.alive.utility",
+            "version": 2,
+            "parameters": {
+              "gain": 1.0
+            }
+          }
+        ],
+        "slots": [
+          {
+            "id": "slot-38b3c03da64115e12a5298dd5e8ed5e9",
+            "name": "Clip 1",
+            "sourceId": "source-26732e12a85d356b76000f464161e225",
+            "region": {
+              "start": 0.0,
+              "end": 4.0,
+              "loopStart": 0.0,
+              "loopEnd": 4.0,
+              "loopEnabled": true
+            }
+          },
+          null,
+          null,
+          null
+        ],
+        "gain": 0.7,
+        "mute": false,
+        "solo": false
+      }
+    ],
+    "sources": [
+      {
+        "kind": "midi",
+        "id": "source-26732e12a85d356b76000f464161e225",
+        "trackId": "track-1",
+        "name": "Clip 1",
+        "lengthBeats": 4.0,
+        "notes": [
+          {
+            "id": "note-92b2ff218774f6eb8b9130cce96dcc00",
+            "beat": 0.0,
+            "duration": 4.0,
+            "pitch": 60,
+            "velocity": 100
+          }
+        ],
+        "automation": []
+      }
+    ],
+    "placements": []
+  },
+  "master": {
+    "gain": 1.0
+  },
+  "launch": {
+    "globalQuantization": "bar1",
+    "clipQuantization": []
+  }
+}

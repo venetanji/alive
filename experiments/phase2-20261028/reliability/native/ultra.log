@@ -1,0 +1,235 @@
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Activating service name='org.freedesktop.portal.Desktop' requested by ':1.0' (uid=1000 pid=544263 comm="/home/venetanji/.codex/worktrees/edd5/alive/apps/u")
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Activating service name='org.freedesktop.impl.portal.PermissionStore' requested by ':1.1' (uid=1000 pid=544271 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.PermissionStore'
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Activating service name='org.freedesktop.portal.Documents' requested by ':1.1' (uid=1000 pid=544271 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Successfully activated service 'org.freedesktop.portal.Documents'
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=544271 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Activating service name='org.a11y.Bus' requested by ':1.4' (uid=1000 pid=544293 comm="/usr/lib/xdg-desktop-portal-gtk")
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Successfully activated service 'org.a11y.Bus'
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=544303 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=544303 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.gtk'
+
+** (xdg-desktop-portal-gtk:544293): WARNING **: 21:07:46.764: AT-SPI: Could not obtain desktop path or name
+
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=544303 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+
+** (xdg-desktop-portal-gtk:544293): WARNING **: 21:07:46.766: atk-bridge: GetRegisteredEvents returned message with unknown signature
+
+** (xdg-desktop-portal-gtk:544293): WARNING **: 21:07:46.766: atk-bridge: get_device_events_reply: unknown signature
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=544271 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=544271 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=544271 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=544271 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Successfully activated service 'org.freedesktop.portal.Desktop'
+PASS secondary file delivery during initialization preserves main and opens its own window
+WIRING-NODES {"imported": [{"id": 1, "type": "add", "x": 80, "y": 80, "params": {"rhs": 0, "numericmode": 0}}, {"id": 2, "type": "number", "x": 300, "y": 240, "params": {"value": 0}}], "after_drag": [{"id": 1, "params": {"rhs": 0, "numericmode": 0}, "type": "add", "x": 80, "y": 80}, {"id": 2, "params": {"value": 0}, "type": "number", "x": 300, "y": 240}]}
+SLIDER-HELP-COUNTS {"nodes": 21, "comments": 5, "executable": 16, "edges": 10}
+{
+  "status": "passed",
+  "scope": "built Tauri canvas + real Rust CPAL device output",
+  "audio_environment": "private software-only CPAL PipeWire at 48 kHz / 512 frames",
+  "keyboard_create_edit_undo_lock": true,
+  "json_roundtrip": true,
+  "control_face_and_numeric_drag": true,
+  "numeric_ui": {
+    "incoming_float": -3,
+    "direct_entry": -4,
+    "physical_tab_number_and_flonum": true,
+    "incoming_tab_selector_silent": true
+  },
+  "message_ui": {
+    "cold_displays": [
+      "6.25",
+      "5 pear 2.25",
+      "bang"
+    ],
+    "hot_set_display": "fresh",
+    "bare_set_clears_and_suppresses": true,
+    "substituted_output": "edited 8 9",
+    "literal_template_display": true,
+    "runtime_keeps_authored_text": true,
+    "physical_inline_same_text_restore": true,
+    "physical_inline_edit_and_undo": true,
+    "preserved_runtime_revision": 12,
+    "unrelated_int_recalled": 77
+  },
+  "print_popups": {
+    "default_off_logged_without_popup": true,
+    "typed_popup_and_console": "list 3.5 <native> 7",
+    "independent_prints": true,
+    "blank_input_keeps_popups": true,
+    "dsp_off_expiry": true,
+    "inspector_disable_and_reenable_without_resurrection": true,
+    "ordinary_popup_selector": "popup 0",
+    "receipt_keeps_console_closed": true,
+    "locked_double_click_opens_console": true,
+    "preserved_runtime_revision": 13
+  },
+  "installed_max_help": {
+    "tested": true,
+    "source": "/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resources/help/max/slider.maxhelp",
+    "partial": true,
+    "selected_tab": "basic",
+    "imported_nodes": 21,
+    "imported_comments": 5,
+    "imported_executable_nodes": 16,
+    "imported_edges": 10,
+    "slider_id": 6,
+    "number_id": 11,
+    "native_downstream_values": [
+      95.0,
+      25.0
+    ],
+    "whole_help_executed": false
+  },
+  "native_print_console_with_audio_off": true,
+  "native_print_console_with_audio_on": true,
+  "message_path_left_peak": 0.006200010888278484,
+  "untriggered_right_peak": 0,
+  "note_off_tail_peak": 0,
+  "capture_frames": 96000,
+  "saved_audio_config": {
+    "host": "default",
+    "device": "default",
+    "sample_rate": 48000,
+    "buffer_frames": 512
+  },
+  "limits": [
+    "No hardware MIDI or latency qualification",
+    "No Max DSP equivalence claim"
+  ]
+}
+PASS native hosted Basic, local references, independent overlays, source reveal and preserved live state
+PASS native file forwarding and cross-window typed messages
+PASS native menu creates exactly one patch window
+PASS native Save to an existing path
+PASS native unsaved-close Save, Discard, and Cancel
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Activating service name='ca.desrt.dconf' requested by ':1.113' (uid=1000 pid=544841 comm="/home/venetanji/.codex/worktrees/edd5/alive/apps/u")
+dbus-daemon[544210]: [session uid=1000 pid=544210 pidfd=5] Successfully activated service 'ca.desrt.dconf'
+PASS native Open picker with a path containing spaces
+PASS help opens an independent native patch window
+PASS all ten native list objects with audio off
+PASS all ten native list objects with audio on
+PASS all twelve MSP objects, summed inputs, shared output, named Receive resume and global DSP restart
+PASS separate native child views, shared edits, owner-wide undo/redo and whole-tree child Save
+PASS native child audio continuity, source navigation, detach/reopen, deletion closure and owner close/cancel
+{
+  "status": "passed",
+  "scope": "actual Tauri/WebKit windows + native shared runtime and CPAL",
+  "argv_open_and_single_instance": true,
+  "canonical_path_deduplication": true,
+  "native_menu_new_is_local": true,
+  "native_save_existing_path": true,
+  "native_close_save_discard_cancel": true,
+  "native_open_picker": true,
+  "in_app_help_new_window": true,
+  "typed_send_receive_audio_off": true,
+  "typed_list_objects_audio_off_and_on": [
+    "iter",
+    "prepend",
+    "append",
+    "zl_reg",
+    "zl_join",
+    "zl_len",
+    "zl_iter",
+    "zl_slice",
+    "zl_rev",
+    "zl_rot"
+  ],
+  "two_document_stereo_peaks": [
+    0.006200012285262346,
+    0.006200012285262346
+  ],
+  "scoped_stop_stereo_peaks": [
+    0.0,
+    0.006200012285262346
+  ],
+  "msp_twelve_kinds": true,
+  "msp_stereo_peaks": [
+    0.03999999910593033,
+    0.125
+  ],
+  "msp_scoped_stop_stereo_peaks": [
+    0.0,
+    0.02500000037252903
+  ],
+  "msp_named_receive_resume_stereo_peaks": [
+    0.03999999910593033,
+    0.125
+  ],
+  "msp_global_restart_stereo_peaks": [
+    0.03999999910593033,
+    0.125
+  ],
+  "audio_environment": "private software-only CPAL PipeWire at 48 kHz / 512 frames",
+  "embedded_hierarchy": {
+    "control_console_audio_off_and_on": [
+      17,
+      19
+    ],
+    "initial_native_revision": "Document 0; active 0; native r1.",
+    "preserved_runtime_revision": 1,
+    "separate_native_child_windows": true,
+    "shared_child_edits_and_owner_history": true,
+    "message_box_non_consuming_root_and_child_display": "5 pear 2.25",
+    "message_box_reopen_retains_live_display_and_saved_template": true,
+    "before_navigation_stereo_peaks": [
+      0.0625,
+      0.05624999850988388
+    ],
+    "control_child_stereo_peaks": [
+      0.0625,
+      0.05624999850988388
+    ],
+    "signal_child_stereo_peaks": [
+      0.0625,
+      0.05624999850988388
+    ],
+    "after_child_close_stereo_peaks": [
+      0.0625,
+      0.05624999850988388
+    ],
+    "after_child_reopen_stereo_peaks": [
+      0.0625,
+      0.05624999850988388
+    ],
+    "after_owner_close_stereo_peaks": [
+      0.0,
+      0.02500000037252903
+    ],
+    "save_from_child_and_reopen_whole_tree": true,
+    "child_deletion_closes_obsolete_view": true,
+    "owner_close_cancel_preserves_all_views": true,
+    "owner_close_disposes_all_views_once": true,
+    "hidden_descendant_console_source_opens_child_without_reset": true
+  },
+  "help_shell": {
+    "status": "passed",
+    "local_reference_available": true,
+    "basic_stays_visible_and_selected": true,
+    "independent_native_basic_window": true,
+    "console_source_reveals_locally": true,
+    "preserved_runtime_revision": 1,
+    "preserved_numeric_value": 77,
+    "preserved_message_display": "fresh",
+    "saved_message_template": "17",
+    "canonical_export_and_save_omit_reference_and_local_state": true,
+    "whole_help_roots_qualified": 0
+  }
+}

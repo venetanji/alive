@@ -1,0 +1,61 @@
+HTTP request lines omitted; test results retained.
+(node:829800) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+Running 44 tests using 1 worker
+
+(node:829927) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:829927) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(node:829927) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 alive-chain.spec.mjs:393:1 › fresh MIDI tracks expose the library immediately and accept a browser instrument on the dropped-on track (720ms)
+  ✓   2 alive-chain.spec.mjs:439:1 › effects drop onto another track then insert before its first effect in serial order (636ms)
+  ✓   3 alive-chain.spec.mjs:545:1 › Arrangement track drops use the actual destination and report native refusals without changing the chain (575ms)
+  ✓   4 alive-chain.spec.mjs:1238:5 › two fixed track columns leave blank stage and expose piano roll at 1440x900 (375ms)
+  ✓   5 alive-chain.spec.mjs:1238:5 › two fixed track columns leave blank stage and expose piano roll at 1280x800 (383ms)
+  ✓   6 alive-chain.spec.mjs:1276:5 › expanded inspector preserves shared mixer baseline in two tracks at 1440x900 (1.0s)
+  ✓   7 alive-chain.spec.mjs:1276:5 › expanded inspector preserves shared mixer baseline in eight tracks at 1440x900 (1.1s)
+  ✓   8 alive-chain.spec.mjs:1276:5 › expanded inspector preserves shared mixer baseline in two tracks at 1280x800 (1.2s)
+  ✓   9 alive-chain.spec.mjs:1276:5 › expanded inspector preserves shared mixer baseline in eight tracks at 1280x800 (1.0s)
+  ✓  10 alive-chain.spec.mjs:1333:1 › Add note queued behind track removal never edits the surviving track (521ms)
+  ✓  11 alive-chain.spec.mjs:1524:1 › piano navigation and live resize preserve the score and recompute editing geometry (714ms)
+  ✓  12 alive-chain.spec.mjs:1800:1 › view buttons preserve focused uncommitted values and native Tab navigation (624ms)
+  ✓  13 alive-chain.spec.mjs:1845:40 › detail navigation preserves an unfinished device field until one deliberate commit (11.4s)
+  ✓  14 alive-chain.spec.mjs:1845:40 › detail navigation preserves an unfinished note field until one deliberate commit (11.0s)
+  ✓  15 alive-chain.spec.mjs:1961:1 › track name and metadata line boxes fit the fixed Session header without clipping (299ms)
+  ✓  16 alive-chain.spec.mjs:1984:38 › navigation and polling preserve unfinished gain without changing runtime authority (1.1s)
+  ✓  17 alive-chain.spec.mjs:1984:38 › navigation and polling preserve unfinished note without changing runtime authority (1.2s)
+  ✓  18 alive-chain.spec.mjs:2311:5 › Arrangement eight-track scrolling, long names and expanded detail stay bounded at 1440 (643ms)
+  ✓  19 alive-chain.spec.mjs:2311:5 › Arrangement eight-track scrolling, long names and expanded detail stay bounded at 1280 (603ms)
+  ✓  20 alive-chain.spec.mjs:2439:38 › Master and compact workspace geometry 2 tracks 1440 (2.0s)
+  ✓  21 alive-chain.spec.mjs:2439:38 › Master and compact workspace geometry 8 tracks 1440 (2.2s)
+  ✓  22 alive-chain.spec.mjs:2439:38 › Master and compact workspace geometry 2 tracks 1280 (2.0s)
+  ✓  23 alive-chain.spec.mjs:2439:38 › Master and compact workspace geometry 8 tracks 1280 (2.2s)
+  ✓  24 alive-chain.spec.mjs:2781:1 › Arrangement Master aligns with right track controls and source fields have visible context (560ms)
+  ✓  25 alive-chain.spec.mjs:2903:1 › pointer-derived track gain remains readable in both mixer and Arrangement detail (510ms)
+  ✓  26 alive-chain.spec.mjs:3002:5 › device rack exposes independent controls and internal horizontal scrolling at 1440 (715ms)
+  ✓  27 alive-chain.spec.mjs:3002:5 › device rack exposes independent controls and internal horizontal scrolling at 800 (651ms)
+  ✓  28 alive-chain.spec.mjs:3049:1 › rack drop insertion follows horizontal card midpoint even at its top edge (782ms)
+  ✓  29 alive-chain.spec.mjs:3074:1 › rack retains another track draft and opens the editor owned by an unselected card (855ms)
+  ✓  30 alive-chain.spec.mjs:3108:111 › rack draft survives Session slot selection and commits once after returning (960ms)
+  ✓  31 alive-chain.spec.mjs:3108:111 › rack draft survives Arrangement track selection and commits once after returning (1.2s)
+  ✓  32 alive-chain.spec.mjs:3108:111 › rack draft survives Arrangement placement selection and commits once after returning (1.2s)
+  ✓  33 alive-chain.spec.mjs:3108:111 › rack draft survives Arrangement lane selection and commits once after returning (1.2s)
+  ✓  34 alive-chain.spec.mjs:3165:1 › detached rack draft blocks Save until its cached field is deliberately committed (748ms)
+  ✓  35 alive-chain.spec.mjs:3194:1 › removing a track releases its detached cached rack and parked draft (511ms)
+  ✓  36 alive-clip-regions.spec.mjs:382:5 › MIDI and audio range controls preserve source content at 800x600 (2.0s)
+  ✓  37 alive-clip-regions.spec.mjs:382:5 › MIDI and audio range controls preserve source content at 1280x800 (2.1s)
+  ✓  38 alive-clip-regions.spec.mjs:382:5 › MIDI and audio range controls preserve source content at 1440x1000 (2.1s)
+  ✓  39 alive-clip-regions.spec.mjs:478:1 › an empty audio track has an audio import surface and no piano or MIDI editing controls (509ms)
+  ✓  40 alive-clip-regions.spec.mjs:528:1 › waveform zoom and navigation change only the view while marker drags edit the audio loop (1.4s)
+  ✓  41 alive-clip-regions.spec.mjs:584:1 › Re-Pitch stretches the shared sample with numeric and drag controls; Escape cancels preview (1.2s)
+  ✓  42 alive-clip-regions.spec.mjs:649:1 › source BPM accepts repeated Enter commits without requiring a refocus (709ms)
+  ✓  43 alive-clip-regions.spec.mjs:668:1 › an audio length draft cannot target a clip removed by an accepted refresh (549ms)
+  ✓  44 alive-clip-regions.spec.mjs:695:1 › rolling clip and typed tracks are immediate and keep the inserted track selected (816ms)
+
+  44 passed (1.1m)
+
+To open last HTML report run:
+
+  npx playwright show-report

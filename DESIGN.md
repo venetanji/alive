@@ -329,6 +329,48 @@ Basic dismisses the reference and selects its object locally. Native child
 windows keep their bound scope and independent overlays. Saves include helper
 roles and geometry, with reference text and navigation state kept out of patches.
 
+## Alive Workspaces
+
+Alive uses the same compact charcoal and Liberation Sans language, with a
+separate Session and Arrangement workspace. Its browser defaults to 220px and
+resizes from 180 to 420px. Session columns default to 128px and can be adjusted
+from 112 to 180px. One-line 28px headers and four 24px slots align with the four
+scene actions in the fixed-right Master column. Empty workspace remains empty;
+it does not imply unsupported tracks, sends or clips.
+
+Master is an output selection, not a musical track. Both views use the same
+native gain owner and publication: the Session column and Arrangement bottom
+lane expose gain, dB, separate interval peaks, digital overload and explicit
+reset. Pending intent, admitted saved target and applied observation remain
+separate; unavailable and stale observations are named rather than synthesized.
+The Arrangement track controls sit to the right of the musical lanes, and source
+and placement edits live in selected Clip detail. Browser and detail changes,
+selection and Tab navigation stay local and preserve parked input and bindings.
+
+The document bar is 25px and the musical toolbar is 40px. Tempo and fixed 4/4
+sit on the left; position uses bars, beats and sixteenths beside Start, Stop and
+Loop. Transport length, precise seek and track width live in Transport and View
+options. Audio diagnostics scroll above the anchored footer. Native windows
+support 800x600; compact windows retain regional scrolling, and workspace labels
+recede into their original icons. Resizing retains the requested detail height
+when space returns. The dense control padding follows the desktop reference;
+functional shell and browser labels use at least 11px.
+
+The two-pane browser searches bundled Ultra instruments/effects and real project
+MIDI clips. Selection and keyboard navigation do not load or launch anything;
+Add Track, Add Effect and Open Clip are explicit actions. Original native file
+pickers remain available. Project devices use native resolved paths while saved
+references retain their original project-relative spelling.
+
+The piano editor has a 48px keyboard gutter, 22px musical ruler and 12px default
+pitch rows. Time and pitch pan/zoom are independent; Fit frames the source's
+notes. Wheel scrolls pitch, Shift scrolls time, Ctrl/Cmd zooms time and Alt zooms
+pitch. A separate velocity lane keeps the selected chord marker in front. Note
+gestures freeze geometry and commit one owner edit on release; Escape cancels.
+Viewport changes never edit the score. Unfinished fields survive presentation
+navigation, clear on accepted session generation changes, and must be accepted
+before file actions proceed.
+
 ## Do's and Don'ts
 
 ### Do:

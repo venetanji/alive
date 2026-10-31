@@ -1,0 +1,56 @@
+{
+  "utc": "2026-10-29T04:50:47.552016+00:00",
+  "harness_source": "03d79622dafc7626878085a98a143f5fb8f1ab8e",
+  "application_source": "64fcacd2c454393e89526043fa57c6b2c8ec942f",
+  "source_hashes_match_review": true,
+  "artifacts": {
+    "alive": {
+      "sha256": "741cc7ede7f76257f9caec8a8052d42aaa2a484e7a60ea662ce26e5a8851d1a1",
+      "bytes": 14521336,
+      "device": 53,
+      "inode": 8395135
+    },
+    "ultra": {
+      "sha256": "e793a74b6c2db82198f70de7c8a1c85fd72d5620969d2b5d42525739b48f2097",
+      "bytes": 18435280,
+      "device": 53,
+      "inode": 8395063
+    },
+    "libultra_native.so": {
+      "sha256": "9fd076115b2a914fa2d156dab37b0a1d99676d40634e23f78ba2c50c110062c4",
+      "bytes": 12990840,
+      "device": 53,
+      "inode": 8395136
+    }
+  },
+  "fresh_scoped_test_result": {
+    "count": 66,
+    "exit": 0,
+    "seconds": 1.413,
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "test_desktop_checkpoint",
+      "test_desktop_sustained_integration",
+      "test_sustained_measurement",
+      "test_stream_measurement.MeasurementTests.test_complex_comm_non100hz_pid_reuse_and_exit_are_not_zero_cpu",
+      "test_stream_measurement.MeasurementTests.test_metadata_and_epoch_coverage_are_bounded",
+      "test_stream_measurement.MeasurementTests.test_group_union_limits_preserve_separate_cpu_reports",
+      "test_stream_measurement.ResourceFixtureTests"
+    ],
+    "cwd": "apps/ultra/tests"
+  },
+  "cloud_manifest_audit": {
+    "path": "experiments/phase2-20261028/master/cloud-eb4f704/manifest.json",
+    "sha256": "694a95d666c0a5dfada16fa479367bc7cc03e1adcb48be127b73e94948ff71bc",
+    "stored_entries_verified": 19,
+    "decoded_logs_verified": 7,
+    "zip_members_verified": 1,
+    "direct_terminal_api_verified": true
+  },
+  "native_pilot_started": false,
+  "pause_requested_by_user": true,
+  "owned_runtime_processes_observed": 0,
+  "system_pipewire_left_running": true
+}

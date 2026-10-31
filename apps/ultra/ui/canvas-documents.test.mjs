@@ -1,7 +1,32 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
 
-const patch=()=>({version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]});
+test('save flush waits for the local barrier and suppresses a late acknowledgement after release',async()=>{
+  const {createDocumentSession}=await import('./canvas-documents.mjs');const calls=[];let release;
+  const session=createDocumentSession({getPatch:()=>({}),adopt:()=>{},beforeClose:()=>new Promise(resolve=>release=resolve),invoke:async(name,args)=>{calls.push({name,args});}});
+  const request={owner:'main',token:9},flushing=session.flushBeforeSave(request);
+  assert.deepEqual(calls,[]);assert.deepEqual(session.releaseSave(request),{requestLabel:'save/main',token:9,purpose:'save'});
+  release();await flushing;assert.deepEqual(calls,[]);
+  await session.flushBeforeSave(request);assert.deepEqual(calls,[]);
+});
+test('invalid save flush reports an error to the owner preflight',async()=>{
+  const {createDocumentSession}=await import('./canvas-documents.mjs');const calls=[];
+  const session=createDocumentSession({getPatch:()=>({}),adopt:()=>{},beforeClose:()=>{throw Error('invalid draft');},invoke:async(name,args)=>{calls.push({name,args});}});
+  await session.flushBeforeSave({owner:'main',token:12});
+  assert.deepEqual(calls,[{name:'document_save_flushed',args:{owner:'main',token:12,error:'invalid draft'}}]);
+});
+test('a lost release event reconciles and unfreezes the live save barrier',async()=>{
+  const {createDocumentSession}=await import('./canvas-documents.mjs');const timers=[],released=[],calls=[];let active=true;
+  const session=createDocumentSession({getPatch:()=>({}),adopt:()=>{},beforeClose:async()=>{},
+    setTimer:fn=>{timers.push(fn);return timers.length;},clearTimer:()=>{},onSaveReleased:barrier=>released.push(barrier),
+    invoke:async(name,args)=>{calls.push({name,args});return name==='document_save_barrier_active'?active:true;}});
+  await session.flushBeforeSave({owner:'main',token:11});await timers.shift()();assert.deepEqual(released,[]);
+  active=false;await timers.shift()();assert.deepEqual(released,[{requestLabel:'save/main',token:11,purpose:'save'}]);
+  assert.equal(calls.filter(call=>call.name==='document_save_flushed').length,1);
+  session.dispose();
+});
+
+const patch=()=>({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[],edges:[]});
 async function setup(responses={}){
   const {createDocumentSession}=await import('./canvas-documents.mjs');
   const calls=[],titles=[],notices=[];let current=patch();
@@ -121,7 +146,7 @@ test('a cancelled close does not acknowledge its obsolete flush',async()=>{
 test('a real shared-controller admission rejection sends a failed native close acknowledgement',async()=>{
   const {createSharedCanvasController}=await import('./canvas-shared.mjs');
   const {createDocumentSession}=await import('./canvas-documents.mjs');const calls=[];
-  const descriptor={shared:true,id:0,label:'main',ownerLabel:'main',title:'Owner.ultra',kind:'patch',patch:{version:2,profile:'ultra-patcher-v2',nodes:[{id:1,type:'number',x:20,y:20,params:{value:0}}],edges:[]},viewPath:[],authoringRevision:0,runtimeRevision:1};
+  const descriptor={shared:true,id:0,label:'main',ownerLabel:'main',title:'Owner.ultra',kind:'patch',patch:{version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[{id:1,type:'number',x:20,y:20,params:{value:0}}],edges:[]},viewPath:[],authoringRevision:0,runtimeRevision:1};
   const invoke=async(name,args)=>{calls.push({name,args});if(name==='document_current')return descriptor;if(name==='document_commit')throw Error('Native canvas parameter was not admitted');return true;};
   const controller=createSharedCanvasController({invoke}),session=createDocumentSession({invoke,getPatch:()=>controller.getState().document,
     adopt:(_,value)=>controller.adoptDescriptor(value),beforeSave:()=>controller.flush(),beforeClose:request=>controller.flushBeforeClose(request)});

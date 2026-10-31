@@ -18,6 +18,9 @@ pub(super) struct CloseState {
 }
 
 impl Registry {
+    pub(super) fn ready_owner_views(&self, label: &str) -> Result<Vec<String>, String> {
+        Ok(self.owner_views(label)?.into_iter().filter(|view| self.close.ready.contains(view)).collect())
+    }
     pub fn mark_ready(&mut self, label: &str) -> Result<Vec<CloseNotice>, String> {
         let owner = self.get_open(label)?.label.clone();
         if !self.close.ready.insert(label.into()) { return Ok(vec![]); }
@@ -35,6 +38,7 @@ impl Registry {
     pub fn begin_close(&mut self, label: &str) -> Result<CloseGate, String> {
         let owner = self.get_open(label)?.label.clone();
         if self.close.completed.remove(label) {
+            self.require_settled_parameter_gestures(label)?;
             self.close.dispatch.remove(label);
             if let Some(request) = self.close.requests.remove(label) { self.close.sessions.insert(label.into(), request); }
             return Ok(CloseGate::Proceed);
@@ -42,7 +46,7 @@ impl Registry {
         if self.close.requests.contains_key(label) || self.close.sessions.contains_key(label) { return Ok(CloseGate::Waiting); }
         let views: Vec<_> = if owner == label { self.owner_views(label)? } else { vec![label.into()] }
             .into_iter().filter(|view| self.close.ready.contains(view)).collect();
-        if views.is_empty() { return Ok(CloseGate::Proceed); }
+        if views.is_empty() { self.require_settled_parameter_gestures(label)?;return Ok(CloseGate::Proceed); }
         let token = self.close.serial.checked_add(1).ok_or("Close request identity exhausted")?;
         self.close.serial = token;
         self.close.requests.insert(label.into(), Request { token, owner, awaiting: views.iter().cloned().collect(), members: views.iter().cloned().collect() });

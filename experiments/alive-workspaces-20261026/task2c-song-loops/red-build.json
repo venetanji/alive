@@ -1,0 +1,10 @@
+{
+  "command": [
+    "bash",
+    "-c",
+    "c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE -DULTRA_ALIVE_SESSION_V4_PROVISIONAL -c apps/ultra/src-tauri/native/backend.cpp -o /tmp/alive-workspaces-task2c-song-loops/base-backend.o && c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE -DULTRA_ALIVE_SESSION_V4_PROVISIONAL -I/tmp/alive-workspaces-task2c-song-loops apps/ultra/tests/alive_session_v4_authority_test.cpp /tmp/alive-workspaces-task2c-song-loops/base-backend.o apps/ultra/build/core/libultra_core_bundle.a -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock -ldl -lrt -o /tmp/alive-workspaces-task2c-song-loops/red-test"
+  ],
+  "cwd": "/home/venetanji/.codex/worktrees/edd5/alive",
+  "exit": 0,
+  "seconds": 26.987851157995465
+}

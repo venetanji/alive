@@ -1,0 +1,23 @@
+FF
+======================================================================
+FAIL: test_epoch_quality_and_attempt_limits_remain_fatal (test_stream_measurement.MeasurementTests.test_epoch_quality_and_attempt_limits_remain_fatal) [provisional final]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/test_stream_measurement.py", line 92, in test_epoch_quality_and_attempt_limits_remain_fatal
+    with self.assertRaisesRegex(RuntimeError, 'epoch_not_final'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: RuntimeError not raised
+
+======================================================================
+FAIL: test_epoch_quality_and_attempt_limits_remain_fatal (test_stream_measurement.MeasurementTests.test_epoch_quality_and_attempt_limits_remain_fatal) [counter overflow]
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/test_stream_measurement.py", line 95, in test_epoch_quality_and_attempt_limits_remain_fatal
+    with self.assertRaisesRegex(RuntimeError, 'epoch_counter_overflow'):
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: RuntimeError not raised
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=2)

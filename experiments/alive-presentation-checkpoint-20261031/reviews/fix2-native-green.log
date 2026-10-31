@@ -1,0 +1,30 @@
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/src-tauri)
+warning: unused import: `SaveSnapshot`
+  --> src/documents.rs:16:28
+   |
+16 | pub use save::{SaveNotice, SaveSnapshot};
+   |                            ^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: suspicious definition of the runtime `write` symbol used by the standard library
+   --> src/audio.rs:420:13
+    |
+420 |             fn write(fd: i32, buf: *const u8, len: usize) -> isize;
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: expected `unsafe extern "C" fn(i32, *const std::ffi::c_void, usize) -> isize` (for the current target)
+            found    `unsafe extern "C" fn(i32, *const u8, usize) -> isize`
+    = help: either fix the signature or remove any attributes like `#[unsafe(no_mangle)]`, `#[unsafe(export_name = "write")]`, or `#[link_name = "write"]`
+    = help: allow this lint if the signature is compatible
+    = note: `#[warn(suspicious_runtime_symbol_definitions)]` on by default
+
+warning: `ultra` (lib test) generated 2 warnings (run `cargo fix --lib -p ultra --tests` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.20s
+     Running unittests src/lib.rs (/tmp/alive-live-regions-rust-target/debug/deps/ultra_desktop-6951be0eecdd253e)
+
+running 1 test
+test document_windows::commands::parameter_gestures::tests::linked_view_cold_hint_cannot_overwrite_an_active_parameter_gesture ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 300 filtered out; finished in 0.01s
+

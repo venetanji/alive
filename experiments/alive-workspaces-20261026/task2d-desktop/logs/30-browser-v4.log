@@ -1,0 +1,127 @@
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 03:44:01] "GET /canvas.html HTTP/1.1" 200 -
+
+Running 2 tests using 1 worker
+
+(node:2065085) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2065085) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 03:44:04] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 03:44:04] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 03:44:04] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 03:44:04] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 03:44:04] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 03:44:04] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 03:44:04] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 03:44:04] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+  ✘  1 alive-chain.spec.mjs:262:35 › v4 navigation and polling preserve unfinished gain without changing runtime authority (3.0s)
+(node:2065302) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2065302) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 03:44:06] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 03:44:06] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 03:44:06] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 03:44:06] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 03:44:06] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 03:44:06] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 03:44:06] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 03:44:06] "GET /alive-piano.mjs HTTP/1.1" 200 -
+  ✘  2 alive-chain.spec.mjs:262:35 › v4 navigation and polling preserve unfinished note without changing runtime authority (1.5s)
+
+
+  1) alive-chain.spec.mjs:262:35 › v4 navigation and polling preserve unfinished gain without changing runtime authority 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -  1[39m
+    [31m+ Received  + 12[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   Object {[39m
+    [31m+     "args": Object {[39m
+    [31m+       "gain": 0.83,[39m
+    [31m+       "generation": 1,[39m
+    [31m+       "mute": false,[39m
+    [31m+       "solo": false,[39m
+    [31m+       "track": 0,[39m
+    [31m+     },[39m
+    [31m+     "name": "alive_mixer",[39m
+    [31m+   },[39m
+    [31m+ ][39m
+
+      272 |   await page.locator('#session-workspace').focus();await page.keyboard.press('Tab');await expect(page.locator('#arrangement-workspace')).toBeVisible();await page.keyboard.press('Tab');await expect(page.locator('#session-workspace')).toBeVisible();
+      273 |   expect(await page.evaluate(()=>window.sessionSnapshot.runtime.tracks.every(t=>t.authority==='arrangement'&&t.activeSourceId===null))).toBe(true);
+    > 274 |   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+          |                                                                                     ^
+      275 | });
+      276 |
+        at /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/ci/alive-chain.spec.mjs:274:85
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/alive-chain-v4-navigation--0a1eb--changing-runtime-authority/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/alive-chain-v4-navigation--0a1eb--changing-runtime-authority/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/alive-chain-v4-navigation--0a1eb--changing-runtime-authority/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/alive-chain-v4-navigation--0a1eb--changing-runtime-authority/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) alive-chain.spec.mjs:262:35 › v4 navigation and polling preserve unfinished note without changing runtime authority 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  -  1[39m
+    [31m+ Received  + 18[39m
+
+    [32m- Array [][39m
+    [31m+ Array [[39m
+    [31m+   Object {[39m
+    [31m+     "args": Object {[39m
+    [31m+       "draftRevision": 0,[39m
+    [31m+       "generation": 1,[39m
+    [31m+       "operation": Object {[39m
+    [31m+         "beat": 0,[39m
+    [31m+         "duration": 1.75,[39m
+    [31m+         "kind": "noteUpdate",[39m
+    [31m+         "noteId": "note-track-1-0",[39m
+    [31m+         "pitch": 73,[39m
+    [31m+         "sourceId": "source-track-1",[39m
+    [31m+         "velocity": 90,[39m
+    [31m+       },[39m
+    [31m+     },[39m
+    [31m+     "name": "alive_workspace_edit",[39m
+    [31m+   },[39m
+    [31m+ ][39m
+
+      272 |   await page.locator('#session-workspace').focus();await page.keyboard.press('Tab');await expect(page.locator('#arrangement-workspace')).toBeVisible();await page.keyboard.press('Tab');await expect(page.locator('#session-workspace')).toBeVisible();
+      273 |   expect(await page.evaluate(()=>window.sessionSnapshot.runtime.tracks.every(t=>t.authority==='arrangement'&&t.activeSourceId===null))).toBe(true);
+    > 274 |   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+          |                                                                                     ^
+      275 | });
+      276 |
+        at /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/ci/alive-chain.spec.mjs:274:85
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/alive-chain-v4-navigation--53fe4--changing-runtime-authority/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/alive-chain-v4-navigation--53fe4--changing-runtime-authority/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/alive-chain-v4-navigation--53fe4--changing-runtime-authority/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/alive-chain-v4-navigation--53fe4--changing-runtime-authority/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    alive-chain.spec.mjs:262:35 › v4 navigation and polling preserve unfinished gain without changing runtime authority 
+    alive-chain.spec.mjs:262:35 › v4 navigation and polling preserve unfinished note without changing runtime authority 

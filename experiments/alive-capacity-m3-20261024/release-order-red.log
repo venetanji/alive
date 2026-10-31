@@ -1,0 +1,20 @@
+..............F...
+======================================================================
+FAIL: test_release_stages_current_libraries_before_cargo_tests (test_release.ReleaseTests.test_release_stages_current_libraries_before_cargo_tests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/scripts/test_release.py", line 138, in test_release_stages_current_libraries_before_cargo_tests
+    release.main()
+    ~~~~~~~~~~~~^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/scripts/release.py", line 335, in main
+    run('cargo', 'test', '--manifest-path', APP/'src-tauri/Cargo.toml', '--release', '--locked', '--target', args.target, env=env)
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/scripts/test_release.py", line 128, in run
+    self.assertEqual(path.read_bytes(), built.read_bytes())
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: b'stale native ABI' != b'current native ABI'
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.084s
+
+FAILED (failures=1)

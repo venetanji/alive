@@ -1,0 +1,17 @@
+{
+  "native_test_exit_code": 0,
+  "tested_ui_source": "97533b805c9831766a244163076e16a297f32c5d",
+  "model_source_at_execution": "b34615c; model not integrated or exercised by this binary",
+  "command": "env ULTRA_TEST_ALIVE=1 ULTRA_TEST_SCRIPT=/tmp/alive-ci-f0fb9e5-trace.py PYTHONUNBUFFERED=1 timeout --signal=TERM --kill-after=10s 480s bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-ci-f0fb9e5-local",
+  "trace_driver_changes": "only faulthandler diagnostics and run-line timestamps, no UI/assertion substitution",
+  "traced_run_body_seconds": 187.5396768669998,
+  "backend": "private Xvfb + software PipeWire/CPAL",
+  "rate_hz": 48000,
+  "observed_buffer_frames": 512,
+  "binary_hashes": {
+    "apps/ultra/src-tauri/target/release/alive": "bac50bb1af01c2d15d985d0cf345f21a1efcd6a0be450f0b77870df4356c3260",
+    "apps/ultra/src-tauri/target/release/ultra": "51788adda242c24e22838737cd6525e0fa0af09223e817d7846449795107add3",
+    "apps/ultra/src-tauri/target/release/libultra_native.so": "4c54e3e0a2e7bf2007a56620d1006658e97b86d5f8828e08f13e9ffd3a1e9e70"
+  },
+  "ci_timeout_root_cause": "not established; local result does not qualify failed CI"
+}

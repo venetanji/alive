@@ -1,0 +1,58 @@
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Activating service name='org.freedesktop.portal.Desktop' requested by ':1.0' (uid=1000 pid=2184744 comm="/home/venetanji/.codex/worktrees/edd5/alive/apps/u")
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Activating service name='org.freedesktop.impl.portal.PermissionStore' requested by ':1.1' (uid=1000 pid=2184751 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.PermissionStore'
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Activating service name='org.freedesktop.portal.Documents' requested by ':1.1' (uid=1000 pid=2184751 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Successfully activated service 'org.freedesktop.portal.Documents'
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=2184751 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Activating service name='org.a11y.Bus' requested by ':1.4' (uid=1000 pid=2184773 comm="/usr/lib/xdg-desktop-portal-gtk")
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Successfully activated service 'org.a11y.Bus'
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=2184783 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=2184783 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.gtk'
+
+** (xdg-desktop-portal-gtk:2184773): WARNING **: 05:10:06.419: AT-SPI: Could not obtain desktop path or name
+
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=2184783 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+
+** (xdg-desktop-portal-gtk:2184773): WARNING **: 05:10:06.420: atk-bridge: GetRegisteredEvents returned message with unknown signature
+
+** (xdg-desktop-portal-gtk:2184773): WARNING **: 05:10:06.420: atk-bridge: get_device_events_reply: unknown signature
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2184751 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2184751 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2184751 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2184751 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Successfully activated service 'org.freedesktop.portal.Desktop'
+PASS secondary file delivery during initialization preserves main and opens its own window
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Activating service name='ca.desrt.dconf' requested by ':1.113' (uid=1000 pid=2185369 comm="/tmp/alive-workspaces-task4-midi/app-final/alive /")
+dbus-daemon[2184683]: [session uid=1000 pid=2184683 pidfd=5] Successfully activated service 'ca.desrt.dconf'
+Traceback (most recent call last):
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_arrangement.py", line 327, in <module>
+    run()
+    ~~~^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_arrangement.py", line 277, in run
+    report['stream_diagnostics'] = json.loads(alive.value('Stream diagnostics'))
+                                   ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/json/__init__.py", line 352, in loads
+    return _default_decoder.decode(s)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/json/decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)

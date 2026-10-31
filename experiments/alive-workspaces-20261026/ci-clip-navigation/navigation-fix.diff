@@ -1,0 +1,17 @@
+diff --git i/apps/ultra/tests/alive_workspace_navigation.py w/apps/ultra/tests/alive_workspace_navigation.py
+index 2732e04..af18dc8 100644
+--- i/apps/ultra/tests/alive_workspace_navigation.py
++++ w/apps/ultra/tests/alive_workspace_navigation.py
+@@ -27,7 +27,11 @@ def install(ui, windows):
+         notes = re.match(r'Note \d+ ', name)
+         automation = ('automation enabled' in name or ' point' in name or
+                       name in ('Automation target', 'Add automation lane'))
+-        clip = notes or automation or name in ('Selected clip piano roll', 'Selected note velocity', 'Add note')
++        clip = notes or automation or name in (
++            'Enable clip bank', 'Create clip', 'Clip name', 'Selected clip length',
++            'Duplicate destination', 'Duplicate clip', 'Delete clip',
++            'Set Saved Default', 'Clear Saved Default',
++            'Selected clip piano roll', 'Selected note velocity', 'Add note')
+         track_action = re.fullmatch(r'(?:Open (.+) editor|Replace (.+) device|Remove (.+) track)', name)
+         surface = device or clip or track_action or re.fullmatch(r'(?:Pulse|Harmony|Track \d+) (?:gain|mute|solo)', name)
+         if not surface:

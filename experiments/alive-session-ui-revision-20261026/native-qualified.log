@@ -1,0 +1,62 @@
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Activating service name='org.freedesktop.portal.Desktop' requested by ':1.0' (uid=1000 pid=1061714 comm="/home/venetanji/.codex/worktrees/edd5/alive/apps/u")
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Activating service name='org.freedesktop.impl.portal.PermissionStore' requested by ':1.1' (uid=1000 pid=1061721 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.PermissionStore'
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Activating service name='org.freedesktop.portal.Documents' requested by ':1.1' (uid=1000 pid=1061721 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Successfully activated service 'org.freedesktop.portal.Documents'
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=1061721 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Activating service name='org.a11y.Bus' requested by ':1.4' (uid=1000 pid=1061743 comm="/usr/lib/xdg-desktop-portal-gtk")
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Successfully activated service 'org.a11y.Bus'
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=1061753 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=1061753 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+
+** (xdg-desktop-portal-gtk:1061743): WARNING **: 18:07:38.084: AT-SPI: Could not obtain desktop path or name
+
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.gtk'
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=1061753 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+
+** (xdg-desktop-portal-gtk:1061743): WARNING **: 18:07:38.090: atk-bridge: GetRegisteredEvents returned message with unknown signature
+
+** (xdg-desktop-portal-gtk:1061743): WARNING **: 18:07:38.090: atk-bridge: get_device_events_reply: unknown signature
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=1061721 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=1061721 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=1061721 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=1061721 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Successfully activated service 'org.freedesktop.portal.Desktop'
+PASS secondary file delivery during initialization preserves main and opens its own window
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Activating service name='ca.desrt.dconf' requested by ':1.113' (uid=1000 pid=1062338 comm="/home/venetanji/.codex/worktrees/edd5/alive/apps/u")
+dbus-daemon[1061634]: [session uid=1000 pid=1061634 pidfd=5] Successfully activated service 'ca.desrt.dconf'
+Traceback (most recent call last):
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_session_ui.py", line 81, in <module>
+    run()
+    ~~~^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_session_ui.py", line 76, in run
+    clips.run()
+    ~~~~~~~~~^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_clips.py", line 62, in run
+    initial_path, initial = saved('initial-v3.alive')
+                            ~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_clips.py", line 51, in saved
+    alive.choose_file('Save session as', 'Save Alive Session', path)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_desktop.py", line 348, in choose_file
+    for frame in windows.app_frames()):
+                 ~~~~~~~~~~~~~~~~~~^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_documents_desktop.py", line 41, in app_frames
+    if node.get_role_name() in ('frame', 'dialog', 'file chooser', 'alert'):
+       ^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get_role_name'

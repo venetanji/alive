@@ -1,0 +1,451 @@
+-- Clockwork 94b67500c96e105491682ec68741b5018560eab7
+-- Ableton Link disabled — ClockworkClock uses its local-state backing
+-- DSP: ultra_hardened_guest
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/build
+[  2%] Building Rust subsystems (cargo: clockwork-native)
+    Finished `release` profile [optimized] target(s) in 0.05s
+[  2%] Built target clockwork_rust
+[ 77%] Built target clockwork
+[ 82%] Built target ultra_hardened_guest
+[ 88%] Built target ultra_core
+[ 91%] Building CXX object CMakeFiles/ultra_native.dir/src-tauri/native/backend.cpp.o
+[ 94%] Linking CXX shared library libultra_native.so
+[ 94%] Built target ultra_native
+[ 97%] Linking CXX executable ultra-diagnostic
+[100%] Built target ultra-diagnostic
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+warning: method `reserve_native` is never used
+  --> src/document_windows.rs:47:8
+   |
+36 | impl QuitSession {
+   | ---------------- method in this implementation
+...
+47 |     fn reserve_native(&mut self) -> Option<u64> {
+   |        ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: constant `MAX_BYTES` is never used
+ --> src/session/workspaces.rs:8:7
+  |
+8 | const MAX_BYTES: usize = 1024 * 1024;
+  |       ^^^^^^^^^
+
+warning: constant `MIN_BEATS` is never used
+ --> src/session/workspaces.rs:9:7
+  |
+9 | const MIN_BEATS: f64 = 1. / 64.;
+  |       ^^^^^^^^^
+
+warning: struct `TrackCounts` is never constructed
+   --> src/session/workspaces.rs:265:8
+    |
+265 | struct TrackCounts {
+    |        ^^^^^^^^^^^
+    |
+    = note: `TrackCounts` has a derived impl for the trait `Default`, but this is intentionally ignored during dead code analysis
+
+warning: function `decode` is never used
+   --> src/session/workspaces.rs:273:8
+    |
+273 | pub fn decode(text: &str) -> Result<ProjectV4, String> {
+    |        ^^^^^^
+
+warning: function `encode` is never used
+   --> src/session/workspaces.rs:278:8
+    |
+278 | pub fn encode(project: &ProjectV4) -> Result<String, String> {
+    |        ^^^^^^
+
+warning: function `decode_edit` is never used
+   --> src/session/workspaces.rs:284:8
+    |
+284 | pub fn decode_edit(text: &str) -> Result<WorkspaceEditV4, String> {
+    |        ^^^^^^^^^^^
+
+warning: function `frame_at` is never used
+   --> src/session/workspaces.rs:289:8
+    |
+289 | pub fn frame_at(beat: f64, tempo: f64) -> Result<u64, String> {
+    |        ^^^^^^^^
+
+warning: function `check_size` is never used
+   --> src/session/workspaces.rs:301:4
+    |
+301 | fn check_size(size: usize) -> Result<(), String> {
+    |    ^^^^^^^^^^
+
+warning: function `strict_decode` is never used
+   --> src/session/workspaces.rs:308:4
+    |
+308 | fn strict_decode<T: serde::de::DeserializeOwned>(text: &str) -> Result<T, String> {
+    |    ^^^^^^^^^^^^^
+
+warning: method `devices` is never used
+   --> src/session/workspaces.rs:367:12
+    |
+366 | impl TrackV4 {
+    | ------------ method in this implementation
+367 |     pub fn devices(&self) -> impl Iterator<Item = &DeviceInstance> {
+    |            ^^^^^^^
+
+warning: methods `id`, `track_id`, `automation`, and `length_frames` are never used
+   --> src/session/workspaces.rs:376:12
+    |
+375 | impl SourceV4 {
+    | ------------- methods in this implementation
+376 |     pub fn id(&self) -> &str {
+    |            ^^
+...
+381 |     pub fn track_id(&self) -> &str {
+    |            ^^^^^^^^
+...
+386 |     pub fn automation(&self) -> &[Lane] {
+    |            ^^^^^^^^^^
+...
+391 |     pub fn length_frames(&self, tempo: f64) -> Result<u64, String> {
+    |            ^^^^^^^^^^^^^
+
+warning: methods `validate`, `identities`, `reference_ids`, `track`, `source`, and `suffix` are never used
+   --> src/session/workspaces.rs:400:12
+    |
+399 | impl ProjectV4 {
+    | -------------- methods in this implementation
+400 |     pub fn validate(&self) -> Result<(), String> {
+    |            ^^^^^^^^
+...
+686 |     pub fn identities(&self) -> HashSet<String> {
+    |            ^^^^^^^^^^
+...
+702 |     pub fn reference_ids(&self, source_id: &str) -> Vec<String> {
+    |            ^^^^^^^^^^^^^
+...
+719 |     fn track(&self, id: &str) -> Result<&TrackV4, String> {
+    |        ^^^^^
+...
+725 |     fn source(&self, id: &str) -> Result<&SourceV4, String> {
+    |        ^^^^^^
+...
+731 |     fn suffix(
+    |        ^^^^^^
+
+warning: function `unique` is never used
+   --> src/session/workspaces.rs:763:4
+    |
+763 | fn unique(ids: &mut HashSet<String>, id: &str) -> Result<(), String> {
+    |    ^^^^^^
+
+warning: function `fingerprint` is never used
+   --> src/session/workspaces.rs:771:4
+    |
+771 | fn fingerprint(value: &str) -> Result<(), String> {
+    |    ^^^^^^^^^^^
+
+warning: function `color` is never used
+   --> src/session/workspaces.rs:782:4
+    |
+782 | fn color(value: &str) -> Result<(), String> {
+    |    ^^^^^
+
+warning: function `sum` is never used
+   --> src/session/workspaces.rs:794:4
+    |
+794 | fn sum(a: f64, b: f64) -> Result<f64, String> {
+    |    ^^^
+
+warning: function `checked_add` is never used
+   --> src/session/workspaces.rs:802:4
+    |
+802 | fn checked_add(a: usize, b: usize) -> Result<usize, String> {
+    |    ^^^^^^^^^^^
+
+warning: function `prospective_from_document` is never used
+   --> src/session/workspaces.rs:809:8
+    |
+809 | pub fn prospective_from_document(document: &Document) -> Result<ProjectV4, String> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `prospective_from_legacy_text` is never used
+   --> src/session/workspaces.rs:915:8
+    |
+915 | pub fn prospective_from_legacy_text(
+    |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: field `format` is never read
+   --> src/session/workspaces.rs:923:9
+    |
+922 |     struct Format {
+    |            ------ field in this struct
+923 |         format: String,
+    |         ^^^^^^
+
+warning: function `identity` is never used
+   --> src/session/workspaces.rs:934:4
+    |
+934 | fn identity(prefix: &str, parts: &[&str]) -> String {
+    |    ^^^^^^^^
+
+warning: function `apply_edit` is never used
+   --> src/session/workspaces.rs:945:8
+    |
+945 | pub fn apply_edit(
+    |        ^^^^^^^^^^
+
+warning: function `apply_edit_with` is never used
+   --> src/session/workspaces.rs:955:8
+    |
+955 | pub fn apply_edit_with<F: FnMut(&str) -> String>(
+    |        ^^^^^^^^^^^^^^^
+
+warning: methods `track_mut`, `source_mut`, `placement_mut`, `slot_mut`, `notes_mut`, and `edit` are never used
+    --> src/session/workspaces.rs:987:8
+     |
+986  | impl ProjectV4 {
+     | -------------- methods in this implementation
+987  |     fn track_mut(&mut self, id: &str) -> Result<&mut TrackV4, String> {
+     |        ^^^^^^^^^
+...
+993  |     fn source_mut(&mut self, id: &str) -> Result<&mut SourceV4, String> {
+     |        ^^^^^^^^^^
+...
+999  |     fn placement_mut(&mut self, id: &str) -> Result<&mut PlacementV4, String> {
+     |        ^^^^^^^^^^^^^
+...
+1005 |     fn slot_mut(&mut self, track_id: &str, slot_id: &str) -> Result<&mut SlotV4, String> {
+     |        ^^^^^^^^
+...
+1013 |     fn notes_mut(&mut self, source_id: &str) -> Result<&mut Vec<ClipNote>, String> {
+     |        ^^^^^^^^^
+...
+1021 |     fn edit(
+     |        ^^^^
+
+warning: function `affected` is never used
+    --> src/session/workspaces.rs:1287:4
+     |
+1287 | fn affected(before: &ProjectV4, after: &ProjectV4) -> Result<Vec<String>, String> {
+     |    ^^^^^^^^
+
+warning: `ultra` (lib) generated 26 warnings
+    Finished `release` profile [optimized] target(s) in 27.74s
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+warning: method `reserve_native` is never used
+  --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/document_windows.rs:47:8
+   |
+36 | impl QuitSession {
+   | ---------------- method in this implementation
+...
+47 |     fn reserve_native(&mut self) -> Option<u64> {
+   |        ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: constant `MAX_BYTES` is never used
+ --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:8:7
+  |
+8 | const MAX_BYTES: usize = 1024 * 1024;
+  |       ^^^^^^^^^
+
+warning: constant `MIN_BEATS` is never used
+ --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:9:7
+  |
+9 | const MIN_BEATS: f64 = 1. / 64.;
+  |       ^^^^^^^^^
+
+warning: struct `TrackCounts` is never constructed
+   --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:265:8
+    |
+265 | struct TrackCounts {
+    |        ^^^^^^^^^^^
+    |
+    = note: `TrackCounts` has a derived impl for the trait `Default`, but this is intentionally ignored during dead code analysis
+
+warning: function `decode` is never used
+   --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:273:8
+    |
+273 | pub fn decode(text: &str) -> Result<ProjectV4, String> {
+    |        ^^^^^^
+
+warning: function `encode` is never used
+   --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:278:8
+    |
+278 | pub fn encode(project: &ProjectV4) -> Result<String, String> {
+    |        ^^^^^^
+
+warning: function `decode_edit` is never used
+   --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:284:8
+    |
+284 | pub fn decode_edit(text: &str) -> Result<WorkspaceEditV4, String> {
+    |        ^^^^^^^^^^^
+
+warning: function `frame_at` is never used
+   --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:289:8
+    |
+289 | pub fn frame_at(beat: f64, tempo: f64) -> Result<u64, String> {
+    |        ^^^^^^^^
+
+warning: function `check_size` is never used
+   --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:301:4
+    |
+301 | fn check_size(size: usize) -> Result<(), String> {
+    |    ^^^^^^^^^^
+
+warning: function `strict_decode` is never used
+   --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:308:4
+    |
+308 | fn strict_decode<T: serde::de::DeserializeOwned>(text: &str) -> Result<T, String> {
+    |    ^^^^^^^^^^^^^
+
+warning: method `devices` is never used
+   --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:367:12
+    |
+366 | impl TrackV4 {
+    | ------------ method in this implementation
+367 |     pub fn devices(&self) -> impl Iterator<Item = &DeviceInstance> {
+    |            ^^^^^^^
+
+warning: methods `id`, `track_id`, `automation`, and `length_frames` are never used
+   --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:376:12
+    |
+375 | impl SourceV4 {
+    | ------------- methods in this implementation
+376 |     pub fn id(&self) -> &str {
+    |            ^^
+...
+381 |     pub fn track_id(&self) -> &str {
+    |            ^^^^^^^^
+...
+386 |     pub fn automation(&self) -> &[Lane] {
+    |            ^^^^^^^^^^
+...
+391 |     pub fn length_frames(&self, tempo: f64) -> Result<u64, String> {
+    |            ^^^^^^^^^^^^^
+
+warning: methods `validate`, `identities`, `reference_ids`, `track`, `source`, and `suffix` are never used
+   --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:400:12
+    |
+399 | impl ProjectV4 {
+    | -------------- methods in this implementation
+400 |     pub fn validate(&self) -> Result<(), String> {
+    |            ^^^^^^^^
+...
+686 |     pub fn identities(&self) -> HashSet<String> {
+    |            ^^^^^^^^^^
+...
+702 |     pub fn reference_ids(&self, source_id: &str) -> Vec<String> {
+    |            ^^^^^^^^^^^^^
+...
+719 |     fn track(&self, id: &str) -> Result<&TrackV4, String> {
+    |        ^^^^^
+...
+725 |     fn source(&self, id: &str) -> Result<&SourceV4, String> {
+    |        ^^^^^^
+...
+731 |     fn suffix(
+    |        ^^^^^^
+
+warning: function `unique` is never used
+   --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:763:4
+    |
+763 | fn unique(ids: &mut HashSet<String>, id: &str) -> Result<(), String> {
+    |    ^^^^^^
+
+warning: function `fingerprint` is never used
+   --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:771:4
+    |
+771 | fn fingerprint(value: &str) -> Result<(), String> {
+    |    ^^^^^^^^^^^
+
+warning: function `color` is never used
+   --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:782:4
+    |
+782 | fn color(value: &str) -> Result<(), String> {
+    |    ^^^^^
+
+warning: function `sum` is never used
+   --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:794:4
+    |
+794 | fn sum(a: f64, b: f64) -> Result<f64, String> {
+    |    ^^^
+
+warning: function `checked_add` is never used
+   --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:802:4
+    |
+802 | fn checked_add(a: usize, b: usize) -> Result<usize, String> {
+    |    ^^^^^^^^^^^
+
+warning: function `prospective_from_document` is never used
+   --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:809:8
+    |
+809 | pub fn prospective_from_document(document: &Document) -> Result<ProjectV4, String> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `prospective_from_legacy_text` is never used
+   --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:915:8
+    |
+915 | pub fn prospective_from_legacy_text(
+    |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: field `format` is never read
+   --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:923:9
+    |
+922 |     struct Format {
+    |            ------ field in this struct
+923 |         format: String,
+    |         ^^^^^^
+
+warning: function `identity` is never used
+   --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:934:4
+    |
+934 | fn identity(prefix: &str, parts: &[&str]) -> String {
+    |    ^^^^^^^^
+
+warning: function `apply_edit` is never used
+   --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:945:8
+    |
+945 | pub fn apply_edit(
+    |        ^^^^^^^^^^
+
+warning: function `apply_edit_with` is never used
+   --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:955:8
+    |
+955 | pub fn apply_edit_with<F: FnMut(&str) -> String>(
+    |        ^^^^^^^^^^^^^^^
+
+warning: methods `track_mut`, `source_mut`, `placement_mut`, `slot_mut`, `notes_mut`, and `edit` are never used
+    --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:987:8
+     |
+986  | impl ProjectV4 {
+     | -------------- methods in this implementation
+987  |     fn track_mut(&mut self, id: &str) -> Result<&mut TrackV4, String> {
+     |        ^^^^^^^^^
+...
+993  |     fn source_mut(&mut self, id: &str) -> Result<&mut SourceV4, String> {
+     |        ^^^^^^^^^^
+...
+999  |     fn placement_mut(&mut self, id: &str) -> Result<&mut PlacementV4, String> {
+     |        ^^^^^^^^^^^^^
+...
+1005 |     fn slot_mut(&mut self, track_id: &str, slot_id: &str) -> Result<&mut SlotV4, String> {
+     |        ^^^^^^^^
+...
+1013 |     fn notes_mut(&mut self, source_id: &str) -> Result<&mut Vec<ClipNote>, String> {
+     |        ^^^^^^^^^
+...
+1021 |     fn edit(
+     |        ^^^^
+
+warning: function `affected` is never used
+    --> /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/src/session/workspaces.rs:1287:4
+     |
+1287 | fn affected(before: &ProjectV4, after: &ProjectV4) -> Result<Vec<String>, String> {
+     |    ^^^^^^^^
+
+warning: `ultra` (lib) generated 26 warnings
+   Compiling alive v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/alive/src-tauri)
+    Finished `release` profile [optimized] target(s) in 26.88s
+
+Run /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/ultra
+Run /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/alive

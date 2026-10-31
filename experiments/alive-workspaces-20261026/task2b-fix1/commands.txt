@@ -1,0 +1,16 @@
+BASE=d7f8490a783762a7c864f07957e12fce045b4b5d
+FIXTURES=python3 apps/ultra/tests/alive_session_v3_fixtures.py /tmp/alive-workspaces-task2b-fix1/saved_graphs.hpp
+RED_BACKEND=c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE -DULTRA_ALIVE_SESSION_V4_PROVISIONAL -c apps/ultra/src-tauri/native/backend.cpp -o /tmp/alive-workspaces-task2b-fix1/red-backend.o
+RED_TEST=c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE -DULTRA_ALIVE_SESSION_V4_PROVISIONAL -I/tmp/alive-workspaces-task2b-fix1 apps/ultra/tests/alive_session_v4_test.cpp /tmp/alive-workspaces-task2b-fix1/red-backend.o apps/ultra/build/core/libultra_core_bundle.a -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock -ldl -lrt -o /tmp/alive-workspaces-task2b-fix1/red-test
+I1_RED=/tmp/alive-workspaces-task2b-fix1/red-test --start-reservation
+I2_RED=/tmp/alive-workspaces-task2b-fix1/red-test --chase-order
+GREEN_BACKEND=c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE -DULTRA_ALIVE_SESSION_V4_PROVISIONAL -c apps/ultra/src-tauri/native/backend.cpp -o /tmp/alive-workspaces-task2b-fix1/green-backend.o
+GREEN_TEST=c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE -DULTRA_ALIVE_SESSION_V4_PROVISIONAL -I/tmp/alive-workspaces-task2b-fix1 apps/ultra/tests/alive_session_v4_test.cpp /tmp/alive-workspaces-task2b-fix1/green-backend.o apps/ultra/build/core/libultra_core_bundle.a -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock -ldl -lrt -o /tmp/alive-workspaces-task2b-fix1/green-test
+I1_GREEN=/tmp/alive-workspaces-task2b-fix1/green-test --start-reservation
+I2_GREEN=/tmp/alive-workspaces-task2b-fix1/green-test --chase-order
+V4_GREEN=/tmp/alive-workspaces-task2b-fix1/green-test
+NORMAL_BUILD=cmake --build apps/ultra/build --target ultra_native -j2
+NATIVE_CI=bash apps/ultra/tests/ci/check-native.sh
+SHIPPING_BUILD=c++ -std=c++17 -O2 -Wall -Wextra -Werror -I/tmp/alive-workspaces-task2b-fix1 apps/ultra/tests/alive_session_v4_shipping_test.cpp -Lapps/ultra/build -lultra_native -Wl,-rpath,$PWD/apps/ultra/build -o /tmp/alive-workspaces-task2b-fix1/shipping-test
+SHIPPING_GREEN=/tmp/alive-workspaces-task2b-fix1/shipping-test
+WHITESPACE=git diff --check

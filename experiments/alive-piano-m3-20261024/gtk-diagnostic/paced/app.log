@@ -1,0 +1,21 @@
+
+This GDB supports auto-downloading debuginfo from the following URLs:
+  <https://debuginfod.archlinux.org>
+Enable debuginfod for this session? (y or [n]) [answered N; input not from terminal]
+Debuginfod has been disabled.
+To make this setting permanent, add 'set debuginfod enabled off' to .gdbinit.
+Function "gtk_widget_event" not defined.
+Breakpoint 1 (gtk_widget_event) pending.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib/libthread_db.so.1".
+[Detaching after vfork from child process 822672]
+MESA-EGL: warning: DRI3 error: Could not get DRI3 device
+MESA-EGL: warning: Ensure your X server supports DRI3 to get accelerated rendering
+[Detaching after vfork from child process 822713]
+[Detaching after fork from child process 822785]
+[Detaching after fork from child process 822792]
+[Detaching after fork from child process 824138]
+[Inferior 1 (process 822658) exited normally]
+$1 = 12
+/tmp/alive-gtk-diagnostic-20261024/gdb-event.commands:18: Error in sourced command file:
+Cannot access memory at address 0x5555577cc74c

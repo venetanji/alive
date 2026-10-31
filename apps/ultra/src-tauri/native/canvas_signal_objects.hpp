@@ -4,7 +4,7 @@
 #include <cmath>
 
 namespace ultra {
-inline bool canvas_signal_kind(unsigned kind)noexcept{return kind>=Sig&&kind<=SignalDac;}
+inline bool canvas_signal_kind(unsigned kind)noexcept{return (kind>=Sig&&kind<=SignalDac)||kind==AudioIn||kind==FilterStereo;}
 inline bool canvas_voice_kind(unsigned kind)noexcept{return kind>=PolyNote&&kind<=MixVoice;}
 inline bool canvas_control_port(unsigned type)noexcept{return type==1||type==4;}
 inline bool canvas_signal_port(unsigned type)noexcept{return type==2||type==3||type==4||type==5;}

@@ -9,8 +9,8 @@ import {validateMidpoints} from './canvas-cable-geometry.mjs';
 // messages are never evaluated or resolved by this bounded native-graph adapter.
 export const MAX_IMPORT_LIMITS = Object.freeze({bytes: 8 * 1024 * 1024, depth: 64, patcherDepth: 24, patchers: 256, boxes: 20000, edges: 40000, values: 250000});
 const encoder = new TextEncoder();
-const empty = () => ({version: 1, profile: 'ultra-canvas-v1', nodes: [], edges: []});
-const emptyHierarchy = () => ({version: 2, profile: 'ultra-patcher-v2', nodes: [], edges: []});
+const empty = () => ({version: 1, profile: 'ultra-canvas-v1',presentation:null, nodes: [], edges: []});
+const emptyHierarchy = () => ({version: 2, profile: 'ultra-patcher-v2',presentation:null, nodes: [], edges: []});
 const record = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 const own = (obj, key) => Object.hasOwn(obj, key);
 const fail = message => { throw Error(message); };
@@ -168,7 +168,7 @@ function convertBox(box, id, diagnostic, hierarchy = false, helperRole = null, i
   const rect = box.patching_rect;
   if (!Array.isArray(rect) || rect.length !== 4 || rect.some(n => typeof n !== 'number' || !Number.isFinite(n))) fail('Max patching_rect must contain four finite coordinates/dimensions.');
   const node = helperRole?{id,type:'help_helper',x:rect[0],y:rect[1],params:authored.params}:makeNode(authored.type, id, rect[0], rect[1], authored.params);
-  if (node.type === 'patcher') node.patcher = {nodes: [], edges: []};
+  if (node.type === 'patcher') node.patcher = {presentation:null,nodes: [], edges: []};
   if(!helperRole)validatePatch({...(hierarchy ? emptyHierarchy() : empty()), nodes: [node]});
   const style = {}, styleKeys = appearanceFields(node.type).map(field => field.key);
   const candidates = {width: rect[2], height: rect[3]};
@@ -258,7 +258,7 @@ function convertPatcher(entry, {allowPartial = false, sourceName = '', shell = n
   let nextId = 1, fatal = false;
   const diagnose = (patcherId, severity, code, message, detail = {}) => diagnostics.push({severity, code, message, patcherId, ...detail});
   function convertScope(current) {
-    const tree = {nodes: [], edges: []}, {patcher} = current;
+    const tree = {presentation:null,nodes: [], edges: []}, {patcher} = current;
     const inheritedFontsize = commentFontsize(patcher, current.inheritedFontsize);
     const diagnostic = (severity, code, message, detail = {}) => diagnose(current.id, severity, code, message, detail);
     if (patcher.classnamespace != null && patcher.classnamespace !== 'box') {

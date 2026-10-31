@@ -1,0 +1,44 @@
+(node:854981) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:38:29] "GET /canvas.html HTTP/1.1" 200 -
+
+Running 1 test using 1 worker
+
+(node:854999) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:854999) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(node:854999) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:38:32] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:38:32] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:38:32] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:38:32] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:38:32] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:38:32] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:38:32] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:38:32] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:38:32] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:38:32] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✘  1 alive-chain.spec.mjs:2000:1 › pointer-derived track gain remains readable in both mixer and Arrangement detail (2.0s)
+
+
+  1) alive-chain.spec.mjs:2000:1 › pointer-derived track gain remains readable in both mixer and Arrangement detail 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m5[39m
+    Received:    [31m17[39m
+
+      480 |   await page.setViewportSize({width:1280,height:800});await openSession(page,false,true,2,true);
+      481 |   const slider=page.getByLabel('Pulse gain fader',{exact:true}),number=page.getByLabel('Pulse gain',{exact:true});const box=await slider.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height*.77);await page.mouse.down();await page.mouse.move(box.x+box.width/2,box.y+box.height*.68);await page.mouse.up();await page.locator('#view-arrangement').click();
+    > 482 |   const gain=page.getByLabel('Pulse Arrangement gain',{exact:true}),text=await gain.inputValue(),actual=await page.evaluate(()=>window.sessionSnapshot.document.tracks[0].gain);expect(text.length).toBeLessThanOrEqual(5);expect(Math.abs(Number(text)-actual)).toBeLessThanOrEqual(.0005);
+          |                                                                                                                                                                                                     ^
+      483 |   await page.locator('#view-session').click();const shown=await number.inputValue();expect(shown.length).toBeLessThanOrEqual(5);expect(Math.abs(Number(shown)-actual)).toBeLessThanOrEqual(.0005);
+      484 | });
+      485 |
+        at /home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/tests/ci/alive-chain.spec.mjs:482:197
+
+    Error Context: ../../../../../../../../../../tmp/alive-task8-gain-red/alive-chain-pointer-derive-44571-ixer-and-Arrangement-detail/error-context.md
+
+  1 failed
+    alive-chain.spec.mjs:2000:1 › pointer-derived track gain remains readable in both mixer and Arrangement detail 

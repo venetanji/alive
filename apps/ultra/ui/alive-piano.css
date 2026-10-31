@@ -1,0 +1,34 @@
+.clip-area{display:flex;flex-direction:column;height:calc(var(--detail-height) - 27px);min-height:247px;overflow:hidden;background:#2b2b2b}
+.clip-view-tools{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;flex:0 0 auto;min-height:26px;min-width:0;padding:2px 7px;background:#292929;border-bottom:1px solid #505050;white-space:nowrap}
+.clip-view-tools>*{flex-shrink:0}
+.clip-tool-group{display:flex;align-items:center;gap:2px}.clip-tool-group>span{font-size:11px;color:var(--muted);padding-right:3px}
+.clip-view-tools button{min-width:22px;height:21px;min-height:21px;padding:0 5px;font-size:12px;line-height:18px;border-color:#565656}
+.clip-view-range{margin-left:auto;min-width:max-content;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+:is(#piano-roll,#audio-waveform){flex:1 0 156px;width:100%;height:156px;min-height:156px;overflow:hidden;display:block;touch-action:none;cursor:crosshair}
+:is(#piano-roll,#audio-waveform) text,.piano-velocity-lane text{font-family:"Liberation Sans","Helvetica Neue",sans-serif;user-select:none}
+:is(#piano-roll,#audio-waveform) [data-key]{cursor:default}:is(#piano-roll,#audio-waveform) [data-part=body]{cursor:move}:is(#piano-roll,#audio-waveform) [data-part=resize]{cursor:ew-resize}
+/* Keep empty-grid clicks on the stable SVG while selection redraws its marks. */
+:is(#piano-roll,#audio-waveform) rect,:is(#piano-roll,#audio-waveform) line,:is(#piano-roll,#audio-waveform) text{pointer-events:none}
+:is(#piano-roll,#audio-waveform) [data-note],:is(#piano-roll,#audio-waveform) [data-key]{pointer-events:auto}
+.clip-view-tools .piano-preview[aria-pressed=true]{background:var(--selection);color:#202020;border-color:var(--selection)}
+.piano-velocity-lane{display:block;flex:0 0 40px;width:100%;height:40px;min-height:40px;box-shadow:inset 0 1px #5a5a5a;touch-action:none;outline-offset:-2px}
+.piano-velocity-lane:focus-visible{outline:2px solid var(--selection)}.piano-velocity-lane [data-part=velocity]{cursor:ns-resize}
+.clip-area .note-velocity{display:flex;flex:0 0 25px;height:25px;min-height:25px;gap:8px;padding:2px 9px;border-top:1px solid #454545;font-size:11px}
+.clip-area .note-velocity input{width:130px;min-height:17px}.clip-area .note-velocity output{min-width:75px}
+
+.clip-region-tools{display:flex;flex-wrap:wrap;align-items:center;gap:5px 12px;flex:0 0 auto;min-height:31px;padding:4px 8px;background:#2b2b2b;border-bottom:1px solid #505050;font-size:11px;font-variant-numeric:tabular-nums}
+.clip-region-tools label{display:flex;align-items:center;gap:5px;white-space:nowrap}
+.clip-region-tools input[type=number]{width:58px;height:22px;min-height:22px;padding:1px 4px}
+.clip-region-tools input[type=checkbox]{width:13px;height:13px;min-height:13px;margin:0}
+.clip-region-tools button{min-height:23px;padding:2px 6px;font-size:11px}
+:is(#piano-roll,#audio-waveform) [data-region]{pointer-events:auto;cursor:ew-resize}
+:is(#piano-roll,#audio-waveform) [data-region=loopMove]{cursor:grab}
+:is(#piano-roll,#audio-waveform) [data-region=loopMove]:active{cursor:grabbing}
+.audio-source .note-velocity,.audio-source+.note-table{display:none}
+.empty-source :is(.clip-section>.section-heading,.note-velocity,.note-table,.automation-section){display:none}
+@media(max-width:850px){.clip-region-tools{gap:4px 8px}.clip-region-tools label{gap:4px}.clip-region-tools input[type=number]{width:51px}.clip-region-tools button{margin-left:auto}}
+
+.audio-clip-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:28px;color:var(--muted);text-align:center;background:var(--canvas)}.audio-clip-empty strong{color:var(--text);font-size:14px}.audio-clip-empty p{max-width:300px;margin:0 0 8px}.audio-clip-empty button{padding:5px 12px}.clip-area [hidden]{display:none!important}
+.audio-stretch-tools{display:flex;flex-wrap:wrap;align-items:center;gap:5px 12px;padding:4px 8px;border-bottom:1px solid #505050;font-size:11px;flex:0 0 auto}
+.audio-stretch-tools label{display:flex;align-items:center;gap:5px}.audio-stretch-tools input{width:64px;min-height:22px;height:22px;padding:1px 4px}.audio-stretch-tools button{min-height:22px;padding:1px 6px}
+#audio-waveform [data-stretch]{pointer-events:auto;cursor:ew-resize}

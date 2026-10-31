@@ -1,0 +1,28 @@
+HTTP request lines omitted; test results retained.
+(node:828551) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+Running 11 tests using 1 worker
+
+(node:828567) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:828567) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(node:828567) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 alive-clip-regions.spec.mjs:382:5 › MIDI and audio range controls preserve source content at 800x600 (2.1s)
+  ✓   2 alive-clip-regions.spec.mjs:382:5 › MIDI and audio range controls preserve source content at 1280x800 (2.1s)
+  ✓   3 alive-clip-regions.spec.mjs:382:5 › MIDI and audio range controls preserve source content at 1440x1000 (2.2s)
+  ✓   4 alive-clip-regions.spec.mjs:478:1 › an empty audio track has an audio import surface and no piano or MIDI editing controls (550ms)
+  ✓   5 alive-clip-regions.spec.mjs:528:1 › waveform zoom and navigation change only the view while marker drags edit the audio loop (1.5s)
+  ✓   6 alive-clip-regions.spec.mjs:584:1 › Re-Pitch stretches the shared sample with numeric and drag controls; Escape cancels preview (1.3s)
+  ✓   7 alive-clip-regions.spec.mjs:649:1 › source BPM accepts repeated Enter commits without requiring a refocus (726ms)
+  ✓   8 alive-clip-regions.spec.mjs:668:1 › an audio length draft cannot target a clip removed by an accepted refresh (548ms)
+  ✓   9 alive-clip-regions.spec.mjs:695:1 › rolling clip and typed tracks are immediate and keep the inserted track selected (817ms)
+  ✓  10 alive-clip-regions.spec.mjs:727:1 › Arrangement focused time selection drives global loop and atomic MIDI insertion (877ms)
+  ✓  11 alive-clip-regions.spec.mjs:757:1 › a rejected publication preserves the installed region and surfaces its native explanation (451ms)
+
+  11 passed (14.1s)
+
+To open last HTML report run:
+
+  npx playwright show-report

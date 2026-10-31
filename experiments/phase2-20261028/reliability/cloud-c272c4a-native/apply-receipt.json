@@ -1,0 +1,153 @@
+{
+  "before_navigation": {
+    "rect": [
+      1018,
+      477,
+      89,
+      24
+    ],
+    "point": [
+      1062,
+      489
+    ],
+    "screen": [
+      1280,
+      840
+    ],
+    "showing": true,
+    "enabled": true,
+    "audio_details_expanded": true,
+    "audio_details_rect": [
+      12,
+      485,
+      1176,
+      15
+    ],
+    "audio_summary_overlap_edges": [
+      1018,
+      485,
+      1107,
+      500
+    ],
+    "audio_summary_covers_point": true,
+    "accessible_hit_path": [
+      {
+        "name": "Alive",
+        "role": "frame"
+      },
+      {
+        "name": "",
+        "role": "filler"
+      },
+      {
+        "name": "",
+        "role": "filler"
+      }
+    ],
+    "web_hit_path": [
+      {
+        "name": "* First Light - Alive",
+        "role": "document web"
+      },
+      {
+        "name": "Audio details",
+        "role": "unknown"
+      }
+    ],
+    "native_hit_path": [
+      543,
+      4194307
+    ],
+    "frames": [
+      {
+        "name": "Alive",
+        "showing": true
+      },
+      {
+        "name": "Pulse - Ultra Hosted Editor",
+        "showing": true
+      }
+    ]
+  },
+  "after_navigation": {
+    "rect": [
+      1018,
+      477,
+      89,
+      24
+    ],
+    "point": [
+      1062,
+      489
+    ],
+    "screen": [
+      1280,
+      840
+    ],
+    "showing": true,
+    "enabled": true,
+    "audio_details_expanded": false,
+    "audio_details_rect": [
+      1104,
+      775,
+      84,
+      15
+    ],
+    "audio_summary_overlap_edges": null,
+    "audio_summary_covers_point": false,
+    "accessible_hit_path": [
+      {
+        "name": "Alive",
+        "role": "frame"
+      },
+      {
+        "name": "",
+        "role": "filler"
+      },
+      {
+        "name": "",
+        "role": "filler"
+      }
+    ],
+    "web_hit_path": [
+      {
+        "name": "* First Light - Alive",
+        "role": "document web"
+      },
+      {
+        "name": "Prepare / Apply",
+        "role": "push button"
+      }
+    ],
+    "native_hit_path": [
+      543,
+      4194307
+    ],
+    "frames": [
+      {
+        "name": "Alive",
+        "showing": true
+      },
+      {
+        "name": "Pulse - Ultra Hosted Editor",
+        "showing": true
+      }
+    ]
+  },
+  "queued": true,
+  "trace": [
+    "ALIVE_TRACE apply_begin requested_generation=12 requested_draft=38",
+    "ALIVE_TRACE apply_before generation=12 draft=38 preparation=12",
+    "ALIVE_TRACE apply_installed generation=13 draft=39 preparation=13",
+    "ALIVE_TRACE editor_close requested_generation=12 installed_generation=13 result=ok",
+    "ALIVE_TRACE apply_end result=ok",
+    "ALIVE_TRACE editor_destroyed generation=12"
+  ],
+  "after_frames": [
+    {
+      "name": "Alive",
+      "showing": true
+    }
+  ],
+  "audio_details_after_click_expanded": false
+}

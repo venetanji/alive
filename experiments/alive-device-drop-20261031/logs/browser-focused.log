@@ -1,0 +1,9 @@
+Running 7 tests using 1 worker
+  ✓  1 alive-chain.spec.mjs:393:1 › fresh MIDI tracks expose the library immediately and accept a browser instrument on the dropped-on track (1.5s)
+  ✓  2 alive-chain.spec.mjs:422:1 › instrument drop replaces the MIDI instrument in place and retains its effects (769ms)
+  ✓  3 alive-chain.spec.mjs:439:1 › effects drop onto another track then insert before its first effect in serial order (908ms)
+  ✓  4 alive-chain.spec.mjs:477:1 › empty device chain accepts an instrument and successive effects at its tail (1.1s)
+  ✓  5 alive-chain.spec.mjs:496:1 › device drops remain reachable at the minimum window size (837ms)
+  ✓  6 alive-chain.spec.mjs:518:1 › device drops reject audio instruments, full chains and playing transport visibly (1.2s)
+  ✓  7 alive-chain.spec.mjs:545:1 › Arrangement track drops use the actual destination and report native refusals without changing the chain (790ms)
+  7 passed (10.1s)

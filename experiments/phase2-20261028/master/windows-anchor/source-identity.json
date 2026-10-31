@@ -1,0 +1,127 @@
+{
+  "head": "210b37e9ca6900c13bfb6c45f7ee8a050914311a",
+  "method": "git diff-tree paths and git show bytes compared at producer, integration and HEAD; git rev-parse blob IDs and SHA-256 recorded",
+  "packets": [
+    {
+      "files": [
+        {
+          "head_blob": "4ea501d1d7a520c87fccfb4917ab06ddfb8723fc",
+          "integrated_blob": "4ea501d1d7a520c87fccfb4917ab06ddfb8723fc",
+          "path": "apps/ultra/src-tauri/src/session/native.rs",
+          "producer_blob": "4ea501d1d7a520c87fccfb4917ab06ddfb8723fc",
+          "sha256": "e82811d579db3e29120632edfbb90aff8004161eb7fef2429cecb98d864f627b"
+        },
+        {
+          "head_blob": "58a2aa105f23b1dc22a5d215f36621cc10f4bb85",
+          "integrated_blob": "58a2aa105f23b1dc22a5d215f36621cc10f4bb85",
+          "path": "apps/ultra/src-tauri/src/session/native_master.rs",
+          "producer_blob": "58a2aa105f23b1dc22a5d215f36621cc10f4bb85",
+          "sha256": "b8ed4b43b427e44cd867c7f8fa316b2d5f96b61b5a7110ef48fed2222509cec7"
+        }
+      ],
+      "integration": "fc320f5bb4e50db6f72f87f121849e95c14b9098",
+      "integration_parent": "85adb2e8f15bd820a93f9096ff190f699807c2c5",
+      "producer": "3212065c4b47c068c69e60e8f7a098966f65be4f",
+      "producer_parent": "58057f980afd3365e106433c7102cfc19450c130"
+    },
+    {
+      "files": [
+        {
+          "head_blob": "2a45c2b54f7249177d57ad24ecd91fb45f0af5d2",
+          "integrated_blob": "2a45c2b54f7249177d57ad24ecd91fb45f0af5d2",
+          "path": ".github/workflows/ultra-desktop.yml",
+          "producer_blob": "2a45c2b54f7249177d57ad24ecd91fb45f0af5d2",
+          "sha256": "39fc54d37552500595d3c2abb8402f85aa6d654a5122fc0cd90d115f62330c28"
+        },
+        {
+          "head_blob": "26b71692cd12a606d82f0f759fcbe71b54d2954c",
+          "integrated_blob": "26b71692cd12a606d82f0f759fcbe71b54d2954c",
+          "path": "apps/ultra/tests/windows/CMakeLists.txt",
+          "producer_blob": "26b71692cd12a606d82f0f759fcbe71b54d2954c",
+          "sha256": "c686890f7e953b06b32a47775255b8f4aac51b6c9647843d407b43f44ae428eb"
+        },
+        {
+          "head_blob": "d4db8ac8ccad80cb7459eeb1f9b194713d8d07e1",
+          "integrated_blob": "d4db8ac8ccad80cb7459eeb1f9b194713d8d07e1",
+          "path": "apps/ultra/tests/windows/forward_target.def",
+          "producer_blob": "d4db8ac8ccad80cb7459eeb1f9b194713d8d07e1",
+          "sha256": "1ded72ea96fca249471e9f44cb01dbf302ba2742a21d11407ec4edca987c015b"
+        },
+        {
+          "head_blob": "9f7d501e87d51827ac287a77e8ffab6bd73e7e6d",
+          "integrated_blob": "9f7d501e87d51827ac287a77e8ffab6bd73e7e6d",
+          "path": "apps/ultra/tests/windows/forwarded.def",
+          "producer_blob": "9f7d501e87d51827ac287a77e8ffab6bd73e7e6d",
+          "sha256": "7daca41ffb81ff99118433d0d175c0633d6bf357fc181524a5dcee368d023270"
+        },
+        {
+          "head_blob": "722bb190238b20d07e6266d33099a0c9a305f60c",
+          "integrated_blob": "722bb190238b20d07e6266d33099a0c9a305f60c",
+          "path": "apps/ultra/tests/windows/full.def",
+          "producer_blob": "722bb190238b20d07e6266d33099a0c9a305f60c",
+          "sha256": "c7bad3da47e1fde720193ca2b9e57de99f5b59a04db2098a090e1b709d88a06f"
+        },
+        {
+          "head_blob": "1382fa272106b501f7743290b7c9297bc1bf01c1",
+          "integrated_blob": "1382fa272106b501f7743290b7c9297bc1bf01c1",
+          "path": "apps/ultra/tests/windows/master_fixture.c",
+          "producer_blob": "1382fa272106b501f7743290b7c9297bc1bf01c1",
+          "sha256": "cfcbba0e380386c6920a7e25d9dc6750df6c8333a388f1c83d6d66343343ec37"
+        },
+        {
+          "head_blob": "9e1dfc9a090701c73e1c4ba504a1515d1892d563",
+          "integrated_blob": "9e1dfc9a090701c73e1c4ba504a1515d1892d563",
+          "path": "apps/ultra/tests/windows/master_forward_target.c",
+          "producer_blob": "9e1dfc9a090701c73e1c4ba504a1515d1892d563",
+          "sha256": "02ab48d561ee526a871b5c939f787d4d3b81140d1a0a723ac44811625d4ee90c"
+        },
+        {
+          "head_blob": "77783c6fce93c7160835ac5af889e0f16ea4a8b3",
+          "integrated_blob": "77783c6fce93c7160835ac5af889e0f16ea4a8b3",
+          "path": "apps/ultra/tests/windows/master_resolver_fixtures.ps1",
+          "producer_blob": "77783c6fce93c7160835ac5af889e0f16ea4a8b3",
+          "sha256": "cb57f939d0c6c490510d5e9e37084ed7b04776b238284945d7b77d3640b86ee0"
+        },
+        {
+          "head_blob": "f9f5ff36d40c7ecf1484edbf9164b2b0996a47f9",
+          "integrated_blob": "f9f5ff36d40c7ecf1484edbf9164b2b0996a47f9",
+          "path": "apps/ultra/tests/windows/master_resolver_probe.rs",
+          "producer_blob": "f9f5ff36d40c7ecf1484edbf9164b2b0996a47f9",
+          "sha256": "981781dd9bcfa94cc497f42d0f5a742f732d01e82104701cdfcaa5dfc3d612c0"
+        },
+        {
+          "head_blob": "d5b553f6b7abbc0c1a31577eaf76b7d778aa3379",
+          "integrated_blob": "d5b553f6b7abbc0c1a31577eaf76b7d778aa3379",
+          "path": "apps/ultra/tests/windows/old.def",
+          "producer_blob": "d5b553f6b7abbc0c1a31577eaf76b7d778aa3379",
+          "sha256": "ffb47c07f4e1cb89660caddda5a3f0978cee8ffa8906b63d3b157893797c3ca5"
+        },
+        {
+          "head_blob": "494d8d5cbae4384e837384d8846e67c4d9800f2d",
+          "integrated_blob": "494d8d5cbae4384e837384d8846e67c4d9800f2d",
+          "path": "apps/ultra/tests/windows/partial.def",
+          "producer_blob": "494d8d5cbae4384e837384d8846e67c4d9800f2d",
+          "sha256": "bd8184e1a6735c2ead3813d80c3e2b977c52adc67f9f9147e3cfc542639f2d14"
+        }
+      ],
+      "integration": "210b37e9ca6900c13bfb6c45f7ee8a050914311a",
+      "integration_parent": "fc320f5bb4e50db6f72f87f121849e95c14b9098",
+      "producer": "8a83d13d4e854d431dd47acaba2ad55ba7083900",
+      "producer_parent": "3212065c4b47c068c69e60e8f7a098966f65be4f"
+    }
+  ],
+  "verified_ancestor_pairs": [
+    [
+      "58057f9",
+      "fc320f5"
+    ],
+    [
+      "fc320f5",
+      "210b37e"
+    ],
+    [
+      "3212065",
+      "8a83d13"
+    ]
+  ]
+}

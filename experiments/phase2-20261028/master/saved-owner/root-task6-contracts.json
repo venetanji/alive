@@ -1,0 +1,24 @@
+{
+  "baseHead": "ce84e2a8c6521a88d809ae5a6a6bd18140e49330",
+  "ownerCandidate": "e716e43406cb6b15a9fcd90dc9471d853ef93c74",
+  "nodeCandidate": "de30ca8c3f80a4be2ca346839c27a5f4a7974450",
+  "command": [
+    "uv",
+    "run",
+    "--no-project",
+    "--with-requirements",
+    "apps/ultra/tests/ci/requirements.txt",
+    "bash",
+    "apps/ultra/tests/ci/check-contracts.sh"
+  ],
+  "exitCode": 0,
+  "elapsedSeconds": 219.253,
+  "log": ".superpowers/sdd/2026-10-28-phase2-live-max/root-task6-contracts.log",
+  "sha256": "13251e6202d8ea74d77b6feac7f2d6d5f4b7650e0aec511c2fd308fddde2a6d0",
+  "ownGeneratedReceiptsRetainedAndRestored": [
+    {
+      "path": "experiments/max-reference/arithmetic-runtime-20261022/results/native-build.json",
+      "retained": ".superpowers/sdd/2026-10-28-phase2-live-max/root-task6-generated-615cea8c.json"
+    }
+  ]
+}

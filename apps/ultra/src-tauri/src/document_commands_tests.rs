@@ -1,5 +1,160 @@
 use super::*;
 
+fn parameter(value: f64) -> Parameter { Parameter { node: 2, key: "value".into(), value, hot: false } }
+
+fn numeric_patch() -> Value {
+    serde_json::json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,"nodes":[
+        {"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"numeric"},"patcher":{"presentation":null,
+            "nodes":[{"id":2,"type":"number","x":0,"y":0,"params":{"value":1}}],"edges":[]}}
+    ],"edges":[]})
+}
+
+fn native_numeric_state(id: u32) -> (u64, u32, Vec<(u32, f64, u64)>) {
+    let status = snapshot(id);
+    (status.revision, status.active, status.nodes[..status.node_count as usize].iter()
+        .map(|node| (node.id, node.value, node.pulses)).collect())
+}
+
+#[test]
+fn canvas_parameter_retirement_preserves_numeric_history_and_live_edits() {
+    let _guard = crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+    let mut registry = Registry::default();
+    let root = registry.add("Numeric".into(), Kind::Patch, Some(numeric_patch()), None, None).unwrap();
+    // Native close retains revision history; reserve distinct slots for these routes.
+    registry.get_mut(&root.label).unwrap().id = 8;
+    let mut audio = crate::AudioControl::default();
+    let mut io = crate::audio::Driver::load(PathBuf::from("/nonexistent/ultra-param-retirement-test.json"));
+    let root = registry.prepare_runtime(&root.label, |owner| admit_owned(&mut io, &mut audio.graphs[8], owner, owner.patch.as_ref().unwrap(), None, None, true)).unwrap();
+    let (child, _) = registry.open_view(&root.label, 1).unwrap();
+    for value in [2., 3.] {
+        canvas_parameter(&mut registry, &mut audio, &mut io, &child.label, root.runtime_revision, parameter(value)).unwrap();
+    }
+    registry.history(&child.label, 2, "undo", |owner, patch| admit_owned(&mut io, &mut audio.graphs[8], owner, patch, None, None, false)).unwrap();
+    let before = serde_json::to_value(registry.descriptor(&child.label).unwrap()).unwrap();
+    let native_before = native_numeric_state(root.id);
+    let views_before = registry.owner_views(&root.label).unwrap();
+    let data_owner = crate::audio::tests::hold_retiring(&mut io);
+    let error_owner = data_owner.clone();
+    let refused = canvas_parameter(&mut registry, &mut audio, &mut io, &child.label, root.runtime_revision, parameter(4.));
+    assert!(refused.as_ref().is_err_and(|error| error.contains("retirement_pending")), "numeric route passed unresolved retirement");
+    assert_eq!(serde_json::to_value(registry.descriptor(&child.label).unwrap()).unwrap(), before);
+    assert_eq!(native_numeric_state(root.id), native_before);
+    assert_eq!(registry.owner_views(&root.label).unwrap(), views_before);
+    drop(data_owner);
+    assert!(canvas_parameter(&mut registry, &mut audio, &mut io, &child.label, root.runtime_revision, parameter(5.)).is_err(), "the error owner still retains the epoch");
+    assert_eq!(serde_json::to_value(registry.descriptor(&child.label).unwrap()).unwrap(), before);
+    assert_eq!(native_numeric_state(root.id), native_before);
+    drop(error_owner);
+    for (direction, value) in [("redo", 3.), ("undo", 2.), ("undo", 1.), ("redo", 2.)] {
+        let base = registry.get(&root.label).unwrap().authoring_revision;
+        let restored = registry.history(&child.label, base, direction, |owner, patch| admit_owned(&mut io, &mut audio.graphs[8], owner, patch, None, None, false)).unwrap();
+        assert_eq!(restored.document.patch.unwrap()["nodes"][0]["patcher"]["nodes"][0]["params"]["value"].as_f64(), Some(value));
+    }
+    let running_owner = crate::audio::tests::hold_running(&mut io);
+    assert_eq!(unsafe { crate::session::native::ultra_external_start() }, 1);
+    let edited = canvas_parameter(&mut registry, &mut audio, &mut io, &child.label, root.runtime_revision, parameter(4.)).unwrap();
+    assert_eq!(edited.document.runtime_revision, root.runtime_revision);
+    let (mut left, mut right) = ([0.; 256], [0.; 256]);
+    assert_eq!(unsafe { crate::session::native::ultra_external_render(256, left.as_mut_ptr(), right.as_mut_ptr()) }, 1);
+    assert_eq!(native_numeric_state(root.id).2.iter().find(|node| node.0 == 2).unwrap().1, 4.);
+    drop(running_owner);
+    io.stop().unwrap();
+    close_owned(&mut io, root.id).unwrap();
+}
+
+#[test]
+fn canvas_parameter_retirement_blocks_revision_zero_installation() {
+    let _guard = crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+    let mut registry = Registry::default();
+    let root = registry.add("Initial numeric".into(), Kind::Patch, Some(numeric_patch()), None, None).unwrap();
+    registry.get_mut(&root.label).unwrap().id = 7;
+    let mut audio = crate::AudioControl::default();
+    let mut io = crate::audio::Driver::load(PathBuf::from("/nonexistent/ultra-param-initial-test.json"));
+    let before = serde_json::to_value(registry.get(&root.label).unwrap()).unwrap();
+    let native_before = native_numeric_state(7);
+    let data_owner = crate::audio::tests::hold_retiring(&mut io);
+    let error_owner = data_owner.clone();
+    let refused = canvas_parameter(&mut registry, &mut audio, &mut io, &root.label, 0, parameter(6.));
+    assert!(refused.as_ref().is_err_and(|error| error.contains("retirement_pending")), "revision-zero route installed during unresolved retirement");
+    assert_eq!(serde_json::to_value(registry.get(&root.label).unwrap()).unwrap(), before);
+    assert_eq!(native_numeric_state(7), native_before);
+    assert_eq!(audio.graphs[7].revision(), 0);
+    drop(error_owner);
+    assert!(canvas_parameter(&mut registry, &mut audio, &mut io, &root.label, 0, parameter(7.)).is_err(), "the data owner still retains the epoch");
+    assert_eq!(serde_json::to_value(registry.get(&root.label).unwrap()).unwrap(), before);
+    assert_eq!(native_numeric_state(7), native_before);
+    drop(data_owner);
+    let edited = canvas_parameter(&mut registry, &mut audio, &mut io, &root.label, 0, parameter(7.)).unwrap();
+    assert!(edited.accepted && edited.document.runtime_revision > 0 && edited.document.can_undo);
+    assert_eq!(edited.document.authoring_revision, 1);
+    assert_eq!(native_numeric_state(7).2.iter().find(|node| node.0 == 2).unwrap().1, 7.);
+    assert!(canvas_parameter(&mut registry, &mut audio, &mut io, &root.label, 0, parameter(8.)).err().unwrap().contains("Stale canvas revision"));
+    let unknown = Parameter { node: 99, ..parameter(8.) };
+    assert!(canvas_parameter(&mut registry, &mut audio, &mut io, &root.label, edited.document.runtime_revision, unknown).err().unwrap().contains("Unknown canvas node"));
+    let restored = registry.history(&root.label, 1, "undo", |owner, patch| admit_owned(&mut io, &mut audio.graphs[7], owner, patch, None, None, false)).unwrap();
+    assert_eq!(restored.document.patch.unwrap(), numeric_patch());
+    close_owned(&mut io, 7).unwrap();
+}
+
+#[test]
+fn retiring_ultra_owner_refuses_admission_history_and_root_close() {
+    let _guard = crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+    let mut registry = Registry::default();
+    let patch = serde_json::json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,"nodes":[],"edges":[]});
+    let root = registry.add("Retained".into(), Kind::Patch, Some(patch.clone()), None, None).unwrap();
+    registry.get_mut(&root.label).unwrap().id = 9;
+    let mut control = canvas::CanvasState::default();
+    let mut io = crate::audio::Driver::load(PathBuf::from("/nonexistent/ultra-retirement-test.json"));
+    let root = registry.prepare_runtime(&root.label, |owner| admit_owned(&mut io, &mut control, owner, &patch, None, None, true)).unwrap();
+    let mut edited = patch.clone();
+    edited["nodes"] = serde_json::json!([{"id":1,"type":"number","x":0,"y":0,"params":{"value":3}}]);
+    registry.commit(&root.label, 0, edited.clone(), true, |owner, patch| admit_owned(&mut io, &mut control, owner, patch, None, None, false)).unwrap();
+    let before = serde_json::to_value(registry.get(&root.label).unwrap()).unwrap();
+    let revision = control.revision();
+    let closure = crate::audio::tests::hold_retiring(&mut io);
+    let error_closure = closure.clone();
+    let result = registry.commit(&root.label, 1, patch.clone(), true, |owner, patch| admit_owned(&mut io, &mut control, owner, patch, None, None, false));
+    assert!(result.is_err(), "native replacement passed unresolved retirement");
+    assert!(registry.history(&root.label, 1, "undo", |owner, patch| admit_owned(&mut io, &mut control, owner, patch, None, None, false)).is_err());
+    assert!(close_owned(&mut io, root.id).is_err(), "native root close passed unresolved retirement");
+    assert_eq!(serde_json::to_value(registry.get(&root.label).unwrap()).unwrap(), before);
+    assert_eq!(control.revision(), revision);
+    drop(closure);
+    assert!(close_owned(&mut io, root.id).is_err(), "the remaining error closure still owns the epoch");
+    drop(error_closure);
+    close_owned(&mut io, root.id).unwrap();
+}
+
+#[test]
+fn retiring_ultra_owner_refuses_root_close_independently() {
+    let _guard = crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+    let mut io = crate::audio::Driver::load(PathBuf::from("/nonexistent/ultra-close-retirement-test.json"));
+    let closure = crate::audio::tests::hold_retiring(&mut io);
+    let error_closure = closure.clone();
+    drop(error_closure);
+    let result = close_owned(&mut io, 14);
+    drop(closure);
+    assert!(result.is_err(), "root close must consult the closure witness even for an empty slot");
+}
+
+#[test]
+fn running_ultra_owner_keeps_live_authoring_available() {
+    let _guard = crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+    let mut registry = Registry::default();
+    let patch = documents::empty_patch();
+    let root = registry.add("Live".into(), Kind::Patch, Some(patch.clone()), None, None).unwrap();
+    registry.get_mut(&root.label).unwrap().id = 10;
+    let mut control = canvas::CanvasState::default();
+    let mut io = crate::audio::Driver::load(PathBuf::from("/nonexistent/ultra-live-test.json"));
+    let closure = crate::audio::tests::hold_running(&mut io);
+    assert_eq!(unsafe { crate::session::native::ultra_external_start() }, 1);
+    let accepted = registry.prepare_runtime(&root.label, |owner| admit_owned(&mut io, &mut control, owner, &patch, None, None, true));
+    let accepted = accepted.unwrap();
+    assert!(close_owned(&mut io, accepted.id).is_ok());
+    drop(closure);
+    io.stop().unwrap();
+}
+
 fn snapshot(id: u32) -> canvas::NativeStatus {
     let mut status = canvas::NativeStatus::default();
     unsafe { crate::ultra_canvas_status_document(id, &mut status); }
@@ -10,8 +165,8 @@ fn snapshot(id: u32) -> canvas::NativeStatus {
 fn arithmetic_shared_rhs_history_retains_hot_state_and_mode_history_reinstalls() {
     let _guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
     let mut registry=Registry::default();
-    let patch=serde_json::json!({"version":2,"profile":"ultra-patcher-v2","nodes":[
-        {"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"arithmetic"},"patcher":{"nodes":[
+    let patch=serde_json::json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,"nodes":[
+        {"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"arithmetic"},"patcher":{"presentation":null,"nodes":[
             {"id":2,"type":"multiply","x":0,"y":0,"params":{"rhs":2,"numericmode":1}},
             {"id":3,"type":"print","x":100,"y":0,"params":{"label":"product","popup":1}},
             {"id":4,"type":"number","x":200,"y":0,"params":{"value":0}}
@@ -70,8 +225,8 @@ fn arithmetic_shared_rhs_history_retains_hot_state_and_mode_history_reinstalls()
 fn cable_midpoints_owner_commits_and_history_preserve_fresh_native_recall() {
     let _guard = crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
     let mut registry = Registry::default();
-    let patch = serde_json::json!({"version":2,"profile":"ultra-patcher-v2","nodes":[
-        {"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"child"},"patcher":{"nodes":[
+    let patch = serde_json::json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,"nodes":[
+        {"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"child"},"patcher":{"presentation":null,"nodes":[
             {"id":2,"type":"number","x":10,"y":10,"params":{"value":1}},
             {"id":3,"type":"number","x":100,"y":100,"params":{"value":0}},
             {"id":4,"type":"message_box","x":150,"y":0,"params":{"text":"saved $1"}},
@@ -169,8 +324,8 @@ fn forced_graph_installs_cannot_silently_ignore_message_text_intent() {
 fn message_box_shared_restore_history_and_child_view_serials() {
     let _guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
     let mut registry=Registry::default();
-    let patch=serde_json::json!({"version":2,"profile":"ultra-patcher-v2","nodes":[
-        {"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"child"},"patcher":{"nodes":[
+    let patch=serde_json::json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,"nodes":[
+        {"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"child"},"patcher":{"presentation":null,"nodes":[
             {"id":2,"type":"message_box","x":0,"y":0,"params":{"text":"saved $1 $2"}},
             {"id":3,"type":"number","x":100,"y":0,"params":{"value":0}}
         ],"edges":[]}}
@@ -207,7 +362,7 @@ fn message_box_shared_restore_history_and_child_view_serials() {
 fn integer_number_shared_edits_and_history_keep_runtime_and_tab_independent() {
     let _guard = crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
     let mut registry = Registry::default();
-    let patch = serde_json::json!({"version":2,"profile":"ultra-patcher-v2","nodes":[
+    let patch = serde_json::json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,"nodes":[
         {"id":1,"type":"number_int","x":0,"y":0,"params":{"value":1}},
         {"id":2,"type":"number","x":100,"y":0,"params":{"value":0}},
         {"id":3,"type":"number","x":200,"y":0,"params":{"value":0}}
@@ -239,8 +394,8 @@ fn integer_number_shared_edits_and_history_keep_runtime_and_tab_independent() {
 fn shared_admission_preserves_live_state_and_uses_atomic_hot_numeric_updates() {
     let _guard = crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
     let mut registry = Registry::default();
-    let patch = serde_json::json!({"version":2,"profile":"ultra-patcher-v2","nodes":[
-        {"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"child"},"patcher":{"nodes":[
+    let patch = serde_json::json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,"nodes":[
+        {"id":1,"type":"patcher","x":0,"y":0,"params":{"name":"child"},"patcher":{"presentation":null,"nodes":[
             {"id":2,"type":"number","x":0,"y":0,"params":{"value":1}},
             {"id":3,"type":"number","x":50,"y":0,"params":{"value":0}}
         ],"edges":[{"from":2,"outlet":0,"to":3,"inlet":0}]}}
@@ -305,4 +460,40 @@ fn shared_admission_preserves_live_state_and_uses_atomic_hot_numeric_updates() {
     assert!(replacement.runtime_revision > root.runtime_revision);
     assert_eq!(snapshot(root.id).active, 1);
     assert_eq!(unsafe { crate::ultra_canvas_close_document(root.id) }, 1);
+}
+
+#[test]
+fn saved_presentation_shared_history_and_reopen_preserve_native_runtime_and_receipts(){
+    const NAME:&str="document_windows::commands::tests::saved_presentation_shared_history_and_reopen_preserve_native_runtime_and_receipts";
+    if std::env::var("ULTRA_PRESENTATION_HISTORY_TEST_PROCESS").as_deref()!=Ok("1"){
+        let child=std::process::Command::new(std::env::current_exe().unwrap()).args(["--exact",NAME,"--nocapture"])
+            .env("ULTRA_PRESENTATION_HISTORY_TEST_PROCESS","1").output().unwrap();
+        assert!(child.status.success(),"{}\n{}",String::from_utf8_lossy(&child.stdout),String::from_utf8_lossy(&child.stderr));return;
+    }
+    let _guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+    let mut registry=Registry::default();
+    let root=registry.add("Surface".into(),Kind::Patch,Some(numeric_patch()),None,None).unwrap();
+    registry.get_mut(&root.label).unwrap().id=14;
+    let mut control=canvas::CanvasState::default();
+    let root=registry.prepare_runtime(&root.label,|owner|admit(&mut control,owner,owner.patch.as_ref().unwrap(),None,true)).unwrap();
+    let (child,_)=registry.open_view(&root.label,1).unwrap();
+    let message=control.event(root.runtime_revision,2,0,serde_json::json!([87])).unwrap();
+    assert_eq!(unsafe{crate::ultra_canvas_message_document(root.id,root.runtime_revision,2,0,&message)},1);
+    let native_before=native_numeric_state(root.id);
+    let mut edited=root.patch.clone().unwrap();
+    edited["presentation"]=serde_json::json!({"version":1,"openOnLoad":false,"size":{"width":640,"height":120},"items":[{
+        "id":"value","kind":"control","target":{"kind":"parameter","node":2,"param":"value"},"widget":"number","label":"Value",
+        "rect":{"x":8,"y":8,"width":100,"height":80},"included":true,"visible":true,"style":{"accent":"cyan","labelPosition":"above"}}]});
+    let committed=registry.commit(&child.label,0,edited.clone(),true,|owner,patch|admit(&mut control,owner,patch,None,false)).unwrap().document;
+    assert_eq!(committed.runtime_revision,root.runtime_revision);assert!(committed.dirty);
+    assert_eq!(native_numeric_state(root.id),native_before,"metadata commit reinstalled DSP or reset a live receipt");
+    for (base,direction,expected) in [(1,"undo",root.patch.unwrap()),(2,"redo",edited.clone())]{
+        let result=registry.history(&root.label,base,direction,|owner,patch|admit(&mut control,owner,patch,None,false)).unwrap().document;
+        assert_eq!(result.runtime_revision,root.runtime_revision);assert_eq!(native_numeric_state(root.id),native_before);
+        assert_eq!(registry.descriptor(&child.label).unwrap().patch,Some(expected));
+    }
+    let folder=std::env::temp_dir().join(format!("alive-saved-presentation-{}",std::process::id()));std::fs::create_dir_all(&folder).unwrap();
+    let file=folder.join("saved.ultra");documents::save_patch(&file,&edited).unwrap();
+    assert_eq!(documents::read_patch(&file).unwrap().patch,Some(edited));std::fs::remove_dir_all(folder).unwrap();
+    assert_eq!(unsafe{crate::ultra_canvas_close_document(root.id)},1);
 }

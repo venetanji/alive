@@ -1,0 +1,61 @@
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 05:07:33] "GET /canvas.html HTTP/1.1" 200 -
+
+Running 1 test using 1 worker
+
+(node:2182967) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2182967) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 05:07:36] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 05:07:36] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 05:07:36] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 05:07:36] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 05:07:36] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 05:07:36] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 05:07:36] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 05:07:36] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [27/Oct/2026 05:07:36] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+  ✘  1 alive-chain.spec.mjs:341:1 › Arrangement selection opens Clip detail and piano Delete never deletes its occurrence (7.3s)
+
+
+  1) alive-chain.spec.mjs:341:1 › Arrangement selection opens Clip detail and piano Delete never deletes its occurrence 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator:  locator('#clip-detail')
+    Expected: visible
+    Received: hidden
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('#clip-detail')[22m
+    [2m    9 × locator resolved to <div hidden="" id="clip-detail">…</div>[22m
+    [2m      - unexpected value "hidden"[22m
+
+
+      341 | test('Arrangement selection opens Clip detail and piano Delete never deletes its occurrence',async({page})=>{
+      342 |   await openArrangement(page,{width:1280,height:800});await page.locator('#detail-devices').click();await page.getByRole('button',{name:'Select placement p-0',exact:true}).click();
+    > 343 |   await expect(page.locator('#clip-detail')).toBeVisible();
+          |                                              ^
+      344 |   await page.locator('#piano-roll [data-note="0"][data-part="body"]').click();await page.locator('#piano-roll').press('Delete');
+      345 |   await expect.poll(async()=>(await workspaceEdits(page)).length).toBeGreaterThan(0);expect((await workspaceEdits(page)).map(c=>c.args.operation.kind)).toEqual(['noteDelete']);await expect(page.getByRole('button',{name:'Select placement p-0',exact:true})).toBeVisible();
+      346 | });
+        at /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/ci/alive-chain.spec.mjs:343:46
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results/alive-chain-Arrangement-se-3cb8b-ever-deletes-its-occurrence/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results/alive-chain-Arrangement-se-3cb8b-ever-deletes-its-occurrence/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/alive-chain-Arrangement-se-3cb8b-ever-deletes-its-occurrence/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/alive-chain-Arrangement-se-3cb8b-ever-deletes-its-occurrence/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    alive-chain.spec.mjs:341:1 › Arrangement selection opens Clip detail and piano Delete never deletes its occurrence 

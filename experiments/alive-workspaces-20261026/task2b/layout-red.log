@@ -1,0 +1,251 @@
+apps/ultra/tests/alive_session_v4_layout_test.cpp:4:22: error: ‘AliveSessionTrackV4’ was not declared in this scope; did you mean ‘AliveSessionTrackV3’?
+    4 | static_assert(sizeof(AliveSessionTrackV4) == 64);
+      |                      ^~~~~~~~~~~~~~~~~~~
+      |                      AliveSessionTrackV3
+apps/ultra/tests/alive_session_v4_layout_test.cpp:5:23: error: ‘AliveSessionTrackV4’ was not declared in this scope; did you mean ‘AliveSessionTrackV3’?
+    5 | static_assert(alignof(AliveSessionTrackV4) == 8);
+      |                       ^~~~~~~~~~~~~~~~~~~
+      |                       AliveSessionTrackV3
+In file included from /usr/include/stdio.h:38,
+                 from /usr/include/c++/16/cstdio:47,
+                 from apps/ultra/tests/alive_session_v4_layout_test.cpp:3:
+apps/ultra/tests/alive_session_v4_layout_test.cpp:6:24: error: ‘AliveSessionTrackV4’ does not name a type; did you mean ‘AliveSessionTrackV3’?
+    6 | static_assert(offsetof(AliveSessionTrackV4, effects) == 16);
+      |                        ^~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:7:24: error: ‘AliveSessionTrackV4’ does not name a type; did you mean ‘AliveSessionTrackV3’?
+    7 | static_assert(offsetof(AliveSessionTrackV4, slots) == 24);
+      |                        ^~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:8:24: error: ‘AliveSessionTrackV4’ does not name a type; did you mean ‘AliveSessionTrackV3’?
+    8 | static_assert(offsetof(AliveSessionTrackV4, placement_begin) == 40);
+      |                        ^~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:9:24: error: ‘AliveSessionTrackV4’ does not name a type; did you mean ‘AliveSessionTrackV3’?
+    9 | static_assert(offsetof(AliveSessionTrackV4, gain) == 48);
+      |                        ^~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:10:22: error: ‘AliveSessionSourceV4’ was not declared in this scope; did you mean ‘AliveSessionWorkV3’?
+   10 | static_assert(sizeof(AliveSessionSourceV4) == 104);
+      |                      ^~~~~~~~~~~~~~~~~~~~
+      |                      AliveSessionWorkV3
+apps/ultra/tests/alive_session_v4_layout_test.cpp:11:23: error: ‘AliveSessionSourceV4’ was not declared in this scope; did you mean ‘AliveSessionWorkV3’?
+   11 | static_assert(alignof(AliveSessionSourceV4) == 8);
+      |                       ^~~~~~~~~~~~~~~~~~~~
+      |                       AliveSessionWorkV3
+apps/ultra/tests/alive_session_v4_layout_test.cpp:12:24: error: ‘AliveSessionSourceV4’ does not name a type; did you mean ‘AliveSessionWorkV3’?
+   12 | static_assert(offsetof(AliveSessionSourceV4, length_frames) == 32);
+      |                        ^~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:13:24: error: ‘AliveSessionSourceV4’ does not name a type; did you mean ‘AliveSessionWorkV3’?
+   13 | static_assert(offsetof(AliveSessionSourceV4, owned_masks) == 40);
+      |                        ^~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:14:22: error: ‘AliveSessionSlotV4’ was not declared in this scope; did you mean ‘AliveSessionStateV3’?
+   14 | static_assert(sizeof(AliveSessionSlotV4) == 24);
+      |                      ^~~~~~~~~~~~~~~~~~
+      |                      AliveSessionStateV3
+apps/ultra/tests/alive_session_v4_layout_test.cpp:15:23: error: ‘AliveSessionSlotV4’ was not declared in this scope; did you mean ‘AliveSessionStateV3’?
+   15 | static_assert(alignof(AliveSessionSlotV4) == 8);
+      |                       ^~~~~~~~~~~~~~~~~~
+      |                       AliveSessionStateV3
+apps/ultra/tests/alive_session_v4_layout_test.cpp:16:24: error: ‘AliveSessionSlotV4’ does not name a type; did you mean ‘AliveSessionStateV3’?
+   16 | static_assert(offsetof(AliveSessionSlotV4, source_offset) == 16);
+      |                        ^~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:17:22: error: ‘AliveSessionPlacementV4’ was not declared in this scope; did you mean ‘AliveSessionParameter’?
+   17 | static_assert(sizeof(AliveSessionPlacementV4) == 40);
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~
+      |                      AliveSessionParameter
+apps/ultra/tests/alive_session_v4_layout_test.cpp:18:23: error: ‘AliveSessionPlacementV4’ was not declared in this scope; did you mean ‘AliveSessionParameter’?
+   18 | static_assert(alignof(AliveSessionPlacementV4) == 8);
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~
+      |                       AliveSessionParameter
+apps/ultra/tests/alive_session_v4_layout_test.cpp:19:24: error: ‘AliveSessionPlacementV4’ does not name a type; did you mean ‘AliveSessionParameter’?
+   19 | static_assert(offsetof(AliveSessionPlacementV4, start_frame) == 16);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:20:24: error: ‘AliveSessionPlacementV4’ does not name a type; did you mean ‘AliveSessionParameter’?
+   20 | static_assert(offsetof(AliveSessionPlacementV4, duration_frames) == 24);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:21:24: error: ‘AliveSessionPlacementV4’ does not name a type; did you mean ‘AliveSessionParameter’?
+   21 | static_assert(offsetof(AliveSessionPlacementV4, source_offset) == 32);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:22:22: error: ‘AliveSessionAudioBufferV4’ was not declared in this scope
+   22 | static_assert(sizeof(AliveSessionAudioBufferV4) == 48);
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:23:23: error: ‘AliveSessionAudioBufferV4’ was not declared in this scope
+   23 | static_assert(alignof(AliveSessionAudioBufferV4) == 8);
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:24:24: error: ‘AliveSessionAudioBufferV4’ does not name a type
+   24 | static_assert(offsetof(AliveSessionAudioBufferV4, frames) == 16);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:25:24: error: ‘AliveSessionAudioBufferV4’ does not name a type
+   25 | static_assert(offsetof(AliveSessionAudioBufferV4, sample_count) == 24);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:26:24: error: ‘AliveSessionAudioBufferV4’ does not name a type
+   26 | static_assert(offsetof(AliveSessionAudioBufferV4, samples) == 32);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:27:24: error: ‘AliveSessionAudioBufferV4’ does not name a type
+   27 | static_assert(offsetof(AliveSessionAudioBufferV4, reserved) == 40);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:28:22: error: ‘AliveSessionConfigV4’ was not declared in this scope; did you mean ‘AliveSessionConfigV3’?
+   28 | static_assert(sizeof(AliveSessionConfigV4) == 51160);
+      |                      ^~~~~~~~~~~~~~~~~~~~
+      |                      AliveSessionConfigV3
+apps/ultra/tests/alive_session_v4_layout_test.cpp:29:23: error: ‘AliveSessionConfigV4’ was not declared in this scope; did you mean ‘AliveSessionConfigV3’?
+   29 | static_assert(alignof(AliveSessionConfigV4) == 8);
+      |                       ^~~~~~~~~~~~~~~~~~~~
+      |                       AliveSessionConfigV3
+apps/ultra/tests/alive_session_v4_layout_test.cpp:30:24: error: ‘AliveSessionConfigV4’ does not name a type; did you mean ‘AliveSessionConfigV3’?
+   30 | static_assert(offsetof(AliveSessionConfigV4, preparation_revision) == 48);
+      |                        ^~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:31:24: error: ‘AliveSessionConfigV4’ does not name a type; did you mean ‘AliveSessionConfigV3’?
+   31 | static_assert(offsetof(AliveSessionConfigV4, tempo_bpm) == 80);
+      |                        ^~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:32:24: error: ‘AliveSessionConfigV4’ does not name a type; did you mean ‘AliveSessionConfigV3’?
+   32 | static_assert(offsetof(AliveSessionConfigV4, tracks) == 88);
+      |                        ^~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:33:24: error: ‘AliveSessionConfigV4’ does not name a type; did you mean ‘AliveSessionConfigV3’?
+   33 | static_assert(offsetof(AliveSessionConfigV4, devices) == 600);
+      |                        ^~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:34:24: error: ‘AliveSessionConfigV4’ does not name a type; did you mean ‘AliveSessionConfigV3’?
+   34 | static_assert(offsetof(AliveSessionConfigV4, sources) == 11736);
+      |                        ^~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:35:24: error: ‘AliveSessionConfigV4’ does not name a type; did you mean ‘AliveSessionConfigV3’?
+   35 | static_assert(offsetof(AliveSessionConfigV4, slots) == 15064);
+      |                        ^~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:36:24: error: ‘AliveSessionConfigV4’ does not name a type; did you mean ‘AliveSessionConfigV3’?
+   36 | static_assert(offsetof(AliveSessionConfigV4, placements) == 15832);
+      |                        ^~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:37:24: error: ‘AliveSessionConfigV4’ does not name a type; did you mean ‘AliveSessionConfigV3’?
+   37 | static_assert(offsetof(AliveSessionConfigV4, events) == 18392);
+      |                        ^~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:38:22: error: ‘AliveSessionTrackActionV4’ was not declared in this scope; did you mean ‘AliveSessionTrackActionV3’?
+   38 | static_assert(sizeof(AliveSessionTrackActionV4) == 8);
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |                      AliveSessionTrackActionV3
+apps/ultra/tests/alive_session_v4_layout_test.cpp:39:23: error: ‘AliveSessionTrackActionV4’ was not declared in this scope; did you mean ‘AliveSessionTrackActionV3’?
+   39 | static_assert(alignof(AliveSessionTrackActionV4) == 4);
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~
+      |                       AliveSessionTrackActionV3
+apps/ultra/tests/alive_session_v4_layout_test.cpp:40:24: error: ‘AliveSessionTrackActionV4’ does not name a type; did you mean ‘AliveSessionTrackActionV3’?
+   40 | static_assert(offsetof(AliveSessionTrackActionV4, slot) == 4);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:41:22: error: ‘AliveSessionRequestV4’ was not declared in this scope; did you mean ‘AliveSessionRequestV3’?
+   41 | static_assert(sizeof(AliveSessionRequestV4) == 112);
+      |                      ^~~~~~~~~~~~~~~~~~~~~
+      |                      AliveSessionRequestV3
+apps/ultra/tests/alive_session_v4_layout_test.cpp:42:23: error: ‘AliveSessionRequestV4’ was not declared in this scope; did you mean ‘AliveSessionRequestV3’?
+   42 | static_assert(alignof(AliveSessionRequestV4) == 8);
+      |                       ^~~~~~~~~~~~~~~~~~~~~
+      |                       AliveSessionRequestV3
+apps/ultra/tests/alive_session_v4_layout_test.cpp:43:24: error: ‘AliveSessionRequestV4’ does not name a type; did you mean ‘AliveSessionRequestV3’?
+   43 | static_assert(offsetof(AliveSessionRequestV4, preparation_revision) == 16);
+      |                        ^~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:44:24: error: ‘AliveSessionRequestV4’ does not name a type; did you mean ‘AliveSessionRequestV3’?
+   44 | static_assert(offsetof(AliveSessionRequestV4, tracks) == 48);
+      |                        ^~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:45:22: error: ‘AliveSessionReceiptV4’ was not declared in this scope; did you mean ‘AliveSessionReceiptV3’?
+   45 | static_assert(sizeof(AliveSessionReceiptV4) == 80);
+      |                      ^~~~~~~~~~~~~~~~~~~~~
+      |                      AliveSessionReceiptV3
+apps/ultra/tests/alive_session_v4_layout_test.cpp:46:23: error: ‘AliveSessionReceiptV4’ was not declared in this scope; did you mean ‘AliveSessionReceiptV3’?
+   46 | static_assert(alignof(AliveSessionReceiptV4) == 8);
+      |                       ^~~~~~~~~~~~~~~~~~~~~
+      |                       AliveSessionReceiptV3
+apps/ultra/tests/alive_session_v4_layout_test.cpp:47:24: error: ‘AliveSessionReceiptV4’ does not name a type; did you mean ‘AliveSessionReceiptV3’?
+   47 | static_assert(offsetof(AliveSessionReceiptV4, preparation_revision) == 16);
+      |                        ^~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:48:24: error: ‘AliveSessionReceiptV4’ does not name a type; did you mean ‘AliveSessionReceiptV3’?
+   48 | static_assert(offsetof(AliveSessionReceiptV4, kind) == 48);
+      |                        ^~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:49:24: error: ‘AliveSessionReceiptV4’ does not name a type; did you mean ‘AliveSessionReceiptV3’?
+   49 | static_assert(offsetof(AliveSessionReceiptV4, reserved) == 76);
+      |                        ^~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:50:22: error: ‘AliveSessionWorkV4’ was not declared in this scope; did you mean ‘AliveSessionWorkV3’?
+   50 | static_assert(sizeof(AliveSessionWorkV4) == 48);
+      |                      ^~~~~~~~~~~~~~~~~~
+      |                      AliveSessionWorkV3
+apps/ultra/tests/alive_session_v4_layout_test.cpp:51:23: error: ‘AliveSessionWorkV4’ was not declared in this scope; did you mean ‘AliveSessionWorkV3’?
+   51 | static_assert(alignof(AliveSessionWorkV4) == 8);
+      |                       ^~~~~~~~~~~~~~~~~~
+      |                       AliveSessionWorkV3
+apps/ultra/tests/alive_session_v4_layout_test.cpp:52:24: error: ‘AliveSessionWorkV4’ does not name a type; did you mean ‘AliveSessionWorkV3’?
+   52 | static_assert(offsetof(AliveSessionWorkV4, placement_steps) == 32);
+      |                        ^~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:53:24: error: ‘AliveSessionWorkV4’ does not name a type; did you mean ‘AliveSessionWorkV3’?
+   53 | static_assert(offsetof(AliveSessionWorkV4, sample_reads) == 40);
+      |                        ^~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:54:22: error: ‘AliveSessionLimitsV4’ was not declared in this scope; did you mean ‘AliveSessionLimitsV3’?
+   54 | static_assert(sizeof(AliveSessionLimitsV4) == 352);
+      |                      ^~~~~~~~~~~~~~~~~~~~
+      |                      AliveSessionLimitsV3
+apps/ultra/tests/alive_session_v4_layout_test.cpp:55:23: error: ‘AliveSessionLimitsV4’ was not declared in this scope; did you mean ‘AliveSessionLimitsV3’?
+   55 | static_assert(alignof(AliveSessionLimitsV4) == 8);
+      |                       ^~~~~~~~~~~~~~~~~~~~
+      |                       AliveSessionLimitsV3
+apps/ultra/tests/alive_session_v4_layout_test.cpp:56:24: error: ‘AliveSessionLimitsV4’ does not name a type; did you mean ‘AliveSessionLimitsV3’?
+   56 | static_assert(offsetof(AliveSessionLimitsV4, max_audio_frames) == 80);
+      |                        ^~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:57:24: error: ‘AliveSessionLimitsV4’ does not name a type; did you mean ‘AliveSessionLimitsV3’?
+   57 | static_assert(offsetof(AliveSessionLimitsV4, scheduled_frame) == 104);
+      |                        ^~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:58:24: error: ‘AliveSessionLimitsV4’ does not name a type; did you mean ‘AliveSessionLimitsV3’?
+   58 | static_assert(offsetof(AliveSessionLimitsV4, emergency) == 296);
+      |                        ^~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:59:24: error: ‘AliveSessionLimitsV4’ does not name a type; did you mean ‘AliveSessionLimitsV3’?
+   59 | static_assert(offsetof(AliveSessionLimitsV4, max_sample_reads_frame) == 344);
+      |                        ^~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:60:22: error: ‘AliveSessionDiagnosticV4’ was not declared in this scope; did you mean ‘AliveSessionDiagnosticV3’?
+   60 | static_assert(sizeof(AliveSessionDiagnosticV4) == 152);
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~
+      |                      AliveSessionDiagnosticV3
+apps/ultra/tests/alive_session_v4_layout_test.cpp:61:23: error: ‘AliveSessionDiagnosticV4’ was not declared in this scope; did you mean ‘AliveSessionDiagnosticV3’?
+   61 | static_assert(alignof(AliveSessionDiagnosticV4) == 8);
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~
+      |                       AliveSessionDiagnosticV3
+apps/ultra/tests/alive_session_v4_layout_test.cpp:62:24: error: ‘AliveSessionDiagnosticV4’ does not name a type; did you mean ‘AliveSessionDiagnosticV3’?
+   62 | static_assert(offsetof(AliveSessionDiagnosticV4, frame) == 32);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:63:24: error: ‘AliveSessionDiagnosticV4’ does not name a type; did you mean ‘AliveSessionDiagnosticV3’?
+   63 | static_assert(offsetof(AliveSessionDiagnosticV4, source) == 56);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:64:24: error: ‘AliveSessionDiagnosticV4’ does not name a type; did you mean ‘AliveSessionDiagnosticV3’?
+   64 | static_assert(offsetof(AliveSessionDiagnosticV4, placement) == 88);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:65:24: error: ‘AliveSessionDiagnosticV4’ does not name a type; did you mean ‘AliveSessionDiagnosticV3’?
+   65 | static_assert(offsetof(AliveSessionDiagnosticV4, contribution) == 120);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:66:22: error: ‘AliveSessionTrackStateV4’ was not declared in this scope; did you mean ‘AliveSessionTrackStateV3’?
+   66 | static_assert(sizeof(AliveSessionTrackStateV4) == 104);
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~
+      |                      AliveSessionTrackStateV3
+apps/ultra/tests/alive_session_v4_layout_test.cpp:67:23: error: ‘AliveSessionTrackStateV4’ was not declared in this scope; did you mean ‘AliveSessionTrackStateV3’?
+   67 | static_assert(alignof(AliveSessionTrackStateV4) == 8);
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~
+      |                       AliveSessionTrackStateV3
+apps/ultra/tests/alive_session_v4_layout_test.cpp:68:24: error: ‘AliveSessionTrackStateV4’ does not name a type; did you mean ‘AliveSessionTrackStateV3’?
+   68 | static_assert(offsetof(AliveSessionTrackStateV4, authority) == 40);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:69:24: error: ‘AliveSessionTrackStateV4’ does not name a type; did you mean ‘AliveSessionTrackStateV3’?
+   69 | static_assert(offsetof(AliveSessionTrackStateV4, pending_action) == 56);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:70:24: error: ‘AliveSessionTrackStateV4’ does not name a type; did you mean ‘AliveSessionTrackStateV3’?
+   70 | static_assert(offsetof(AliveSessionTrackStateV4, phase) == 72);
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:71:22: error: ‘AliveSessionStateV4’ was not declared in this scope; did you mean ‘AliveSessionStateV3’?
+   71 | static_assert(sizeof(AliveSessionStateV4) == 16736);
+      |                      ^~~~~~~~~~~~~~~~~~~
+      |                      AliveSessionStateV3
+apps/ultra/tests/alive_session_v4_layout_test.cpp:72:23: error: ‘AliveSessionStateV4’ was not declared in this scope; did you mean ‘AliveSessionStateV3’?
+   72 | static_assert(alignof(AliveSessionStateV4) == 8);
+      |                       ^~~~~~~~~~~~~~~~~~~
+      |                       AliveSessionStateV3
+apps/ultra/tests/alive_session_v4_layout_test.cpp:73:24: error: ‘AliveSessionStateV4’ does not name a type; did you mean ‘AliveSessionStateV3’?
+   73 | static_assert(offsetof(AliveSessionStateV4, absolute_frame) == 64);
+      |                        ^~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:74:24: error: ‘AliveSessionStateV4’ does not name a type; did you mean ‘AliveSessionStateV3’?
+   74 | static_assert(offsetof(AliveSessionStateV4, peak_left) == 144);
+      |                        ^~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:75:24: error: ‘AliveSessionStateV4’ does not name a type; did you mean ‘AliveSessionStateV3’?
+   75 | static_assert(offsetof(AliveSessionStateV4, tracks) == 160);
+      |                        ^~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:76:24: error: ‘AliveSessionStateV4’ does not name a type; did you mean ‘AliveSessionStateV3’?
+   76 | static_assert(offsetof(AliveSessionStateV4, devices) == 992);
+      |                        ^~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/alive_session_v4_layout_test.cpp:77:24: error: ‘AliveSessionStateV4’ does not name a type; did you mean ‘AliveSessionStateV3’?
+   77 | static_assert(offsetof(AliveSessionStateV4, receipts) == 6496);
+      |                        ^~~~~~~~~~~~~~~~~~~

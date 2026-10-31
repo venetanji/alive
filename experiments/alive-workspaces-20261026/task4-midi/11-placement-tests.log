@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: queued placement start resolves unchanged sibling fields at execution
+ok 1 - queued placement start resolves unchanged sibling fields at execution
+  ---
+  duration_ms: 33.838516
+  type: 'test'
+  ...
+# Subtest: queued placement offset resolves unchanged sibling fields at execution
+ok 2 - queued placement offset resolves unchanged sibling fields at execution
+  ---
+  duration_ms: 12.294603
+  type: 'test'
+  ...
+# Subtest: queued placement offset refuses earlier delete without retargeting
+ok 3 - queued placement offset refuses earlier delete without retargeting
+  ---
+  duration_ms: 9.627002
+  type: 'test'
+  ...
+# Subtest: queued placement offset refuses earlier independent without retargeting
+ok 4 - queued placement offset refuses earlier independent without retargeting
+  ---
+  duration_ms: 9.344811
+  type: 'test'
+  ...
+# Subtest: placement sharing, independent copy and occurrence history preserve Session source membership
+ok 5 - placement sharing, independent copy and occurrence history preserve Session source membership
+  ---
+  duration_ms: 21.955629
+  type: 'test'
+  ...
+# Subtest: late placement creation cannot steal a newer track/source selection
+ok 6 - late placement creation cannot steal a newer track/source selection
+  ---
+  duration_ms: 4.892675
+  type: 'test'
+  ...
+# Subtest: Arrangement observes mixed/silent authority and Return members without optimistic updates
+ok 7 - Arrangement observes mixed/silent authority and Return members without optimistic updates
+  ---
+  duration_ms: 4.516737
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 180.836994

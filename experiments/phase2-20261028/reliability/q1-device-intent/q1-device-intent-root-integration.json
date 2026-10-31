@@ -1,0 +1,17 @@
+{
+  "base": "210b37e9ca6900c13bfb6c45f7ee8a050914311a",
+  "candidate": "d13f6e804b7679c8238c8dddc9e7ca10865d0e5e",
+  "command": [
+    "node",
+    "--test",
+    "apps/ultra/ui/alive-dom.test.mjs"
+  ],
+  "exit": 0,
+  "elapsed_seconds": 0.7485303969879169,
+  "log_sha256": "4af8b65baa1a1b498a0f5ea396b937f86e3e8c10b572965386126f4a96cefa3f",
+  "source": {
+    "apps/ultra/ui/alive.mjs": "9c1659438d8b2acc016cce5c1020bc573f4c26003567adab20b362aebfe71656",
+    "apps/ultra/ui/alive-dom.test.mjs": "c5a34f7e06e00b6654a8bbc2abc64d13619a682d127c9c150e4bdca00bb1f5a4"
+  },
+  "limits": "GI-free Node regression only; no native, browser, build or endurance qualification"
+}

@@ -1,0 +1,28 @@
+✖ track addition follows explicitly advertised capacity and retains the legacy fallback (16.096545ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 103.096765
+
+✖ failing tests:
+
+test at apps/ultra/ui/alive-dom.test.mjs:34:1
+✖ track addition follows explicitly advertised capacity and retains the legacy fallback (16.096545ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive-dom.test.mjs:37:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,65 @@
+{
+  "actual_cloud_pilot_head": "0f3776c87b79069e989c5e5be24312ed455ee3ce",
+  "local_source_head": "4326b0bd6ba439566964761e47a7dbc09704a4f8",
+  "changed_paths": [
+    "apps/ultra/tests/windows/master_resolver_fixtures.ps1",
+    "apps/ultra/tests/windows/master_resolver_launcher_diagnostic.ps1"
+  ],
+  "checked_input_objects": [
+    {
+      "path": "apps/alive",
+      "old_object": "f91a6af338a377b379a7be5c93986454163652cf",
+      "new_object": "f91a6af338a377b379a7be5c93986454163652cf",
+      "equal": true
+    },
+    {
+      "path": "apps/ultra/src-tauri",
+      "old_object": "d30eea8ea46be0a5ed57c95e58370cb576edc739",
+      "new_object": "d30eea8ea46be0a5ed57c95e58370cb576edc739",
+      "equal": true
+    },
+    {
+      "path": "apps/ultra/ui",
+      "old_object": "c648190de30f5852b86e56fc4dacbe7e567e7143",
+      "new_object": "c648190de30f5852b86e56fc4dacbe7e567e7143",
+      "equal": true
+    },
+    {
+      "path": "experiments/clockwork-faust",
+      "old_object": "074915f63824667b2e766748e1640c04d7779e8d",
+      "new_object": "074915f63824667b2e766748e1640c04d7779e8d",
+      "equal": true
+    },
+    {
+      "path": "experiments/faust-reference",
+      "old_object": "26c6bf2caa0e9dcb1a4d4ec586f7beace401fce1",
+      "new_object": "26c6bf2caa0e9dcb1a4d4ec586f7beace401fce1",
+      "equal": true
+    },
+    {
+      "path": ".github/workflows/ultra-ci.yml",
+      "old_object": "0c9550d569c386bb172c7e35b7aea4c4fa4736cf",
+      "new_object": "0c9550d569c386bb172c7e35b7aea4c4fa4736cf",
+      "equal": true
+    },
+    {
+      "path": ".github/workflows/ultra-desktop.yml",
+      "old_object": "2a45c2b54f7249177d57ad24ecd91fb45f0af5d2",
+      "new_object": "2a45c2b54f7249177d57ad24ecd91fb45f0af5d2",
+      "equal": true
+    },
+    {
+      "path": "apps/ultra/build.sh",
+      "old_object": "7bcda65fbaa486800c73022c8744c4b4a510e98f",
+      "new_object": "7bcda65fbaa486800c73022c8744c4b4a510e98f",
+      "equal": true
+    },
+    {
+      "path": "apps/ultra/CMakeLists.txt",
+      "old_object": "162800d720a0eb7f97bcff895bec316b2f6093e8",
+      "new_object": "162800d720a0eb7f97bcff895bec316b2f6093e8",
+      "equal": true
+    }
+  ],
+  "qualification": "input equality only; does not change actual pilot attribution or replace its raw audit, projection admission, final-head CI or Windows runtime"
+}

@@ -1,0 +1,84 @@
+{
+  "head": "da7c6fb30c14a42502461a2ef2f4297b075b34ec",
+  "application_source": "f69125cd289365424cd0661975291d8c12a96cac",
+  "ci_run": 40762558922,
+  "package_run": 40762558971,
+  "windows_job": 123078046233,
+  "windows_status": "completed failure;275 passed,9 failed,4 ignored",
+  "other_jobs": "Full CI completed success (all three jobs); Linux and both Mac package targets success; Windows failure; publication skipped.",
+  "cause": "direct/helper anchors resolve but cached production capability false; actual initializer unobserved",
+  "artifacts": [
+    {
+      "path": "windows-report.md",
+      "bytes": 4600,
+      "sha256": "272f21c15293347452ce301ae22bac61e10fedce11d2667264c1dd770687b2fb"
+    },
+    {
+      "path": "windows/job-original.log.gz",
+      "bytes": 36478,
+      "sha256": "3ff9df632fbc98cf5b68e260af3b7140d7f29c03ab3fad776b995c4b59092332",
+      "encoding": "gzip",
+      "decoded_bytes": 158784,
+      "decoded_sha256": "f45ced5d40a6a7bc0a7d0516551d2415ca91c0843443180a700c84ed006988b4",
+      "local_original": ".superpowers/sdd/2026-10-28-phase2-live-max/windows-runner-evidence/job-original.log"
+    },
+    {
+      "path": "windows/job-terminal.json",
+      "bytes": 3937,
+      "sha256": "89b570047e5d521669c9d1244fbd542e584780eabf692e5721c3981e53a9af78"
+    },
+    {
+      "path": "windows/job-view.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "windows/log-fetch-allowed.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "windows/log-fetch.stderr",
+      "bytes": 99,
+      "sha256": "8b6407b2fdbca54bf3d53fb93e79a3560dbe59567fa5044cfee4bed1b5b6e467"
+    },
+    {
+      "path": "windows/status-20261028T2032Z.json",
+      "bytes": 3483,
+      "sha256": "168e874d15362672362fcb6d8041877beeec89a93319d73fe2e774e9ef1fb3a8"
+    },
+    {
+      "path": "windows/status-latest.json",
+      "bytes": 3937,
+      "sha256": "89b570047e5d521669c9d1244fbd542e584780eabf692e5721c3981e53a9af78"
+    },
+    {
+      "path": "windows/view-fetch.stderr",
+      "bytes": 81,
+      "sha256": "e18167b6a2f887b9083394de7689716294ac1f48aec63bcdcede52bfe0a111f0"
+    },
+    {
+      "path": "ci-terminal.json",
+      "bytes": 14438,
+      "sha256": "67195bfbab78cdb778e63eeed952145f8f546030727786da0b7d7af179503993"
+    },
+    {
+      "path": "ci-original.log.gz",
+      "bytes": 223726,
+      "sha256": "1f58e06531812a27541ebf615dffc270d9867878717bbc1c99594f896987e774",
+      "encoding": "gzip",
+      "decoded_bytes": 2778894,
+      "decoded_sha256": "f9e51920751ce8f639b96dfbbc4bbd3b880af3e6fde881056111fca59cf120a4"
+    },
+    {
+      "path": "ci-receipt.json",
+      "bytes": 848,
+      "sha256": "3c090ed87d1bd292d425e78dc92669d0c3d6ac7b337d64ecbbb08c00b2854c87"
+    },
+    {
+      "path": "packages-terminal.json",
+      "bytes": 19721,
+      "sha256": "cdfc8ef9a2cc4c98ee95469680573972762c64749a2724396fa2a7fe19185130"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+import {subtractivePatch,packageInstrument} from '../../apps/ultra/ui/canvas-instrument.mjs';
+const before=subtractivePatch();const after=packageInstrument(before,{id:before.device.id,name:'Renamed synth'});
+console.log(JSON.stringify({evidenceType:'Direct production packaging function; UI handler at canvas-device-panel.mjs:99-101 calls this function for already packaged instruments',steps:['Open supplied subtractive instrument','Open Perform','Enter a new Instrument name','Press Package instrument'],before:{name:before.device.name,presets:before.device.presets.map(p=>p.name)},after:{name:after.device.name,presets:after.device.presets.map(p=>p.name)}},null,2));

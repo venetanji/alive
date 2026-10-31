@@ -1,0 +1,38 @@
+✔ one in flight, reset precedes superseding gain, and second reset is refused (9.027425ms)
+✔ busy retains final gain and one retry timer; generation cancels late work (1.323595ms)
+✔ retry preserves reset ordering and permanent failures never retry (1.833862ms)
+✔ ordinal exhaustion refuses intent without wrapping (0.386365ms)
+✔ malformed receipts are refused and unavailable generation cannot send (0.881624ms)
+✔ permanent gain refusal retains the requested value in visible status (0.477877ms)
+✔ permanent bridge codes do not retry, even if message mentions busy (0.734538ms)
+✔ generation change cancels pending retry and late failure cannot affect new generation (0.646032ms)
+✖ admission receipt must carry a nonzero native serial (1.352879ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 8
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 81.510901
+
+✖ failing tests:
+
+test at apps/ultra/ui/alive-master-producer.test.mjs:76:1
+✖ admission receipt must carry a nonzero native serial (1.352879ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - true
+  
+      at TestContext.<anonymous> (file:///home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/ui/alive-master-producer.test.mjs:78:147)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

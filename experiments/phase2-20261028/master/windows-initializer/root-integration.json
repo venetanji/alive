@@ -1,0 +1,43 @@
+{
+  "base": "da7c6fb30c14a42502461a2ef2f4297b075b34ec",
+  "candidate": "d6acf731e8591cb3937b4e24d9a30ae3d18e67ad",
+  "canonical_patch_sha256": "24e3d3ffaae1274650becfa155d60211ab8047215443cf5f8d762e7e380b7099",
+  "producer_worktree_patch_sha256": "a9a57214fd8195104a307f8cba0379be2708459f5d28356df5d8f78fe93d0f09",
+  "files": {
+    "apps/ultra/src-tauri/src/session/native.rs": "bbbeb91f21d5400c1a78eafb91286e59fcdce4d953bd3bc97638bdb32c709938",
+    "apps/ultra/src-tauri/src/session/native_master.rs": "1fe85578673e443b1424791d6e208746c6c3493b4a0fc303b3e8f637d27b404c"
+  },
+  "checks": [
+    {
+      "command": [
+        "rustfmt",
+        "--edition",
+        "2021",
+        "--emit",
+        "stdout",
+        "apps/ultra/src-tauri/src/session/native.rs"
+      ],
+      "exit": 0,
+      "seconds": 0.024,
+      "stderr": "native-parse.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "rustfmt",
+        "--edition",
+        "2021",
+        "--emit",
+        "stdout",
+        "apps/ultra/src-tauri/src/session/native_master.rs"
+      ],
+      "exit": 0,
+      "seconds": 0.022,
+      "stderr": "native_master-parse.stderr",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "rustfmt": "rustfmt 1.10.0",
+  "qualification": "byte-identical source integration/static parsing only; actual Windows compilation/runtime pending; unchanged pinned Q1 binary inodes/hashes verified",
+  "integration_commit": "3ca670d572aea40061b9d054f3fca48a3f661f1d"
+}

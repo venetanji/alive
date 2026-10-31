@@ -1,0 +1,31 @@
+TAP version 13
+# Subtest: Arrangement gain uses shared mixer state and retains queued track identity
+not ok 1 - Arrangement gain uses shared mixer state and retains queued track identity
+  ---
+  duration_ms: 27.92492
+  type: 'test'
+  location: '/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive-dom.test.mjs:871:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The expression evaluated to a falsy value:
+    
+      assert.ok(gain)
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive-dom.test.mjs:874:110)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+1..1
+# tests 1
+# suites 0
+# pass 0
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 113.879112

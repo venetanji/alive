@@ -39,6 +39,7 @@ fn patcher_path(patch: &Value, id: u32, path: &mut Vec<u32>) -> bool {
 impl Registry {
     pub fn descriptor(&self, label: &str) -> Result<Document, String> {
         let mut document = self.get_open(label)?.clone();
+        document.parameter_previews=document.parameter_previews();
         document.view_title = document.title.clone();
         if let Some(view) = self.views.get(label) {
             document.label = label.into();
@@ -148,6 +149,7 @@ impl Registry {
         crate::canvas::prepare(patch.clone())?;
         let next = base.checked_add(1).ok_or("Authoring revision exhausted")?;
         let publication = owner.descriptor_revision.checked_add(1).ok_or("Descriptor revision exhausted")?;
+        owner.validate_gesture_change(&patch)?;
         let runtime_revision = admit(owner, &patch)?;
         let owner = self.get_mut(label)?;
         if owner.patch.as_ref() != Some(&patch) {
@@ -178,6 +180,7 @@ impl Registry {
         let patch = (*snapshot.patch).clone();
         let next = base.checked_add(1).ok_or("Authoring revision exhausted")?;
         let publication = owner.descriptor_revision.checked_add(1).ok_or("Descriptor revision exhausted")?;
+        owner.validate_gesture_change(&patch)?;
         let runtime_revision = admit(owner, &patch)?;
         let owner = self.get_mut(label)?;
         let previous = Snapshot::new(owner.patch.replace(patch).unwrap());

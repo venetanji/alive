@@ -1,0 +1,8 @@
+Ultra-Software-Output:monitor_FL
+  |-> Ultra-Capture:input_FL
+Ultra-Software-Output:monitor_FR
+  |-> Ultra-Capture:input_FR
+Ultra-Capture:input_FL
+  |<- Ultra-Software-Output:monitor_FL
+Ultra-Capture:input_FR
+  |<- Ultra-Software-Output:monitor_FR

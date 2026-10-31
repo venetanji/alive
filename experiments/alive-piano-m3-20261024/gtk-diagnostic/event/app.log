@@ -1,0 +1,54 @@
+
+This GDB supports auto-downloading debuginfo from the following URLs:
+  <https://debuginfod.archlinux.org>
+Enable debuginfod for this session? (y or [n]) [answered N; input not from terminal]
+Debuginfod has been disabled.
+To make this setting permanent, add 'set debuginfod enabled off' to .gdbinit.
+Function "gtk_widget_event" not defined.
+Breakpoint 1 (gtk_widget_event) pending.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/usr/lib/libthread_db.so.1".
+[Detaching after vfork from child process 820328]
+MESA-EGL: warning: DRI3 error: Could not get DRI3 device
+MESA-EGL: warning: Ensure your X server supports DRI3 to get accelerated rendering
+[Detaching after vfork from child process 820369]
+[Detaching after fork from child process 820435]
+[Detaching after fork from child process 820439]
+
+(alive:820308): Gtk-CRITICAL **: 12:31:47.228: gtk_widget_event: assertion 'WIDGET_REALIZED_FOR_EVENT (widget, event)' failed
+
+Thread 1 "alive" received signal SIGTRAP, Trace/breakpoint trap.
+0x00007ffff396a7a0 in ?? () from /usr/lib/libglib-2.0.so.0
+$1 = 9
+$2 = 47
+$3 = 0x7fffed653357 "GtkFileChooserEntry"
+$4 = 0
+#0  0x00007ffff396a7a0 in ??? () at /usr/lib/libglib-2.0.so.0
+#1  0x00007ffff396acce in g_logv () at /usr/lib/libglib-2.0.so.0
+#2  0x00007ffff396af84 in g_log () at /usr/lib/libglib-2.0.so.0
+#3  0x00007fffed57046b in gtk_widget_event () at /usr/lib/libgtk-3.so.0
+#4  0x00007fffed5984b4 in gtk_window_propagate_key_event () at /usr/lib/libgtk-3.so.0
+#5  0x00007fffed598507 in ??? () at /usr/lib/libgtk-3.so.0
+#6  0x00007fffed273da2 in ??? () at /usr/lib/libgtk-3.so.0
+#7  0x00007ffff3a9b01a in ??? () at /usr/lib/libgobject-2.0.so.0
+#8  0x00007ffff3a9b179 in g_signal_emit_valist () at /usr/lib/libgobject-2.0.so.0
+#9  0x00007ffff3a9b234 in g_signal_emit () at /usr/lib/libgobject-2.0.so.0
+#10 0x00007fffed586dae in ??? () at /usr/lib/libgtk-3.so.0
+#11 0x00007fffed3fcab4 in ??? () at /usr/lib/libgtk-3.so.0
+#12 0x00007fffed3fd797 in gtk_main_do_event () at /usr/lib/libgtk-3.so.0
+#13 0x00007ffff3c3a8fb in ??? () at /usr/lib/libgdk-3.so.0
+#14 0x00007ffff3c9c9f0 in ??? () at /usr/lib/libgdk-3.so.0
+#15 0x00007ffff396375e in ??? () at /usr/lib/libglib-2.0.so.0
+#16 0x00007ffff396cc50 in ??? () at /usr/lib/libglib-2.0.so.0
+#17 0x00007ffff396cdb5 in g_main_context_iteration () at /usr/lib/libglib-2.0.so.0
+#18 0x00007fffed3fad4f in gtk_main_iteration_do () at /usr/lib/libgtk-3.so.0
+#19 0x0000555555b5314b in gtk::auto::functions::main_iteration_do ()
+#20 0x00005555558a59a2 in tao::platform_impl::platform::event_loop::EventLoop<T>::run ()
+#21 0x00005555558e6ee4 in <tauri_runtime_wry::Wry<T> as tauri_runtime::Runtime<T>>::run ()
+#22 0x00005555558351a9 in tauri::app::App<R>::run ()
+#23 0x00005555556f48d0 in ultra_desktop::session::desktop::run ()
+#24 0x0000555555682da7 in ultra_desktop::run_alive ()
+#25 0x00005555556010c3 in std::sys::backtrace::__rust_begin_short_backtrace ()
+#26 0x000055555563f279 in std::rt::lang_start::{{closure}} ()
+#27 0x0000555555be3487 in std::rt::lang_start_internal ()
+#28 0x0000555555650155 in main ()

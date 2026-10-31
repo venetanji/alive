@@ -1,0 +1,65 @@
+{
+  "base": "c511f1441860e77fd7f25810a00ad121a1d7bf9d",
+  "branch": "feat/alive-session-host",
+  "status": " M PRODUCT.md\n M apps/ultra/tests/ci/alive-chain.spec.mjs\n M apps/ultra/ui/alive-dom.test.mjs\n M apps/ultra/ui/alive.css\n M apps/ultra/ui/alive.html\n M apps/ultra/ui/alive.mjs\n?? .impeccable/surfaces/alive-session.md\n?? apps/ultra/ui/alive-workspace.mjs\n",
+  "files": {
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive.html": {
+      "sha256": "ace7591ba86e1aba81c34d6535d8f4bde38b51a1d160e9a4494dd985408ac3f6",
+      "size": 11098
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive.css": {
+      "sha256": "adaac15b57ee7cee339bfb9ed56f11af76a222eca5b9ff436147279527617d92",
+      "size": 20505
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive.mjs": {
+      "sha256": "ac8a67ac6c766b92e7be82b15d5ead7dfa1534f9f15417f26a2fdc6d9e88652d",
+      "size": 55219
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive-workspace.mjs": {
+      "sha256": "757cfe74f8214e4e58d8fe11ce995c210fb3b9716e3e1d57f94af29c65eaddf2",
+      "size": 3854
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/alive": {
+      "sha256": "3107f210e1ea8f1d1d8cba1bb54490c56fb4911b4ca4ed690f150b7512095f79",
+      "size": 13518024
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/ultra": {
+      "sha256": "b26a73b3761a59f44c67c564e46481b8f7418e8a13a4b1420b531b21d918c84a",
+      "size": 17357648
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/libultra_native.so": {
+      "sha256": "4c54e3e0a2e7bf2007a56620d1006658e97b86d5f8828e08f13e9ffd3a1e9e70",
+      "size": 12917760
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_canvas_desktop.sh": {
+      "sha256": "e75bbd94e63ad4fc28476098e2b7bc1f8918c04706c709e7876fd8b47c2df574",
+      "size": 7699
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_desktop.py": {
+      "sha256": "089e0d4e52ae1dbd3ef7121fc52c4e97506c94b63dd8c69854705d52739eb3f4",
+      "size": 44801
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_canvas_desktop.py": {
+      "sha256": "5753440e59f6a5e25b18a9b402e13c8ce0b04176d4694cb82b8314026af39ec5",
+      "size": 42071
+    },
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_documents_desktop.py": {
+      "sha256": "c62b3bd0fb46888761d0a8477d21f1c525680d8ba80ac2c68ceedc5cb052c6ac",
+      "size": 49595
+    },
+    "/tmp/alive-workspaces-task1/native-check.py": {
+      "sha256": "2ca1dd922d4b441e9f84cb8ba72a5f748632921c2be4942c1749749a74ccc6ac",
+      "size": 4544
+    },
+    "/tmp/alive-workspaces-task1/private-desktop.sh": {
+      "sha256": "0dfb4526f198e54e38ba210b3c1611ae50a7336ae3bf6f028ce6a4b0b1c560c0",
+      "size": 7704
+    },
+    "/tmp/alive-workspaces-task1/eight-tracks.alive": {
+      "sha256": "34f915e4814f57e43a20e4173e7d31b0e799fcff97bfd2c4c39f45837a75d6ad",
+      "size": 17486
+    }
+  },
+  "build_command": "bash apps/alive/build.sh",
+  "native_command": "ULTRA_TEST_ALIVE=1 ULTRA_TEST_SCRIPT=/tmp/alive-workspaces-task1/native-check.py ULTRA_TEST_ALIVE_SESSION=/tmp/alive-workspaces-task1/eight-tracks.alive bash /tmp/alive-workspaces-task1/private-desktop.sh /tmp/alive-workspaces-task1/native"
+}

@@ -1,0 +1,70 @@
+{
+  "head": "58057f980afd3365e106433c7102cfc19450c130",
+  "application_source": "f69125cd289365424cd0661975291d8c12a96cac",
+  "ci_run": 40769366285,
+  "package_run": 40769366396,
+  "scope": "Full CI terminal success; Linux and both Mac package targets pass; Windows fails and publication is skipped. Windows original raw log retained separately in windows-anchor evidence.",
+  "artifacts": [
+    {
+      "path": "ci-terminal.json",
+      "bytes": 9873,
+      "sha256": "41096861c8cce44b9569f62db6bec70187cbf8d723e81a736d95cc4f1920fe57",
+      "command": [
+        "gh",
+        "run",
+        "view",
+        "40769366285",
+        "--json",
+        "status,conclusion,headSha,jobs,url"
+      ],
+      "exit": 0
+    },
+    {
+      "path": "ci-original.log.gz",
+      "bytes": 219146,
+      "sha256": "5bb9c311bcdc76d327ff37b84cdafa0534939603fe1036e193e2a509b3df102b",
+      "command": [
+        "gh",
+        "run",
+        "view",
+        "40769366285",
+        "--log"
+      ],
+      "exit": 0,
+      "encoding": "gzip",
+      "decoded_bytes": 2716856,
+      "decoded_sha256": "cdb74e063070b379e42209d7dfc1298c56043da72ab6094633ab8e7d7dc3940b",
+      "representation": "gh run view --log rendering; not a raw provider log"
+    },
+    {
+      "path": "windows-job-terminal.json",
+      "bytes": 3937,
+      "sha256": "75a220166769b3353b3f97b255e6b9d7f0ffa5013a7f42df363344edec969fa4",
+      "command": [
+        "gh",
+        "api",
+        "repos/venetanji/alive/actions/jobs/123102065627"
+      ],
+      "exit": 0
+    },
+    {
+      "path": "packages-terminal.json",
+      "bytes": 13471,
+      "sha256": "a71aa0e7166d579605d46c62faed446d76c64a113fdf1ac19e4a81b8477ac272",
+      "command": [
+        "gh",
+        "run",
+        "view",
+        "40769366396",
+        "--json",
+        "status,conclusion,headSha,jobs,url"
+      ],
+      "exit": 0
+    },
+    {
+      "path": "README.md",
+      "bytes": 1465,
+      "sha256": "896dd467d56e5e42716a752d692d40af952f12a77dbb3fdaefccaf4aff17f29b"
+    }
+  ]
+}

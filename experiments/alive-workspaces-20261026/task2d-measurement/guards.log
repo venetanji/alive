@@ -1,0 +1,430 @@
+FIXTURE name=session profile=1 tracks=2 roots=6 sources=2 slots=1 placements=0 events=1 admitted=0 prep_ms=8.934016 resource=2 observed=21 limit=18
+FIXTURE name=dense_session profile=1 tracks=2 roots=6 sources=2 slots=2 placements=0 events=2 admitted=0 prep_ms=8.697100 resource=2 observed=24 limit=18
+FIXTURE name=arrangement profile=1 tracks=2 roots=6 sources=2 slots=1 placements=1 events=1 admitted=0 prep_ms=10.623707 resource=2 observed=24 limit=18
+FIXTURE name=suffix_min profile=1 tracks=2 roots=6 sources=2 slots=1 placements=1 events=1 admitted=0 prep_ms=10.501787 resource=2 observed=24 limit=18
+FIXTURE name=song profile=1 tracks=2 roots=6 sources=2 slots=1 placements=3 events=1 admitted=0 prep_ms=14.165032 resource=2 observed=24 limit=18
+FIXTURE name=storage profile=1 tracks=2 roots=6 sources=8 slots=8 placements=16 events=1024 admitted=0 prep_ms=32.198846 resource=2 observed=30 limit=18
+FIXTURE name=idle profile=1 tracks=2 roots=6 sources=2 slots=0 placements=0 events=1 admitted=1 prep_ms=8.560383 resource=0 observed=0 limit=0
+PREPARATION fixture=idle-p1-t2-r6-saved-prep700014 configure_ms=9.071104 peak_rss_kib=21228
+TIMING case=saved_idle profile=1 frames=1 samples=20 sounding=0 voices=0 mean_us=8.685800 p99_us=9.077000 p999_us=9.077000 max_us=9.267000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_idle profile=1 frames=31 samples=20 sounding=0 voices=0 mean_us=55.044050 p99_us=85.871000 p999_us=85.871000 max_us=95.219000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_idle profile=1 frames=64 samples=20 sounding=0 voices=0 mean_us=91.818800 p99_us=96.351000 p999_us=96.351000 max_us=99.717000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_idle profile=1 frames=128 samples=20 sounding=0 voices=0 mean_us=175.871450 p99_us=181.632000 p999_us=181.632000 max_us=182.453000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_idle profile=1 frames=256 samples=20 sounding=0 voices=0 mean_us=349.494700 p99_us=369.946000 p999_us=369.946000 max_us=379.374000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_idle profile=1 frames=512 samples=20 sounding=0 voices=0 mean_us=691.557350 p99_us=746.876000 p999_us=746.876000 max_us=759.179000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_idle profile=1 frames=1024 samples=20 sounding=0 voices=0 mean_us=1361.521200 p99_us=1423.319000 p999_us=1423.319000 max_us=1491.658000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=session profile=1 tracks=2 roots=3 sources=2 slots=1 placements=0 events=1 admitted=1 prep_ms=8.597513 resource=0 observed=0 limit=0
+PREPARATION fixture=session-p1-t2-r3-saved-prep700016 configure_ms=8.885545 peak_rss_kib=132280
+TIMING case=saved_session profile=1 frames=1 samples=20 sounding=1 voices=1 mean_us=8.344450 p99_us=8.556000 p999_us=8.556000 max_us=8.667000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_session profile=1 frames=31 samples=20 sounding=1 voices=1 mean_us=42.003450 p99_us=54.613000 p999_us=54.613000 max_us=64.000000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_session profile=1 frames=64 samples=20 sounding=1 voices=1 mean_us=71.113300 p99_us=79.259000 p999_us=79.259000 max_us=81.182000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_session profile=1 frames=128 samples=20 sounding=1 voices=1 mean_us=133.546800 p99_us=140.043000 p999_us=140.043000 max_us=142.659000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_session profile=1 frames=256 samples=20 sounding=1 voices=1 mean_us=261.217800 p99_us=276.230000 p999_us=276.230000 max_us=311.286000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_session profile=1 frames=512 samples=20 sounding=1 voices=1 mean_us=507.025300 p99_us=513.466000 p999_us=513.466000 max_us=514.478000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_session profile=1 frames=1024 samples=20 sounding=1 voices=1 mean_us=1014.458100 p99_us=1033.376000 p999_us=1033.376000 max_us=1082.968000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=arrangement profile=1 tracks=2 roots=3 sources=2 slots=1 placements=1 events=1 admitted=1 prep_ms=10.612175 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p1-t2-r3-saved-prep700018 configure_ms=10.910787 peak_rss_kib=133132
+TIMING case=saved_arrangement profile=1 frames=1 samples=20 sounding=1 voices=1 mean_us=8.688800 p99_us=8.816000 p999_us=8.816000 max_us=14.498000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_arrangement profile=1 frames=31 samples=20 sounding=1 voices=1 mean_us=38.409650 p99_us=43.542000 p999_us=43.542000 max_us=46.407000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_arrangement profile=1 frames=64 samples=20 sounding=1 voices=1 mean_us=70.231200 p99_us=73.338000 p999_us=73.338000 max_us=75.161000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_arrangement profile=1 frames=128 samples=20 sounding=1 voices=1 mean_us=132.407200 p99_us=136.788000 p999_us=136.788000 max_us=142.628000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_arrangement profile=1 frames=256 samples=20 sounding=1 voices=1 mean_us=255.711400 p99_us=261.592000 p999_us=261.592000 max_us=262.394000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_arrangement profile=1 frames=512 samples=20 sounding=1 voices=1 mean_us=506.916550 p99_us=526.721000 p999_us=526.721000 max_us=531.360000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_arrangement profile=1 frames=1024 samples=20 sounding=1 voices=1 mean_us=1000.278150 p99_us=1006.294000 p999_us=1006.294000 max_us=1014.189000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=suffix_min profile=1 tracks=2 roots=3 sources=2 slots=1 placements=1 events=1 admitted=1 prep_ms=10.543295 resource=0 observed=0 limit=0
+PREPARATION fixture=suffix_min-p1-t2-r3-saved-prep700020 configure_ms=10.600413 peak_rss_kib=133144
+TIMING case=saved_suffix_min profile=1 frames=1 samples=20 sounding=1 voices=1 mean_us=8.792000 p99_us=8.496000 p999_us=8.496000 max_us=17.864000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_suffix_min profile=1 frames=31 samples=20 sounding=1 voices=1 mean_us=44.510300 p99_us=70.683000 p999_us=70.683000 max_us=81.243000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_suffix_min profile=1 frames=64 samples=20 sounding=1 voices=1 mean_us=74.866900 p99_us=81.844000 p999_us=81.844000 max_us=95.349000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_suffix_min profile=1 frames=128 samples=20 sounding=1 voices=1 mean_us=141.355600 p99_us=150.564000 p999_us=150.564000 max_us=150.733000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_suffix_min profile=1 frames=256 samples=20 sounding=1 voices=1 mean_us=274.878800 p99_us=290.847000 p999_us=290.847000 max_us=299.483000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_suffix_min profile=1 frames=512 samples=20 sounding=1 voices=1 mean_us=541.649450 p99_us=556.437000 p999_us=556.437000 max_us=557.960000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_suffix_min profile=1 frames=1024 samples=20 sounding=1 voices=1 mean_us=1082.270000 p99_us=1107.915000 p999_us=1107.915000 max_us=1126.500000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=song profile=1 tracks=2 roots=3 sources=2 slots=1 placements=3 events=1 admitted=1 prep_ms=12.607090 resource=0 observed=0 limit=0
+PREPARATION fixture=song-p1-t2-r3-saved-prep700022 configure_ms=12.443642 peak_rss_kib=133144
+TIMING case=saved_song profile=1 frames=1 samples=20 sounding=0 voices=0 mean_us=8.299700 p99_us=8.476000 p999_us=8.476000 max_us=13.245000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_song profile=1 frames=31 samples=20 sounding=1 voices=1 mean_us=29.898200 p99_us=42.460000 p999_us=42.460000 max_us=46.237000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_song profile=1 frames=64 samples=20 sounding=1 voices=1 mean_us=70.040850 p99_us=70.683000 p999_us=70.683000 max_us=75.172000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_song profile=1 frames=128 samples=20 sounding=1 voices=1 mean_us=123.254500 p99_us=140.855000 p999_us=140.855000 max_us=142.999000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_song profile=1 frames=256 samples=20 sounding=1 voices=1 mean_us=223.330400 p99_us=236.906000 p999_us=236.906000 max_us=242.927000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_song profile=1 frames=512 samples=20 sounding=1 voices=1 mean_us=437.215400 p99_us=457.761000 p999_us=457.761000 max_us=462.891000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_song profile=1 frames=1024 samples=20 sounding=1 voices=1 mean_us=868.069000 p99_us=878.123000 p999_us=878.123000 max_us=883.383000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=storage profile=1 tracks=2 roots=3 sources=8 slots=8 placements=16 events=1024 admitted=1 prep_ms=31.898391 resource=0 observed=0 limit=0
+PREPARATION fixture=storage-p1-t2-r3-saved-prep700024 configure_ms=32.211090 peak_rss_kib=133156
+TIMING case=saved_storage profile=1 frames=1 samples=20 sounding=2 voices=2 mean_us=8.398900 p99_us=8.577000 p999_us=8.577000 max_us=8.707000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_storage profile=1 frames=31 samples=20 sounding=2 voices=2 mean_us=40.175050 p99_us=45.054000 p999_us=45.054000 max_us=52.259000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_storage profile=1 frames=64 samples=20 sounding=2 voices=2 mean_us=74.197300 p99_us=76.074000 p999_us=76.074000 max_us=82.927000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_storage profile=1 frames=128 samples=20 sounding=2 voices=2 mean_us=140.042500 p99_us=144.201000 p999_us=144.201000 max_us=146.626000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_storage profile=1 frames=256 samples=20 sounding=2 voices=2 mean_us=256.447650 p99_us=275.388000 p999_us=275.388000 max_us=276.350000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_storage profile=1 frames=512 samples=20 sounding=2 voices=2 mean_us=310.249450 p99_us=475.755000 p999_us=475.755000 max_us=540.758000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_storage profile=1 frames=1024 samples=20 sounding=2 voices=2 mean_us=819.350200 p99_us=1060.095000 p999_us=1060.095000 max_us=1062.961000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=idle profile=1 tracks=2 roots=6 sources=2 slots=0 placements=0 events=1 admitted=1 prep_ms=10.535491 resource=0 observed=0 limit=0
+PREPARATION fixture=idle-p1-t2-r6-extended-prep700026 configure_ms=11.849053 peak_rss_kib=133272
+TIMING case=extended_idle profile=1 frames=1 samples=20 sounding=0 voices=0 mean_us=11.729150 p99_us=13.756000 p999_us=13.756000 max_us=19.597000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_idle profile=1 frames=31 samples=20 sounding=0 voices=0 mean_us=99.938100 p99_us=104.607000 p999_us=104.607000 max_us=105.840000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_idle profile=1 frames=64 samples=20 sounding=0 voices=0 mean_us=198.123550 p99_us=205.437000 p999_us=205.437000 max_us=206.519000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_idle profile=1 frames=128 samples=20 sounding=0 voices=0 mean_us=388.014850 p99_us=393.481000 p999_us=393.481000 max_us=406.295000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_idle profile=1 frames=256 samples=20 sounding=0 voices=0 mean_us=765.362200 p99_us=771.012000 p999_us=771.012000 max_us=771.723000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_idle profile=1 frames=512 samples=20 sounding=0 voices=0 mean_us=1523.894300 p99_us=1539.498000 p999_us=1539.498000 max_us=1577.780000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_idle profile=1 frames=1024 samples=20 sounding=0 voices=0 mean_us=3031.923750 p99_us=3036.966000 p999_us=3036.966000 max_us=3078.074000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=session profile=1 tracks=2 roots=3 sources=2 slots=1 placements=0 events=1 admitted=1 prep_ms=9.410623 resource=0 observed=0 limit=0
+PREPARATION fixture=session-p1-t2-r3-extended-prep700028 configure_ms=10.110060 peak_rss_kib=133272
+TIMING case=extended_session profile=1 frames=1 samples=20 sounding=1 voices=1 mean_us=9.647150 p99_us=9.648000 p999_us=9.648000 max_us=16.611000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_session profile=1 frames=31 samples=20 sounding=1 voices=1 mean_us=61.859350 p99_us=68.428000 p999_us=68.428000 max_us=75.843000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_session profile=1 frames=64 samples=20 sounding=1 voices=1 mean_us=120.448750 p99_us=142.228000 p999_us=142.228000 max_us=146.957000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_session profile=1 frames=128 samples=20 sounding=1 voices=1 mean_us=224.973600 p99_us=231.806000 p999_us=231.806000 max_us=234.862000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_session profile=1 frames=256 samples=20 sounding=1 voices=1 mean_us=441.253050 p99_us=444.928000 p999_us=444.928000 max_us=445.408000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_session profile=1 frames=512 samples=20 sounding=1 voices=1 mean_us=875.014050 p99_us=878.885000 p999_us=878.885000 max_us=879.726000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_session profile=1 frames=1024 samples=20 sounding=1 voices=1 mean_us=1743.287350 p99_us=1750.254000 p999_us=1750.254000 max_us=1761.706000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=arrangement profile=1 tracks=2 roots=3 sources=2 slots=1 placements=1 events=1 admitted=1 prep_ms=11.424694 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p1-t2-r3-extended-prep700030 configure_ms=12.113360 peak_rss_kib=133272
+TIMING case=extended_arrangement profile=1 frames=1 samples=20 sounding=1 voices=1 mean_us=9.231900 p99_us=9.528000 p999_us=9.528000 max_us=9.628000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_arrangement profile=1 frames=31 samples=20 sounding=1 voices=1 mean_us=61.134050 p99_us=65.503000 p999_us=65.503000 max_us=70.894000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_arrangement profile=1 frames=64 samples=20 sounding=1 voices=1 mean_us=117.094450 p99_us=123.012000 p999_us=123.012000 max_us=123.212000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_arrangement profile=1 frames=128 samples=20 sounding=1 voices=1 mean_us=225.486050 p99_us=230.314000 p999_us=230.314000 max_us=234.542000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_arrangement profile=1 frames=256 samples=20 sounding=1 voices=1 mean_us=442.688700 p99_us=446.110000 p999_us=446.110000 max_us=446.120000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_arrangement profile=1 frames=512 samples=20 sounding=1 voices=1 mean_us=881.307800 p99_us=889.545000 p999_us=889.545000 max_us=890.686000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_arrangement profile=1 frames=1024 samples=20 sounding=1 voices=1 mean_us=1757.642350 p99_us=1768.599000 p999_us=1768.599000 max_us=1769.311000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=suffix_min profile=1 tracks=2 roots=3 sources=2 slots=1 placements=1 events=1 admitted=1 prep_ms=11.372105 resource=0 observed=0 limit=0
+PREPARATION fixture=suffix_min-p1-t2-r3-extended-prep700032 configure_ms=12.174155 peak_rss_kib=133272
+TIMING case=extended_suffix_min profile=1 frames=1 samples=20 sounding=1 voices=1 mean_us=9.246500 p99_us=9.488000 p999_us=9.488000 max_us=9.648000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_suffix_min profile=1 frames=31 samples=20 sounding=1 voices=1 mean_us=63.046600 p99_us=70.072000 p999_us=70.072000 max_us=80.702000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_suffix_min profile=1 frames=64 samples=20 sounding=1 voices=1 mean_us=123.064100 p99_us=138.270000 p999_us=138.270000 max_us=140.665000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_suffix_min profile=1 frames=128 samples=20 sounding=1 voices=1 mean_us=236.122450 p99_us=243.408000 p999_us=243.408000 max_us=266.813000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_suffix_min profile=1 frames=256 samples=20 sounding=1 voices=1 mean_us=461.364400 p99_us=475.235000 p999_us=475.235000 max_us=478.561000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_suffix_min profile=1 frames=512 samples=20 sounding=1 voices=1 mean_us=915.462550 p99_us=921.966000 p999_us=921.966000 max_us=932.555000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_suffix_min profile=1 frames=1024 samples=20 sounding=1 voices=1 mean_us=1822.659750 p99_us=1841.175000 p999_us=1841.175000 max_us=1842.769000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=song profile=1 tracks=2 roots=3 sources=2 slots=1 placements=3 events=1 admitted=1 prep_ms=13.247274 resource=0 observed=0 limit=0
+PREPARATION fixture=song-p1-t2-r3-extended-prep700034 configure_ms=13.829240 peak_rss_kib=133312
+TIMING case=extended_song profile=1 frames=1 samples=20 sounding=0 voices=0 mean_us=8.500550 p99_us=8.826000 p999_us=8.826000 max_us=8.827000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_song profile=1 frames=31 samples=20 sounding=1 voices=1 mean_us=42.202900 p99_us=65.053000 p999_us=65.053000 max_us=72.897000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_song profile=1 frames=64 samples=20 sounding=1 voices=1 mean_us=117.262200 p99_us=125.436000 p999_us=125.436000 max_us=129.664000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_song profile=1 frames=128 samples=20 sounding=1 voices=1 mean_us=203.313650 p99_us=229.933000 p999_us=229.933000 max_us=231.025000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_song profile=1 frames=256 samples=20 sounding=1 voices=1 mean_us=367.036800 p99_us=387.239000 p999_us=387.239000 max_us=387.268000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_song profile=1 frames=512 samples=20 sounding=1 voices=1 mean_us=724.280350 p99_us=743.479000 p999_us=743.479000 max_us=745.343000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_song profile=1 frames=1024 samples=20 sounding=1 voices=1 mean_us=1444.891750 p99_us=1458.625000 p999_us=1458.625000 max_us=1461.461000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=storage profile=1 tracks=2 roots=3 sources=8 slots=8 placements=16 events=1024 admitted=1 prep_ms=36.486587 resource=0 observed=0 limit=0
+PREPARATION fixture=storage-p1-t2-r3-extended-prep700036 configure_ms=37.340004 peak_rss_kib=133312
+TIMING case=extended_storage profile=1 frames=1 samples=20 sounding=2 voices=2 mean_us=9.370600 p99_us=9.668000 p999_us=9.668000 max_us=9.789000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_storage profile=1 frames=31 samples=20 sounding=2 voices=2 mean_us=64.023450 p99_us=68.649000 p999_us=68.649000 max_us=75.472000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_storage profile=1 frames=64 samples=20 sounding=2 voices=2 mean_us=122.034300 p99_us=122.771000 p999_us=122.771000 max_us=126.619000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_storage profile=1 frames=128 samples=20 sounding=2 voices=2 mean_us=245.837200 p99_us=298.051000 p999_us=298.051000 max_us=319.792000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_storage profile=1 frames=256 samples=20 sounding=2 voices=2 mean_us=433.978800 p99_us=472.059000 p999_us=472.059000 max_us=472.299000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_storage profile=1 frames=512 samples=20 sounding=2 voices=2 mean_us=390.159300 p99_us=769.479000 p999_us=769.479000 max_us=925.632000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_storage profile=1 frames=1024 samples=20 sounding=2 voices=2 mean_us=1277.436900 p99_us=1852.337000 p999_us=1852.337000 max_us=1852.858000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=arrangement profile=1 tracks=2 roots=3 sources=2 slots=1 placements=1 events=1 admitted=1 prep_ms=11.440855 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p1-t2-r3-extended-prep700038 configure_ms=12.039391 peak_rss_kib=133568
+TIMING case=return_burst64 profile=1 frames=1 samples=20 sounding=1 voices=1 mean_us=11.284500 p99_us=11.282000 p999_us=11.282000 max_us=18.074000 overruns=0 refused_seek_callbacks=0
+TIMING case=seek_retained_history profile=1 frames=1 samples=20 sounding=1 voices=1 mean_us=12.459000 p99_us=16.671000 p999_us=16.671000 max_us=66.344000 overruns=1 refused_seek_callbacks=19
+FIXTURE name=arrangement profile=1 tracks=2 roots=3 sources=2 slots=1 placements=1 events=1 admitted=1 prep_ms=11.411449 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p1-t2-r3-extended-prep700039 configure_ms=12.093964 peak_rss_kib=133636
+TIMING case=full_queue_reserved_stop profile=1 frames=1 samples=20 sounding=0 voices=0 mean_us=20.562550 p99_us=21.470000 p999_us=21.470000 max_us=22.292000 overruns=2 refused_seek_callbacks=0
+FIXTURE name=arrangement profile=1 tracks=2 roots=3 sources=2 slots=1 placements=1 events=1 admitted=1 prep_ms=11.401550 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p1-t2-r3-extended-prep700040 configure_ms=12.044530 peak_rss_kib=133648
+TIMING case=return_burst64 profile=1 frames=31 samples=20 sounding=1 voices=1 mean_us=63.085650 p99_us=69.260000 p999_us=69.260000 max_us=81.403000 overruns=0 refused_seek_callbacks=0
+TIMING case=seek_retained_history profile=1 frames=31 samples=20 sounding=1 voices=1 mean_us=60.116700 p99_us=93.857000 p999_us=93.857000 max_us=123.312000 overruns=0 refused_seek_callbacks=19
+FIXTURE name=arrangement profile=1 tracks=2 roots=3 sources=2 slots=1 placements=1 events=1 admitted=1 prep_ms=12.169476 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p1-t2-r3-extended-prep700041 configure_ms=12.105376 peak_rss_kib=133668
+TIMING case=full_queue_reserved_stop profile=1 frames=31 samples=20 sounding=0 voices=0 mean_us=52.303550 p99_us=55.064000 p999_us=55.064000 max_us=79.339000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=arrangement profile=1 tracks=2 roots=3 sources=2 slots=1 placements=1 events=1 admitted=1 prep_ms=11.445693 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p1-t2-r3-extended-prep700042 configure_ms=12.044591 peak_rss_kib=133668
+TIMING case=return_burst64 profile=1 frames=64 samples=20 sounding=1 voices=1 mean_us=119.505300 p99_us=124.935000 p999_us=124.935000 max_us=128.602000 overruns=0 refused_seek_callbacks=0
+TIMING case=seek_retained_history profile=1 frames=64 samples=20 sounding=1 voices=1 mean_us=100.490750 p99_us=129.284000 p999_us=129.284000 max_us=133.692000 overruns=0 refused_seek_callbacks=18
+FIXTURE name=arrangement profile=1 tracks=2 roots=3 sources=2 slots=1 placements=1 events=1 admitted=1 prep_ms=11.546023 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p1-t2-r3-extended-prep700043 configure_ms=12.168975 peak_rss_kib=133668
+TIMING case=full_queue_reserved_stop profile=1 frames=64 samples=20 sounding=0 voices=0 mean_us=83.067750 p99_us=88.146000 p999_us=88.146000 max_us=92.895000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=arrangement profile=1 tracks=2 roots=3 sources=2 slots=1 placements=1 events=1 admitted=1 prep_ms=11.398094 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p1-t2-r3-extended-prep700044 configure_ms=12.025274 peak_rss_kib=133668
+TIMING case=return_burst64 profile=1 frames=128 samples=20 sounding=1 voices=1 mean_us=228.460950 p99_us=231.295000 p999_us=231.295000 max_us=232.037000 overruns=0 refused_seek_callbacks=0
+TIMING case=seek_retained_history profile=1 frames=128 samples=20 sounding=1 voices=1 mean_us=191.957900 p99_us=222.770000 p999_us=222.770000 max_us=224.703000 overruns=0 refused_seek_callbacks=17
+FIXTURE name=arrangement profile=1 tracks=2 roots=3 sources=2 slots=1 placements=1 events=1 admitted=1 prep_ms=11.377525 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p1-t2-r3-extended-prep700045 configure_ms=12.039311 peak_rss_kib=133668
+TIMING case=full_queue_reserved_stop profile=1 frames=128 samples=20 sounding=0 voices=0 mean_us=144.499450 p99_us=149.271000 p999_us=149.271000 max_us=151.756000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=arrangement profile=1 tracks=2 roots=3 sources=2 slots=1 placements=1 events=1 admitted=1 prep_ms=11.393796 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p1-t2-r3-extended-prep700046 configure_ms=12.128740 peak_rss_kib=133668
+TIMING case=return_burst64 profile=1 frames=256 samples=20 sounding=1 voices=1 mean_us=450.329550 p99_us=459.445000 p999_us=459.445000 max_us=460.177000 overruns=0 refused_seek_callbacks=0
+TIMING case=seek_retained_history profile=1 frames=256 samples=20 sounding=1 voices=1 mean_us=377.234500 p99_us=413.829000 p999_us=413.829000 max_us=478.060000 overruns=0 refused_seek_callbacks=15
+FIXTURE name=arrangement profile=1 tracks=2 roots=3 sources=2 slots=1 placements=1 events=1 admitted=1 prep_ms=11.405368 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p1-t2-r3-extended-prep700047 configure_ms=12.041134 peak_rss_kib=133668
+TIMING case=full_queue_reserved_stop profile=1 frames=256 samples=20 sounding=0 voices=0 mean_us=273.141200 p99_us=283.183000 p999_us=283.183000 max_us=331.133000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=arrangement profile=1 tracks=2 roots=3 sources=2 slots=1 placements=1 events=1 admitted=1 prep_ms=11.396461 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p1-t2-r3-extended-prep700048 configure_ms=12.116056 peak_rss_kib=133668
+TIMING case=return_burst64 profile=1 frames=512 samples=20 sounding=1 voices=1 mean_us=888.264900 p99_us=892.199000 p999_us=892.199000 max_us=893.652000 overruns=0 refused_seek_callbacks=0
+TIMING case=seek_retained_history profile=1 frames=512 samples=20 sounding=1 voices=1 mean_us=733.742650 p99_us=753.007000 p999_us=753.007000 max_us=760.361000 overruns=0 refused_seek_callbacks=10
+FIXTURE name=arrangement profile=1 tracks=2 roots=3 sources=2 slots=1 placements=1 events=1 admitted=1 prep_ms=11.389838 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p1-t2-r3-extended-prep700049 configure_ms=12.106277 peak_rss_kib=133668
+TIMING case=full_queue_reserved_stop profile=1 frames=512 samples=20 sounding=0 voices=0 mean_us=518.797150 p99_us=534.065000 p999_us=534.065000 max_us=545.206000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=arrangement profile=1 tracks=2 roots=3 sources=2 slots=1 placements=1 events=1 admitted=1 prep_ms=11.384829 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p1-t2-r3-extended-prep700050 configure_ms=12.065811 peak_rss_kib=133668
+TIMING case=return_burst64 profile=1 frames=1024 samples=20 sounding=1 voices=1 mean_us=1766.026150 p99_us=1773.568000 p999_us=1773.568000 max_us=1781.494000 overruns=0 refused_seek_callbacks=0
+TIMING case=seek_retained_history profile=1 frames=1024 samples=20 sounding=1 voices=1 mean_us=1463.137500 p99_us=1468.174000 p999_us=1468.174000 max_us=1470.548000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=arrangement profile=1 tracks=2 roots=3 sources=2 slots=1 placements=1 events=1 admitted=1 prep_ms=12.085669 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p1-t2-r3-extended-prep700051 configure_ms=12.053869 peak_rss_kib=133668
+TIMING case=full_queue_reserved_stop profile=1 frames=1024 samples=20 sounding=0 voices=0 mean_us=1014.946550 p99_us=1024.138000 p999_us=1024.138000 max_us=1034.528000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=pool_max profile=1 tracks=2 roots=6 sources=8 slots=0 placements=0 events=1024 admitted=1 prep_ms=16.286736 resource=0 observed=0 limit=0
+PREPARATION fixture=pool_max-p1-t2-r6-extended-prep700053 configure_ms=17.586622 peak_rss_kib=133924
+TIMING case=full_roots_source_event_pools profile=1 frames=1 samples=20 sounding=0 voices=0 mean_us=11.023800 p99_us=11.411000 p999_us=11.411000 max_us=11.552000 overruns=0 refused_seek_callbacks=0
+TIMING case=full_roots_source_event_pools profile=1 frames=31 samples=20 sounding=0 voices=0 mean_us=100.490650 p99_us=110.297000 p999_us=110.297000 max_us=110.478000 overruns=0 refused_seek_callbacks=0
+TIMING case=full_roots_source_event_pools profile=1 frames=64 samples=20 sounding=0 voices=0 mean_us=197.334500 p99_us=202.141000 p999_us=202.141000 max_us=203.743000 overruns=0 refused_seek_callbacks=0
+TIMING case=full_roots_source_event_pools profile=1 frames=128 samples=20 sounding=0 voices=0 mean_us=387.018550 p99_us=397.949000 p999_us=397.949000 max_us=398.871000 overruns=0 refused_seek_callbacks=0
+TIMING case=full_roots_source_event_pools profile=1 frames=256 samples=20 sounding=0 voices=0 mean_us=763.813800 p99_us=767.936000 p999_us=767.936000 max_us=784.938000 overruns=0 refused_seek_callbacks=0
+TIMING case=full_roots_source_event_pools profile=1 frames=512 samples=20 sounding=0 voices=0 mean_us=1523.020400 p99_us=1535.561000 p999_us=1535.561000 max_us=1554.386000 overruns=0 refused_seek_callbacks=0
+TIMING case=full_roots_source_event_pools profile=1 frames=1024 samples=20 sounding=0 voices=0 mean_us=3039.503550 p99_us=3080.798000 p999_us=3080.798000 max_us=3129.510000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=session profile=2 tracks=8 roots=16 sources=8 slots=1 placements=0 events=1 admitted=0 prep_ms=32.848118 resource=2 observed=51 limit=48
+FIXTURE name=dense_session profile=2 tracks=8 roots=16 sources=8 slots=8 placements=0 events=8 admitted=0 prep_ms=33.170776 resource=1 observed=40 limit=32
+FIXTURE name=arrangement profile=2 tracks=8 roots=16 sources=8 slots=1 placements=1 events=1 admitted=0 prep_ms=34.684606 resource=2 observed=54 limit=48
+FIXTURE name=suffix_min profile=2 tracks=8 roots=16 sources=8 slots=1 placements=1 events=1 admitted=0 prep_ms=34.662263 resource=2 observed=54 limit=48
+FIXTURE name=song profile=2 tracks=8 roots=16 sources=8 slots=1 placements=3 events=1 admitted=0 prep_ms=36.916847 resource=2 observed=54 limit=48
+FIXTURE name=storage profile=2 tracks=8 roots=16 sources=32 slots=32 placements=64 events=1024 admitted=0 prep_ms=71.554804 resource=2 observed=80 limit=48
+FIXTURE name=idle profile=2 tracks=8 roots=16 sources=8 slots=0 placements=0 events=1 admitted=1 prep_ms=32.593480 resource=0 observed=0 limit=0
+PREPARATION fixture=idle-p2-t8-r16-saved-prep700067 configure_ms=33.277096 peak_rss_kib=133988
+TIMING case=saved_idle profile=2 frames=1 samples=20 sounding=0 voices=0 mean_us=11.005150 p99_us=11.482000 p999_us=11.482000 max_us=11.702000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_idle profile=2 frames=31 samples=20 sounding=0 voices=0 mean_us=105.507150 p99_us=114.165000 p999_us=114.165000 max_us=114.605000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_idle profile=2 frames=64 samples=20 sounding=0 voices=0 mean_us=208.326050 p99_us=212.600000 p999_us=212.600000 max_us=212.900000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_idle profile=2 frames=128 samples=20 sounding=0 voices=0 mean_us=412.044650 p99_us=420.762000 p999_us=420.762000 max_us=441.702000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_idle profile=2 frames=256 samples=20 sounding=0 voices=0 mean_us=806.773650 p99_us=813.972000 p999_us=813.972000 max_us=816.687000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_idle profile=2 frames=512 samples=20 sounding=0 voices=0 mean_us=1611.080950 p99_us=1626.051000 p999_us=1626.051000 max_us=1629.627000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_idle profile=2 frames=1024 samples=20 sounding=0 voices=0 mean_us=3206.422850 p99_us=3228.076000 p999_us=3228.076000 max_us=3233.637000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=session profile=2 tracks=8 roots=10 sources=8 slots=1 placements=0 events=1 admitted=1 prep_ms=32.655787 resource=0 observed=0 limit=0
+PREPARATION fixture=session-p2-t8-r10-saved-prep700069 configure_ms=33.168852 peak_rss_kib=134396
+TIMING case=saved_session profile=2 frames=1 samples=20 sounding=1 voices=1 mean_us=10.106100 p99_us=10.460000 p999_us=10.460000 max_us=10.670000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_session profile=2 frames=31 samples=20 sounding=1 voices=1 mean_us=82.091550 p99_us=92.594000 p999_us=92.594000 max_us=93.116000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_session profile=2 frames=64 samples=20 sounding=1 voices=1 mean_us=161.307100 p99_us=168.928000 p999_us=168.928000 max_us=170.120000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_session profile=2 frames=128 samples=20 sounding=1 voices=1 mean_us=312.813200 p99_us=318.088000 p999_us=318.088000 max_us=338.056000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_session profile=2 frames=256 samples=20 sounding=1 voices=1 mean_us=611.613800 p99_us=617.242000 p999_us=617.242000 max_us=634.604000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_session profile=2 frames=512 samples=20 sounding=1 voices=1 mean_us=1219.078700 p99_us=1223.393000 p999_us=1223.393000 max_us=1350.271000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_session profile=2 frames=1024 samples=20 sounding=1 voices=1 mean_us=2419.809700 p99_us=2434.101000 p999_us=2434.101000 max_us=2441.155000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=arrangement profile=2 tracks=8 roots=10 sources=8 slots=1 placements=1 events=1 admitted=1 prep_ms=34.603383 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p2-t8-r10-saved-prep700071 configure_ms=35.091301 peak_rss_kib=134396
+TIMING case=saved_arrangement profile=2 frames=1 samples=20 sounding=1 voices=1 mean_us=10.090150 p99_us=10.420000 p999_us=10.420000 max_us=10.500000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_arrangement profile=2 frames=31 samples=20 sounding=1 voices=1 mean_us=81.325100 p99_us=86.263000 p999_us=86.263000 max_us=93.005000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_arrangement profile=2 frames=64 samples=20 sounding=1 voices=1 mean_us=161.027200 p99_us=167.305000 p999_us=167.305000 max_us=181.311000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_arrangement profile=2 frames=128 samples=20 sounding=1 voices=1 mean_us=310.473350 p99_us=316.937000 p999_us=316.937000 max_us=318.199000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_arrangement profile=2 frames=256 samples=20 sounding=1 voices=1 mean_us=610.283200 p99_us=617.171000 p999_us=617.171000 max_us=623.363000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_arrangement profile=2 frames=512 samples=20 sounding=1 voices=1 mean_us=1217.298600 p99_us=1235.876000 p999_us=1235.876000 max_us=1238.511000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_arrangement profile=2 frames=1024 samples=20 sounding=1 voices=1 mean_us=2420.488450 p99_us=2437.708000 p999_us=2437.708000 max_us=2439.832000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=suffix_min profile=2 tracks=8 roots=10 sources=8 slots=1 placements=1 events=1 admitted=1 prep_ms=34.621927 resource=0 observed=0 limit=0
+PREPARATION fixture=suffix_min-p2-t8-r10-saved-prep700073 configure_ms=35.170059 peak_rss_kib=134396
+TIMING case=saved_suffix_min profile=2 frames=1 samples=20 sounding=1 voices=1 mean_us=10.433200 p99_us=10.480000 p999_us=10.480000 max_us=15.399000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_suffix_min profile=2 frames=31 samples=20 sounding=1 voices=1 mean_us=84.432450 p99_us=94.739000 p999_us=94.739000 max_us=100.409000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_suffix_min profile=2 frames=64 samples=20 sounding=1 voices=1 mean_us=169.278550 p99_us=199.014000 p999_us=199.014000 max_us=204.746000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_suffix_min profile=2 frames=128 samples=20 sounding=1 voices=1 mean_us=326.100150 p99_us=336.122000 p999_us=336.122000 max_us=360.949000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_suffix_min profile=2 frames=256 samples=20 sounding=1 voices=1 mean_us=641.542550 p99_us=653.049000 p999_us=653.049000 max_us=673.578000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_suffix_min profile=2 frames=512 samples=20 sounding=1 voices=1 mean_us=1278.440350 p99_us=1302.782000 p999_us=1302.782000 max_us=1316.929000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_suffix_min profile=2 frames=1024 samples=20 sounding=1 voices=1 mean_us=2542.879150 p99_us=2569.105000 p999_us=2569.105000 max_us=2602.408000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=song profile=2 tracks=8 roots=10 sources=8 slots=1 placements=3 events=1 admitted=1 prep_ms=36.556970 resource=0 observed=0 limit=0
+PREPARATION fixture=song-p2-t8-r10-saved-prep700075 configure_ms=36.926255 peak_rss_kib=134396
+TIMING case=saved_song profile=2 frames=1 samples=20 sounding=0 voices=0 mean_us=9.670700 p99_us=10.019000 p999_us=10.019000 max_us=10.200000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_song profile=2 frames=31 samples=20 sounding=1 voices=1 mean_us=71.448050 p99_us=86.754000 p999_us=86.754000 max_us=92.194000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_song profile=2 frames=64 samples=20 sounding=1 voices=1 mean_us=160.577300 p99_us=169.399000 p999_us=169.399000 max_us=171.423000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_song profile=2 frames=128 samples=20 sounding=1 voices=1 mean_us=252.503800 p99_us=318.570000 p999_us=318.570000 max_us=335.081000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_song profile=2 frames=256 samples=20 sounding=1 voices=1 mean_us=408.087300 p99_us=451.811000 p999_us=451.811000 max_us=456.369000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_song profile=2 frames=512 samples=20 sounding=1 voices=1 mean_us=801.429600 p99_us=847.936000 p999_us=847.936000 max_us=849.589000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_song profile=2 frames=1024 samples=20 sounding=1 voices=1 mean_us=1600.532750 p99_us=1632.313000 p999_us=1632.313000 max_us=1645.026000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=storage profile=2 tracks=8 roots=8 sources=32 slots=32 placements=64 events=1024 admitted=0 prep_ms=71.394512 resource=6 observed=136 limit=64
+FIXTURE name=idle profile=2 tracks=8 roots=16 sources=8 slots=0 placements=0 events=1 admitted=1 prep_ms=38.525075 resource=0 observed=0 limit=0
+PREPARATION fixture=idle-p2-t8-r16-extended-prep700079 configure_ms=41.496938 peak_rss_kib=134396
+TIMING case=extended_idle profile=2 frames=1 samples=20 sounding=0 voices=0 mean_us=17.701350 p99_us=18.425000 p999_us=18.425000 max_us=23.724000 overruns=1 refused_seek_callbacks=0
+TIMING case=extended_idle profile=2 frames=31 samples=20 sounding=0 voices=0 mean_us=275.419500 p99_us=361.892000 p999_us=361.892000 max_us=397.418000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_idle profile=2 frames=64 samples=20 sounding=0 voices=0 mean_us=521.938350 p99_us=625.027000 p999_us=625.027000 max_us=720.286000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_idle profile=2 frames=128 samples=20 sounding=0 voices=0 mean_us=1007.095250 p99_us=1039.597000 p999_us=1039.597000 max_us=1283.806000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_idle profile=2 frames=256 samples=20 sounding=0 voices=0 mean_us=1982.536150 p99_us=2083.572000 p999_us=2083.572000 max_us=2204.850000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_idle profile=2 frames=512 samples=20 sounding=0 voices=0 mean_us=3990.756550 p99_us=4360.137000 p999_us=4360.137000 max_us=4368.362000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_idle profile=2 frames=1024 samples=20 sounding=0 voices=0 mean_us=8009.666300 p99_us=8422.874000 p999_us=8422.874000 max_us=8574.740000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=session profile=2 tracks=8 roots=10 sources=8 slots=1 placements=0 events=1 admitted=1 prep_ms=36.198976 resource=0 observed=0 limit=0
+PREPARATION fixture=session-p2-t8-r10-extended-prep700081 configure_ms=38.007009 peak_rss_kib=134396
+TIMING case=extended_session profile=2 frames=1 samples=20 sounding=1 voices=1 mean_us=13.393100 p99_us=14.026000 p999_us=14.026000 max_us=14.237000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_session profile=2 frames=31 samples=20 sounding=1 voices=1 mean_us=157.918200 p99_us=169.529000 p999_us=169.529000 max_us=170.521000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_session profile=2 frames=64 samples=20 sounding=1 voices=1 mean_us=316.094100 p99_us=319.261000 p999_us=319.261000 max_us=364.627000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_session profile=2 frames=128 samples=20 sounding=1 voices=1 mean_us=617.281950 p99_us=622.181000 p999_us=622.181000 max_us=630.126000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_session profile=2 frames=256 samples=20 sounding=1 voices=1 mean_us=1234.433050 p99_us=1286.922000 p999_us=1286.922000 max_us=1289.968000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_session profile=2 frames=512 samples=20 sounding=1 voices=1 mean_us=2457.253750 p99_us=2518.821000 p999_us=2518.821000 max_us=2553.326000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_session profile=2 frames=1024 samples=20 sounding=1 voices=1 mean_us=4886.272150 p99_us=4929.819000 p999_us=4929.819000 max_us=5063.471000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=arrangement profile=2 tracks=8 roots=10 sources=8 slots=1 placements=1 events=1 admitted=1 prep_ms=38.213778 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p2-t8-r10-extended-prep700083 configure_ms=40.554454 peak_rss_kib=134396
+TIMING case=extended_arrangement profile=2 frames=1 samples=20 sounding=1 voices=1 mean_us=13.740450 p99_us=14.097000 p999_us=14.097000 max_us=20.198000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_arrangement profile=2 frames=31 samples=20 sounding=1 voices=1 mean_us=159.477100 p99_us=168.958000 p999_us=168.958000 max_us=180.049000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_arrangement profile=2 frames=64 samples=20 sounding=1 voices=1 mean_us=313.849750 p99_us=318.148000 p999_us=318.148000 max_us=318.991000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_arrangement profile=2 frames=128 samples=20 sounding=1 voices=1 mean_us=623.670900 p99_us=655.584000 p999_us=655.584000 max_us=657.016000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_arrangement profile=2 frames=256 samples=20 sounding=1 voices=1 mean_us=1235.171900 p99_us=1253.911000 p999_us=1253.911000 max_us=1265.492000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_arrangement profile=2 frames=512 samples=20 sounding=1 voices=1 mean_us=2502.091550 p99_us=2636.392000 p999_us=2636.392000 max_us=2929.945000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_arrangement profile=2 frames=1024 samples=20 sounding=1 voices=1 mean_us=4977.363800 p99_us=5110.779000 p999_us=5110.779000 max_us=5137.661000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=suffix_min profile=2 tracks=8 roots=10 sources=8 slots=1 placements=1 events=1 admitted=1 prep_ms=38.594815 resource=0 observed=0 limit=0
+PREPARATION fixture=suffix_min-p2-t8-r10-extended-prep700085 configure_ms=40.199275 peak_rss_kib=134396
+TIMING case=extended_suffix_min profile=2 frames=1 samples=20 sounding=1 voices=1 mean_us=13.752750 p99_us=14.016000 p999_us=14.016000 max_us=21.170000 overruns=1 refused_seek_callbacks=0
+TIMING case=extended_suffix_min profile=2 frames=31 samples=20 sounding=1 voices=1 mean_us=161.338000 p99_us=170.932000 p999_us=170.932000 max_us=174.658000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_suffix_min profile=2 frames=64 samples=20 sounding=1 voices=1 mean_us=327.374750 p99_us=342.685000 p999_us=342.685000 max_us=416.013000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_suffix_min profile=2 frames=128 samples=20 sounding=1 voices=1 mean_us=639.241200 p99_us=666.685000 p999_us=666.685000 max_us=668.128000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_suffix_min profile=2 frames=256 samples=20 sounding=1 voices=1 mean_us=1270.495300 p99_us=1320.576000 p999_us=1320.576000 max_us=1320.776000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_suffix_min profile=2 frames=512 samples=20 sounding=1 voices=1 mean_us=2546.221700 p99_us=2643.856000 p999_us=2643.856000 max_us=2818.405000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_suffix_min profile=2 frames=1024 samples=20 sounding=1 voices=1 mean_us=5058.942750 p99_us=5266.152000 p999_us=5266.152000 max_us=5299.696000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=song profile=2 tracks=8 roots=10 sources=8 slots=1 placements=3 events=1 admitted=1 prep_ms=39.733730 resource=0 observed=0 limit=0
+PREPARATION fixture=song-p2-t8-r10-extended-prep700087 configure_ms=41.693668 peak_rss_kib=134396
+TIMING case=extended_song profile=2 frames=1 samples=20 sounding=0 voices=0 mean_us=12.898300 p99_us=16.741000 p999_us=16.741000 max_us=21.060000 overruns=1 refused_seek_callbacks=0
+TIMING case=extended_song profile=2 frames=31 samples=20 sounding=1 voices=1 mean_us=127.050100 p99_us=151.705000 p999_us=151.705000 max_us=160.563000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_song profile=2 frames=64 samples=20 sounding=1 voices=1 mean_us=316.131550 p99_us=321.635000 p999_us=321.635000 max_us=321.856000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_song profile=2 frames=128 samples=20 sounding=1 voices=1 mean_us=458.397950 p99_us=625.117000 p999_us=625.117000 max_us=628.012000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_song profile=2 frames=256 samples=20 sounding=1 voices=1 mean_us=714.674600 p99_us=815.645000 p999_us=815.645000 max_us=933.156000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_song profile=2 frames=512 samples=20 sounding=1 voices=1 mean_us=1384.440300 p99_us=1467.723000 p999_us=1467.723000 max_us=1494.322000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_song profile=2 frames=1024 samples=20 sounding=1 voices=1 mean_us=2729.761550 p99_us=2768.511000 p999_us=2768.511000 max_us=2771.466000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=storage profile=2 tracks=8 roots=8 sources=32 slots=32 placements=64 events=1024 admitted=0 prep_ms=81.052662 resource=6 observed=136 limit=64
+FIXTURE name=arrangement profile=2 tracks=8 roots=10 sources=8 slots=1 placements=1 events=1 admitted=1 prep_ms=38.270395 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p2-t8-r10-extended-prep700091 configure_ms=40.048882 peak_rss_kib=134396
+TIMING case=return_burst64 profile=2 frames=1 samples=20 sounding=1 voices=1 mean_us=17.838650 p99_us=19.627000 p999_us=19.627000 max_us=21.841000 overruns=1 refused_seek_callbacks=0
+TIMING case=seek_retained_history profile=2 frames=1 samples=20 sounding=1 voices=1 mean_us=21.857500 p99_us=71.494000 p999_us=71.494000 max_us=124.644000 overruns=4 refused_seek_callbacks=19
+FIXTURE name=arrangement profile=2 tracks=8 roots=10 sources=8 slots=1 placements=1 events=1 admitted=1 prep_ms=37.950433 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p2-t8-r10-extended-prep700092 configure_ms=40.134343 peak_rss_kib=134396
+TIMING case=full_queue_reserved_stop profile=2 frames=1 samples=20 sounding=0 voices=0 mean_us=32.058800 p99_us=39.975000 p999_us=39.975000 max_us=48.752000 overruns=20 refused_seek_callbacks=0
+FIXTURE name=arrangement profile=2 tracks=8 roots=10 sources=8 slots=1 placements=1 events=1 admitted=1 prep_ms=37.970209 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p2-t8-r10-extended-prep700093 configure_ms=40.218462 peak_rss_kib=134396
+TIMING case=return_burst64 profile=2 frames=31 samples=20 sounding=1 voices=1 mean_us=165.395300 p99_us=198.894000 p999_us=198.894000 max_us=224.964000 overruns=0 refused_seek_callbacks=0
+TIMING case=seek_retained_history profile=2 frames=31 samples=20 sounding=1 voices=1 mean_us=96.248450 p99_us=103.595000 p999_us=103.595000 max_us=231.345000 overruns=0 refused_seek_callbacks=19
+FIXTURE name=arrangement profile=2 tracks=8 roots=10 sources=8 slots=1 placements=1 events=1 admitted=1 prep_ms=38.276246 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p2-t8-r10-extended-prep700094 configure_ms=39.969383 peak_rss_kib=134396
+TIMING case=full_queue_reserved_stop profile=2 frames=31 samples=20 sounding=0 voices=0 mean_us=140.773950 p99_us=155.332000 p999_us=155.332000 max_us=162.426000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=arrangement profile=2 tracks=8 roots=10 sources=8 slots=1 placements=1 events=1 admitted=1 prep_ms=37.972594 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p2-t8-r10-extended-prep700095 configure_ms=40.161143 peak_rss_kib=134396
+TIMING case=return_burst64 profile=2 frames=64 samples=20 sounding=1 voices=1 mean_us=319.666750 p99_us=333.578000 p999_us=333.578000 max_us=336.964000 overruns=0 refused_seek_callbacks=0
+TIMING case=seek_retained_history profile=2 frames=64 samples=20 sounding=1 voices=1 mean_us=183.628200 p99_us=246.153000 p999_us=246.153000 max_us=297.360000 overruns=0 refused_seek_callbacks=18
+FIXTURE name=arrangement profile=2 tracks=8 roots=10 sources=8 slots=1 placements=1 events=1 admitted=1 prep_ms=37.914435 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p2-t8-r10-extended-prep700096 configure_ms=39.919940 peak_rss_kib=134396
+TIMING case=full_queue_reserved_stop profile=2 frames=64 samples=20 sounding=0 voices=0 mean_us=264.265800 p99_us=282.672000 p999_us=282.672000 max_us=301.768000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=arrangement profile=2 tracks=8 roots=10 sources=8 slots=1 placements=1 events=1 admitted=1 prep_ms=37.888385 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p2-t8-r10-extended-prep700097 configure_ms=39.866028 peak_rss_kib=134396
+TIMING case=return_burst64 profile=2 frames=128 samples=20 sounding=1 voices=1 mean_us=622.282300 p99_us=631.278000 p999_us=631.278000 max_us=631.388000 overruns=0 refused_seek_callbacks=0
+TIMING case=seek_retained_history profile=2 frames=128 samples=20 sounding=1 voices=1 mean_us=354.358950 p99_us=412.056000 p999_us=412.056000 max_us=458.763000 overruns=0 refused_seek_callbacks=17
+FIXTURE name=arrangement profile=2 tracks=8 roots=10 sources=8 slots=1 placements=1 events=1 admitted=1 prep_ms=37.877015 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p2-t8-r10-extended-prep700098 configure_ms=39.878161 peak_rss_kib=134396
+TIMING case=full_queue_reserved_stop profile=2 frames=128 samples=20 sounding=0 voices=0 mean_us=491.549150 p99_us=506.323000 p999_us=506.323000 max_us=509.108000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=arrangement profile=2 tracks=8 roots=10 sources=8 slots=1 placements=1 events=1 admitted=1 prep_ms=37.875411 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p2-t8-r10-extended-prep700099 configure_ms=39.846552 peak_rss_kib=134396
+TIMING case=return_burst64 profile=2 frames=256 samples=20 sounding=1 voices=1 mean_us=1225.011400 p99_us=1230.696000 p999_us=1230.696000 max_us=1234.403000 overruns=0 refused_seek_callbacks=0
+TIMING case=seek_retained_history profile=2 frames=256 samples=20 sounding=1 voices=1 mean_us=698.605850 p99_us=758.388000 p999_us=758.388000 max_us=779.396000 overruns=0 refused_seek_callbacks=15
+FIXTURE name=arrangement profile=2 tracks=8 roots=10 sources=8 slots=1 placements=1 events=1 admitted=1 prep_ms=37.932368 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p2-t8-r10-extended-prep700100 configure_ms=39.906915 peak_rss_kib=134396
+TIMING case=full_queue_reserved_stop profile=2 frames=256 samples=20 sounding=0 voices=0 mean_us=951.590050 p99_us=958.704000 p999_us=958.704000 max_us=963.393000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=arrangement profile=2 tracks=8 roots=10 sources=8 slots=1 placements=1 events=1 admitted=1 prep_ms=38.276005 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p2-t8-r10-extended-prep700101 configure_ms=39.890855 peak_rss_kib=134396
+TIMING case=return_burst64 profile=2 frames=512 samples=20 sounding=1 voices=1 mean_us=2450.081150 p99_us=2469.177000 p999_us=2469.177000 max_us=2517.408000 overruns=0 refused_seek_callbacks=0
+TIMING case=seek_retained_history profile=2 frames=512 samples=20 sounding=1 voices=1 mean_us=1385.831600 p99_us=1447.545000 p999_us=1447.545000 max_us=1451.533000 overruns=0 refused_seek_callbacks=10
+FIXTURE name=arrangement profile=2 tracks=8 roots=10 sources=8 slots=1 placements=1 events=1 admitted=1 prep_ms=37.953458 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p2-t8-r10-extended-prep700102 configure_ms=39.834869 peak_rss_kib=134396
+TIMING case=full_queue_reserved_stop profile=2 frames=512 samples=20 sounding=0 voices=0 mean_us=1877.942850 p99_us=1897.171000 p999_us=1897.171000 max_us=1900.116000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=arrangement profile=2 tracks=8 roots=10 sources=8 slots=1 placements=1 events=1 admitted=1 prep_ms=37.954941 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p2-t8-r10-extended-prep700103 configure_ms=39.993799 peak_rss_kib=134396
+TIMING case=return_burst64 profile=2 frames=1024 samples=20 sounding=1 voices=1 mean_us=4878.112400 p99_us=4919.740000 p999_us=4919.740000 max_us=4947.342000 overruns=0 refused_seek_callbacks=0
+TIMING case=seek_retained_history profile=2 frames=1024 samples=20 sounding=1 voices=1 mean_us=2772.331200 p99_us=2832.732000 p999_us=2832.732000 max_us=2863.009000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=arrangement profile=2 tracks=8 roots=10 sources=8 slots=1 placements=1 events=1 admitted=1 prep_ms=37.907091 resource=0 observed=0 limit=0
+PREPARATION fixture=arrangement-p2-t8-r10-extended-prep700104 configure_ms=39.870947 peak_rss_kib=134396
+TIMING case=full_queue_reserved_stop profile=2 frames=1024 samples=20 sounding=0 voices=0 mean_us=3729.358500 p99_us=3798.480000 p999_us=3798.480000 max_us=3818.317000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=pool_max profile=2 tracks=8 roots=16 sources=32 slots=0 placements=0 events=1024 admitted=1 prep_ms=48.189085 resource=0 observed=0 limit=0
+PREPARATION fixture=pool_max-p2-t8-r16-extended-prep700106 configure_ms=51.479959 peak_rss_kib=134396
+TIMING case=full_roots_source_event_pools profile=2 frames=1 samples=20 sounding=0 voices=0 mean_us=17.258400 p99_us=17.814000 p999_us=17.814000 max_us=17.853000 overruns=0 refused_seek_callbacks=0
+TIMING case=full_roots_source_event_pools profile=2 frames=31 samples=20 sounding=0 voices=0 mean_us=248.643100 p99_us=273.685000 p999_us=273.685000 max_us=280.298000 overruns=0 refused_seek_callbacks=0
+TIMING case=full_roots_source_event_pools profile=2 frames=64 samples=20 sounding=0 voices=0 mean_us=509.377900 p99_us=583.158000 p999_us=583.158000 max_us=585.773000 overruns=0 refused_seek_callbacks=0
+TIMING case=full_roots_source_event_pools profile=2 frames=128 samples=20 sounding=0 voices=0 mean_us=987.540800 p99_us=1015.091000 p999_us=1015.091000 max_us=1060.686000 overruns=0 refused_seek_callbacks=0
+TIMING case=full_roots_source_event_pools profile=2 frames=256 samples=20 sounding=0 voices=0 mean_us=2005.545600 p99_us=2086.427000 p999_us=2086.427000 max_us=2150.027000 overruns=0 refused_seek_callbacks=0
+TIMING case=full_roots_source_event_pools profile=2 frames=512 samples=20 sounding=0 voices=0 mean_us=3945.274450 p99_us=4066.104000 p999_us=4066.104000 max_us=4074.149000 overruns=0 refused_seek_callbacks=0
+TIMING case=full_roots_source_event_pools profile=2 frames=1024 samples=20 sounding=0 voices=0 mean_us=7849.763300 p99_us=7992.393000 p999_us=7992.393000 max_us=8033.281000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=session profile=2 tracks=2 roots=6 sources=2 slots=2 placements=0 events=2 admitted=1 prep_ms=8.490431 resource=0 observed=0 limit=0
+PREPARATION fixture=session-p2-t2-r6-saved-prep700108 configure_ms=8.702630 peak_rss_kib=134396
+TIMING case=saved_two_chains_session profile=2 frames=1 samples=20 sounding=2 voices=2 mean_us=8.877650 p99_us=9.237000 p999_us=9.237000 max_us=9.438000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_two_chains_session profile=2 frames=31 samples=20 sounding=2 voices=2 mean_us=53.029350 p99_us=58.219000 p999_us=58.219000 max_us=64.261000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_two_chains_session profile=2 frames=64 samples=20 sounding=2 voices=2 mean_us=100.781650 p99_us=106.229000 p999_us=106.229000 max_us=106.651000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_two_chains_session profile=2 frames=128 samples=20 sounding=2 voices=2 mean_us=193.381600 p99_us=198.403000 p999_us=198.403000 max_us=198.895000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_two_chains_session profile=2 frames=256 samples=20 sounding=2 voices=2 mean_us=378.592250 p99_us=382.450000 p999_us=382.450000 max_us=386.588000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_two_chains_session profile=2 frames=512 samples=20 sounding=2 voices=2 mean_us=748.737700 p99_us=756.835000 p999_us=756.835000 max_us=763.347000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_two_chains_session profile=2 frames=1024 samples=20 sounding=2 voices=2 mean_us=1487.739650 p99_us=1497.528000 p999_us=1497.528000 max_us=1498.901000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=song profile=2 tracks=2 roots=6 sources=2 slots=2 placements=4 events=2 admitted=1 prep_ms=14.235125 resource=0 observed=0 limit=0
+PREPARATION fixture=song-p2-t2-r6-saved-prep700110 configure_ms=14.531422 peak_rss_kib=134396
+TIMING case=saved_two_chains_song profile=2 frames=1 samples=20 sounding=1 voices=1 mean_us=8.483000 p99_us=8.696000 p999_us=8.696000 max_us=8.987000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_two_chains_song profile=2 frames=31 samples=20 sounding=2 voices=2 mean_us=44.093050 p99_us=57.198000 p999_us=57.198000 max_us=64.652000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_two_chains_song profile=2 frames=64 samples=20 sounding=2 voices=2 mean_us=102.963800 p99_us=113.274000 p999_us=113.274000 max_us=116.720000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_two_chains_song profile=2 frames=128 samples=20 sounding=2 voices=2 mean_us=198.208000 p99_us=210.116000 p999_us=210.116000 max_us=224.372000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_two_chains_song profile=2 frames=256 samples=20 sounding=2 voices=2 mean_us=391.790550 p99_us=432.504000 p999_us=432.504000 max_us=434.838000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_two_chains_song profile=2 frames=512 samples=20 sounding=2 voices=2 mean_us=768.036150 p99_us=797.010000 p999_us=797.010000 max_us=819.833000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_two_chains_song profile=2 frames=1024 samples=20 sounding=2 voices=2 mean_us=1523.580750 p99_us=1549.797000 p999_us=1549.797000 max_us=1550.849000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=storage profile=2 tracks=2 roots=6 sources=8 slots=8 placements=16 events=1024 admitted=1 prep_ms=31.915844 resource=0 observed=0 limit=0
+PREPARATION fixture=storage-p2-t2-r6-saved-prep700112 configure_ms=32.184800 peak_rss_kib=134412
+TIMING case=saved_two_chains_storage profile=2 frames=1 samples=20 sounding=2 voices=2 mean_us=8.878100 p99_us=9.177000 p999_us=9.177000 max_us=9.258000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_two_chains_storage profile=2 frames=31 samples=20 sounding=2 voices=2 mean_us=53.856450 p99_us=58.620000 p999_us=58.620000 max_us=63.419000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_two_chains_storage profile=2 frames=64 samples=20 sounding=2 voices=2 mean_us=101.221600 p99_us=104.917000 p999_us=104.917000 max_us=105.789000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_two_chains_storage profile=2 frames=128 samples=20 sounding=2 voices=2 mean_us=194.076200 p99_us=199.485000 p999_us=199.485000 max_us=199.535000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_two_chains_storage profile=2 frames=256 samples=20 sounding=2 voices=2 mean_us=356.866650 p99_us=381.838000 p999_us=381.838000 max_us=382.159000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_two_chains_storage profile=2 frames=512 samples=20 sounding=2 voices=2 mean_us=408.093750 p99_us=662.717000 p999_us=662.717000 max_us=759.510000 overruns=0 refused_seek_callbacks=0
+TIMING case=saved_two_chains_storage profile=2 frames=1024 samples=20 sounding=2 voices=2 mean_us=1140.564300 p99_us=1512.256000 p999_us=1512.256000 max_us=1521.394000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=session profile=2 tracks=2 roots=6 sources=2 slots=2 placements=0 events=2 admitted=1 prep_ms=10.631521 resource=0 observed=0 limit=0
+PREPARATION fixture=session-p2-t2-r6-extended-prep700114 configure_ms=11.841168 peak_rss_kib=134412
+TIMING case=extended_two_chains_session profile=2 frames=1 samples=20 sounding=2 voices=2 mean_us=11.993500 p99_us=17.113000 p999_us=17.113000 max_us=17.433000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_two_chains_session profile=2 frames=31 samples=20 sounding=2 voices=2 mean_us=107.138150 p99_us=113.524000 p999_us=113.524000 max_us=117.110000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_two_chains_session profile=2 frames=64 samples=20 sounding=2 voices=2 mean_us=211.194000 p99_us=216.637000 p999_us=216.637000 max_us=221.638000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_two_chains_session profile=2 frames=128 samples=20 sounding=2 voices=2 mean_us=415.461550 p99_us=427.485000 p999_us=427.485000 max_us=432.094000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_two_chains_session profile=2 frames=256 samples=20 sounding=2 voices=2 mean_us=816.861800 p99_us=820.675000 p999_us=820.675000 max_us=821.787000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_two_chains_session profile=2 frames=512 samples=20 sounding=2 voices=2 mean_us=1625.920900 p99_us=1638.364000 p999_us=1638.364000 max_us=1641.430000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_two_chains_session profile=2 frames=1024 samples=20 sounding=2 voices=2 mean_us=3263.548750 p99_us=3296.254000 p999_us=3296.254000 max_us=3540.073000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=song profile=2 tracks=2 roots=6 sources=2 slots=2 placements=4 events=2 admitted=1 prep_ms=16.386764 resource=0 observed=0 limit=0
+PREPARATION fixture=song-p2-t2-r6-extended-prep700116 configure_ms=17.738950 peak_rss_kib=134412
+TIMING case=extended_two_chains_song profile=2 frames=1 samples=20 sounding=1 voices=1 mean_us=10.327400 p99_us=10.509000 p999_us=10.509000 max_us=15.079000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_two_chains_song profile=2 frames=31 samples=20 sounding=2 voices=2 mean_us=78.141150 p99_us=101.231000 p999_us=101.231000 max_us=110.879000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_two_chains_song profile=2 frames=64 samples=20 sounding=2 voices=2 mean_us=211.342250 p99_us=214.353000 p999_us=214.353000 max_us=228.320000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_two_chains_song profile=2 frames=128 samples=20 sounding=2 voices=2 mean_us=418.659050 p99_us=444.788000 p999_us=444.788000 max_us=445.298000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_two_chains_song profile=2 frames=256 samples=20 sounding=2 voices=2 mean_us=829.788500 p99_us=875.318000 p999_us=875.318000 max_us=893.622000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_two_chains_song profile=2 frames=512 samples=20 sounding=2 voices=2 mean_us=1643.183350 p99_us=1679.441000 p999_us=1679.441000 max_us=1702.124000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_two_chains_song profile=2 frames=1024 samples=20 sounding=2 voices=2 mean_us=3290.394750 p99_us=3332.152000 p999_us=3332.152000 max_us=3410.770000 overruns=0 refused_seek_callbacks=0
+TIMING case=two_chains_coincident_return64 profile=2 frames=1 samples=20 sounding=2 voices=2 mean_us=49.327450 p99_us=62.888000 p999_us=62.888000 max_us=66.806000 overruns=20 refused_seek_callbacks=0
+TIMING case=two_chains_coincident_return64 profile=2 frames=31 samples=20 sounding=2 voices=2 mean_us=144.015550 p99_us=154.591000 p999_us=154.591000 max_us=162.667000 overruns=0 refused_seek_callbacks=0
+TIMING case=two_chains_coincident_return64 profile=2 frames=64 samples=20 sounding=2 voices=2 mean_us=250.738350 p99_us=264.949000 p999_us=264.949000 max_us=307.529000 overruns=0 refused_seek_callbacks=0
+TIMING case=two_chains_coincident_return64 profile=2 frames=128 samples=20 sounding=2 voices=2 mean_us=447.474400 p99_us=464.734000 p999_us=464.734000 max_us=470.185000 overruns=0 refused_seek_callbacks=0
+TIMING case=two_chains_coincident_return64 profile=2 frames=256 samples=20 sounding=2 voices=2 mean_us=849.837650 p99_us=858.977000 p999_us=858.977000 max_us=877.632000 overruns=0 refused_seek_callbacks=0
+TIMING case=two_chains_coincident_return64 profile=2 frames=512 samples=20 sounding=2 voices=2 mean_us=1660.134650 p99_us=1669.432000 p999_us=1669.432000 max_us=1683.449000 overruns=0 refused_seek_callbacks=0
+TIMING case=two_chains_coincident_return64 profile=2 frames=1024 samples=20 sounding=2 voices=2 mean_us=3269.820250 p99_us=3304.330000 p999_us=3304.330000 max_us=3318.767000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=storage profile=2 tracks=2 roots=6 sources=8 slots=8 placements=16 events=1024 admitted=1 prep_ms=37.726972 resource=0 observed=0 limit=0
+PREPARATION fixture=storage-p2-t2-r6-extended-prep700118 configure_ms=39.071613 peak_rss_kib=134412
+TIMING case=extended_two_chains_storage profile=2 frames=1 samples=20 sounding=2 voices=2 mean_us=11.266750 p99_us=11.752000 p999_us=11.752000 max_us=11.753000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_two_chains_storage profile=2 frames=31 samples=20 sounding=2 voices=2 mean_us=105.429250 p99_us=110.187000 p999_us=110.187000 max_us=115.307000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_two_chains_storage profile=2 frames=64 samples=20 sounding=2 voices=2 mean_us=209.918250 p99_us=218.421000 p999_us=218.421000 max_us=220.756000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_two_chains_storage profile=2 frames=128 samples=20 sounding=2 voices=2 mean_us=410.764200 p99_us=418.577000 p999_us=418.577000 max_us=430.580000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_two_chains_storage profile=2 frames=256 samples=20 sounding=2 voices=2 mean_us=745.614850 p99_us=817.068000 p999_us=817.068000 max_us=826.385000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_two_chains_storage profile=2 frames=512 samples=20 sounding=2 voices=2 mean_us=603.866150 p99_us=1317.059000 p999_us=1317.059000 max_us=1630.258000 overruns=0 refused_seek_callbacks=0
+TIMING case=extended_two_chains_storage profile=2 frames=1024 samples=20 sounding=2 voices=2 mean_us=2159.431750 p99_us=3268.883000 p999_us=3268.883000 max_us=3281.426000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=idle profile=1 tracks=2 roots=6 sources=2 slots=0 placements=0 events=1 admitted=1 prep_ms=10.615972 resource=0 observed=0 limit=0
+PREPARATION fixture=idle-p1-t2-r6-extended-prep700120 configure_ms=11.793098 peak_rss_kib=134696
+SYNTHETIC profile=1 events=64 roots=126 scans=19456 writes=3968 guards=9252 placement=2626 pcm_reads=0 extra_dsp_roots=6 extra_voices=8 idle_callback_already_included=true native_queue_writes=64 synthetic_write_supplement=3904
+TIMING case=synthetic_six_resource_plus_four_voice_dsp profile=1 frames=1 samples=20 sounding=0 voices=0 mean_us=787.290000 p99_us=802.431000 p999_us=802.431000 max_us=803.462000 overruns=20 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_plus_four_voice_dsp profile=1 frames=31 samples=20 sounding=0 voices=0 mean_us=961.487750 p99_us=998.108000 p999_us=998.108000 max_us=1027.424000 overruns=20 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_plus_four_voice_dsp profile=1 frames=64 samples=20 sounding=0 voices=0 mean_us=1153.933900 p99_us=1171.395000 p999_us=1171.395000 max_us=1204.407000 overruns=0 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_plus_four_voice_dsp profile=1 frames=128 samples=20 sounding=0 voices=0 mean_us=1544.874900 p99_us=1655.757000 p999_us=1655.757000 max_us=1830.195000 overruns=0 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_plus_four_voice_dsp profile=1 frames=256 samples=20 sounding=0 voices=0 mean_us=2262.952100 p99_us=2291.814000 p999_us=2291.814000 max_us=2506.738000 overruns=0 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_plus_four_voice_dsp profile=1 frames=512 samples=20 sounding=0 voices=0 mean_us=3712.090650 p99_us=3753.044000 p999_us=3753.044000 max_us=3755.268000 overruns=0 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_plus_four_voice_dsp profile=1 frames=1024 samples=20 sounding=0 voices=0 mean_us=6670.796250 p99_us=6728.635000 p999_us=6728.635000 max_us=6736.480000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=idle profile=1 tracks=2 roots=6 sources=2 slots=0 placements=0 events=1 admitted=1 prep_ms=8.771640 resource=0 observed=0 limit=0
+PREPARATION fixture=idle-p1-t2-r6-heavy-prep700122 configure_ms=9.088958 peak_rss_kib=138744
+SYNTHETIC profile=1 events=64 roots=126 scans=19456 writes=3968 guards=9252 placement=2626 pcm_reads=0 extra_dsp_roots=6 extra_voices=8 idle_callback_already_included=true native_queue_writes=64 synthetic_write_supplement=3904
+TIMING case=synthetic_six_resource_heavy_dsp profile=1 frames=1 samples=20 sounding=0 voices=0 mean_us=792.643100 p99_us=842.927000 p999_us=842.927000 max_us=871.591000 overruns=20 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_heavy_dsp profile=1 frames=31 samples=20 sounding=0 voices=0 mean_us=996.307050 p99_us=1051.088000 p999_us=1051.088000 max_us=1226.378000 overruns=20 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_heavy_dsp profile=1 frames=64 samples=20 sounding=0 voices=0 mean_us=1192.623700 p99_us=1326.376000 p999_us=1326.376000 max_us=1374.487000 overruns=1 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_heavy_dsp profile=1 frames=128 samples=20 sounding=0 voices=0 mean_us=1587.397500 p99_us=1648.834000 p999_us=1648.834000 max_us=1700.340000 overruns=0 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_heavy_dsp profile=1 frames=256 samples=20 sounding=0 voices=0 mean_us=2359.158950 p99_us=2431.266000 p999_us=2431.266000 max_us=2446.174000 overruns=0 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_heavy_dsp profile=1 frames=512 samples=20 sounding=0 voices=0 mean_us=3909.876900 p99_us=3995.481000 p999_us=3995.481000 max_us=3997.143000 overruns=0 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_heavy_dsp profile=1 frames=1024 samples=20 sounding=0 voices=0 mean_us=7031.551800 p99_us=7118.720000 p999_us=7118.720000 max_us=7119.340000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=idle profile=2 tracks=8 roots=16 sources=8 slots=0 placements=0 events=1 admitted=1 prep_ms=38.323886 resource=0 observed=0 limit=0
+PREPARATION fixture=idle-p2-t8-r16-extended-prep700124 configure_ms=41.441384 peak_rss_kib=138744
+SYNTHETIC profile=2 events=64 roots=336 scans=19456 writes=10368 guards=9252 placement=2626 pcm_reads=0 extra_dsp_roots=16 extra_voices=32 idle_callback_already_included=true native_queue_writes=64 synthetic_write_supplement=10304
+TIMING case=synthetic_six_resource_plus_four_voice_dsp profile=2 frames=1 samples=20 sounding=0 voices=0 mean_us=2086.366050 p99_us=2217.744000 p999_us=2217.744000 max_us=2617.066000 overruns=20 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_plus_four_voice_dsp profile=2 frames=31 samples=20 sounding=0 voices=0 mean_us=2559.542800 p99_us=2775.183000 p999_us=2775.183000 max_us=2879.049000 overruns=20 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_plus_four_voice_dsp profile=2 frames=64 samples=20 sounding=0 voices=0 mean_us=3111.259150 p99_us=3366.807000 p999_us=3366.807000 max_us=3370.344000 overruns=20 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_plus_four_voice_dsp profile=2 frames=128 samples=20 sounding=0 voices=0 mean_us=4340.567600 p99_us=5432.355000 p999_us=5432.355000 max_us=5606.113000 overruns=20 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_plus_four_voice_dsp profile=2 frames=256 samples=20 sounding=0 voices=0 mean_us=6240.337000 p99_us=6337.208000 p999_us=6337.208000 max_us=6378.016000 overruns=20 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_plus_four_voice_dsp profile=2 frames=512 samples=20 sounding=0 voices=0 mean_us=10502.718750 p99_us=10641.930000 p999_us=10641.930000 max_us=10753.792000 overruns=1 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_plus_four_voice_dsp profile=2 frames=1024 samples=20 sounding=0 voices=0 mean_us=18921.962750 p99_us=19110.000000 p999_us=19110.000000 max_us=19145.056000 overruns=0 refused_seek_callbacks=0
+FIXTURE name=idle profile=2 tracks=8 roots=16 sources=8 slots=0 placements=0 events=1 admitted=1 prep_ms=33.952688 resource=0 observed=0 limit=0
+PREPARATION fixture=idle-p2-t8-r16-heavy-prep700126 configure_ms=34.929116 peak_rss_kib=138744
+SYNTHETIC profile=2 events=64 roots=336 scans=19456 writes=10368 guards=9252 placement=2626 pcm_reads=0 extra_dsp_roots=16 extra_voices=32 idle_callback_already_included=true native_queue_writes=64 synthetic_write_supplement=10304
+TIMING case=synthetic_six_resource_heavy_dsp profile=2 frames=1 samples=20 sounding=0 voices=0 mean_us=2027.109100 p99_us=2178.370000 p999_us=2178.370000 max_us=2247.080000 overruns=20 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_heavy_dsp profile=2 frames=31 samples=20 sounding=0 voices=0 mean_us=2493.699850 p99_us=2564.357000 p999_us=2564.357000 max_us=2574.095000 overruns=20 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_heavy_dsp profile=2 frames=64 samples=20 sounding=0 voices=0 mean_us=3083.398300 p99_us=3210.402000 p999_us=3210.402000 max_us=3235.991000 overruns=20 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_heavy_dsp profile=2 frames=128 samples=20 sounding=0 voices=0 mean_us=4165.342250 p99_us=4267.132000 p999_us=4267.132000 max_us=4278.443000 overruns=20 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_heavy_dsp profile=2 frames=256 samples=20 sounding=0 voices=0 mean_us=6310.952100 p99_us=6415.295000 p999_us=6415.295000 max_us=6542.544000 overruns=20 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_heavy_dsp profile=2 frames=512 samples=20 sounding=0 voices=0 mean_us=10676.600600 p99_us=10797.905000 p999_us=10797.905000 max_us=10903.473000 overruns=9 refused_seek_callbacks=0
+TIMING case=synthetic_six_resource_heavy_dsp profile=2 frames=1024 samples=20 sounding=0 voices=0 mean_us=19390.741000 p99_us=19681.967000 p999_us=19681.967000 max_us=19744.695000 overruns=0 refused_seek_callbacks=0
+PASS: v4 measurement peak_rss_kib=138744

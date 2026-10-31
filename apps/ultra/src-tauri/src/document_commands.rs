@@ -5,6 +5,25 @@ use serde::Deserialize;
 #[cfg(test)]
 #[path = "document_commands_tests.rs"]
 mod tests;
+#[path="document_parameter_gestures.rs"]
+mod parameter_gestures;
+
+#[tauri::command]
+pub fn document_parameter_gesture(window:WebviewWindow,state:tauri::State<Documents>,audio:tauri::State<Audio>,io:tauri::State<crate::AudioIo>,request:parameter_gestures::GestureRequest)->Result<parameter_gestures::GestureReply,String>{
+    let mut registry=state.0.lock().map_err(|_|"Document lock poisoned")?;
+    let mut audio=audio.0.lock().map_err(|_|"Audio control lock poisoned")?;
+    let mut io=io.0.lock().map_err(|_|"Audio device lock poisoned")?;
+    let result=parameter_gestures::apply(&mut registry,&mut audio,&mut io,window.label(),request);
+    drop(io);drop(audio);broadcast(window.app_handle(),&registry,window.label());result
+}
+#[tauri::command]
+pub fn document_settle_parameter_gestures(window:WebviewWindow,state:tauri::State<Documents>,audio:tauri::State<Audio>,io:tauri::State<crate::AudioIo>)->Result<Document,String>{
+    let mut registry=state.0.lock().map_err(|_|"Document lock poisoned")?;
+    let mut audio=audio.0.lock().map_err(|_|"Audio control lock poisoned")?;
+    let mut io=io.0.lock().map_err(|_|"Audio device lock poisoned")?;
+    let result=parameter_gestures::settle(&mut registry,&mut audio,&mut io,window.label());
+    drop(io);drop(audio);broadcast(window.app_handle(),&registry,window.label());result
+}
 
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -14,6 +33,45 @@ pub struct Parameter { pub node: u32, pub key: String, pub value: f64, #[serde(d
 #[serde(deny_unknown_fields)]
 pub struct MessageText { pub node: u32, pub text: String }
 
+pub(crate) fn trace_document(event: &str, document: &Document, token: u64, code: u8) {
+    if std::env::var_os("ULTRA_TRACE_DOCUMENT_COMMANDS").is_some() {
+        eprintln!("ultra-document-trace event={event} owner={} revision={} scope={} depth={} token={token} code={code}",
+            document.id, document.authoring_revision, document.view_path.last().copied().unwrap_or(0), document.view_path.len());
+    }
+}
+
+pub(crate) fn canvas_parameter(registry: &mut Registry, audio: &mut crate::AudioControl,
+    io: &mut crate::audio::Driver, label: &str, revision: u64, parameter: Parameter) -> Result<CommitResult, String> {
+    let owner = registry.get_open(label)?;
+    if revision != owner.runtime_revision { return Err("Stale canvas revision".into()); }
+    let base = owner.authoring_revision;
+    let mut patch = owner.patch.clone().unwrap();
+    fn update(scope: &mut Value, id: u32, key: &str, value: f64) -> bool {
+        let Some(nodes) = scope.get_mut("nodes").and_then(Value::as_array_mut) else { return false; };
+        for node in nodes {
+            if node["id"].as_u64() == Some(u64::from(id)) { node["params"][key] = serde_json::json!(value); return true; }
+            if let Some(child) = node.get_mut("patcher") { if update(child, id, key, value) { return true; } }
+        }
+        false
+    }
+    if !update(&mut patch, parameter.node, &parameter.key, parameter.value) { return Err("Unknown canvas node".into()); }
+    registry.commit(label, base, patch, true, |owner, patch| {
+        admit_owned(io, &mut audio.graphs[owner.id as usize], owner, patch, Some(&parameter), None, false)
+    })
+}
+
+pub fn admit_owned(io: &mut crate::audio::Driver, control: &mut canvas::CanvasState, owner: &Document, patch: &Value,
+    parameter: Option<&Parameter>, message_text: Option<&MessageText>, force: bool) -> Result<documents::Admission, String> {
+    io.reject_retiring()?;
+    admit_message(control, owner, patch, parameter, message_text, force)
+}
+
+pub fn close_owned(io: &mut crate::audio::Driver, document: u32) -> Result<(), String> {
+    io.reject_retiring()?;
+    if unsafe { crate::ultra_canvas_close_document(document) } == 0 { return Err("Patch is busy. Try closing the window again.".into()); }
+    Ok(())
+}
+
 pub fn admit(control: &mut canvas::CanvasState, owner: &Document, patch: &Value, parameter: Option<&Parameter>, force: bool) -> Result<documents::Admission, String> {
     admit_message(control,owner,patch,parameter,None,force)
 }
@@ -21,6 +79,7 @@ pub fn admit_message(control: &mut canvas::CanvasState, owner: &Document, patch:
     if parameter.is_some() && message_text.is_some() { return Err("Numeric and message text hints cannot be combined".into()); }
     let plan = canvas::prepare(patch.clone())?;
     let force = force || owner.runtime_revision == 0;
+    if force { owner.require_settled_parameter_gestures()?; }
     if force && message_text.is_some() { return Err("Message text hints require an active graph and cannot accompany a forced installation".into()); }
     let inferred_text = if !force && parameter.is_none() && message_text.is_none() {
         control.single_message_text_change(&plan).map(|(node,text)| MessageText { node,text })
@@ -38,10 +97,14 @@ pub fn admit_message(control: &mut canvas::CanvasState, owner: &Document, patch:
         control.single_parameter_change(&plan).map(|(node, key, value, hot)| Parameter { node, key: key.into(), value, hot })
     } else { None };
     let parameter = parameter.or(inferred.as_ref());
-    if !force && control.matches(&plan) && !parameter.is_some_and(|parameter| parameter.hot) {
+    // A cold hint can reconcile native preview state even when canonical values match.
+    if !force && control.matches(&plan) && parameter.is_none() {
         return Ok(documents::Admission {revision:control.revision(),message_text_serial:control.message_text_serial()});
     }
     if let Some(parameter) = parameter.filter(|_| !force) {
+        if owner.parameter_previews().iter().any(|gesture|gesture.node==parameter.node&&gesture.key==parameter.key) {
+            return Err("This parameter is owned by an active presentation gesture. Finish or cancel it first.".into());
+        }
         if control.parameter_matches(&plan, parameter.node, &parameter.key, parameter.value)? {
             let revision = control.revision();
             if parameter.hot { control.event(revision, parameter.node, 0, serde_json::json!([parameter.value]))?; }
@@ -97,6 +160,9 @@ pub fn close_cancelled(app: &AppHandle, notice: Option<documents::CloseNotice>) 
 pub fn request_close_flush(app: &AppHandle, notice: documents::CloseNotice) {
     let payload = serde_json::json!({"requestLabel":notice.request_label,"token":notice.token});
     for label in notice.views {
+        if let Ok(registry) = app.state::<Documents>().0.lock() {
+            if let Ok(document) = registry.descriptor(&label) { trace_document("close_flush", &document, notice.token, 0); }
+        }
         let sent = app.get_webview_window(&label).ok_or_else(|| "Editor window is unavailable".to_string())
             .and_then(|target| target.emit_to(tauri::EventTarget::webview_window(&label), "document-flush-before-close", &payload).map_err(|e| e.to_string()));
         if let Err(error) = sent {
@@ -109,9 +175,43 @@ pub fn request_close_flush(app: &AppHandle, notice: documents::CloseNotice) {
     }
 }
 
+pub fn request_save_flush(app: &AppHandle, notice: &documents::SaveNotice) {
+    let payload = serde_json::json!({"owner":notice.owner,"token":notice.token});
+    for label in &notice.views {
+        let sent = app.get_webview_window(label).ok_or_else(|| "Editor window is unavailable".to_string())
+            .and_then(|target| target.emit_to(tauri::EventTarget::webview_window(label), "document-flush-before-save", &payload).map_err(|e| e.to_string()));
+        if sent.is_err() {
+            if let Ok(mut registry) = app.state::<Documents>().0.lock() {
+                let _ = registry.acknowledge_save(label, &notice.owner, notice.token, Some("Editor window is unavailable".into()));
+            }
+        }
+    }
+}
+
+pub fn release_save_flush(app: &AppHandle, notice: documents::SaveNotice) {
+    let payload = serde_json::json!({"owner":notice.owner,"token":notice.token});
+    for label in notice.views { let _ = app.emit_to(tauri::EventTarget::webview_window(label), "document-save-flush-released", &payload); }
+}
+
+#[tauri::command]
+pub fn document_save_flushed(window: WebviewWindow, state: tauri::State<Documents>, owner: String, token: u64, error: Option<String>) -> Result<(), String> {
+    let mut registry = state.0.lock().map_err(|_| "Document lock poisoned")?;
+    let document = registry.descriptor(window.label())?;
+    let accepted = u8::from(error.is_none());
+    registry.acknowledge_save(window.label(), &owner, token, error)?;
+    trace_document("save_ack", &document, token, accepted);
+    Ok(())
+}
+
+#[tauri::command]
+pub fn document_save_barrier_active(window: WebviewWindow, state: tauri::State<Documents>, owner: String, token: u64) -> Result<bool, String> {
+    state.0.lock().map_err(|_| "Document lock poisoned")?.save_barrier_active(window.label(), &owner, token)
+}
+
 #[tauri::command]
 pub fn document_close_flushed(window: WebviewWindow, state: tauri::State<Documents>, request_label: String, token: u64, error: Option<String>) -> Result<bool, String> {
     let mut registry = state.0.lock().map_err(|_| "Document lock poisoned")?;
+    if let Ok(document) = registry.descriptor(window.label()) { trace_document("close_ack", &document, token, u8::from(error.is_none())); }
     if let Some(error) = error {
         let cancelled = registry.reject_close(window.label(), &request_label, token)?;
         drop(registry);
@@ -133,13 +233,16 @@ pub fn document_close_flushed(window: WebviewWindow, state: tauri::State<Documen
 }
 
 #[tauri::command]
-pub fn document_commit(window: WebviewWindow, state: tauri::State<Documents>, audio: tauri::State<Audio>, base_revision: u64,
+pub fn document_commit(window: WebviewWindow, state: tauri::State<Documents>, audio: tauri::State<Audio>, io: tauri::State<crate::AudioIo>, base_revision: u64,
     patch: Value, force: Option<bool>, parameter: Option<Parameter>, message_text: Option<MessageText>, history: Option<bool>) -> Result<CommitResult, String> {
     let mut registry = state.0.lock().map_err(|_| "Document lock poisoned")?;
     let mut audio = audio.0.lock().map_err(|_| "Audio control lock poisoned")?;
+    let mut io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
     let result = registry.commit(window.label(), base_revision, patch, history.unwrap_or(true), |owner, patch| {
-        admit_message(&mut audio.graphs[owner.id as usize], owner, patch, parameter.as_ref(), message_text.as_ref(), force.unwrap_or(false))
+        admit_owned(&mut io, &mut audio.graphs[owner.id as usize], owner, patch, parameter.as_ref(), message_text.as_ref(), force.unwrap_or(false))
     })?;
+    trace_document("commit", &result.document, base_revision, u8::from(result.accepted));
+    drop(io);
     drop(audio);
     let obsolete = if result.accepted { changed(window.app_handle(), &mut registry, &result.document.owner_label) } else { vec![] };
     drop(registry);
@@ -148,12 +251,14 @@ pub fn document_commit(window: WebviewWindow, state: tauri::State<Documents>, au
 }
 
 #[tauri::command]
-pub fn document_history(window: WebviewWindow, state: tauri::State<Documents>, audio: tauri::State<Audio>, base_revision: u64, direction: String) -> Result<CommitResult, String> {
+pub fn document_history(window: WebviewWindow, state: tauri::State<Documents>, audio: tauri::State<Audio>, io: tauri::State<crate::AudioIo>, base_revision: u64, direction: String) -> Result<CommitResult, String> {
     let mut registry = state.0.lock().map_err(|_| "Document lock poisoned")?;
     let mut audio = audio.0.lock().map_err(|_| "Audio control lock poisoned")?;
+    let mut io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
     let result = registry.history(window.label(), base_revision, &direction, |owner, patch| {
-        admit(&mut audio.graphs[owner.id as usize], owner, patch, None, false)
+        admit_owned(&mut io, &mut audio.graphs[owner.id as usize], owner, patch, None, None, false)
     })?;
+    drop(io);
     drop(audio);
     let obsolete = if result.accepted { changed(window.app_handle(), &mut registry, &result.document.owner_label) } else { vec![] };
     drop(registry);

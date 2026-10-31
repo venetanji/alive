@@ -1,0 +1,19 @@
+{
+  "evidence_id": "LOCAL-S2",
+  "authority": "shipped-artifact",
+  "path": "/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Devices/Pc/Analog_64.dll",
+  "sha256": "4528afb1fbc78d49ed92161ed13ae1df50606e2e2b2c4f28caeca0cbc1476133",
+  "tool": "GNU objdump -p",
+  "export_names": [
+    "CalcA",
+    "CreateInstanceU",
+    "DestroyInstanceU",
+    "GetPlugInfoU",
+    "ResetA",
+    "SetParameterA",
+    "SetSampleRateU"
+  ],
+  "limitations": [
+    "Names establish a static exported surface only. Signatures, actual calls, threading, realtime safety and DSP implementation are not established."
+  ]
+}

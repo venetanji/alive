@@ -1,0 +1,25 @@
+apps/ultra/tests/alive_session_v4_authority_test.cpp: In function ‘void sparse_eight_and_denied_density()’:
+apps/ultra/tests/alive_session_v4_authority_test.cpp:761:3: error: this ‘for’ clause does not guard... [-Werror=misleading-indentation]
+  761 |   for(auto &action:r.tracks)action={STOP,NONE};r.tracks[0]={LAUNCH,1};
+      |   ^~~
+apps/ultra/tests/alive_session_v4_authority_test.cpp:761:48: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘for’
+  761 |   for(auto &action:r.tracks)action={STOP,NONE};r.tracks[0]={LAUNCH,1};
+      |                                                ^
+In file included from /usr/include/c++/16/cassert:46,
+                 from apps/ultra/tests/alive_session_v4_authority_test.cpp:5:
+apps/ultra/tests/alive_session_v4_authority_test.cpp: In function ‘void exact_combined_batch()’:
+apps/ultra/tests/alive_session_v4_authority_test.cpp:800:79: error: cannot bind non-const lvalue reference of type ‘exact_combined_batch()::<lambda(alive::Event)>&’ to an rvalue of type ‘exact_combined_batch()::<lambda(alive::Event)>’
+  800 |       assert(ultra::compile_canvas(graph,plan) && workspace->install(d,plan,0,[](alive::Event){return true;}));
+      |                                                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from apps/ultra/tests/../src-tauri/native/alive_session.hpp:3,
+                 from apps/ultra/tests/alive_session_v4_authority_test.cpp:1:
+apps/ultra/tests/../src-tauri/native/canvas_workspace.hpp:42:99: note: initializing argument 4 of ‘bool ultra::CanvasWorkspace::install(unsigned int, const ultra::CanvasPlan&, unsigned int, Emit&) [with Emit = exact_combined_batch()::<lambda(alive::Event)>]’
+   42 |  template<class Emit> bool install(unsigned document,const CanvasPlan& plan,unsigned offset,Emit& emit)noexcept {
+      |                                                                                             ~~~~~~^~~~
+apps/ultra/tests/alive_session_v4_authority_test.cpp:800:79: error: cannot bind non-const lvalue reference of type ‘exact_combined_batch()::<lambda(alive::Event)>&’ to an rvalue of type ‘exact_combined_batch()::<lambda(alive::Event)>’
+  800 |       assert(ultra::compile_canvas(graph,plan) && workspace->install(d,plan,0,[](alive::Event){return true;}));
+      |                                                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+apps/ultra/tests/../src-tauri/native/canvas_workspace.hpp:42:99: note: initializing argument 4 of ‘bool ultra::CanvasWorkspace::install(unsigned int, const ultra::CanvasPlan&, unsigned int, Emit&) [with Emit = exact_combined_batch()::<lambda(alive::Event)>]’
+   42 |  template<class Emit> bool install(unsigned document,const CanvasPlan& plan,unsigned offset,Emit& emit)noexcept {
+      |                                                                                             ~~~~~~^~~~
+cc1plus: all warnings being treated as errors

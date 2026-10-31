@@ -1,0 +1,25 @@
+[
+  {
+    "name": "native-build",
+    "command": [
+      "bash",
+      "apps/ultra/build.sh",
+      "--native-only"
+    ],
+    "exit": 0,
+    "seconds": 21.341,
+    "log": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-root-validation/native-build.log",
+    "sha256": "538d971f38a1c22132a6dd3296ef13d1430cd3e3c8b655467b40c271eebeff4b"
+  },
+  {
+    "name": "native-suite",
+    "command": [
+      "bash",
+      "apps/ultra/tests/ci/check-native.sh"
+    ],
+    "exit": 127,
+    "seconds": 14.205,
+    "log": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-root-validation/native-suite.log",
+    "sha256": "5be32efda47763c7eae139f6808517086794272074a347023d4ff0a1494dd5cf"
+  }
+]

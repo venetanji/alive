@@ -1,0 +1,45 @@
+{
+  "commit": "5981cfeeefc52f6dcb0e1ee536c0bd3ff9ec9e4b",
+  "verified_raw_artifacts": 274,
+  "verified_source_library_pins": 33,
+  "verified_committed_blobs": [
+    "apps/ultra/src-tauri/native/alive_session_clips.hpp",
+    "apps/ultra/src-tauri/native/alive_session_workspaces.hpp",
+    "apps/ultra/tests/alive_session_v4_authority_test.cpp",
+    "apps/ultra/tests/alive_session_v4_midi_test.cpp"
+  ],
+  "pcm": {
+    "song-pcm.f32": {
+      "frames": 10401,
+      "peak": 0.0006803426658734679,
+      "nonzero_scalars": 20802,
+      "sha256": "4840a47ae199e2146c186e444f319e0b8f0ddbfcaaadc919d98856a76d19f4a0"
+    },
+    "song-session-pcm.f32": {
+      "frames": 10401,
+      "peak": 0.00036471133353188634,
+      "nonzero_scalars": 20802,
+      "sha256": "1173cf0a17222bba91361b7c0c235ecbb4792271b6cdb23cfa7e1f149d1e732a"
+    },
+    "song-session-control-pcm.f32": {
+      "frames": 10401,
+      "peak": 0.00036471133353188634,
+      "nonzero_scalars": 20802,
+      "sha256": "1173cf0a17222bba91361b7c0c235ecbb4792271b6cdb23cfa7e1f149d1e732a"
+    },
+    "song-gestures-pcm.f32": {
+      "frames": 20480,
+      "peak": 0.00036471133353188634,
+      "nonzero_scalars": 28672,
+      "sha256": "0d7cd3cfcead0540a126385c2d69d79f13ef9d059bba117f42a15c401fa11888"
+    },
+    "song-gestures-control-pcm.f32": {
+      "frames": 20480,
+      "peak": 0.00036471133353188634,
+      "nonzero_scalars": 28672,
+      "sha256": "0d7cd3cfcead0540a126385c2d69d79f13ef9d059bba117f42a15c401fa11888"
+    }
+  },
+  "independent_review": "approved; see independent-review.md",
+  "shipping_v4_enabled": false
+}

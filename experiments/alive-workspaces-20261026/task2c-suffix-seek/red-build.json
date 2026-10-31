@@ -1,0 +1,5 @@
+{
+  "command": "c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE -DULTRA_ALIVE_SESSION_V4_PROVISIONAL -I/tmp/alive-workspaces-task2c-suffix-seek apps/ultra/tests/alive_session_v4_authority_test.cpp /tmp/alive-workspaces-task2c-suffix-seek/baseline-backend.o apps/ultra/build/core/libultra_core_bundle.a -Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock -ldl -lrt -o /tmp/alive-workspaces-task2c-suffix-seek/red-test",
+  "exit": 0,
+  "seconds": 8.33446610700048
+}

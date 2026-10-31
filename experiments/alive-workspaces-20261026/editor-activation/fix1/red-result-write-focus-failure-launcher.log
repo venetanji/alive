@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "timeout",
+    "--signal=TERM",
+    "--kill-after=10s",
+    "480s",
+    "bash",
+    "apps/ultra/tests/check_canvas_desktop.sh",
+    "/tmp/alive-workspaces-editor-ci-probe/fix-1/red-result-write-focus-failure"
+  ],
+  "script": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_editor_diagnostics.py",
+  "sha256": {
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_editor_diagnostics.py": "35fad2ef300af7a462e2a5ab649e18498d925ff517704bb1a2d3369ae228e223",
+    "apps/ultra/tests/check_alive_desktop.py": "1f1b7e9786343d255d72f226b06634e3f23524588b4f326cb7b5f47515235614",
+    "apps/ultra/tests/alive_workspace_navigation.py": "dc7e884dbe17cbd2d4db5984f8315552ea18ccfedd1cc1052202d40b95e3ce20",
+    "apps/ultra/tests/check_canvas_desktop.py": "fa5d5c543afa5cdfa261874ee2123a47c9ac168ad4f79811b1a7a71847684684",
+    "apps/ultra/tests/check_documents_desktop.py": "97685d35f6c9c1410c35ed45c4e2dbb32282f86383ec366ab12d40234ccd0c88"
+  },
+  "env": {
+    "PATH": "/usr/bin:/bin",
+    "ALIVE_TEST_EDITOR_WRITE_ERROR": "result",
+    "ALIVE_TEST_EDITOR_FOCUS_FAILURE": "1",
+    "PYTHONUNBUFFERED": "1",
+    "ULTRA_TEST_ALIVE": "1",
+    "ULTRA_TEST_SCRIPT": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_editor_diagnostics.py"
+  },
+  "start": "2026-10-26T18:58:27.966216+00:00",
+  "exit": 1,
+  "seconds": 18.04305022200424,
+  "end": "2026-10-26T18:58:46.009282+00:00"
+}

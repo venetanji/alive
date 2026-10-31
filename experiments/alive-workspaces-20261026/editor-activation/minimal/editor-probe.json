@@ -1,0 +1,150 @@
+[
+  {
+    "phase": "initial-collapsed",
+    "monotonic": 59007.06022972,
+    "rect": [
+      164,
+      455,
+      129,
+      13
+    ]
+  },
+  {
+    "phase": "focus",
+    "monotonic": 59007.427406874,
+    "before": [
+      164,
+      472,
+      129,
+      25
+    ],
+    "after": [
+      164,
+      385,
+      129,
+      25
+    ],
+    "result": true,
+    "observation_seconds": 0.0020217109995428473
+  },
+  {
+    "phase": "chosen",
+    "monotonic": 59007.428391666,
+    "rect": [
+      164,
+      385,
+      129,
+      25
+    ],
+    "point": [
+      228,
+      397
+    ],
+    "native": {
+      "focus": 4194307,
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            1996203
+          ],
+          "type": [
+            268
+          ]
+        }
+      ]
+    },
+    "observation_seconds": 0.0006344559951685369
+  },
+  {
+    "phase": "XTestFakeMotionEvent",
+    "monotonic": 59007.428415971,
+    "args": [
+      0,
+      228,
+      397,
+      0
+    ],
+    "result": true
+  },
+  {
+    "phase": "XTestFakeButtonEvent",
+    "monotonic": 59007.42842074,
+    "args": [
+      1,
+      1,
+      0
+    ],
+    "result": true
+  },
+  {
+    "phase": "XTestFakeButtonEvent",
+    "monotonic": 59007.428423415,
+    "args": [
+      1,
+      0,
+      0
+    ],
+    "result": true
+  },
+  {
+    "phase": "post-flush",
+    "monotonic": 59007.429712315,
+    "rect": [
+      164,
+      385,
+      129,
+      25
+    ],
+    "native": {
+      "focus": 4194307,
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            1996203
+          ],
+          "type": [
+            268
+          ]
+        }
+      ]
+    },
+    "observation_seconds": 0.0012770679968525656
+  },
+  {
+    "phase": "activation-returned",
+    "monotonic": 59007.57979012
+  },
+  {
+    "phase": "editor-found",
+    "monotonic": 59007.844222439,
+    "cutoff": "2400"
+  }
+]

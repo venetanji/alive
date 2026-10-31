@@ -1,0 +1,12 @@
+VERIFIER_SOURCE apps/ultra/scripts/release.py 10377d41bcb00806cb223aee08afabb970bbe7eb9dcedb1623e150d7e34a8727
+VERIFIER_SOURCE apps/ultra/scripts/smoke_native.py 2c05c8f59e7d05c2ebdd85aade74dd4fdbed724b0e879f9566b33317b0150060
+VERIFIER_SOURCE apps/ultra/THIRD-PARTY.txt 70ea02d1c11e7d889f52051dccc09154d396e8c5f52b5cad88b4f0888cd50ec7
+VERIFIER_SOURCE apps/ultra/THIRD-PARTY-CRATES.json 45032e14f48889834352858d00a8e37f7b52b4f983dd2c64f7dfa6a848142f2e
+VERIFIER_SOURCE apps/ultra/core/VOICE.txt 3305f3b0ba3c62f647365a18e2b17ee07bc60c9582df6b4d6e0f3d54fc8133cd
+Traceback (most recent call last):
+  File "<stdin>", line 9, in <module>
+  File "<frozen importlib._bootstrap_external>", line 763, in exec_module
+  File "<frozen importlib._bootstrap>", line 491, in _call_with_frames_removed
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/scripts/release.py", line 17, in <module>
+    from notices import validate as validate_notices
+ModuleNotFoundError: No module named 'notices'

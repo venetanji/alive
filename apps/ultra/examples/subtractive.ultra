@@ -1,6 +1,177 @@
 {
   "version": 1,
   "profile": "ultra-canvas-v1",
+  "presentation": {
+    "version": 1,
+    "openOnLoad": false,
+    "size": {
+      "width": 640,
+      "height": 112
+    },
+    "items": [
+      {
+        "id": "attack",
+        "kind": "control",
+        "target": {
+          "kind": "parameter",
+          "node": 5,
+          "param": "attack"
+        },
+        "widget": "dial",
+        "label": "Attack",
+        "rect": {
+          "x": 8,
+          "y": 8,
+          "width": 80,
+          "height": 96
+        },
+        "included": true,
+        "visible": true,
+        "style": {
+          "accent": "default",
+          "labelPosition": "above"
+        }
+      },
+      {
+        "id": "decay",
+        "kind": "control",
+        "target": {
+          "kind": "parameter",
+          "node": 5,
+          "param": "decay"
+        },
+        "widget": "dial",
+        "label": "Decay",
+        "rect": {
+          "x": 96,
+          "y": 8,
+          "width": 80,
+          "height": 96
+        },
+        "included": true,
+        "visible": true,
+        "style": {
+          "accent": "default",
+          "labelPosition": "above"
+        }
+      },
+      {
+        "id": "sustain",
+        "kind": "control",
+        "target": {
+          "kind": "parameter",
+          "node": 5,
+          "param": "sustain"
+        },
+        "widget": "dial",
+        "label": "Sustain",
+        "rect": {
+          "x": 184,
+          "y": 8,
+          "width": 80,
+          "height": 96
+        },
+        "included": true,
+        "visible": true,
+        "style": {
+          "accent": "default",
+          "labelPosition": "above"
+        }
+      },
+      {
+        "id": "release",
+        "kind": "control",
+        "target": {
+          "kind": "parameter",
+          "node": 5,
+          "param": "release"
+        },
+        "widget": "dial",
+        "label": "Release",
+        "rect": {
+          "x": 272,
+          "y": 8,
+          "width": 80,
+          "height": 96
+        },
+        "included": true,
+        "visible": true,
+        "style": {
+          "accent": "default",
+          "labelPosition": "above"
+        }
+      },
+      {
+        "id": "cutoff",
+        "kind": "control",
+        "target": {
+          "kind": "parameter",
+          "node": 4,
+          "param": "cutoff"
+        },
+        "widget": "dial",
+        "label": "Cutoff",
+        "rect": {
+          "x": 360,
+          "y": 8,
+          "width": 80,
+          "height": 96
+        },
+        "included": true,
+        "visible": true,
+        "style": {
+          "accent": "default",
+          "labelPosition": "above"
+        }
+      },
+      {
+        "id": "resonance",
+        "kind": "control",
+        "target": {
+          "kind": "parameter",
+          "node": 4,
+          "param": "resonance"
+        },
+        "widget": "dial",
+        "label": "Resonance",
+        "rect": {
+          "x": 448,
+          "y": 8,
+          "width": 80,
+          "height": 96
+        },
+        "included": true,
+        "visible": true,
+        "style": {
+          "accent": "default",
+          "labelPosition": "above"
+        }
+      },
+      {
+        "id": "level",
+        "kind": "control",
+        "target": {
+          "kind": "parameter",
+          "node": 9,
+          "param": "value"
+        },
+        "widget": "dial",
+        "label": "Level",
+        "rect": {
+          "x": 536,
+          "y": 8,
+          "width": 80,
+          "height": 96
+        },
+        "included": true,
+        "visible": true,
+        "style": {
+          "accent": "default",
+          "labelPosition": "above"
+        }
+      }
+    ]
+  },
   "nodes": [
     {
       "id": 1,
@@ -257,17 +428,23 @@
     }
   ],
   "device": {
-    "version": 1,
+    "version": 2,
+    "kind": "instrument",
     "id": "org.alive.subtractive",
     "name": "Subtractive",
     "midi": {
-      "node": 2,
-      "inlet": 0
+      "input": {
+        "node": 2,
+        "inlet": 0
+      },
+      "output": null
     },
     "audio": {
-      "inputs": 0,
-      "outputs": 2,
-      "layout": "stereo"
+      "input": null,
+      "output": {
+        "channels": 2,
+        "layout": "stereo"
+      }
     },
     "parameters": [
       {

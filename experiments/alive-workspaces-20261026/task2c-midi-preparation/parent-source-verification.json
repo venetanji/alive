@@ -1,0 +1,20 @@
+{
+  "source": "0606542c505f5ba615f43404b639f6c5f63e6e37",
+  "base": "e5b905fa378e5f8d8644a4fd6f9adb5c8437207a",
+  "pins_checked": 20,
+  "committed_blobs_checked": [
+    "apps/ultra/src-tauri/native/alive_session.hpp",
+    "apps/ultra/src-tauri/native/alive_session_clips.hpp",
+    "apps/ultra/src-tauri/native/alive_session_workspaces.hpp",
+    "apps/ultra/tests/alive_session_v4_midi_test.cpp",
+    "apps/ultra/tests/ci/check-native.sh"
+  ],
+  "complete_native_ci": {
+    "command": [
+      "bash",
+      "apps/ultra/tests/ci/check-native.sh"
+    ],
+    "exit": 0,
+    "elapsed_seconds": 157.49073595500522
+  }
+}

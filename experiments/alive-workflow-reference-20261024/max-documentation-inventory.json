@@ -1,0 +1,71 @@
+{
+  "evidence_id": "LOCAL-WF-S1",
+  "kind": "installed_documentation_inventory",
+  "source_root": "/home/venetanji/.cache/alive-max-list-20261021/wine-disposable/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resources/docs",
+  "files": [
+    {
+      "relative_path": "refpages/msp-ref/plugin~.maxref.xml",
+      "bytes": 3625,
+      "sha256": "4c84af097336bdcbbe932d2c9f4772fddc00686bcdf6a539693ee851c7b61e94"
+    },
+    {
+      "relative_path": "refpages/msp-ref/plugout~.maxref.xml",
+      "bytes": 3681,
+      "sha256": "a69066b8cf7de4fc00d59cb4ac146b71733fc17195abdc6e926ed505460b2ed4"
+    },
+    {
+      "relative_path": "refpages/m4l-ref/parameters.maxref.xml",
+      "bytes": 10282,
+      "sha256": "cbb5e732ad8c28de3492bc447f27103d83e2ad15d7e5c3b864ee4f3812d0a733"
+    },
+    {
+      "relative_path": "userguide/content/m4l/live_preview.json",
+      "bytes": 9582,
+      "sha256": "fb93e71f8e4e78638eec5962a613a94ab9d01c4c1598faec3415618ddf1b46d8"
+    },
+    {
+      "relative_path": "userguide/content/m4l/live_creatingdevices.json",
+      "bytes": 7442,
+      "sha256": "f0db6289593769839c3d7c77b18a85b787bb6e5f3c3d05817d959bd490561281"
+    },
+    {
+      "relative_path": "userguide/content/m4l/live_audiodevices.json",
+      "bytes": 6370,
+      "sha256": "237972c593125efde2ec566b520ba1e9c5877759781b963fa001f45b72177fe9"
+    }
+  ],
+  "parameter_field_names": [
+    "Order",
+    "Parameter Mode Enable",
+    "Link to Scripting Name",
+    "Long Name",
+    "Short Name",
+    "Type",
+    "Range/Enum",
+    "Clip Modulation Mode",
+    "Clip Modulation Range",
+    "Initial Enable",
+    "Initial",
+    "Unit Style",
+    "Custom Units",
+    "Exponent",
+    "Steps",
+    "Control Surface Button Mode",
+    "Parameter Visibility",
+    "Undo When Visible",
+    "Update Limit (ms)",
+    "Defer Automation Output"
+  ],
+  "observations": [
+    "plugin~ defines host audio input ports; installed reference documents two channels by default and optional logical channel arguments.",
+    "plugout~ defines audio output to host for audio effects and instruments. Installed prose includes legacy two-channel statements alongside Maximum Channels; current supported layouts were not executed and remain unresolved.",
+    "Parameters have distinct unique-per-patcher Long Name and compact Short Name; Type, Range/Enum, Initial, Unit Style, Exponent, Steps, Visibility and Undo metadata are explicit concepts.",
+    "Preview Mode documentation describes an editor copy and a track copy; the track copy is disabled while previewing, and preview introduces additional latency.",
+    "Preview Mode documentation says parameter state synchronizes when toggled, while arbitrary Max object memory does not; Max parameter edits in preview are undoable in Live."
+  ],
+  "limitations": [
+    "Documentation describes declared product behavior; this static inventory does not observe audio, editor instance count, DSP continuity or port negotiation.",
+    "No proprietary documentation bodies, templates, patch graphs or assets are redistributed.",
+    "Port layout and editor ownership choices for Alive remain its own contract."
+  ]
+}

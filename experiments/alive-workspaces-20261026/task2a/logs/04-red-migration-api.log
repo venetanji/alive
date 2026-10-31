@@ -1,0 +1,63 @@
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+error[E0425]: cannot find function `prospective_from_document` in this scope
+   --> src/session/workspaces_tests.rs:184:11
+    |
+184 |     let p=prospective_from_document(&old).unwrap();
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `prospective_from_document` in this scope
+   --> src/session/workspaces_tests.rs:185:18
+    |
+185 |     assert_eq!(p,prospective_from_document(&old).unwrap()); assert_eq!(old,before);
+    |                  ^^^^^^^^^^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `prospective_from_document` in this scope
+   --> src/session/workspaces_tests.rs:195:13
+    |
+195 |     assert!(prospective_from_document(&silent).unwrap().placements.is_empty());
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `prospective_from_document` in this scope
+   --> src/session/workspaces_tests.rs:196:16
+    |
+196 |     assert_eq!(prospective_from_document(&silent).unwrap().sources.len(),1);
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `prospective_from_document` in this scope
+   --> src/session/workspaces_tests.rs:200:17
+    |
+200 |         assert!(prospective_from_document(&colliding).unwrap_err().contains(collision)); assert_eq!(colliding,before);
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `prospective_from_document` in this scope
+   --> src/session/workspaces_tests.rs:209:11
+    |
+209 |     let a=prospective_from_document(&old).unwrap();
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `prospective_from_document` in this scope
+   --> src/session/workspaces_tests.rs:210:11
+    |
+210 |     let b=prospective_from_document(&old.to_clips().unwrap()).unwrap();
+    |           ^^^^^^^^^^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `prospective_from_legacy_text` in this scope
+   --> src/session/workspaces_tests.rs:212:16
+    |
+212 |     assert_eq!(prospective_from_legacy_text(&text,&path).unwrap(),a);
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `prospective_from_document` in this scope
+   --> src/session/workspaces_tests.rs:217:13
+    |
+217 |     assert!(prospective_from_document(&invalid).unwrap_err().contains("four")); assert_eq!(invalid,before);
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `prospective_from_legacy_text` in this scope
+   --> src/session/workspaces_tests.rs:224:19
+    |
+224 |     let converted=prospective_from_legacy_text(&v1.to_string(),&path).unwrap();
+    |                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in this scope
+
+For more information about this error, try `rustc --explain E0425`.
+error: could not compile `ultra` (lib test) due to 10 previous errors

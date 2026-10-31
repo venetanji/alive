@@ -17,16 +17,31 @@ function number(value,min,max,label,integer=false){
 export function validateDevice(patch,registry,structural){
   if(!own(patch,'device'))return;
   const device=patch.device;
-  fields(device,['version','id','name','midi','audio','parameters','presets']);
-  if(device.version!==1)fail('unsupported manifest version.');
+  if(device?.version!==2)fail('unsupported manifest version.');
+  fields(device,['version','id','name','midi','audio','parameters','presets','kind']);
   text(device.id,'id',127);
   if(!/^[A-Za-z0-9_-]+(?:\.[A-Za-z0-9_-]+)*$/.test(device.id))fail('id must use ASCII identifier segments separated by dots.');
   text(device.name,'name',64);
-  fields(device.midi,['node','inlet']);fields(device.audio,['inputs','outputs','layout']);
   const byId=new Map(nodes(patch).map(node=>[node.id,node]));
-  if(!Number.isInteger(device.midi.node)||byId.get(device.midi.node)?.type!=='poly_note'||device.midi.inlet!==0)fail('MIDI entry must be the note inlet of poly.note~.');
-  if(device.audio.inputs!==0||device.audio.outputs!==2||device.audio.layout!=='stereo')fail('audio interface supports zero inputs and exactly two stereo outputs.');
-  if(!Array.isArray(device.parameters)||!device.parameters.length||device.parameters.length>16)fail('expected 1 to 16 parameter bindings.');
+  const note=input=>{
+    fields(input,['node','inlet']);
+    if(!Number.isInteger(input.node)||byId.get(input.node)?.type!=='poly_note'||input.inlet!==0)fail('MIDI entry must be the note inlet of poly.note~.');
+  };
+  const stereo=bundle=>{
+    fields(bundle,['channels','layout']);
+    if(bundle.channels!==2||bundle.layout!=='stereo')fail('audio interface requires exactly two stereo channels.');
+  };
+  fields(device.midi,['input','output']);fields(device.audio,['input','output']);stereo(device.audio.output);
+  if(device.midi.output!==null)fail('MIDI output must be null.');
+  if(device.kind==='instrument'){
+    note(device.midi.input);if(device.audio.input!==null)fail('instruments require no audio input.');
+  }else if(device.kind==='audioEffect'){
+    if(device.midi.input!==null)fail('audio effects require no MIDI input.');
+    fields(device.audio.input,['node','bundle']);stereo(device.audio.input.bundle);
+    if(!Number.isInteger(device.audio.input.node)||byId.get(device.audio.input.node)?.type!=='audio_in')fail('effect input must bind an authored audio.in~.');
+  }else fail('kind must be instrument or audioEffect.');
+  if(patch.presentation===null)fail('reusable devices require a root presentation.');
+  if(!Array.isArray(device.parameters)||device.parameters.length>16)fail('expected 0 to 16 parameter bindings.');
   const keys=new Set(),bindings=new Set();
   for(const parameter of device.parameters){
     fields(parameter,['key','label','node','param','min','max','unit'],['key','label','node','param','min','max']);

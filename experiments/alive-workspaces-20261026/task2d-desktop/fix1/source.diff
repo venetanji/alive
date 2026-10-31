@@ -1,0 +1,90 @@
+diff --git i/apps/ultra/ui/alive-dom.test.mjs w/apps/ultra/ui/alive-dom.test.mjs
+index 0035d87..a6005da 100644
+--- i/apps/ultra/ui/alive-dom.test.mjs
++++ w/apps/ultra/ui/alive-dom.test.mjs
+@@ -759,3 +759,38 @@ for(const effectFirst of [false,true])test(`v4 unavailable audio chain has expli
+   if(effectFirst){const bypass=descendants(page.ids.get('chain')).find(e=>e.attrs['aria-label']?.startsWith('Bypass '));assert.equal(bypass.disabled,false);}
+   view.dispose();
+ });
++
++for(const firstField of ['name','offset'])test(`v4 queued slot ${firstField} edit preserves the other accepted field`,async()=>{
++  const initial=workspaceState(),page=dom('./alive.html'),native=backend(initial);let release;
++  const view=mountAlive({...page,invoke:async(name,args)=>{
++    if(name!=='alive_workspace_edit')return native.invoke(name,args);
++    native.calls.push({name,args});if(!release)await new Promise(resolve=>{release=resolve;});
++    native.snapshot.draft??=structuredClone(native.snapshot.document);const op=args.operation;
++    const slot=native.snapshot.draft.tracks.find(t=>t.id===op.trackId).slots.find(s=>s?.id===op.slotId);
++    Object.assign(slot,{name:op.name,sourceOffset:op.sourceOffset,loopEnabled:op.loopEnabled});native.snapshot.draftRevision++;
++    return{snapshot:structuredClone(native.snapshot),affected:{trackId:op.trackId,slotId:op.slotId,sourceId:slot.sourceId,noteId:null,placementId:null}};
++  }});await settle();
++  const name=page.find('Clip name'),offset=page.find('Slot source offset');name.value='Renamed slot';offset.value='0.25';
++  await(firstField==='name'?name:offset).fire('change');await(firstField==='name'?offset:name).fire('change');
++  assert.equal(native.calls.filter(c=>c.name==='alive_workspace_edit').length,1);release();await settle();await settle();await settle();
++  const edits=native.calls.filter(c=>c.name==='alive_workspace_edit');assert.deepEqual(edits.map(c=>c.args.draftRevision),[0,1]);
++  assert.deepEqual(edits[1].args.operation,{kind:'slotUpdate',trackId:'track-1',slotId:'clip-track-1',name:'Renamed slot',sourceOffset:{kind:'beats',value:0.25},loopEnabled:true});
++  assert.deepEqual(view.model.document().tracks[0].slots[0],{...initial.document.tracks[0].slots[0],name:'Renamed slot',sourceOffset:{kind:'beats',value:0.25}});view.dispose();
++});
++
++for(const field of ['name','offset'])for(const boundary of ['rewire','delete'])test(`v4 queued slot ${field} refuses an earlier ${boundary}`,async()=>{
++  const initial=workspaceState(),page=dom('./alive.html'),native=backend(initial);let release;
++  const view=mountAlive({...page,invoke:async(name,args)=>{
++    if(name!=='alive_workspace_edit')return native.invoke(name,args);
++    native.calls.push({name,args});if(!release)await new Promise(resolve=>{release=resolve;});
++    native.snapshot.draft??=structuredClone(native.snapshot.document);const slot=native.snapshot.draft.tracks[0].slots[0];
++    if(boundary==='delete')native.snapshot.draft.tracks[0].slots[0]=null;
++    else{const source=structuredClone(native.snapshot.draft.sources[0]);source.id='new-independent-source';source.notes.forEach(n=>n.id+='-new');native.snapshot.draft.sources.push(source);slot.sourceId=source.id;}
++    native.snapshot.draftRevision++;
++    return{snapshot:structuredClone(native.snapshot),affected:{trackId:'track-1',slotId:slot.id,sourceId:slot.sourceId,noteId:null,placementId:null}};
++  }});await settle();
++  const input=page.find(field==='name'?'Clip name':'Slot source offset');
++  await page.find(boundary==='rewire'?'Make source independent':'Delete clip').fire('click');input.value=field==='name'?'Stale name':'0.25';await input.fire('change');
++  release();await settle();await settle();await settle();
++  assert.equal(native.calls.filter(c=>c.name==='alive_workspace_edit').length,1);assert.match(page.ids.get('notice').textContent,/slot or source changed/);view.dispose();
++});
+diff --git i/apps/ultra/ui/alive.mjs w/apps/ultra/ui/alive.mjs
+index fad4c77..71637cc 100644
+--- i/apps/ultra/ui/alive.mjs
++++ w/apps/ultra/ui/alive.mjs
+@@ -196,13 +196,20 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
+   }
+   function workspaceEdit(operation){
+     const scope=scopeRevision,token=selectionToken;
+-    return enqueue(async()=>{if(scope!==scopeRevision)throw Error('The source scope changed. Select it and try again.');const result=await command('alive_workspace_edit',{operation});model.applied(result.snapshot);listRevision++;
++    return enqueue(async()=>{if(scope!==scopeRevision)throw Error('The source scope changed. Select it and try again.');const result=await command('alive_workspace_edit',{operation:typeof operation==='function'?operation():operation});model.applied(result.snapshot);listRevision++;
+       if(token===selectionToken){const a=result.affected,track=model.document().tracks.find(t=>t.id===a.trackId);if(a.slotId&&track){const slot=track.slots.findIndex(s=>s?.id===a.slotId);if(slot>=0)selectedSlots.set(a.trackId,slot);}selectedNote=a.noteId??null;}
+       musicKey=clipControlsKey=trackKey='';render();return result;});
+   }
++  function workspaceSlotEdit(trackId,slotId,sourceId,changes){
++    return workspaceEdit(()=>{
++      const slot=model.document().tracks.find(t=>t.id===trackId)?.slots.find(s=>s?.id===slotId);
++      if(!slot||slot.sourceId!==sourceId)throw Error('The originating slot or source changed. Select it and try again.');
++      return{kind:'slotUpdate',trackId,slotId,name:slot.name,sourceOffset:slot.sourceOffset,loopEnabled:slot.loopEnabled,...changes};
++    });
++  }
+   function workspaceClipEdit(operation){
+     const track=model.document().tracks.find(t=>t.id===operation.trackId),slot=track?.slots.find(s=>s?.id===operation.clipId),source=model.document().sources.find(s=>s.id===slot?.sourceId);
+-    const {kind,trackId,clipId,...rest}=operation;
++    const {kind,trackId,clipId,sourceId,...rest}=operation;
+     if(kind==='create'){
+       const scope=scopeRevision,token=selectionToken;
+       return enqueue(async()=>{if(scope!==scopeRevision)throw Error('The source scope changed.');const created=await command('alive_workspace_edit',{operation:{kind:'sourceCreateMidi',trackId,name:`Clip ${rest.slot+1}`,lengthBeats:model.document().lengthBeats}});model.applied(created.snapshot);
+@@ -211,7 +218,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
+     if(!slot||!source)throw Error('Select a MIDI source slot.');
+     if(kind==='duplicate')return workspaceEdit({kind:'slotDuplicate',trackId,slotId:slot.id,...rest});
+     if(kind==='delete')return workspaceEdit({kind:'slotDelete',trackId,slotId:slot.id});
+-    if(kind==='rename')return workspaceEdit({kind:'slotUpdate',trackId,slotId:slot.id,name:rest.name,sourceOffset:slot.sourceOffset,loopEnabled:slot.loopEnabled});
++    if(kind==='rename')return workspaceSlotEdit(trackId,slot.id,sourceId??source.id,{name:rest.name});
+     if(kind==='length')return workspaceEdit({kind:'sourceLength',sourceId:source.id,...rest});
+     if(kind==='noteCreate')return workspaceEdit({kind:'noteCreate',sourceId:source.id,...rest});
+     throw Error('This clip operation is unavailable in workspaces.');
+@@ -256,8 +263,8 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
+     if(!source){container.append(make('span','muted','Source unavailable'));return;}
+     const references=document.tracks.reduce((n,t)=>n+t.slots.filter(s=>s?.sourceId===source.id).length,0)+document.placements.filter(p=>p.sourceId===source.id).length;
+     container.append(make('span','source-scope',`${source.name} / shared source: ${references} references. Notes and automation edit every reference.`));
+-    const name=make('input');name.value=slot.name;name.setAttribute('aria-label','Clip name');name.maxLength=64;name.addEventListener('change',guard(()=>clipEdit({kind:'rename',trackId:track.id,clipId:slot.id,name:name.value})));container.append(name);
+-    if(source.kind==='midi'){container.append(numeric('Selected clip length',source.lengthBeats,{min:1/64,max:256},lengthBeats=>workspaceEdit({kind:'sourceLength',sourceId:source.id,lengthBeats})));container.append(numeric('Slot source offset',slot.sourceOffset.value,{min:0,max:source.lengthBeats},value=>workspaceEdit({kind:'slotUpdate',trackId:track.id,slotId:slot.id,name:slot.name,sourceOffset:{kind:'beats',value},loopEnabled:slot.loopEnabled})));}
++    const name=make('input');name.value=slot.name;name.setAttribute('aria-label','Clip name');name.maxLength=64;name.addEventListener('change',guard(()=>clipEdit({kind:'rename',trackId:track.id,clipId:slot.id,sourceId:source.id,name:name.value})));container.append(name);
++    if(source.kind==='midi'){container.append(numeric('Selected clip length',source.lengthBeats,{min:1/64,max:256},lengthBeats=>workspaceEdit({kind:'sourceLength',sourceId:source.id,lengthBeats})));container.append(numeric('Slot source offset',slot.sourceOffset.value,{min:0,max:source.lengthBeats},value=>workspaceSlotEdit(track.id,slot.id,source.id,{sourceOffset:{kind:'beats',value}})));}
+     const destination=make('select');destination.setAttribute('aria-label','Duplicate destination');track.slots.forEach((s,i)=>{if(!s){const option=make('option','',`Slot ${i+1}`);option.value=String(i);destination.append(option);}});destination.value=destination.children[0]?.value??'';container.append(destination);
+     button('Duplicate clip',()=>workspaceEdit({kind:'slotDuplicate',trackId:track.id,slotId:slot.id,destinationSlot:Number(destination.value)})).disabled=!destination.children.length;
+     button('Make source independent',()=>workspaceEdit({kind:'sourceIndependent',occurrence:{kind:'slot',trackId:track.id,slotId:slot.id}}));

@@ -1,6 +1,6 @@
 import {completionFor} from './canvas-completion.mjs';
 
-export function createObjectEntry({document:doc,window:win,commit,onClose=()=>{}}) {
+export function createObjectEntry({document:doc,window:win,commit,onClose=()=>{},drafts}) {
   const $=id=>doc.querySelector('#'+id),box=$('object-entry'),input=$('object-text'),list=$('object-suggestions'),guide=$('object-arguments'),assistance=$('entry-assistance');
   let choices=[],active=0,context=null,completion=null,anchor={x:80,y:140},lastSelection='',entryWidth=100,entryHeight=24,fontSize=12,multiline=false,originalText='',originalDisplay='';
   const selection=()=>`${input.selectionStart}:${input.selectionEnd}`;
@@ -68,19 +68,29 @@ export function createObjectEntry({document:doc,window:win,commit,onClose=()=>{}
     const caret=s.start+s.insert.length+(separator.length||suffix.match(/^\s+/)?.[0].length||0);
     input.setSelectionRange?.(caret,caret);active=0;render();
   }
-  function close() {box.hidden=true;context=null;$('object-error').textContent='';onClose();}
+  function close() {drafts?.forget(input);box.hidden=true;context=null;$('object-error').textContent='';onClose();}
   function open({text='',clientX=80,clientY=140,width=100,height=24,fontSize:font=12,...rest}={}) {
     context=rest;active=0;originalText=text;input.value=text;originalDisplay=input.value;input.setAttribute('aria-invalid','false');$('object-error').textContent='';box.hidden=false;
     anchor={x:clientX,y:clientY};
     entryWidth=width;entryHeight=height;fontSize=font;
     box.style.setProperty('--entry-scale',String(height/24));
-    input.focus();if(text)input.select();render();
+    drafts?.add(input);input.focus();if(text)input.select();render();
   }
+  function commitDraft(){
+    if(box.hidden)return true;
+    if(!input.value.trim()&&!context.nodeId){close();return true;}
+    try{
+      commit(multiline&&input.value===originalDisplay?originalText:input.value,context);close();return true;
+    }catch(error){$('object-error').textContent=error.message;assistance.hidden=false;input.setAttribute('aria-invalid','true');return false;}
+  }
+  input.commitDraft=commitDraft;input.cancelDraft=close;
+  drafts?.watch(input);
   input.addEventListener('input',()=>{active=0;input.setAttribute('aria-invalid','false');$('object-error').textContent='';render();});
   input.addEventListener('click',()=>{active=0;render();});
   input.addEventListener('select',()=>{if(selection()!==lastSelection){active=0;render();}});
   input.addEventListener('keyup',e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){active=0;render();}});
   input.addEventListener('keydown',e=>{
+    if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s')return;
     e.stopPropagation();
     if(selection()!==lastSelection){active=0;render();}
     if(e.key==='Escape'){e.preventDefault();close();}
@@ -91,13 +101,10 @@ export function createObjectEntry({document:doc,window:win,commit,onClose=()=>{}
     } else if(e.key==='Tab'){e.preventDefault();complete();}
     else if(e.key==='Enter'){
       e.preventDefault();
-      if(!input.value.trim()&&!context.nodeId){close();return;}
-      try{
-        const name=input.value.trim().split(/\s+/)[0];
-        if(completion.mode==='objects'&&choices.length&&!choices.some(s=>s.object.name===name||s.object.aliases.includes(name)))complete();
-        commit(multiline&&input.value===originalDisplay?originalText:input.value,context);close();
-      }catch(error){$('object-error').textContent=error.message;assistance.hidden=false;input.setAttribute('aria-invalid','true');}
+      const name=input.value.trim().split(/\s+/)[0];
+      if(completion.mode==='objects'&&choices.length&&!choices.some(s=>s.object.name===name||s.object.aliases.includes(name)))complete();
+      input.commitDraft();
     }
   });
-  return{open,close,isOpen:()=>!box.hidden};
+  return{open,close,commitDraft:()=>input.commitDraft(),isOpen:()=>!box.hidden};
 }

@@ -1,0 +1,50 @@
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Activating service name='org.freedesktop.portal.Desktop' requested by ':1.0' (uid=1000 pid=464122 comm="/home/venetanji/.codex/worktrees/bb01/alive/apps/u")
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Activating service name='org.freedesktop.impl.portal.PermissionStore' requested by ':1.1' (uid=1000 pid=464132 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.PermissionStore'
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Activating service name='org.freedesktop.portal.Documents' requested by ':1.1' (uid=1000 pid=464132 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Successfully activated service 'org.freedesktop.portal.Documents'
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=464132 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Activating service name='org.a11y.Bus' requested by ':1.4' (uid=1000 pid=464156 comm="/usr/lib/xdg-desktop-portal-gtk")
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Successfully activated service 'org.a11y.Bus'
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=464168 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=464168 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.gtk'
+
+** (xdg-desktop-portal-gtk:464156): WARNING **: 20:04:31.023: AT-SPI: Could not obtain desktop path or name
+
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=464168 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+
+** (xdg-desktop-portal-gtk:464156): WARNING **: 20:04:31.025: atk-bridge: GetRegisteredEvents returned message with unknown signature
+
+** (xdg-desktop-portal-gtk:464156): WARNING **: 20:04:31.025: atk-bridge: get_device_events_reply: unknown signature
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=464132 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=464132 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=464132 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=464132 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[464067]: [session uid=1000 pid=464067 pidfd=5] Successfully activated service 'org.freedesktop.portal.Desktop'
+PASS secondary file delivery during initialization preserves main and opens its own window
+Traceback (most recent call last):
+  File "/home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/tests/check_ultra_drafts.py", line 217, in <module>
+    {'save-as': run_save_as, 'child': run_child, 'linked': run_linked, 'peer-invalid':run_peer_invalid, 'quit': run_quit,
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     'quit-discard': run_quit_discard, 'close': run_close, 'close-discard': lambda:run_close(True), 'reopen':run_reopen}[scenario]()
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/tests/check_ultra_drafts.py", line 144, in run_peer_invalid
+    entries=records();assert not any(entry.get('event')=='save_begin' for entry in entries),entries
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [{'event': 'save_begin', 'owner': '0', 'revision': '0', 'scope': '0', 'depth': '0', 'token': '0', 'code': '0'}, {'event': 'save_done', 'owner': '0', 'revision': '0', 'scope': '0', 'depth': '0', 'token': '0', 'code': '0'}]

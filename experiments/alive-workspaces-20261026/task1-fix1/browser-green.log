@@ -1,0 +1,90 @@
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:13:32] "GET /canvas.html HTTP/1.1" 200 -
+
+Running 2 tests using 1 worker
+
+(node:150863) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:150863) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:13:35] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:13:35] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:13:35] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:13:35] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:13:35] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:13:35] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:13:35] "GET /alive-model.mjs HTTP/1.1" 200 -
+  ✘  1 apps/ultra/tests/ci/alive-chain.spec.mjs:143:37 › detail navigation preserves an unfinished device field until one deliberate commit (7.3s)
+(node:151251) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:151251) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:13:41] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:13:41] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:13:41] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:13:41] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:13:41] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:13:41] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:13:41] "GET /audio-settings.mjs HTTP/1.1" 200 -
+  ✘  2 apps/ultra/tests/ci/alive-chain.spec.mjs:143:37 › detail navigation preserves an unfinished note field until one deliberate commit (5.7s)
+
+
+  1) apps/ultra/tests/ci/alive-chain.spec.mjs:143:37 › detail navigation preserves an unfinished device field until one deliberate commit 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveValue[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: getByRole('spinbutton', { name: 'Cutoff base', exact: true })
+    Expected: [32m"1717"[39m
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toHaveValue" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('spinbutton', { name: 'Cutoff base', exact: true })[22m
+
+
+      151 |     const before=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length);
+      152 |     await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length)).toBeGreaterThan(before+2);
+    > 153 |     expect(await mutations()).toEqual([]);await expect(input).toHaveValue(typed);
+          |                                                               ^
+      154 |   };
+      155 |   await input.fill(typed);
+      156 |   for(let i=0;i<3;i++){
+        at acrossPolls (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/ci/alive-chain.spec.mjs:153:63)
+        at /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/ci/alive-chain.spec.mjs:157:50
+
+    Error Context: ../../../../../../tmp/alive-workspaces-task1-fix1/browser-green/alive-chain-detail-navigat-362d4-until-one-deliberate-commit/error-context.md
+
+  2) apps/ultra/tests/ci/alive-chain.spec.mjs:143:37 › detail navigation preserves an unfinished note field until one deliberate commit 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveValue[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: getByRole('spinbutton', { name: 'Note 1 pitch', exact: true })
+    Expected: [32m"73"[39m
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toHaveValue" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('spinbutton', { name: 'Note 1 pitch', exact: true })[22m
+
+
+      151 |     const before=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length);
+      152 |     await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length)).toBeGreaterThan(before+2);
+    > 153 |     expect(await mutations()).toEqual([]);await expect(input).toHaveValue(typed);
+          |                                                               ^
+      154 |   };
+      155 |   await input.fill(typed);
+      156 |   for(let i=0;i<3;i++){
+        at acrossPolls (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/ci/alive-chain.spec.mjs:153:63)
+        at /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/ci/alive-chain.spec.mjs:157:50
+
+    Error Context: ../../../../../../tmp/alive-workspaces-task1-fix1/browser-green/alive-chain-detail-navigat-e077c-until-one-deliberate-commit/error-context.md
+
+  2 failed
+    apps/ultra/tests/ci/alive-chain.spec.mjs:143:37 › detail navigation preserves an unfinished device field until one deliberate commit 
+    apps/ultra/tests/ci/alive-chain.spec.mjs:143:37 › detail navigation preserves an unfinished note field until one deliberate commit 
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report apps/ultra/tests/ci/playwright-report[39m
+[36m[39m

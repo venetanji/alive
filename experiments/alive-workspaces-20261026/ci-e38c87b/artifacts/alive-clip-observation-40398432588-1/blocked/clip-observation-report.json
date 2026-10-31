@@ -1,0 +1,35 @@
+{
+  "original_blocked_assertion_preserved": true,
+  "original_input_exception_identity_preserved": false,
+  "failed_writes": [
+    "disclosure blocked"
+  ],
+  "observation_failures": [
+    {
+      "action": "disclosure blocked",
+      "unavailable": true,
+      "error_type": "OSError",
+      "error": "Deliberately unavailable disclosure receipt write"
+    }
+  ],
+  "receipt": {
+    "action": "disclosure blocked",
+    "monotonic": 1321.946540014,
+    "name": "Pulse runtime details",
+    "owner": 4194307,
+    "samples": [
+      {
+        "rect": [
+          156,
+          285,
+          145,
+          21
+        ],
+        "hit_path": []
+      }
+    ],
+    "presses": 0,
+    "releases": 0
+  },
+  "quit_discard_exited": true
+}

@@ -60,3 +60,35 @@ test('Enter opens File and activates Save As while F2 still edits a selected can
   await expect(page.locator('#object-entry')).toBeHidden();
   await page.locator('#workspace').focus();await page.keyboard.press('F2');await expect(page.locator('#object-entry')).toBeVisible();
 });
+
+test('Ctrl+S commits a focused number before saving its owner',async({page})=>{
+  await page.addInitScript(()=>{
+    let patch={version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'number',x:40,y:40,params:{value:10}}],edges:[]},revision=1;
+    const descriptor=()=>({shared:true,id:1,label:'owner',ownerLabel:'owner',title:'Number.ultra',kind:'patch',viewPath:[],patch:structuredClone(patch),authoringRevision:revision,runtimeRevision:1,dirty:false});
+    window.documentCalls=[];
+    window.__TAURI__={core:{invoke:async(name,args={})=>{
+      window.documentCalls.push({name,args});
+      if(name==='document_current')return descriptor();
+      if(name==='document_commit'){patch=structuredClone(args.patch);revision++;return{accepted:true,document:descriptor()};}
+      if(name==='document_save')return descriptor();
+      if(name==='canvas_status')return{revision:1,active:true,nodes:[],console:[]};
+      if(name==='audio_status')return{running:false};
+      if(name==='audio_devices')return{config:{host:'default',device:'default',sample_rate:48000,buffer_frames:null},hosts:[],devices:[],notice:'Audio is off.'};
+      return true;
+    }},event:{listen:async()=>()=>{}},webviewWindow:{getCurrentWebviewWindow:()=>({label:'owner'})},webview:{getCurrentWebview:()=>({onDragDropEvent:async()=>()=>{}})}};
+  });
+  await page.goto('/canvas.html');await expect(page.locator('#document-title')).toHaveText('Number.ultra');
+  await page.locator('#lock-patch').click();
+  const input=page.locator('[data-node="1"] [data-parameter="value"]');await input.click();await input.fill('42');await input.press('Control+s');
+  await expect.poll(()=>page.evaluate(()=>window.documentCalls.filter(call=>call.name==='document_save').length)).toBe(1);
+  const calls=await page.evaluate(()=>window.documentCalls);
+  expect(calls.filter(call=>call.name==='document_commit')).toHaveLength(1);
+  expect(calls.find(call=>call.name==='document_save').args.patch.nodes[0].params.value).toBe(42);
+  expect(calls.findIndex(call=>call.name==='document_commit')).toBeLessThan(calls.findIndex(call=>call.name==='document_save'));
+  await input.fill('');await input.evaluate(element=>element.blur());
+  await page.locator('#document-save').evaluate(element=>{element.focus();element.click();});
+  await expect.poll(()=>page.locator('#notice').textContent()).toContain('invalid focused edit');
+  expect(await page.evaluate(()=>window.documentCalls.filter(call=>call.name==='document_save').length)).toBe(1);
+  await expect(input).toHaveValue('');await input.focus();await input.press('Escape');await input.press('Control+s');
+  await expect.poll(()=>page.evaluate(()=>window.documentCalls.filter(call=>call.name==='document_save').length)).toBe(2);
+});

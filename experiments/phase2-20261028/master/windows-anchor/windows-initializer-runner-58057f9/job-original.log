@@ -1,0 +1,2051 @@
+﻿2026-10-28T21:08:11.2891891Z Current runner version: '2.338.0'
+2026-10-28T21:08:11.2915821Z ##[group]Runner Image Provisioner
+2026-10-28T21:08:11.2916609Z Hosted Compute Agent
+2026-10-28T21:08:11.2917176Z Version: 20261021.618
+2026-10-28T21:08:11.2917773Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-28T21:08:11.2919869Z Build Date: 2026-10-21T00:45:21Z
+2026-10-28T21:08:11.2920924Z Worker ID: {ab53711c-39c1-4502-985d-249db7439cc8}
+2026-10-28T21:08:11.2922010Z Region: southcentralus
+2026-10-28T21:08:11.2922842Z Cloud: Azure
+2026-10-28T21:08:11.2923704Z ##[endgroup]
+2026-10-28T21:08:11.2925742Z ##[group]Operating System
+2026-10-28T21:08:11.2926818Z Microsoft Windows Server 2022
+2026-10-28T21:08:11.2927799Z 10.0.20348
+2026-10-28T21:08:11.2928559Z Datacenter
+2026-10-28T21:08:11.2929491Z ##[endgroup]
+2026-10-28T21:08:11.2930395Z ##[group]Runner Image
+2026-10-28T21:08:11.2931279Z Image: windows-2022
+2026-10-28T21:08:11.2932201Z Version: 20261022.344.1
+2026-10-28T21:08:11.2934739Z Included Software: https://github.com/actions/runner-images/blob/win22/20261022.344/images/windows/Windows2022-Readme.md
+2026-10-28T21:08:11.2937339Z Image Release: https://github.com/actions/runner-images/releases/tag/win22%2F20261022.344
+2026-10-28T21:08:11.2938952Z ##[endgroup]
+2026-10-28T21:08:11.2940774Z ##[group]GITHUB_TOKEN Permissions
+2026-10-28T21:08:11.2943461Z Contents: read
+2026-10-28T21:08:11.2944407Z Metadata: read
+2026-10-28T21:08:11.2945231Z ##[endgroup]
+2026-10-28T21:08:11.2948185Z Secret source: Actions
+2026-10-28T21:08:11.2949537Z Cache mode: write
+2026-10-28T21:08:11.2950579Z Prepare workflow directory
+2026-10-28T21:08:11.3417039Z Prepare all required actions
+2026-10-28T21:08:11.3463915Z Getting action download info
+2026-10-28T21:08:11.6417603Z Download action repository 'actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683' (SHA:11bd71901bbe5b1630ceea73d27597364c9af683)
+2026-10-28T21:08:11.7694757Z Download action repository 'actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-28T21:08:12.0091496Z Download action repository 'actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-10-28T21:08:12.1585132Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-28T21:08:12.5127609Z Complete job name: Package x86_64-pc-windows-msvc
+2026-10-28T21:08:12.6523404Z ##[group]Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+2026-10-28T21:08:12.6524951Z with:
+2026-10-28T21:08:12.6525495Z   persist-credentials: false
+2026-10-28T21:08:12.6526101Z   fetch-depth: 0
+2026-10-28T21:08:12.6526632Z   repository: venetanji/alive
+2026-10-28T21:08:12.6531712Z   token: ***
+2026-10-28T21:08:12.6532216Z   ssh-strict: true
+2026-10-28T21:08:12.6532713Z   ssh-user: git
+2026-10-28T21:08:12.6533110Z   clean: true
+2026-10-28T21:08:12.6533532Z   sparse-checkout-cone-mode: true
+2026-10-28T21:08:12.6534072Z   fetch-tags: false
+2026-10-28T21:08:12.6534496Z   show-progress: true
+2026-10-28T21:08:12.6534925Z   lfs: false
+2026-10-28T21:08:12.6535322Z   submodules: false
+2026-10-28T21:08:12.6535747Z   set-safe-directory: true
+2026-10-28T21:08:12.6536398Z env:
+2026-10-28T21:08:12.6536769Z   JOBS: 2
+2026-10-28T21:08:12.6537141Z   CARGO_BUILD_JOBS: 2
+2026-10-28T21:08:12.6537558Z   CARGO_NET_RETRY: 2
+2026-10-28T21:08:12.6538033Z   CARGO_HTTP_TIMEOUT: 60
+2026-10-28T21:08:12.6538464Z ##[endgroup]
+2026-10-28T21:08:12.8012329Z Syncing repository: venetanji/alive
+2026-10-28T21:08:12.8014180Z ##[group]Getting Git version info
+2026-10-28T21:08:12.8014788Z Working directory is 'D:\a\alive\alive'
+2026-10-28T21:08:12.8964766Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-28T21:08:13.4334938Z git version 2.56.0.windows.3
+2026-10-28T21:08:13.4377203Z ##[endgroup]
+2026-10-28T21:08:13.4396992Z Temporarily overriding HOME='D:\a\_temp\90db092c-09fc-408c-918a-305a310c0249' before making global git config changes
+2026-10-28T21:08:13.4401649Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-28T21:08:13.4408146Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\alive\alive
+2026-10-28T21:08:13.5080589Z Deleting the contents of 'D:\a\alive\alive'
+2026-10-28T21:08:13.5086899Z ##[group]Initializing the repository
+2026-10-28T21:08:13.5096447Z [command]"C:\Program Files\Git\bin\git.exe" init D:\a\alive\alive
+2026-10-28T21:08:13.6130031Z Initialized empty Git repository in D:/a/alive/alive/.git/
+2026-10-28T21:08:13.6172657Z [command]"C:\Program Files\Git\bin\git.exe" remote add origin https://github.com/venetanji/alive
+2026-10-28T21:08:13.6930534Z ##[endgroup]
+2026-10-28T21:08:13.6932509Z ##[group]Disabling automatic garbage collection
+2026-10-28T21:08:13.6938947Z [command]"C:\Program Files\Git\bin\git.exe" config --local gc.auto 0
+2026-10-28T21:08:13.7234767Z ##[endgroup]
+2026-10-28T21:08:13.7236579Z ##[group]Setting up auth
+2026-10-28T21:08:13.7247131Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-28T21:08:13.7543368Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-28T21:08:15.5923601Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-28T21:08:15.6231586Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-28T21:08:16.0921573Z [command]"C:\Program Files\Git\bin\git.exe" config --local http.https://github.com/.extraheader "AUTHORIZATION: basic ***"
+2026-10-28T21:08:16.1229583Z ##[endgroup]
+2026-10-28T21:08:16.1230698Z ##[group]Fetching the repository
+2026-10-28T21:08:16.1247840Z [command]"C:\Program Files\Git\bin\git.exe" -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/* +e6b94c88ab675f5761b556297facd4445a75063d:refs/remotes/pull/6/merge
+2026-10-28T21:08:19.8053781Z From https://github.com/venetanji/alive
+2026-10-28T21:08:19.8057447Z  * [new branch]      build/ultra-desktop-releases             -> origin/build/ultra-desktop-releases
+2026-10-28T21:08:19.8059523Z  * [new branch]      design/max-patcher-ui-20261020           -> origin/design/max-patcher-ui-20261020
+2026-10-28T21:08:19.8060816Z  * [new branch]      feat/alive-session-host                  -> origin/feat/alive-session-host
+2026-10-28T21:08:19.8062053Z  * [new branch]      feat/rust-audio-settings-20261021        -> origin/feat/rust-audio-settings-20261021
+2026-10-28T21:08:19.8063321Z  * [new branch]      feat/ultra-reusable-instrument           -> origin/feat/ultra-reusable-instrument
+2026-10-28T21:08:19.8065047Z  * [new branch]      integration/ultra-rc1-review             -> origin/integration/ultra-rc1-review
+2026-10-28T21:08:19.8065693Z  * [new branch]      main                                     -> origin/main
+2026-10-28T21:08:19.8066337Z  * [new branch]      research/max-help-coverage-20261021      -> origin/research/max-help-coverage-20261021
+2026-10-28T21:08:19.8067163Z  * [new branch]      research/max-reference-local-20261020    -> origin/research/max-reference-local-20261020
+2026-10-28T21:08:19.8067937Z  * [new branch]      research/runtime-foundations-probes      -> origin/research/runtime-foundations-probes
+2026-10-28T21:08:19.8068693Z  * [new branch]      review/astra-validation-20261024         -> origin/review/astra-validation-20261024
+2026-10-28T21:08:19.8069315Z  * [new ref]         e6b94c88ab675f5761b556297facd4445a75063d -> pull/6/merge
+2026-10-28T21:08:19.8097090Z ##[endgroup]
+2026-10-28T21:08:19.8097856Z ##[group]Determining the checkout info
+2026-10-28T21:08:19.8099943Z ##[endgroup]
+2026-10-28T21:08:19.8107940Z [command]"C:\Program Files\Git\bin\git.exe" sparse-checkout disable
+2026-10-28T21:08:19.8568810Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all extensions.worktreeConfig
+2026-10-28T21:08:19.8844551Z ##[group]Checking out the ref
+2026-10-28T21:08:19.8852759Z [command]"C:\Program Files\Git\bin\git.exe" checkout --progress --force refs/remotes/pull/6/merge
+2026-10-28T21:08:20.9482358Z Updating files:  45% (3545/7836)
+2026-10-28T21:08:20.9703921Z Updating files:  46% (3605/7836)
+2026-10-28T21:08:20.9895015Z Updating files:  47% (3683/7836)
+2026-10-28T21:08:21.0057684Z Updating files:  48% (3762/7836)
+2026-10-28T21:08:21.0244508Z Updating files:  49% (3840/7836)
+2026-10-28T21:08:21.0377444Z Updating files:  50% (3918/7836)
+2026-10-28T21:08:21.0554846Z Updating files:  51% (3997/7836)
+2026-10-28T21:08:21.0765869Z Updating files:  52% (4075/7836)
+2026-10-28T21:08:21.1258379Z Updating files:  53% (4154/7836)
+2026-10-28T21:08:21.1436948Z Updating files:  54% (4232/7836)
+2026-10-28T21:08:21.1659784Z Updating files:  55% (4310/7836)
+2026-10-28T21:08:21.1840743Z Updating files:  56% (4389/7836)
+2026-10-28T21:08:21.2028311Z Updating files:  57% (4467/7836)
+2026-10-28T21:08:21.2173465Z Updating files:  58% (4545/7836)
+2026-10-28T21:08:21.2326525Z Updating files:  59% (4624/7836)
+2026-10-28T21:08:21.2505212Z Updating files:  60% (4702/7836)
+2026-10-28T21:08:21.2710798Z Updating files:  61% (4780/7836)
+2026-10-28T21:08:21.2882481Z Updating files:  62% (4859/7836)
+2026-10-28T21:08:21.3045140Z Updating files:  63% (4937/7836)
+2026-10-28T21:08:21.3207993Z Updating files:  64% (5016/7836)
+2026-10-28T21:08:21.3463500Z Updating files:  65% (5094/7836)
+2026-10-28T21:08:21.3811422Z Updating files:  66% (5172/7836)
+2026-10-28T21:08:21.4071635Z Updating files:  67% (5251/7836)
+2026-10-28T21:08:21.4319724Z Updating files:  68% (5329/7836)
+2026-10-28T21:08:21.4654542Z Updating files:  69% (5407/7836)
+2026-10-28T21:08:21.4776133Z Updating files:  70% (5486/7836)
+2026-10-28T21:08:21.4895724Z Updating files:  71% (5564/7836)
+2026-10-28T21:08:21.5055581Z Updating files:  72% (5642/7836)
+2026-10-28T21:08:21.5228057Z Updating files:  73% (5721/7836)
+2026-10-28T21:08:21.5413683Z Updating files:  74% (5799/7836)
+2026-10-28T21:08:21.5610862Z Updating files:  75% (5877/7836)
+2026-10-28T21:08:21.5959027Z Updating files:  76% (5956/7836)
+2026-10-28T21:08:21.6208421Z Updating files:  77% (6034/7836)
+2026-10-28T21:08:21.6382618Z Updating files:  78% (6113/7836)
+2026-10-28T21:08:21.6523124Z Updating files:  79% (6191/7836)
+2026-10-28T21:08:21.6763709Z Updating files:  80% (6269/7836)
+2026-10-28T21:08:21.7028394Z Updating files:  81% (6348/7836)
+2026-10-28T21:08:21.7208157Z Updating files:  82% (6426/7836)
+2026-10-28T21:08:21.7441353Z Updating files:  83% (6504/7836)
+2026-10-28T21:08:21.7637317Z Updating files:  84% (6583/7836)
+2026-10-28T21:08:21.7824171Z Updating files:  85% (6661/7836)
+2026-10-28T21:08:21.8034185Z Updating files:  86% (6739/7836)
+2026-10-28T21:08:21.8217101Z Updating files:  87% (6818/7836)
+2026-10-28T21:08:21.8498784Z Updating files:  88% (6896/7836)
+2026-10-28T21:08:21.8708176Z Updating files:  89% (6975/7836)
+2026-10-28T21:08:21.8856627Z Updating files:  90% (7053/7836)
+2026-10-28T21:08:21.9237064Z Updating files:  91% (7131/7836)
+2026-10-28T21:08:21.9330841Z Updating files:  92% (7210/7836)
+2026-10-28T21:08:21.9707707Z Updating files:  92% (7248/7836)
+2026-10-28T21:08:21.9859889Z Updating files:  93% (7288/7836)
+2026-10-28T21:08:22.0132185Z Updating files:  94% (7366/7836)
+2026-10-28T21:08:22.0311297Z Updating files:  95% (7445/7836)
+2026-10-28T21:08:22.0503378Z Updating files:  96% (7523/7836)
+2026-10-28T21:08:22.0743288Z Updating files:  97% (7601/7836)
+2026-10-28T21:08:22.0915215Z Updating files:  98% (7680/7836)
+2026-10-28T21:08:22.1110451Z Updating files:  99% (7758/7836)
+2026-10-28T21:08:22.1111044Z Updating files: 100% (7836/7836)
+2026-10-28T21:08:22.1111328Z Updating files: 100% (7836/7836), done.
+2026-10-28T21:08:22.1286370Z Note: switching to 'refs/remotes/pull/6/merge'.
+2026-10-28T21:08:22.1287086Z 
+2026-10-28T21:08:22.1287475Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-28T21:08:22.1288018Z changes and commit them, and you can discard any commits you make in this
+2026-10-28T21:08:22.1288801Z state without impacting any branches by switching back to a branch.
+2026-10-28T21:08:22.1289132Z 
+2026-10-28T21:08:22.1289336Z If you want to create a new branch to retain commits you create, you may
+2026-10-28T21:08:22.1289955Z do so (now or later) by using -c with the switch command. Example:
+2026-10-28T21:08:22.1290407Z 
+2026-10-28T21:08:22.1290580Z   git switch -c <new-branch-name>
+2026-10-28T21:08:22.1290881Z 
+2026-10-28T21:08:22.1291034Z Or undo this operation with:
+2026-10-28T21:08:22.1291192Z 
+2026-10-28T21:08:22.1291263Z   git switch -
+2026-10-28T21:08:22.1291438Z 
+2026-10-28T21:08:22.1291746Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-28T21:08:22.1292063Z 
+2026-10-28T21:08:22.1292397Z HEAD is now at e6b94c8 Merge 58057f980afd3365e106433c7102cfc19450c130 into 31033483eb3baf15edab1734b966cc6d55c4b8c7
+2026-10-28T21:08:22.1499317Z ##[endgroup]
+2026-10-28T21:08:22.1947291Z [command]"C:\Program Files\Git\bin\git.exe" log -1 --format=%H
+2026-10-28T21:08:22.2214688Z e6b94c88ab675f5761b556297facd4445a75063d
+2026-10-28T21:08:22.2251771Z ##[group]Removing auth
+2026-10-28T21:08:22.2260324Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-28T21:08:22.2549757Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-28T21:08:22.7307597Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-28T21:08:22.7563249Z http.https://github.com/.extraheader
+2026-10-28T21:08:22.7599344Z [command]"C:\Program Files\Git\bin\git.exe" config --local --unset-all http.https://github.com/.extraheader
+2026-10-28T21:08:22.7889936Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-28T21:08:23.2745742Z ##[endgroup]
+2026-10-28T21:08:23.3124456Z ##[group]Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+2026-10-28T21:08:23.3124917Z with:
+2026-10-28T21:08:23.3125105Z   python-version: 3.12.10
+2026-10-28T21:08:23.3125327Z   check-latest: false
+2026-10-28T21:08:23.3128109Z   token: ***
+2026-10-28T21:08:23.3128306Z   update-environment: true
+2026-10-28T21:08:23.3128535Z   allow-prereleases: false
+2026-10-28T21:08:23.3128743Z   freethreaded: false
+2026-10-28T21:08:23.3128923Z env:
+2026-10-28T21:08:23.3129087Z   JOBS: 2
+2026-10-28T21:08:23.3129245Z   CARGO_BUILD_JOBS: 2
+2026-10-28T21:08:23.3129427Z   CARGO_NET_RETRY: 2
+2026-10-28T21:08:23.3129619Z   CARGO_HTTP_TIMEOUT: 60
+2026-10-28T21:08:23.3129811Z ##[endgroup]
+2026-10-28T21:08:23.4612732Z ##[group]Installed versions
+2026-10-28T21:08:23.4664626Z (node:7440) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-28T21:08:23.4665877Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-28T21:08:23.4682886Z Successfully set up CPython (3.12.10)
+2026-10-28T21:08:23.4684317Z ##[endgroup]
+2026-10-28T21:08:23.4961234Z ##[group]Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+2026-10-28T21:08:23.4961685Z with:
+2026-10-28T21:08:23.4961865Z   node-version: 22.20.0
+2026-10-28T21:08:23.4962066Z   always-auth: false
+2026-10-28T21:08:23.4962257Z   check-latest: false
+2026-10-28T21:08:23.4965015Z   token: ***
+2026-10-28T21:08:23.4965187Z env:
+2026-10-28T21:08:23.4965532Z   JOBS: 2
+2026-10-28T21:08:23.4965689Z   CARGO_BUILD_JOBS: 2
+2026-10-28T21:08:23.4965886Z   CARGO_NET_RETRY: 2
+2026-10-28T21:08:23.4966075Z   CARGO_HTTP_TIMEOUT: 60
+2026-10-28T21:08:23.4966358Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-28T21:08:23.4966816Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-10-28T21:08:23.4967358Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-28T21:08:23.4967788Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-28T21:08:23.4968210Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-28T21:08:23.4968514Z ##[endgroup]
+2026-10-28T21:08:23.6879172Z Attempting to download 22.20.0...
+2026-10-28T21:08:23.7097365Z (node:7436) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-28T21:08:23.7099452Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-28T21:08:24.5132750Z Acquiring 22.20.0 - x64 from https://github.com/actions/node-versions/releases/download/22.20.0-17993202319/node-22.20.0-win32-x64.7z
+2026-10-28T21:08:24.9930846Z Extracting ...
+2026-10-28T21:08:27.1086566Z Adding to the cache ...
+2026-10-28T21:08:33.1234732Z ##[group]Environment details
+2026-10-28T21:08:34.9553877Z node: v22.20.0
+2026-10-28T21:08:34.9554231Z npm: 10.9.3
+2026-10-28T21:08:34.9554676Z yarn: 1.22.22
+2026-10-28T21:08:34.9555391Z ##[endgroup]
+2026-10-28T21:08:34.9806600Z ##[group]Run python apps/ultra/scripts/test_release.py
+2026-10-28T21:08:34.9807096Z [36;1mpython apps/ultra/scripts/test_release.py[0m
+2026-10-28T21:08:34.9807444Z [36;1mpython apps/ultra/scripts/test_notices.py[0m
+2026-10-28T21:08:34.9807756Z [36;1mif [[ "$EVENT" == push ]]; then[0m
+2026-10-28T21:08:34.9808153Z [36;1m  python apps/ultra/scripts/release.py check-version --tag "$RELEASE_TAG"[0m
+2026-10-28T21:08:34.9808602Z [36;1m  git merge-base --is-ancestor HEAD origin/main[0m
+2026-10-28T21:08:34.9808908Z [36;1melse[0m
+2026-10-28T21:08:34.9809156Z [36;1m  python apps/ultra/scripts/release.py check-version[0m
+2026-10-28T21:08:34.9809455Z [36;1mfi[0m
+2026-10-28T21:08:34.9827436Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-10-28T21:08:34.9827849Z env:
+2026-10-28T21:08:34.9828003Z   JOBS: 2
+2026-10-28T21:08:34.9828169Z   CARGO_BUILD_JOBS: 2
+2026-10-28T21:08:34.9828357Z   CARGO_NET_RETRY: 2
+2026-10-28T21:08:34.9828579Z   CARGO_HTTP_TIMEOUT: 60
+2026-10-28T21:08:34.9828872Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-28T21:08:34.9829329Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-10-28T21:08:34.9829783Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-28T21:08:34.9830180Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-28T21:08:34.9830566Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-28T21:08:34.9830882Z   RELEASE_TAG: 6/merge
+2026-10-28T21:08:34.9831076Z   EVENT: pull_request
+2026-10-28T21:08:34.9831265Z ##[endgroup]
+2026-10-28T21:08:38.1882735Z .........s........
+2026-10-28T21:08:38.1883254Z ----------------------------------------------------------------------
+2026-10-28T21:08:38.1883712Z Ran 18 tests in 0.273s
+2026-10-28T21:08:38.1883878Z 
+2026-10-28T21:08:38.1883972Z OK (skipped=1)
+2026-10-28T21:08:38.4459675Z ....
+2026-10-28T21:08:38.4460540Z ----------------------------------------------------------------------
+2026-10-28T21:08:38.4461302Z Ran 4 tests in 0.108s
+2026-10-28T21:08:38.4461551Z 
+2026-10-28T21:08:38.4461696Z OK
+2026-10-28T21:08:38.5724062Z 0.1.0-rc.1
+2026-10-28T21:08:38.6021492Z ##[group]Run python -m pip install --disable-pip-version-check cmake==3.31.6
+2026-10-28T21:08:38.6022139Z [36;1mpython -m pip install --disable-pip-version-check cmake==3.31.6[0m
+2026-10-28T21:08:38.6022600Z [36;1mrustup toolchain install 1.85.1 --profile minimal[0m
+2026-10-28T21:08:38.6023715Z [36;1mrustup override set 1.85.1[0m
+2026-10-28T21:08:38.6024007Z [36;1mrustup target add 'x86_64-pc-windows-msvc'[0m
+2026-10-28T21:08:38.6024310Z [36;1mrustc --version[0m
+2026-10-28T21:08:38.6024523Z [36;1mcmake --version[0m
+2026-10-28T21:08:38.6040558Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-10-28T21:08:38.6040938Z env:
+2026-10-28T21:08:38.6041103Z   JOBS: 2
+2026-10-28T21:08:38.6041272Z   CARGO_BUILD_JOBS: 2
+2026-10-28T21:08:38.6041467Z   CARGO_NET_RETRY: 2
+2026-10-28T21:08:38.6041657Z   CARGO_HTTP_TIMEOUT: 60
+2026-10-28T21:08:38.6041962Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-28T21:08:38.6042490Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-10-28T21:08:38.6042956Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-28T21:08:38.6043351Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-28T21:08:38.6043754Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-28T21:08:38.6044069Z ##[endgroup]
+2026-10-28T21:08:42.3514616Z Collecting cmake==3.31.6
+2026-10-28T21:08:42.5344498Z   Downloading cmake-3.31.6-py3-none-win_amd64.whl.metadata (6.3 kB)
+2026-10-28T21:08:42.5732993Z Downloading cmake-3.31.6-py3-none-win_amd64.whl (36.4 MB)
+2026-10-28T21:08:43.8326570Z    ---------------------------------------- 36.4/36.4 MB 30.4 MB/s  0:00:01
+2026-10-28T21:08:44.2511993Z Installing collected packages: cmake
+2026-10-28T21:08:50.5021191Z Successfully installed cmake-3.31.6
+2026-10-28T21:08:51.4906919Z info: syncing channel updates for 1.85.1-x86_64-pc-windows-msvc
+2026-10-28T21:08:52.3029159Z info: latest update on 2025-03-18 for version 1.85.1 (4eb161250 2025-03-15)
+2026-10-28T21:08:52.3166646Z info: downloading 3 components
+2026-10-28T21:08:59.0025757Z 
+2026-10-28T21:08:59.8285634Z   1.85.1-x86_64-pc-windows-msvc installed - rustc 1.85.1 (4eb161250 2025-03-15)
+2026-10-28T21:08:59.8286046Z 
+2026-10-28T21:08:59.8550179Z info: override toolchain for D:\a\alive\alive set to 1.85.1-x86_64-pc-windows-msvc
+2026-10-28T21:09:00.3394043Z info: component rust-std is up to date
+2026-10-28T21:09:00.8567552Z rustc 1.85.1 (4eb161250 2025-03-15)
+2026-10-28T21:09:01.6853395Z cmake version 3.31.6
+2026-10-28T21:09:01.6853657Z 
+2026-10-28T21:09:01.6854479Z CMake suite maintained and supported by Kitware (kitware.com/cmake).
+2026-10-28T21:09:01.7230127Z ##[group]Run npm --prefix apps/ultra/scripts/tooling ci --ignore-scripts --no-audit --no-fund
+2026-10-28T21:09:01.7230883Z [36;1mnpm --prefix apps/ultra/scripts/tooling ci --ignore-scripts --no-audit --no-fund[0m
+2026-10-28T21:09:01.7246168Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-10-28T21:09:01.7246566Z env:
+2026-10-28T21:09:01.7246733Z   JOBS: 2
+2026-10-28T21:09:01.7246898Z   CARGO_BUILD_JOBS: 2
+2026-10-28T21:09:01.7247089Z   CARGO_NET_RETRY: 2
+2026-10-28T21:09:01.7247286Z   CARGO_HTTP_TIMEOUT: 60
+2026-10-28T21:09:01.7247593Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-28T21:09:01.7248054Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-10-28T21:09:01.7248502Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-28T21:09:01.7248916Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-28T21:09:01.7249330Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-28T21:09:01.7249648Z ##[endgroup]
+2026-10-28T21:09:03.2167502Z 
+2026-10-28T21:09:03.2168044Z added 2 packages in 1s
+2026-10-28T21:09:04.6963037Z ##[group]Run python apps/ultra/scripts/release.py build --target 'x86_64-pc-windows-msvc'
+2026-10-28T21:09:04.6963757Z [36;1mpython apps/ultra/scripts/release.py build --target 'x86_64-pc-windows-msvc'[0m
+2026-10-28T21:09:04.6977854Z shell: C:\Program Files\Git\bin\bash.EXE --noprofile --norc -e -o pipefail {0}
+2026-10-28T21:09:04.6978260Z env:
+2026-10-28T21:09:04.6978578Z   JOBS: 2
+2026-10-28T21:09:04.6978749Z   CARGO_BUILD_JOBS: 2
+2026-10-28T21:09:04.6978942Z   CARGO_NET_RETRY: 2
+2026-10-28T21:09:04.6979133Z   CARGO_HTTP_TIMEOUT: 60
+2026-10-28T21:09:04.6979431Z   pythonLocation: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-28T21:09:04.6979893Z   PKG_CONFIG_PATH: C:\hostedtoolcache\windows\Python\3.12.10\x64/lib/pkgconfig
+2026-10-28T21:09:04.6980349Z   Python_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-28T21:09:04.6980744Z   Python2_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-28T21:09:04.6981171Z   Python3_ROOT_DIR: C:\hostedtoolcache\windows\Python\3.12.10\x64
+2026-10-28T21:09:04.6981505Z   APPLE_SIGNING_IDENTITY: -
+2026-10-28T21:09:04.6981731Z   APPIMAGE_EXTRACT_AND_RUN: 1
+2026-10-28T21:09:04.6981947Z ##[endgroup]
+2026-10-28T21:09:12.6875408Z     Updating crates.io index
+2026-10-28T21:09:14.9369341Z  Downloading crates ...
+2026-10-28T21:09:15.2781810Z   Downloaded async-broadcast v0.7.2
+2026-10-28T21:09:15.3010822Z   Downloaded dtor-proc-macro v0.0.6
+2026-10-28T21:09:15.3101562Z   Downloaded libappindicator-sys v0.9.0
+2026-10-28T21:09:15.3234779Z   Downloaded matches v0.1.10
+2026-10-28T21:09:15.3423033Z   Downloaded phf v0.10.1
+2026-10-28T21:09:15.3608025Z   Downloaded try-lock v0.2.5
+2026-10-28T21:09:15.3811416Z   Downloaded thiserror v1.0.69
+2026-10-28T21:09:15.4665675Z   Downloaded javascriptcore-rs v1.1.2
+2026-10-28T21:09:15.5036145Z   Downloaded indexmap v1.9.3
+2026-10-28T21:09:15.5430191Z   Downloaded itoa v1.0.18
+2026-10-28T21:09:15.5624432Z   Downloaded windows_x86_64_gnullvm v0.42.2
+2026-10-28T21:09:15.5874100Z   Downloaded endi v1.1.1
+2026-10-28T21:09:15.6158272Z   Downloaded time-core v0.1.7
+2026-10-28T21:09:15.6302068Z   Downloaded generic-array v0.14.7
+2026-10-28T21:09:15.6548683Z   Downloaded windows-collections v0.2.0
+2026-10-28T21:09:15.6768813Z   Downloaded serde_urlencoded v0.7.1
+2026-10-28T21:09:15.7122660Z   Downloaded fnv v1.0.7
+2026-10-28T21:09:15.7278085Z   Downloaded tinystr v0.8.4
+2026-10-28T21:09:15.7566194Z   Downloaded tower-layer v0.3.3
+2026-10-28T21:09:15.7713854Z   Downloaded web_atoms v0.2.6
+2026-10-28T21:09:15.7857162Z   Downloaded uds_windows v1.2.1
+2026-10-28T21:09:15.8047304Z   Downloaded windows-strings v0.5.1
+2026-10-28T21:09:15.8290269Z   Downloaded wayland-client v0.31.15
+2026-10-28T21:09:15.8477082Z   Downloaded typenum v1.20.1
+2026-10-28T21:09:15.8791295Z   Downloaded tower-http v0.6.11
+2026-10-28T21:09:15.9937038Z   Downloaded gio v0.18.4
+2026-10-28T21:09:16.3246296Z   Downloaded tokio-util v0.7.20
+2026-10-28T21:09:16.4166401Z   Downloaded wayland-protocols v0.32.13
+2026-10-28T21:09:16.5133157Z   Downloaded quote v1.0.47
+2026-10-28T21:09:16.5468683Z   Downloaded glib v0.18.5
+2026-10-28T21:09:16.6523010Z   Downloaded objc2-ui-kit v0.3.2
+2026-10-28T21:09:16.9999232Z   Downloaded winapi-i686-pc-windows-gnu v0.4.0
+2026-10-28T21:09:18.0547207Z   Downloaded windows_aarch64_gnullvm v0.42.2
+2026-10-28T21:09:18.0727452Z   Downloaded glob v0.3.4
+2026-10-28T21:09:18.0901033Z   Downloaded glib-sys v0.18.1
+2026-10-28T21:09:18.1025221Z   Downloaded windows-threading v0.1.0
+2026-10-28T21:09:18.1112991Z   Downloaded windows-targets v0.53.5
+2026-10-28T21:09:18.1201701Z   Downloaded windows_aarch64_gnullvm v0.52.6
+2026-10-28T21:09:18.1430642Z   Downloaded windows-targets v0.52.6
+2026-10-28T21:09:18.1549056Z   Downloaded foreign-types v0.5.0
+2026-10-28T21:09:18.1648519Z   Downloaded windows-targets v0.42.2
+2026-10-28T21:09:18.1801820Z   Downloaded libc v0.2.191
+2026-10-28T21:09:18.6045744Z   Downloaded winapi v0.3.9
+2026-10-28T21:09:18.9116423Z   Downloaded windows_x86_64_msvc v0.42.2
+2026-10-28T21:09:18.9433602Z   Downloaded objc2-app-kit v0.3.2
+2026-10-28T21:09:19.1722962Z   Downloaded serde_with v3.17.0
+2026-10-28T21:09:19.3247099Z   Downloaded tracing-core v0.1.36
+2026-10-28T21:09:19.3554270Z   Downloaded wayland-backend v0.3.17
+2026-10-28T21:09:19.3994986Z   Downloaded tower v0.5.3
+2026-10-28T21:09:19.5063393Z   Downloaded wayland-scanner v0.31.11
+2026-10-28T21:09:19.5336582Z   Downloaded toml_edit v0.19.15
+2026-10-28T21:09:19.7896062Z   Downloaded webview2-com-macros v0.8.1
+2026-10-28T21:09:19.7978943Z   Downloaded windows_x86_64_msvc v0.52.6
+2026-10-28T21:09:19.8263030Z   Downloaded webview2-com-sys v0.38.2
+2026-10-28T21:09:19.9328647Z   Downloaded tower-service v0.3.3
+2026-10-28T21:09:19.9412922Z   Downloaded toml v1.1.8+spec-1.1.0
+2026-10-28T21:09:19.9840538Z   Downloaded toml v0.9.12+spec-1.1.0
+2026-10-28T21:09:20.0295254Z   Downloaded web-sys v0.3.106
+2026-10-28T21:09:21.1879415Z   Downloaded windows-strings v0.4.2
+2026-10-28T21:09:21.2086675Z   Downloaded windows-numerics v0.2.0
+2026-10-28T21:09:21.2232950Z   Downloaded windows-result v0.4.1
+2026-10-28T21:09:21.2414600Z   Downloaded webkit2gtk v2.0.1
+2026-10-28T21:09:21.3423332Z   Downloaded windows-result v0.3.4
+2026-10-28T21:09:21.3570590Z   Downloaded webkit2gtk-sys v2.0.1
+2026-10-28T21:09:21.3764638Z   Downloaded windows-interface v0.59.3
+2026-10-28T21:09:21.3850134Z   Downloaded windows-link v0.1.3
+2026-10-28T21:09:21.3935227Z   Downloaded windows-future v0.3.2
+2026-10-28T21:09:21.4095803Z   Downloaded tokio v1.54.0
+2026-10-28T21:09:22.9627262Z   Downloaded windows-numerics v0.3.1
+2026-10-28T21:09:22.9792597Z   Downloaded windows-link v0.2.1
+2026-10-28T21:09:22.9873478Z   Downloaded windows-implement v0.60.2
+2026-10-28T21:09:22.9978896Z   Downloaded tracing v0.1.44
+2026-10-28T21:09:23.0903486Z   Downloaded windows-sys v0.61.2
+2026-10-28T21:09:23.6485394Z   Downloaded windows_x86_64_msvc v0.53.1
+2026-10-28T21:09:23.6764779Z   Downloaded webview2-com v0.38.2
+2026-10-28T21:09:23.6894191Z   Downloaded gdk v0.18.2
+2026-10-28T21:09:23.7633398Z   Downloaded fxhash v0.2.1
+2026-10-28T21:09:23.7714163Z   Downloaded futures-util v0.3.34
+2026-10-28T21:09:23.9373906Z   Downloaded futures-task v0.3.34
+2026-10-28T21:09:23.9509302Z   Downloaded futures-sink v0.3.34
+2026-10-28T21:09:23.9611382Z   Downloaded futures-macro v0.3.34
+2026-10-28T21:09:23.9754925Z   Downloaded futures-lite v2.6.1
+2026-10-28T21:09:23.9887956Z   Downloaded futures-io v0.3.34
+2026-10-28T21:09:23.9969458Z   Downloaded futures-executor v0.3.34
+2026-10-28T21:09:24.0109554Z   Downloaded futures-core v0.3.34
+2026-10-28T21:09:24.0301928Z   Downloaded futures-channel v0.3.34
+2026-10-28T21:09:24.0465616Z   Downloaded futf v0.1.5
+2026-10-28T21:09:24.0557490Z   Downloaded window-vibrancy v0.6.0
+2026-10-28T21:09:24.1011054Z   Downloaded form_urlencoded v1.2.2
+2026-10-28T21:09:24.1092234Z   Downloaded regex-automata v0.4.18
+2026-10-28T21:09:24.2157982Z   Downloaded typeid v1.0.3
+2026-10-28T21:09:24.2325399Z   Downloaded tracing-attributes v0.1.31
+2026-10-28T21:09:24.2565531Z   Downloaded toml_edit v0.25.17+spec-1.1.0
+2026-10-28T21:09:24.2976356Z   Downloaded toml_edit v0.20.2
+2026-10-28T21:09:24.5786054Z   Downloaded gio-sys v0.18.1
+2026-10-28T21:09:24.5924079Z   Downloaded gdk-pixbuf v0.18.5
+2026-10-28T21:09:24.6185956Z   Downloaded rustix v1.1.5
+2026-10-28T21:09:24.9585962Z   Downloaded rfd v0.15.4
+2026-10-28T21:09:25.0187557Z   Downloaded reqwest v0.12.28
+2026-10-28T21:09:25.0650418Z   Downloaded time v0.3.45
+2026-10-28T21:09:25.3006752Z   Downloaded wayland-sys v0.31.11
+2026-10-28T21:09:25.3120214Z   Downloaded unic-ucd-ident v0.9.0
+2026-10-28T21:09:25.3279740Z   Downloaded unic-common v0.9.0
+2026-10-28T21:09:25.3350444Z   Downloaded unic-char-range v0.9.0
+2026-10-28T21:09:25.3550628Z   Downloaded unic-char-property v0.9.0
+2026-10-28T21:09:25.3703302Z   Downloaded toml_parser v1.1.5+spec-1.1.0
+2026-10-28T21:09:25.3945714Z   Downloaded rand v0.7.3
+2026-10-28T21:09:25.4445040Z   Downloaded schemars v1.2.3
+2026-10-28T21:09:25.6422059Z   Downloaded windows-sys v0.60.2
+2026-10-28T21:09:26.0081945Z   Downloaded schemars v0.9.0
+2026-10-28T21:09:26.5627044Z   Downloaded schemars v0.8.22
+2026-10-28T21:09:26.7288434Z   Downloaded same-file v1.0.6
+2026-10-28T21:09:26.7429535Z   Downloaded ryu v1.0.23
+2026-10-28T21:09:26.7793408Z   Downloaded rustversion v1.0.23
+2026-10-28T21:09:26.8135460Z   Downloaded rustc_version v0.4.1
+2026-10-28T21:09:26.8242740Z   Downloaded regex-syntax v0.8.11
+2026-10-28T21:09:26.8679768Z   Downloaded ref-cast-impl v1.0.27
+2026-10-28T21:09:26.8766885Z   Downloaded ref-cast v1.0.27
+2026-10-28T21:09:26.9143714Z   Downloaded redox_syscall v0.5.18
+2026-10-28T21:09:26.9394568Z   Downloaded raw-window-handle v0.6.2
+2026-10-28T21:09:26.9622380Z   Downloaded rand_hc v0.2.0
+2026-10-28T21:09:26.9716895Z   Downloaded tao-macros v0.1.4
+2026-10-28T21:09:26.9823728Z   Downloaded string_cache v0.8.9
+2026-10-28T21:09:27.0018620Z   Downloaded simdutf8 v0.1.5
+2026-10-28T21:09:27.0237422Z   Downloaded simd_cesu8 v1.2.0
+2026-10-28T21:09:27.0557683Z   Downloaded objc2-foundation v0.3.2
+2026-10-28T21:09:27.2695420Z   Downloaded toml_writer v1.1.3+spec-1.1.0
+2026-10-28T21:09:27.2804268Z   Downloaded toml_datetime v1.1.2+spec-1.1.0
+2026-10-28T21:09:27.2906234Z   Downloaded toml_datetime v0.7.5+spec-1.1.0
+2026-10-28T21:09:27.3058627Z   Downloaded toml_datetime v0.6.3
+2026-10-28T21:09:27.3145392Z   Downloaded toml v0.8.2
+2026-10-28T21:09:27.3485742Z   Downloaded sha2 v0.10.9
+2026-10-28T21:09:27.5738852Z   Downloaded glib-macros v0.18.5
+2026-10-28T21:09:27.6015736Z   Downloaded getrandom v0.4.3
+2026-10-28T21:09:27.6410639Z   Downloaded getrandom v0.3.4
+2026-10-28T21:09:27.9931442Z   Downloaded flate2 v1.1.10
+2026-10-28T21:09:28.0503699Z   Downloaded rand v0.9.5
+2026-10-28T21:09:28.0912689Z   Downloaded rand v0.8.8
+2026-10-28T21:09:28.1297999Z   Downloaded serde_json v1.0.145
+2026-10-28T21:09:28.2793126Z   Downloaded schemars_derive v0.8.22
+2026-10-28T21:09:28.3019313Z   Downloaded rustc-hash v2.1.3
+2026-10-28T21:09:28.3139486Z   Downloaded regex v1.13.1
+2026-10-28T21:09:28.3665918Z   Downloaded redox_users v0.5.3
+2026-10-28T21:09:28.3783409Z   Downloaded rand_pcg v0.2.1
+2026-10-28T21:09:28.3935450Z   Downloaded rand_core v0.9.5
+2026-10-28T21:09:28.4071269Z   Downloaded tauri v2.8.5
+2026-10-28T21:09:28.5536633Z   Downloaded synstructure v0.14.0
+2026-10-28T21:09:28.5617349Z   Downloaded syn v2.0.119
+2026-10-28T21:09:28.6549256Z   Downloaded syn v1.0.109
+2026-10-28T21:09:28.7424169Z   Downloaded socket2 v0.6.5
+2026-10-28T21:09:28.7552211Z   Downloaded windows-sys v0.59.0
+2026-10-28T21:09:29.4022579Z   Downloaded winnow v1.0.4
+2026-10-28T21:09:29.5199263Z   Downloaded quick-xml v0.41.0
+2026-10-28T21:09:29.5711192Z   Downloaded quick-xml v0.38.4
+2026-10-28T21:09:29.6154851Z   Downloaded ndk-sys v0.6.0+11769913
+2026-10-28T21:09:29.6422884Z   Downloaded servo_arc v0.4.3
+2026-10-28T21:09:29.6493799Z   Downloaded servo_arc v0.2.0
+2026-10-28T21:09:29.6567774Z   Downloaded serialize-to-javascript-impl v0.1.2
+2026-10-28T21:09:29.6676991Z   Downloaded serialize-to-javascript v0.1.2
+2026-10-28T21:09:29.6774231Z   Downloaded foreign-types-shared v0.3.1
+2026-10-28T21:09:29.6851204Z   Downloaded windows-sys v0.45.0
+2026-10-28T21:09:31.0619851Z   Downloaded foreign-types-macros v0.2.4
+2026-10-28T21:09:31.0717256Z   Downloaded foldhash v0.2.0
+2026-10-28T21:09:31.0816603Z   Downloaded linux-raw-sys v0.12.1
+2026-10-28T21:09:31.4670753Z   Downloaded find-msvc-tools v0.1.15
+2026-10-28T21:09:31.4822374Z   Downloaded fdeflate v0.3.7
+2026-10-28T21:09:31.5051745Z   Downloaded winapi-x86_64-pc-windows-gnu v0.4.0
+2026-10-28T21:09:32.8549690Z   Downloaded fastrand v2.5.0
+2026-10-28T21:09:32.8665145Z   Downloaded event-listener-strategy v0.5.4
+2026-10-28T21:09:32.8766118Z   Downloaded event-listener v5.4.2
+2026-10-28T21:09:32.8960059Z   Downloaded erased-serde v0.4.10
+2026-10-28T21:09:32.9185265Z   Downloaded enumflags2 v0.7.12
+2026-10-28T21:09:32.9373377Z   Downloaded r-efi v6.0.0
+2026-10-28T21:09:33.1200032Z   Downloaded r-efi v5.3.0
+2026-10-28T21:09:33.1809434Z   Downloaded tauri-plugin-fs v2.4.4
+2026-10-28T21:09:33.2707126Z   Downloaded tauri-build v2.4.1
+2026-10-28T21:09:33.2845137Z   Downloaded target-lexicon v0.12.16
+2026-10-28T21:09:34.0072036Z   Downloaded tao v0.34.8
+2026-10-28T21:09:34.1103024Z   Downloaded system-deps v7.0.8
+2026-10-28T21:09:34.1318839Z   Downloaded sync_wrapper v1.0.2
+2026-10-28T21:09:34.1399938Z   Downloaded syn v3.0.9
+2026-10-28T21:09:34.2351957Z   Downloaded strsim v0.11.1
+2026-10-28T21:09:34.2510230Z   Downloaded string_cache_codegen v0.6.1
+2026-10-28T21:09:34.2597700Z   Downloaded string_cache v0.9.0
+2026-10-28T21:09:34.2792359Z   Downloaded soup3-sys v0.5.0
+2026-10-28T21:09:34.2900274Z   Downloaded soup3 v0.5.0
+2026-10-28T21:09:34.3369091Z   Downloaded smallvec v1.16.3
+2026-10-28T21:09:34.3505137Z   Downloaded siphasher v1.0.4
+2026-10-28T21:09:34.3633289Z   Downloaded signal-hook-registry v1.4.8
+2026-10-28T21:09:34.3732422Z   Downloaded shlex v2.0.1
+2026-10-28T21:09:34.3889681Z   Downloaded winnow v0.7.15
+2026-10-28T21:09:34.4835426Z   Downloaded winnow v0.5.40
+2026-10-28T21:09:34.5656789Z   Downloaded windows_x86_64_gnullvm v0.53.1
+2026-10-28T21:09:34.5953990Z   Downloaded windows_x86_64_gnu v0.53.1
+2026-10-28T21:09:34.6278228Z   Downloaded windows_x86_64_gnu v0.52.6
+2026-10-28T21:09:34.6580037Z   Downloaded windows_i686_msvc v0.53.1
+2026-10-28T21:09:34.9364561Z   Downloaded windows_i686_msvc v0.42.2
+2026-10-28T21:09:34.9583421Z   Downloaded windows_i686_gnu v0.53.1
+2026-10-28T21:09:35.0035002Z   Downloaded windows_aarch64_msvc v0.52.6
+2026-10-28T21:09:35.0264367Z   Downloaded windows_aarch64_gnullvm v0.53.1
+2026-10-28T21:09:35.0534891Z   Downloaded jni v0.22.4
+2026-10-28T21:09:35.1342664Z   Downloaded zlib-rs v0.6.8
+2026-10-28T21:09:35.1863324Z   Downloaded objc2-security v0.3.2
+2026-10-28T21:09:35.2623713Z   Downloaded objc2 v0.6.5
+2026-10-28T21:09:35.3684854Z   Downloaded field-offset v0.3.6
+2026-10-28T21:09:35.3790819Z   Downloaded errno v0.3.14
+2026-10-28T21:09:35.3977601Z   Downloaded equivalent v1.0.3
+2026-10-28T21:09:35.4087436Z   Downloaded enumflags2_derive v0.7.12
+2026-10-28T21:09:35.4207461Z   Downloaded windows-version v0.1.7
+2026-10-28T21:09:35.4293383Z   Downloaded windows-threading v0.2.1
+2026-10-28T21:09:35.4431457Z   Downloaded serde_with_macros v3.17.0
+2026-10-28T21:09:35.4612533Z   Downloaded rand_core v0.6.4
+2026-10-28T21:09:35.4734066Z   Downloaded rand_core v0.5.1
+2026-10-28T21:09:35.4918901Z   Downloaded rand_chacha v0.9.0
+2026-10-28T21:09:35.5017175Z   Downloaded rand_chacha v0.2.2
+2026-10-28T21:09:35.5114888Z   Downloaded windows-core v0.61.2
+2026-10-28T21:09:35.5441790Z   Downloaded tauri-codegen v2.6.3
+2026-10-28T21:09:35.5560731Z   Downloaded target-lexicon v0.13.5
+2026-10-28T21:09:35.5697518Z   Downloaded system-deps v6.2.2
+2026-10-28T21:09:35.5957616Z   Downloaded swift-rs v1.0.9
+2026-10-28T21:09:35.6166271Z   Downloaded string_cache_codegen v0.5.4
+2026-10-28T21:09:35.6274324Z   Downloaded softbuffer v0.4.8
+2026-10-28T21:09:35.6597310Z   Downloaded slab v0.4.12
+2026-10-28T21:09:35.6849235Z   Downloaded siphasher v0.3.11
+2026-10-28T21:09:35.6953086Z   Downloaded shlex v1.3.0
+2026-10-28T21:09:35.7063484Z   Downloaded windows_i686_gnullvm v0.53.1
+2026-10-28T21:09:35.7311308Z   Downloaded windows_i686_gnu v0.52.6
+2026-10-28T21:09:35.7685521Z   Downloaded windows_aarch64_msvc v0.53.1
+2026-10-28T21:09:35.7937172Z   Downloaded objc2-core-foundation v0.3.2
+2026-10-28T21:09:35.8607025Z   Downloaded serde_spanned v1.1.2
+2026-10-28T21:09:35.8713200Z   Downloaded serde_spanned v0.6.9
+2026-10-28T21:09:35.8807989Z   Downloaded serde_repr v0.1.21
+2026-10-28T21:09:35.9105159Z   Downloaded rand_chacha v0.3.1
+2026-10-28T21:09:35.9211511Z   Downloaded windows-future v0.2.1
+2026-10-28T21:09:35.9393729Z   Downloaded windows-core v0.62.2
+2026-10-28T21:09:35.9712652Z   Downloaded windows-collections v0.3.2
+2026-10-28T21:09:35.9819538Z   Downloaded getrandom v0.2.17
+2026-10-28T21:09:36.0170374Z   Downloaded gdk-sys v0.18.2
+2026-10-28T21:09:36.0326375Z   Downloaded serde_derive v1.0.228
+2026-10-28T21:09:37.9233844Z   Downloaded serde_core v1.0.228
+2026-10-28T21:09:40.0662004Z   Downloaded serde v1.0.228
+2026-10-28T21:09:40.0960494Z   Downloaded selectors v0.36.1
+2026-10-28T21:09:40.1169702Z   Downloaded tauri-runtime-wry v2.8.1
+2026-10-28T21:09:40.1369795Z   Downloaded stable_deref_trait v1.2.1
+2026-10-28T21:09:40.1456101Z   Downloaded simd-adler32 v0.3.10
+2026-10-28T21:09:40.1685794Z   Downloaded js-sys v0.3.106
+2026-10-28T21:09:40.1873729Z   Downloaded winapi-util v0.1.11
+2026-10-28T21:09:40.2046113Z   Downloaded getrandom v0.1.16
+2026-10-28T21:09:40.2317282Z   Downloaded gdkx11 v0.18.2
+2026-10-28T21:09:40.2565084Z   Downloaded semver v1.0.28
+2026-10-28T21:09:40.2804671Z   Downloaded selectors v0.24.0
+2026-10-28T21:09:40.2968681Z   Downloaded tauri-runtime v2.8.0
+2026-10-28T21:09:40.3085017Z   Downloaded tauri-macros v2.6.3
+2026-10-28T21:09:40.3214735Z   Downloaded windows_i686_msvc v0.52.6
+2026-10-28T21:09:40.3486559Z   Downloaded jsonptr v0.6.3
+2026-10-28T21:09:40.3798920Z   Downloaded jni v0.21.1
+2026-10-28T21:09:40.4582088Z   Downloaded gtk v0.18.2
+2026-10-28T21:09:40.7218306Z   Downloaded objc2-audio-toolbox v0.3.2
+2026-10-28T21:09:40.7522574Z   Downloaded gdkx11-sys v0.18.2
+2026-10-28T21:09:40.7678465Z   Downloaded gdkwayland-sys v0.18.2
+2026-10-28T21:09:40.7754249Z   Downloaded gdk-pixbuf-sys v0.18.0
+2026-10-28T21:09:40.7862145Z   Downloaded serde_derive_internals v0.29.1
+2026-10-28T21:09:40.8033245Z   Downloaded serde-untagged v0.1.9
+2026-10-28T21:09:40.8221997Z   Downloaded scopeguard v1.2.0
+2026-10-28T21:09:40.8328711Z   Downloaded scoped-tls v1.0.1
+2026-10-28T21:09:41.3430367Z   Downloaded time-macros v0.2.25
+2026-10-28T21:09:41.8380021Z   Downloaded thiserror-impl v2.0.21
+2026-10-28T21:09:41.8543020Z   Downloaded tauri-plugin v2.6.3
+2026-10-28T21:09:41.8674654Z   Downloaded wit-bindgen v0.46.0
+2026-10-28T21:09:41.9099359Z   Downloaded winreg v0.56.0
+2026-10-28T21:09:41.9456982Z   Downloaded windows_x86_64_gnullvm v0.52.6
+2026-10-28T21:09:41.9630958Z   Downloaded windows_i686_gnu v0.42.2
+2026-10-28T21:09:41.9908011Z   Downloaded windows_aarch64_msvc v0.42.2
+2026-10-28T21:09:42.0112298Z   Downloaded proc-macro2 v1.0.107
+2026-10-28T21:09:42.0445192Z   Downloaded proc-macro-error v1.0.4
+2026-10-28T21:09:42.0967944Z   Downloaded keyboard-types v0.7.0
+2026-10-28T21:09:42.1131844Z   Downloaded jni-macros v0.22.4
+2026-10-28T21:09:42.1284181Z   Downloaded indexmap v2.14.2
+2026-10-28T21:09:42.1685256Z   Downloaded embed-resource v3.0.12
+2026-10-28T21:09:42.1878034Z   Downloaded either v1.19.0
+2026-10-28T21:09:42.2063820Z   Downloaded dunce v1.0.5
+2026-10-28T21:09:42.2154686Z   Downloaded zvariant_utils v3.3.0
+2026-10-28T21:09:42.2342637Z   Downloaded zvariant_derive v5.9.2
+2026-10-28T21:09:42.2481021Z   Downloaded windows_x86_64_gnu v0.42.2
+2026-10-28T21:09:42.2749778Z   Downloaded proc-macro-crate v3.5.0
+2026-10-28T21:09:42.2877988Z   Downloaded proc-macro-crate v1.3.1
+2026-10-28T21:09:42.3027525Z   Downloaded json-patch v3.0.1
+2026-10-28T21:09:43.0166349Z   Downloaded jni-sys-macros v0.4.1
+2026-10-28T21:09:43.0256754Z   Downloaded jni-sys v0.4.1
+2026-10-28T21:09:43.0397230Z   Downloaded jni-sys v0.3.1
+2026-10-28T21:09:43.0519084Z   Downloaded itertools v0.13.0
+2026-10-28T21:09:43.1262731Z   Downloaded hyper v1.12.0
+2026-10-28T21:09:43.1968336Z   Downloaded zvariant v5.9.2
+2026-10-28T21:09:43.2709538Z   Downloaded png v0.17.16
+2026-10-28T21:09:43.3076511Z   Downloaded objc2-web-kit v0.3.2
+2026-10-28T21:09:43.4842548Z   Downloaded objc2-avf-audio v0.3.2
+2026-10-28T21:09:43.5365178Z   Downloaded nom v8.0.0
+2026-10-28T21:09:43.5802707Z   Downloaded nom v7.1.3
+2026-10-28T21:09:43.6269586Z   Downloaded embed_plist v1.2.2
+2026-10-28T21:09:43.6372212Z   Downloaded dyn-clone v1.0.20
+2026-10-28T21:09:43.6536781Z   Downloaded windows_i686_gnullvm v0.52.6
+2026-10-28T21:09:43.6741271Z   Downloaded proc-macro-hack v0.5.20+deprecated
+2026-10-28T21:09:43.7021003Z   Downloaded proc-macro-error-attr v1.0.4
+2026-10-28T21:09:43.7126370Z   Downloaded proc-macro-crate v2.0.2
+2026-10-28T21:09:43.7241800Z   Downloaded javascriptcore-rs-sys v1.1.1
+2026-10-28T21:09:44.6983385Z   Downloaded icu_properties v2.1.2
+2026-10-28T21:09:44.7161463Z   Downloaded icu_normalizer_data v2.1.1
+2026-10-28T21:09:44.7318304Z   Downloaded zerovec-derive v0.11.6
+2026-10-28T21:09:44.7545824Z   Downloaded wasm-streams v0.4.2
+2026-10-28T21:09:44.8082104Z   Downloaded plist v1.8.0
+2026-10-28T21:09:44.8424016Z   Downloaded pipewire v0.10.1
+2026-10-28T21:09:44.8895938Z   Downloaded objc2-core-image v0.3.2
+2026-10-28T21:09:44.9181040Z   Downloaded num_enum_derive v0.7.6
+2026-10-28T21:09:44.9319708Z   Downloaded muda v0.17.2
+2026-10-28T21:09:44.9795611Z   Downloaded mio v1.2.4
+2026-10-28T21:09:45.0436716Z   Downloaded minimal-lexical v0.2.1
+2026-10-28T21:09:45.0924157Z   Downloaded infer v0.19.0
+2026-10-28T21:09:45.1123905Z   Downloaded idna_adapter v1.2.1
+2026-10-28T21:09:46.1224715Z   Downloaded iana-time-zone v0.1.65
+2026-10-28T21:09:46.1543072Z   Downloaded zerocopy v0.8.63
+2026-10-28T21:09:46.4680045Z   Downloaded thiserror-impl v1.0.69
+2026-10-28T21:09:46.4851911Z   Downloaded ppv-lite86 v0.2.21
+2026-10-28T21:09:46.4989718Z   Downloaded polling v3.11.0
+2026-10-28T21:09:46.6875954Z   Downloaded objc2-core-text v0.3.2
+2026-10-28T21:09:46.7180575Z   Downloaded objc2-cloud-kit v0.3.2
+2026-10-28T21:09:46.7755504Z   Downloaded nodrop v0.1.14
+2026-10-28T21:09:46.7897473Z   Downloaded ndk v0.9.0
+2026-10-28T21:09:46.8143144Z   Downloaded miniz_oxide v0.9.1
+2026-10-28T21:09:46.8378488Z   Downloaded memchr v2.8.3
+2026-10-28T21:09:46.8853714Z   Downloaded litemap v0.8.3
+2026-10-28T21:09:46.9088221Z   Downloaded ipnet v2.12.2
+2026-10-28T21:09:46.9308485Z   Downloaded idna v1.1.0
+2026-10-28T21:09:46.9511395Z   Downloaded icu_provider v2.1.1
+2026-10-28T21:09:46.9767089Z   Downloaded icu_properties_data v2.1.2
+2026-10-28T21:09:47.0913661Z   Downloaded icu_locale_core v2.1.1
+2026-10-28T21:09:47.1752884Z   Downloaded icu_collections v2.1.1
+2026-10-28T21:09:47.2493516Z   Downloaded hyper-util v0.1.21
+2026-10-28T21:09:47.3047705Z   Downloaded http v1.5.0
+2026-10-28T21:09:47.3395373Z   Downloaded hashbrown v0.17.1
+2026-10-28T21:09:47.3836637Z   Downloaded hashbrown v0.12.3
+2026-10-28T21:09:47.4185126Z   Downloaded gtk-sys v0.18.2
+2026-10-28T21:09:47.4337210Z   Downloaded zbus v5.13.2
+2026-10-28T21:09:47.5548602Z   Downloaded wry v0.53.5
+2026-10-28T21:09:47.6340222Z   Downloaded phf_generator v0.10.0
+2026-10-28T21:09:47.6482805Z   Downloaded percent-encoding v2.3.2
+2026-10-28T21:09:47.6584668Z   Downloaded once_cell v1.21.4
+2026-10-28T21:09:47.6872407Z   Downloaded objc2-core-graphics v0.3.2
+2026-10-28T21:09:47.7505300Z   Downloaded num_enum v0.7.6
+2026-10-28T21:09:47.8370827Z   Downloaded num-traits v0.2.19
+2026-10-28T21:09:47.8651279Z   Downloaded miniz_oxide v0.8.9
+2026-10-28T21:09:48.0319194Z   Downloaded lock_api v0.4.14
+2026-10-28T21:09:48.0423261Z   Downloaded ident_case v1.0.1
+2026-10-28T21:09:48.0520885Z   Downloaded icu_normalizer v2.1.1
+2026-10-28T21:09:48.0920732Z   Downloaded ico v0.5.0
+2026-10-28T21:09:48.1257609Z   Downloaded iana-time-zone-haiku v0.1.2
+2026-10-28T21:09:48.1337005Z   Downloaded httparse v1.10.1
+2026-10-28T21:09:48.1519322Z   Downloaded http-body-util v0.1.5
+2026-10-28T21:09:48.1806071Z   Downloaded http-body v1.1.0
+2026-10-28T21:09:48.1907032Z   Downloaded html5ever v0.38.0
+2026-10-28T21:09:48.2270445Z   Downloaded html5ever v0.29.1
+2026-10-28T21:09:48.2704424Z   Downloaded hex v0.4.3
+2026-10-28T21:09:48.2884654Z   Downloaded hermit-abi v0.5.3
+2026-10-28T21:09:48.2978091Z   Downloaded heck v0.5.0
+2026-10-28T21:09:48.3203952Z   Downloaded heck v0.4.1
+2026-10-28T21:09:48.3388609Z   Downloaded gtk3-macros v0.18.2
+2026-10-28T21:09:48.3480780Z   Downloaded gobject-sys v0.18.0
+2026-10-28T21:09:48.3593981Z   Downloaded zerovec v0.11.8
+2026-10-28T21:09:48.4386218Z   Downloaded zerocopy-derive v0.8.63
+2026-10-28T21:09:48.5928765Z   Downloaded zbus_names v4.3.1
+2026-10-28T21:09:48.6090086Z   Downloaded yoke v0.8.3
+2026-10-28T21:09:48.6290829Z   Downloaded x11-dl v2.21.0
+2026-10-28T21:09:48.6595031Z   Downloaded writeable v0.6.4
+2026-10-28T21:09:48.6805799Z   Downloaded url v2.5.8
+2026-10-28T21:09:48.7058915Z   Downloaded pin-project-lite v0.2.17
+2026-10-28T21:09:48.7901610Z   Downloaded parking_lot_core v0.9.12
+2026-10-28T21:09:48.8166134Z   Downloaded parking_lot v0.12.5
+2026-10-28T21:09:48.8537246Z   Downloaded objc2-quartz-core v0.3.2
+2026-10-28T21:09:48.8919178Z   Downloaded objc2-javascript-core v0.3.2
+2026-10-28T21:09:48.9152713Z   Downloaded objc2-core-video v0.3.2
+2026-10-28T21:09:48.9412151Z   Downloaded objc2-core-data v0.3.2
+2026-10-28T21:09:49.0085064Z   Downloaded match_token v0.1.0
+2026-10-28T21:09:49.0181620Z   Downloaded log v0.4.34
+2026-10-28T21:09:49.0412322Z   Downloaded libspa v0.10.1
+2026-10-28T21:09:49.0797665Z   Downloaded libappindicator v0.9.0
+2026-10-28T21:09:49.1086366Z   Downloaded zerotrie v0.2.5
+2026-10-28T21:09:49.1481564Z   Downloaded zerofrom-derive v0.1.8
+2026-10-28T21:09:49.1573216Z   Downloaded zerofrom v0.1.8
+2026-10-28T21:09:49.1655983Z   Downloaded zbus_macros v5.13.2
+2026-10-28T21:09:49.1803958Z   Downloaded yoke-derive v0.8.4
+2026-10-28T21:09:49.1945236Z   Downloaded x11 v2.21.0
+2026-10-28T21:09:49.2191216Z   Downloaded wasm-bindgen-shared v0.2.129
+2026-10-28T21:09:49.2322671Z   Downloaded wasm-bindgen-macro-support v0.2.129
+2026-10-28T21:09:50.2861641Z   Downloaded wasm-bindgen-macro v0.2.129
+2026-10-28T21:09:50.2949504Z   Downloaded wasm-bindgen-futures v0.4.79
+2026-10-28T21:09:50.3054024Z   Downloaded wasm-bindgen v0.2.129
+2026-10-28T21:09:50.3305347Z   Downloaded wasip2 v1.0.1+wasi-0.2.4
+2026-10-28T21:09:50.3808607Z   Downloaded wasi v0.11.1+wasi-snapshot-preview1
+2026-10-28T21:09:50.3969103Z   Downloaded wasi v0.9.0+wasi-snapshot-preview1
+2026-10-28T21:09:50.4165848Z   Downloaded want v0.3.2
+2026-10-28T21:09:50.4275844Z   Downloaded walkdir v2.5.0
+2026-10-28T21:09:50.4441545Z   Downloaded vswhom-sys v0.1.3
+2026-10-28T21:09:50.4620002Z   Downloaded vswhom v0.1.0
+2026-10-28T21:09:50.4779856Z   Downloaded version_check v0.9.5
+2026-10-28T21:09:50.4895420Z   Downloaded version-compare v0.2.1
+2026-10-28T21:09:50.5038258Z   Downloaded uuid v1.26.1
+2026-10-28T21:09:50.5320024Z   Downloaded utf8_iter v1.0.4
+2026-10-28T21:09:50.5415823Z   Downloaded utf-8 v0.7.6
+2026-10-28T21:09:50.5521417Z   Downloaded urlpattern v0.3.0
+2026-10-28T21:09:50.5756522Z   Downloaded unicode-width v0.2.2
+2026-10-28T21:09:50.5944546Z   Downloaded unicode-segmentation v1.13.3
+2026-10-28T21:09:50.6187484Z   Downloaded unicode-ident v1.0.27
+2026-10-28T21:09:50.6455409Z   Downloaded unic-ucd-version v0.9.0
+2026-10-28T21:09:50.6554870Z   Downloaded tray-icon v0.21.3
+2026-10-28T21:09:50.8221394Z   Downloaded thiserror v2.0.21
+2026-10-28T21:09:50.9122665Z   Downloaded tendril v0.5.1
+2026-10-28T21:09:50.9287690Z   Downloaded tauri-winres v0.3.7
+2026-10-28T21:09:50.9469675Z   Downloaded tauri-utils v2.9.3
+2026-10-28T21:09:50.9850698Z   Downloaded powerfmt v0.2.1
+2026-10-28T21:09:50.9997120Z   Downloaded phf_codegen v0.13.1
+2026-10-28T21:09:51.0080965Z   Downloaded phf v0.13.1
+2026-10-28T21:09:51.0239770Z   Downloaded pango v0.18.3
+2026-10-28T21:09:51.0876317Z   Downloaded ordered-stream v0.2.0
+2026-10-28T21:09:51.0972049Z   Downloaded option-ext v0.2.0
+2026-10-28T21:09:51.1051978Z   Downloaded libloading v0.8.9
+2026-10-28T21:09:51.1341478Z   Downloaded libloading v0.7.4
+2026-10-28T21:09:51.1596774Z   Downloaded kuchikiki v0.8.8-speedreader
+2026-10-28T21:09:52.8153539Z   Downloaded brotli v8.0.4
+2026-10-28T21:09:52.9041839Z   Downloaded tendril v0.4.3
+2026-10-28T21:09:52.9265252Z   Downloaded tempfile v3.27.0
+2026-10-28T21:09:52.9465347Z   Downloaded tauri-plugin-dialog v2.4.2
+2026-10-28T21:09:53.0019343Z   Downloaded potential_utf v0.1.6
+2026-10-28T21:09:53.0155372Z   Downloaded pipewire-sys v0.10.1
+2026-10-28T21:09:53.0262621Z   Downloaded piper v0.2.5
+2026-10-28T21:09:53.0411509Z   Downloaded phf_shared v0.11.3
+2026-10-28T21:09:53.0501189Z   Downloaded phf_shared v0.8.0
+2026-10-28T21:09:53.0565169Z   Downloaded phf_generator v0.8.0
+2026-10-28T21:09:53.0742296Z   Downloaded phf_codegen v0.11.3
+2026-10-28T21:09:53.0850244Z   Downloaded phf_codegen v0.8.0
+2026-10-28T21:09:53.0907042Z   Downloaded phf v0.11.3
+2026-10-28T21:09:53.1033866Z   Downloaded parking v2.2.1
+2026-10-28T21:09:53.1139967Z   Downloaded objc2-io-surface v0.3.2
+2026-10-28T21:09:53.1342269Z   Downloaded num-conv v0.1.0
+2026-10-28T21:09:53.1417399Z   Downloaded new_debug_unreachable v1.0.6
+2026-10-28T21:09:53.1542673Z   Downloaded mime v0.3.17
+2026-10-28T21:09:53.1704350Z   Downloaded mach2 v0.6.0
+2026-10-28T21:09:53.2246854Z   Downloaded mac v0.1.1
+2026-10-28T21:09:53.2379880Z   Downloaded derive_more-impl v2.1.1
+2026-10-28T21:09:53.2932451Z   Downloaded derive_more v2.1.1
+2026-10-28T21:09:54.0830027Z   Downloaded crossbeam-channel v0.5.17
+2026-10-28T21:09:54.1255888Z   Downloaded cpal v0.18.2
+2026-10-28T21:09:54.2110210Z   Downloaded combine v4.6.9
+2026-10-28T21:09:54.2446905Z   Downloaded chrono v0.4.45
+2026-10-28T21:09:54.2977009Z   Downloaded cc v1.9.0
+2026-10-28T21:09:54.3345996Z   Downloaded bumpalo v3.20.3
+2026-10-28T21:09:54.3568339Z   Downloaded brotli-decompressor v5.0.3
+2026-10-28T21:09:54.3981669Z   Downloaded bindgen v0.72.1
+2026-10-28T21:09:54.4593374Z   Downloaded base64 v0.22.1
+2026-10-28T21:09:54.4968777Z   Downloaded base64 v0.21.7
+2026-10-28T21:09:54.5332819Z   Downloaded ashpd v0.11.1
+2026-10-28T21:09:54.6161395Z   Downloaded aho-corasick v1.1.5
+2026-10-28T21:09:54.6684774Z   Downloaded precomputed-hash v0.1.1
+2026-10-28T21:09:54.6755160Z   Downloaded pkg-config v0.3.34
+2026-10-28T21:09:54.6894354Z   Downloaded phf_shared v0.13.1
+2026-10-28T21:09:54.6982272Z   Downloaded phf_shared v0.10.0
+2026-10-28T21:09:54.7089523Z   Downloaded phf_macros v0.13.1
+2026-10-28T21:09:54.7215862Z   Downloaded phf_macros v0.10.0
+2026-10-28T21:09:54.7287495Z   Downloaded phf_generator v0.13.1
+2026-10-28T21:09:54.7402044Z   Downloaded phf_generator v0.11.3
+2026-10-28T21:09:54.7506710Z   Downloaded phf v0.8.0
+2026-10-28T21:09:54.7576044Z   Downloaded pango-sys v0.18.0
+2026-10-28T21:09:54.7744977Z   Downloaded objc2-encode v4.1.0
+2026-10-28T21:09:54.8342532Z   Downloaded objc2-core-audio-types v0.3.2
+2026-10-28T21:09:54.8452589Z   Downloaded objc2-core-audio v0.3.2
+2026-10-28T21:09:54.8587722Z   Downloaded num-derive v0.4.2
+2026-10-28T21:09:54.8827084Z   Downloaded ndk-context v0.1.1
+2026-10-28T21:09:54.8898288Z   Downloaded markup5ever v0.38.0
+2026-10-28T21:09:54.9001028Z   Downloaded markup5ever v0.14.1
+2026-10-28T21:09:54.9192504Z   Downloaded libspa-sys v0.10.1
+2026-10-28T21:09:54.9329305Z   Downloaded libredox v0.1.25
+2026-10-28T21:09:54.9397597Z   Downloaded dom_query v0.27.0
+2026-10-28T21:09:54.9929692Z   Downloaded dispatch2 v0.3.1
+2026-10-28T21:09:55.0205843Z   Downloaded derive_more v0.99.20
+2026-10-28T21:09:55.0743050Z   Downloaded darling_core v0.21.3
+2026-10-28T21:09:55.1416389Z   Downloaded darling v0.21.3
+2026-10-28T21:09:55.2106635Z   Downloaded cssparser v0.36.0
+2026-10-28T21:09:55.2303244Z   Downloaded cssparser v0.29.6
+2026-10-28T21:09:55.2592015Z   Downloaded coreaudio-rs v0.14.2
+2026-10-28T21:09:55.2775351Z   Downloaded core-graphics v0.25.0
+2026-10-28T21:09:55.3013341Z   Downloaded core-foundation-sys v0.8.7
+2026-10-28T21:09:55.3332411Z   Downloaded cookie-factory v0.3.3
+2026-10-28T21:09:55.3511269Z   Downloaded cookie v0.18.2
+2026-10-28T21:09:55.3723925Z   Downloaded clang-sys v1.9.1
+2026-10-28T21:09:55.3934357Z   Downloaded cfg-expr v0.20.10
+2026-10-28T21:09:55.4230565Z   Downloaded cfg-expr v0.15.8
+2026-10-28T21:09:55.5975298Z   Downloaded cfb v0.7.3
+2026-10-28T21:09:55.6370899Z   Downloaded cexpr v0.6.0
+2026-10-28T21:09:55.6550365Z   Downloaded cargo_toml v0.22.3
+2026-10-28T21:09:55.6743556Z   Downloaded camino v1.2.6
+2026-10-28T21:09:55.6870662Z   Downloaded cairo-rs v0.18.5
+2026-10-28T21:09:55.7248610Z   Downloaded bytes v1.12.1
+2026-10-28T21:09:55.7570369Z   Downloaded bytemuck v1.25.2
+2026-10-28T21:09:55.7932188Z   Downloaded blocking v1.7.0
+2026-10-28T21:09:55.8049101Z   Downloaded block2 v0.6.2
+2026-10-28T21:09:55.8244572Z   Downloaded windows v0.62.2
+2026-10-28T21:09:57.1600200Z   Downloaded bitflags v2.13.2
+2026-10-28T21:09:57.2139277Z   Downloaded bit-vec v0.8.0
+2026-10-28T21:09:57.2307664Z   Downloaded base64 v0.23.1
+2026-10-28T21:09:57.2682443Z   Downloaded atk-sys v0.18.2
+2026-10-28T21:09:57.2785658Z   Downloaded atk v0.18.2
+2026-10-28T21:09:57.3194886Z   Downloaded async-task v4.7.1
+2026-10-28T21:09:57.3528490Z   Downloaded async-recursion v1.2.0
+2026-10-28T21:09:57.4032114Z   Downloaded async-lock v3.4.2
+2026-10-28T21:09:57.4303668Z   Downloaded async-io v2.6.0
+2026-10-28T21:09:57.4575974Z   Downloaded async-channel v2.5.0
+2026-10-28T21:09:57.4743700Z   Downloaded anyhow v1.0.104
+2026-10-28T21:09:57.9594548Z   Downloaded anstyle v1.0.14
+2026-10-28T21:09:57.9810304Z   Downloaded alsa-sys v0.4.0
+2026-10-28T21:09:57.9978825Z   Downloaded alsa v0.11.0
+2026-10-28T21:09:58.0241722Z   Downloaded objc2-exception-helper v0.1.1
+2026-10-28T21:09:58.0323227Z   Downloaded memoffset v0.9.1
+2026-10-28T21:09:58.0499115Z   Downloaded dlopen2 v0.8.2
+2026-10-28T21:09:58.0984369Z   Downloaded windows v0.61.3
+2026-10-28T21:10:01.0124179Z   Downloaded displaydoc v0.2.7
+2026-10-28T21:10:01.2052720Z   Downloaded deranged v0.5.9
+2026-10-28T21:10:01.2198741Z   Downloaded crossbeam-utils v0.8.23
+2026-10-28T21:10:01.2589378Z   Downloaded crc32fast v1.5.2
+2026-10-28T21:10:01.2747705Z   Downloaded core-foundation v0.10.1
+2026-10-28T21:10:01.3002684Z   Downloaded concurrent-queue v2.5.0
+2026-10-28T21:10:01.3144985Z   Downloaded cargo_metadata v0.19.2
+2026-10-28T21:10:01.3395370Z   Downloaded byteorder v1.5.0
+2026-10-28T21:10:01.3516630Z   Downloaded block-buffer v0.10.4
+2026-10-28T21:10:01.3608207Z   Downloaded bitflags v1.3.2
+2026-10-28T21:10:01.4079832Z   Downloaded async-trait v0.1.92
+2026-10-28T21:10:01.4536079Z   Downloaded async-executor v1.14.0
+2026-10-28T21:10:01.4721495Z   Downloaded android_system_properties v0.1.6
+2026-10-28T21:10:01.4860591Z   Downloaded adler2 v2.0.1
+2026-10-28T21:10:01.4993823Z   Downloaded dtor v0.3.0
+2026-10-28T21:10:01.5112968Z   Downloaded dtoa-short v0.3.5
+2026-10-28T21:10:01.5235302Z   Downloaded dtoa v1.0.11
+2026-10-28T21:10:01.5456929Z   Downloaded dpi v0.1.2
+2026-10-28T21:10:01.5559307Z   Downloaded downcast-rs v1.2.1
+2026-10-28T21:10:01.5704386Z   Downloaded dlopen2_derive v0.4.3
+2026-10-28T21:10:01.5834706Z   Downloaded dirs-sys v0.5.0
+2026-10-28T21:10:01.6078518Z   Downloaded dirs v6.0.0
+2026-10-28T21:10:01.6216821Z   Downloaded digest v0.10.7
+2026-10-28T21:10:01.6395400Z   Downloaded dasp_sample v0.11.0
+2026-10-28T21:10:01.6568566Z   Downloaded ctor-proc-macro v0.0.7
+2026-10-28T21:10:01.6653392Z   Downloaded ctor v0.8.0
+2026-10-28T21:10:02.0197196Z   Downloaded cssparser-macros v0.6.1
+2026-10-28T21:10:02.0261882Z   Downloaded crypto-common v0.1.7
+2026-10-28T21:10:02.0356558Z   Downloaded cpufeatures v0.2.17
+2026-10-28T21:10:02.0526646Z   Downloaded core-graphics-types v0.2.0
+2026-10-28T21:10:02.0603771Z   Downloaded convert_case v0.4.0
+2026-10-28T21:10:02.0684039Z   Downloaded cargo-platform v0.1.9
+2026-10-28T21:10:02.0805113Z   Downloaded bit-set v0.8.0
+2026-10-28T21:10:02.0981269Z   Downloaded autocfg v1.5.1
+2026-10-28T21:10:02.1141999Z   Downloaded atomic-waker v1.1.2
+2026-10-28T21:10:02.1253539Z   Downloaded async-signal v0.2.14
+2026-10-28T21:10:02.1422937Z   Downloaded alloc-stdlib v0.2.4
+2026-10-28T21:10:02.1553155Z   Downloaded alloc-no-stdlib v2.0.4
+2026-10-28T21:10:02.1734181Z   Downloaded dlib v0.5.3
+2026-10-28T21:10:02.1911201Z   Downloaded darling_macro v0.21.3
+2026-10-28T21:10:02.2069259Z   Downloaded cfg-if v1.0.5
+2026-10-28T21:10:02.2193141Z   Downloaded cesu8 v1.1.0
+2026-10-28T21:10:02.2269596Z   Downloaded cairo-sys-rs v0.18.2
+2026-10-28T21:10:02.2355689Z   Downloaded async-process v2.5.0
+2026-10-28T21:10:02.2561648Z   Downloaded annotate-snippets v0.11.5
+2026-10-28T21:10:03.3319905Z -- Selecting Windows SDK version 10.0.26100.0 to target Windows 10.0.20348.
+2026-10-28T21:10:17.2833039Z -- The C compiler identification is MSVC 19.44.35229.0
+2026-10-28T21:10:18.8305489Z -- The CXX compiler identification is MSVC 19.44.35229.0
+2026-10-28T21:10:18.8597827Z -- Detecting C compiler ABI info
+2026-10-28T21:10:19.6757865Z -- Detecting C compiler ABI info - done
+2026-10-28T21:10:19.6897469Z -- Check for working C compiler: C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe - skipped
+2026-10-28T21:10:19.6902262Z -- Detecting C compile features
+2026-10-28T21:10:19.6909275Z -- Detecting C compile features - done
+2026-10-28T21:10:19.6992928Z -- Detecting CXX compiler ABI info
+2026-10-28T21:10:20.3956578Z -- Detecting CXX compiler ABI info - done
+2026-10-28T21:10:20.4093920Z -- Check for working CXX compiler: C:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe - skipped
+2026-10-28T21:10:20.4097766Z -- Detecting CXX compile features
+2026-10-28T21:10:20.4106599Z -- Detecting CXX compile features - done
+2026-10-28T21:10:20.4158840Z -- Clockwork 94b67500c96e105491682ec68741b5018560eab7
+2026-10-28T21:10:20.4166374Z -- Performing Test CLOCKWORK_HAS_STD_JTHREAD
+2026-10-28T21:10:23.4435397Z -- Performing Test CLOCKWORK_HAS_STD_JTHREAD - Success
+2026-10-28T21:10:23.4488837Z -- Ableton Link disabled — ClockworkClock uses its local-state backing
+2026-10-28T21:10:23.4618665Z -- DSP: ultra_hardened_guest
+2026-10-28T21:10:23.4648741Z -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+2026-10-28T21:10:25.2831804Z -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+2026-10-28T21:10:25.2832608Z -- Looking for pthread_create in pthreads
+2026-10-28T21:10:25.8794603Z -- Looking for pthread_create in pthreads - not found
+2026-10-28T21:10:25.8795452Z -- Looking for pthread_create in pthread
+2026-10-28T21:10:26.4672432Z -- Looking for pthread_create in pthread - not found
+2026-10-28T21:10:26.4685712Z -- Found Threads: TRUE
+2026-10-28T21:10:27.0219269Z -- Configuring done (24.0s)
+2026-10-28T21:10:27.0981971Z -- Generating done (0.1s)
+2026-10-28T21:10:27.0990603Z -- Build files have been written to: D:/a/alive/alive/apps/ultra/build
+2026-10-28T21:10:27.5694215Z MSBuild version 17.14.60+43b635718 for .NET Framework
+2026-10-28T21:10:27.5998009Z 
+2026-10-28T21:10:28.0353291Z   1>Checking Build System
+2026-10-28T21:10:28.3148507Z   Building Rust subsystems (cargo: clockwork-native)
+2026-10-28T21:10:28.4688041Z       Updating crates.io index
+2026-10-28T21:10:28.7343306Z    Downloading crates ...
+2026-10-28T21:10:28.8441167Z     Downloaded portable-atomic v1.15.0
+2026-10-28T21:10:29.0340532Z      Compiling portable-atomic v1.15.0
+2026-10-28T21:10:29.0342469Z      Compiling clockwork-heap v0.1.0 (D:\a\alive\alive\experiments\clockwork-faust\.deps\clockwork-94b67500c96e105491682ec68741b5018560eab7\rust\clockwork-heap)
+2026-10-28T21:10:29.4377971Z      Compiling clockwork-taps v0.1.0 (D:\a\alive\alive\experiments\clockwork-faust\.deps\clockwork-94b67500c96e105491682ec68741b5018560eab7\rust\clockwork-taps)
+2026-10-28T21:10:30.0637642Z      Compiling clockwork-log v0.1.0 (D:\a\alive\alive\experiments\clockwork-faust\.deps\clockwork-94b67500c96e105491682ec68741b5018560eab7\rust\clockwork-log)
+2026-10-28T21:10:30.1476431Z      Compiling clockwork-osc v0.1.0 (D:\a\alive\alive\experiments\clockwork-faust\.deps\clockwork-94b67500c96e105491682ec68741b5018560eab7\rust\clockwork-osc)
+2026-10-28T21:10:30.5357251Z      Compiling clockwork-slots v0.1.0 (D:\a\alive\alive\experiments\clockwork-faust\.deps\clockwork-94b67500c96e105491682ec68741b5018560eab7\rust\clockwork-slots)
+2026-10-28T21:10:30.6268924Z      Compiling clockwork-ports v0.1.0 (D:\a\alive\alive\experiments\clockwork-faust\.deps\clockwork-94b67500c96e105491682ec68741b5018560eab7\rust\clockwork-ports)
+2026-10-28T21:10:31.2293130Z      Compiling clockwork-ports-disk v0.1.0 (D:\a\alive\alive\experiments\clockwork-faust\.deps\clockwork-94b67500c96e105491682ec68741b5018560eab7\rust\clockwork-ports-disk)
+2026-10-28T21:10:31.4484547Z      Compiling clockwork-sinks v0.1.0 (D:\a\alive\alive\experiments\clockwork-faust\.deps\clockwork-94b67500c96e105491682ec68741b5018560eab7\rust\clockwork-sinks)
+2026-10-28T21:10:32.5445477Z      Compiling clockwork-schedule v0.1.0 (D:\a\alive\alive\experiments\clockwork-faust\.deps\clockwork-94b67500c96e105491682ec68741b5018560eab7\rust\clockwork-schedule)
+2026-10-28T21:10:33.4971190Z      Compiling clockwork-clock v0.1.0 (D:\a\alive\alive\experiments\clockwork-faust\.deps\clockwork-94b67500c96e105491682ec68741b5018560eab7\rust\clockwork-clock)
+2026-10-28T21:10:34.1018190Z      Compiling clockwork-native v0.1.0 (D:\a\alive\alive\experiments\clockwork-faust\.deps\clockwork-94b67500c96e105491682ec68741b5018560eab7\rust\clockwork-native)
+2026-10-28T21:10:34.1939217Z       Finished `release` profile [optimized] target(s) in 5.85s
+2026-10-28T21:10:34.2086777Z   Building Custom Rule D:/a/alive/alive/experiments/clockwork-faust/.deps/clockwork-94b67500c96e105491682ec68741b5018560eab7/CMakeLists.txt
+2026-10-28T21:10:34.3768623Z   Building Custom Rule D:/a/alive/alive/experiments/clockwork-faust/.deps/clockwork-94b67500c96e105491682ec68741b5018560eab7/CMakeLists.txt
+2026-10-28T21:10:34.5395930Z   audio_processor.cpp
+2026-10-28T21:10:37.1141979Z   clockwork_client.cpp
+2026-10-28T21:10:40.2234170Z   clockwork_asset_pool.cpp
+2026-10-28T21:10:40.6723726Z   clockwork_embed.cpp
+2026-10-28T21:10:42.2116133Z   lanes.cpp
+2026-10-28T21:10:43.7713520Z   clockwork_pool.cpp
+2026-10-28T21:10:44.2183631Z   guest_malloc.cpp
+2026-10-28T21:10:44.3404206Z   tap_streams.cpp
+2026-10-28T21:10:45.9107964Z   mem_region.cpp
+2026-10-28T21:10:46.0329949Z   engine_support.cpp
+2026-10-28T21:10:47.5697871Z   MidiClockOut.cpp
+2026-10-28T21:10:49.2936488Z   OscEgress.cpp
+2026-10-28T21:10:51.0425899Z   RingReader.cpp
+2026-10-28T21:10:52.7043589Z   ClockworkClock.cpp
+2026-10-28T21:10:54.2969304Z   EngineClock.cpp
+2026-10-28T21:10:56.0353695Z   ClockworkClockNative.cpp
+2026-10-28T21:10:57.6523865Z   TimeSource.cpp
+2026-10-28T21:10:59.1921762Z   MidiTimelines.cpp
+2026-10-28T21:11:00.8088872Z   LinkAudioHost.cpp
+2026-10-28T21:11:02.5631754Z   clockwork_audio_file.cpp
+2026-10-28T21:11:04.7407223Z   Generating Code...
+2026-10-28T21:11:10.9218855Z   Compiling...
+2026-10-28T21:11:10.9219280Z   flac_encoder.cpp
+2026-10-28T21:11:11.4250119Z   OscTypes.cpp
+2026-10-28T21:11:11.4319276Z   OscOutboundPacketStream.cpp
+2026-10-28T21:11:11.5253126Z   OscReceivedElements.cpp
+2026-10-28T21:11:11.6244391Z   Generating Code...
+2026-10-28T21:11:12.2522740Z   stb_vorbis.c
+2026-10-28T21:11:13.2142911Z   clockwork.vcxproj -> D:\a\alive\alive\apps\ultra\build\core\clockwork\Release\clockwork.lib
+2026-10-28T21:11:13.2871024Z   Building Custom Rule D:/a/alive/alive/apps/ultra/core/guest/CMakeLists.txt
+2026-10-28T21:11:13.4103677Z   guest.cpp
+2026-10-28T21:11:14.0677045Z D:\a\alive\alive\apps\ultra\core\app_voice.hpp(10,9): warning C4068: unknown pragma 'GCC' [D:\a\alive\alive\apps\ultra\build\core\clockwork\dsp-ultra_hardened_guest\ultra_hardened_guest.vcxproj]
+2026-10-28T21:11:14.0695628Z   (compiling source file '../../../../core/guest/guest.cpp')
+2026-10-28T21:11:14.0696265Z   
+2026-10-28T21:11:14.0697892Z D:\a\alive\alive\apps\ultra\core\app_voice.hpp(11,9): warning C4068: unknown pragma 'GCC' [D:\a\alive\alive\apps\ultra\build\core\clockwork\dsp-ultra_hardened_guest\ultra_hardened_guest.vcxproj]
+2026-10-28T21:11:14.0700072Z   (compiling source file '../../../../core/guest/guest.cpp')
+2026-10-28T21:11:14.0700617Z   
+2026-10-28T21:11:14.0701489Z D:\a\alive\alive\apps\ultra\core\app_voice.hpp(13,9): warning C4068: unknown pragma 'GCC' [D:\a\alive\alive\apps\ultra\build\core\clockwork\dsp-ultra_hardened_guest\ultra_hardened_guest.vcxproj]
+2026-10-28T21:11:14.0702360Z   (compiling source file '../../../../core/guest/guest.cpp')
+2026-10-28T21:11:14.0702683Z   
+2026-10-28T21:11:15.2887865Z   ultra_hardened_guest.vcxproj -> D:\a\alive\alive\apps\ultra\build\core\clockwork\dsp-ultra_hardened_guest\Release\ultra_hardened_guest.lib
+2026-10-28T21:11:15.3460202Z   Building Custom Rule D:/a/alive/alive/apps/ultra/core/CMakeLists.txt
+2026-10-28T21:11:15.4103355Z   engine.cpp
+2026-10-28T21:11:17.3912806Z   ultra_core.vcxproj -> D:\a\alive\alive\apps\ultra\build\core\Release\ultra_core.lib
+2026-10-28T21:11:17.4390196Z   Building Custom Rule D:/a/alive/alive/apps/ultra/CMakeLists.txt
+2026-10-28T21:11:17.5246122Z   backend.cpp
+2026-10-28T21:11:18.2220649Z D:\a\alive\alive\apps\ultra\src-tauri\native\canvas_voice_objects.hpp(23,9): warning C4068: unknown pragma 'GCC' [D:\a\alive\alive\apps\ultra\build\ultra_native.vcxproj]
+2026-10-28T21:11:18.2221890Z   (compiling source file '../src-tauri/native/backend.cpp')
+2026-10-28T21:11:18.2222304Z   
+2026-10-28T21:11:18.2223306Z D:\a\alive\alive\apps\ultra\src-tauri\native\canvas_voice_objects.hpp(24,9): warning C4068: unknown pragma 'GCC' [D:\a\alive\alive\apps\ultra\build\ultra_native.vcxproj]
+2026-10-28T21:11:18.2224352Z   (compiling source file '../src-tauri/native/backend.cpp')
+2026-10-28T21:11:18.2224757Z   
+2026-10-28T21:11:18.2281810Z D:\a\alive\alive\apps\ultra\src-tauri\native\canvas_voice_objects.hpp(28,9): warning C4068: unknown pragma 'GCC' [D:\a\alive\alive\apps\ultra\build\ultra_native.vcxproj]
+2026-10-28T21:11:18.2283001Z   (compiling source file '../src-tauri/native/backend.cpp')
+2026-10-28T21:11:18.2283454Z   
+2026-10-28T21:11:19.0969441Z D:\a\alive\alive\apps\ultra\src-tauri\native\alive_session.hpp(352,90): warning C4805: '|=': unsafe mix of type 'bool' and type 'uint32_t' in operation [D:\a\alive\alive\apps\ultra\build\ultra_native.vcxproj]
+2026-10-28T21:11:19.0970618Z   (compiling source file '../src-tauri/native/backend.cpp')
+2026-10-28T21:11:19.0971012Z   
+2026-10-28T21:11:19.0972138Z D:\a\alive\alive\apps\ultra\src-tauri\native\alive_session.hpp(352,90): warning C4805: '|': unsafe mix of type 'bool' and type 'uint32_t' in operation [D:\a\alive\alive\apps\ultra\build\ultra_native.vcxproj]
+2026-10-28T21:11:19.0973215Z   (compiling source file '../src-tauri/native/backend.cpp')
+2026-10-28T21:11:19.0973577Z   
+2026-10-28T21:11:23.7660923Z C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\xutility(5310,24): warning C4244: '=': conversion from 'const _Ty' to 'float', possible loss of data [D:\a\alive\alive\apps\ultra\build\ultra_native.vcxproj]
+2026-10-28T21:11:23.7664244Z C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\xutility(5310,24): warning C4244:         with [D:\a\alive\alive\apps\ultra\build\ultra_native.vcxproj]
+2026-10-28T21:11:23.7666924Z C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\xutility(5310,24): warning C4244:         [ [D:\a\alive\alive\apps\ultra\build\ultra_native.vcxproj]
+2026-10-28T21:11:23.7670066Z C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\xutility(5310,24): warning C4244:             _Ty=int [D:\a\alive\alive\apps\ultra\build\ultra_native.vcxproj]
+2026-10-28T21:11:23.7672026Z C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\xutility(5310,24): warning C4244:         ] [D:\a\alive\alive\apps\ultra\build\ultra_native.vcxproj]
+2026-10-28T21:11:23.7673087Z   (compiling source file '../src-tauri/native/backend.cpp')
+2026-10-28T21:11:23.7673845Z       C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Tools\MSVC\14.44.35207\include\xutility(5310,24):
+2026-10-28T21:11:23.7674620Z       the template instantiation context (the oldest one first) is
+2026-10-28T21:11:23.7675189Z           D:\a\alive\alive\apps\ultra\src-tauri\native\backend.cpp(296,108):
+2026-10-28T21:11:23.7676131Z           see reference to function template instantiation 'void std::fill<float*,int>(const _FwdIt,const _FwdIt,const _Ty &)' being compiled
+2026-10-28T21:11:23.7676713Z           with
+2026-10-28T21:11:23.7676897Z           [
+2026-10-28T21:11:23.7677337Z               _FwdIt=float *,
+2026-10-28T21:11:23.7677571Z               _Ty=int
+2026-10-28T21:11:23.7677764Z           ]
+2026-10-28T21:11:23.7677931Z   
+2026-10-28T21:11:30.6862753Z   Auto build dll exports
+2026-10-28T21:11:31.4441801Z      Creating library D:/a/alive/alive/apps/ultra/build/ultra_native.lib and object D:/a/alive/alive/apps/ultra/build/ultra_native.exp
+2026-10-28T21:11:31.5318388Z   ultra_native.vcxproj -> D:\a\alive\alive\apps\ultra\build\ultra_native.dll
+2026-10-28T21:11:31.6344125Z MSBuild version 17.14.60+43b635718 for .NET Framework
+2026-10-28T21:11:31.6660759Z 
+2026-10-28T21:11:32.0179709Z   Building Custom Rule D:/a/alive/alive/apps/ultra/CMakeLists.txt
+2026-10-28T21:11:32.1948090Z cl : command line  warning D9025: overriding '/DNDEBUG' with '/UNDEBUG' [D:\a\alive\alive\apps\ultra\build\ultra-parser-test.vcxproj]
+2026-10-28T21:11:32.1948783Z   portable_parser_test.cpp
+2026-10-28T21:11:33.3800829Z   ultra-parser-test.vcxproj -> D:\a\alive\alive\apps\ultra\build\ultra-parser-test.exe
+2026-10-28T21:11:33.4330501Z Portable bounded numeric parser passed
+2026-10-28T21:11:33.5208939Z Native shared library loaded; finite callback output and stop/restart passed
+2026-10-28T21:11:33.5769879Z         Appx Creating StoreLogo.png
+2026-10-28T21:11:33.5779935Z         Appx Creating Square30x30Logo.png
+2026-10-28T21:11:33.5784601Z         Appx Creating Square44x44Logo.png
+2026-10-28T21:11:33.5792151Z         Appx Creating Square71x71Logo.png
+2026-10-28T21:11:33.5805598Z         Appx Creating Square89x89Logo.png
+2026-10-28T21:11:33.5825619Z         Appx Creating Square107x107Logo.png
+2026-10-28T21:11:33.5857815Z         Appx Creating Square142x142Logo.png
+2026-10-28T21:11:33.5903743Z         Appx Creating Square150x150Logo.png
+2026-10-28T21:11:33.5951687Z         Appx Creating Square284x284Logo.png
+2026-10-28T21:11:33.6139458Z         Appx Creating Square310x310Logo.png
+2026-10-28T21:11:33.6359891Z         ICNS Creating icon.icns
+2026-10-28T21:11:33.9880266Z          ICO Creating icon.ico
+2026-10-28T21:11:34.0042353Z          PNG Creating 32x32.png
+2026-10-28T21:11:34.0045827Z          PNG Creating 64x64.png
+2026-10-28T21:11:34.0059484Z          PNG Creating 128x128.png
+2026-10-28T21:11:34.0097704Z          PNG Creating 128x128@2x.png
+2026-10-28T21:11:34.0247258Z          PNG Creating icon.png
+2026-10-28T21:11:34.0815419Z          PNG Creating mipmap-hdpi/ic_launcher_foreground.png
+2026-10-28T21:11:34.0875498Z          PNG Creating mipmap-hdpi/ic_launcher_round.png
+2026-10-28T21:11:34.0883705Z          PNG Creating mipmap-hdpi/ic_launcher.png
+2026-10-28T21:11:34.0892057Z          PNG Creating mipmap-mdpi/ic_launcher_foreground.png
+2026-10-28T21:11:34.0919802Z          PNG Creating mipmap-mdpi/ic_launcher_round.png
+2026-10-28T21:11:34.0928878Z          PNG Creating mipmap-mdpi/ic_launcher.png
+2026-10-28T21:11:34.0936870Z          PNG Creating mipmap-xhdpi/ic_launcher_foreground.png
+2026-10-28T21:11:34.1038344Z          PNG Creating mipmap-xhdpi/ic_launcher_round.png
+2026-10-28T21:11:34.1061591Z          PNG Creating mipmap-xhdpi/ic_launcher.png
+2026-10-28T21:11:34.1085948Z          PNG Creating mipmap-xxhdpi/ic_launcher_foreground.png
+2026-10-28T21:11:34.1327588Z          PNG Creating mipmap-xxhdpi/ic_launcher_round.png
+2026-10-28T21:11:34.1371201Z          PNG Creating mipmap-xxhdpi/ic_launcher.png
+2026-10-28T21:11:34.1415207Z          PNG Creating mipmap-xxxhdpi/ic_launcher_foreground.png
+2026-10-28T21:11:34.1801687Z          PNG Creating mipmap-xxxhdpi/ic_launcher_round.png
+2026-10-28T21:11:34.1877722Z          PNG Creating mipmap-xxxhdpi/ic_launcher.png
+2026-10-28T21:11:34.1955661Z          iOS Creating AppIcon-20x20@2x-1.png
+2026-10-28T21:11:34.1962365Z          iOS Creating AppIcon-20x20@1x.png
+2026-10-28T21:11:34.1966316Z          iOS Creating AppIcon-20x20@2x.png
+2026-10-28T21:11:34.1972899Z          iOS Creating AppIcon-20x20@3x.png
+2026-10-28T21:11:34.1983727Z          iOS Creating AppIcon-29x29@2x-1.png
+2026-10-28T21:11:34.1994627Z          iOS Creating AppIcon-29x29@1x.png
+2026-10-28T21:11:34.2001312Z          iOS Creating AppIcon-29x29@2x.png
+2026-10-28T21:11:34.2012026Z          iOS Creating AppIcon-29x29@3x.png
+2026-10-28T21:11:34.2031006Z          iOS Creating AppIcon-40x40@2x-1.png
+2026-10-28T21:11:34.2048933Z          iOS Creating AppIcon-40x40@1x.png
+2026-10-28T21:11:34.2055135Z          iOS Creating AppIcon-40x40@2x.png
+2026-10-28T21:11:34.2073095Z          iOS Creating AppIcon-40x40@3x.png
+2026-10-28T21:11:34.2105657Z          iOS Creating AppIcon-60x60@2x.png
+2026-10-28T21:11:34.2139005Z          iOS Creating AppIcon-60x60@3x.png
+2026-10-28T21:11:34.2215766Z          iOS Creating AppIcon-76x76@1x.png
+2026-10-28T21:11:34.2232163Z          iOS Creating AppIcon-76x76@2x.png
+2026-10-28T21:11:34.2281810Z          iOS Creating AppIcon-83.5x83.5@2x.png
+2026-10-28T21:11:34.2345179Z          iOS Creating AppIcon-512@2x.png
+2026-10-28T21:11:35.0985435Z    Compiling proc-macro2 v1.0.107
+2026-10-28T21:11:35.0986659Z    Compiling quote v1.0.47
+2026-10-28T21:11:35.3551314Z    Compiling unicode-ident v1.0.27
+2026-10-28T21:11:35.4630638Z    Compiling cfg-if v1.0.5
+2026-10-28T21:11:35.4969802Z    Compiling serde_core v1.0.228
+2026-10-28T21:11:36.6238132Z    Compiling syn v2.0.119
+2026-10-28T21:11:38.2411957Z    Compiling syn v3.0.9
+2026-10-28T21:11:42.1094906Z    Compiling synstructure v0.14.0
+2026-10-28T21:11:42.6111531Z    Compiling zerofrom-derive v0.1.8
+2026-10-28T21:11:42.7455347Z    Compiling yoke-derive v0.8.4
+2026-10-28T21:11:43.5223182Z    Compiling siphasher v1.0.4
+2026-10-28T21:11:43.6378780Z    Compiling serde_derive v1.0.228
+2026-10-28T21:11:43.6977546Z    Compiling zerovec-derive v0.11.6
+2026-10-28T21:11:44.9576753Z    Compiling displaydoc v0.2.7
+2026-10-28T21:11:45.6587762Z    Compiling zerocopy v0.8.63
+2026-10-28T21:11:47.3520655Z    Compiling stable_deref_trait v1.2.1
+2026-10-28T21:11:47.3958634Z    Compiling smallvec v1.16.3
+2026-10-28T21:11:47.5542795Z    Compiling phf_shared v0.13.1
+2026-10-28T21:11:47.7733775Z    Compiling windows-link v0.2.1
+2026-10-28T21:11:47.8066433Z    Compiling icu_normalizer_data v2.1.1
+2026-10-28T21:11:47.9437314Z    Compiling fastrand v2.5.0
+2026-10-28T21:11:48.0717885Z    Compiling icu_properties_data v2.1.2
+2026-10-28T21:11:48.2114497Z    Compiling phf_generator v0.13.1
+2026-10-28T21:11:48.3774647Z    Compiling parking_lot_core v0.9.12
+2026-10-28T21:11:48.5683877Z    Compiling getrandom v0.2.17
+2026-10-28T21:11:48.6758036Z    Compiling serde v1.0.228
+2026-10-28T21:11:48.9608691Z    Compiling rand_core v0.6.4
+2026-10-28T21:11:49.1321958Z    Compiling zerofrom v0.1.8
+2026-10-28T21:11:49.5030147Z    Compiling yoke v0.8.3
+2026-10-28T21:11:50.3184115Z    Compiling itoa v1.0.18
+2026-10-28T21:11:50.4557060Z    Compiling ppv-lite86 v0.2.21
+2026-10-28T21:11:50.4594526Z    Compiling thiserror v2.0.21
+2026-10-28T21:11:50.8538960Z    Compiling rand_chacha v0.3.1
+2026-10-28T21:11:51.3332222Z    Compiling rand v0.8.8
+2026-10-28T21:11:52.0389789Z    Compiling new_debug_unreachable v1.0.6
+2026-10-28T21:11:52.0765876Z    Compiling siphasher v0.3.11
+2026-10-28T21:11:52.2270438Z    Compiling zerovec v0.11.8
+2026-10-28T21:11:52.8251017Z    Compiling thiserror-impl v2.0.21
+2026-10-28T21:11:53.5673970Z    Compiling getrandom v0.1.16
+2026-10-28T21:11:53.7921738Z    Compiling phf_macros v0.13.1
+2026-10-28T21:11:54.2833966Z    Compiling memchr v2.8.3
+2026-10-28T21:11:54.6210597Z    Compiling scopeguard v1.2.0
+2026-10-28T21:11:54.6717478Z    Compiling typeid v1.0.3
+2026-10-28T21:11:54.8713445Z    Compiling precomputed-hash v0.1.1
+2026-10-28T21:11:54.9155740Z    Compiling fnv v1.0.7
+2026-10-28T21:11:54.9684833Z    Compiling lock_api v0.4.14
+2026-10-28T21:11:55.2674966Z    Compiling phf_shared v0.11.3
+2026-10-28T21:11:55.2822995Z    Compiling num-conv v0.1.0
+2026-10-28T21:11:55.3878155Z    Compiling time-core v0.1.7
+2026-10-28T21:11:55.4250617Z    Compiling rand_core v0.5.1
+2026-10-28T21:11:55.5216273Z    Compiling parking_lot v0.12.5
+2026-10-28T21:11:55.5869462Z    Compiling tinystr v0.8.4
+2026-10-28T21:11:55.8192922Z    Compiling phf_codegen v0.13.1
+2026-10-28T21:11:55.8949959Z    Compiling erased-serde v0.4.10
+2026-10-28T21:11:55.9030539Z    Compiling strsim v0.11.1
+2026-10-28T21:11:56.1609085Z    Compiling thiserror v1.0.69
+2026-10-28T21:11:56.2443362Z    Compiling syn v1.0.109
+2026-10-28T21:11:56.4058438Z    Compiling litemap v0.8.3
+2026-10-28T21:11:56.4994065Z    Compiling ident_case v1.0.1
+2026-10-28T21:11:56.5629792Z    Compiling writeable v0.6.4
+2026-10-28T21:11:56.5789011Z    Compiling darling_core v0.21.3
+2026-10-28T21:11:56.7610204Z    Compiling icu_locale_core v2.1.1
+2026-10-28T21:11:58.0053724Z    Compiling potential_utf v0.1.6
+2026-10-28T21:11:58.1099788Z    Compiling zerotrie v0.2.5
+2026-10-28T21:11:58.4369406Z    Compiling windows-sys v0.61.2
+2026-10-28T21:12:00.0794005Z    Compiling version_check v0.9.5
+2026-10-28T21:12:00.3662734Z    Compiling log v0.4.34
+2026-10-28T21:12:00.5147311Z    Compiling darling_macro v0.21.3
+2026-10-28T21:12:00.8593135Z    Compiling icu_provider v2.1.1
+2026-10-28T21:12:01.1809745Z    Compiling icu_collections v2.1.1
+2026-10-28T21:12:04.7122276Z    Compiling rand_pcg v0.2.1
+2026-10-28T21:12:04.8242763Z    Compiling rand_chacha v0.2.2
+2026-10-28T21:12:05.2665058Z    Compiling phf_generator v0.11.3
+2026-10-28T21:12:05.4380362Z    Compiling phf_shared v0.8.0
+2026-10-28T21:12:05.5836571Z    Compiling thiserror-impl v1.0.69
+2026-10-28T21:12:06.9916950Z    Compiling dtoa v1.0.11
+2026-10-28T21:12:07.0996882Z    Compiling proc-macro-hack v0.5.20+deprecated
+2026-10-28T21:12:07.3050037Z    Compiling anyhow v1.0.104
+2026-10-28T21:12:07.5901502Z    Compiling dtoa-short v0.3.5
+2026-10-28T21:12:07.8152845Z    Compiling rand v0.7.3
+2026-10-28T21:12:08.0287072Z    Compiling darling v0.21.3
+2026-10-28T21:12:08.0707272Z    Compiling phf v0.13.1
+2026-10-28T21:12:08.1835230Z    Compiling phf_shared v0.10.0
+2026-10-28T21:12:08.3211689Z    Compiling string_cache_codegen v0.6.1
+2026-10-28T21:12:08.6083726Z    Compiling cssparser-macros v0.6.1
+2026-10-28T21:12:08.7912204Z    Compiling byteorder v1.5.0
+2026-10-28T21:12:08.9934130Z    Compiling getrandom v0.4.3
+2026-10-28T21:12:09.0015307Z    Compiling serde_json v1.0.145
+2026-10-28T21:12:09.1482860Z    Compiling winnow v1.0.4
+2026-10-28T21:12:09.1884499Z    Compiling web_atoms v0.2.6
+2026-10-28T21:12:09.5239634Z    Compiling toml_parser v1.1.5+spec-1.1.0
+2026-10-28T21:12:09.7218189Z    Compiling phf_generator v0.8.0
+2026-10-28T21:12:09.7860206Z    Compiling phf_generator v0.10.0
+2026-10-28T21:12:09.8585044Z    Compiling serde_with_macros v3.17.0
+2026-10-28T21:12:10.3049675Z    Compiling icu_properties v2.1.2
+2026-10-28T21:12:11.0390601Z    Compiling icu_normalizer v2.1.1
+2026-10-28T21:12:11.7220236Z    Compiling string_cache_codegen v0.5.4
+2026-10-28T21:12:12.1570748Z    Compiling phf_codegen v0.11.3
+2026-10-28T21:12:12.3480175Z    Compiling serde_spanned v1.1.2
+2026-10-28T21:12:12.4065844Z    Compiling toml_writer v1.1.3+spec-1.1.0
+2026-10-28T21:12:12.4524239Z    Compiling mac v0.1.1
+2026-10-28T21:12:12.4928410Z    Compiling ctor-proc-macro v0.0.7
+2026-10-28T21:12:12.6304577Z    Compiling ryu v1.0.23
+2026-10-28T21:12:12.9419715Z    Compiling futf v0.1.5
+2026-10-28T21:12:13.0309928Z    Compiling phf_macros v0.10.0
+2026-10-28T21:12:13.9007486Z    Compiling markup5ever v0.14.1
+2026-10-28T21:12:14.0605933Z    Compiling idna_adapter v1.2.1
+2026-10-28T21:12:14.1447310Z    Compiling phf_codegen v0.8.0
+2026-10-28T21:12:14.4489391Z    Compiling cssparser v0.29.6
+2026-10-28T21:12:14.5384407Z    Compiling string_cache v0.9.0
+2026-10-28T21:12:14.7139227Z    Compiling windows-interface v0.59.3
+2026-10-28T21:12:15.5281573Z    Compiling windows-implement v0.60.2
+2026-10-28T21:12:16.2203716Z    Compiling semver v1.0.28
+2026-10-28T21:12:16.2582963Z    Compiling autocfg v1.5.1
+2026-10-28T21:12:16.5545799Z    Compiling utf-8 v0.7.6
+2026-10-28T21:12:16.6864930Z    Compiling percent-encoding v2.3.2
+2026-10-28T21:12:16.7086470Z    Compiling libc v0.2.191
+2026-10-28T21:12:16.8427199Z    Compiling bitflags v1.3.2
+2026-10-28T21:12:16.8823822Z    Compiling utf8_iter v1.0.4
+2026-10-28T21:12:16.9772189Z    Compiling idna v1.1.0
+2026-10-28T21:12:17.1443212Z    Compiling form_urlencoded v1.2.2
+2026-10-28T21:12:17.2825861Z    Compiling indexmap v1.9.3
+2026-10-28T21:12:17.4245200Z    Compiling tendril v0.4.3
+2026-10-28T21:12:17.8525639Z    Compiling uuid v1.26.1
+2026-10-28T21:12:18.5497830Z    Compiling selectors v0.24.0
+2026-10-28T21:12:18.5685725Z    Compiling phf v0.10.1
+2026-10-28T21:12:18.6834235Z    Compiling selectors v0.36.1
+2026-10-28T21:12:18.9455714Z    Compiling string_cache v0.8.9
+2026-10-28T21:12:19.0591627Z    Compiling phf v0.11.3
+2026-10-28T21:12:19.1631851Z    Compiling aho-corasick v1.1.5
+2026-10-28T21:12:19.1877668Z    Compiling tendril v0.5.1
+2026-10-28T21:12:19.4727128Z    Compiling derive_more-impl v2.1.1
+2026-10-28T21:12:20.5255557Z    Compiling toml_datetime v1.1.2+spec-1.1.0
+2026-10-28T21:12:20.8105951Z    Compiling camino v1.2.6
+2026-10-28T21:12:21.0645186Z    Compiling regex-syntax v0.8.11
+2026-10-28T21:12:21.3818169Z    Compiling matches v0.1.10
+2026-10-28T21:12:21.4182299Z    Compiling unic-common v0.9.0
+2026-10-28T21:12:21.4803201Z    Compiling alloc-no-stdlib v2.0.4
+2026-10-28T21:12:21.5570868Z    Compiling unic-char-range v0.9.0
+2026-10-28T21:12:21.6308727Z    Compiling powerfmt v0.2.1
+2026-10-28T21:12:21.7525274Z    Compiling equivalent v1.0.3
+2026-10-28T21:12:21.7976618Z    Compiling hashbrown v0.17.1
+2026-10-28T21:12:22.3894166Z    Compiling nodrop v0.1.14
+2026-10-28T21:12:22.4580185Z    Compiling convert_case v0.4.0
+2026-10-28T21:12:23.0651944Z    Compiling regex-automata v0.4.18
+2026-10-28T21:12:24.1757303Z    Compiling derive_more v0.99.20
+2026-10-28T21:12:27.1882366Z    Compiling servo_arc v0.2.0
+2026-10-28T21:12:27.3247676Z    Compiling indexmap v2.14.2
+2026-10-28T21:12:27.4757491Z    Compiling deranged v0.5.9
+2026-10-28T21:12:28.0274785Z    Compiling unic-char-property v0.9.0
+2026-10-28T21:12:28.0947178Z    Compiling alloc-stdlib v0.2.4
+2026-10-28T21:12:28.1616217Z    Compiling unic-ucd-version v0.9.0
+2026-10-28T21:12:28.8521919Z    Compiling toml v1.1.8+spec-1.1.0
+2026-10-28T21:12:28.9627983Z    Compiling derive_more v2.1.1
+2026-10-28T21:12:29.0331006Z    Compiling markup5ever v0.38.0
+2026-10-28T21:12:30.4304435Z    Compiling url v2.5.8
+2026-10-28T21:12:31.1551435Z    Compiling cssparser v0.36.0
+2026-10-28T21:12:31.3132651Z    Compiling fxhash v0.2.1
+2026-10-28T21:12:31.3989183Z    Compiling phf v0.8.0
+2026-10-28T21:12:31.4794182Z    Compiling winapi-util v0.1.11
+2026-10-28T21:12:31.7740277Z    Compiling servo_arc v0.4.3
+2026-10-28T21:12:31.8823565Z    Compiling match_token v0.1.0
+2026-10-28T21:12:32.0330948Z    Compiling serde_derive_internals v0.29.1
+2026-10-28T21:12:32.3050684Z    Compiling rustc-hash v2.1.3
+2026-10-28T21:12:32.3819872Z    Compiling bit-vec v0.8.0
+2026-10-28T21:12:32.5807362Z    Compiling hashbrown v0.12.3
+2026-10-28T21:12:33.0956183Z    Compiling bitflags v2.13.2
+2026-10-28T21:12:33.1532234Z    Compiling schemars v0.8.22
+2026-10-28T21:12:33.3095840Z    Compiling schemars_derive v0.8.22
+2026-10-28T21:12:34.7314981Z    Compiling bit-set v0.8.0
+2026-10-28T21:12:34.8325316Z    Compiling html5ever v0.29.1
+2026-10-28T21:12:35.4716313Z    Compiling same-file v1.0.6
+2026-10-28T21:12:35.7690065Z    Compiling html5ever v0.38.0
+2026-10-28T21:12:36.7317317Z    Compiling time v0.3.45
+2026-10-28T21:12:36.7766289Z    Compiling unic-ucd-ident v0.9.0
+2026-10-28T21:12:36.9756096Z    Compiling brotli-decompressor v5.0.3
+2026-10-28T21:12:38.2932138Z    Compiling regex v1.13.1
+2026-10-28T21:12:38.7673575Z    Compiling cfb v0.7.3
+2026-10-28T21:12:39.5089341Z    Compiling jsonptr v0.6.3
+2026-10-28T21:12:39.5918589Z    Compiling generic-array v0.14.7
+2026-10-28T21:12:39.7262917Z    Compiling quick-xml v0.38.4
+2026-10-28T21:12:39.9949830Z    Compiling cargo-platform v0.1.9
+2026-10-28T21:12:40.1973693Z    Compiling shlex v2.0.1
+2026-10-28T21:12:40.3447397Z    Compiling find-msvc-tools v0.1.15
+2026-10-28T21:12:40.6880468Z    Compiling base64 v0.22.1
+2026-10-28T21:12:41.0126531Z    Compiling windows-link v0.1.3
+2026-10-28T21:12:41.0524030Z    Compiling bytes v1.12.1
+2026-10-28T21:12:41.3544891Z    Compiling dyn-clone v1.0.20
+2026-10-28T21:12:41.4367876Z    Compiling foldhash v0.2.0
+2026-10-28T21:12:41.5847928Z    Compiling dunce v1.0.5
+2026-10-28T21:12:41.7033799Z    Compiling http v1.5.0
+2026-10-28T21:12:41.7577362Z    Compiling dom_query v0.27.0
+2026-10-28T21:12:43.6354046Z    Compiling plist v1.8.0
+2026-10-28T21:12:44.4119347Z    Compiling cc v1.9.0
+2026-10-28T21:12:44.5841094Z    Compiling cargo_metadata v0.19.2
+2026-10-28T21:12:46.3351903Z    Compiling json-patch v3.0.1
+2026-10-28T21:12:46.7876650Z    Compiling infer v0.19.0
+2026-10-28T21:12:46.8345429Z    Compiling urlpattern v0.3.0
+2026-10-28T21:12:47.2679182Z    Compiling brotli v8.0.4
+2026-10-28T21:12:48.0435323Z    Compiling kuchikiki v0.8.8-speedreader
+2026-10-28T21:12:48.6467356Z    Compiling walkdir v2.5.0
+2026-10-28T21:12:48.9786269Z    Compiling serde-untagged v0.1.9
+2026-10-28T21:12:49.2056939Z    Compiling ctor v0.8.0
+2026-10-28T21:12:49.2499637Z    Compiling serde_with v3.17.0
+2026-10-28T21:12:51.1978268Z    Compiling glob v0.3.4
+2026-10-28T21:12:51.5577745Z    Compiling tauri-utils v2.9.3
+2026-10-28T21:12:52.9264894Z    Compiling vswhom-sys v0.1.3
+2026-10-28T21:12:59.0329404Z    Compiling windows-result v0.3.4
+2026-10-28T21:12:59.4588663Z    Compiling windows-strings v0.4.2
+2026-10-28T21:13:02.6109577Z    Compiling windows-core v0.61.2
+2026-10-28T21:13:03.7151151Z    Compiling toml_datetime v0.7.5+spec-1.1.0
+2026-10-28T21:13:03.9799195Z    Compiling winnow v0.7.15
+2026-10-28T21:13:05.7455651Z    Compiling toml v0.9.12+spec-1.1.0
+2026-10-28T21:13:07.5665842Z    Compiling vswhom v0.1.0
+2026-10-28T21:13:07.6456149Z    Compiling rustc_version v0.4.1
+2026-10-28T21:13:07.9148849Z    Compiling winreg v0.56.0
+2026-10-28T21:13:12.0306703Z    Compiling option-ext v0.2.0
+2026-10-28T21:13:12.0790681Z    Compiling dirs-sys v0.5.0
+2026-10-28T21:13:12.1626446Z    Compiling embed-resource v3.0.12
+2026-10-28T21:13:14.5024952Z    Compiling windows-threading v0.1.0
+2026-10-28T21:13:14.8941959Z    Compiling simd-adler32 v0.3.10
+2026-10-28T21:13:14.9188818Z    Compiling heck v0.5.0
+2026-10-28T21:13:15.1229175Z    Compiling windows-future v0.2.1
+2026-10-28T21:13:15.6704916Z    Compiling tauri-winres v0.3.7
+2026-10-28T21:13:16.0279583Z    Compiling dirs v6.0.0
+2026-10-28T21:13:16.0860039Z    Compiling cargo_toml v0.22.3
+2026-10-28T21:13:16.6990920Z    Compiling windows-collections v0.2.0
+2026-10-28T21:13:16.9209762Z    Compiling windows-numerics v0.2.0
+2026-10-28T21:13:17.1264317Z    Compiling time-macros v0.2.25
+2026-10-28T21:13:18.7294640Z    Compiling once_cell v1.21.4
+2026-10-28T21:13:19.3045960Z    Compiling adler2 v2.0.1
+2026-10-28T21:13:19.3815741Z    Compiling raw-window-handle v0.6.2
+2026-10-28T21:13:19.6429579Z    Compiling crc32fast v1.5.2
+2026-10-28T21:13:19.9956619Z    Compiling typenum v1.20.1
+2026-10-28T21:13:26.4575479Z    Compiling tauri-build v2.4.1
+2026-10-28T21:13:27.8283802Z    Compiling windows v0.61.3
+2026-10-28T21:13:36.6404705Z    Compiling webview2-com-sys v0.38.2
+2026-10-28T21:13:51.1305726Z    Compiling crossbeam-utils v0.8.23
+2026-10-28T21:13:51.3701161Z    Compiling windows_x86_64_msvc v0.52.6
+2026-10-28T21:14:15.8525909Z    Compiling miniz_oxide v0.9.1
+2026-10-28T21:14:16.7720721Z    Compiling dpi v0.1.2
+2026-10-28T21:14:17.1259527Z    Compiling cookie v0.18.2
+2026-10-28T21:14:18.3600380Z    Compiling windows_x86_64_msvc v0.53.1
+2026-10-28T21:14:26.7131724Z    Compiling flate2 v1.1.10
+2026-10-28T21:14:37.1901227Z    Compiling tauri v2.8.5
+2026-10-28T21:14:39.8081883Z    Compiling crypto-common v0.1.7
+2026-10-28T21:14:39.8794278Z    Compiling block-buffer v0.10.4
+2026-10-28T21:14:39.9625807Z    Compiling miniz_oxide v0.8.9
+2026-10-28T21:14:40.2659924Z    Compiling fdeflate v0.3.7
+2026-10-28T21:14:40.7360568Z    Compiling windows-version v0.1.7
+2026-10-28T21:14:41.8257807Z    Compiling webview2-com-macros v0.8.1
+2026-10-28T21:14:42.9733384Z    Compiling pin-project-lite v0.2.17
+2026-10-28T21:14:43.0259698Z    Compiling unicode-segmentation v1.13.3
+2026-10-28T21:14:46.4740056Z    Compiling webview2-com v0.38.2
+2026-10-28T21:14:52.3680599Z    Compiling png v0.17.16
+2026-10-28T21:14:53.4484461Z    Compiling digest v0.10.7
+2026-10-28T21:14:56.4801914Z    Compiling windows-targets v0.52.6
+2026-10-28T21:14:56.5177528Z    Compiling crossbeam-channel v0.5.17
+2026-10-28T21:15:05.7141294Z    Compiling tracing-core v0.1.36
+2026-10-28T21:15:07.0826691Z    Compiling tauri-plugin v2.6.3
+2026-10-28T21:15:07.5170733Z    Compiling tracing-attributes v0.1.31
+2026-10-28T21:15:09.7051478Z    Compiling wry v0.53.5
+2026-10-28T21:15:09.9857865Z    Compiling cpufeatures v0.2.17
+2026-10-28T21:15:10.0233964Z    Compiling tauri-runtime v2.8.0
+2026-10-28T21:15:11.4534070Z    Compiling sha2 v0.10.9
+2026-10-28T21:15:11.9206963Z    Compiling tracing v0.1.44
+2026-10-28T21:15:12.4978129Z    Compiling windows-targets v0.53.5
+2026-10-28T21:15:12.5392248Z    Compiling windows-sys v0.59.0
+2026-10-28T21:15:15.4070617Z    Compiling ico v0.5.0
+2026-10-28T21:15:17.5326941Z    Compiling windows-result v0.4.1
+2026-10-28T21:15:17.9669378Z    Compiling windows-strings v0.5.1
+2026-10-28T21:15:18.7657968Z    Compiling getrandom v0.3.4
+2026-10-28T21:15:19.0212267Z    Compiling tauri-runtime-wry v2.8.1
+2026-10-28T21:15:19.3607856Z    Compiling windows-core v0.62.2
+2026-10-28T21:15:21.0481509Z    Compiling tao v0.34.8
+2026-10-28T21:15:29.3223225Z    Compiling tauri-codegen v2.6.3
+2026-10-28T21:15:31.4670399Z    Compiling windows-sys v0.60.2
+2026-10-28T21:15:36.2542300Z    Compiling softbuffer v0.4.8
+2026-10-28T21:15:42.6904224Z    Compiling tauri-plugin-fs v2.4.4
+2026-10-28T21:15:44.3928877Z    Compiling keyboard-types v0.7.0
+2026-10-28T21:15:47.7356555Z    Compiling serialize-to-javascript-impl v0.1.2
+2026-10-28T21:15:49.6236363Z    Compiling serialize-to-javascript v0.1.2
+2026-10-28T21:15:49.8152361Z    Compiling muda v0.17.2
+2026-10-28T21:15:59.5278823Z    Compiling tauri-macros v2.6.3
+2026-10-28T21:16:01.5176123Z    Compiling window-vibrancy v0.6.0
+2026-10-28T21:16:01.6903464Z    Compiling tokio v1.54.0
+2026-10-28T21:16:13.5736017Z    Compiling serde_repr v0.1.21
+2026-10-28T21:16:14.0183523Z    Compiling mime v0.3.17
+2026-10-28T21:16:14.9259833Z    Compiling tauri-plugin-dialog v2.4.2
+2026-10-28T21:16:15.6580258Z    Compiling windows-threading v0.2.1
+2026-10-28T21:16:15.7530563Z    Compiling rfd v0.15.4
+2026-10-28T21:16:15.9124728Z    Compiling windows-future v0.3.2
+2026-10-28T21:16:17.2180562Z    Compiling windows-collections v0.3.2
+2026-10-28T21:16:17.7717096Z    Compiling windows-numerics v0.3.1
+2026-10-28T21:16:17.9648669Z    Compiling cpal v0.18.2
+2026-10-28T21:16:18.1214489Z    Compiling windows v0.62.2
+2026-10-28T21:16:48.5480381Z    Compiling ultra v0.1.0-rc.1 (D:\a\alive\alive\apps\ultra\src-tauri)
+2026-10-28T21:16:49.6170534Z    Compiling dasp_sample v0.11.0
+2026-10-28T21:16:53.5890489Z    Compiling tauri-plugin-single-instance v2.3.4 (D:\a\alive\alive\apps\ultra\src-tauri\vendor\tauri-plugin-single-instance)
+2026-10-28T21:16:54.8433096Z warning: unused import: `SaveSnapshot`
+2026-10-28T21:16:54.8434081Z   --> src\documents.rs:14:28
+2026-10-28T21:16:54.8434701Z    |
+2026-10-28T21:16:54.8435619Z 14 | pub use save::{SaveNotice, SaveSnapshot};
+2026-10-28T21:16:54.8436505Z    |                            ^^^^^^^^^^^^
+2026-10-28T21:16:54.8437151Z    |
+2026-10-28T21:16:54.8437725Z    = note: `#[warn(unused_imports)]` on by default
+2026-10-28T21:16:54.8438264Z 
+2026-10-28T21:17:00.4775840Z warning: method `reserve_native` is never used
+2026-10-28T21:17:00.4780830Z   --> src\document_windows.rs:47:8
+2026-10-28T21:17:00.4787527Z    |
+2026-10-28T21:17:00.4788150Z 36 | impl QuitSession {
+2026-10-28T21:17:00.4790759Z    | ---------------- method in this implementation
+2026-10-28T21:17:00.4791393Z ...
+2026-10-28T21:17:00.4792102Z 47 |     fn reserve_native(&mut self) -> Option<u64> {
+2026-10-28T21:17:00.4793094Z    |        ^^^^^^^^^^^^^^
+2026-10-28T21:17:00.4793642Z    |
+2026-10-28T21:17:00.4794171Z    = note: `#[warn(dead_code)]` on by default
+2026-10-28T21:17:00.4794782Z 
+2026-10-28T21:17:00.4795838Z warning: variant `Audio` is never constructed
+2026-10-28T21:17:00.4797482Z   --> src\session\prepare.rs:20:59
+2026-10-28T21:17:00.4798655Z    |
+2026-10-28T21:17:00.4800304Z 20 | pub enum PreparedTrackInput { Midi { instrument: usize }, Audio }
+2026-10-28T21:17:00.4802787Z    |          ------------------ variant in this enum          ^^^^^
+2026-10-28T21:17:00.4804197Z    |
+2026-10-28T21:17:00.4806640Z    = note: `PreparedTrackInput` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+2026-10-28T21:17:00.4808805Z 
+2026-10-28T21:17:00.4809503Z warning: method `format` is never used
+2026-10-28T21:17:00.4810852Z   --> src\session\document.rs:19:12
+2026-10-28T21:17:00.4812169Z    |
+2026-10-28T21:17:00.4813050Z 16 | impl Document {
+2026-10-28T21:17:00.4814520Z    | ------------- method in this implementation
+2026-10-28T21:17:00.4815877Z ...
+2026-10-28T21:17:00.4818247Z 19 |     pub fn format(&self) -> &str {match self {Self::LegacyV2(s)=>&s.format,Self::ClipsV3(s)=>&s.common.format,Self::WorkspacesV4(s)=>&s.f...
+2026-10-28T21:17:00.4820727Z    |            ^^^^^^
+2026-10-28T21:17:00.4821466Z 
+2026-10-28T21:17:00.4822811Z warning: function `encode` is never used
+2026-10-28T21:17:00.4824219Z    --> src\session\workspaces.rs:278:8
+2026-10-28T21:17:00.4825494Z     |
+2026-10-28T21:17:00.4827072Z 278 | pub fn encode(project: &ProjectV4) -> Result<String, String> {
+2026-10-28T21:17:00.4828778Z     |        ^^^^^^
+2026-10-28T21:17:00.4829431Z 
+2026-10-28T21:17:00.4830354Z warning: function `decode_edit` is never used
+2026-10-28T21:17:00.4831795Z    --> src\session\workspaces.rs:284:8
+2026-10-28T21:17:00.4833168Z     |
+2026-10-28T21:17:00.4834762Z 284 | pub fn decode_edit(text: &str) -> Result<WorkspaceEditV4, String> {
+2026-10-28T21:17:00.4836425Z     |        ^^^^^^^^^^^
+2026-10-28T21:17:00.4837156Z 
+2026-10-28T21:17:00.4838092Z warning: function `prospective_from_legacy_text` is never used
+2026-10-28T21:17:00.4839732Z    --> src\session\workspaces.rs:915:8
+2026-10-28T21:17:00.4841031Z     |
+2026-10-28T21:17:00.4842177Z 915 | pub fn prospective_from_legacy_text(
+2026-10-28T21:17:00.4843390Z     |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-28T21:17:00.4844484Z 
+2026-10-28T21:17:00.4845008Z warning: field `format` is never read
+2026-10-28T21:17:00.4846525Z    --> src\session\workspaces.rs:924:9
+2026-10-28T21:17:00.4847769Z     |
+2026-10-28T21:17:00.4848641Z 923 |     struct Format {
+2026-10-28T21:17:00.4849945Z     |            ------ field in this struct
+2026-10-28T21:17:00.4851457Z 924 |         format: String,
+2026-10-28T21:17:00.4852623Z     |         ^^^^^^
+2026-10-28T21:17:00.4853304Z 
+2026-10-28T21:17:06.9899663Z warning: variant `Audio` is never constructed
+2026-10-28T21:17:06.9900428Z   --> src\session\prepare.rs:20:59
+2026-10-28T21:17:06.9900906Z    |
+2026-10-28T21:17:06.9901580Z 20 | pub enum PreparedTrackInput { Midi { instrument: usize }, Audio }
+2026-10-28T21:17:06.9902891Z    |          ------------------ variant in this enum          ^^^^^
+2026-10-28T21:17:06.9903494Z    |
+2026-10-28T21:17:06.9904608Z    = note: `PreparedTrackInput` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+2026-10-28T21:17:06.9905810Z    = note: `#[warn(dead_code)]` on by default
+2026-10-28T21:17:06.9906232Z 
+2026-10-28T21:17:06.9906581Z warning: function `legacy_v2_tracks` is never used
+2026-10-28T21:17:06.9907272Z    --> src\session\workspaces_tests.rs:810:4
+2026-10-28T21:17:06.9907807Z     |
+2026-10-28T21:17:06.9908364Z 810 | fn legacy_v2_tracks(count: usize) -> Document {
+2026-10-28T21:17:06.9908959Z     |    ^^^^^^^^^^^^^^^^
+2026-10-28T21:17:06.9909251Z 
+2026-10-28T21:19:17.5761611Z warning: `ultra` (lib test) generated 4 warnings (2 duplicates)
+2026-10-28T21:20:07.7201628Z warning: `ultra` (lib) generated 8 warnings (run `cargo fix --lib -p ultra` to apply 1 suggestion)
+2026-10-28T21:20:14.7863362Z     Finished `release` profile [optimized] target(s) in 8m 40s
+2026-10-28T21:20:14.8353919Z      Running unittests src\lib.rs (apps\ultra\src-tauri\target\x86_64-pc-windows-msvc\release\deps\ultra_desktop-9775c3e7146034d2.exe)
+2026-10-28T21:20:14.8518714Z 
+2026-10-28T21:20:14.8519280Z running 288 tests
+2026-10-28T21:20:14.8525168Z test audio::epoch::tests::duration_edges_and_exact_per_buffer_budgets ... ok
+2026-10-28T21:20:14.8526641Z test audio::epoch::tests::reader_contention_returns_cached_payload_after_three_attempts ... ok
+2026-10-28T21:20:14.8532614Z test audio::epoch::tests::independent_closures_keep_late_errors_and_native_state_until_both_drop ... ok
+2026-10-28T21:20:14.8534763Z test audio::instrumentation::native_saved_clip_release_overhead ... ignored, exact saved-fixture release measurement; requires ALIVE_MEASUREMENT_SESSION
+2026-10-28T21:20:14.8536823Z test audio::instrumentation::paired_release_overhead ... ignored, explicit release measurement; no timing acceptance threshold
+2026-10-28T21:20:14.8538941Z test audio::instrumentation::cpal_owned_error_destruction_is_separate_from_the_typed_action ... ok
+2026-10-28T21:20:14.8540710Z test audio::instrumentation::warmed_fill_clock_histogram_publication_allocate_and_free_nothing ... ok
+2026-10-28T21:20:14.8544996Z test audio::tests::callback_partitions_stereo_and_converts_without_losing_frames ... ok
+2026-10-28T21:20:14.8555726Z test audio::epoch::tests::concurrent_publication_reads_are_coherent_or_stale ... ok
+2026-10-28T21:20:14.8557290Z test audio::tests::configuration_rejects_unsupported_rates_buffers_and_fields ... ok
+2026-10-28T21:20:14.8561166Z test audio::tests::disconnected_or_stale_device_is_not_silently_replaced ... ok
+2026-10-28T21:20:14.8569130Z test audio::tests::measured_fill_counts_all_returns_shapes_and_later_partition_failure ... ok
+2026-10-28T21:20:14.8573271Z test audio::tests::invalid_saved_settings_use_defaults_without_rewriting_user_data ... ok
+2026-10-28T21:20:14.8574526Z test audio::tests::native_failure_silences_the_whole_device_callback ... ok
+2026-10-28T21:20:14.8576113Z test audio::tests::private_software_output ... ignored, requires the private software-only PipeWire graph from check_cpal_audio.sh
+2026-10-28T21:20:14.8590921Z test audio::tests::pending_start_configure_and_stop_refuse_without_consuming_an_epoch ... ok
+2026-10-28T21:20:14.8592192Z test audio::tests::stop_retains_observed_callbacks ... ok
+2026-10-28T21:20:14.8600311Z test canvas::tests::all_allowed_live_parameters_use_their_native_slot_without_revising ... ok
+2026-10-28T21:20:14.8605298Z test audio::tests::unavailable_saved_host_catalog_keeps_preferences_and_lists_recovery_hosts ... ok
+2026-10-28T21:20:14.8688556Z test canvas::tests::arithmetic_help_shell_policy_pairs_retain_topology_and_no_helper_ports ... ok
+2026-10-28T21:20:14.8690101Z test canvas::tests::appearance_shared_cases_validate_without_changing_native_descriptors ... ok
+2026-10-28T21:20:14.8695612Z test canvas::tests::arithmetic_numericmode_is_structural_and_rhs_live_admission_is_atomic ... ok
+2026-10-28T21:20:14.8704727Z test canvas::tests::audio_map_supports_stereo_swap_dual_mono_and_partial_paths ... ok
+2026-10-28T21:20:14.8706514Z test canvas::tests::arithmetic_modes_preserve_legacy_defaults_and_validate_new_descriptors ... ok
+2026-10-28T21:20:14.8714372Z test canvas::tests::authored_voice_objects_compile_with_exact_discrete_lanes_and_live_parameters ... ok
+2026-10-28T21:20:14.8715896Z test canvas::tests::authored_voice_parameter_bounds_are_strict ... ok
+2026-10-28T21:20:14.8722293Z test canvas::tests::batch_parameters_use_six_slots_and_refuse_crossed_flonum_limits_atomically ... ok
+2026-10-28T21:20:14.8724722Z test audio::tests::authorized_pending_exit_skips_destructors_in_child ... ok
+2026-10-28T21:20:14.8728985Z test canvas::tests::console_formatting_preserves_fractional_legacy_values_and_typed_float_identity ... ok
+2026-10-28T21:20:14.8732791Z test canvas::tests::cable_midpoints_are_bounded_authoring_only_in_flat_and_nested_documents ... ok
+2026-10-28T21:20:14.8734542Z test canvas::tests::empty_document_is_a_valid_silent_graph ... ok
+2026-10-28T21:20:14.8737330Z test canvas::tests::creation_arguments_are_bounded_structural_and_drive_event_ports ... ok
+2026-10-28T21:20:14.8738559Z test canvas::tests::defaults_compile_to_exact_native_slots ... ok
+2026-10-28T21:20:14.8739897Z test canvas::tests::finite_control_bounds_and_exact_size_limit_are_enforced ... ok
+2026-10-28T21:20:14.8741172Z test canvas::tests::events_validate_generation_target_control_ports_and_values ... ok
+2026-10-28T21:20:14.8743182Z test canvas::tests::generation_admission_is_atomic_and_failure_keeps_last_plan ... ok
+2026-10-28T21:20:14.8746619Z test canvas::tests::hierarchy_boundary_order_treats_negative_zero_as_the_same_position ... ok
+2026-10-28T21:20:14.8748673Z test canvas::tests::hierarchy_boundary_order_uses_x_then_saved_node_order_and_ignores_y ... ok
+2026-10-28T21:20:14.8752926Z test canvas::tests::hierarchy_checks_control_and_active_signal_cycles_separately ... ok
+2026-10-28T21:20:14.8758914Z test canvas::tests::hierarchy_enforces_surface_ports_before_lowering_relays ... ok
+2026-10-28T21:20:14.8763681Z test canvas::tests::hierarchy_embedded_depth_is_bounded_independently_of_runtime_nodes ... ok
+2026-10-28T21:20:14.8765327Z test canvas::tests::hierarchy_keeps_v1_flat_and_forbids_public_v1_relays ... ok
+2026-10-28T21:20:14.8768934Z test canvas::tests::hierarchy_lowers_nested_boundaries_without_splicing_or_reordering_cables ... ok
+2026-10-28T21:20:14.8772793Z test canvas::tests::hierarchy_mixed_boundaries_allow_control_taps_and_mono_routes ... ok
+2026-10-28T21:20:14.8777510Z test canvas::tests::hierarchy_requires_global_ids_and_scope_local_wires ... ok
+2026-10-28T21:20:14.8784631Z test canvas::tests::hierarchy_reports_native_capacity_without_truncating_the_authoring_tree ... ok
+2026-10-28T21:20:14.8786453Z test canvas::tests::hierarchy_schema_rejects_unknown_fields_and_inapplicable_child_patchers ... ok
+2026-10-28T21:20:14.8791093Z test canvas::tests::integer_number_ports_parameters_and_live_history_preserve_legacy_numbers ... ok
+2026-10-28T21:20:14.8793888Z test canvas::tests::list_creation_text_is_typed_structural_and_strictly_bounded ... ok
+2026-10-28T21:20:14.8797413Z test canvas::tests::list_objects_prepare_stable_kinds_and_keep_inactive_zl_ports ... ok
+2026-10-28T21:20:14.8799196Z test canvas::tests::list_sizes_validate_and_update_the_live_native_slot ... ok
+2026-10-28T21:20:14.8803033Z test canvas::tests::live_parameters_do_not_revise_graph_and_rejections_do_not_mutate ... ok
+2026-10-28T21:20:14.8804659Z test canvas::tests::message_snapshot_preserves_empty_bang_float_and_template_types ... ok
+2026-10-28T21:20:14.8808452Z test canvas::tests::message_text_admission_is_atomic_and_same_text_reapply_advances_serial ... ok
+2026-10-28T21:20:14.8812455Z test canvas::tests::messages_admit_typed_literals_and_reject_unsupported_syntax ... ok
+2026-10-28T21:20:14.8818283Z test canvas::tests::mutable_message_schema_accepts_empty_and_fixed_head_templates ... ok
+2026-10-28T21:20:14.8819844Z test canvas::tests::named_bus_nodes_preserve_creation_names_and_exact_port_shapes ... ok
+2026-10-28T21:20:14.8829893Z test canvas::tests::named_bus_parameters_are_strict_and_structural ... ok
+2026-10-28T21:20:14.8831632Z test canvas::tests::node_identifiers_positions_and_counts_are_bounded ... ok
+2026-10-28T21:20:14.8839292Z test canvas::tests::object_batch_default_kinds_and_argument_dependent_ports_are_admitted ... ok
+2026-10-28T21:20:14.8841063Z test canvas::tests::physical_tab_validation_rejects_stale_and_non_ui_actions_without_changing_messages ... ok
+2026-10-28T21:20:14.8844797Z test canvas::tests::print_popup_parameter_is_strict_and_live ... ok
+2026-10-28T21:20:14.8846423Z test canvas::tests::print_popup_snapshot_preserves_types_and_rejects_malformed_rows ... ok
+2026-10-28T21:20:14.8850305Z test canvas::tests::print_prepares_a_bounded_label_and_has_no_output ... ok
+2026-10-28T21:20:14.8853834Z test canvas::tests::reusable_device_manifest_binds_live_saved_parameters_without_changing_runtime ... ok
+2026-10-28T21:20:14.8869655Z test canvas::tests::reusable_device_manifest_rejects_invalid_schema_bindings_and_presets ... ok
+2026-10-28T21:20:14.8873921Z test canvas::tests::revision_exhaustion_never_wraps_or_calls_native ... ok
+2026-10-28T21:20:14.8886558Z test canvas::tests::saved_effect_examples_share_native_admission_and_normalized_live_bindings ... ok
+2026-10-28T21:20:14.8891372Z test canvas::tests::schema_is_strict_and_required ... ok
+2026-10-28T21:20:14.8896080Z test canvas::tests::reusable_device_manifest_bounds_counts_and_integer_bindings ... ok
+2026-10-28T21:20:14.8898347Z test canvas::tests::hierarchy_authoring_bounds_count_virtual_nodes_and_allow_large_comments ... ok
+2026-10-28T21:20:14.8900394Z test canvas::tests::serialized_input_is_bounded_without_an_unbounded_copy ... ok
+2026-10-28T21:20:14.8903951Z test canvas::tests::shipped_editor_preset_compiles_as_the_same_native_profile ... ok
+2026-10-28T21:20:14.8908771Z test canvas::tests::signal_control_and_mixed_ports_reach_the_message_bridge_but_dac_stays_signal_only ... ok
+2026-10-28T21:20:14.8910872Z test canvas::tests::signal_creation_layouts_are_numeric_structural_and_bounded ... ok
+2026-10-28T21:20:14.8912678Z test canvas::tests::signal_graph_admits_mixed_inlets_fanin_and_sampled_control_feedback ... ok
+2026-10-28T21:20:14.8916307Z test canvas::tests::signal_objects_prepare_appended_ids_and_observed_defaults ... ok
+2026-10-28T21:20:14.8918005Z test canvas::tests::signal_parameters_use_live_slots_and_reject_unrepresented_configuration ... ok
+2026-10-28T21:20:14.8922061Z test canvas::tests::signal_routes_allow_sums_and_fanout_but_preserve_device_and_bundle_ownership ... ok
+2026-10-28T21:20:14.8927275Z test canvas::tests::structural_routes_require_reapply_and_never_call_live_native_update ... ok
+2026-10-28T21:20:14.8935221Z test canvas::tests::strict_numeric_parameters_and_enum_integrality ... ok
+2026-10-28T21:20:14.8936570Z test canvas::tests::typed_literal_messages_and_eight_atom_events_preserve_cardinality ... ok
+2026-10-28T21:20:14.8938021Z test audio::epoch::tests::retention_eviction_merges_each_attempt_once_and_reports_cursor_gap ... ok
+2026-10-28T21:20:14.8939405Z test canvas::tests::typed_message_pod_layout_and_atom_identity_are_preserved ... ok
+2026-10-28T21:20:14.8946415Z test canvas::tests::version_two_instrument_manifest_normalizes_and_keeps_version_one_compatible ... ok
+2026-10-28T21:20:14.8948918Z test canvas::tests::version_two_effect_manifest_requires_bound_stereo_input_without_midi ... ok
+2026-10-28T21:20:14.8954575Z test canvas::tests::typed_ports_duplicates_cycles_and_edge_limit ... ok
+2026-10-28T21:20:14.8970052Z test document_windows::commands::tests::arithmetic_shared_rhs_history_retains_hot_state_and_mode_history_reinstalls ... ok
+2026-10-28T21:20:14.8986489Z test document_windows::commands::tests::cable_midpoints_owner_commits_and_history_preserve_fresh_native_recall ... ok
+2026-10-28T21:20:14.8997210Z test document_windows::commands::tests::canvas_parameter_retirement_blocks_revision_zero_installation ... ok
+2026-10-28T21:20:14.9008647Z test canvas::tests::shared_help_shell_schema_and_lowering_cases ... ok
+2026-10-28T21:20:14.9293963Z test document_windows::commands::tests::canvas_parameter_retirement_preserves_numeric_history_and_live_edits ... ok
+2026-10-28T21:20:14.9295773Z test document_windows::commands::tests::forced_graph_installs_cannot_silently_ignore_message_text_intent ... ok
+2026-10-28T21:20:14.9304131Z test document_windows::commands::tests::integer_number_shared_edits_and_history_keep_runtime_and_tab_independent ... ok
+2026-10-28T21:20:14.9314678Z test document_windows::commands::tests::message_box_shared_restore_history_and_child_view_serials ... ok
+2026-10-28T21:20:14.9316259Z test document_windows::commands::tests::retiring_ultra_owner_refuses_root_close_independently ... ok
+2026-10-28T21:20:14.9318448Z test document_windows::lifecycle_tests::app_menu_routes_to_focus_and_window_menu_keeps_its_source ... ok
+2026-10-28T21:20:14.9323257Z test document_windows::commands::tests::retiring_ultra_owner_refuses_admission_history_and_root_close ... ok
+2026-10-28T21:20:14.9327057Z test document_windows::lifecycle_tests::exit_requires_every_current_owner_approval ... ok
+2026-10-28T21:20:14.9330230Z test document_windows::lifecycle_tests::focused_child_menu_retains_owner_authority ... ok
+2026-10-28T21:20:14.9332557Z test document_windows::lifecycle_tests::last_unrelated_save_resumes_the_current_quit_generation ... ok
+2026-10-28T21:20:14.9337909Z test document_windows::lifecycle_tests::multi_owner_quit_waits_for_each_flush_and_cancel_preserves_owner ... ok
+2026-10-28T21:20:14.9340187Z test document_windows::lifecycle_tests::native_quit_requests_coalesce_and_old_dispatch_dies_after_cancel ... ok
+2026-10-28T21:20:14.9343135Z test document_windows::lifecycle_tests::quit_cancel_releases_every_flush_and_allows_a_new_round ... ok
+2026-10-28T21:20:14.9346175Z test document_windows::lifecycle_tests::quit_preparation_does_not_close_other_owners_before_cancel ... ok
+2026-10-28T21:20:14.9348334Z test document_windows::lifecycle_tests::quit_repeated_requests_pending_save_and_stale_approvals_are_inert ... ok
+2026-10-28T21:20:14.9350853Z test document_windows::lifecycle_tests::quit_save_retains_owner_until_save_and_final_close ... ok
+2026-10-28T21:20:14.9354947Z test document_windows::lifecycle_tests::worker_owns_and_drops_the_complete_save_lease_after_marking_clean ... ok
+2026-10-28T21:20:14.9358644Z test documents::tests::a_child_ready_during_dirty_dialog_joins_barrier_without_retriggering_close ... ok
+2026-10-28T21:20:14.9364162Z test documents::tests::aborted_save_releases_members_and_stale_tokens_cannot_affect_the_next_request ... ok
+2026-10-28T21:20:14.9366454Z test documents::tests::admitted_close_blocks_late_graph_and_save_commands_before_destroy ... ok
+2026-10-28T21:20:14.9370071Z test documents::tests::child_becoming_ready_during_owner_flush_adds_an_acknowledgement_obligation ... ok
+2026-10-28T21:20:14.9378007Z test documents::tests::child_close_flushes_only_that_view_and_disappearance_releases_owner_obligation ... ok
+2026-10-28T21:20:14.9485341Z test document_windows::lifecycle_tests::approved_ultra_quit_retains_pending_roots_until_terminal_exit ... ok
+2026-10-28T21:20:14.9489183Z test document_windows::commands::tests::running_ultra_owner_keeps_live_authoring_available ... ok
+2026-10-28T21:20:14.9491098Z test documents::tests::child_views_share_owner_identity_without_consuming_slots_and_detach_independently ... ok
+2026-10-28T21:20:14.9496425Z test documents::tests::descriptor_revision_orders_runtime_and_save_publications_without_authoring_conflicts ... ok
+2026-10-28T21:20:14.9501226Z test documents::tests::console_records_are_cached_for_each_view_and_drop_counts_stay_cumulative ... ok
+2026-10-28T21:20:14.9503052Z test documents::tests::document_identity_is_independent_and_reused_slots_have_new_labels ... ok
+2026-10-28T21:20:14.9506772Z test documents::tests::failed_close_flush_is_cancelled_and_next_attempt_uses_a_new_token ... ok
+2026-10-28T21:20:14.9509831Z test document_windows::commands::tests::shared_admission_preserves_live_state_and_uses_atomic_hot_numeric_updates ... ok
+2026-10-28T21:20:14.9515825Z test documents::tests::full_registry_retains_all_documents_and_closing_frees_one_slot ... ok
+2026-10-28T21:20:14.9523831Z test documents::tests::instantiating_clones_the_current_authored_root_into_an_independent_unsaved_owner ... ok
+2026-10-28T21:20:14.9595383Z test documents::tests::imported_max_json_cannot_save_over_its_own_source_path ... ok
+2026-10-28T21:20:14.9596850Z test documents::tests::child_view_limit_is_separate_from_root_slots_and_owner_close_detaches_all ... ok
+2026-10-28T21:20:14.9601845Z test documents::tests::native_descriptors_expose_shared_owner_authority ... ok
+2026-10-28T21:20:14.9603876Z test documents::tests::newly_ready_child_reopens_completed_gate_and_dialog_cancel_releases_all_members ... ok
+2026-10-28T21:20:14.9609208Z test documents::tests::owner_cas_history_admission_and_save_race_are_atomic ... ok
+2026-10-28T21:20:14.9610726Z test documents::tests::owner_close_waits_for_all_ready_views_and_rejects_stale_or_forged_acknowledgements ... ok
+2026-10-28T21:20:14.9613145Z test documents::tests::owner_dirty_decision_observes_the_child_commit_flushed_before_its_acknowledgement ... ok
+2026-10-28T21:20:14.9614932Z test documents::tests::pending_reveal_is_not_relabelled_after_runtime_replacement ... ok
+2026-10-28T21:20:14.9617903Z test documents::tests::reading_owner_and_child_installs_once_and_removed_children_detach ... ok
+2026-10-28T21:20:14.9661303Z test documents::tests::file_open_canonicalizes_paths_and_routes_max_to_import_report ... ok
+2026-10-28T21:20:14.9668109Z test documents::tests::save_preflight_includes_newly_ready_views_and_refuses_disappearing_or_invalid_peers ... ok
+2026-10-28T21:20:14.9671497Z test documents::tests::save_preflight_waits_for_all_views_and_rejects_stale_or_foreign_acknowledgements ... ok
+2026-10-28T21:20:14.9675071Z test documents::tests::save_snapshot_keeps_later_owner_edits_dirty_during_picker ... ok
+2026-10-28T21:20:14.9773163Z test documents::tests::instantiating_revalidates_and_retains_canonical_device_metadata ... ok
+2026-10-28T21:20:14.9778210Z test documents::tests::source_reveal_rejects_reused_ids_after_replacement_and_keeps_captured_revision ... ok
+2026-10-28T21:20:14.9782934Z test documents::tests::source_reveal_requires_matching_revision_before_creating_or_mutating_views ... ok
+2026-10-28T21:20:14.9785039Z test documents::tests::writing_a_snapshot_compares_the_authoritative_tree ... ok
+2026-10-28T21:20:14.9935106Z test documents::tests::save_is_atomic_and_imported_sources_are_not_overwritten ... ok
+2026-10-28T21:20:14.9944158Z test documents::tests::save_as_rejects_another_open_documents_path_and_dirty_is_local ... ok
+2026-10-28T21:20:15.0043344Z test help_reference::tests::arithmetic_reference_routes_reject_unpinned_xml_and_public_symbol_aliases ... ok
+2026-10-28T21:20:15.0482431Z test help_reference::tests::arithmetic_reference_tuples_bind_fixed_route_digest_and_exact_symbolic_identity ... ok
+2026-10-28T21:20:15.0509233Z test help_reference::tests::arithmetic_shell_owner_admission_history_and_disk_preserve_safe_policy ... ok
+2026-10-28T21:20:15.0517444Z test help_reference::tests::extraction_limits_apply_to_normalized_fields_and_reject_duplicate_sections ... ok
+2026-10-28T21:20:15.0522242Z test help_reference::tests::extracts_original_unicode_text_and_catalog_without_markup ... ok
+2026-10-28T21:20:15.0542160Z test help_reference::tests::exact_probe_identity_requires_all_helpers_and_preserves_raw_bytes ... ok
+2026-10-28T21:20:15.0544090Z test help_reference::tests::local_identity_and_catalog_are_available ... ignored, Reads the user's licensed local installation; emits identity/status facts only
+2026-10-28T21:20:15.0590956Z test help_reference::tests::reference_requires_admitted_valid_shell_but_probe_does_not ... ok
+2026-10-28T21:20:15.0593629Z test help_reference::tests::files_are_fixed_bounded_and_contained_with_explicit_root_precedence ... ok
+2026-10-28T21:20:15.0636414Z test help_reference::tests::arithmetic_probe_selects_its_policy_only_after_all_four_helpers_match ... ok
+2026-10-28T21:20:15.0668251Z test help_reference::tests::rejects_entities_controls_identity_and_all_parser_bounds ... ok
+2026-10-28T21:20:15.0683224Z test instrument_probe::tests::effects_are_rejected_by_the_instrument_probe_before_rendering ... ok
+2026-10-28T21:20:15.0720657Z test help_reference::tests::related_symbolic_classes_use_only_the_three_finite_safe_page_ids ... ok
+2026-10-28T21:20:15.0797860Z test help_reference::tests::shell_metadata_survives_child_commit_history_and_disk_roundtrip ... ok
+2026-10-28T21:20:15.0805075Z test session::desktop::tests::actual_registered_window_binding_authenticates_instance_and_generation ... ok
+2026-10-28T21:20:15.0965804Z test session::desktop::tests::alive_companion_loads_the_installed_shared_example_without_source_tree ... ok
+2026-10-28T21:20:15.1018447Z test session::desktop::tests::canonical_musical_drafts_cannot_change_format_identity_fingerprint_or_effect_order ... ok
+2026-10-28T21:20:15.1942564Z test documents::tests::shared_history_bounds_large_authoring_snapshots_by_bytes ... ok
+2026-10-28T21:20:15.2046822Z test session::desktop::tests::delayed_retirement_preserves_draft_history_generation_and_prepared_roots ... ok
+2026-10-28T21:20:15.2101142Z test session::desktop::tests::draft_rejects_device_substitution_and_overload_before_retention ... ok
+2026-10-28T21:20:15.2170715Z test session::desktop::tests::edit_admission_rejects_ranges_targets_rounded_overlap_and_truncation_atomically ... ok
+2026-10-28T21:20:15.2239624Z test session::desktop::tests::explicit_load_captures_fresh_identity_and_original_source_before_bases ... ok
+2026-10-28T21:20:15.2336834Z test session::desktop::tests::failed_apply_source_and_native_density_preserve_retained_history ... ok
+2026-10-28T21:20:15.2427423Z test session::desktop::tests::focused_clips_duplicate_scores_and_history_retains_ids_without_changing_devices ... ok
+2026-10-28T21:20:15.2765815Z test session::desktop::tests::master_failed_install_rolls_back_gain_and_receipt ... FAILED
+2026-10-28T21:20:15.3029057Z test session::desktop::tests::master_failed_rollback_does_not_claim_receipt ... FAILED
+2026-10-28T21:20:15.3262065Z test session::desktop::tests::master_gain_admission_promotes_only_on_change ... FAILED
+2026-10-28T21:20:15.3527891Z test session::desktop::tests::master_install_refuses_serial_exhaustion_before_retirement ... FAILED
+2026-10-28T21:20:15.3532320Z test session::desktop::tests::master_old_library_snapshot_exposes_no_observation ... ok
+2026-10-28T21:20:15.3820647Z test session::desktop::tests::master_pending_retirement_burns_pair_without_replacement ... FAILED
+2026-10-28T21:20:15.4539027Z test session::desktop::tests::master_queue_full_preserves_owner_and_allows_retry ... FAILED
+2026-10-28T21:20:15.4749585Z test session::desktop::tests::conversion_notices_and_saves_match_the_owner_wire ... ok
+2026-10-28T21:20:15.4802240Z test session::desktop::tests::master_stale_generation_refuses_without_owner_mutation ... ok
+2026-10-28T21:20:15.4931239Z test session::desktop::tests::master_survives_score_history_and_nonunity_install_is_refused ... ok
+2026-10-28T21:20:15.4982831Z test session::desktop::tests::new_session_explicitly_starts_with_unity_v5 ... ok
+2026-10-28T21:20:15.5024154Z test session::desktop::tests::master_save_commit_follows_rename_and_reports_migration ... ok
+2026-10-28T21:20:15.5034987Z test session::desktop::tests::pending_history_versions_noops_baseline_redo_and_live_merge ... ok
+2026-10-28T21:20:15.5038891Z test session::desktop::tests::polling_or_close_during_native_dialog_never_blocks_the_ui ... ok
+2026-10-28T21:20:15.5078068Z test session::desktop::tests::pending_schedule_merges_latest_live_bases_and_mixer ... ok
+2026-10-28T21:20:15.5092033Z test session::desktop::tests::removing_an_instrument_removes_its_whole_track_and_preserves_the_other_chain ... ok
+2026-10-28T21:20:15.5172048Z test session::desktop::tests::scenes_authenticate_origin_generation_preparation_and_audio_before_mutation ... ok
+2026-10-28T21:20:15.5176237Z test session::desktop::tests::stale_generation_and_unrelated_main_actions_reject ... ok
+2026-10-28T21:20:15.5226430Z test session::desktop::tests::structural_reorder_and_removal_keep_unrelated_instance_automation ... ok
+2026-10-28T21:20:15.5230450Z test session::desktop::tests::unavailable_master_snapshot_is_explicit ... ok
+2026-10-28T21:20:15.5336057Z test session::desktop::tests::shared_changed_source_blocks_either_selected_replace_until_original_is_restored ... ok
+2026-10-28T21:20:15.5346589Z test session::desktop::tests::undo_redo_merge_same_source_effect_bases_bypass_and_mixer_by_identity ... ok
+2026-10-28T21:20:15.5425725Z test session::desktop::tests::workspace_commands_authenticate_origin_generation_revision_and_preparation ... ok
+2026-10-28T21:20:15.5522482Z test session::desktop::tests::workspace_effect_roles_never_use_the_first_effect_as_an_instrument ... ok
+2026-10-28T21:20:15.5629597Z test session::desktop::tests::workspace_history_retains_independent_ids_and_merges_current_live_values ... ok
+2026-10-28T21:20:15.5725695Z test session::desktop::tests::workspace_source_edits_preserve_occurrence_identity_and_reject_invalid_bindings_transactionally ... ok
+2026-10-28T21:20:15.6087028Z test session::history::tests::byte_eviction_and_strict_directions_are_bounded ... ok
+2026-10-28T21:20:15.6359286Z test session::history::tests::musical_history_is_bounded_and_redo_is_transactional ... ok
+2026-10-28T21:20:15.6412035Z test session::history::tests::projection_restores_music_onto_current_chain_without_live_fields ... ok
+2026-10-28T21:20:15.6416785Z test session::native::native_v4::tests::defaults_initialize_headers_and_active_record_sentinels ... ok
+2026-10-28T21:20:15.6420259Z test session::native::native_v4::tests::exact_v4_layout ... ok
+2026-10-28T21:20:15.6617734Z test session::native_master::tests::production_capability_fresh_process_diagnostics ... FAILED
+2026-10-28T21:20:15.6621554Z test session::native_master::tests::reserves_a_pair_without_wrap_or_reuse ... ok
+2026-10-28T21:20:15.6624056Z test session::native_master::tests::resolves_the_loaded_native_image ... ok
+2026-10-28T21:20:15.6626448Z test session::runtime::tests::receipts_match_both_identities_and_keep_queued_until_consumed ... ok
+2026-10-28T21:20:15.6706198Z test session::runtime::tests::scene_mapper_uses_immutable_prepared_slots_and_empty_members_stop ... ok
+2026-10-28T21:20:15.6710505Z test session::runtime::tests::scene_members_keep_terminal_outcomes_when_remaining_observation_is_unavailable ... ok
+2026-10-28T21:20:15.6712537Z test session::runtime::tests::scene_projection_retains_authoritative_member_masks ... ok
+2026-10-28T21:20:15.6793506Z test session::runtime_workspaces::tests::gaps_and_session_silence_keep_null_sources_and_pending_return_is_not_predicted ... ok
+2026-10-28T21:20:15.6878145Z test session::runtime_workspaces::tests::receipt_reconciliation_matches_revision_and_preserves_terminal_members ... ok
+2026-10-28T21:20:15.6880131Z test session::desktop::tests::workspace_conversion_and_apply_native_refusal_preserve_controller_scope ... ok
+2026-10-28T21:20:15.6946542Z test session::tests::active_v4_decode_roundtrip_preserves_sources_and_occurrences ... ok
+2026-10-28T21:20:15.6968585Z test session::runtime_workspaces::tests::return_and_launch_use_prepared_identities_and_reject_draft_or_foreign_slots ... ok
+2026-10-28T21:20:15.7026712Z test session::tests::active_v4_preparation_rejects_audio_before_reading_dependencies ... ok
+2026-10-28T21:20:15.7078277Z test session::tests::bare_legacy_parameter_maps_reject_escaped_duplicate_keys ... ok
+2026-10-28T21:20:15.7114904Z test session::tests::active_v4_preparation_compiles_shared_sources_once ... ok
+2026-10-28T21:20:15.7182719Z test session::tests::frame_conversion_orders_off_automation_on_and_preserves_required_offsets ... ok
+2026-10-28T21:20:15.7287520Z test session::tests::global_root_and_chain_bounds_reject_before_dependency_reads ... ok
+2026-10-28T21:20:15.7303352Z test session::tests::frame_collision_voice_release_ambiguity_and_loop_seam_overload_are_rejected ... ok
+2026-10-28T21:20:15.7403776Z test session::tests::legacy_read_returns_canonical_v2_with_stable_instance_targets ... ok
+2026-10-28T21:20:15.7492872Z test session::tests::master_contract_raw_fixtures_decode_strictly ... ok
+2026-10-28T21:20:15.7534038Z test session::tests::master_decode_enforces_complete_file_limit ... ok
+2026-10-28T21:20:15.7724305Z test session::tests::master_host_install_publishes_saved_gain_before_audio ... FAILED
+2026-10-28T21:20:15.7768950Z test session::tests::hashes_cover_original_json_before_instance_bases_and_formatting_is_irrelevant ... ok
+2026-10-28T21:20:15.7773015Z test session::tests::master_old_library_unity_install_and_nonunity_preflight ... ok
+2026-10-28T21:20:15.7783230Z test session::tests::master_nonunity_host_install_refuses_before_native_replacement ... ok
+2026-10-28T21:20:15.7819013Z test session::tests::master_read_checks_byte_limit_before_utf8_decoding ... ok
+2026-10-28T21:20:15.7829572Z test session::tests::master_preflight_accepts_nonunity_with_native_capability ... FAILED
+2026-10-28T21:20:15.7980938Z test session::tests::master_roundtrip_rebases_and_preserves_complete_wrapper ... ok
+2026-10-28T21:20:15.8064402Z test session::tests::master_serialization_limit_includes_final_newline ... ok
+2026-10-28T21:20:15.8969220Z test session::tests::master_wire_save_and_failure_preserve_the_owner ... ok
+2026-10-28T21:20:15.8975496Z test session::tests::master_roundtrips_every_score_variant_including_eight_tracks ... ok
+2026-10-28T21:20:15.8979121Z test session::tests::native_v3_layout_matches_fixed_c_interface ... ok
+2026-10-28T21:20:15.8982592Z test session::tests::native_wire_layouts_have_matching_sizes_headers_and_offsets ... ok
+2026-10-28T21:20:15.9098356Z test session::tests::missing_and_incompatible_devices_identify_track_and_preserve_input ... ok
+2026-10-28T21:20:15.9361778Z test session::tests::rejects_invalid_schedule_and_parameter_binding_before_admission ... ok
+2026-10-28T21:20:15.9629531Z test session::tests::save_as_rebases_references_and_failed_save_retains_file ... ok
+2026-10-28T21:20:16.0103465Z test session::tests::save_as_relocates_every_effect_and_cannot_overwrite_any_dependency ... ok
+2026-10-28T21:20:16.0239439Z test session::tests::save_cannot_replace_source_device_or_accept_oversized_file ... ok
+2026-10-28T21:20:16.0426129Z test session::tests::saved_effect_order_and_automation_resolve_by_instance_not_chain_index ... ok
+2026-10-28T21:20:16.0499247Z test session::tests::saved_session_resolves_two_real_independent_device_references ... ok
+2026-10-28T21:20:16.0577072Z test session::tests::session_roundtrip_preserves_notes_automation_and_mixer ... ok
+2026-10-28T21:20:16.0724663Z test session::tests::session_v1_accepts_version_two_instruments_and_checks_declared_version ... ok
+2026-10-28T21:20:16.0798686Z test session::tests::session_v1_rejects_effects_with_an_explicit_chain_runtime_error ... ok
+2026-10-28T21:20:16.0941597Z test session::tests::stable_parameter_keys_survive_explicit_source_manifest_reordering ... ok
+2026-10-28T21:20:16.0953579Z test session::tests::v1_dispatch_is_strict_and_v2_never_infers_missing_instance_data ... ok
+2026-10-28T21:20:16.1033436Z test session::tests::v3_compiles_independent_clip_ranges_and_empty_lane_ownership ... ok
+2026-10-28T21:20:16.3190340Z test session::tests::v3_eight_track_host_roundtrip_and_mixer ... ok
+2026-10-28T21:20:16.4805847Z test session::tests::v3_native_host_defaults_requests_and_graph_fallback_are_real ... ok
+2026-10-28T21:20:16.4998945Z test session::tests::v3_save_as_preserves_bank_ids_beats_defaults_and_source_hashes ... ok
+2026-10-28T21:20:16.5326830Z test instrument_probe::tests::saved_instrument_renders_headlessly_with_independent_instances_and_authored_cables ... ok
+2026-10-28T21:20:16.5407238Z test session::tests::v3_strict_ids_disabled_aggregate_and_source_free_range_rejections ... ok
+2026-10-28T21:20:16.5467782Z test session::tests::v3_strict_wire_migration_and_roundtrip_preserve_score_identity ... ok
+2026-10-28T21:20:16.5898933Z test session::tests::v3_scene_is_one_native_queue_entry_with_prepared_member_identities ... ok
+2026-10-28T21:20:16.5934437Z test instrument_probe::tests::version_two_instrument_uses_the_normalized_midi_entry_in_headless_render ... ok
+2026-10-28T21:20:16.5993730Z test session::tests::v4_nested_duplicates_and_invalid_prepared_dependencies_are_transactional ... ok
+2026-10-28T21:20:16.6047715Z test session::tests::v5_envelope_accepts_a_valid_score_and_master ... ok
+2026-10-28T21:20:16.6111550Z test session::tests::v4_source_compiler_checks_disabled_bindings_and_placement_endpoint_arithmetic ... ok
+2026-10-28T21:20:16.6119863Z test session::workspace_edits::tests::command_primary_ids_follow_the_operation_not_sorted_invalidation ... ok
+2026-10-28T21:20:16.6127943Z test session::workspaces::tests::audio_suffix_descriptors_and_automation_retain_exact_frames ... ok
+2026-10-28T21:20:16.6134730Z test session::workspaces::tests::endpoint_difference_controls_duration_and_beats_still_detect_subframe_overlap ... ok
+2026-10-28T21:20:16.6142318Z test session::workspaces::tests::byte_limits_unicode_controls_and_document_size_are_enforced ... ok
+2026-10-28T21:20:16.6152531Z test session::workspaces::tests::finite_bounds_and_loop_brace_apply_even_when_disabled ... ok
+2026-10-28T21:20:16.6160933Z test session::workspaces::tests::fresh_ids_check_current_and_reserved_history_and_undo_keeps_originals ... ok
+2026-10-28T21:20:16.6170625Z test session::workspaces::tests::invalid_id_generators_and_occupied_targets_leave_input_unchanged ... ok
+2026-10-28T21:20:16.6196629Z test session::workspaces::tests::every_nested_wire_record_rejects_missing_or_unknown_fields ... ok
+2026-10-28T21:20:16.6204504Z test session::workspaces::tests::notes_reject_overlap_and_five_held_voices_but_allow_touching_ends ... ok
+2026-10-28T21:20:16.6211312Z test session::workspaces::tests::occupied_slot_names_identity_and_delete_assign_mints_a_new_occurrence ... ok
+2026-10-28T21:20:16.6220455Z test session::workspaces::tests::offsets_suffix_bounds_and_touching_occurrences_use_endpoint_frames ... ok
+2026-10-28T21:20:16.6241188Z test session::workspaces::tests::legacy_prospective_conversion_preserves_input_and_rejects_held_voice_excess ... ok
+2026-10-28T21:20:16.6258150Z test session::workspaces::tests::prospective_conversion_keeps_pure_bank_default_and_strict_text_rejections ... ok
+2026-10-28T21:20:16.6265023Z test session::workspaces::tests::prospective_migration_preserves_music_and_uses_length_prefixed_id_domains ... ok
+2026-10-28T21:20:16.6277209Z test session::workspaces::tests::real_cross_track_references_and_duplicate_lane_targets_reject ... ok
+2026-10-28T21:20:16.6286164Z test session::workspaces::tests::shared_source_edits_and_independent_copy_preserve_occurrence_identity ... ok
+2026-10-28T21:20:16.6304898Z test session::workspaces::tests::per_track_and_global_bounds_include_disabled_automation ... ok
+2026-10-28T21:20:16.6316449Z test session::workspaces::tests::source_slot_note_placement_lifecycle_returns_stable_affected_ids ... ok
+2026-10-28T21:20:16.6320635Z test session::workspaces::tests::strict_edits_reject_duplicate_unknown_and_missing_fields ... ok
+2026-10-28T21:20:16.6328442Z test session::workspaces::tests::strict_roundtrip_keeps_explicit_empty_slots_and_no_audio_instrument ... ok
+2026-10-28T21:20:16.6335714Z test session::workspaces::tests::tempo_and_source_shrink_fail_transactionally_with_referring_ids ... ok
+2026-10-28T21:20:16.6346402Z test session::workspaces::tests::validation_rejects_identity_kind_ownership_and_device_targets ... ok
+2026-10-28T21:20:16.6358963Z test session::workspaces::tests::wire_rejects_unknown_missing_duplicate_and_noncanonical_decimal_members ... ok
+2026-10-28T21:20:16.6362812Z test tests::complete_disconnected_and_empty ... ok
+2026-10-28T21:20:16.6366075Z test tests::duplicate_objects_rejected ... ok
+2026-10-28T21:20:16.6369255Z test tests::independent_routes ... ok
+2026-10-28T21:20:16.6372457Z test tests::invalid_cords_rejected ... ok
+2026-10-28T21:20:16.6418250Z test session::workspaces::tests::source_event_pool_counts_rounded_note_ends_and_enabled_points_once ... ok
+2026-10-28T21:20:16.6703039Z test tests::native_canvas_ffi_retains_admitted_graph_while_stopped ... ok
+2026-10-28T21:20:16.6708394Z test tests::sequence_bounds_and_serialization ... ok
+2026-10-28T21:20:16.6712023Z test tests::native_documents_forward_typed_messages_and_keep_other_graph_state ... ok
+2026-10-28T21:20:16.6713025Z test tests::unknown_type_and_bounds_rejected ... ok
+2026-10-28T21:20:17.2111388Z test session::tests::v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal ... ok
+2026-10-28T21:20:18.9323643Z test session::tests::rust_host_installs_the_saved_session_without_editor_windows ... ok
+2026-10-28T21:20:18.9324693Z 
+2026-10-28T21:20:18.9324891Z failures:
+2026-10-28T21:20:18.9325181Z 
+2026-10-28T21:20:18.9326548Z ---- session::desktop::tests::master_failed_install_rolls_back_gain_and_receipt stdout ----
+2026-10-28T21:20:18.9327494Z 
+2026-10-28T21:20:18.9328477Z thread 'session::desktop::tests::master_failed_install_rolls_back_gain_and_receipt' panicked at src\session\native_master.rs:41:5:
+2026-10-28T21:20:18.9329546Z native fixture failed:
+2026-10-28T21:20:18.9329803Z 
+2026-10-28T21:20:18.9329993Z running 1 test
+2026-10-28T21:20:18.9330777Z test session::desktop::tests::master_failed_install_rolls_back_gain_and_receipt ... FAILED
+2026-10-28T21:20:18.9331713Z 
+2026-10-28T21:20:18.9331855Z failures:
+2026-10-28T21:20:18.9332080Z 
+2026-10-28T21:20:18.9332248Z failures:
+2026-10-28T21:20:18.9332910Z     session::desktop::tests::master_failed_install_rolls_back_gain_and_receipt
+2026-10-28T21:20:18.9333455Z 
+2026-10-28T21:20:18.9334062Z test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 287 filtered out; finished in 0.02s
+2026-10-28T21:20:18.9334706Z 
+2026-10-28T21:20:18.9334716Z 
+2026-10-28T21:20:18.9334727Z 
+2026-10-28T21:20:18.9335701Z thread 'session::desktop::tests::master_failed_install_rolls_back_gain_and_receipt' panicked at src\session\desktop.rs:979:60:
+2026-10-28T21:20:18.9337369Z called `Result::unwrap()` on an `Err` value: "Master gain is unavailable until native Master support is installed"
+2026-10-28T21:20:18.9338567Z note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+2026-10-28T21:20:18.9339132Z 
+2026-10-28T21:20:18.9339597Z note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+2026-10-28T21:20:18.9340133Z 
+2026-10-28T21:20:18.9340700Z ---- session::desktop::tests::master_failed_rollback_does_not_claim_receipt stdout ----
+2026-10-28T21:20:18.9341297Z 
+2026-10-28T21:20:18.9342173Z thread 'session::desktop::tests::master_failed_rollback_does_not_claim_receipt' panicked at src\session\native_master.rs:41:5:
+2026-10-28T21:20:18.9343239Z native fixture failed:
+2026-10-28T21:20:18.9343510Z 
+2026-10-28T21:20:18.9343655Z running 1 test
+2026-10-28T21:20:18.9344380Z test session::desktop::tests::master_failed_rollback_does_not_claim_receipt ... FAILED
+2026-10-28T21:20:18.9345021Z 
+2026-10-28T21:20:18.9345173Z failures:
+2026-10-28T21:20:18.9345337Z 
+2026-10-28T21:20:18.9345499Z failures:
+2026-10-28T21:20:18.9346079Z     session::desktop::tests::master_failed_rollback_does_not_claim_receipt
+2026-10-28T21:20:18.9346639Z 
+2026-10-28T21:20:18.9347269Z test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 287 filtered out; finished in 0.01s
+2026-10-28T21:20:18.9347979Z 
+2026-10-28T21:20:18.9347988Z 
+2026-10-28T21:20:18.9347996Z 
+2026-10-28T21:20:18.9348876Z thread 'session::desktop::tests::master_failed_rollback_does_not_claim_receipt' panicked at src\session\desktop.rs:1044:9:
+2026-10-28T21:20:18.9350261Z assertion failed: c.install(candidate).unwrap_err().contains("audio restoration failed")
+2026-10-28T21:20:18.9351411Z note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+2026-10-28T21:20:18.9351993Z 
+2026-10-28T21:20:18.9352001Z 
+2026-10-28T21:20:18.9352540Z ---- session::desktop::tests::master_gain_admission_promotes_only_on_change stdout ----
+2026-10-28T21:20:18.9353142Z 
+2026-10-28T21:20:18.9354071Z thread 'session::desktop::tests::master_gain_admission_promotes_only_on_change' panicked at src\session\native_master.rs:41:5:
+2026-10-28T21:20:18.9355140Z native fixture failed:
+2026-10-28T21:20:18.9355413Z 
+2026-10-28T21:20:18.9355544Z running 1 test
+2026-10-28T21:20:18.9356312Z test session::desktop::tests::master_gain_admission_promotes_only_on_change ... FAILED
+2026-10-28T21:20:18.9356926Z 
+2026-10-28T21:20:18.9357165Z failures:
+2026-10-28T21:20:18.9357339Z 
+2026-10-28T21:20:18.9357481Z failures:
+2026-10-28T21:20:18.9358014Z     session::desktop::tests::master_gain_admission_promotes_only_on_change
+2026-10-28T21:20:18.9358522Z 
+2026-10-28T21:20:18.9359058Z test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 287 filtered out; finished in 0.01s
+2026-10-28T21:20:18.9359698Z 
+2026-10-28T21:20:18.9359706Z 
+2026-10-28T21:20:18.9359714Z 
+2026-10-28T21:20:18.9360706Z thread 'session::desktop::tests::master_gain_admission_promotes_only_on_change' panicked at src\session\desktop.rs:1005:46:
+2026-10-28T21:20:18.9362468Z called `Result::unwrap()` on an `Err` value: MasterError { code: "UNSUPPORTED", message: "Native Master support is unavailable; upgrade or reinstall." }
+2026-10-28T21:20:18.9363858Z note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+2026-10-28T21:20:18.9364526Z 
+2026-10-28T21:20:18.9364534Z 
+2026-10-28T21:20:18.9365123Z ---- session::desktop::tests::master_install_refuses_serial_exhaustion_before_retirement stdout ----
+2026-10-28T21:20:18.9365804Z 
+2026-10-28T21:20:18.9366733Z thread 'session::desktop::tests::master_install_refuses_serial_exhaustion_before_retirement' panicked at src\session\native_master.rs:41:5:
+2026-10-28T21:20:18.9367817Z native fixture failed:
+2026-10-28T21:20:18.9368041Z 
+2026-10-28T21:20:18.9368202Z running 1 test
+2026-10-28T21:20:18.9368982Z test session::desktop::tests::master_install_refuses_serial_exhaustion_before_retirement ... FAILED
+2026-10-28T21:20:18.9369651Z 
+2026-10-28T21:20:18.9369774Z failures:
+2026-10-28T21:20:18.9369972Z 
+2026-10-28T21:20:18.9370121Z failures:
+2026-10-28T21:20:18.9370735Z     session::desktop::tests::master_install_refuses_serial_exhaustion_before_retirement
+2026-10-28T21:20:18.9371308Z 
+2026-10-28T21:20:18.9371876Z test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 287 filtered out; finished in 0.01s
+2026-10-28T21:20:18.9372517Z 
+2026-10-28T21:20:18.9372526Z 
+2026-10-28T21:20:18.9372533Z 
+2026-10-28T21:20:18.9373424Z thread 'session::desktop::tests::master_install_refuses_serial_exhaustion_before_retirement' panicked at src\session\desktop.rs:1075:9:
+2026-10-28T21:20:18.9374771Z assertion failed: c.install(candidate).unwrap_err().contains("serial exhausted")
+2026-10-28T21:20:18.9375756Z note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+2026-10-28T21:20:18.9376288Z 
+2026-10-28T21:20:18.9376301Z 
+2026-10-28T21:20:18.9376870Z ---- session::desktop::tests::master_pending_retirement_burns_pair_without_replacement stdout ----
+2026-10-28T21:20:18.9377604Z 
+2026-10-28T21:20:18.9378523Z thread 'session::desktop::tests::master_pending_retirement_burns_pair_without_replacement' panicked at src\session\native_master.rs:41:5:
+2026-10-28T21:20:18.9379572Z native fixture failed:
+2026-10-28T21:20:18.9379795Z 
+2026-10-28T21:20:18.9379957Z running 1 test
+2026-10-28T21:20:18.9380730Z test session::desktop::tests::master_pending_retirement_burns_pair_without_replacement ... FAILED
+2026-10-28T21:20:18.9381391Z 
+2026-10-28T21:20:18.9381517Z failures:
+2026-10-28T21:20:18.9381714Z 
+2026-10-28T21:20:18.9381867Z failures:
+2026-10-28T21:20:18.9382488Z     session::desktop::tests::master_pending_retirement_burns_pair_without_replacement
+2026-10-28T21:20:18.9383015Z 
+2026-10-28T21:20:18.9383619Z test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 287 filtered out; finished in 0.01s
+2026-10-28T21:20:18.9384277Z 
+2026-10-28T21:20:18.9384285Z 
+2026-10-28T21:20:18.9384293Z 
+2026-10-28T21:20:18.9385196Z thread 'session::desktop::tests::master_pending_retirement_burns_pair_without_replacement' panicked at src\session\desktop.rs:1056:9:
+2026-10-28T21:20:18.9386282Z assertion `left == right` failed
+2026-10-28T21:20:18.9386716Z   left: "UNSUPPORTED"
+2026-10-28T21:20:18.9387091Z  right: "BUSY"
+2026-10-28T21:20:18.9387755Z note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+2026-10-28T21:20:18.9388281Z 
+2026-10-28T21:20:18.9388288Z 
+2026-10-28T21:20:18.9388866Z ---- session::desktop::tests::master_queue_full_preserves_owner_and_allows_retry stdout ----
+2026-10-28T21:20:18.9389473Z 
+2026-10-28T21:20:18.9390330Z thread 'session::desktop::tests::master_queue_full_preserves_owner_and_allows_retry' panicked at src\session\native_master.rs:41:5:
+2026-10-28T21:20:18.9391374Z native fixture failed:
+2026-10-28T21:20:18.9391619Z 
+2026-10-28T21:20:18.9391744Z running 1 test
+2026-10-28T21:20:18.9392586Z test session::desktop::tests::master_queue_full_preserves_owner_and_allows_retry ... FAILED
+2026-10-28T21:20:18.9393237Z 
+2026-10-28T21:20:18.9393400Z failures:
+2026-10-28T21:20:18.9393565Z 
+2026-10-28T21:20:18.9393710Z failures:
+2026-10-28T21:20:18.9394280Z     session::desktop::tests::master_queue_full_preserves_owner_and_allows_retry
+2026-10-28T21:20:18.9394950Z 
+2026-10-28T21:20:18.9395516Z test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 287 filtered out; finished in 0.04s
+2026-10-28T21:20:18.9396189Z 
+2026-10-28T21:20:18.9396197Z 
+2026-10-28T21:20:18.9396205Z 
+2026-10-28T21:20:18.9397075Z thread 'session::desktop::tests::master_queue_full_preserves_owner_and_allows_retry' panicked at src\session\desktop.rs:1023:52:
+2026-10-28T21:20:18.9398146Z called `Option::unwrap()` on a `None` value
+2026-10-28T21:20:18.9398930Z note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+2026-10-28T21:20:18.9399704Z 
+2026-10-28T21:20:18.9399717Z 
+2026-10-28T21:20:18.9400332Z ---- session::native_master::tests::production_capability_fresh_process_diagnostics stdout ----
+2026-10-28T21:20:18.9400968Z 
+2026-10-28T21:20:18.9401133Z running 1 test
+2026-10-28T21:20:18.9401544Z cache: before=None thread=ThreadId(2)
+2026-10-28T21:20:18.9402236Z cache: initializer_enter anchor=0x7ff7114a90e2 thread=ThreadId(2)
+2026-10-28T21:20:18.9403013Z resolve: enter anchor=0x7ff7114a90e2 thread=ThreadId(2)
+2026-10-28T21:20:18.9404457Z anchor: module=0x7ff710f30000 path="D:\\a\\alive\\alive\\apps\\ultra\\src-tauri\\target\\x86_64-pc-windows-msvc\\release\\deps\\ultra_desktop-9775c3e7146034d2.exe"
+2026-10-28T21:20:18.9405700Z symbol: name=alive_session_state_v2 stage=missing
+2026-10-28T21:20:18.9406294Z anchor: stage=export_lookup_or_owner
+2026-10-28T21:20:18.9406879Z resolve: stage=anchor_module_or_export result=false
+2026-10-28T21:20:18.9407460Z cache: initializer_result=false
+2026-10-28T21:20:18.9407930Z cache: return=false
+2026-10-28T21:20:18.9408393Z production capability=false expected=true
+2026-10-28T21:20:18.9409059Z production: expectation_env=None anchor=0x7ff93b9b5960
+2026-10-28T21:20:18.9410357Z production: module=0x7ff93b930000 path="D:\\a\\alive\\alive\\apps\\ultra\\src-tauri\\target\\x86_64-pc-windows-msvc\\release\\ultra_native.dll"
+2026-10-28T21:20:18.9411448Z production: anchor_export=0x7ff93b9b5960
+2026-10-28T21:20:18.9412376Z production: symbol=alive_session_master_limits address=0x7ff93b9b4f10 owner=0x7ff93b930000
+2026-10-28T21:20:18.9413515Z production: symbol=alive_session_master_set address=0x7ff93b9b4fd0 owner=0x7ff93b930000
+2026-10-28T21:20:18.9414711Z production: symbol=alive_session_master_reset_clip address=0x7ff93b9b4f60 owner=0x7ff93b930000
+2026-10-28T21:20:18.9415980Z production: symbol=alive_session_master_snapshot_v2 address=0x7ff93b9b5050 owner=0x7ff93b930000
+2026-10-28T21:20:18.9417285Z production: symbol=alive_session_master_snapshot_v3 address=0x7ff93b9b50a0 owner=0x7ff93b930000
+2026-10-28T21:20:18.9418585Z production: symbol=alive_session_master_snapshot_v4 address=0x7ff93b9b50f0 owner=0x7ff93b930000
+2026-10-28T21:20:18.9419727Z production: limits result=1 version=1 bytes=24 features=7 ramp=64 max_gain=4
+2026-10-28T21:20:18.9420659Z resolve: enter anchor=0x7ff93b9b5960 thread=ThreadId(2)
+2026-10-28T21:20:18.9421521Z anchor: module=0x7ff93b930000 path="D:\\a\\alive\\alive\\apps\\ultra\\src-tauri\\target\\x86_64-pc-windows-msvc\\release\\ultra_native.dll"
+2026-10-28T21:20:18.9422394Z symbol: name=alive_session_state_v2 address=0x7ff93b9b5960 owner=0x7ff93b930000 same=true
+2026-10-28T21:20:18.9423159Z anchor: export=0x7ff93b9b5960 equal=true
+2026-10-28T21:20:18.9424078Z symbol: name=alive_session_master_limits address=0x7ff93b9b4f10 owner=0x7ff93b930000 same=true
+2026-10-28T21:20:18.9424813Z symbol: name=alive_session_master_set address=0x7ff93b9b4fd0 owner=0x7ff93b930000 same=true
+2026-10-28T21:20:18.9425563Z symbol: name=alive_session_master_reset_clip address=0x7ff93b9b4f60 owner=0x7ff93b930000 same=true
+2026-10-28T21:20:18.9426469Z symbol: name=alive_session_master_snapshot_v2 address=0x7ff93b9b5050 owner=0x7ff93b930000 same=true
+2026-10-28T21:20:18.9427271Z symbol: name=alive_session_master_snapshot_v3 address=0x7ff93b9b50a0 owner=0x7ff93b930000 same=true
+2026-10-28T21:20:18.9428025Z symbol: name=alive_session_master_snapshot_v4 address=0x7ff93b9b50f0 owner=0x7ff93b930000 same=true
+2026-10-28T21:20:18.9428771Z resolve: limits result=1 version=1 bytes=24 features=7 ramp=64 max_gain=4
+2026-10-28T21:20:18.9429211Z resolve: stage=ok result=true
+2026-10-28T21:20:18.9429545Z production: stage=ok direct_resolve=true
+2026-10-28T21:20:18.9429964Z direct: expectation_env=None anchor=0x7ff93b9b5960
+2026-10-28T21:20:18.9430737Z direct: module=0x7ff93b930000 path="D:\\a\\alive\\alive\\apps\\ultra\\src-tauri\\target\\x86_64-pc-windows-msvc\\release\\ultra_native.dll"
+2026-10-28T21:20:18.9431427Z direct: anchor_export=0x7ff93b9b5960
+2026-10-28T21:20:18.9431944Z direct: symbol=alive_session_master_limits address=0x7ff93b9b4f10 owner=0x7ff93b930000
+2026-10-28T21:20:18.9432622Z direct: symbol=alive_session_master_set address=0x7ff93b9b4fd0 owner=0x7ff93b930000
+2026-10-28T21:20:18.9433321Z direct: symbol=alive_session_master_reset_clip address=0x7ff93b9b4f60 owner=0x7ff93b930000
+2026-10-28T21:20:18.9434020Z direct: symbol=alive_session_master_snapshot_v2 address=0x7ff93b9b5050 owner=0x7ff93b930000
+2026-10-28T21:20:18.9434724Z direct: symbol=alive_session_master_snapshot_v3 address=0x7ff93b9b50a0 owner=0x7ff93b930000
+2026-10-28T21:20:18.9435411Z direct: symbol=alive_session_master_snapshot_v4 address=0x7ff93b9b50f0 owner=0x7ff93b930000
+2026-10-28T21:20:18.9436051Z direct: limits result=1 version=1 bytes=24 features=7 ramp=64 max_gain=4
+2026-10-28T21:20:18.9436593Z resolve: enter anchor=0x7ff93b9b5960 thread=ThreadId(2)
+2026-10-28T21:20:18.9437440Z anchor: module=0x7ff93b930000 path="D:\\a\\alive\\alive\\apps\\ultra\\src-tauri\\target\\x86_64-pc-windows-msvc\\release\\ultra_native.dll"
+2026-10-28T21:20:18.9438490Z symbol: name=alive_session_state_v2 address=0x7ff93b9b5960 owner=0x7ff93b930000 same=true
+2026-10-28T21:20:18.9439015Z anchor: export=0x7ff93b9b5960 equal=true
+2026-10-28T21:20:18.9439562Z symbol: name=alive_session_master_limits address=0x7ff93b9b4f10 owner=0x7ff93b930000 same=true
+2026-10-28T21:20:18.9440363Z symbol: name=alive_session_master_set address=0x7ff93b9b4fd0 owner=0x7ff93b930000 same=true
+2026-10-28T21:20:18.9441406Z symbol: name=alive_session_master_reset_clip address=0x7ff93b9b4f60 owner=0x7ff93b930000 same=true
+2026-10-28T21:20:18.9442605Z symbol: name=alive_session_master_snapshot_v2 address=0x7ff93b9b5050 owner=0x7ff93b930000 same=true
+2026-10-28T21:20:18.9443384Z symbol: name=alive_session_master_snapshot_v3 address=0x7ff93b9b50a0 owner=0x7ff93b930000 same=true
+2026-10-28T21:20:18.9444151Z symbol: name=alive_session_master_snapshot_v4 address=0x7ff93b9b50f0 owner=0x7ff93b930000 same=true
+2026-10-28T21:20:18.9444811Z resolve: limits result=1 version=1 bytes=24 features=7 ramp=64 max_gain=4
+2026-10-28T21:20:18.9445251Z resolve: stage=ok result=true
+2026-10-28T21:20:18.9445582Z direct: stage=ok direct_resolve=true
+2026-10-28T21:20:18.9446785Z test session::native_master::tests::production_capability_fresh_process_diagnostics ... FAILED
+2026-10-28T21:20:18.9447464Z 
+2026-10-28T21:20:18.9447647Z failures:
+2026-10-28T21:20:18.9447866Z 
+2026-10-28T21:20:18.9448007Z failures:
+2026-10-28T21:20:18.9448700Z     session::native_master::tests::production_capability_fresh_process_diagnostics
+2026-10-28T21:20:18.9449326Z 
+2026-10-28T21:20:18.9449856Z test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 287 filtered out; finished in 0.00s
+2026-10-28T21:20:18.9450243Z 
+2026-10-28T21:20:18.9450250Z 
+2026-10-28T21:20:18.9450841Z thread 'session::native_master::tests::production_capability_fresh_process_diagnostics' panicked at src\session\native_master.rs:207:9:
+2026-10-28T21:20:18.9451550Z assertion `left == right` failed
+2026-10-28T21:20:18.9460913Z   left: false
+2026-10-28T21:20:18.9461632Z  right: true
+2026-10-28T21:20:18.9462147Z note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+2026-10-28T21:20:18.9462463Z 
+2026-10-28T21:20:18.9463054Z thread 'session::native_master::tests::production_capability_fresh_process_diagnostics' panicked at src\session\native_master.rs:199:13:
+2026-10-28T21:20:18.9463757Z diagnostic child failed: exit code: 101
+2026-10-28T21:20:18.9464075Z 
+2026-10-28T21:20:18.9464397Z ---- session::tests::master_host_install_publishes_saved_gain_before_audio stdout ----
+2026-10-28T21:20:18.9464769Z 
+2026-10-28T21:20:18.9465303Z thread 'session::tests::master_host_install_publishes_saved_gain_before_audio' panicked at src\session\native_master.rs:41:5:
+2026-10-28T21:20:18.9465925Z native fixture failed:
+2026-10-28T21:20:18.9466073Z 
+2026-10-28T21:20:18.9466191Z running 1 test
+2026-10-28T21:20:18.9466650Z test session::tests::master_host_install_publishes_saved_gain_before_audio ... FAILED
+2026-10-28T21:20:18.9467022Z 
+2026-10-28T21:20:18.9467114Z failures:
+2026-10-28T21:20:18.9467253Z 
+2026-10-28T21:20:18.9467361Z failures:
+2026-10-28T21:20:18.9467718Z     session::tests::master_host_install_publishes_saved_gain_before_audio
+2026-10-28T21:20:18.9468047Z 
+2026-10-28T21:20:18.9468404Z test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 287 filtered out; finished in 0.01s
+2026-10-28T21:20:18.9468812Z 
+2026-10-28T21:20:18.9468822Z 
+2026-10-28T21:20:18.9468828Z 
+2026-10-28T21:20:18.9469314Z thread 'session::tests::master_host_install_publishes_saved_gain_before_audio' panicked at src\session\tests.rs:168:64:
+2026-10-28T21:20:18.9470211Z called `Result::unwrap()` on an `Err` value: "Master gain is unavailable until native Master support is installed"
+2026-10-28T21:20:18.9470917Z note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+2026-10-28T21:20:18.9471246Z 
+2026-10-28T21:20:18.9471252Z 
+2026-10-28T21:20:18.9471588Z ---- session::tests::master_preflight_accepts_nonunity_with_native_capability stdout ----
+2026-10-28T21:20:18.9471971Z 
+2026-10-28T21:20:18.9472465Z thread 'session::tests::master_preflight_accepts_nonunity_with_native_capability' panicked at src\session\tests.rs:159:5:
+2026-10-28T21:20:18.9473190Z assertion failed: native::master_capability().is_some()
+2026-10-28T21:20:18.9473432Z 
+2026-10-28T21:20:18.9473437Z 
+2026-10-28T21:20:18.9473548Z failures:
+2026-10-28T21:20:18.9473929Z     session::desktop::tests::master_failed_install_rolls_back_gain_and_receipt
+2026-10-28T21:20:18.9474482Z     session::desktop::tests::master_failed_rollback_does_not_claim_receipt
+2026-10-28T21:20:18.9475047Z     session::desktop::tests::master_gain_admission_promotes_only_on_change
+2026-10-28T21:20:18.9475631Z     session::desktop::tests::master_install_refuses_serial_exhaustion_before_retirement
+2026-10-28T21:20:18.9476252Z     session::desktop::tests::master_pending_retirement_burns_pair_without_replacement
+2026-10-28T21:20:18.9476874Z     session::desktop::tests::master_queue_full_preserves_owner_and_allows_retry
+2026-10-28T21:20:18.9477506Z     session::native_master::tests::production_capability_fresh_process_diagnostics
+2026-10-28T21:20:18.9478104Z     session::tests::master_host_install_publishes_saved_gain_before_audio
+2026-10-28T21:20:18.9478958Z     session::tests::master_preflight_accepts_nonunity_with_native_capability
+2026-10-28T21:20:18.9479300Z 
+2026-10-28T21:20:18.9480156Z test result: FAILED. 275 passed; 9 failed; 4 ignored; 0 measured; 0 filtered out; finished in 4.08s
+2026-10-28T21:20:18.9481179Z 
+2026-10-28T21:20:18.9481597Z error: test failed, to rerun pass `--lib`
+2026-10-28T21:20:18.9504386Z Traceback (most recent call last):
+2026-10-28T21:20:18.9505088Z   File "D:\a\alive\alive\apps\ultra\scripts\release.py", line 369, in <module>
+2026-10-28T21:20:18.9508625Z     main()
+2026-10-28T21:20:18.9509284Z   File "D:\a\alive\alive\apps\ultra\scripts\release.py", line 341, in main
+2026-10-28T21:20:18.9513263Z     run('cargo', 'test', '--manifest-path', APP/'src-tauri/Cargo.toml', '--release', '--locked', '--target', args.target, env=env)
+2026-10-28T21:20:18.9514453Z   File "D:\a\alive\alive\apps\ultra\scripts\release.py", line 39, in run
+2026-10-28T21:20:18.9515260Z     subprocess.run([str(a) for a in args], cwd=cwd, env=env, check=True)
+2026-10-28T21:20:18.9515993Z   File "C:\hostedtoolcache\windows\Python\3.12.10\x64\Lib\subprocess.py", line 571, in run
+2026-10-28T21:20:18.9623508Z     raise CalledProcessError(retcode, process.args,
+2026-10-28T21:20:18.9625283Z subprocess.CalledProcessError: Command '['cargo', 'test', '--manifest-path', 'D:\\a\\alive\\alive\\apps\\ultra\\src-tauri\\Cargo.toml', '--release', '--locked', '--target', 'x86_64-pc-windows-msvc']' returned non-zero exit status 101.
+2026-10-28T21:20:18.9878662Z ##[error]Process completed with exit code 1.
+2026-10-28T21:20:19.0135929Z Post job cleanup.
+2026-10-28T21:20:19.2002284Z [command]"C:\Program Files\Git\bin\git.exe" version
+2026-10-28T21:20:19.2279374Z git version 2.56.0.windows.3
+2026-10-28T21:20:19.2343885Z Temporarily overriding HOME='D:\a\_temp\e1c3bda2-b9fd-47ac-bf0c-6b5e79444125' before making global git config changes
+2026-10-28T21:20:19.2345385Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-28T21:20:19.2357156Z [command]"C:\Program Files\Git\bin\git.exe" config --global --add safe.directory D:\a\alive\alive
+2026-10-28T21:20:19.2680517Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp core\.sshCommand
+2026-10-28T21:20:19.3079165Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\""
+2026-10-28T21:20:19.8136921Z [command]"C:\Program Files\Git\bin\git.exe" config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-28T21:20:19.8444611Z [command]"C:\Program Files\Git\bin\git.exe" submodule foreach --recursive "sh -c \"git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\""
+2026-10-28T21:20:20.3441705Z Cleaning up orphan processes
+2026-10-28T21:20:20.4059294Z Terminate orphan process: pid (6164) (vctip)
+2026-10-28T21:20:20.4119064Z Terminate orphan process: pid (2188) (MSBuild)
+2026-10-28T21:20:20.4242864Z Terminate orphan process: pid (7148) (conhost)
+2026-10-28T21:20:20.4336452Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683, actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020, actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

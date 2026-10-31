@@ -1,0 +1,30 @@
+[
+  {
+    "command": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "-I/tmp/alive-workspaces-task2c-authority-actions",
+      "apps/ultra/tests/alive_session_v4_shipping_test.cpp",
+      "apps/ultra/src-tauri/native/backend.cpp",
+      "apps/ultra/build/core/libultra_core_bundle.a",
+      "-ldl",
+      "-lrt",
+      "-o",
+      "/tmp/alive-workspaces-task2c-authority-actions/shipping-test"
+    ],
+    "exit": 0,
+    "seconds": 17.27851868399739
+  },
+  {
+    "command": [
+      "/tmp/alive-workspaces-task2c-authority-actions/shipping-test"
+    ],
+    "exit": 0,
+    "seconds": 0.03291646999423392
+  }
+]

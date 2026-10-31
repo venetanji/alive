@@ -1,0 +1,75 @@
+[
+  {
+    "action": "select blank range",
+    "time": 66798.225633342,
+    "range": "[8,10)"
+  },
+  {
+    "action": "create source then note then placement",
+    "time": 66799.962895205,
+    "notice": "MIDI workspaces prepared. Arrangement starts at zero; Save writes v4."
+  },
+  {
+    "action": "saved created source and placement",
+    "time": 66802.322788083,
+    "placement": {
+      "id": "placement-7bc3c14966b19c9069a81ee32c48d903",
+      "trackId": "track-1",
+      "sourceId": "source-f9db00101b4eaf2958ab32d7384ad254",
+      "start": 8.0,
+      "duration": 2.0,
+      "sourceOffset": {
+        "kind": "beats",
+        "value": 0.0
+      },
+      "loopEnabled": true
+    },
+    "source": {
+      "kind": "midi",
+      "id": "source-f9db00101b4eaf2958ab32d7384ad254",
+      "trackId": "track-1",
+      "name": "First MIDI",
+      "lengthBeats": 2.0,
+      "notes": [
+        {
+          "id": "note-70215e7da21815e2848a50aa3f24df5e",
+          "beat": 0.0,
+          "duration": 0.25,
+          "pitch": 60,
+          "velocity": 100
+        }
+      ],
+      "automation": []
+    }
+  },
+  {
+    "action": "move same-track +2 beats, source preserved",
+    "time": 66805.957710594,
+    "placement": {
+      "id": "placement-7bc3c14966b19c9069a81ee32c48d903",
+      "trackId": "track-1",
+      "sourceId": "source-f9db00101b4eaf2958ab32d7384ad254",
+      "start": 10.0,
+      "duration": 2.0,
+      "sourceOffset": {
+        "kind": "beats",
+        "value": 0.0
+      },
+      "loopEnabled": true
+    }
+  },
+  {
+    "action": "checkpoint complete",
+    "time": 66807.397145709,
+    "sizes": [
+      [
+        1440,
+        900
+      ],
+      [
+        1280,
+        800
+      ]
+    ]
+  }
+]

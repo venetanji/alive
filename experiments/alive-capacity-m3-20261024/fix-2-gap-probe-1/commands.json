@@ -1,0 +1,93 @@
+[
+  {
+    "argv": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "-DCAPACITY_GUARDS",
+      "-DULTRA_ALIVE_SESSION_TEST_TRACE",
+      "-c",
+      "/tmp/alive-task13b-evidence/fix-2-final-verify/source/src-tauri/native/backend.cpp",
+      "-o",
+      "/tmp/alive-task13b-evidence/fix-2-gap-probe-1/backend.o"
+    ],
+    "cwd": "/home/venetanji/.codex/worktrees/edd5/alive",
+    "timeout_seconds": 180,
+    "log": "/tmp/alive-task13b-evidence/fix-2-gap-probe-1/backend-build.log",
+    "core_limit_bytes": 0
+  },
+  {
+    "argv": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "-DCAPACITY_GUARDS",
+      "-DULTRA_ALIVE_SESSION_TEST_TRACE",
+      "/tmp/alive-task13b-evidence/fix-2-gap-probe-1/checkpoint-predicate/source/tests/alive_session_capacity.cpp",
+      "/tmp/alive-task13b-evidence/fix-2-gap-probe-1/backend.o",
+      "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/build/core/libultra_core_bundle.a",
+      "-ldl",
+      "-lrt",
+      "-o",
+      "/tmp/alive-task13b-evidence/fix-2-gap-probe-1/checkpoint-predicate/probe",
+      "-Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock"
+    ],
+    "cwd": "/home/venetanji/.codex/worktrees/edd5/alive",
+    "timeout_seconds": 180,
+    "log": "/tmp/alive-task13b-evidence/fix-2-gap-probe-1/checkpoint-predicate/build.log",
+    "core_limit_bytes": 0
+  },
+  {
+    "argv": [
+      "/tmp/alive-task13b-evidence/fix-2-gap-probe-1/checkpoint-predicate/probe",
+      "--gap-probe"
+    ],
+    "cwd": "/home/venetanji/.codex/worktrees/edd5/alive",
+    "timeout_seconds": 20,
+    "log": "/tmp/alive-task13b-evidence/fix-2-gap-probe-1/checkpoint-predicate/probe.log",
+    "core_limit_bytes": 0
+  },
+  {
+    "argv": [
+      "c++",
+      "-std=c++17",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-pthread",
+      "-DCAPACITY_GUARDS",
+      "-DULTRA_ALIVE_SESSION_TEST_TRACE",
+      "/tmp/alive-task13b-evidence/fix-2-gap-probe-1/same-callback-predicate/source/tests/alive_session_capacity.cpp",
+      "/tmp/alive-task13b-evidence/fix-2-gap-probe-1/backend.o",
+      "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/build/core/libultra_core_bundle.a",
+      "-ldl",
+      "-lrt",
+      "-o",
+      "/tmp/alive-task13b-evidence/fix-2-gap-probe-1/same-callback-predicate/probe",
+      "-Wl,--wrap=malloc,--wrap=calloc,--wrap=realloc,--wrap=free,--wrap=pthread_mutex_lock"
+    ],
+    "cwd": "/home/venetanji/.codex/worktrees/edd5/alive",
+    "timeout_seconds": 180,
+    "log": "/tmp/alive-task13b-evidence/fix-2-gap-probe-1/same-callback-predicate/build.log",
+    "core_limit_bytes": 0
+  },
+  {
+    "argv": [
+      "/tmp/alive-task13b-evidence/fix-2-gap-probe-1/same-callback-predicate/probe",
+      "--gap-probe"
+    ],
+    "cwd": "/home/venetanji/.codex/worktrees/edd5/alive",
+    "timeout_seconds": 20,
+    "log": "/tmp/alive-task13b-evidence/fix-2-gap-probe-1/same-callback-predicate/probe.log",
+    "core_limit_bytes": 0
+  }
+]

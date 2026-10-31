@@ -1,0 +1,119 @@
+{
+  "device": {
+    "audio": {
+      "inputs": 0,
+      "layout": "stereo",
+      "outputs": 2
+    },
+    "id": "org.alive.subtractive",
+    "midi": {
+      "inlet": 0,
+      "node": 2
+    },
+    "name": "Renamed",
+    "parameters": [
+      {
+        "key": "attack",
+        "label": "Attack",
+        "max": 10000,
+        "min": 1,
+        "node": 5,
+        "param": "attack",
+        "unit": "ms"
+      },
+      {
+        "key": "decay",
+        "label": "Decay",
+        "max": 10000,
+        "min": 1,
+        "node": 5,
+        "param": "decay",
+        "unit": "ms"
+      },
+      {
+        "key": "sustain",
+        "label": "Sustain",
+        "max": 1,
+        "min": 0,
+        "node": 5,
+        "param": "sustain",
+        "unit": ""
+      },
+      {
+        "key": "release",
+        "label": "Release",
+        "max": 10000,
+        "min": 1,
+        "node": 5,
+        "param": "release",
+        "unit": "ms"
+      },
+      {
+        "key": "tone",
+        "label": "Tone",
+        "max": 9000,
+        "min": 100,
+        "node": 4,
+        "param": "cutoff",
+        "unit": "Hz"
+      },
+      {
+        "key": "resonance",
+        "label": "Resonance",
+        "max": 20,
+        "min": 0.1,
+        "node": 4,
+        "param": "resonance",
+        "unit": "Q"
+      },
+      {
+        "key": "level",
+        "label": "Level",
+        "max": 127,
+        "min": 0,
+        "node": 9,
+        "param": "value",
+        "unit": "raw"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Init",
+        "values": {
+          "attack": 10,
+          "decay": 150,
+          "level": 90,
+          "release": 300,
+          "resonance": 0.7,
+          "sustain": 0.65,
+          "tone": 2400
+        }
+      },
+      {
+        "name": "Soft",
+        "values": {
+          "attack": 80,
+          "decay": 450,
+          "level": 80,
+          "release": 800,
+          "resonance": 0.8,
+          "sustain": 0.5,
+          "tone": 700
+        }
+      },
+      {
+        "name": "Pluck",
+        "values": {
+          "attack": 2,
+          "decay": 170,
+          "level": 85,
+          "release": 120,
+          "resonance": 2.5,
+          "sustain": 0.12,
+          "tone": 4200
+        }
+      }
+    ],
+    "version": 1
+  }
+}

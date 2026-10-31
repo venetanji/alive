@@ -1,0 +1,36 @@
+[
+  {
+    "log": "/tmp/alive-task13b-evidence/fix-1-mutations-1/backend-build.log",
+    "returncode": 0,
+    "outer_timeout": false,
+    "elapsed_seconds": 14.745418682010495
+  },
+  {
+    "log": "/tmp/alive-task13b-evidence/fix-1-mutations-1/discarded-action/build.log",
+    "returncode": 0,
+    "outer_timeout": false,
+    "elapsed_seconds": 5.626974946004339
+  },
+  {
+    "log": "/tmp/alive-task13b-evidence/fix-1-mutations-1/discarded-action/probe.log",
+    "returncode": -6,
+    "outer_timeout": false,
+    "elapsed_seconds": 0.3644017119950149,
+    "expected_assertion_observed": true,
+    "expected_sigabrt": true
+  },
+  {
+    "log": "/tmp/alive-task13b-evidence/fix-1-mutations-1/late-reader/build.log",
+    "returncode": 0,
+    "outer_timeout": false,
+    "elapsed_seconds": 5.627146351005649
+  },
+  {
+    "log": "/tmp/alive-task13b-evidence/fix-1-mutations-1/late-reader/probe.log",
+    "returncode": -6,
+    "outer_timeout": false,
+    "elapsed_seconds": 30.1601722100022,
+    "expected_assertion_observed": true,
+    "expected_sigabrt": true
+  }
+]

@@ -1,0 +1,57 @@
+{
+  "observed_utc": "2026-10-26T04:55:32.218600+00:00",
+  "desktop_entry": "/home/venetanji/.local/share/applications/org.alive.session.test.desktop",
+  "display_name": "Alive (Test)",
+  "release_ui_source": "97533b8",
+  "rebuilt_for_checkpoint": false,
+  "arrangement_available": false,
+  "audio_file_tracks_available": false,
+  "commands": [
+    {
+      "argv": [
+        "desktop-file-validate",
+        "/home/venetanji/.local/share/applications/org.alive.session.test.desktop"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "bash",
+        "apps/alive/run.sh",
+        "--help"
+      ],
+      "exit": 0,
+      "stdout": "Usage: alive [session.alive]\n       alive --session-probe <session.alive> <output-directory>\n       alive --help | --version\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "update-desktop-database",
+        "/home/venetanji/.local/share/applications"
+      ],
+      "exit": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "bash",
+        "apps/alive/run.sh",
+        "--session-probe",
+        "apps/alive/examples/two-instruments.alive",
+        "/tmp/alive-launcher-checkpoint-20261026"
+      ],
+      "exit": 0,
+      "report": "session-probe-report.json",
+      "scope": "fresh native offline saved-device test; no app GUI, physical output or endurance claim"
+    }
+  ],
+  "hashes": {
+    "apps/alive/run.sh": "154354031370b86fb0bee2c370f5355a35f37b7c6d9f9f2246266251c5300f89",
+    "apps/ultra/src-tauri/target/release/alive": "bac50bb1af01c2d15d985d0cf345f21a1efcd6a0be450f0b77870df4356c3260",
+    "apps/ultra/src-tauri/target/release/ultra": "51788adda242c24e22838737cd6525e0fa0af09223e817d7846449795107add3",
+    "apps/ultra/src-tauri/target/release/libultra_native.so": "4c54e3e0a2e7bf2007a56620d1006658e97b86d5f8828e08f13e9ffd3a1e9e70"
+  }
+}

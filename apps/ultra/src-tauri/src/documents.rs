@@ -8,7 +8,12 @@ pub const MAX_DOCUMENTS: usize = 16;
 mod shared;
 #[path = "documents_close.rs"]
 mod close;
+#[path = "documents_save.rs"]
+mod save;
+#[path = "documents_gestures.rs"]
+mod gestures;
 pub use close::{CloseGate, CloseNotice};
+pub use save::{SaveNotice, SaveSnapshot};
 const MAX_IMPORT_BYTES: u64 = 8 * 1024 * 1024;
 static NEXT_TEMP: AtomicU64 = AtomicU64::new(1);
 
@@ -58,6 +63,9 @@ pub struct Document {
     pub close_pending: bool,
     #[serde(skip)]
     pub close_approved: bool,
+    pub parameter_previews: Vec<gestures::ParameterPreview>,
+    #[serde(skip)]
+    gestures: gestures::GestureState,
 }
 
 #[derive(Default)]
@@ -66,6 +74,7 @@ pub struct Registry {
     views: BTreeMap<String, View>,
     consoles: BTreeMap<String, ConsoleCache>,
     close: close::CloseState,
+    save: save::SaveState,
     serial: u64,
 }
 #[derive(Default)]
@@ -99,7 +108,7 @@ impl Registry {
         let label = if self.serial == 0 { "main".into() } else { format!("patch-{}", self.serial) };
         self.serial = self.serial.checked_add(1).ok_or("Document identity exhausted")?;
         let patch = patch.unwrap_or_else(empty_patch);
-        let doc = Document { id, label: label.clone(), owner_label: label.clone(), view_title: title.clone(), title, path, kind, saved_patch: patch.clone(), patch: Some(patch), source: None, source_name: None, help_key, dirty: false, shared: true, view_path: vec![], authoring_revision: 0, descriptor_revision: 0, runtime_revision: 0, message_text_serial: 0, can_undo: false, can_redo: false, reveal_node: None, reveal_revision: None, undo: VecDeque::new(), redo: VecDeque::new(), close_pending: false, close_approved: false };
+        let doc = Document { id, label: label.clone(), owner_label: label.clone(), view_title: title.clone(), title, path, kind, saved_patch: patch.clone(), patch: Some(patch), source: None, source_name: None, help_key, dirty: false, shared: true, view_path: vec![], authoring_revision: 0, descriptor_revision: 0, runtime_revision: 0, message_text_serial: 0, can_undo: false, can_redo: false, reveal_node: None, reveal_revision: None, undo: VecDeque::new(), redo: VecDeque::new(), close_pending: false, close_approved: false, parameter_previews: vec![], gestures: gestures::GestureState::default() };
         self.entries.insert(label, doc.clone());
         Ok(doc)
     }
@@ -114,6 +123,7 @@ impl Registry {
         self.entries.get_mut(&owner).ok_or_else(|| "This patch window is closed".into())
     }
     pub fn remove(&mut self, label: &str) -> Option<Document> {
+        self.detach_save(label);
         self.detach_close(label);
         if let Some(view) = self.views.remove(label) {
             if let Some(cache) = self.consoles.get_mut(&view.owner) { cache.cursors.remove(label); }
@@ -209,7 +219,7 @@ pub fn save_patch(path: &Path, patch: &Value) -> Result<PathBuf, String> {
     Ok(path)
 }
 
-pub fn empty_patch() -> Value { serde_json::json!({"version":1,"profile":"ultra-canvas-v1","nodes":[],"edges":[]}) }
+pub fn empty_patch() -> Value { serde_json::json!({"version":1,"profile":"ultra-canvas-v1","presentation":null,"nodes":[],"edges":[]}) }
 
 #[cfg(test)]
 #[path = "documents_tests.rs"]

@@ -2,6 +2,8 @@
 # Actual canvas UI + Rust CPAL, private display, bus and software audio server.
 set -euo pipefail
 ROOT=$(cd "$(dirname "$0")/../../.." && pwd)
+source "$ROOT/apps/ultra/tests/desktop_launch_config.sh"
+ultra_screen_size=$(desktop_screen_size)
 if [[ ${ULTRA_TEST_PRIVATE_SESSION:-} != 1 ]]; then
   if [[ ${1:-} == --software-audio ]]; then shift; fi
   for tool in dbus-run-session xvfb-run Xvfb python3 pipewire wireplumber pw-cat pw-link; do
@@ -20,7 +22,7 @@ if [[ ${ULTRA_TEST_PRIVATE_SESSION:-} != 1 ]]; then
     exit 2
   fi
   export ULTRA_TEST_REGISTRY_BIN="$ultra_registry_bin"
-  if [[ ! -x "$ROOT/apps/ultra/src-tauri/target/release/ultra" ]]; then
+  if [[ ! -x "$ROOT/apps/ultra/src-tauri/target/release/ultra" || ( ${ULTRA_TEST_ALIVE:-0} == 1 && ! -x "$ROOT/apps/ultra/src-tauri/target/release/alive" ) ]]; then
     echo 'Build the native app with bash apps/ultra/build.sh first.' >&2
     exit 2
   fi
@@ -46,6 +48,7 @@ if [[ ${ULTRA_TEST_PRIVATE_SESSION:-} != 1 ]]; then
     pipewire -c "$ROOT/apps/ultra/tests/cpal-software-pipewire.conf" \
       >"$ULTRA_TEST_OUTPUT_DIR/pipewire.log" 2>&1 &
     ultra_audio_pid=$!
+    export ULTRA_TEST_AUDIO_PID="$ultra_audio_pid"
     for attempt in {1..50}; do
       if [[ -S "$ultra_runtime_dir/ultra-audio-test" ]]; then break; fi
       kill -0 "$ultra_audio_pid"
@@ -53,12 +56,17 @@ if [[ ${ULTRA_TEST_PRIVATE_SESSION:-} != 1 ]]; then
     done
     test -S "$ultra_runtime_dir/ultra-audio-test"
     ln -s ultra-audio-test "$ultra_runtime_dir/pipewire-0"
+    case "$(wireplumber --version)" in
+      *"0.4."*) ultra_policy_args=(-c policy.conf) ;;
+      *) ultra_policy_args=(-p policy) ;;
+    esac
     WIREPLUMBER_CONFIG_DIR=/usr/share/wireplumber dbus-run-session -- \
-      wireplumber -p policy >"$ULTRA_TEST_OUTPUT_DIR/policy.log" 2>&1 &
+      wireplumber "${ultra_policy_args[@]}" >"$ULTRA_TEST_OUTPUT_DIR/policy.log" 2>&1 &
     ultra_policy_pid=$!
     sleep .3
+    kill -0 "$ultra_policy_pid"
   env -u WAYLAND_DISPLAY dbus-run-session -- xvfb-run -a \
-    -s '-screen 0 1280x840x24 -nolisten tcp' bash "$0"
+    -s "-screen 0 ${ultra_screen_size}x24 -nolisten tcp" bash "$0"
   exit
 fi
 if [[ ${DISPLAY:-} != :[0-9]* || -n ${WAYLAND_DISPLAY:-} || -z ${XAUTHORITY:-} ]]; then
@@ -98,6 +106,10 @@ export AT_SPI_BUS_ADDRESS
 "${ULTRA_TEST_REGISTRY_BIN:-/usr/lib/at-spi2-registryd}" >"$ULTRA_TEST_OUTPUT_DIR/registry.log" 2>&1 &
 ultra_registry_pid=$!
 cd "$ROOT"
+if [[ ${ULTRA_TEST_ALIVE:-0} == 1 && -n ${ULTRA_TEST_ALIVE_BINARY:-} ]]; then
+  export ULTRA_TEST_STARTUP_ULTRA_BINARY
+  ULTRA_TEST_STARTUP_ULTRA_BINARY=$(desktop_startup_binary "$ULTRA_TEST_ALIVE_BINARY")
+fi
 python3 "$ROOT/apps/ultra/tests/check_document_startup.py"
 if [[ ${ULTRA_TEST_STARTUP_ONLY:-0} == 1 ]]; then exit; fi
 if [[ ${ULTRA_TEST_PINCH_ONLY:-0} == 1 ]]; then
@@ -109,7 +121,7 @@ ultra_initial_patch="$ULTRA_TEST_OUTPUT_DIR/initial.ultra"
 if [[ -n ${ULTRA_TEST_INITIAL_PATCH:-} ]]; then
   cp -- "$ULTRA_TEST_INITIAL_PATCH" "$ultra_initial_patch"
 else
-  printf '%s\n' '{"version":1,"profile":"ultra-canvas-v1","nodes":[],"edges":[]}' > "$ultra_initial_patch"
+  printf '%s\n' '{"version":1,"profile":"ultra-canvas-v1","presentation":null,"nodes":[],"edges":[]}' > "$ultra_initial_patch"
 fi
 if [[ ${ULTRA_TEST_WM:-0} == 1 ]]; then
   mwm -xrm 'Mwm*interactivePlacement: False' -xrm 'Mwm*usePPosition: on' \
@@ -118,8 +130,24 @@ if [[ ${ULTRA_TEST_WM:-0} == 1 ]]; then
   sleep .3
   kill -0 "$ultra_wm_pid"
 fi
-LD_LIBRARY_PATH="$ROOT/apps/ultra/src-tauri/target/release${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
-  "$ROOT/apps/ultra/src-tauri/target/release/ultra" "$ultra_initial_patch" >"$ULTRA_TEST_OUTPUT_DIR/app.log" 2>&1 &
+ultra_launch_arguments=("$ultra_initial_patch")
+ultra_launch_binary="$ROOT/apps/ultra/src-tauri/target/release/ultra"
+if [[ ${ULTRA_TEST_ALIVE:-0} == 1 ]]; then
+  export ALIVE_TRACE_COMMANDS=1
+  ultra_initial_session="$ULTRA_TEST_OUTPUT_DIR/initial.alive"
+  python3 "$ROOT/apps/ultra/tests/stage_alive_session.py" "${ULTRA_TEST_ALIVE_SESSION:-$ROOT/apps/alive/examples/two-instruments.alive}" "$ultra_initial_session"
+  ultra_launch_arguments=("$ultra_initial_session")
+  ultra_launch_binary="${ULTRA_TEST_ALIVE_BINARY:-$ROOT/apps/ultra/src-tauri/target/release/alive}"
+  ultra_launch_binary=$(desktop_alive_binary "$ultra_launch_binary")
+  export ULTRA_TEST_ALIVE_BINARY="$ultra_launch_binary"
+  if [[ ${ULTRA_TEST_ALIVE_DEFAULT:-0} == 1 ]]; then ultra_launch_arguments=(); fi
+fi
+if [[ ${ULTRA_TEST_ALIVE:-0} == 1 ]]; then
+  env -u LD_LIBRARY_PATH "$ultra_launch_binary" "${ultra_launch_arguments[@]}" >"$ULTRA_TEST_OUTPUT_DIR/app.log" 2>&1 &
+else
+  LD_LIBRARY_PATH="$ROOT/apps/ultra/src-tauri/target/release${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
+    "$ultra_launch_binary" "${ultra_launch_arguments[@]}" >"$ULTRA_TEST_OUTPUT_DIR/app.log" 2>&1 &
+fi
 ultra_test_pid=$!
 export ULTRA_TEST_PID="$ultra_test_pid"
 if [[ -n ${ULTRA_TEST_SCRIPT:-} ]]; then

@@ -1,0 +1,22 @@
+PASS: seventeen-root dependency refusal and exact forty-event frame rejection
+REFUSED,tracks=4,devices=8,length=188,events=8,window=1024,observed=96,limit=64,authored_timing_unchanged=true
+REFUSED,tracks=8,devices=16,length=188,events=8,window=1024,observed=96,limit=64,authored_timing_unchanged=true
+TARGET,track=0,action=1,serial=700015,target=111312,observed=111722,phase=410,voices_before=4,voices_after=0,receipt=applied
+TARGET,track=0,action=2,serial=700018,target=163360,observed=163576,phase=0,voices_before=4,voices_after=0,receipt=applied
+TARGET,track=1,action=1,serial=700023,target=267456,observed=267866,phase=410,voices_before=4,voices_after=0,receipt=applied
+TARGET,track=1,action=2,serial=700026,target=319504,observed=319720,phase=0,voices_before=4,voices_after=0,receipt=applied
+TARGET,track=2,action=1,serial=700031,target=423600,observed=424010,phase=410,voices_before=4,voices_after=0,receipt=applied
+TARGET,track=2,action=2,serial=700034,target=475648,observed=475864,phase=0,voices_before=4,voices_after=0,receipt=applied
+TARGET,track=3,action=1,serial=700039,target=579744,observed=580154,phase=410,voices_before=4,voices_after=0,receipt=applied
+TARGET,track=3,action=2,serial=700042,target=631792,observed=632008,phase=0,voices_before=4,voices_after=0,receipt=applied
+TARGET,track=4,action=1,serial=700047,target=735888,observed=736298,phase=410,voices_before=4,voices_after=0,receipt=applied
+TARGET,track=4,action=2,serial=700050,target=787936,observed=788152,phase=0,voices_before=4,voices_after=0,receipt=applied
+TARGET,track=5,action=1,serial=700055,target=892032,observed=892442,phase=410,voices_before=4,voices_after=0,receipt=applied
+TARGET,track=5,action=2,serial=700058,target=944080,observed=944296,phase=0,voices_before=4,voices_after=0,receipt=applied
+TARGET,track=6,action=1,serial=700063,target=1048176,observed=1048586,phase=410,voices_before=4,voices_after=0,receipt=applied
+TARGET,track=6,action=2,serial=700066,target=1100224,observed=1100440,phase=0,voices_before=4,voices_after=0,receipt=applied
+TARGET,track=7,action=1,serial=700071,target=1204320,observed=1204730,phase=410,voices_before=4,voices_after=0,receipt=applied
+TARGET,track=7,action=2,serial=700074,target=1256368,observed=1256584,phase=0,voices_before=4,voices_after=0,receipt=applied
+PASS: eight local launch/Stop paths preserve other saved chains across exact partitions
+PASS: concurrent callback/control/read accepted=1327 refused=2769 coherent_snapshots=59844 receipt_snapshots=59844 overlapping_callbacks=38 callbacks=2048
+PASS: capacity probe complete

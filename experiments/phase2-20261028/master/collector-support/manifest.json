@@ -1,0 +1,61 @@
+{
+  "base": "c71b60805e0e877915fb2b9efaf83b479252d5e3",
+  "candidate": "07f1d9dacd70ac8a2ebcef10380e70ca035aa8b1",
+  "integratedSource": "d025c91a7b8341ad1ca4525b265cdc7ed147bd79",
+  "diffSha256": "d44444ac376d8e4ecaf1e86f8ad44d0aadd9a9cadc2e183279cb323ec9fe9af7",
+  "sourceFiles": {
+    "apps/ultra/tests/sustained_measurement.py": "c6263eb06a541ce119cf63800368f69c7ce498dac69a69023db334d98709917a",
+    "apps/ultra/tests/test_sustained_measurement.py": "51296304bf5ede034f51ada2b68b2a6ce6a66b10c071268f6aae98e131e8602d"
+  },
+  "artifacts": [
+    {
+      "file": "report.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task9-collector-fixtures-report.md",
+      "sha256": "fa53df22989ee19c7514d1de7ca9926918325c2a6f17d4f438cc606c652056f0",
+      "bytes": 9815
+    },
+    {
+      "file": "spec-original.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task9-collector-fixtures-spec-review.md",
+      "sha256": "ca197544ce5c50954a25485d305c8799c7e3f6ae5c268e96aa1e29b0d26c5b9a",
+      "bytes": 2550
+    },
+    {
+      "file": "spec-rereview1.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task9-collector-fixtures-spec-rereview1.md",
+      "sha256": "5caf9e01564225e5e1fcc16188c2be51824b966979aefc59df67604fefe89f61",
+      "bytes": 1439
+    },
+    {
+      "file": "quality-original.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task9-collector-fixtures-quality-review.md",
+      "sha256": "01bfe999264506d3b4b7d6ced2dceccf41462a2fe3d9c290bc70968c80411de0",
+      "bytes": 2399
+    },
+    {
+      "file": "quality-rereview2.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task9-collector-fixtures-quality-rereview2.md",
+      "sha256": "57eec00eedcb95f86935aa2687ce893f71309ec6f511786a8df97a60ca6f4354",
+      "bytes": 1383
+    },
+    {
+      "file": "root/command-0.log",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task9-collector-root-validation/command-0.log",
+      "sha256": "8d6d52159a8bd444b0a761b6b87146f5fb8019c542aeec85685107da11a79f48",
+      "bytes": 3015
+    },
+    {
+      "file": "root/receipt.json",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task9-collector-root-validation/receipt.json",
+      "sha256": "b121ef90db350e6e2e13c83d610ed0fc263cf1a1306d15eaa2319bc55134a690",
+      "bytes": 1858
+    },
+    {
+      "file": "root/command-1.log",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task9-collector-root-validation/command-1.log",
+      "sha256": "d52cbb1058abf83e3acb402d1c2b8ee089749613d6075f5d973dd66c8ef09200",
+      "bytes": 102
+    }
+  ],
+  "scope": "Reviewed GI-free support preparation only:18new+4existing tests pass independently. No actual driver integration, native pilot, UI, sampler/recorder execution, endurance, final-head CI or physical qualification. Caller must explicitly identify process disappearance, collect actual existing diagnostics, supply bounded cleanup and health, retire audio and preserve original Quit."
+}

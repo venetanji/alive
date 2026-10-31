@@ -1,0 +1,166 @@
+{
+  "effects_before": [
+    {
+      "instanceId": "8f2f7076-38dd-4538-a0e5-627562b161d8",
+      "sourceSha256": "a1d4a9c5e3c474979108ca42e53bc5fe1c58c28c8c18ad3681f5652dc1de30f8",
+      "bypassed": false,
+      "path": "utility.ultra",
+      "id": "org.alive.utility",
+      "version": 2,
+      "parameters": {
+        "gain": 1.0
+      }
+    },
+    {
+      "instanceId": "29a31d39-a5aa-4d35-a462-96d108bcd812",
+      "sourceSha256": "582bcdd1db059cf142acb963fc4124aca594a22d00c52d1251681714720bf787",
+      "bypassed": false,
+      "path": "stereo-lowpass.ultra",
+      "id": "org.alive.stereo-lowpass",
+      "version": 2,
+      "parameters": {
+        "cutoff": 2400.0,
+        "resonance": 0.7
+      }
+    }
+  ],
+  "effects_moved": [
+    {
+      "instanceId": "29a31d39-a5aa-4d35-a462-96d108bcd812",
+      "sourceSha256": "582bcdd1db059cf142acb963fc4124aca594a22d00c52d1251681714720bf787",
+      "bypassed": false,
+      "path": "stereo-lowpass.ultra",
+      "id": "org.alive.stereo-lowpass",
+      "version": 2,
+      "parameters": {
+        "cutoff": 2400.0,
+        "resonance": 0.7
+      }
+    },
+    {
+      "instanceId": "8f2f7076-38dd-4538-a0e5-627562b161d8",
+      "sourceSha256": "a1d4a9c5e3c474979108ca42e53bc5fe1c58c28c8c18ad3681f5652dc1de30f8",
+      "bypassed": false,
+      "path": "utility.ultra",
+      "id": "org.alive.utility",
+      "version": 2,
+      "parameters": {
+        "gain": 1.0
+      }
+    }
+  ],
+  "effects_after": [
+    {
+      "instanceId": "8f2f7076-38dd-4538-a0e5-627562b161d8",
+      "sourceSha256": "a1d4a9c5e3c474979108ca42e53bc5fe1c58c28c8c18ad3681f5652dc1de30f8",
+      "bypassed": false,
+      "path": "utility.ultra",
+      "id": "org.alive.utility",
+      "version": 2,
+      "parameters": {
+        "gain": 1.0
+      }
+    },
+    {
+      "instanceId": "29a31d39-a5aa-4d35-a462-96d108bcd812",
+      "sourceSha256": "582bcdd1db059cf142acb963fc4124aca594a22d00c52d1251681714720bf787",
+      "bypassed": false,
+      "path": "stereo-lowpass.ultra",
+      "id": "org.alive.stereo-lowpass",
+      "version": 2,
+      "parameters": {
+        "cutoff": 2400.0,
+        "resonance": 0.7
+      }
+    }
+  ],
+  "covering_tooltip": {
+    "action": "covering reorder tooltip",
+    "monotonic": 62905.004272705,
+    "name": "Move Pulse Stereo Utility effect 2 earlier",
+    "owner": 4194307,
+    "rect": [
+      1018,
+      385,
+      52,
+      25
+    ],
+    "hit_path": [
+      927,
+      4204071
+    ]
+  },
+  "single_earlier_click": {
+    "action": "reorder click",
+    "monotonic": 62905.14923876,
+    "name": "Move Pulse Stereo Utility effect 2 earlier",
+    "owner": 4194307,
+    "samples": [
+      {
+        "rect": [
+          1018,
+          385,
+          52,
+          25
+        ],
+        "hit_path": [
+          927,
+          4204071
+        ]
+      },
+      {
+        "rect": [
+          1018,
+          385,
+          52,
+          25
+        ],
+        "hit_path": [
+          927,
+          4194307
+        ]
+      }
+    ],
+    "presses": 1,
+    "releases": 1,
+    "final_rect": [
+      1018,
+      385,
+      52,
+      25
+    ]
+  },
+  "slash_entries": [
+    {
+      "action": "slash location entry",
+      "monotonic": 62897.053114976,
+      "scope": "Load Ultra Device",
+      "ready_before_release": true,
+      "released": true
+    },
+    {
+      "action": "slash location entry",
+      "monotonic": 62899.474512959,
+      "scope": "Load Ultra Device",
+      "ready_before_release": true,
+      "released": true
+    }
+  ],
+  "audio": {
+    "Audio backend": "default",
+    "Audio device": "default",
+    "Audio sample rate": "48000",
+    "Audio buffer frames": "0",
+    "Audio callbacks": "0",
+    "Audio stream errors": "0",
+    "Audio failed": "false",
+    "Audio status": "Audio is off.",
+    "Transport playing": "false",
+    "Absolute frame": "0",
+    "Rejected commands": "0",
+    "Native generation": "19",
+    "Track 1 active voices": "0",
+    "Track 2 active voices": "0"
+  },
+  "quit_exited": true
+}

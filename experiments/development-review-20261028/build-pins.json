@@ -1,0 +1,25 @@
+{
+  "head": "1ebf2161e0fa2a62484566fac65c7e940567f357",
+  "platform": "Linux-7.2.8-10-omarchy-x86_64-with-glibc2.44",
+  "binaries": {
+    "alive": {
+      "path": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/alive",
+      "bytes": 14554264,
+      "sha256": "6ba32745b7fa16b915174d51c6b79f82252c6e26b2bcabaf1984315d187afcd2"
+    },
+    "ultra": {
+      "path": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/ultra",
+      "bytes": 18381352,
+      "sha256": "62383db8f6ea84db28ffe4702aabe8f7835ed793df67005aadacb63df0a13e44"
+    },
+    "libultra_native.so": {
+      "path": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/libultra_native.so",
+      "bytes": 12981880,
+      "sha256": "5ac56cce5977a12f8efa477bfe9b705b8b478f5b8c765bbf858ea1719b92acde"
+    }
+  },
+  "command": "bash apps/alive/build.sh",
+  "build_exit": 0,
+  "warnings": "7 existing Rust dead-code warnings per app build; retained in log",
+  "native_test": "FAIL: original desktop journey reproduces CI hosted-editor Apply closure assertion; exit1"
+}

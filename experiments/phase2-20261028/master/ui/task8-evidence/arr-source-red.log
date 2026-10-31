@@ -1,0 +1,50 @@
+(node:843288) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:26:22] "GET /canvas.html HTTP/1.1" 200 -
+
+Running 1 test using 1 worker
+
+(node:843306) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:843306) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(node:843306) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:26:25] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:26:25] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:26:25] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:26:25] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:26:25] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:26:25] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:26:25] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:26:25] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:26:25] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 03:26:25] "GET /alive-master.mjs HTTP/1.1" 200 -
+  ✘  1 alive-chain.spec.mjs:1915:1 › returning from Master to the same Arrangement occurrence retains parked text (2.1s)
+
+
+  1) alive-chain.spec.mjs:1915:1 › returning from Master to the same Arrangement occurrence retains parked text 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoEqual[2m([22m[32mexpected[39m[2m) // deep equality[22m
+
+    [32m- Expected  - 2[39m
+    [31m+ Received  + 2[39m
+
+    [2m  Array [[22m
+    [32m-   3,[39m
+    [32m-   7,[39m
+    [31m+   17,[39m
+    [31m+   17,[39m
+    [2m  ][22m
+
+      460 |   await openArrangement(page,{width:1440,height:900});const placement=page.getByRole('button',{name:'Select placement p-0',exact:true});await placement.click();
+      461 |   const name=page.getByLabel('MIDI source name',{exact:true});await name.fill('Unfinished source');await name.evaluate(e=>e.setSelectionRange(3,7));
+    > 462 |   await page.locator('#master-select-arrangement').click();await placement.click();await expect(name).toHaveValue('Unfinished source');expect(await name.evaluate(e=>[e.selectionStart,e.selectionEnd])).toEqual([3,7]);expect(await workspaceEdits(page)).toHaveLength(0);
+          |                                                                                                                                                                                                          ^
+      463 | });
+      464 |
+        at /home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/tests/ci/alive-chain.spec.mjs:462:202
+
+    Error Context: ../../../../../../../../../../tmp/alive-task8-arr-source-red/alive-chain-returning-from-54289-urrence-retains-parked-text/error-context.md
+
+  1 failed
+    alive-chain.spec.mjs:1915:1 › returning from Master to the same Arrangement occurrence retains parked text 

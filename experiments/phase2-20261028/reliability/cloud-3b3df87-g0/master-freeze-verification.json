@@ -1,0 +1,25 @@
+{
+  "recordedAt": "2026-10-28T14:59:43.747703+00:00",
+  "reviewedCandidate": "6638858d1ffb65d48b9952e64b7e3c768f3379d1",
+  "integratedFilesByteEqualBeforeStatusEdits": 40,
+  "commands": [
+    {
+      "command": "python3 docs/contracts/alive-master-v1-fixtures/check.py",
+      "result": "fixture identities, exact duplicate paths, dependencies and boundaries verified; application decoder not invoked"
+    },
+    {
+      "command": "cc -std=c11 -Wall -Wextra -Werror -Iapps/ultra/src-tauri/native -Idocs/contracts -x c -c docs/contracts/alive-master-v1.h",
+      "result": "compiled"
+    },
+    {
+      "command": "c++ -std=c++17 -Wall -Wextra -Werror -Iapps/ultra/src-tauri/native -Idocs/contracts -x c++ -c docs/contracts/alive-master-v1.h",
+      "result": "compiled"
+    },
+    {
+      "command": "experiments/clockwork-faust/.deps/rust/bin/rustc --edition=2021 --crate-type lib docs/contracts/alive-master-v1.rs",
+      "result": "compiled"
+    }
+  ],
+  "combinedVerificationShellExitCode": 0,
+  "limits": "Contract fixture/layout verification only; no v5 decoder, native Master, UI, cross-platform runtime or endurance proof."
+}

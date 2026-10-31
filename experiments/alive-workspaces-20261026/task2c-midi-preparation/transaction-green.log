@@ -1,0 +1,31 @@
+tracks=2 roots=2 partition=1 muted=0 removed=0 events=5 steps=4140 PASS
+tracks=2 roots=2 partition=0 muted=0 removed=0 events=5 steps=4140 PASS
+tracks=2 roots=2 partition=31 muted=0 removed=0 events=5 steps=4140 PASS
+tracks=2 roots=2 partition=63 muted=0 removed=0 events=5 steps=4140 PASS
+tracks=2 roots=2 partition=64 muted=0 removed=0 events=5 steps=4140 PASS
+tracks=2 roots=2 partition=127 muted=0 removed=0 events=5 steps=4140 PASS
+tracks=2 roots=2 partition=1024 muted=0 removed=0 events=5 steps=4140 PASS
+tracks=8 roots=8 partition=1 muted=0 removed=0 events=3 steps=4184 PASS
+tracks=8 roots=8 partition=0 muted=0 removed=0 events=3 steps=4184 PASS
+tracks=8 roots=8 partition=31 muted=0 removed=0 events=3 steps=4184 PASS
+tracks=8 roots=8 partition=63 muted=0 removed=0 events=3 steps=4184 PASS
+tracks=8 roots=8 partition=64 muted=0 removed=0 events=3 steps=4184 PASS
+tracks=8 roots=8 partition=127 muted=0 removed=0 events=3 steps=4184 PASS
+tracks=8 roots=8 partition=1024 muted=0 removed=0 events=3 steps=4184 PASS
+tracks=2 roots=2 partition=31 muted=1 removed=0 events=4 steps=2082 PASS
+tracks=2 roots=2 partition=1024 muted=1 removed=1 events=1 steps=2062 PASS
+tracks=2 roots=4 partition=31 muted=1 removed=0 events=4 steps=2082 PASS
+tracks=2 roots=4 partition=1024 muted=1 removed=1 events=1 steps=2062 PASS
+tracks=2 roots=6 partition=31 muted=1 removed=0 events=4 steps=2082 PASS
+tracks=2 roots=6 partition=1024 muted=1 removed=1 events=1 steps=2062 PASS
+tracks=2 roots=4 partition=31 muted=1 removed=0 events=4 steps=2082 PASS
+tracks=2 roots=4 partition=1024 muted=1 removed=1 events=1 steps=2062 PASS
+work tracks=2 roots=6 actual-frame/admitted-frame actual-window/admitted-window: 1/12,2/24 3/30,3/48 1/10,1/16 20/200,20/320 0/0,0/0 4/34,4/40 reads/probes/clears/rolling1024=PASS
+work tracks=8 roots=8 actual-frame/admitted-frame actual-window/admitted-window: 1/11,1/21 1/27,1/32 1/9,1/14 14/378,14/448 0/0,0/0 4/60,4/65 reads/probes/clears/rolling1024=PASS
+eight placements/track, 64 STARTs: eight pre-reserved probes, one horizon=PASS
+transactional malformed/ownership/unused-source/loops/audio refusals=29 future-actions=4 PASS
+shape-valid eight-track/four-slot refusal placement=66/64 width=1 PASS
+two-track offset/automation/off/chased-before-ordinary/adjacent-one-clear=PASS
+direct native rejected configuration preserves playing v3/v4 publication and continuation=PASS
+removed configuration: all real roots remain silent across later fragments=PASS
+PASS: finite multi-track MIDI preparation and independent real PCM

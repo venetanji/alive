@@ -1,0 +1,1 @@
+/usr/bin/c++ -O3 -DNDEBUG -Wl,--dependency-file=CMakeFiles/ultra-diagnostic.dir/link.d "CMakeFiles/ultra-diagnostic.dir/src-tauri/native/diagnostic.cpp.o" -o ultra-diagnostic  -Wl,-rpath,"\$ORIGIN" libultra_native.so

@@ -1,0 +1,32 @@
+
+running 1 test
+
+thread 'session::tests::v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal' (2058918) panicked at src/session/tests.rs:691:9:
+
+running 1 test
+test session::tests::v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal ... FAILED
+
+failures:
+
+failures:
+    session::tests::v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 248 filtered out; finished in 0.12s
+
+
+
+thread 'session::tests::v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal' (2058920) panicked at src/session/tests.rs:719:5:
+assertion failed: prepare(&Document::WorkspacesV4(larger),
+            &example_path()).unwrap_err().contains("Profile 2")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test session::tests::v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal ... FAILED
+
+failures:
+
+failures:
+    session::tests::v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 248 filtered out; finished in 0.13s
+

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Alive",
+  "version": "0.1.0-rc.1",
+  "identifier": "org.alive.session",
+  "build": { "frontendDist": "../../ultra/ui" },
+  "app": {
+    "enableGTKAppId": true,
+    "withGlobalTauri": true,
+    "windows": [],
+    "security": {
+      "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src ipc: http://ipc.localhost; object-src 'none'; base-uri 'none'"
+    }
+  },
+  "bundle": {
+    "active": false,
+    "icon": ["../../ultra/src-tauri/icons/icon.ico", "../../ultra/src-tauri/icons/icon.png"],
+    "resources": {
+      "../examples/empty-workspaces.alive": "alive-session/alive/examples/empty-workspaces.alive",
+      "../examples/two-instruments.alive": "alive-session/alive/examples/two-instruments.alive",
+      "../examples/midi-arrangement.alive": "alive-session/alive/examples/midi-arrangement.alive",
+      "../examples/quantized-midi.alive": "alive-session/alive/examples/quantized-midi.alive",
+      "../../ultra/examples/subtractive.ultra": "alive-session/ultra/examples/subtractive.ultra",
+      "../../ultra/examples/utility.ultra": "alive-session/ultra/examples/utility.ultra",
+      "../../ultra/examples/stereo-lowpass.ultra": "alive-session/ultra/examples/stereo-lowpass.ultra"
+    }
+  }
+}

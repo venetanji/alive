@@ -1,0 +1,114 @@
+[
+  {
+    "command": [
+      "/tmp/alive-task13b-evidence/telemetry-binaries/enabled",
+      "--exact",
+      "audio::instrumentation::native_saved_clip_release_overhead",
+      "--ignored",
+      "--nocapture"
+    ],
+    "fixture": "two",
+    "environment": {
+      "LD_LIBRARY_PATH": "/tmp/alive-task13b-evidence/telemetry-binaries",
+      "ALIVE_MEASUREMENT_SESSION": "/tmp/alive-task13b-evidence/two.alive",
+      "ALIVE_MEASUREMENT_OUTPUT": "/tmp/alive-task13b-evidence/telemetry-final-1/raw",
+      "ALIVE_MEASUREMENT_SAMPLES": "1200"
+    }
+  },
+  {
+    "command": [
+      "/tmp/alive-task13b-evidence/telemetry-binaries/disabled",
+      "--exact",
+      "audio::instrumentation::native_saved_clip_release_overhead",
+      "--ignored",
+      "--nocapture"
+    ],
+    "fixture": "two",
+    "environment": {
+      "LD_LIBRARY_PATH": "/tmp/alive-task13b-evidence/telemetry-binaries",
+      "ALIVE_MEASUREMENT_SESSION": "/tmp/alive-task13b-evidence/two.alive",
+      "ALIVE_MEASUREMENT_OUTPUT": "/tmp/alive-task13b-evidence/telemetry-final-1/raw",
+      "ALIVE_MEASUREMENT_SAMPLES": "1200"
+    }
+  },
+  {
+    "command": [
+      "/tmp/alive-task13b-evidence/telemetry-binaries/enabled",
+      "--exact",
+      "audio::instrumentation::native_saved_clip_release_overhead",
+      "--ignored",
+      "--nocapture"
+    ],
+    "fixture": "four",
+    "environment": {
+      "LD_LIBRARY_PATH": "/tmp/alive-task13b-evidence/telemetry-binaries",
+      "ALIVE_MEASUREMENT_SESSION": "/tmp/alive-task13b-evidence/four.alive",
+      "ALIVE_MEASUREMENT_OUTPUT": "/tmp/alive-task13b-evidence/telemetry-final-1/raw",
+      "ALIVE_MEASUREMENT_SAMPLES": "1200"
+    }
+  },
+  {
+    "command": [
+      "/tmp/alive-task13b-evidence/telemetry-binaries/disabled",
+      "--exact",
+      "audio::instrumentation::native_saved_clip_release_overhead",
+      "--ignored",
+      "--nocapture"
+    ],
+    "fixture": "four",
+    "environment": {
+      "LD_LIBRARY_PATH": "/tmp/alive-task13b-evidence/telemetry-binaries",
+      "ALIVE_MEASUREMENT_SESSION": "/tmp/alive-task13b-evidence/four.alive",
+      "ALIVE_MEASUREMENT_OUTPUT": "/tmp/alive-task13b-evidence/telemetry-final-1/raw",
+      "ALIVE_MEASUREMENT_SAMPLES": "1200"
+    }
+  },
+  {
+    "command": [
+      "/tmp/alive-task13b-evidence/telemetry-binaries/enabled",
+      "--exact",
+      "audio::instrumentation::native_saved_clip_release_overhead",
+      "--ignored",
+      "--nocapture"
+    ],
+    "fixture": "eight",
+    "environment": {
+      "LD_LIBRARY_PATH": "/tmp/alive-task13b-evidence/telemetry-binaries",
+      "ALIVE_MEASUREMENT_SESSION": "/tmp/alive-task13b-evidence/eight.alive",
+      "ALIVE_MEASUREMENT_OUTPUT": "/tmp/alive-task13b-evidence/telemetry-final-1/raw",
+      "ALIVE_MEASUREMENT_SAMPLES": "1200"
+    }
+  },
+  {
+    "command": [
+      "/tmp/alive-task13b-evidence/telemetry-binaries/disabled",
+      "--exact",
+      "audio::instrumentation::native_saved_clip_release_overhead",
+      "--ignored",
+      "--nocapture"
+    ],
+    "fixture": "eight",
+    "environment": {
+      "LD_LIBRARY_PATH": "/tmp/alive-task13b-evidence/telemetry-binaries",
+      "ALIVE_MEASUREMENT_SESSION": "/tmp/alive-task13b-evidence/eight.alive",
+      "ALIVE_MEASUREMENT_OUTPUT": "/tmp/alive-task13b-evidence/telemetry-final-1/raw",
+      "ALIVE_MEASUREMENT_SAMPLES": "1200"
+    }
+  },
+  {
+    "command": [
+      "/tmp/alive-task13b-evidence/telemetry-binaries/enabled",
+      "--exact",
+      "audio::instrumentation::paired_release_overhead",
+      "--ignored",
+      "--nocapture"
+    ],
+    "fixture": "two",
+    "environment": {
+      "LD_LIBRARY_PATH": "/tmp/alive-task13b-evidence/telemetry-binaries",
+      "ALIVE_MEASUREMENT_SESSION": "/tmp/alive-task13b-evidence/two.alive",
+      "ALIVE_MEASUREMENT_OUTPUT": "/tmp/alive-task13b-evidence/telemetry-final-1/raw",
+      "ALIVE_MEASUREMENT_SAMPLES": "1200"
+    }
+  }
+]

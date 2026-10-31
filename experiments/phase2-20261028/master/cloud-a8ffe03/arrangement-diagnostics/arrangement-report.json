@@ -1,0 +1,131 @@
+{
+  "physical_audio": false,
+  "actions": [
+    {
+      "action": "loaded",
+      "monotonic": 1450.305999984,
+      "process_identity": {
+        "executable_path": "/home/runner/work/alive/alive/apps/ultra/src-tauri/target/release/alive",
+        "executable": {
+          "device": 2049,
+          "inode": 9467310,
+          "sha256": "42a5e210e0b6b92a18140607dcc0843ac4cf871dc3be841129529ac264fc1af9"
+        },
+        "libraries": [
+          {
+            "path": "/home/runner/work/alive/alive/apps/ultra/src-tauri/target/release/libultra_native.so",
+            "mapping_device": [
+              8,
+              1
+            ],
+            "mapping_inode": 9467299,
+            "device": 2049,
+            "inode": 9467299,
+            "sha256": "af1b562173da259dccb5d826901d3243c9ceba6f1557096795a788bb8e0a231c"
+          }
+        ]
+      }
+    },
+    {
+      "action": "native create, note, place, move, right resize, fixed-end left trim",
+      "monotonic": 1465.917154656,
+      "placement_id": "placement-ed1ed433d2d4d73ccd91b550b40354f6",
+      "video": "arrangement-interaction.mp4",
+      "video_scope": "UI interaction only; no audio or exact timing proof"
+    },
+    {
+      "action": "complete candidate refused without changing preparation or clearing pending history",
+      "monotonic": 1492.562245137,
+      "refusal": "Measured workspace profile 1 refused the complete candidate: Complete MIDI envelope exceeds bounded preparation policy. (resource 2, observed 21, limit 18). Keep the current playable project, reduce simultaneous music or simplify chains. Profile 2 is not admitted.",
+      "native_generation": "3",
+      "prepared_placement": "placement-c532c9612459d4c4de79a3c4caaaa690"
+    },
+    {
+      "action": "explicit original-occurrence trim to fit partial-brace admission",
+      "monotonic": 1502.113263309,
+      "range": [
+        2,
+        8
+      ],
+      "offset": 2
+    },
+    {
+      "action": "saved",
+      "monotonic": 1505.232880509,
+      "path": "/home/runner/work/alive/alive/apps/ultra/build/arrangement-desktop-evidence/authored.alive"
+    },
+    {
+      "action": "occurrence edits, refusal, independent copy, Session reuse, delete/undo/redo, stopped Apply",
+      "monotonic": 1505.233322307,
+      "first": {
+        "id": "placement-ed1ed433d2d4d73ccd91b550b40354f6",
+        "trackId": "track-1",
+        "sourceId": "source-2e95bb6e0bf296871397a02e627c907c",
+        "start": 9.5,
+        "duration": 2.5,
+        "sourceOffset": {
+          "kind": "beats",
+          "value": 0.25
+        },
+        "loopEnabled": true
+      },
+      "independent": {
+        "id": "placement-7310cf159bf86dd4cc12c3df2b8649da",
+        "trackId": "track-1",
+        "sourceId": "source-954ca61783a5fb04fd951389995f699f",
+        "start": 12.5,
+        "duration": 2.5,
+        "sourceOffset": {
+          "kind": "beats",
+          "value": 0.25
+        },
+        "loopEnabled": true
+      }
+    },
+    {
+      "action": "failure",
+      "monotonic": 1509.963142894,
+      "error": "AssertionError('Native disclosure target remains occluded or unavailable: Audio details')"
+    },
+    {
+      "action": "capture finalized after interrupted journey",
+      "monotonic": 1510.281980127
+    }
+  ],
+  "kind": "Actual Tauri/WebKit with private software PipeWire",
+  "expected_admission_rejections": 1,
+  "playing_started": 1506.863073518,
+  "interrupted_audio": {
+    "frames": 226816,
+    "seconds": 4.725333333333333,
+    "peak": 0.16347549855709076,
+    "one_second_peaks": [
+      0.0,
+      0.10983739048242569,
+      0.16347549855709076,
+      0.1610753834247589,
+      0.09816010296344757
+    ],
+    "unequal_stereo_samples_after_setup": 0,
+    "sha256": "cea8589f441078c44aa8afb9482b981aa31bad4df30f407016279992ab11e9fa",
+    "path": "midi-arrangement-playback.f32",
+    "physical_audio": false,
+    "supervision": {
+      "complete": true,
+      "reason": "requested_stop",
+      "group_id": 21601,
+      "recorder_pid": 21604,
+      "returncode": 1,
+      "wall_seconds": 4.86707698400005,
+      "audio_bytes": 1814528,
+      "stderr_bytes": 0,
+      "limits": {
+        "wall_seconds": 2700.0,
+        "audio_bytes": 1073741824,
+        "metadata_bytes": 67108864,
+        "stderr_bytes": 1048576,
+        "disk_reserve_bytes": 268435456
+      }
+    }
+  }
+}

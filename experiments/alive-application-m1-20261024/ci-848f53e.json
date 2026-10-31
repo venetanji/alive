@@ -1,0 +1,121 @@
+{
+  "sourceCommit": "848f53ee3a570fde9ba607b6f8458c475bcab7fc",
+  "observedAtUtc": "2026-10-24T02:05:16.812012+00:00",
+  "runs": [
+    {
+      "conclusion": "success",
+      "createdAt": "2026-10-24T01:35:32Z",
+      "headSha": "848f53ee3a570fde9ba607b6f8458c475bcab7fc",
+      "jobs": [
+        {
+          "name": "UI, protocol, and reference tests",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-24T01:36:32Z",
+          "completedAt": "2026-10-24T01:40:10Z",
+          "url": "https://github.com/venetanji/alive/actions/runs/40050492761/job/120742074479"
+        },
+        {
+          "name": "Linux native build, Rust bridge, and CPAL loopback",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-24T01:36:32Z",
+          "completedAt": "2026-10-24T01:50:01Z",
+          "url": "https://github.com/venetanji/alive/actions/runs/40050492761/job/120742074657"
+        },
+        {
+          "name": "Chromium canvas editing smoke",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-24T01:36:32Z",
+          "completedAt": "2026-10-24T01:38:48Z",
+          "url": "https://github.com/venetanji/alive/actions/runs/40050492761/job/120742074710"
+        }
+      ],
+      "status": "completed",
+      "updatedAt": "2026-10-24T01:50:01Z",
+      "url": "https://github.com/venetanji/alive/actions/runs/40050492761"
+    },
+    {
+      "conclusion": "success",
+      "createdAt": "2026-10-24T01:35:32Z",
+      "headSha": "848f53ee3a570fde9ba607b6f8458c475bcab7fc",
+      "jobs": [
+        {
+          "name": "Package x86_64-apple-darwin",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-24T01:35:54Z",
+          "completedAt": "2026-10-24T02:04:43Z",
+          "url": "https://github.com/venetanji/alive/actions/runs/40050492765/job/120741924581"
+        },
+        {
+          "name": "Package x86_64-pc-windows-msvc",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-24T01:35:53Z",
+          "completedAt": "2026-10-24T01:55:26Z",
+          "url": "https://github.com/venetanji/alive/actions/runs/40050492765/job/120741924771"
+        },
+        {
+          "name": "Package x86_64-unknown-linux-gnu",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-24T01:35:53Z",
+          "completedAt": "2026-10-24T01:53:33Z",
+          "url": "https://github.com/venetanji/alive/actions/runs/40050492765/job/120741924807"
+        },
+        {
+          "name": "Package aarch64-apple-darwin",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-24T01:35:53Z",
+          "completedAt": "2026-10-24T01:49:43Z",
+          "url": "https://github.com/venetanji/alive/actions/runs/40050492765/job/120741924862"
+        },
+        {
+          "name": "Publish complete tag release",
+          "status": "completed",
+          "conclusion": "skipped",
+          "startedAt": "2026-10-24T02:04:43Z",
+          "completedAt": "2026-10-24T02:04:43Z",
+          "url": "https://github.com/venetanji/alive/actions/runs/40050492765/job/120748476160"
+        }
+      ],
+      "status": "completed",
+      "updatedAt": "2026-10-24T02:04:44Z",
+      "url": "https://github.com/venetanji/alive/actions/runs/40050492765"
+    }
+  ],
+  "linuxArtifact": {
+    "name": "desktop-x86_64-unknown-linux-gnu",
+    "id": 12543338489,
+    "run": 40050492765
+  },
+  "downloadedAlivePackages": [
+    {
+      "path": "dist/alive/ci-848f53e/Alive-0.1.0-rc.1-x86_64-unknown-linux-gnu.AppImage",
+      "sha256": "c0992683cc89911311147174b4001998b2670a690ed808fec7e28fc061662a62",
+      "bytes": 84060664
+    },
+    {
+      "path": "dist/alive/ci-848f53e/Alive-0.1.0-rc.1-x86_64-unknown-linux-gnu.deb",
+      "sha256": "f974af09ed337dce4f66dd876f586c400eb6d1412f3327818973f3c6e0ee7e78",
+      "bytes": 7718650
+    }
+  ],
+  "localAppImageVerification": {
+    "passed": true,
+    "checks": [
+      "published artifact checksums",
+      "committed notice hashes",
+      "own executable and native linkage",
+      "native ABI smoke",
+      "bundled saved session render outside repository"
+    ],
+    "log": "/tmp/alive-m1-ci-appimage-848f53e.log",
+    "graphicalWalkthrough": false,
+    "physicalAudio": false
+  },
+  "scope": "M1 checkpoint only; later local effect/chain changes are not qualified by these CI runs; publishing skipped"
+}

@@ -1,0 +1,49 @@
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+    Finished `release` profile [optimized] target(s) in 13.22s
+     Running unittests src/lib.rs (apps/ultra/src-tauri/target/release/deps/ultra_desktop-9e1feeb9c9029f98)
+
+running 19 tests
+test document_windows::lifecycle_tests::app_menu_routes_to_focus_and_window_menu_keeps_its_source ... ok
+test document_windows::lifecycle_tests::exit_requires_every_current_owner_approval ... ok
+test document_windows::lifecycle_tests::multi_owner_quit_waits_for_each_flush_and_cancel_preserves_owner ... ok
+test document_windows::lifecycle_tests::quit_cancel_releases_every_flush_and_allows_a_new_round ... ok
+test document_windows::lifecycle_tests::quit_repeated_requests_pending_save_and_stale_approvals_are_inert ... ok
+test document_windows::lifecycle_tests::quit_preparation_does_not_close_other_owners_before_cancel ... ok
+test document_windows::lifecycle_tests::native_quit_requests_coalesce_and_old_dispatch_dies_after_cancel ... ok
+test document_windows::lifecycle_tests::quit_save_retains_owner_until_save_and_final_close ... ok
+test document_windows::lifecycle_tests::focused_child_menu_retains_owner_authority ... ok
+test document_windows::commands::tests::cable_midpoints_owner_commits_and_history_preserve_fresh_native_recall ... ok
+test document_windows::commands::tests::arithmetic_shared_rhs_history_retains_hot_state_and_mode_history_reinstalls ... ok
+test document_windows::commands::tests::forced_graph_installs_cannot_silently_ignore_message_text_intent ... ok
+test document_windows::commands::tests::message_box_shared_restore_history_and_child_view_serials ... ok
+test document_windows::commands::tests::integer_number_shared_edits_and_history_keep_runtime_and_tab_independent ... ok
+test document_windows::commands::tests::retiring_ultra_owner_refuses_admission_history_and_root_close ... ok
+
+thread 'document_windows::commands::tests::running_ultra_owner_keeps_live_authoring_available' panicked at src/document_commands_tests.rs:54:5:
+normal running epochs must still admit live edits
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'document_windows::commands::tests::retiring_ultra_owner_refuses_root_close_independently' panicked at src/document_commands_tests.rs:33:60:
+called `Result::unwrap()` on an `Err` value: PoisonError { .. }
+
+thread 'document_windows::commands::tests::shared_admission_preserves_live_state_and_uses_atomic_hot_numeric_updates' panicked at src/document_commands_tests.rs:297:60:
+called `Result::unwrap()` on an `Err` value: PoisonError { .. }
+test document_windows::commands::tests::running_ultra_owner_keeps_live_authoring_available ... FAILED
+test document_windows::commands::tests::retiring_ultra_owner_refuses_root_close_independently ... FAILED
+test document_windows::commands::tests::shared_admission_preserves_live_state_and_uses_atomic_hot_numeric_updates ... FAILED
+
+thread 'document_windows::lifecycle_tests::approved_ultra_quit_retains_pending_roots_until_terminal_exit' panicked at src/document_windows.rs:829:9:
+assertion failed: String::from_utf8_lossy(&output.stderr).contains("incomplete_audio_retirement")
+test document_windows::lifecycle_tests::approved_ultra_quit_retains_pending_roots_until_terminal_exit ... FAILED
+
+failures:
+
+failures:
+    document_windows::commands::tests::retiring_ultra_owner_refuses_root_close_independently
+    document_windows::commands::tests::running_ultra_owner_keeps_live_authoring_available
+    document_windows::commands::tests::shared_admission_preserves_live_state_and_uses_atomic_hot_numeric_updates
+    document_windows::lifecycle_tests::approved_ultra_quit_retains_pending_roots_until_terminal_exit
+
+test result: FAILED. 15 passed; 4 failed; 0 ignored; 0 measured; 188 filtered out; finished in 0.08s
+
+error: test failed, to rerun pass `--lib`

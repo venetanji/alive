@@ -7,9 +7,9 @@ import {createSharedCanvasController} from './canvas-shared.mjs';
 
 const clone = value => structuredClone(value);
 const tick = () => new Promise(resolve=>setImmediate(resolve));
-const initial = () => ({version:2,profile:'ultra-patcher-v2',nodes:[
+const initial = () => ({version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[
   makeNode('number',1),makeNode('number',2),
-  {...makeNode('patcher',3),patcher:{nodes:[makeNode('number',4)],edges:[]}},
+  {...makeNode('patcher',3),patcher:{presentation:null,nodes:[makeNode('number',4)],edges:[]}},
 ],edges:[]});
 
 // This service owns the tree/history. Each controller gets only an IPC view of it.
@@ -85,8 +85,8 @@ test('device bindings address the root tree while retaining the current child vi
   assert.equal(host.calls.some(call=>call.name==='canvas_apply'),false);
 });
 test('shared root and child modes commit structurally while operands retain live admission',async()=>{
-  const patch={version:2,profile:'ultra-patcher-v2',nodes:[makeNode('add',1,0,0,{rhs:2,numericmode:1}),
-    {...makeNode('patcher',3),patcher:{nodes:[makeNode('modulo',4,0,0,{rhs:3,numericmode:1})],edges:[]}}],edges:[]};
+  const patch={version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[makeNode('add',1,0,0,{rhs:2,numericmode:1}),
+    {...makeNode('patcher',3),patcher:{presentation:null,nodes:[makeNode('modulo',4,0,0,{rhs:3,numericmode:1})],edges:[]}}],edges:[]};
   const {host,owner,child}=await views({broadcast:true,patch});
   const initialRevision=owner.getState().revision;
   owner.parameter(1,'numericmode',2);await owner.flush();
@@ -119,6 +119,20 @@ test('optimistic edits serialize and stale disjoint edits rebase without overwri
   assert.equal(host.patch.nodes[0].x,120);assert.equal(host.patch.nodes[2].patcher.nodes[0].x,200);
   const commits=host.calls.filter(call=>call.name==='document_commit');
   assert.ok(commits.some(call=>call.args.baseRevision===1));assert.equal(host.revision,3);
+});
+test('overlapping root and child authoring settles before the child close barrier completes',async()=>{
+  const {host,owner,child}=await views({broadcast:true}),release=host.holdNextCommit();
+  child.parameter(4,'value',73);await tick();
+  const closing=child.flushBeforeClose({requestLabel:'child',token:7});
+  owner.parameter(1,'value',42);await owner.flush();
+  assert.equal(host.revision,2);assert.equal(host.patch.nodes[0].params.value,42);
+  let closed=false;closing.then(()=>{closed=true;});await tick();assert.equal(closed,false);
+  release();await closing;
+  assert.equal(host.revision,3);assert.equal(host.patch.nodes[0].params.value,42);
+  assert.equal(host.patch.nodes[2].patcher.nodes[0].params.value,73);
+  const commits=host.calls.filter(call=>call.name==='document_commit');
+  assert.deepEqual(commits.map(call=>[call.label,call.args.baseRevision]),[['child',1],['owner',1],['child',2]]);
+  assert.equal(child.getState().closing,true);child.cancelClose({requestLabel:'child',token:7});
 });
 test('simultaneous changes to one field retain the canonical tree and report conflict',async()=>{
   const {host,owner,child}=await views();child.reveal(1);
@@ -268,6 +282,31 @@ test('an acknowledged view blocks new authoring until every matching close barri
   child.cancelClose(first);assert.equal(child.getState().closing,true);
   child.cancelClose(second);assert.equal(child.getState().closing,false);
   child.move(4,200,200);await child.flush();assert.equal(host.patch.nodes[2].patcher.nodes[0].x,200);
+});
+test('Save preflight allows held device note release without stopping the patch',async()=>{
+  const {createDevicePlayer}=await import('./canvas-device-player.mjs');
+  const {host,owner}=await views({patch:{version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[makeNode('poly_note',2)],edges:[]}});
+  const player=createDevicePlayer({send:note=>owner.deviceEvent(2,0,note),stop:()=>owner.stop()});
+  assert.equal(await player.press(60,'key:a'),true);
+  await owner.flushBeforeClose({requestLabel:'save/owner',token:1,purpose:'save'});
+  assert.throws(()=>owner.parameter(2,'voices',3),/clos/i);
+  assert.equal(await player.release('key:a'),true);await owner.flush();
+  const events=host.calls.filter(call=>call.name==='canvas_event');assert.deepEqual(events.map(call=>call.args.value),[[60,100],[60,0]]);
+  assert.equal(host.calls.filter(call=>call.name==='canvas_stop').length,0);
+  await owner.flushBeforeClose({requestLabel:'owner',token:2});
+  assert.equal(await owner.deviceEvent(2,0,[61,0]),false,'an overlapping genuine close keeps its veto');
+  owner.cancelClose({requestLabel:'owner',token:2});
+  owner.cancelClose({requestLabel:'save/owner',token:1});
+});
+test('a genuine close barrier retains the existing device release Stop fallback',async()=>{
+  const {createDevicePlayer}=await import('./canvas-device-player.mjs');
+  const {host,owner}=await views({patch:{version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[makeNode('poly_note',2)],edges:[]}});
+  const player=createDevicePlayer({send:note=>owner.deviceEvent(2,0,note),stop:()=>owner.stop()});
+  assert.equal(await player.press(60,'key:a'),true);await owner.flushBeforeClose({requestLabel:'owner',token:2});
+  assert.equal(await player.release('key:a'),false);await owner.flush();
+  assert.deepEqual(host.calls.filter(call=>call.name==='canvas_event').map(call=>call.args.value),[[60,100]]);
+  assert.equal(host.calls.filter(call=>call.name==='canvas_stop').length,1);
+  owner.cancelClose({requestLabel:'owner',token:2});
 });
 
 test('a pending undo rejected by owner CAS cancels the close flush',async()=>{

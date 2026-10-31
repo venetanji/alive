@@ -1,0 +1,19 @@
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+    Finished `release` profile [optimized] target(s) in 13.64s
+     Running unittests src/lib.rs (apps/ultra/src-tauri/target/release/deps/ultra_desktop-9e1feeb9c9029f98)
+
+running 1 test
+
+thread 'document_windows::commands::tests::canvas_parameter_retirement_preserves_numeric_history_and_live_edits' panicked at src/document_commands_tests.rs:39:5:
+numeric route passed unresolved retirement
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test document_windows::commands::tests::canvas_parameter_retirement_preserves_numeric_history_and_live_edits ... FAILED
+
+failures:
+
+failures:
+    document_windows::commands::tests::canvas_parameter_retirement_preserves_numeric_history_and_live_edits
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 208 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `--lib`

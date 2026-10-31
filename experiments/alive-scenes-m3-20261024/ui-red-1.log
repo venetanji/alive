@@ -1,0 +1,61 @@
+✖ scene controls launch a prepared row once without selection or document edits (16.824763ms)
+✖ scene receipt shows separate member outcomes and never presents it as transport success (7.701297ms)
+✖ queued scene captures preparation at gesture and late result preserves newer selection and focus (5.672273ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 0
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 116.18562
+
+✖ failing tests:
+
+test at apps/ultra/ui/alive-dom.test.mjs:34:1
+✖ scene controls launch a prepared row once without selection or document edits (16.824763ms)
+  AssertionError [ERR_ASSERTION]: scene row has an explicit launch button
+      at TestContext.<anonymous> (file:///home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive-dom.test.mjs:38:51)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at apps/ultra/ui/alive-dom.test.mjs:46:1
+✖ scene receipt shows separate member outcomes and never presents it as transport success (7.701297ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(result)
+  
+      at TestContext.<anonymous> (file:///home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive-dom.test.mjs:50:52)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at apps/ultra/ui/alive-dom.test.mjs:55:1
+✖ queued scene captures preparation at gesture and late result preserves newer selection and focus (5.672273ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(launch)
+  
+      at TestContext.<anonymous> (file:///home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/ui/alive-dom.test.mjs:59:51)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

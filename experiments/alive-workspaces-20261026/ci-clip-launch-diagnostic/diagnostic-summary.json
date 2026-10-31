@@ -1,0 +1,1963 @@
+{
+  "source_pin": "729dc9a555a389130304fe52b081bae351f814da",
+  "command_exit": 1,
+  "stopped_launch_result": "unchanged original assertion passed in this observed run; original failure cause unresolved",
+  "late_failure": "Missing native control: Save Alive audio settings at check_alive_observability.py:153 during first final qualification cycle",
+  "snapshots": {
+    "before-original-launch": {
+      "start_utc": "2026-10-26T05:31:38.158367+00:00",
+      "start_monotonic": 11630.960976372,
+      "end_monotonic": 11631.602508546,
+      "overhead_seconds": 0.6415321740005311,
+      "native_input_focus": 4194307,
+      "owned_main_window": 4194307,
+      "nodes": {
+        "Launch Pulse Clip 1": {
+          "name": "Launch Pulse Clip 1",
+          "role": "button",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "screen_rect": [
+            555,
+            159,
+            49,
+            24
+          ],
+          "native_hit_path": [
+            927,
+            4194307
+          ]
+        },
+        "Select Pulse slot 2": {
+          "name": "Select Pulse slot 2",
+          "role": "toggle button",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": true,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "screen_rect": [
+            159,
+            203,
+            395,
+            24
+          ]
+        },
+        "Pulse clip runtime": {
+          "name": "Pulse clip runtime",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "Cued Clip 1 copy",
+          "text_truncated": false,
+          "screen_rect": [
+            156,
+            361,
+            451,
+            27
+          ]
+        },
+        "Harmony clip runtime": {
+          "name": "Harmony clip runtime",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "Cued Clip 1",
+          "text_truncated": false,
+          "screen_rect": [
+            608,
+            361,
+            451,
+            27
+          ]
+        },
+        "Session status": {
+          "name": "Session status",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "Transport request 1 applied",
+          "text_truncated": false,
+          "screen_rect": [
+            12,
+            773,
+            1069,
+            18
+          ]
+        },
+        "Alive audio settings": {
+          "name": "Alive audio settings",
+          "role": "button",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "screen_rect": [
+            1093,
+            768,
+            95,
+            27
+          ]
+        },
+        "Audio details": {
+          "name": "Audio details",
+          "role": "unknown",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": true,
+            "EDITABLE": false
+          },
+          "text": "\ufffcAudio details",
+          "text_truncated": false,
+          "screen_rect": [
+            12,
+            578,
+            1176,
+            17
+          ]
+        },
+        "Audio backend": {
+          "name": "Audio backend",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "PipeWire",
+          "text_truncated": false,
+          "screen_rect": [
+            241,
+            604,
+            50,
+            17
+          ]
+        },
+        "Audio device": {
+          "name": "Audio device",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "default_output",
+          "text_truncated": false,
+          "screen_rect": [
+            512,
+            604,
+            78,
+            17
+          ]
+        },
+        "Audio sample rate": {
+          "name": "Audio sample rate",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "48000",
+          "text_truncated": false,
+          "screen_rect": [
+            854,
+            604,
+            35,
+            17
+          ]
+        },
+        "Audio buffer frames": {
+          "name": "Audio buffer frames",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "512",
+          "text_truncated": false,
+          "screen_rect": [
+            1167,
+            604,
+            21,
+            17
+          ]
+        },
+        "Audio callbacks": {
+          "name": "Audio callbacks",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "446",
+          "text_truncated": false,
+          "screen_rect": [
+            270,
+            626,
+            21,
+            17
+          ]
+        },
+        "Audio stream errors": {
+          "name": "Audio stream errors",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "0",
+          "text_truncated": false,
+          "screen_rect": [
+            583,
+            626,
+            7,
+            17
+          ]
+        },
+        "Audio failed": {
+          "name": "Audio failed",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "false",
+          "text_truncated": false,
+          "screen_rect": [
+            863,
+            626,
+            26,
+            17
+          ]
+        },
+        "Audio status": {
+          "name": "Audio status",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "Audio output is running.",
+          "text_truncated": false,
+          "screen_rect": [
+            1059,
+            626,
+            129,
+            17
+          ]
+        },
+        "Transport playing": {
+          "name": "Transport playing",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "false",
+          "text_truncated": false,
+          "screen_rect": [
+            265,
+            647,
+            26,
+            17
+          ]
+        },
+        "Absolute frame": {
+          "name": "Absolute frame",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "421888",
+          "text_truncated": false,
+          "screen_rect": [
+            548,
+            647,
+            42,
+            17
+          ]
+        },
+        "Rejected commands": {
+          "name": "Rejected commands",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "0",
+          "text_truncated": false,
+          "screen_rect": [
+            882,
+            647,
+            7,
+            17
+          ]
+        },
+        "Native generation": {
+          "name": "Native generation",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "9",
+          "text_truncated": false,
+          "screen_rect": [
+            1181,
+            647,
+            7,
+            17
+          ]
+        }
+      },
+      "bounded_truncation": false,
+      "errors": []
+    },
+    "after-original-launch": {
+      "start_utc": "2026-10-26T05:31:38.913809+00:00",
+      "start_monotonic": 11631.716423626,
+      "end_monotonic": 11632.434134603,
+      "overhead_seconds": 0.7177109770000243,
+      "native_input_focus": 4194307,
+      "owned_main_window": 4194307,
+      "nodes": {
+        "Launch Pulse Clip 1": {
+          "name": "Launch Pulse Clip 1",
+          "role": "button",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": true,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "screen_rect": [
+            555,
+            159,
+            49,
+            24
+          ],
+          "native_hit_path": [
+            927,
+            4194307
+          ]
+        },
+        "Select Pulse slot 2": {
+          "name": "Select Pulse slot 2",
+          "role": "toggle button",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": true,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "screen_rect": [
+            159,
+            203,
+            395,
+            24
+          ]
+        },
+        "Pulse clip runtime": {
+          "name": "Pulse clip runtime",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "Cued Clip 1 / request 2 applied for Clip 1",
+          "text_truncated": false,
+          "screen_rect": [
+            156,
+            361,
+            451,
+            27
+          ]
+        },
+        "Harmony clip runtime": {
+          "name": "Harmony clip runtime",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "Cued Clip 1",
+          "text_truncated": false,
+          "screen_rect": [
+            608,
+            361,
+            451,
+            27
+          ]
+        },
+        "Session status": {
+          "name": "Session status",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "request 2 queued for Clip 1",
+          "text_truncated": false,
+          "screen_rect": [
+            12,
+            773,
+            1069,
+            18
+          ]
+        },
+        "Alive audio settings": {
+          "name": "Alive audio settings",
+          "role": "button",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "screen_rect": [
+            1093,
+            768,
+            95,
+            27
+          ]
+        },
+        "Audio details": {
+          "name": "Audio details",
+          "role": "unknown",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": true,
+            "EDITABLE": false
+          },
+          "text": "\ufffcAudio details",
+          "text_truncated": false,
+          "screen_rect": [
+            12,
+            578,
+            1176,
+            17
+          ]
+        },
+        "Audio backend": {
+          "name": "Audio backend",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "PipeWire",
+          "text_truncated": false,
+          "screen_rect": [
+            241,
+            604,
+            50,
+            17
+          ]
+        },
+        "Audio device": {
+          "name": "Audio device",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "default_output",
+          "text_truncated": false,
+          "screen_rect": [
+            512,
+            604,
+            78,
+            17
+          ]
+        },
+        "Audio sample rate": {
+          "name": "Audio sample rate",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "48000",
+          "text_truncated": false,
+          "screen_rect": [
+            854,
+            604,
+            35,
+            17
+          ]
+        },
+        "Audio buffer frames": {
+          "name": "Audio buffer frames",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "512",
+          "text_truncated": false,
+          "screen_rect": [
+            1167,
+            604,
+            21,
+            17
+          ]
+        },
+        "Audio callbacks": {
+          "name": "Audio callbacks",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "523",
+          "text_truncated": false,
+          "screen_rect": [
+            270,
+            626,
+            21,
+            17
+          ]
+        },
+        "Audio stream errors": {
+          "name": "Audio stream errors",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "0",
+          "text_truncated": false,
+          "screen_rect": [
+            583,
+            626,
+            7,
+            17
+          ]
+        },
+        "Audio failed": {
+          "name": "Audio failed",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "false",
+          "text_truncated": false,
+          "screen_rect": [
+            863,
+            626,
+            26,
+            17
+          ]
+        },
+        "Audio status": {
+          "name": "Audio status",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "Audio output is running.",
+          "text_truncated": false,
+          "screen_rect": [
+            1059,
+            626,
+            129,
+            17
+          ]
+        },
+        "Transport playing": {
+          "name": "Transport playing",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "false",
+          "text_truncated": false,
+          "screen_rect": [
+            265,
+            647,
+            26,
+            17
+          ]
+        },
+        "Absolute frame": {
+          "name": "Absolute frame",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "461312",
+          "text_truncated": false,
+          "screen_rect": [
+            548,
+            647,
+            42,
+            17
+          ]
+        },
+        "Rejected commands": {
+          "name": "Rejected commands",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "0",
+          "text_truncated": false,
+          "screen_rect": [
+            882,
+            647,
+            7,
+            17
+          ]
+        },
+        "Native generation": {
+          "name": "Native generation",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "9",
+          "text_truncated": false,
+          "screen_rect": [
+            1181,
+            647,
+            7,
+            17
+          ]
+        }
+      },
+      "bounded_truncation": false,
+      "errors": []
+    },
+    "original-failure": {
+      "start_utc": "2026-10-26T05:32:42.810201+00:00",
+      "start_monotonic": 11695.612818074,
+      "end_monotonic": 11695.987010487,
+      "overhead_seconds": 0.3741924130008556,
+      "native_input_focus": 4194307,
+      "owned_main_window": 4194307,
+      "nodes": {
+        "Launch Pulse Clip 1": {
+          "name": "Launch Pulse Clip 1",
+          "role": "button",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink"
+          ],
+          "states": {
+            "SHOWING": false,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "screen_rect": [
+            555,
+            40,
+            49,
+            24
+          ],
+          "native_hit_path": [
+            927,
+            4194307
+          ]
+        },
+        "Select Pulse slot 2": {
+          "name": "Select Pulse slot 2",
+          "role": "toggle button",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink"
+          ],
+          "states": {
+            "SHOWING": false,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "screen_rect": [
+            159,
+            84,
+            395,
+            24
+          ]
+        },
+        "Pulse clip runtime": {
+          "name": "Pulse clip runtime",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "Cued Clip 1 copy",
+          "text_truncated": false,
+          "screen_rect": [
+            156,
+            242,
+            451,
+            27
+          ]
+        },
+        "Harmony clip runtime": {
+          "name": "Harmony clip runtime",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "Cued Clip 1",
+          "text_truncated": false,
+          "screen_rect": [
+            608,
+            242,
+            451,
+            27
+          ]
+        },
+        "Session status": {
+          "name": "Session status",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "Schedule prepared and applied. Start transport when ready.",
+          "text_truncated": false,
+          "screen_rect": [
+            12,
+            773,
+            1069,
+            18
+          ]
+        },
+        "Alive audio settings": {
+          "name": "Alive audio settings",
+          "role": "button",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "screen_rect": [
+            1093,
+            768,
+            95,
+            27
+          ]
+        },
+        "Audio details": {
+          "name": "Audio details",
+          "role": "unknown",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": true,
+            "EDITABLE": false
+          },
+          "text": "\ufffcAudio details",
+          "text_truncated": false,
+          "screen_rect": [
+            12,
+            578,
+            1176,
+            17
+          ]
+        },
+        "Audio backend": {
+          "name": "Audio backend",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "PipeWire",
+          "text_truncated": false,
+          "screen_rect": [
+            241,
+            604,
+            50,
+            17
+          ]
+        },
+        "Audio device": {
+          "name": "Audio device",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "default_output",
+          "text_truncated": false,
+          "screen_rect": [
+            512,
+            604,
+            78,
+            17
+          ]
+        },
+        "Audio sample rate": {
+          "name": "Audio sample rate",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "48000",
+          "text_truncated": false,
+          "screen_rect": [
+            854,
+            604,
+            35,
+            17
+          ]
+        },
+        "Audio buffer frames": {
+          "name": "Audio buffer frames",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "512",
+          "text_truncated": false,
+          "screen_rect": [
+            1167,
+            604,
+            21,
+            17
+          ]
+        },
+        "Audio callbacks": {
+          "name": "Audio callbacks",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "480",
+          "text_truncated": false,
+          "screen_rect": [
+            270,
+            626,
+            21,
+            17
+          ]
+        },
+        "Audio stream errors": {
+          "name": "Audio stream errors",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "0",
+          "text_truncated": false,
+          "screen_rect": [
+            583,
+            626,
+            7,
+            17
+          ]
+        },
+        "Audio failed": {
+          "name": "Audio failed",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "false",
+          "text_truncated": false,
+          "screen_rect": [
+            863,
+            626,
+            26,
+            17
+          ]
+        },
+        "Audio status": {
+          "name": "Audio status",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "Audio is off.",
+          "text_truncated": false,
+          "screen_rect": [
+            1125,
+            626,
+            64,
+            17
+          ]
+        },
+        "Transport playing": {
+          "name": "Transport playing",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "false",
+          "text_truncated": false,
+          "screen_rect": [
+            265,
+            647,
+            26,
+            17
+          ]
+        },
+        "Absolute frame": {
+          "name": "Absolute frame",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "1397248",
+          "text_truncated": false,
+          "screen_rect": [
+            541,
+            647,
+            49,
+            17
+          ]
+        },
+        "Rejected commands": {
+          "name": "Rejected commands",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "0",
+          "text_truncated": false,
+          "screen_rect": [
+            882,
+            647,
+            7,
+            17
+          ]
+        },
+        "Native generation": {
+          "name": "Native generation",
+          "role": "status bar",
+          "frame": "Alive",
+          "interfaces": [
+            "Accessible",
+            "Action",
+            "Collection",
+            "Component",
+            "Hypertext",
+            "Hyperlink",
+            "Text"
+          ],
+          "states": {
+            "SHOWING": true,
+            "VISIBLE": true,
+            "ENABLED": true,
+            "SENSITIVE": true,
+            "FOCUSED": false,
+            "SELECTED": false,
+            "PRESSED": false,
+            "EXPANDED": false,
+            "EDITABLE": false
+          },
+          "text": "20",
+          "text_truncated": false,
+          "screen_rect": [
+            1174,
+            647,
+            14,
+            17
+          ]
+        }
+      },
+      "bounded_truncation": false,
+      "errors": []
+    }
+  },
+  "snapshot_total_overhead_seconds": 1.733435564001411,
+  "native_gesture": {
+    "start_monotonic": 11631.604258684,
+    "start_utc": "2026-10-26T05:31:38.801644+00:00",
+    "end_monotonic": 11631.716315726,
+    "input_records": [
+      {
+        "action": "slash location entry",
+        "monotonic": 11595.985602584,
+        "scope": "Load Ultra Device",
+        "ready_before_release": true,
+        "released": true
+      },
+      {
+        "action": "slash location entry",
+        "monotonic": 11598.475527674,
+        "scope": "Load Ultra Device",
+        "ready_before_release": true,
+        "released": true
+      },
+      {
+        "action": "reorder click",
+        "monotonic": 11631.716147273,
+        "name": "Launch Pulse Clip 1",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              555,
+              159,
+              49,
+              24
+            ],
+            "hit_path": [
+              927,
+              4194307
+            ]
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          555,
+          159,
+          49,
+          24
+        ]
+      }
+    ]
+  },
+  "late_failure_supported_explanation": {
+    "observed": "Audio details expanded, footer settings opener unexpanded and visually covered, no audio settings panel controls in original missing-control tree.",
+    "pinned_source": "Open diagnostics is an absolute full-width bottom overlay with z-index10, and Alive audio settings is a footer sibling absent from navigation helper overlay-clearing classification. Original qualify loop opens Audio details immediately before the settings opener.",
+    "proposed_narrow_change": "Include Alive audio settings in existing overlay-clearing surface classification; preserve original opener and all qualification actions.",
+    "limitation": "No raw DOM aria-expanded or elementFromPoint was queried, and no per-opener native/DOM event trace was captured; recorded AT-SPI EXPANDED false and screenshot/source layering support occlusion. Not implemented or verified."
+  },
+  "raw_receipt_access": "No raw receipt interface was found among existing accessible nodes. request2 queued/applied are UI-projected text, not raw native receipt structure. Stream diagnostics contain audio epochs, not clip receipts.",
+  "additional_native_runs": 0,
+  "proposed_next_discriminating_experiment_for_stopped_launch": "If separately authorized, one reproduction with the same original audio-settings/launch order and failure-only snapshots, omitting pre/post-gesture observation delays. Retain original one pointer action and predicate; capture runtime/status/focus only on failure. No pass-seeking repeats."
+}

@@ -1,0 +1,55 @@
+✔ Ultra resolves authored numeric event and text targets with one canonical commit (8.182619ms)
+✔ Alive retains generation/instance authorization and base/effective ownership through observations (1.668657ms)
+✔ Alive rejects stale writes and delayed replies after source replacement or owner disposal (4.906358ms)
+✔ Alive cancellation cannot overwrite an observed edit from another parameter owner (0.560577ms)
+✖ Alive mounted control recovers from an ownership conflict without losing a newer draft (6.257904ms)
+✖ mounted Ultra comment and message text refresh with current and cleared appearance (2.820097ms)
+✔ disposing a surface during preview writes nothing and owner settlement persists its accepted value (2.617215ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 5
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 105.35553
+
+✖ failing tests:
+
+test at apps/ultra/ui/canvas-presentation-hosts.test.mjs:42:1
+✖ Alive mounted control recovers from an ownership conflict without losing a newer draft (6.257904ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1.6 !== 1.7
+  
+      at TestContext.<anonymous> (file:///home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/canvas-presentation-hosts.test.mjs:48:47)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1.6,
+    expected: 1.7,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at apps/ultra/ui/canvas-presentation-hosts.test.mjs:51:1
+✖ mounted Ultra comment and message text refresh with current and cleared appearance (2.820097ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  'Before' !== 'After'
+  
+      at TestContext.<anonymous> (file:///home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/canvas-presentation-hosts.test.mjs:57:64)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Before',
+    expected: 'After',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

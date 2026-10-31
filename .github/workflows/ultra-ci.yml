@@ -1,12 +1,19 @@
 name: Ultra CI
 
 on:
-  pull_request:
-  push:
-    branches: [main]
   workflow_dispatch:
+    inputs:
+      alive_endurance:
+        description: 'Optional Alive sustained desktop journey'
+        type: choice
+        required: true
+        default: 'off'
+        options:
+          - 'off'
+          - pilot
+          - endurance
 
-# Fork PRs execute untrusted source without secrets or repository write access.
+# Manual checks use no secrets or repository write access.
 permissions:
   contents: read
 
@@ -40,6 +47,21 @@ jobs:
           python -m pip install --disable-pip-version-check --only-binary=:all: -r apps/ultra/tests/ci/requirements.txt
       - name: Run deterministic UI, native graph, and recorded-reference tests
         run: bash apps/ultra/tests/ci/check-contracts.sh
+      - name: Test desktop diagnostics without a native desktop
+        run: |
+          python -m unittest discover -s apps/ultra/tests -p test_desktop_timing.py -v
+          python -m unittest discover -s apps/ultra/tests -p test_desktop_frames.py -v
+          python -m unittest discover -s apps/ultra/tests -p test_desktop_launch_config.py -v
+          python -m unittest discover -s apps/ultra/tests -p test_alive_workspace_navigation.py -v
+          python -m unittest discover -s apps/ultra/tests -p test_alive_desktop_values.py -v
+          python -m unittest discover -s apps/ultra/tests -p test_alive_clips_fixture.py -v
+          python -m unittest discover -s apps/ultra/tests -p test_stage_alive_session.py -v
+          python -m unittest discover -s apps/ultra/tests -p test_chooser_observation.py -v
+          python -m unittest discover -s apps/ultra/tests -p test_desktop_process_helpers.py -v
+          python -m unittest discover -s apps/ultra/tests -p test_desktop_checkpoint.py -v
+          python -m unittest discover -s apps/ultra/tests -p test_desktop_sustained_integration.py -v
+          python -m unittest discover -s apps/ultra/tests -p test_sustained_measurement.py -v
+          python -m unittest discover -s apps/ultra/tests -p test_slider_help_fixture.py -v
 
   browser:
     name: Chromium canvas editing smoke
@@ -79,13 +101,22 @@ jobs:
   native:
     name: Linux native build, Rust bridge, and CPAL loopback
     runs-on: ubuntu-24.04
-    timeout-minutes: 40
+    timeout-minutes: ${{ github.event_name == 'workflow_dispatch' && (inputs.alive_endurance == 'pilot' || inputs.alive_endurance == 'endurance') && 120 || 40 }}
     env:
       JOBS: '2'
       CARGO_BUILD_JOBS: '2'
       CARGO_NET_RETRY: '2'
       CARGO_HTTP_TIMEOUT: '60'
     steps:
+      - name: Validate Alive endurance selection
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        env:
+          ALIVE_ENDURANCE_MODE: ${{ inputs.alive_endurance }}
+        run: |
+          case "$ALIVE_ENDURANCE_MODE" in
+            ''|off|pilot|endurance) ;;
+            *) echo "Invalid Alive endurance mode: $ALIVE_ENDURANCE_MODE" >&2; exit 1 ;;
+          esac
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           persist-credentials: false
@@ -97,7 +128,12 @@ jobs:
             libjack-jackd2-dev libgtk-3-dev libwebkit2gtk-4.1-dev \
             libasound2-dev libpipewire-0.3-dev libspa-0.2-dev libclang-dev \
             libayatana-appindicator3-dev librsvg2-dev patchelf \
-            pipewire-bin wireplumber dbus
+            pipewire-bin wireplumber dbus xvfb xauth python3-gi \
+            gir1.2-atspi-2.0 gir1.2-gtk-3.0 at-spi2-core libxtst6 ffmpeg
+          ffmpeg -version | head -n 1
+          Xvfb -help 2>&1 | head -n 1 || true
+          pipewire --version
+          wireplumber --version
       - name: Cache downloaded, checksum-verified native dependencies
         uses: actions/cache@0400d5f644dc74513175e3cd8d07132dd4860809 # v4.2.4
         with:
@@ -124,7 +160,11 @@ jobs:
           export LD_LIBRARY_PATH="$ULTRA_NATIVE_LIB_DIR"
           rustc --version
           cargo test --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked
+          cargo test --manifest-path apps/alive/src-tauri/Cargo.toml --target-dir "$GITHUB_WORKSPACE/apps/ultra/src-tauri/target" --release --locked
           cargo build --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked
+          cargo build --manifest-path apps/alive/src-tauri/Cargo.toml --target-dir "$GITHUB_WORKSPACE/apps/ultra/src-tauri/target" --release --locked
+          cp apps/ultra/build/libultra_native.so apps/ultra/src-tauri/target/release/
+          python3 apps/ultra/tests/check_app_entrypoints.py
 
       - name: Render the saved instrument without a desktop or editor
         run: |
@@ -138,6 +178,140 @@ jobs:
         with:
           name: authored-instrument-${{ github.run_id }}-${{ github.run_attempt }}
           path: apps/ultra/build/instrument-evidence/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Render two saved devices through the headless Alive session host
+        run: |
+          env -u DISPLAY -u WAYLAND_DISPLAY \
+            LD_LIBRARY_PATH="$GITHUB_WORKSPACE/apps/ultra/build" \
+            apps/ultra/src-tauri/target/release/alive --session-probe \
+            apps/alive/examples/two-instruments.alive "$GITHUB_WORKSPACE/apps/ultra/build/session-evidence"
+      - name: Save Alive session render and round-trip evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: alive-session-${{ github.run_id }}-${{ github.run_attempt }}
+          path: apps/ultra/build/session-evidence/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Record sustained source and build identities
+        if: ${{ github.event_name == 'workflow_dispatch' && (inputs.alive_endurance == 'pilot' || inputs.alive_endurance == 'endurance') }}
+        env:
+          ALIVE_ENDURANCE_MODE: ${{ inputs.alive_endurance }}
+          ALIVE_ENDURANCE_TARGET: ${{ inputs.alive_endurance == 'pilot' && '500' || '1800' }}
+        run: |
+          evidence=apps/ultra/build/session-desktop-evidence
+          mkdir -p "$evidence"
+          git rev-parse HEAD > "$evidence/source-commit.txt"
+          sha256sum apps/ultra/src-tauri/target/release/alive \
+            apps/ultra/src-tauri/target/release/ultra \
+            apps/ultra/src-tauri/target/release/libultra_native.so \
+            > "$evidence/build-sha256.txt"
+          {
+            printf 'mode=%s\ntarget_playing_seconds=%s\n' "$ALIVE_ENDURANCE_MODE" "$ALIVE_ENDURANCE_TARGET"
+            printf 'runner_os=%s\nrunner_arch=%s\nimage_os=%s\nimage_version=%s\n' "$RUNNER_OS" "$RUNNER_ARCH" "${ImageOS:-unknown}" "${ImageVersion:-unknown}"
+            printf 'backend=private software-only CPAL PipeWire at 48 kHz / 512 frames\n'
+            uname -a
+            lscpu
+            pipewire --version
+          } > "$evidence/sustained-context.txt"
+      - name: Exercise the actual Alive desktop session and hosted editor
+        # Provisional diagnostic allowance; runner phase/query evidence must set the permanent bound.
+        timeout-minutes: ${{ github.event_name == 'workflow_dispatch' && (inputs.alive_endurance == 'pilot' || inputs.alive_endurance == 'endurance') && 60 || 8 }}
+        env:
+          ULTRA_TEST_ALIVE: '1'
+          ULTRA_TEST_SCRIPT: ${{ github.workspace }}/apps/ultra/tests/check_alive_desktop.py
+          ALIVE_ENDURANCE_SECONDS: ${{ github.event_name == 'workflow_dispatch' && inputs.alive_endurance == 'pilot' && '500' || github.event_name == 'workflow_dispatch' && inputs.alive_endurance == 'endurance' && '1800' || '0' }}
+        run: bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/session-desktop-evidence"
+      - name: Save actual Alive desktop evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: alive-desktop-${{ github.run_id }}-${{ github.run_attempt }}
+          path: apps/ultra/build/session-desktop-evidence/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Exercise the real Alive Arrangement journey
+        if: ${{ !cancelled() }}
+        timeout-minutes: 8
+        env:
+          ULTRA_TEST_ALIVE: '1'
+          ULTRA_TEST_SCREEN_SIZE: 1600x1000
+          ULTRA_TEST_ALIVE_BINARY: ${{ github.workspace }}/apps/ultra/src-tauri/target/release/alive
+          ULTRA_TEST_ALIVE_SESSION: ${{ github.workspace }}/apps/alive/examples/midi-arrangement.alive
+          ULTRA_TEST_SCRIPT: ${{ github.workspace }}/apps/ultra/tests/check_alive_arrangement.py
+        run: bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/arrangement-desktop-evidence"
+      - name: Save Arrangement evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: alive-arrangement-${{ github.run_id }}-${{ github.run_attempt }}
+          path: apps/ultra/build/arrangement-desktop-evidence/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Exercise native Master save, Quit and restart
+        if: ${{ !cancelled() }}
+        timeout-minutes: 8
+        env:
+          ULTRA_TEST_ALIVE: '1'
+          ULTRA_TEST_SCREEN_SIZE: 1600x1000
+          ULTRA_TEST_ALIVE_BINARY: ${{ github.workspace }}/apps/ultra/src-tauri/target/release/alive
+          ULTRA_TEST_ALIVE_SESSION: ${{ github.workspace }}/apps/alive/examples/midi-arrangement.alive
+          ULTRA_TEST_SCRIPT: ${{ github.workspace }}/apps/ultra/tests/check_alive_master.py
+        run: bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/master-desktop-evidence"
+      - name: Save Master evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: alive-master-${{ github.run_id }}-${{ github.run_attempt }}
+          path: apps/ultra/build/master-desktop-evidence/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Verify native clip observation boundaries and failure isolation
+        timeout-minutes: 4
+        env:
+          ULTRA_TEST_ALIVE: '1'
+          ULTRA_TEST_SCRIPT: ${{ github.workspace }}/apps/ultra/tests/check_alive_clip_observation.py
+        run: |
+          python3 apps/ultra/tests/test_alive_clip_observation_failure.py
+          bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/clip-observation-evidence/normal"
+          ALIVE_TEST_DISCLOSURE_WRITE_ERROR=1 bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/clip-observation-evidence/write-error"
+          ALIVE_TEST_DISCLOSURE_WRITE_ERROR=1 ALIVE_TEST_DISCLOSURE_BLOCKED=1 bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/clip-observation-evidence/blocked"
+          ALIVE_TEST_DISCLOSURE_INPUT_ERROR=1 bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/clip-observation-evidence/input-error"
+      - name: Save native clip observation boundary evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: alive-clip-observation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: apps/ultra/build/clip-observation-evidence/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Exercise saved clips, stream epochs and bounded measurements in Alive
+        timeout-minutes: 5
+        env:
+          ULTRA_TEST_ALIVE: '1'
+          ULTRA_TEST_SCRIPT: ${{ github.workspace }}/apps/ultra/tests/check_alive_observability.py
+        run: bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/clip-desktop-evidence"
+      - name: Save actual Alive clip evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: alive-clips-${{ github.run_id }}-${{ github.run_attempt }}
+          path: apps/ultra/build/clip-desktop-evidence/
+          if-no-files-found: warn
+          retention-days: 7
+      - name: Bound hosted editor resources across repeated close and reopen
+        timeout-minutes: 4
+        env:
+          ULTRA_TEST_ALIVE: '1'
+          ULTRA_TEST_SCRIPT: ${{ github.workspace }}/apps/ultra/tests/check_alive_editor_resources.py
+        run: bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/editor-resource-evidence"
+      - name: Save hosted editor resource evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: alive-editor-resources-${{ github.run_id }}-${{ github.run_attempt }}
+          path: apps/ultra/build/editor-resource-evidence/
           if-no-files-found: warn
           retention-days: 7
       - name: Gate real CPAL output through a private software-only PipeWire graph

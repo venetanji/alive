@@ -6,7 +6,7 @@ import {appearanceFields} from './canvas-appearance.mjs';
 import {importMaxPatcher} from './canvas-max-import.mjs';
 import {createSharedCanvasController} from './canvas-shared.mjs';
 
-const flat=nodes=>({version:1,profile:'ultra-canvas-v1',nodes,edges:[]});
+const flat=nodes=>({version:1,profile:'ultra-canvas-v1',presentation:null,nodes,edges:[]});
 const source=(boxes,lines=[])=>({patcher:{boxes:boxes.map(box=>({box:{patching_rect:[40,40,64,24],...box}})),lines:lines.map(patchline=>({patchline}))}});
 
 test('Max number authoring uses an integer box while saved legacy numbers round-trip unchanged',()=>{

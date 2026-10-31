@@ -1,0 +1,1192 @@
+{
+  "utc": "2026-10-26T17:53:25.007876+00:00",
+  "base": "0d9ccd6e82e01d9144d1ed1e3d255d01d16af2f9",
+  "source_diff": "diff --git i/apps/ultra/ui/alive-dom.test.mjs w/apps/ultra/ui/alive-dom.test.mjs\nindex b585564..d1fa73d 100644\n--- i/apps/ultra/ui/alive-dom.test.mjs\n+++ w/apps/ultra/ui/alive-dom.test.mjs\n@@ -243,8 +243,8 @@ function dom(file){\n   const html=readFileSync(new URL(file,import.meta.url),'utf8');\n   for(const[markup,tag,id]of html.matchAll(/<([\\w-]+)\\b[^>]*\\bid=\"([^\"]+)\"[^>]*>/g)){const element=new Element(tag,doc);element.id=id;element.hidden=/\\bhidden\\b/.test(markup);const text=html.slice(html.indexOf(markup)+markup.length).match(/^[^<]+/);if(text)element.textContent=text[0];ids.set(id,element);}\n   if(ids.has('master-meter'))ids.get('master-meter').append(doc.createElement('i'),doc.createElement('i'));\n-  const timeouts=[],win={setTimeout:fn=>timeouts.push(fn),addEventListener(){},removeEventListener(){}};\n-  return{doc,win,ids,find:label=>[...ids.values()].flatMap(e=>[e,...descendants(e)]).find(e=>e.attrs['aria-label']===label)};\n+  const timeouts=[],win={setTimeout:(fn,delay)=>timeouts.push({fn,delay}),addEventListener(){},removeEventListener(){}};\n+  return{doc,win,ids,timeouts,find:label=>[...ids.values()].flatMap(e=>[e,...descendants(e)]).find(e=>e.attrs['aria-label']===label)};\n }\n function state(editor=false){\n   const document=JSON.parse(readFileSync(new URL('../../alive/examples/two-instruments.alive',import.meta.url),'utf8')),patch=JSON.parse(readFileSync(new URL('../examples/subtractive.ultra',import.meta.url),'utf8'));\n@@ -288,6 +288,69 @@ function delayedBoundary(native,name,change,outcome='snapshot'){\n   }};\n }\n \n+const dependencyError='Dependency journey-utility.ultra changed. Restore the matching original, then Replace intended instances.';\n+const snapshotError='Session state is temporarily unavailable';\n+async function pollAlive(page){\n+  const index=page.timeouts.findIndex(timer=>timer.delay===80);assert.notEqual(index,-1,'poll remains scheduled');\n+  const [{fn}]=page.timeouts.splice(index,1);await fn();await settle();\n+}\n+for(const failFinalRefresh of [true,false])test(`file refusal survives ${failFinalRefresh?'rejected final refresh':'later periodic refresh failure'} and recovery`,async()=>{\n+  const initial=clipState();initial.draft=structuredClone(initial.document);initial.draft.tracks[1].slots[0].notes[0].pitch=73;\n+  initial.draftRevision=4;initial.history={canUndo:true,canRedo:false};\n+  const page=dom('./alive.html'),native=backend(initial);let failSnapshot=false;\n+  const invoke=async(name,args)=>{\n+    if(name==='alive_file'){await native.invoke(name,args);failSnapshot=failFinalRefresh;throw Error(dependencyError);}\n+    if(name==='alive_current'&&failSnapshot){await native.invoke(name,args);throw Error(snapshotError);}\n+    return native.invoke(name,args);\n+  };\n+  const view=mountAlive({...page,invoke});await settle();await page.find('Select Harmony slot 1').fire('click');\n+  const piano=page.ids.get('piano-roll'),note=descendants(piano).find(e=>e.attrs['data-note']==='0'&&e.attrs['data-part']==='body');\n+  await piano.fire('pointerdown',{target:note,pointerId:4,clientX:10,clientY:15});await piano.fire('pointerup',{pointerId:4});\n+  await page.ids.get('open').fire('click');\n+  const status=page.ids.get('notice');\n+  if(failFinalRefresh){assert.equal(status.textContent,`Error: ${dependencyError} Refresh delayed: Error: ${snapshotError}`);}\n+  else assert.equal(status.textContent,`Error: ${dependencyError}`);\n+  const pitch=page.find('Note 1 pitch');pitch.focus();pitch.value='74';failSnapshot=true;\n+  await pollAlive(page);\n+  assert.equal(status.textContent,`Error: ${dependencyError} Refresh delayed: Error: ${snapshotError}`);assert.equal(status.classList.contains('error'),true);\n+  failSnapshot=false;native.snapshot.snapshotSequence='2';native.snapshot.state.absoluteFrame=4096;\n+  native.snapshot.runtime.requests=[{preparationRevision:'1',requestSerial:'9',trackId:null,clipId:null,status:'applied',reason:0}];\n+  await pollAlive(page);\n+  assert.equal(status.textContent,`Error: ${dependencyError}`);assert.equal(status.classList.contains('error'),true);\n+  assert.equal(view.model.snapshot().state.absoluteFrame,4096);assert.deepEqual(view.model.document(),initial.draft);\n+  assert.equal(page.find('Select Harmony slot 1').attrs['aria-pressed'],'true');\n+  assert.equal(page.ids.get('note-velocity').disabled,false,'selected note survives rejected file and polls');\n+  assert.equal(page.find('Note 1 pitch'),pitch);assert.equal(pitch.value,'74');\n+  assert.deepEqual(native.calls.filter(c=>c.name==='alive_file').map(c=>c.args),[{action:'open',generation:1,draftRevision:4}]);\n+  assert.equal(native.calls.filter(c=>!['alive_file','alive_current'].includes(c.name)).length,0);view.dispose();\n+});\n+\n+test('successful file keeps its result with failed refresh and clears only refresh health on recovery',async()=>{\n+  const page=dom('./alive.html'),native=backend(state());let failSnapshot=false;\n+  const invoke=async(name,args)=>{\n+    const result=await native.invoke(name,args);\n+    if(name==='alive_file'){failSnapshot=true;native.snapshot.dirty=false;}\n+    if(name==='alive_current'&&failSnapshot)throw Error(snapshotError);\n+    return result;\n+  };\n+  const view=mountAlive({...page,invoke});await settle();await page.ids.get('save').fire('click');\n+  const status=page.ids.get('notice');assert.equal(status.textContent,`Session saved. Refresh delayed: Error: ${snapshotError}`);assert.equal(status.classList.contains('error'),true);\n+  failSnapshot=false;await pollAlive(page);\n+  assert.equal(status.textContent,'Session saved.');assert.equal(status.classList.contains('error'),false);\n+  assert.equal(native.calls.filter(c=>c.name==='alive_file').length,1);view.dispose();\n+});\n+\n+test('ordinary periodic refresh retains ready status and a later explicit file action replaces an old refusal',async()=>{\n+  const page=dom('./alive.html'),native=backend(state());let refuse=true;\n+  const invoke=async(name,args)=>{const result=await native.invoke(name,args);if(name==='alive_file'&&refuse)throw Error(dependencyError);return result;};\n+  const view=mountAlive({...page,invoke});await settle();const status=page.ids.get('notice'),ready=status.textContent;\n+  native.snapshot.state.absoluteFrame=4096;await pollAlive(page);assert.equal(view.model.snapshot().state.absoluteFrame,4096);assert.equal(status.textContent,ready);\n+  await page.ids.get('open').fire('click');assert.equal(status.textContent,`Error: ${dependencyError}`);\n+  refuse=false;await page.ids.get('save').fire('click');assert.equal(status.textContent,'Session saved.');assert.equal(status.classList.contains('error'),false);\n+  await pollAlive(page);assert.equal(status.textContent,'Session saved.');\n+  assert.deepEqual(native.calls.filter(c=>c.name==='alive_file').map(c=>c.args.action),['open','save']);view.dispose();\n+});\n+\n test('queued Add note cannot cross successful removal into a reused track index',async()=>{\n   const initial=state();initial.state.playing=0;\n   const page=dom('./alive.html'),native=backend(initial),boundary=delayedBoundary(native,'alive_device',snapshot=>{\ndiff --git i/apps/ultra/ui/alive.mjs w/apps/ultra/ui/alive.mjs\nindex b7e2cbc..6a46bbd 100644\n--- i/apps/ultra/ui/alive.mjs\n+++ w/apps/ultra/ui/alive.mjs\n@@ -9,8 +9,10 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke\n   const workspace=mountWorkspace({doc,win});\n   let selectedSlots=new Map(),selectionToken=0,activeEditClip=null,selectedNote=null,gesture=null,preview=null,pianoGeometry=null,velocityCanceled=false,listRevision=0,scopeRevision=0,transportRequestKey='';\n   const trackViews=[],chainViews=[],parameterViews=new Map(),diagnostics=new Map();let audioSettings;\n-  function notice(text,error=false){$('notice').textContent=String(text);$('notice').classList.toggle('error',error);}\n-  function enqueue(work){const result=queue.then(work);queue=result.catch(error=>notice(error,true));return result;}\n+  let operationText=$('notice').textContent,operationError=false,noticeOwner=null,refreshError='';\n+  function renderNotice(){$('notice').textContent=[operationText,refreshError&&`Refresh delayed: ${refreshError}`].filter(Boolean).join(' ');$('notice').classList.toggle('error',operationError||!!refreshError);}\n+  function notice(text,error=false,owner=null){operationText=String(text);operationError=error;noticeOwner=owner;renderNotice();}\n+  function enqueue(work,background=false){const result=queue.then(work);queue=result.catch(error=>{if(!background)notice(error,true);});return result;}\n   function generation(){return model.snapshot()?.generation;}\n   function command(name,args={}){return invoke(name,{...args,generation:generation(),...(['alive_transport','alive_clip_action'].includes(name)?{preparationRevision:model.snapshot()?.preparationRevision}:{}),...(['alive_edit','alive_clip_edit','alive_enable_clips','alive_history','alive_apply','alive_discard','alive_file','alive_device'].includes(name)?{draftRevision:model.snapshot()?.draftRevision??0}:{})});}\n   function commitFocused(){if(doc.activeElement?.matches('input'))doc.activeElement.blur();}\n@@ -68,22 +70,29 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke\n       preview=null;musicKey='';render();\n     });\n   }\n+  async function current(){\n+    try{const snapshot=await invoke('alive_current');refreshError='';renderNotice();return snapshot;}\n+    catch(error){refreshError=String(error);renderNotice();throw error;}\n+  }\n   async function refresh(){\n-    const snapshot=await invoke('alive_current');\n+    const snapshot=await current();\n     if(gesture&&(snapshot.generation!==gesture.generation||(snapshot.draftRevision??0)!==gesture.revision)){if(gesture.kind==='velocity')velocityCanceled=true;gesture=null;preview=null;selectedNote=null;musicKey='';}\n     const before=model.snapshot();model.accept(snapshot);\n     invalidateScope(before);\n     render();return snapshot;\n   }\n   function file(action){commitFocused();cancelGesture();return enqueue(async()=>{\n-    let result;\n-    try{result=await command('alive_file',{action});}\n-    finally{applySnapshot(await invoke('alive_current'));trackKey=musicKey=parameterKey='';selectedNote=null;render();}\n+    let result,failure,failed=false,snapshot;\n+    try{result=await command('alive_file',{action});}catch(error){failure=error;failed=true;}\n+    // Reconcile inner accepted boundaries even when the outer file action fails.\n+    try{snapshot=await current();}catch{}\n+    if(snapshot){applySnapshot(snapshot);if(result){trackKey=musicKey=parameterKey='';selectedNote=null;}render();}\n+    if(failed)throw failure;\n     if(result)notice(action.startsWith('save')?'Session saved.':'Session ready.');\n   });}\n   function transport(action){return enqueue(async()=>{\n     const result=await command('alive_transport',{action,beat:Number($('seek').value)});await refresh();\n-    if(result?.requestSerial){const observed=observedRequest(result);notice(`Transport ${requestText(observed,model.snapshot())}`,observed.status==='rejected');}\n+    if(result?.requestSerial){const observed=observedRequest(result);notice(`Transport ${requestText(observed,model.snapshot())}`,observed.status==='rejected','transport');}\n     else notice(action==='start'?(model.pending()?'Playing the prepared schedule. Pending edits remain unapplied.':'Transport playing.'):action==='stop'?'Transport stop requested.':'Transport seek queued.');\n   });}\n   function paintPiano(svg,notes,length,detailed=false){\n@@ -160,7 +169,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke\n     const request=snapshot.runtime?.requests.filter(r=>r.trackId===null&&r.sceneSlot==null).at(-1);\n     if(!request){transportRequestKey='';return;}\n     const key=JSON.stringify(request);if(key===transportRequestKey)return;transportRequestKey=key;\n-    notice(`Transport ${requestText(request,snapshot)}`,request.status==='rejected');\n+    if(noticeOwner==='transport')notice(`Transport ${requestText(request,snapshot)}`,request.status==='rejected','transport');\n   }\n   function clipAction(action){return enqueue(async()=>{const result=await command('alive_clip_action',{action});await refresh();if(result){const observed=observedRequest(result);notice(requestText(observed,model.snapshot()),observed.status==='rejected');}});}\n   const creatingSlots=new Set();\n@@ -433,7 +442,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke\n   let unlisten=null;\n   if(win?.__TAURI__?.event?.listen)win.__TAURI__.event.listen('alive-close-requested',()=>{guard(()=>file('quit'))();}).then(fn=>{unlisten=fn;});\n   win?.addEventListener('blur',cancelGesture);\n-  async function poll(){if(disposed)return;try{await enqueue(refresh);}catch{}if(!disposed)win.setTimeout(poll,80);}\n+  async function poll(){if(disposed)return;try{await enqueue(refresh,true);}catch{}if(!disposed)win.setTimeout(poll,80);}\n   async function pollMeasurements(){\n     if(disposed)return;\n     if($('audio-details').open&&$('stream-measurements').open){\n@@ -443,7 +452,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke\n     if(!disposed)win.setTimeout(pollMeasurements,1000);\n   }\n   if(invoke)win.setTimeout(pollMeasurements,1000);\n-  if(invoke){enqueue(refresh).then(()=>notice('Ready. Select a clip to edit notes or automation.')).catch(()=>{});win.setTimeout(poll,80);}else notice('Open the native app with bash apps/alive/run.sh. This page does not synthesize audio.',true);\n+  if(invoke){enqueue(refresh,true).then(()=>notice('Ready. Select a clip to edit notes or automation.')).catch(()=>{});win.setTimeout(poll,80);}else notice('Open the native app with bash apps/alive/run.sh. This page does not synthesize audio.',true);\n   return{model,refresh,dispose(){disposed=true;workspace.dispose();win?.removeEventListener('blur',cancelGesture);unlisten?.();doc.removeEventListener('keydown',keydown);}};\n }\n if(globalThis.document)mountAlive();\n",
+  "files": {
+    "apps/alive/build.sh": {
+      "sha256": "272910b81094226bc6bc37f66859296ced07bc4ccd604607226fa1c624cfa822",
+      "bytes": 118,
+      "mtime_ns": 1792801245071984198
+    },
+    "apps/alive/run.sh": {
+      "sha256": "154354031370b86fb0bee2c370f5355a35f37b7c6d9f9f2246266251c5300f89",
+      "bytes": 357,
+      "mtime_ns": 1792801245071984198
+    },
+    "apps/alive/src-tauri/Cargo.lock": {
+      "sha256": "32e24796e709dac6f7b1189dc8d4ced637ebed81e159c8aa88b92414e6e06a51",
+      "bytes": 147930,
+      "mtime_ns": 1792803592876640949
+    },
+    "apps/alive/src-tauri/Cargo.toml": {
+      "sha256": "974eb5823b5e2e7cd7764bfbd265fbe578383ec843b87631625b398cc73878af",
+      "bytes": 456,
+      "mtime_ns": 1792803577177708363
+    },
+    "apps/alive/src-tauri/build.rs": {
+      "sha256": "84f29376714cf071fb0db11cfcf84cf0023e8f7adb3818cd6b06d6320172cdc2",
+      "bytes": 490,
+      "mtime_ns": 1792803577177708363
+    },
+    "apps/alive/src-tauri/capabilities/default.json": {
+      "sha256": "9810dcd3982e8f3d28255309c75250abc90506b882d4393495363cf913b78567",
+      "bytes": 336,
+      "mtime_ns": 1792804598888536035
+    },
+    "apps/alive/src-tauri/src/main.rs": {
+      "sha256": "8b515386acf9b447ff268ec29d9f3b8d6b2330db682856ac873ab0d66e2839af",
+      "bytes": 895,
+      "mtime_ns": 1792804549535255737
+    },
+    "apps/alive/src-tauri/tauri.conf.json": {
+      "sha256": "9f64caedf4f5044517753c28e29c8d24719d8e14863d4dbf31a21d527a98cd7b",
+      "bytes": 1039,
+      "mtime_ns": 1792809904362124982
+    },
+    "apps/ultra/CMakeLists.txt": {
+      "sha256": "b60d36ce6276b5cbd733425948537040d5756abc4e1ade5ac776c7757ee493e5",
+      "bytes": 2697,
+      "mtime_ns": 1792777258323919052
+    },
+    "apps/ultra/build.sh": {
+      "sha256": "611b4aa336dcb910de10369cbedb6b42380f6311deb0bf713dda3325872d1baa",
+      "bytes": 1347,
+      "mtime_ns": 1792803577177708363
+    },
+    "apps/ultra/src-tauri/Cargo.lock": {
+      "sha256": "0e79088df3a013f9266baf762a65d00e258124a741753d7347bb5d80f6306630",
+      "bytes": 147824,
+      "mtime_ns": 1792777258328919083
+    },
+    "apps/ultra/src-tauri/Cargo.toml": {
+      "sha256": "4e66c5c28483e64fb92a38a075ae0d5a5a5cee0c608c991e08172b8f24ed4a1e",
+      "bytes": 818,
+      "mtime_ns": 1792826165154106080
+    },
+    "apps/ultra/src-tauri/build.rs": {
+      "sha256": "d603268de5907c5e619b09c551b4a6434491b4d7742fe32dce33c9de5a8a8fc3",
+      "bytes": 1142,
+      "mtime_ns": 1792777258328919083
+    },
+    "apps/ultra/src-tauri/capabilities/default.json": {
+      "sha256": "5930d3833307b22cf3716e74ac352f0370cdefb15e207b5f7f296fbad2823c2d",
+      "bytes": 301,
+      "mtime_ns": 1792780408439723034
+    },
+    "apps/ultra/src-tauri/examples/help_root_export.rs": {
+      "sha256": "43007f998f50ee885298d4235faaceea432a761d8817223e16c7c03f05ac79bf",
+      "bytes": 2363,
+      "mtime_ns": 1792771528103883988
+    },
+    "apps/ultra/src-tauri/icons/icon.png": {
+      "sha256": "c8bae0a0290192eb6355304d8e328fc9e2c09fbffc80c03fb1e3d25664f6b3be",
+      "bytes": 129,
+      "mtime_ns": 1792771528103883988
+    },
+    "apps/ultra/src-tauri/native/alive_session.h": {
+      "sha256": "ab7651089a949016a5802767ca0d12049151c8145d50cb9e7c1ef014b29c4032",
+      "bytes": 11264,
+      "mtime_ns": 1792987540920496281
+    },
+    "apps/ultra/src-tauri/native/alive_session.hpp": {
+      "sha256": "c3cc67f057fbb6c1fc5689979bf1c215f5f94b0befb0942be32706b2ee5b3bec",
+      "bytes": 34609,
+      "mtime_ns": 1793027620364510130
+    },
+    "apps/ultra/src-tauri/native/alive_session_bits.hpp": {
+      "sha256": "a260614bc600dc8fcd294c24e3fad35f7e9be2452aa007fa54b49b150d3411b4",
+      "bytes": 435,
+      "mtime_ns": 1792822262458617837
+    },
+    "apps/ultra/src-tauri/native/alive_session_clip_policy.hpp": {
+      "sha256": "b4466cd286908d2d2fee873902640c225703e987bf5e890e57320df5e3af72d8",
+      "bytes": 2818,
+      "mtime_ns": 1792838185422261820
+    },
+    "apps/ultra/src-tauri/native/alive_session_clips.hpp": {
+      "sha256": "dcf4de4f8699d759e37d23a4ec2db8271af728576fe9dd0d59602aca0ea4ff5d",
+      "bytes": 59156,
+      "mtime_ns": 1793035290942484057
+    },
+    "apps/ultra/src-tauri/native/alive_session_envelope.hpp": {
+      "sha256": "d8da367ebdce8a26dd69941a4217c7a6ece0e751d8d1a33115a9babc603405fd",
+      "bytes": 2137,
+      "mtime_ns": 1792816519020488025
+    },
+    "apps/ultra/src-tauri/native/alive_session_v3_policy.md": {
+      "sha256": "cf55b2b44c05f12bf26de82c4a0bf9cf8a2328942a810cd0267f0cbc374fc450",
+      "bytes": 18474,
+      "mtime_ns": 1792838717341425003
+    },
+    "apps/ultra/src-tauri/native/alive_session_workspace_envelope.hpp": {
+      "sha256": "33be00fccb3d083150581feaa6363a1506fa9be6668be0b7087fe005869ca8e0",
+      "bytes": 13720,
+      "mtime_ns": 1793025514146334437
+    },
+    "apps/ultra/src-tauri/native/alive_session_workspaces.h": {
+      "sha256": "a3dadb908b289b2f975e58e494ada045a8261e30c86dd7e47fa142aa4924d43a",
+      "bytes": 7203,
+      "mtime_ns": 1792987540920358454
+    },
+    "apps/ultra/src-tauri/native/alive_session_workspaces.hpp": {
+      "sha256": "131d172fdaecc13e584506f914e2b3cfd73003b5be446ac2ba34be08dbd4148d",
+      "bytes": 35771,
+      "mtime_ns": 1793034939168562294
+    },
+    "apps/ultra/src-tauri/native/backend.cpp": {
+      "sha256": "3661829328ba4d90b143a8a3b3989a297e8a2f12fae069731975c5d9f59ca191",
+      "bytes": 62416,
+      "mtime_ns": 1792987673644308174
+    },
+    "apps/ultra/src-tauri/native/backend.h": {
+      "sha256": "da19583d032e2d8268411b40f2fe4453ba3aa945fd4a1c71b202462a9e805039",
+      "bytes": 1468,
+      "mtime_ns": 1792771528104501753
+    },
+    "apps/ultra/src-tauri/native/canvas_list_objects.hpp": {
+      "sha256": "c83e71885c5ad41663663479500d545c114603eb3ecc47aa9eb60278665dd834",
+      "bytes": 3459,
+      "mtime_ns": 1792771528104501753
+    },
+    "apps/ultra/src-tauri/native/canvas_message.hpp": {
+      "sha256": "ec4cc2bb786ac9317341ec7d1af20c03a6290849c1c8984cc7af6a9697b3ed96",
+      "bytes": 9066,
+      "mtime_ns": 1792805821073963374
+    },
+    "apps/ultra/src-tauri/native/canvas_message_box.hpp": {
+      "sha256": "1a800c9756c8be9c0b365e9480ee3236b994568c09e78af977b3a6aa82483713",
+      "bytes": 4465,
+      "mtime_ns": 1792771528104501753
+    },
+    "apps/ultra/src-tauri/native/canvas_objects.hpp": {
+      "sha256": "235f8b19fd162e0851d38627d0774f97da69411fbaf5ce4af91cca4a849830c0",
+      "bytes": 2669,
+      "mtime_ns": 1792771528104501753
+    },
+    "apps/ultra/src-tauri/native/canvas_signal_objects.hpp": {
+      "sha256": "ea9f52ecf50080406a2a0b985cfbeef23f0dbd56b52827fff87f297459167940",
+      "bytes": 1699,
+      "mtime_ns": 1792805467669746619
+    },
+    "apps/ultra/src-tauri/native/canvas_voice_objects.hpp": {
+      "sha256": "0a93e181210fc2163c9db68c45ff9827077da3376acc73f7d286463774045586",
+      "bytes": 4145,
+      "mtime_ns": 1792772929595523932
+    },
+    "apps/ultra/src-tauri/native/canvas_workspace.hpp": {
+      "sha256": "0f9a388b4dfa1ea3eeb0a37845b3db75d59d479e3e33fae8baec191aa73b1458",
+      "bytes": 3488,
+      "mtime_ns": 1792771528104501753
+    },
+    "apps/ultra/src-tauri/native/diagnostic.cpp": {
+      "sha256": "e5412a4f3587e4b2f80a9240b6d067ed532e9475172f98fca96c6116037802ee",
+      "bytes": 1453,
+      "mtime_ns": 1792771528104561670
+    },
+    "apps/ultra/src-tauri/native/patch_graph.h": {
+      "sha256": "a71ee3af318d0b7d974c08fca93e7a48921aa16bea73526590945d15a91ceeb5",
+      "bytes": 4797,
+      "mtime_ns": 1792805821072963361
+    },
+    "apps/ultra/src-tauri/native/patch_graph.hpp": {
+      "sha256": "d2ccf60d3a4b5fd6b30c427507351b7c7f92004b003a8582ef0c2df30f8cf5c0",
+      "bytes": 63141,
+      "mtime_ns": 1792806023642562132
+    },
+    "apps/ultra/src-tauri/native/sequence.hpp": {
+      "sha256": "0602d22c09e6cee84d7ef79ccc3ea2809359bb8b2ab635af28d3f0983a20bff3",
+      "bytes": 3906,
+      "mtime_ns": 1792771528104561670
+    },
+    "apps/ultra/src-tauri/native/vendor/fast_float/LICENSE-APACHE": {
+      "sha256": "097a889aa954d04e088b790b10a4014d6189561d0a6013935a73ce3d4ddaaf06",
+      "bytes": 10767,
+      "mtime_ns": 1792777258362919296
+    },
+    "apps/ultra/src-tauri/native/vendor/fast_float/LICENSE-BOOST": {
+      "sha256": "8d8291caf1cee26d23acf3eb67c9f9a2d58f1c681b16a4fbe8cbfb9e3c0b5a9b",
+      "bytes": 1337,
+      "mtime_ns": 1792777258362919296
+    },
+    "apps/ultra/src-tauri/native/vendor/fast_float/LICENSE-MIT": {
+      "sha256": "e562f3f974ced7e69dd1db77b820b36bcf8f30377f1aa105723fba449c53c4e6",
+      "bytes": 1079,
+      "mtime_ns": 1792777258362919296
+    },
+    "apps/ultra/src-tauri/native/vendor/fast_float/PROVENANCE.md": {
+      "sha256": "42636ec7c1dfa38ed75220d12ea0f17523cf4d9c3583c103705b6511a38bc19d",
+      "bytes": 544,
+      "mtime_ns": 1792777258362919296
+    },
+    "apps/ultra/src-tauri/native/vendor/fast_float/ascii_number.h": {
+      "sha256": "a034d44ff5b945a51c4797ecf4be7ef50c3a9730d50f5a26a6dc75a2c02d5b11",
+      "bytes": 18903,
+      "mtime_ns": 1792777258363919302
+    },
+    "apps/ultra/src-tauri/native/vendor/fast_float/bigint.h": {
+      "sha256": "1ed0b598da0b522613399897ddc748792dee6f804debf9fee131359252f80763",
+      "bytes": 18631,
+      "mtime_ns": 1792777258363919302
+    },
+    "apps/ultra/src-tauri/native/vendor/fast_float/constexpr_feature_detect.h": {
+      "sha256": "2dd2dc5f98a8f1a78813e62d47e82a19ebe42af726356723d60f6eb387c6dd38",
+      "bytes": 1629,
+      "mtime_ns": 1792777258364919308
+    },
+    "apps/ultra/src-tauri/native/vendor/fast_float/decimal_to_binary.h": {
+      "sha256": "82fad8134c272a3f1bc545b3ef367a2e9e3c7464b9dcef75640c37e325dfb973",
+      "bytes": 8333,
+      "mtime_ns": 1792777258364919308
+    },
+    "apps/ultra/src-tauri/native/vendor/fast_float/digit_comparison.h": {
+      "sha256": "941d18ff89a9164f6ad447542a7b369252cdd5d63d289f1064a71641bd9c99b6",
+      "bytes": 15623,
+      "mtime_ns": 1792777258365919314
+    },
+    "apps/ultra/src-tauri/native/vendor/fast_float/fast_float.h": {
+      "sha256": "2427cd297f5b4d524e696ab9c69f957ffb9f851e59262f5d0b07930ba7dae016",
+      "bytes": 2521,
+      "mtime_ns": 1792777258365919314
+    },
+    "apps/ultra/src-tauri/native/vendor/fast_float/fast_table.h": {
+      "sha256": "c18e0a0a2513215730557cc1dd53541cacd72855ddc0287934e78b364f989edb",
+      "bytes": 31278,
+      "mtime_ns": 1792777258365919314
+    },
+    "apps/ultra/src-tauri/native/vendor/fast_float/float_common.h": {
+      "sha256": "c09daa98e482d9a068c4174f208227741a64f82c7cd1b9cf0db0e8b96fee5562",
+      "bytes": 39545,
+      "mtime_ns": 1792777258366919321
+    },
+    "apps/ultra/src-tauri/native/vendor/fast_float/parse_number.h": {
+      "sha256": "8bb35524d9b52107ac28215e932307a5a1765de8cb099599a7412f429cfb7e33",
+      "bytes": 14316,
+      "mtime_ns": 1792777258367919327
+    },
+    "apps/ultra/src-tauri/src/audio.rs": {
+      "sha256": "989c063a431598a7015af1be0f51b7c9d69a7199655079d91775b3f8fdd0cd80",
+      "bytes": 33345,
+      "mtime_ns": 1792828883365677915
+    },
+    "apps/ultra/src-tauri/src/audio_epoch.rs": {
+      "sha256": "c694fefc6005755b80573af7dff815022382fb315a17af9aa7aba2202d848628",
+      "bytes": 20977,
+      "mtime_ns": 1792826187248506386
+    },
+    "apps/ultra/src-tauri/src/audio_instrumentation.rs": {
+      "sha256": "ab23a876cff6c3adb2702cceee0e0590831473c2809933004113db933ac0e1cc",
+      "bytes": 11072,
+      "mtime_ns": 1792833801415883654
+    },
+    "apps/ultra/src-tauri/src/canvas.rs": {
+      "sha256": "a1148154c2921e89501c67ea67fc8fdc1288e3759c7b1c7f0f0d4fcaa5310db7",
+      "bytes": 48064,
+      "mtime_ns": 1792805548880048534
+    },
+    "apps/ultra/src-tauri/src/canvas_device.rs": {
+      "sha256": "04d494ed6a2a279730ee99594f6b55ffa1ec2e7ab82477fecab09a9f5021432b",
+      "bytes": 10921,
+      "mtime_ns": 1792805548875048456
+    },
+    "apps/ultra/src-tauri/src/canvas_hierarchy.rs": {
+      "sha256": "159a8116c4306f2d35340c75f4b121881394f7c809461b6d89d8b0676f3ed067",
+      "bytes": 10363,
+      "mtime_ns": 1792772284319218593
+    },
+    "apps/ultra/src-tauri/src/canvas_pinch.rs": {
+      "sha256": "86d090baebd864c4e4320c39a0bf550b5d33a2e27c575ac9f8e7db03510aeaa0",
+      "bytes": 1884,
+      "mtime_ns": 1792771528106060972
+    },
+    "apps/ultra/src-tauri/src/canvas_tests.rs": {
+      "sha256": "72ca1d00f8b9d021064e3ddf7a6454f27a06c465cad5c12b64a82c09a26d61e0",
+      "bytes": 77004,
+      "mtime_ns": 1792806144429025842
+    },
+    "apps/ultra/src-tauri/src/document_commands.rs": {
+      "sha256": "65e17a88b26dc34bb7bcbc06323ed0b335dea6dbcbd5fd370be655a4363e1fe4",
+      "bytes": 12294,
+      "mtime_ns": 1792830190527516602
+    },
+    "apps/ultra/src-tauri/src/document_commands_tests.rs": {
+      "sha256": "c5510ca8d853d31f48ff1592ba4dded6b85368ad8ae24c961bd19ab0dabc6663",
+      "bytes": 31911,
+      "mtime_ns": 1792830236234360757
+    },
+    "apps/ultra/src-tauri/src/document_windows.rs": {
+      "sha256": "f13ae0a7bf337c98d972d13f067e659be8a55dd6be9d44bab68a06bdebb1c611",
+      "bytes": 45727,
+      "mtime_ns": 1792828979513491190
+    },
+    "apps/ultra/src-tauri/src/documents.rs": {
+      "sha256": "08355cbbb2798c2c0e69108a60e3fd0c3fed01d76bbeb713701d9c08e80a19ba",
+      "bytes": 10432,
+      "mtime_ns": 1792772341251590172
+    },
+    "apps/ultra/src-tauri/src/documents_close.rs": {
+      "sha256": "280acaaf2dee16af6bce24023ceef38f12fca734f8098ee00cd89347507cd3e2",
+      "bytes": 6407,
+      "mtime_ns": 1792771528106561689
+    },
+    "apps/ultra/src-tauri/src/documents_shared.rs": {
+      "sha256": "5f325ec24bb12cdaae846b8a8ecd2077e974f680cd053fd3a785b0bb1b8c162a",
+      "bytes": 11723,
+      "mtime_ns": 1792771528107561699
+    },
+    "apps/ultra/src-tauri/src/documents_tests.rs": {
+      "sha256": "670d5f2e47581e8115b406c26a3dff28f703fbc6f9ba165075c589bba8a998c1",
+      "bytes": 32006,
+      "mtime_ns": 1792772311099912483
+    },
+    "apps/ultra/src-tauri/src/help_reference.rs": {
+      "sha256": "f8fa49ca1bb0416b2fe36492672b80f04f872a2e5835e7dd21260232a4f4661a",
+      "bytes": 36750,
+      "mtime_ns": 1792777258368919333
+    },
+    "apps/ultra/src-tauri/src/instrument_probe.rs": {
+      "sha256": "19359ed313140bb4ddc3d38c8a180cb64d284aea1025dc0bff680b60749fb903",
+      "bytes": 17048,
+      "mtime_ns": 1792805790568552405
+    },
+    "apps/ultra/src-tauri/src/lib.rs": {
+      "sha256": "10461eeebfa4950cb56faae7756687a8d1a2d2b7178205807f237b9bf9d2a079",
+      "bytes": 42965,
+      "mtime_ns": 1792830119903174607
+    },
+    "apps/ultra/src-tauri/src/mac_termination.rs": {
+      "sha256": "1ce7eca1035ec11cd9d25a7a4a1a07df5e7795b6c06cc40fb125e0698a057f5c",
+      "bytes": 8236,
+      "mtime_ns": 1792777258368919333
+    },
+    "apps/ultra/src-tauri/src/main.rs": {
+      "sha256": "f41ca2464e5de9caeee0ee90b41491c2ae7d01e42ab2e7049a9f1e1be12261ca",
+      "bytes": 143,
+      "mtime_ns": 1792801245070984202
+    },
+    "apps/ultra/src-tauri/src/session/clips.rs": {
+      "sha256": "7a6546facf9aa299f5513ed8d630799780563d9fe059a9cf38d3aa9535a8a645",
+      "bytes": 16012,
+      "mtime_ns": 1792986990836843521
+    },
+    "apps/ultra/src-tauri/src/session/desktop.rs": {
+      "sha256": "bcd917563481fd9b4533e1c80447fe2c736d7fc9077f7d234ffb71141c90f41a",
+      "bytes": 59382,
+      "mtime_ns": 1792837604956795783
+    },
+    "apps/ultra/src-tauri/src/session/history.rs": {
+      "sha256": "25c2b08b16a3cba5a059e192e0ff31cf4e8113f290e71fde8a8b780f54d466cf",
+      "bytes": 6360,
+      "mtime_ns": 1792822223842388455
+    },
+    "apps/ultra/src-tauri/src/session/host.rs": {
+      "sha256": "99b5374cb8492ddfd934bfda99d6021c3e41912ad4cb05de75fcd8ba71077c2c",
+      "bytes": 16063,
+      "mtime_ns": 1792832535824828324
+    },
+    "apps/ultra/src-tauri/src/session/mod.rs": {
+      "sha256": "bf443130d671987f7c16bed4dfe5e13ece298235ad234fd1ae49020a3db09b1d",
+      "bytes": 2279,
+      "mtime_ns": 1792985428721888159
+    },
+    "apps/ultra/src-tauri/src/session/native.rs": {
+      "sha256": "e18f7aec166cfba74c4b7fafe8fc5baa8452109686042ad1572a35ba9d236202",
+      "bytes": 17405,
+      "mtime_ns": 1792988836172308253
+    },
+    "apps/ultra/src-tauri/src/session/native_v4.rs": {
+      "sha256": "db2ebe4bb729cce304741faeb7ca16e7f5d239bdc03f90bda9ee9005d1f31246",
+      "bytes": 19074,
+      "mtime_ns": 1792988358696332383
+    },
+    "apps/ultra/src-tauri/src/session/persistence.rs": {
+      "sha256": "89b93e40b3e0864f7e9b5df7d6e99231d3a59c9aa3e8dc0fbcf57e66318cde56",
+      "bytes": 7453,
+      "mtime_ns": 1792823605976488514
+    },
+    "apps/ultra/src-tauri/src/session/prepare.rs": {
+      "sha256": "7da930e50b1df23c7320ff639c92a686dd3b0895c3e2d74d93e3d3f1dbb1b7bd",
+      "bytes": 21031,
+      "mtime_ns": 1792832502333355742
+    },
+    "apps/ultra/src-tauri/src/session/probe.rs": {
+      "sha256": "8daba9e197bc4b2259d2fce1ba62c1d7db98cb353f7b68711e77b75d24156648",
+      "bytes": 21825,
+      "mtime_ns": 1792822532513592640
+    },
+    "apps/ultra/src-tauri/src/session/runtime.rs": {
+      "sha256": "66a281a29eae3c6020b6097adc2bf6f8711385f70df33d360207bc74655f4657",
+      "bytes": 14198,
+      "mtime_ns": 1792837884010450409
+    },
+    "apps/ultra/src-tauri/src/session/tests.rs": {
+      "sha256": "70dbed958fc544c65f12c2f40a65702d6b041b9a92706947298f418975e015c2",
+      "bytes": 42191,
+      "mtime_ns": 1792837883968456211
+    },
+    "apps/ultra/src-tauri/src/session/workspaces.rs": {
+      "sha256": "faa29cb2c1766bef7f4bc10be2ba71ed11607509cfe846d1bc556cf70ea5f923",
+      "bytes": 49304,
+      "mtime_ns": 1792987057445514597
+    },
+    "apps/ultra/src-tauri/src/session/workspaces_tests.rs": {
+      "sha256": "6a256bbfb23f59e636c85d5ed15527a8d5035c25a223e4916fc0d2a4a65802ed",
+      "bytes": 42190,
+      "mtime_ns": 1792987057458514532
+    },
+    "apps/ultra/src-tauri/tauri.conf.json": {
+      "sha256": "161a720781a6c9a242daeaa1bb653cae3e62224e24fb0b5fdd63fc283ccb8021",
+      "bytes": 935,
+      "mtime_ns": 1792809217443844839
+    },
+    "apps/ultra/src-tauri/vendor/tauri-plugin-single-instance/.cargo_vcs_info.json": {
+      "sha256": "2936bb4b0446e8ce87f506790bb3e98ef3dbad7b485cd2a43546a705ee0e2d21",
+      "bytes": 117,
+      "mtime_ns": 1792771528109341405
+    },
+    "apps/ultra/src-tauri/vendor/tauri-plugin-single-instance/Cargo.toml": {
+      "sha256": "c66206a7fe75902d07e759a370975b7375f47922421674e0c51c4bd445f8a951",
+      "bytes": 2382,
+      "mtime_ns": 1792771528109448006
+    },
+    "apps/ultra/src-tauri/vendor/tauri-plugin-single-instance/Cargo.toml.orig": {
+      "sha256": "f1062dd5130d14fb7aea37180b07800537edc5071287cbfe00cf9ef3029d7fc6",
+      "bytes": 1406,
+      "mtime_ns": 1792771528109448006
+    },
+    "apps/ultra/src-tauri/vendor/tauri-plugin-single-instance/LICENSE.spdx": {
+      "sha256": "eb8a6c84630461b352badcab1dbe5d0168c56d377358b2b8c86b51003272d5ef",
+      "bytes": 888,
+      "mtime_ns": 1792771528109448006
+    },
+    "apps/ultra/src-tauri/vendor/tauri-plugin-single-instance/LICENSE_APACHE-2.0": {
+      "sha256": "0cec06e0e55fbc3dc5cee4fca9b607f66cb8f4e4dbcf3b3c013594dd156732e9",
+      "bytes": 10173,
+      "mtime_ns": 1792771528109448006
+    },
+    "apps/ultra/src-tauri/vendor/tauri-plugin-single-instance/LICENSE_MIT": {
+      "sha256": "b7f455413bfe5f9d7da501a4468d4c5f866a432c325947e98cc9535e8b26cd6d",
+      "bytes": 1112,
+      "mtime_ns": 1792771528109448006
+    },
+    "apps/ultra/src-tauri/vendor/tauri-plugin-single-instance/README.md": {
+      "sha256": "c7d9f5c5177ffa55d11a187d1bddd1d865ea9718f6059fc110e659cef0fb55b4",
+      "bytes": 2585,
+      "mtime_ns": 1792771528109448006
+    },
+    "apps/ultra/src-tauri/vendor/tauri-plugin-single-instance/ULTRA_PATCH.md": {
+      "sha256": "63e392c8260a6915ab4d9d61b0cdfd5262443fc7532c79c7041c4c85bc5ad5d8",
+      "bytes": 2139,
+      "mtime_ns": 1792771528109448006
+    },
+    "apps/ultra/src-tauri/vendor/tauri-plugin-single-instance/src/lib.rs": {
+      "sha256": "d0b835908815e77472d9b95b23360f63d8e37ca8cff064512b4c294c86523fa2",
+      "bytes": 1433,
+      "mtime_ns": 1792771528109561717
+    },
+    "apps/ultra/src-tauri/vendor/tauri-plugin-single-instance/src/platform_impl/linux.rs": {
+      "sha256": "ebaf3316d385f982ead1f89198216279ba0230f62ae56cc77426e81b325b0ef1",
+      "bytes": 4057,
+      "mtime_ns": 1792771528110309950
+    },
+    "apps/ultra/src-tauri/vendor/tauri-plugin-single-instance/src/platform_impl/macos.rs": {
+      "sha256": "aa5af11494de24a3feafabd6ae29c070f2f56149a9ebcc08aae32351ec56c4e3",
+      "bytes": 4600,
+      "mtime_ns": 1792771528110431550
+    },
+    "apps/ultra/src-tauri/vendor/tauri-plugin-single-instance/src/platform_impl/windows.rs": {
+      "sha256": "dabfca4f65f7caf8644994216f292ede2504533480bb82e9b64853387211d7e2",
+      "bytes": 8862,
+      "mtime_ns": 1792771528110431550
+    },
+    "apps/ultra/src-tauri/vendor/tauri-plugin-single-instance/src/semver_compat.rs": {
+      "sha256": "7b2691f864cc76f3acb025d516ae8e402bc318e2b228e588968e462ee094ad23",
+      "bytes": 735,
+      "mtime_ns": 1792771528110431550
+    },
+    "apps/ultra/tests/check_alive_desktop.py": {
+      "sha256": "59150b29078019f95673a19a1264b04903ae7bf6116f9057a0ddfed01635858d",
+      "bytes": 51911,
+      "mtime_ns": 1793036278052656589
+    },
+    "apps/ultra/tests/check_canvas_desktop.sh": {
+      "sha256": "e75bbd94e63ad4fc28476098e2b7bc1f8918c04706c709e7876fd8b47c2df574",
+      "bytes": 7699,
+      "mtime_ns": 1792825962634640527
+    },
+    "apps/ultra/ui/README.md": {
+      "sha256": "fc301fe5b021ece0c8be7c09c1b834a803510271da794e0b1f4b77797dd0cc60",
+      "bytes": 33426,
+      "mtime_ns": 1793022610283749130
+    },
+    "apps/ultra/ui/alive-dom.test.mjs": {
+      "sha256": "2961013401ec256460adcca67d2e338b113faa81e764d0f7d2cbe5404bda822f",
+      "bytes": 68542,
+      "mtime_ns": 1793037135913896694
+    },
+    "apps/ultra/ui/alive-editor.css": {
+      "sha256": "7bd9c28197d32f04db4e43634527c60b8165974e37992163faa81c92c246ebb6",
+      "bytes": 2148,
+      "mtime_ns": 1792780794012051271
+    },
+    "apps/ultra/ui/alive-editor.html": {
+      "sha256": "3ce9bed561a7936ff40085097bee1fcf41f95a5bdf786f60ae07d26fe4012e45",
+      "bytes": 1849,
+      "mtime_ns": 1792780794012051271
+    },
+    "apps/ultra/ui/alive-editor.mjs": {
+      "sha256": "604bd6ed78733aa243c093062180cbdee3be8bfc832eb1fb04a3d29472918d5f",
+      "bytes": 9360,
+      "mtime_ns": 1792808890818611198
+    },
+    "apps/ultra/ui/alive-model.mjs": {
+      "sha256": "b1facc13da6040a05ce9850de5539520cdc454e4fd42b1649564151424dccc30",
+      "bytes": 2492,
+      "mtime_ns": 1792822578471619745
+    },
+    "apps/ultra/ui/alive-model.test.mjs": {
+      "sha256": "44fceb11acba67190ab01806d47077c7c1ad4c61e8b909888e2a1a15c80fd323",
+      "bytes": 4765,
+      "mtime_ns": 1792822556481474653
+    },
+    "apps/ultra/ui/alive-piano.mjs": {
+      "sha256": "357b7e8d5885abfc6e8dfee805a31a160695d1b761ac66da2c57271049303e7a",
+      "bytes": 1317,
+      "mtime_ns": 1792812915624887523
+    },
+    "apps/ultra/ui/alive-piano.test.mjs": {
+      "sha256": "1a1f66e4f5de4a35265160630a469964f07aff42256be237cdf67cd575a0626a",
+      "bytes": 1065,
+      "mtime_ns": 1792812915492884460
+    },
+    "apps/ultra/ui/alive-workspace.mjs": {
+      "sha256": "1da002edbf18400d07fc06b06023e919d471ae747a4e4f37869e8a1e5e644b70",
+      "bytes": 5668,
+      "mtime_ns": 1792984411877824325
+    },
+    "apps/ultra/ui/alive.css": {
+      "sha256": "6ce6f76ae4d1f393431ee33a07eb7e1719a637c1e2b64fd22517bbad780834f1",
+      "bytes": 17893,
+      "mtime_ns": 1793009155953623280
+    },
+    "apps/ultra/ui/alive.html": {
+      "sha256": "5931bf6685b5efd62dfc36536d5bd05a5763e802e66d210c029657aee231711d",
+      "bytes": 11290,
+      "mtime_ns": 1793010222445882086
+    },
+    "apps/ultra/ui/alive.mjs": {
+      "sha256": "fd26cbe3b3f1d5881d01db02f9a8e35117967eca508391c35d079f0827af4f92",
+      "bytes": 60292,
+      "mtime_ns": 1793037072359065681
+    },
+    "apps/ultra/ui/app.mjs": {
+      "sha256": "0f477928c6344c5dcf8ea19fcab8b460c8d282eb49634f88ae9ea147ca532e9c",
+      "bytes": 16043,
+      "mtime_ns": 1792771528121146145
+    },
+    "apps/ultra/ui/audio-bus.mjs": {
+      "sha256": "307c45330faa93cda7b5b604a131b4f480a6ec5790925e1c76f46032f7713858",
+      "bytes": 10555,
+      "mtime_ns": 1792771528121146145
+    },
+    "apps/ultra/ui/audio-bus.test.mjs": {
+      "sha256": "412d0cfdb1d2ccbd497e61785e0bfe87a9877e2dbd780dd98b9a74dea12ba647",
+      "bytes": 12244,
+      "mtime_ns": 1792771528121146145
+    },
+    "apps/ultra/ui/audio-settings.mjs": {
+      "sha256": "79f4fada822bca61b3fc95ef40bf8fa834a74e5f789aadef3ff45cd33015697c",
+      "bytes": 5339,
+      "mtime_ns": 1792771528121146145
+    },
+    "apps/ultra/ui/audio-settings.test.mjs": {
+      "sha256": "fdeda0c02c3d6c5d819a61038472d8a936bec1b8b105eec93c67477269b91430",
+      "bytes": 3546,
+      "mtime_ns": 1792771528121146145
+    },
+    "apps/ultra/ui/canvas-appearance-cases.json": {
+      "sha256": "ca6b3ffc37869970b8df10e9787586e9ad635968cb4f7f84061b93f46d43e32a",
+      "bytes": 10321,
+      "mtime_ns": 1792771528121146145
+    },
+    "apps/ultra/ui/canvas-appearance-view.mjs": {
+      "sha256": "3b9407e30d5d3cf100aa10ae0ce4e274628a48ae640be137b6ec8a399aef262f",
+      "bytes": 4469,
+      "mtime_ns": 1792771528121146145
+    },
+    "apps/ultra/ui/canvas-appearance.mjs": {
+      "sha256": "f827c39dde961ea847a91980120404ee24f9e953ea51f3929b308a76070bfcc2",
+      "bytes": 4074,
+      "mtime_ns": 1792805821072963361
+    },
+    "apps/ultra/ui/canvas-appearance.test.mjs": {
+      "sha256": "02df42753c481e4165f501f504b2eca69f675fe282ee8702f99030377da88e00",
+      "bytes": 8666,
+      "mtime_ns": 1792771528121561830
+    },
+    "apps/ultra/ui/canvas-arithmetic-examples.test.mjs": {
+      "sha256": "70e23fac9f947774610091c2b2aadb96323b24c70e48e5f9c9ac34bd0fbfe273",
+      "bytes": 1809,
+      "mtime_ns": 1792771528121561830
+    },
+    "apps/ultra/ui/canvas-arithmetic.mjs": {
+      "sha256": "8133cedb909681b2e6939960a600e2c3d8859916bd325fb28ab7581a7dffe127",
+      "bytes": 1609,
+      "mtime_ns": 1792771528121561830
+    },
+    "apps/ultra/ui/canvas-arithmetic.test.mjs": {
+      "sha256": "86f44f495242bb8efb4297c7307898fb49c5dc5e2f7e3b25283792338eb3eec4",
+      "bytes": 7031,
+      "mtime_ns": 1792771528121561830
+    },
+    "apps/ultra/ui/canvas-cable-geometry.mjs": {
+      "sha256": "ec0354558e251bc6324af5d96c9bf0a213d177820fb4ac7119194e648b5fde21",
+      "bytes": 1748,
+      "mtime_ns": 1792771528121561830
+    },
+    "apps/ultra/ui/canvas-cable-geometry.test.mjs": {
+      "sha256": "9bd81772531142616d3df22f1998e1aa3070b92742e43c4c4b009fa168b819fd",
+      "bytes": 2647,
+      "mtime_ns": 1792771528121561830
+    },
+    "apps/ultra/ui/canvas-cable-path.mjs": {
+      "sha256": "ac76d6d1fba68b2307eea7a9d2a6af8df531a08e49090038968b9a6de26638ef",
+      "bytes": 1715,
+      "mtime_ns": 1792771528121561830
+    },
+    "apps/ultra/ui/canvas-cable-path.test.mjs": {
+      "sha256": "953ae733e86c1067b56fe64334b56564088301a57984d06117df78a4e7da988e",
+      "bytes": 2304,
+      "mtime_ns": 1792771528121561830
+    },
+    "apps/ultra/ui/canvas-catalog.mjs": {
+      "sha256": "6817264e0cbf652ed9b3b0fe5dea8b67188669b3444564f2334aed6350208d8e",
+      "bytes": 29604,
+      "mtime_ns": 1792805594241744979
+    },
+    "apps/ultra/ui/canvas-catalog.test.mjs": {
+      "sha256": "721cdf4617db8771ea37b10c10b6b0aa64f6f5006ba2da92cdbec02827e56cf3",
+      "bytes": 5109,
+      "mtime_ns": 1792772638564427180
+    },
+    "apps/ultra/ui/canvas-comment-ui.mjs": {
+      "sha256": "92a56ae7dd6ae5ae2f83c94ce382c439ae3aa354f05f6791de0fc10e268f5973",
+      "bytes": 1965,
+      "mtime_ns": 1792771528122561839
+    },
+    "apps/ultra/ui/canvas-comment-ui.test.mjs": {
+      "sha256": "c1643693561a00f2f581313436ad4130268bbf11be68dce121bfe5d70b158fb9",
+      "bytes": 1918,
+      "mtime_ns": 1792771528122561839
+    },
+    "apps/ultra/ui/canvas-completion.mjs": {
+      "sha256": "870f78e239b7f5530f467016f4312dd93d80bb7e0ff07416ef87f582de935806",
+      "bytes": 6586,
+      "mtime_ns": 1792771528122561839
+    },
+    "apps/ultra/ui/canvas-completion.test.mjs": {
+      "sha256": "716fe371c8c3410d493f9247815724e32ab1386ce8e18936bf3e9f4ca52a617d",
+      "bytes": 3213,
+      "mtime_ns": 1792771528122561839
+    },
+    "apps/ultra/ui/canvas-console-view.mjs": {
+      "sha256": "3baec5c83455a3b9ca90e490da779ea0c11b483ed7d93829c243bab296c9113f",
+      "bytes": 3249,
+      "mtime_ns": 1792771528122561839
+    },
+    "apps/ultra/ui/canvas-console.css": {
+      "sha256": "6ced184f4ad831add7ecef77aa20860d60234966bf284fe87692c2907fc1731b",
+      "bytes": 1658,
+      "mtime_ns": 1792771528122561839
+    },
+    "apps/ultra/ui/canvas-console.test.mjs": {
+      "sha256": "681675b0613fab8943ca580f054c9602d3c0af249867284fd000d2d2ac36e53b",
+      "bytes": 2787,
+      "mtime_ns": 1792771528122561839
+    },
+    "apps/ultra/ui/canvas-device-panel.mjs": {
+      "sha256": "b7834d7ff279212686c2a5100351835542901d398152eceae64f553d114e3845",
+      "bytes": 9260,
+      "mtime_ns": 1792805642830469161
+    },
+    "apps/ultra/ui/canvas-device-player.mjs": {
+      "sha256": "b880e5b2c86448ceba8d9a21da948b378791633e456b2ccd66773eeaf3b43ecf",
+      "bytes": 1638,
+      "mtime_ns": 1792772542610952474
+    },
+    "apps/ultra/ui/canvas-device-player.test.mjs": {
+      "sha256": "e5c8b99dbdce66e05342eaa1261f5ec966770b686862d76b1f9143c4a9ed597a",
+      "bytes": 1731,
+      "mtime_ns": 1792772505330196244
+    },
+    "apps/ultra/ui/canvas-device.css": {
+      "sha256": "da2ac7900b046802ca96cce020f6664acfe3985360b21c1d5e0479c23b7d5c8c",
+      "bytes": 1955,
+      "mtime_ns": 1792772638563427185
+    },
+    "apps/ultra/ui/canvas-device.mjs": {
+      "sha256": "04b13b5b8b5e5093687817a8cc5bd849aae92eb1af402c57fbca7c074ee0ebfe",
+      "bytes": 6375,
+      "mtime_ns": 1792805594239744949
+    },
+    "apps/ultra/ui/canvas-documents-view.mjs": {
+      "sha256": "bd10508f32a1f88588737c59d92316888e81d9ee6e7fee3a2a25c7f8e56f8bc5",
+      "bytes": 9540,
+      "mtime_ns": 1792777258373919365
+    },
+    "apps/ultra/ui/canvas-documents.mjs": {
+      "sha256": "9e9fbf42944955152327c00a919362b0d7ad09120418332c47fc5a513821a7cf",
+      "bytes": 4608,
+      "mtime_ns": 1792777258373919365
+    },
+    "apps/ultra/ui/canvas-documents.test.mjs": {
+      "sha256": "aae93e43f1c81d2ba2bf600f14aa2fc37b0a4c03fb6a8f38944f49058f1bb69d",
+      "bytes": 14150,
+      "mtime_ns": 1792777258374919371
+    },
+    "apps/ultra/ui/canvas-dom.test.mjs": {
+      "sha256": "97c4ea4b23442994149c7fb999f3422449757318d0860654aeff1f6a3989e83c",
+      "bytes": 71444,
+      "mtime_ns": 1792805705628374936
+    },
+    "apps/ultra/ui/canvas-effects.mjs": {
+      "sha256": "abbb1614542b964ae83911b70019248219a4c6f3e5e6d42782dc1ec3d96ec2f7",
+      "bytes": 1737,
+      "mtime_ns": 1792805677047966698
+    },
+    "apps/ultra/ui/canvas-entry.mjs": {
+      "sha256": "50a8fb940af501d78fc335b59ee9b40be2a7571e03460d941b53aae9c9072acc",
+      "bytes": 7563,
+      "mtime_ns": 1792771528123561849
+    },
+    "apps/ultra/ui/canvas-help-arithmetic-import.test.mjs": {
+      "sha256": "12a5d704215211446d5a94310b42ca5b5fc3b37fe9000b83b9675bdc5736c07e",
+      "bytes": 16054,
+      "mtime_ns": 1792771528123561849
+    },
+    "apps/ultra/ui/canvas-help-import.test.mjs": {
+      "sha256": "7e40bafa1c17c9661916e8e84fb815105c109b417698fdd0edb24a241535412c",
+      "bytes": 3847,
+      "mtime_ns": 1792771528123561849
+    },
+    "apps/ultra/ui/canvas-help-shell.mjs": {
+      "sha256": "41a128d14bb0479eaab27feb1b88533758934b047f6a1c0bf6da6346b886caa0",
+      "bytes": 13014,
+      "mtime_ns": 1792771528124561858
+    },
+    "apps/ultra/ui/canvas-help-shell.test.mjs": {
+      "sha256": "0f1e5340b250837e3709fd66bbb9f8377739b7a85ffd532174bf3f63383e8932",
+      "bytes": 1339,
+      "mtime_ns": 1792771528124561858
+    },
+    "apps/ultra/ui/canvas-help-view.mjs": {
+      "sha256": "3569262b2566c58e5f46730d9249ec008b7773fc2bb805be848d61616e92e8ac",
+      "bytes": 11020,
+      "mtime_ns": 1792771528124561858
+    },
+    "apps/ultra/ui/canvas-help-view.test.mjs": {
+      "sha256": "cafc460c90c03387d0660dbffc7b1af59e9ef8040e0379064774473a704d6c84",
+      "bytes": 9134,
+      "mtime_ns": 1792771528124561858
+    },
+    "apps/ultra/ui/canvas-help.css": {
+      "sha256": "2addc893ed2313f6224b85b39d4eea65cca08e4f9abbb73fa3e90ea025ee62f0",
+      "bytes": 3099,
+      "mtime_ns": 1792771528124561858
+    },
+    "apps/ultra/ui/canvas-hierarchy.mjs": {
+      "sha256": "617cd35f35a835b7c87b339453c601ad1aad11ccb8ab075753ed1678891e4833",
+      "bytes": 6872,
+      "mtime_ns": 1792772318805827911
+    },
+    "apps/ultra/ui/canvas-hierarchy.test.mjs": {
+      "sha256": "663998290f51130722a874bee44b0d676000b8db75470e998e3d60187c03a3cd",
+      "bytes": 8857,
+      "mtime_ns": 1792771528125561867
+    },
+    "apps/ultra/ui/canvas-inspector.mjs": {
+      "sha256": "29b5b32c9e50a1d6d556eb84e16e6d1ce42e02da772389657e8d1f5fac749f7b",
+      "bytes": 6451,
+      "mtime_ns": 1792771528125561867
+    },
+    "apps/ultra/ui/canvas-inspector.test.mjs": {
+      "sha256": "075d5f398d03c60337ba0a5c78d8da1ccdeff4d4a97f5ca32f36215f0e71a8d6",
+      "bytes": 1484,
+      "mtime_ns": 1792771528125561867
+    },
+    "apps/ultra/ui/canvas-instrument.mjs": {
+      "sha256": "8521414050300f1d62251c7ad52b4a669e7d20efaef6fe885a412513bb189ccd",
+      "bytes": 2978,
+      "mtime_ns": 1792772447222626315
+    },
+    "apps/ultra/ui/canvas-instrument.test.mjs": {
+      "sha256": "dd0a978c1bf69225ec390a8f133735d1e01e94612cd5bfa06f046d00c9a45ea7",
+      "bytes": 7004,
+      "mtime_ns": 1792805654655642221
+    },
+    "apps/ultra/ui/canvas-library-data.json": {
+      "sha256": "117c1157f625ce7ce0e9818fd3d26fecbb96f571f97d2d1856ea7be4a2834bf8",
+      "bytes": 373244,
+      "mtime_ns": 1792806023732563244
+    },
+    "apps/ultra/ui/canvas-library.mjs": {
+      "sha256": "ad236e08da3b4bfe91d3c7ba716529c8043edb246f198cf414745b12f2931ca7",
+      "bytes": 5659,
+      "mtime_ns": 1792806023640562107
+    },
+    "apps/ultra/ui/canvas-library.test.mjs": {
+      "sha256": "97d4fc189a232bdb84ed1edbdb4ed8e1c8048a7a5c82b4ea8ea2deafbe3d5ae1",
+      "bytes": 1699,
+      "mtime_ns": 1792771528126561877
+    },
+    "apps/ultra/ui/canvas-list-objects.test.mjs": {
+      "sha256": "29f74f650451951c804ba4c89fe55e1a426e54bb80e0386b087d567316068370",
+      "bytes": 8380,
+      "mtime_ns": 1792771528126561877
+    },
+    "apps/ultra/ui/canvas-max-dialog.mjs": {
+      "sha256": "1ddb83463676ef31c8130da279083b3b2a7df4cc3163b91f973fab36c442289f",
+      "bytes": 6047,
+      "mtime_ns": 1792771528126561877
+    },
+    "apps/ultra/ui/canvas-max-dialog.test.mjs": {
+      "sha256": "85bbe6feae81f123376870b21d9973d4619eba000f17409ff59f157ab60bb4d1",
+      "bytes": 6116,
+      "mtime_ns": 1792771528126561877
+    },
+    "apps/ultra/ui/canvas-max-import.mjs": {
+      "sha256": "bcd8dd1a7a7d2ab229383f15a533b8df080b1c8015370b61ec4a297993217aed",
+      "bytes": 31042,
+      "mtime_ns": 1792771528127561886
+    },
+    "apps/ultra/ui/canvas-max-import.test.mjs": {
+      "sha256": "543fa955f878f6b244514fe11d661f43468b1f3b2c3d6bd006006097443d7183",
+      "bytes": 26245,
+      "mtime_ns": 1792771528127561886
+    },
+    "apps/ultra/ui/canvas-message-ui.mjs": {
+      "sha256": "af3a99aca94b9f2e21211554109dce50c988ab98c3ce07d2a1fd80fc05507a6b",
+      "bytes": 2509,
+      "mtime_ns": 1792771528127561886
+    },
+    "apps/ultra/ui/canvas-message-ui.test.mjs": {
+      "sha256": "53121a387f3712c0d5d99dc4f2b97e783a1b68b617caa7ba0ea1eb8fa9da02c5",
+      "bytes": 9993,
+      "mtime_ns": 1792771528127561886
+    },
+    "apps/ultra/ui/canvas-model.mjs": {
+      "sha256": "9d5369a75aee2bfc8fc9654024d86db8ec1f51daf938237c4576bf84b5cfaae2",
+      "bytes": 61081,
+      "mtime_ns": 1792805594240744964
+    },
+    "apps/ultra/ui/canvas-model.test.mjs": {
+      "sha256": "dbd38a26489676a53b393862f018a8aaef0ade9f405c21fb9472cffaea2c082e",
+      "bytes": 19523,
+      "mtime_ns": 1792772764683926148
+    },
+    "apps/ultra/ui/canvas-node.mjs": {
+      "sha256": "80b20fa41cb8e8e2b4991b544bf177aa30329d5a5b4be507c7b8ac08c3990a08",
+      "bytes": 19103,
+      "mtime_ns": 1792780067187140311
+    },
+    "apps/ultra/ui/canvas-numeric-ui.test.mjs": {
+      "sha256": "f0771c54d0a89bdde11b501957a39fd6c1ec58e9695a482c7977247ccb2d0b3c",
+      "bytes": 6171,
+      "mtime_ns": 1792771528128561896
+    },
+    "apps/ultra/ui/canvas-object-batch.test.mjs": {
+      "sha256": "0d399451ea26b619846379f334e730719c45baaff3db5a3b5fa31ecbc3473f90",
+      "bytes": 7929,
+      "mtime_ns": 1792772764684926144
+    },
+    "apps/ultra/ui/canvas-object-examples.mjs": {
+      "sha256": "d8367bd8231142afaa4325fcfe1c2e07d357281360ed045f04eab9c4270172f8",
+      "bytes": 60034,
+      "mtime_ns": 1792771528129561905
+    },
+    "apps/ultra/ui/canvas-poll.mjs": {
+      "sha256": "9bd003654f225a39af3b2fb4a76c188a73828c59ab818cacf1bb1270ed917b56",
+      "bytes": 1146,
+      "mtime_ns": 1792772597789633490
+    },
+    "apps/ultra/ui/canvas-poll.test.mjs": {
+      "sha256": "bb717a5b689ad6e5d8fa7d9f3430a35561d22b5e86e06ffa700da8d68348fd9f",
+      "bytes": 1667,
+      "mtime_ns": 1792772558100858060
+    },
+    "apps/ultra/ui/canvas-preset.json": {
+      "sha256": "98b7e936f73ab7a601d4f83df47f2e611a3eb98a06a04bc15c002f54550f4853",
+      "bytes": 3519,
+      "mtime_ns": 1792771528129561905
+    },
+    "apps/ultra/ui/canvas-print-ui.mjs": {
+      "sha256": "f7275077ad49a038d3ac1165e088b460ac94ae4f06d0bfed560386ef4b59bcfd",
+      "bytes": 1612,
+      "mtime_ns": 1792771528129561905
+    },
+    "apps/ultra/ui/canvas-print-ui.test.mjs": {
+      "sha256": "eeade4a5bef06f669ff1093d6c67766c6b6ceb01e3c42e083854ad4cd24e48fb",
+      "bytes": 7532,
+      "mtime_ns": 1792771528129561905
+    },
+    "apps/ultra/ui/canvas-send-receive.test.mjs": {
+      "sha256": "8ca0b2ebf110090c2603d981efc2d87ab815ef2d72d425af2cb62e6bf6fa994b",
+      "bytes": 7693,
+      "mtime_ns": 1792771528129561905
+    },
+    "apps/ultra/ui/canvas-shared.mjs": {
+      "sha256": "6d2a192bf3221597a8c7595a77562c6723c8ba486bfde8b998f370ed662a563a",
+      "bytes": 19495,
+      "mtime_ns": 1792777258375919377
+    },
+    "apps/ultra/ui/canvas-shared.test.mjs": {
+      "sha256": "d89c8ada8e521f3b3f30d66d894ae855dbb2b217cfdc34a378659a050b16eb19",
+      "bytes": 28448,
+      "mtime_ns": 1792777258375919377
+    },
+    "apps/ultra/ui/canvas-signal-objects.test.mjs": {
+      "sha256": "9d0705dd1af3c05b28139a840387d9a0a219604289da485a6458172e7bcfcbed",
+      "bytes": 12398,
+      "mtime_ns": 1792771528130561914
+    },
+    "apps/ultra/ui/canvas.css": {
+      "sha256": "5abdcc69961c40e574a83000bbebd98dc588399d723a0275827074dbbf155749",
+      "bytes": 30329,
+      "mtime_ns": 1792773744177226922
+    },
+    "apps/ultra/ui/canvas.html": {
+      "sha256": "0f2156f63b667fef2e6f10d729e4f444272ca455fea386962e16b8cf2cbb416a",
+      "bytes": 19420,
+      "mtime_ns": 1792806023641562120
+    },
+    "apps/ultra/ui/canvas.mjs": {
+      "sha256": "9ef20cd06c3c49781e466cb0027364741038d3ebe9ded6ed7f88dece955eff89",
+      "bytes": 55386,
+      "mtime_ns": 1792777258376919383
+    },
+    "apps/ultra/ui/chord-lab-dom.test.mjs": {
+      "sha256": "2e7adce6474ff28276b3330f93c47eaaba864d0ea04e93a367f8266f77c1ee6a",
+      "bytes": 6135,
+      "mtime_ns": 1792771528130561914
+    },
+    "apps/ultra/ui/chord-lab-model.mjs": {
+      "sha256": "6aab6d28a7117893073181722c679af00fa3fe3e9d3dc404909b0b199b5f1f3e",
+      "bytes": 13592,
+      "mtime_ns": 1792771528130561914
+    },
+    "apps/ultra/ui/chord-lab-preset.json": {
+      "sha256": "a434024d6491d8066390980ca0cd680d49a7927873afbc79fe1f0f4547709b10",
+      "bytes": 372,
+      "mtime_ns": 1792771528130561914
+    },
+    "apps/ultra/ui/chord-lab.css": {
+      "sha256": "b13752b097fefdc6fb6b7c3d1492515d7ee1ec1b798c9d723f244fde499e8ced",
+      "bytes": 14031,
+      "mtime_ns": 1792771528130561914
+    },
+    "apps/ultra/ui/chord-lab.html": {
+      "sha256": "28b21aaf892b08887813186080dd2aa13e071416bb12e7af7410ebc29bd7c276",
+      "bytes": 12887,
+      "mtime_ns": 1792771528131561924
+    },
+    "apps/ultra/ui/chord-lab.mjs": {
+      "sha256": "5fce17307e5d5ab0a9944bb03feacfe8be9abd8b39d27cef1ea0594a1a99d674",
+      "bytes": 15190,
+      "mtime_ns": 1792771528131561924
+    },
+    "apps/ultra/ui/chord-lab.test.mjs": {
+      "sha256": "b21c5f3735c0199b82dd500bfb1e00cd212eae1e76378c160a4fd20f9609be8e",
+      "bytes": 13538,
+      "mtime_ns": 1792771528131561924
+    },
+    "apps/ultra/ui/component-lab.html": {
+      "sha256": "2fb5ae3beb9c3c38a6358db75db0fb095fd303fc179b0d64f26ae4c8362731fa",
+      "bytes": 3112,
+      "mtime_ns": 1792771528131561924
+    },
+    "apps/ultra/ui/components/README.md": {
+      "sha256": "cd948423155efc9b28dee4a0247603551b49531ed7d6de75abfd0debf85a39ec",
+      "bytes": 8799,
+      "mtime_ns": 1792771528131561924
+    },
+    "apps/ultra/ui/components/components.css": {
+      "sha256": "a9e2a4343755fd057f120d88516994fe0dbb055f1ad24afa575d13370b37dc9d",
+      "bytes": 2435,
+      "mtime_ns": 1792771528133182521
+    },
+    "apps/ultra/ui/components/components.test.mjs": {
+      "sha256": "7b904aacaef2cbc43a43ae6e3fe1a57c20da149ca339846e3e4d7bcb8342c6e6",
+      "bytes": 10049,
+      "mtime_ns": 1792771528133182521
+    },
+    "apps/ultra/ui/components/index.mjs": {
+      "sha256": "968cf8704eaec55dbececf23334a7f1cba8adee875f0bc155c84085cbfe0b891",
+      "bytes": 9199,
+      "mtime_ns": 1792771528133182521
+    },
+    "apps/ultra/ui/components/lab.mjs": {
+      "sha256": "e9c8074c05f39b592eb7c30550203cd6b65c91c589714c64f95bb7df52124a88",
+      "bytes": 2159,
+      "mtime_ns": 1792771528133182521
+    },
+    "apps/ultra/ui/components/state.schema.json": {
+      "sha256": "d5b6edaa3ef0ddf802f919ba88dab09a1f72f756deb26ac52b7ccef648b35199",
+      "bytes": 3447,
+      "mtime_ns": 1792771528133182521
+    },
+    "apps/ultra/ui/events.test.mjs": {
+      "sha256": "705a21c64e08770c9675f1f5f4cacfc18819edfb7eca1d15e2900760aff1b77a",
+      "bytes": 5274,
+      "mtime_ns": 1792771528133182521
+    },
+    "apps/ultra/ui/generate-canvas-library.mjs": {
+      "sha256": "d72f9655bf332795b13a4d810bcf775b789caed905f4c92908b163d72335dd93",
+      "bytes": 663,
+      "mtime_ns": 1792805677055966813
+    },
+    "apps/ultra/ui/graph.mjs": {
+      "sha256": "e7e53e9c885eb52ea4fd41e611d97864e0bffb80c3f3167177905ebfb70fc982",
+      "bytes": 1876,
+      "mtime_ns": 1792771528133561943
+    },
+    "apps/ultra/ui/graph.test.mjs": {
+      "sha256": "974a9dc22027f3a5137ee5da1709992ac6563e8bd772f0004685253a20e12d73",
+      "bytes": 783,
+      "mtime_ns": 1792771528133561943
+    },
+    "apps/ultra/ui/index.html": {
+      "sha256": "ac919219cbd207721332d4cfeef0bf55a54ac7947bafa8d07b2082224bfc96a2",
+      "bytes": 3138,
+      "mtime_ns": 1792771528133561943
+    },
+    "apps/ultra/ui/style.css": {
+      "sha256": "96df30f8057e9b57f48a80d65f7a629f0e576135db1e94653b7d55c33dd9c46a",
+      "bytes": 6089,
+      "mtime_ns": 1792771528133561943
+    },
+    "apps/ultra/src-tauri/target/release/alive": {
+      "sha256": "ae23ba409de663921cce42ed01d66f27fd60fb007fffe126a77736067fa5d894",
+      "bytes": 13523696,
+      "mtime_ns": 1793037181862497408
+    },
+    "apps/ultra/src-tauri/target/release/ultra": {
+      "sha256": "55f84830e64c1346b105e2a0628489728a2f62e0c17838b4929612b64a13fb96",
+      "bytes": 17358088,
+      "mtime_ns": 1793037154927145274
+    },
+    "apps/ultra/src-tauri/target/release/libultra_native.so": {
+      "sha256": "1c579c6d63befb624166174c15a3235fa6fb71acab2e01f03aae124d7801b931",
+      "bytes": 12973024,
+      "mtime_ns": 1793037127154782173
+    },
+    "apps/ultra/build/libultra_native.so": {
+      "sha256": "1c579c6d63befb624166174c15a3235fa6fb71acab2e01f03aae124d7801b931",
+      "bytes": 12973024,
+      "mtime_ns": 1793037127154782173
+    },
+    "apps/ultra/core/CMakeLists.txt": {
+      "sha256": "ed26b3cbc4936054a4c9d8a22b2ad853a8e8fa51a928b990277de05d06e8a8d9",
+      "bytes": 2562,
+      "mtime_ns": 1792777258325919065
+    },
+    "apps/ultra/core/VOICE.txt": {
+      "sha256": "3305f3b0ba3c62f647365a18e2b17ee07bc60c9582df6b4d6e0f3d54fc8133cd",
+      "bytes": 14723,
+      "mtime_ns": 1792774162554101772
+    },
+    "apps/ultra/core/app_voice.hpp": {
+      "sha256": "3b173f9a042544f2ca37cfd1f6385fe2ff584203002d79497cf2d616e8593d23",
+      "bytes": 2480,
+      "mtime_ns": 1792771528097017376
+    },
+    "apps/ultra/core/engine.cpp": {
+      "sha256": "397f6b59debd7bbff899aaeaa4bbbdb18a2e6fe8ff0f7adc4fd0e7287f75413c",
+      "bytes": 9601,
+      "mtime_ns": 1792771528097017376
+    },
+    "apps/ultra/core/engine.hpp": {
+      "sha256": "b4690e8317b44a2ded3844c97ca614da9c9a9ea3dbf67fa90ed7ae115e8d0b1d",
+      "bytes": 2444,
+      "mtime_ns": 1792771528097017376
+    },
+    "apps/ultra/core/generate_voice.py": {
+      "sha256": "69e21a65ddefcf4af28101d1dc63d947b201d4544c4f28cbab01432de51ca236",
+      "bytes": 1510,
+      "mtime_ns": 1792771528097017376
+    },
+    "apps/ultra/core/generate_voice_kernels.py": {
+      "sha256": "a3a440cf998a941a37ec3a0bb0f482e5079a91b830b7c62d4f6b1fb0f191d24c",
+      "bytes": 1624,
+      "mtime_ns": 1792772193087415756
+    },
+    "apps/ultra/core/generated/app_voice.hpp": {
+      "sha256": "c963956717a1b7e9f9b2724d2505c256e0471bc32086968958bf1ac45b2cc03c",
+      "bytes": 7541,
+      "mtime_ns": 1792771528097017376
+    },
+    "apps/ultra/core/generated/voice_adsr.hpp": {
+      "sha256": "5ea3f39e7b914a092eec3881e037d20f5e327457d05736ac947baf392a0b7cbc",
+      "bytes": 4692,
+      "mtime_ns": 1792772193183183858
+    },
+    "apps/ultra/core/generated/voice_filter.hpp": {
+      "sha256": "fb60632045bfdf657a9523befd92f703c8ef97350ce204594fc9fe6746b1e2ab",
+      "bytes": 5296,
+      "mtime_ns": 1792772193174641601
+    },
+    "apps/ultra/core/generated/voice_saw.hpp": {
+      "sha256": "166654639bdea705b3fb64582f04524aa69511f70d9f27e7e2a686ff1a86fae7",
+      "bytes": 3949,
+      "mtime_ns": 1792772193158378105
+    },
+    "apps/ultra/core/guest/CMakeLists.txt": {
+      "sha256": "676ba806ab1ac8078dcc49064138b4faeff415dc78889df77a6cfbd0471e7f1b",
+      "bytes": 249,
+      "mtime_ns": 1792771528097017376
+    },
+    "apps/ultra/core/guest/guest.cpp": {
+      "sha256": "32756a243c3823c8b0e965bff5104b7435aff8136b6227b42460aed98acb067b",
+      "bytes": 7473,
+      "mtime_ns": 1792771528097740499
+    },
+    "apps/ultra/core/guest/observe.hpp": {
+      "sha256": "ad0de5f6c80c49877eb7d042b88562cf673a814d259b42a8ac732773ca82b677",
+      "bytes": 558,
+      "mtime_ns": 1792771528097740499
+    },
+    "apps/ultra/core/merge.cmake": {
+      "sha256": "ec1ca4b0f81c3d250c66267c08571eee08ce64f85b907808013885e004d9fa3c",
+      "bytes": 305,
+      "mtime_ns": 1792771528097740499
+    },
+    "apps/ultra/core/tests/envelope.cpp": {
+      "sha256": "844092afe8edc2b916c148fb8bf2edf0a7e7fab892cfbed66b08f3a9e4cb886f",
+      "bytes": 13834,
+      "mtime_ns": 1792771528097740499
+    },
+    "apps/ultra/core/ultra_core.h": {
+      "sha256": "505d8479af06859369e311e2cf3eb9d4e4be3088a74a46ed3934f4e16d7123dd",
+      "bytes": 1816,
+      "mtime_ns": 1792771528097740499
+    },
+    "apps/ultra/core/voice.dsp": {
+      "sha256": "68476cb0fb81285bdbbb24a5bf0e3c72cddbdeafbffb976bf04b6584a6d6b74d",
+      "bytes": 551,
+      "mtime_ns": 1792771528097740499
+    },
+    "apps/ultra/core/voice_adsr.dsp": {
+      "sha256": "7a6e53d5d9689e830e0f9ec060e792c755d9ba343255261ee7d8a9f4e395c27e",
+      "bytes": 213,
+      "mtime_ns": 1792772193086415771
+    },
+    "apps/ultra/core/voice_filter.dsp": {
+      "sha256": "ca1d6abfe3735c3c38ced43184667d154ec533e7cac14820b839d50a0e133373",
+      "bytes": 154,
+      "mtime_ns": 1792772193086415771
+    },
+    "apps/ultra/core/voice_saw.dsp": {
+      "sha256": "bf9bcf4dd162c645750e398fcb4bfc39e3b35cb82704013fd55bde726aee459f",
+      "bytes": 122,
+      "mtime_ns": 1792772193086415771
+    }
+  }
+}

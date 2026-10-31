@@ -1,0 +1,246 @@
+# Current Alive / Ultra Workflow Coverage
+
+Updated 2026-10-30 for the user's power-off pause. Phase 2 Tasks 1-8 are accepted
+at their recorded scopes; Task 9 qualification remains open. The current
+execution record is [the Phase 2 handoff](PHASE2_HANDOFF.md) and the active
+plan is [Phase 2](superpowers/plans/2026-10-28-phase2-live-max.md). The older
+workflow rows below remain source-pinned evidence. New reference captures stay
+private; this ledger does not expand architecture or admission bounds.
+
+## Current checkpoint and next actions
+
+Current application build is `64fcacd`, with the separate Alive/Ultra/module
+identities in `experiments/phase2-20261028/checkpoint-q1/final64-build/receipt.json`.
+It includes the shared saved stereo Master, compact Session/Arrangement and
+reviewed mixer-baseline correction. Exact pushed `a8ffe03` includes reviewed
+sampler correction `03d7962`; its packages pass all four targets, while CI fails
+the original Arrangement Audio details click before seek9.6. Later clip/resource/
+CPAL gates are skipped. Root verifies all 30 retained cloud entries. Earlier
+`eb4f704` is the latest completely green CI/package checkpoint.
+
+The corrected shared-sampler pilot was interrupted across reboot during setup,
+before its target loop; partial only, with no new admission. The bounded native
+Arrangement diagnostic finished with exit 1 at the later Session transition,
+after playback and seek succeeded. Root verifies 32px disclosure movement,
+owned hits, two costly in-loop lookups and zero presses/releases. Wrapping
+remains a hypothesis pending a rendered regression; no production fix is
+claimed. Diagnostic evidence is in `checkpoint-q1/arrangement-disclosure-diagnostic/`.
+All workers are finished and local runtime/artifact leases released. Application
+hashes, sizes and inodes still match final64; the filesystem device number has
+changed across reboot. No app source/rebuild or launcher change was needed.
+Resume from the handoff after the user reactivates the goal.
+
+| Gate | Current evidence | Remaining work |
+| --- | --- | --- |
+| Source CI | Exact `0f1deae`, [40789537429](https://github.com/venetanji/alive/actions/runs/40789537429): all three jobs pass, including native/Rust/offline/software CPAL journeys | Require CI again on the final pushed checkpoint |
+| New qualification | Exact `eb4f704`, [CI 40816670974](https://github.com/venetanji/alive/actions/runs/40816670974) passes all three jobs; [packages 40816670989](https://github.com/venetanji/alive/actions/runs/40816670989) passes all four targets. Root verifies all 19 retained manifest entries | Later sampler/shutdown checkpoint needs separate exact-head CI/packages; green package builds do not qualify native endurance |
+| Current pushed checkpoint | Exact `a8ffe03`, packages `40820226339` pass all four targets; CI `40820226354` fails Arrangement Audio details input, while original desktop/Master, UI/reference and Chromium pass | Resolve attributed pointer failure; later clip/resource/CPAL steps were skipped. Sampler pilot interrupted before target loop; no admission |
+| Arrangement diagnostic | One instrumented native run exits 1 at line 226 after playback/seek; root audits movement, owned hits, lookup timing and zero presses/releases | Prove geometry mechanism with rendered regression, preserve native checks, implement/review/rebuild and rerun unchanged journeys |
+| Native Master and original desktop | Final64 actual Quit/restart, complete saved v5 equality, nonzero software replay, both views/sizes; original pending/dirty Quit assertions and mixer keyboard/geometry follow-up pass | Keep exact artifact attribution and original assertions |
+| Packages | Exact `eb4f704`, all four targets pass and Intel Mac artifact uploads; publication skipped. Earlier `0f1deae` upload/DMG-eject failures remain retained separately | Prior busy-device cause is unproven; no interactive Windows/Mac host/audio qualification inferred |
+| Final64 endurance | Interrupted full attempt stays partial at 1792.759948s. Earlier completed pilot exits 0 at 500.397271484s with 888 audited credits, seven final epochs, 41 processing-budget events and seven other counters zero | Admission fails: collector forecast 2811.565578530s exceeds 2700s. Corrected-sampler pilot interrupted during setup; no new full run or automatic retry |
+| Earlier endurance | f691/d507 completes 1800.344707 proven playing seconds and nine final epochs | Does not qualify later final64 bytes |
+
+Priority: complete Q1 endurance and package delivery, then freeze Task 10's
+browser/session contracts and implement that slice. General clip/automation
+editing, Max authoring, WAV/portable projects and compatibility remain later
+Phase 2 tasks. Native evidence uses private software PipeWire at 48 kHz/512
+frames; physical playback and physical underruns remain unmeasured. Sampled
+RSS/FD growth and observation gaps remain explicit in the handoff.
+
+Current bounds: v3 Session supports up to eight instrument tracks; admitted v4
+MIDI profile 1 supports two tracks, subject to complete event/work admission.
+The original v3 example may legitimately refuse conversion without losing music.
+Start the timeline workflow with `apps/alive/examples/midi-arrangement.alive`.
+Stopped Prepare / Apply remains required for musical/structural edits. Audio
+sources, physical MIDI ingress and general-purpose Ultra device packaging are
+not qualified by this MIDI checkpoint.
+
+### Earlier Review Follow-Ups
+
+The previous loop-brace invalidation, validated native screen-size and duplicate
+destination follow-ups have source implementations in the accepted Phase 2
+checkpoint. `alive-timeline.mjs` includes `document.loopEnabled` in its cache
+key and validates candidate duplicate destinations; `desktop_launch_config.sh`
+validates `ULTRA_TEST_SCREEN_SIZE`. Current native CI explicitly invokes the
+Arrangement journey at 1600x1000. These are existing changes, not new
+implementation or runtime results from this ledger update.
+
+The historical evidence below remains source-pinned. A stage's refusal or
+missing-feature statement does not override later N6/N7 or Phase 2 implementation.
+
+| Workflow | Reference action and result | Expected behavior | Current implementation | Native verification | Gap / priority |
+| --- | --- | --- | --- | --- | --- |
+| Session MIDI editing | R1: empty-slot double-click creates clip; note add/move/resize/delete/undo changes and restores notes. R2: naming and duplication produce distinct clips. | Four playable slots, selection separate from launch, editable pitch/time/duration/velocity, focused history. | v3 app feature, including piano roll and stopped Apply. | N1 full journey; N2 unfinished-field regression. | Preserve; qualify current CI. P0/P1. |
+| Clip/scene launch and track Stop | R1: queued B leaves A playing until launch; queued track Stop leaves global transport running. | Quantized native requests/receipts, atomic scene launch, scoped Stop. | v3 app feature; corrected legacy scene disclosure and stale receipts. | N1 full journey; targeted legacy-to-v3 native transition at `6a8f644`. | Original-app atomic scene timing is not measured; native v4 authority is covered by N6/N7. Preserve. |
+| Shared views, tracks and details | R3: hide/restore details preserves values; selecting a second device then returning preserves independent values. R2: compact grid/browser/detail layout. | Tab changes view only; same tracks/devices/selection; usable at 1440x900 and 1280x800. | Session and real MIDI Arrangement share tracks, source selection, devices, mixer and Clip detail at `91cb9d1`. | N1/N2 prior Session checks; N7 both views/sizes, pending Return navigation and shared live gain. | Timeline review approved; imported audio remains P2. |
+| MIDI Arrangement | R5: create/move/extend/undo occurrence; Session launch dims only its Arrangement track; scoped Stop keeps override; per-track/global Return restores Arrangement. | Create/place/select/drag/resize/undo/play MIDI, override one track, return at current position, save/Quit/reopen. | Real source creation/notes, placement move/trim/resize, offset/suffix loop, duplicate/independence, history, zoom/pan/seek and Return are implemented at `91cb9d1`; independent task review approved. Existing measured MIDI profile 1 and transactional conversion remain unchanged. | N3 exact PCM, offsets/chase/Stop/partitions and shipping refusal. Preparation oracle at `c8f6522` passes 106,661,824 bounded assertions. `0606542` adds two-active-track PCM/dispatch/work/isolation and transactional refusal proofs; complete native CI passes in 157.49s. Reviewed authority actions through `74d92d4` add quantized Launch/Return/scoped Stop, unchanged-track PCM and pending-slot boundary coherence; full native CI passes in 171.14s. Reviewed suffix loops/Arrangement-only Seek at `a0c34e3` preserve Session PCM and pending requests across refused Seek; full native CI passes in 175.99s. Song loops/coincident boundaries at `5981cfe` pass exact PCM/dispatch/work tests and independent review; full native CI passes in 180.70s. No deadline or GUI claim. | N7 proves actual author/play/override/Return/save/Quit/restart and authored replay; final integrated and exact-head CI qualification remain open. P1. |
+| Devices, effects and automation | R3: ordered effects; R1: stereo host connections and editor close/reopen with advancing transport. | Independent instances, explicit base/automation ownership, ordered effects, editor lifetime separate from DSP. | v3 app feature; instrument plus up to two effects, existing 8-track/16-instance bounds. | N5 full original journey passes after demonstrated native-tooltip test-input fix. | Checkpoint e38c87b CI passes; final mixed-project head still needs qualification. |
+| Persistence and recovery | R5 saves two Arrangement occurrences plus a Session clip; New then Open restores them stopped. Invalid filename preserves project. | Restore musical/device/mixer state; actionable transactional dependency errors; pending/dirty Quit handling. | v1/v2/v3 app feature; active strict MIDI v4 persistence at `4b9a88b`, independently approved after `ee83d30`. | N5 full original save/reopen, source rejection and pending/dirty Quit passes locally. | N7 additionally proves authored timeline/save/Quit/process-restart exact state and replay. Audio dependency recovery remains open. R5 does not prove reference process-restart persistence or missing-media recovery. P1/P2. |
+| Imported WAV and mixed project | R6: mono/stereo import, real waveforms, move, left trim/undo, Warp+Loop extension and separate Session/Arrangement clips; ordinary Save retains external references. | Decode actual PCM, derive real peaks, play through shared effects, save portable mixed project. | **Not an app feature.** Proposed descriptors/ABI do not implement decoding or playback. | No imported-PCM native/app evidence. Rendered synth WAV output is a different operation. | Decoder, runtime, waveform and portability journey after MIDI. Reference restart/missing-file recovery remains unobserved; manual fallback recorded. P2. |
+| Ultra device authoring | R4: edit mode, object entry/autocomplete, connections and unknown-object state. Recorded reference save attempt did not establish saved round-trip. | Author/debug/save reusable devices, independent instances and explicit supported limits. | Substantial bounded app feature; instrument/Perform/presets. Hosted structure remains read-only. | N4 authored instrument, save/reopen, two instances and software capture at historical checkpoint. | Fresh general-authoring journey separately scoped; no broad Max conformance claim. P3. |
+
+## Evidence And Attribution
+
+- R1: `experiments/alive-workflow-reference-20261024/` (`coverage.json`,
+  `actions.jsonl`, README), LOCAL-WF-R1. Live 12.4.6 / Max 9.1.5 on Wine 11.13.
+  Actions/results establish UI behavior, not audible or sample-accurate timing.
+- R2: `experiments/alive-session-ui-reference-20261026/`, LOCAL-UI-R1;
+  settled `attempt2` frames. Dense Session reference, no Arrangement journey.
+- R3: `experiments/alive-live-reference-20261024/`, LOCAL-R1.
+- R4: `experiments/max-ui-reference/` and
+  `experiments/ultra-instrument-20261024/reference/`.
+- R5: LOCAL-ARR-R1/R2, private Live 12.4.6 studies on 2026-10-26. Derived findings:
+  [Arrangement reference](ALIVE_ARRANGEMENT_REFERENCE.md). Captures and project
+  remain outside the repository. No sound capture or timing measurement.
+- R6: LOCAL-AUDIO-R1, private Live 12.4.6 study on 2026-10-26. Derived findings:
+  [WAV reference](ALIVE_AUDIO_REFERENCE.md). All 113 private artifacts verify.
+  No playback/timing claim; bounded restart failure and updater attribution
+  limits are retained. Alive direct-PCM loops deliberately differ from Warp.
+- N1: `experiments/alive-session-ui-revision-20261026/`. Full native journey
+  and both viewport screenshots at `e38676a`; narrower transition verification
+  after `ad47d2a` / `6a8f644`. Linux Xvfb/WebKit, software PipeWire/CPAL,
+  48 kHz/512 frames. Its 30.453333 capture seconds are not endurance or physical audio.
+- N2: `experiments/alive-workspaces-20261026/task1-fix1/` and
+  `native-followup-97533b8/`. The latter pins the full journey to exact `97533b8`
+  release assets; it does not qualify later commits.
+- N3: `experiments/alive-workspaces-20261026/task2a/`, `task2b/`,
+  `task2b-fix1/`, `task2c-prep/`, `task2c-midi-preparation/`,
+  `task2c-authority-actions/`, `task2c-authority-actions-fix1/`,
+  `task2c-suffix-seek/`, and `task2c-song-loops/`. Pure model through
+  `59c6076`, provisional lane through `db39ab0`, complete oracle through
+  `c8f6522`, finite multi-track runtime through `0606542`, reviewed finite authority through
+  `74d92d4`, suffix-loop/Seek through `a0c34e3`, song-loop closure through `5981cfe`;
+  production v4 configure/request still refused.
+- N4: `experiments/ultra-instrument-20261024/`, with original source/build hashes.
+- N5: `experiments/alive-workspaces-20261026/cutoff-ci-fix/`, test source
+  `cc7d541`, unchanged pinned product binary. Demonstrated native-tooltip
+  occlusion, focused RED/GREEN and complete original native journey in 199.087s;
+  independent review approved. Software PipeWire/CPAL, 48 kHz/512 frames, zero
+  final reported stream errors/rejections. 95.349333 capture seconds are not
+  endurance. Harness accessibility/compositor warnings are retained.
+
+- N6: `experiments/alive-workspaces-20261026/task2d-desktop/`, source `4b9a88b`.
+  Full native/Rust/UI/browser and unchanged v3 desktop pass. Final native v4
+  first plays v3, converts an admitted progression, edits notes/automation,
+  exercises Session override/Return/scoped Stop and editor lifetime, then
+  Save/Quit/restarts with exact state and resumed playback. Both Session sizes
+  are captured. Final short-run observed 512-frame epochs have zero reported
+  CPAL errors/Xruns/over-budget callbacks; provisional run2's one 13.34 ms
+  callback remains retained. 15.562667 final capture seconds are not endurance
+  or physical-audio evidence. Independent review approves after queued slot
+  field fix `ee83d30`, with both delayed edit orders reproduced before the fix
+  and passing afterward; 85 UI and two focused browser checks pass. Broad
+  native evidence remains pinned to `4b9a88b`.
+
+- N7: `experiments/alive-workspaces-20261026/task4-midi/`, timeline source
+  `91cb9d1`. Full native journey is pinned to the pre-gain UI, followed by a
+  focused final gain test and clean screenshots at both sizes. New source and
+  placement IDs are observed during playback; Session override/silent Stop,
+  gap Return, partial wrap, Seek, global Return, live controls/editor lifetime,
+  exact saved document equality after Quit/restart and authored replay pass.
+  Main software capture is 2229760 finite stereo frames (46.453333 seconds),
+  reopened capture 189952 frames (3.957333 seconds); neither proves endurance.
+  Observed active epoch: 48 kHz/512 frames, 4541 callbacks, zero reported CPAL
+  errors/Xruns/over-budget callbacks, max 1.969 ms. One deliberate admission
+  refusal is retained; final new-process errors/rejections/voices are zero.
+  Original v3 native regression passes. Parent verifies all 18 committed source
+  pins and three final build pins; independent task review approves.
+
+Checkpoint `e38c87b`: CI `40398432588` passes all three jobs and every original
+native desktop/editor/clip/resource/CPAL gate. Software-loopback report/PCM
+hashes are independently checked; short runs do not qualify final endurance.
+Packages `40398432637` pass all four platforms; tag publication is skipped.
+Evidence: `experiments/alive-workspaces-20261026/ci-e38c87b/`.
+
+
+The saved-clip harness correction is independently approved through `a634f4d`.
+A controlled launch has 30.85 ms left pending while its accessibility traversal
+takes 71.58 ms; bounded early-bar synchronization preserves the original pending
+and applied assertions. A separate covering-tooltip reproduction establishes
+runtime disclosure interception; existing owned-window readiness fixes it.
+Recording and failure screenshots cannot mask original input errors. All twelve
+native checks pass on harness `6ab7775` with product `4b9a88b`; the final
+screenshot guard has focused RED/GREEN coverage. Parent verifies 563712 finite
+software capture frames (11.744 seconds), with zero final reported errors,
+rejections or voices. This is not endurance. Original remote causation remains
+unproved; exact checkpoint e38c87b CI now passes every original gate. Evidence:
+`experiments/alive-workspaces-20261026/clip-observation/`.
+
+Exact checkpoint `6beb210`: CI `40308165402` fails the desktop cutoff assertion
+after passing UI/Chromium, native/Rust and offline renders; subsequent native
+clip/resource/CPAL gates are skipped. Packages `40308165397` pass four targets
+with publishing skipped. Complete earlier CI `40276304022` and packages
+`40276304032` qualify `efa4280`, not current HEAD.
+
+Checkpoint `5abd9eb` CI `40338484521` passes UI/protocol and Chromium. The Linux
+job hits its 40-minute limit: Ubuntu dependency download takes 32m46s, native
+build/checks pass, Rust build is canceled and downstream native journeys skip.
+This is not a repeated cutoff-assertion failure. Packages `40338484480` pass
+Windows and both macOS targets; Linux was canceled for the newer PR run. None of
+these results qualifies the later local native preparation commits.
+
+Checkpoint `65eb486` CI `40360213014` passes UI/Chromium, native/Rust and
+offline renders, then fails to observe the first Replace chooser. The original
+cause remains unconfirmed; local diagnostic runs pass the unchanged journey.
+Review found a new fatal BadWindow risk in diagnostic-only commit `0bbad18`;
+scoped correction `0d9ccd6` passes its native regressions. Its full original
+journey fails a later changed-source status assertion: a temporary snapshot
+error replaces the expected dependency guidance. Product repair `4470230`
+reproduces both masking paths in mounted-view tests and preserves operation errors
+alongside refresh health. Its 508 UI/18 browser tests and unchanged full native
+journey (193.11s, fresh build) pass, with independent approval. No native
+assertion is weakened. Packages `40360212684` pass
+all four targets, with tag publication skipped. Song-loop native commit
+`5981cfe` passes its full suite and independent review, but awaits measured
+shipping admission; it does not add an available Arrangement interface.
+
+Checkpoint `a1cf2e7` CI `40374437793` passes UI/Chromium, native/Rust and
+offline renders, then fails to observe the first Pulse instrument editor
+window. Earlier Replace choosers and effect-editor/history operations pass.
+The failing activation lacks an input/invocation receipt, so its cause remains
+unresolved; focus/scroll timing is a hypothesis. Later native gates skip.
+Evidence: `experiments/alive-workspaces-20261026/ci-a1cf2e7/`.
+Packages `40374437738` pass all four targets; tag publication is skipped.
+Bounded local editor probes pass, leaving the CI cause unresolved. Diagnostic
+receipts at `6d88803` preserve the original activation; review identifies a
+receipt-write isolation gap. Correction `6d8c95a` passes three native RED/GREEN
+failure paths and the unchanged full journey in 193.83s, with scoped re-review
+approval and no remaining finding. Evidence is under `editor-activation/` in the same experiment root.
+
+Checkpoint `ad706ca` CI `40384189184` passes UI/protocol, Chromium, native/Rust,
+offline renders and the full actual desktop/editor journey. The subsequent
+clip/observability journey fails waiting for transient "pending launch", while
+the requested copy is already Playing/applied. The later reviewed clip-observation correction and successful e38c87b CI are
+recorded separately; this failed run does not establish a product cause. Later resource/CPAL
+gates skip. Packages `40384188941` pass all four targets, with tag publication
+skipped. Retained exact-head results: `experiments/alive-workspaces-20261026/ci-ad706ca/`.
+
+MIDI measurement `8e17719` completes 287 distributions / 344400 timing samples
+with separate callback guards, full native CI and current-source shipping
+refusal checks. Independent review approves with one nonblocking runner
+completeness gap; the audited final run is unaffected. The desktop scope is
+profile 1 at practical buffers of at least 256 frames. Profile 2 remains
+unadmitted because its combined synthetic stress exceeds the deadline even at
+1024 frames. Synthetic workload limitations and all failures are retained in
+`experiments/alive-workspaces-20261026/task2d-measurement/`. This is software
+processing evidence, not a desktop feature or physical audio qualification.
+
+## Reference Gaps For The Next Increment
+
+R5 covers creation, movement, both edge edits/source offsets, Escape gesture
+cancel, rename-focused Tab, delete/undo/redo, cross-track movement and partial
+overlap cropping. Alive's initial overlap refusal is a deliberate scoped
+difference. Playing override/return and save/new/open are observed; Return in a
+gap is UI-only with No Audio and stationary transport. Running gap return,
+precise queued state, process-restart persistence, hosted device state and
+missing-media recovery remain unobserved in this study. Existing Session note-edit
+evidence can be reused. R6 now covers actual WAV import/placement/trim/loop and
+mono/stereo waveform display. Its bounded restart failed, so missing-source
+recovery uses clearly labeled official documentation fallback. The native Alive
+WAV journey must still prove restart, dependency errors and portable recovery.
+
+Historical experiment READMEs and manifests retain their original findings,
+including old feature counts, missing hosting and prior failed regressions.
+They are source-pinned evidence, not current product status. Use this ledger,
+`PLAN.md`, `PRODUCT.md` and the application READMEs for current scope.

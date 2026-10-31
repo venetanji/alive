@@ -30,8 +30,12 @@ untitled document, with separate voices, parameters, history and file ownership.
 Save/close/reopen restores the graph, values and presets; running notes/timers
 are deliberately not serialized. Bindings also work across embedded patchers.
 
-Alive session hosting is not connected. The standalone native host exercises
-the same saved interface without creating a desktop or editor:
+The separate Alive application hosts these saved instruments and effects in
+independent native instances, with optional Ultra editors. See
+`apps/alive/README.md` and `docs/WORKFLOW_COVERAGE.md` from the repository root
+for the working Session profile and remaining Arrangement/audio workflows.
+The standalone native probe exercises the same saved interface without
+creating a desktop or editor:
 
 ```sh
 bash apps/ultra/build.sh

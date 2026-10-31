@@ -1,0 +1,23 @@
+Linux native build, Rust bridge, and CPAL loopback	Exercise the real Alive Arrangement journey	﻿2026-10-28T19:25:22.6211584Z ##[group]Run bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/arrangement-desktop-evidence"
+Linux native build, Rust bridge, and CPAL loopback	Exercise the real Alive Arrangement journey	2026-10-28T19:25:22.6212279Z ^[[36;1mbash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/arrangement-desktop-evidence"^[[0m
+Linux native build, Rust bridge, and CPAL loopback	Exercise the real Alive Arrangement journey	2026-10-28T19:25:22.6229282Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+Linux native build, Rust bridge, and CPAL loopback	Exercise the real Alive Arrangement journey	2026-10-28T19:25:22.6229572Z env:
+Linux native build, Rust bridge, and CPAL loopback	Exercise the real Alive Arrangement journey	2026-10-28T19:25:22.6229749Z   JOBS: 2
+Linux native build, Rust bridge, and CPAL loopback	Exercise the real Alive Arrangement journey	2026-10-28T19:25:22.6230097Z   CARGO_BUILD_JOBS: 2
+Linux native build, Rust bridge, and CPAL loopback	Exercise the real Alive Arrangement journey	2026-10-28T19:25:22.6230290Z   CARGO_NET_RETRY: 2
+Linux native build, Rust bridge, and CPAL loopback	Exercise the real Alive Arrangement journey	2026-10-28T19:25:22.6230489Z   CARGO_HTTP_TIMEOUT: 60
+Linux native build, Rust bridge, and CPAL loopback	Exercise the real Alive Arrangement journey	2026-10-28T19:25:22.6230695Z   ULTRA_TEST_ALIVE: 1
+Linux native build, Rust bridge, and CPAL loopback	Exercise the real Alive Arrangement journey	2026-10-28T19:25:22.6230892Z   ULTRA_TEST_SCREEN_SIZE: 1600x1000
+Linux native build, Rust bridge, and CPAL loopback	Exercise the real Alive Arrangement journey	2026-10-28T19:25:22.6231278Z   ULTRA_TEST_ALIVE_BINARY: /home/runner/work/alive/alive/apps/ultra/src-tauri/target/release/alive
+Linux native build, Rust bridge, and CPAL loopback	Exercise the real Alive Arrangement journey	2026-10-28T19:25:22.6231811Z   ULTRA_TEST_ALIVE_SESSION: /home/runner/work/alive/alive/apps/alive/examples/midi-arrangement.alive
+Linux native build, Rust bridge, and CPAL loopback	Exercise the real Alive Arrangement journey	2026-10-28T19:25:22.6232310Z   ULTRA_TEST_SCRIPT: /home/runner/work/alive/alive/apps/ultra/tests/check_alive_arrangement.py
+Linux native build, Rust bridge, and CPAL loopback	Exercise the real Alive Arrangement journey	2026-10-28T19:25:22.6232701Z ##[endgroup]
+Linux native build, Rust bridge, and CPAL loopback	Exercise the real Alive Arrangement journey	2026-10-28T19:25:25.3642490Z PASS secondary file delivery during initialization preserves main and opens its own window
+Linux native build, Rust bridge, and CPAL loopback	Exercise the real Alive Arrangement journey	2026-10-28T19:25:56.0973793Z Traceback (most recent call last):
+Linux native build, Rust bridge, and CPAL loopback	Exercise the real Alive Arrangement journey	2026-10-28T19:25:56.0974396Z   File "/home/runner/work/alive/alive/apps/ultra/tests/check_alive_arrangement.py", line 346, in <module>
+Linux native build, Rust bridge, and CPAL loopback	Exercise the real Alive Arrangement journey	2026-10-28T19:25:56.0974981Z     run()
+Linux native build, Rust bridge, and CPAL loopback	Exercise the real Alive Arrangement journey	2026-10-28T19:25:56.0975402Z   File "/home/runner/work/alive/alive/apps/ultra/tests/check_alive_arrangement.py", line 191, in run
+Linux native build, Rust bridge, and CPAL loopback	Exercise the real Alive Arrangement journey	2026-10-28T19:25:56.0975864Z     assert int(alive.value('Rejected commands')) == before_rejected + 1
+Linux native build, Rust bridge, and CPAL loopback	Exercise the real Alive Arrangement journey	2026-10-28T19:25:56.0976511Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Linux native build, Rust bridge, and CPAL loopback	Exercise the real Alive Arrangement journey	2026-10-28T19:25:56.0977129Z AssertionError
+Linux native build, Rust bridge, and CPAL loopback	Exercise the real Alive Arrangement journey	2026-10-28T19:25:56.1383662Z ##[error]Process completed with exit code 1.

@@ -1,0 +1,154 @@
+install: creating uninstall script at /home/venetanji/.codex/worktrees/27be/alive/experiments/clockwork-faust/.deps/rust/lib/rustlib/uninstall.sh
+install: installing component 'rustc'
+install: installing component 'rust-std-x86_64-unknown-linux-gnu'
+install: installing component 'cargo'
+
+    rust installed.
+
+.deps/faust.tar.gz: OK
+.deps/libfaust.zip: OK
+Faust C API generated cpp voice successfully
+-- The C compiler identification is GNU 16.2.1
+-- The CXX compiler identification is GNU 16.2.1
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Clockwork 94b67500c96e105491682ec68741b5018560eab7
+-- Performing Test CLOCKWORK_HAS_STD_JTHREAD
+-- Performing Test CLOCKWORK_HAS_STD_JTHREAD - Success
+-- Performing Test CLOCKWORK_FLOAT_EVALUATES_WIDER
+-- Performing Test CLOCKWORK_FLOAT_EVALUATES_WIDER - Failed
+-- Ableton Link disabled — ClockworkClock uses its local-state backing
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- DSP: ultra_research
+-- Configuring done (1.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/venetanji/.codex/worktrees/27be/alive/experiments/clockwork-faust/build
+[  3%] Building Rust subsystems (cargo: clockwork-native)
+    Updating crates.io index
+ Downloading crates ...
+  Downloaded portable-atomic v1.15.0
+   Compiling portable-atomic v1.15.0
+   Compiling clockwork-heap v0.1.0 (/home/venetanji/.codex/worktrees/27be/alive/experiments/clockwork-faust/.deps/clockwork-94b67500c96e105491682ec68741b5018560eab7/rust/clockwork-heap)
+   Compiling clockwork-taps v0.1.0 (/home/venetanji/.codex/worktrees/27be/alive/experiments/clockwork-faust/.deps/clockwork-94b67500c96e105491682ec68741b5018560eab7/rust/clockwork-taps)
+   Compiling clockwork-osc v0.1.0 (/home/venetanji/.codex/worktrees/27be/alive/experiments/clockwork-faust/.deps/clockwork-94b67500c96e105491682ec68741b5018560eab7/rust/clockwork-osc)
+   Compiling clockwork-log v0.1.0 (/home/venetanji/.codex/worktrees/27be/alive/experiments/clockwork-faust/.deps/clockwork-94b67500c96e105491682ec68741b5018560eab7/rust/clockwork-log)
+   Compiling clockwork-schedule v0.1.0 (/home/venetanji/.codex/worktrees/27be/alive/experiments/clockwork-faust/.deps/clockwork-94b67500c96e105491682ec68741b5018560eab7/rust/clockwork-schedule)
+   Compiling clockwork-clock v0.1.0 (/home/venetanji/.codex/worktrees/27be/alive/experiments/clockwork-faust/.deps/clockwork-94b67500c96e105491682ec68741b5018560eab7/rust/clockwork-clock)
+   Compiling clockwork-slots v0.1.0 (/home/venetanji/.codex/worktrees/27be/alive/experiments/clockwork-faust/.deps/clockwork-94b67500c96e105491682ec68741b5018560eab7/rust/clockwork-slots)
+   Compiling clockwork-ports v0.1.0 (/home/venetanji/.codex/worktrees/27be/alive/experiments/clockwork-faust/.deps/clockwork-94b67500c96e105491682ec68741b5018560eab7/rust/clockwork-ports)
+   Compiling clockwork-sinks v0.1.0 (/home/venetanji/.codex/worktrees/27be/alive/experiments/clockwork-faust/.deps/clockwork-94b67500c96e105491682ec68741b5018560eab7/rust/clockwork-sinks)
+   Compiling clockwork-ports-disk v0.1.0 (/home/venetanji/.codex/worktrees/27be/alive/experiments/clockwork-faust/.deps/clockwork-94b67500c96e105491682ec68741b5018560eab7/rust/clockwork-ports-disk)
+   Compiling clockwork-native v0.1.0 (/home/venetanji/.codex/worktrees/27be/alive/experiments/clockwork-faust/.deps/clockwork-94b67500c96e105491682ec68741b5018560eab7/rust/clockwork-native)
+    Finished `release` profile [optimized] target(s) in 5.87s
+[  3%] Built target clockwork_rust
+[  6%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/audio_processor.cpp.o
+[  9%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/clockwork_client.cpp.o
+[ 12%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/clockwork_asset_pool.cpp.o
+[ 15%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/embed/clockwork_embed.cpp.o
+[ 18%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/lanes/lanes.cpp.o
+[ 21%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/clockwork_pool.cpp.o
+[ 25%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/guest_malloc.cpp.o
+[ 28%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/tap_streams.cpp.o
+[ 31%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/mem_region.cpp.o
+[ 34%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/engine_support.cpp.o
+[ 37%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/clock/MidiClockOut.cpp.o
+[ 40%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/native/OscEgress.cpp.o
+[ 43%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/workers/RingReader.cpp.o
+[ 46%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/clock/ClockworkClock.cpp.o
+[ 50%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/clock/EngineClock.cpp.o
+[ 53%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/clock/ClockworkClockNative.cpp.o
+[ 56%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/clock/TimeSource.cpp.o
+[ 59%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/clock/MidiTimelines.cpp.o
+[ 62%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/native/LinkAudioHost.cpp.o
+[ 65%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/clockwork_audio_file.cpp.o
+[ 68%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/flac_encoder.cpp.o
+[ 71%] Building C object clockwork/CMakeFiles/clockwork.dir/src/vendor/stb/stb_vorbis.c.o
+[ 75%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/vendor/oscpack/osc/OscTypes.cpp.o
+[ 78%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/vendor/oscpack/osc/OscOutboundPacketStream.cpp.o
+[ 81%] Building CXX object clockwork/CMakeFiles/clockwork.dir/src/vendor/oscpack/osc/OscReceivedElements.cpp.o
+[ 84%] Linking CXX static library libclockwork.a
+[ 84%] Built target clockwork
+[ 87%] Building CXX object clockwork/dsp-ultra_research/CMakeFiles/ultra_research.dir/guest.cpp.o
+[ 90%] Linking CXX static library libultra_research.a
+[ 90%] Built target ultra_research
+[ 93%] Building CXX object CMakeFiles/probe.dir/probe.cpp.o
+[ 96%] Building CXX object CMakeFiles/probe.dir/instrument.cpp.o
+[100%] Linking CXX executable probe
+[100%] Built target probe
+-- The C compiler identification is GNU 16.2.1
+-- The CXX compiler identification is GNU 16.2.1
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Clockwork 94b67500c96e105491682ec68741b5018560eab7
+-- Performing Test CLOCKWORK_HAS_STD_JTHREAD
+-- Performing Test CLOCKWORK_HAS_STD_JTHREAD - Success
+-- Performing Test CLOCKWORK_FLOAT_EVALUATES_WIDER
+-- Performing Test CLOCKWORK_FLOAT_EVALUATES_WIDER - Failed
+-- Ableton Link disabled — ClockworkClock uses its local-state backing
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- DSP: ultra_hardened_guest
+-- Configuring done (1.1s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/venetanji/.codex/worktrees/27be/alive/apps/ultra/build
+[  2%] Building Rust subsystems (cargo: clockwork-native)
+    Finished `release` profile [optimized] target(s) in 0.05s
+[  2%] Built target clockwork_rust
+[  8%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/audio_processor.cpp.o
+[  8%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/clockwork_client.cpp.o
+[ 11%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/clockwork_asset_pool.cpp.o
+[ 14%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/embed/clockwork_embed.cpp.o
+[ 17%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/lanes/lanes.cpp.o
+[ 20%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/clockwork_pool.cpp.o
+[ 22%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/guest_malloc.cpp.o
+[ 25%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/tap_streams.cpp.o
+[ 28%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/mem_region.cpp.o
+[ 31%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/engine_support.cpp.o
+[ 34%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/clock/MidiClockOut.cpp.o
+[ 37%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/native/OscEgress.cpp.o
+[ 40%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/workers/RingReader.cpp.o
+[ 42%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/clock/ClockworkClock.cpp.o
+[ 45%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/clock/EngineClock.cpp.o
+[ 48%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/clock/ClockworkClockNative.cpp.o
+[ 51%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/clock/TimeSource.cpp.o
+[ 54%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/clock/MidiTimelines.cpp.o
+[ 57%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/native/LinkAudioHost.cpp.o
+[ 60%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/clockwork_audio_file.cpp.o
+[ 62%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/flac_encoder.cpp.o
+[ 65%] Building C object core/clockwork/CMakeFiles/clockwork.dir/src/vendor/stb/stb_vorbis.c.o
+[ 68%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/vendor/oscpack/osc/OscTypes.cpp.o
+[ 71%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/vendor/oscpack/osc/OscOutboundPacketStream.cpp.o
+[ 74%] Building CXX object core/clockwork/CMakeFiles/clockwork.dir/src/vendor/oscpack/osc/OscReceivedElements.cpp.o
+[ 77%] Linking CXX static library libclockwork.a
+[ 77%] Built target clockwork
+[ 80%] Building CXX object core/clockwork/dsp-ultra_hardened_guest/CMakeFiles/ultra_hardened_guest.dir/guest.cpp.o
+[ 82%] Linking CXX static library libultra_hardened_guest.a
+[ 82%] Built target ultra_hardened_guest
+[ 85%] Building CXX object core/CMakeFiles/ultra_core.dir/engine.cpp.o
+[ 88%] Linking CXX static library libultra_core.a
+[ 88%] Built target ultra_core
+[ 91%] Building CXX object CMakeFiles/ultra_native.dir/src-tauri/native/backend.cpp.o
+[ 94%] Linking CXX shared library libultra_native.so
+[ 94%] Built target ultra_native
+[ 97%] Building CXX object CMakeFiles/ultra-diagnostic.dir/src-tauri/native/diagnostic.cpp.o
+[100%] Linking CXX executable ultra-diagnostic
+[100%] Built target ultra-diagnostic

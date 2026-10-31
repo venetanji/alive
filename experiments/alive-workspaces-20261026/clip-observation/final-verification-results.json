@@ -1,0 +1,161 @@
+[
+  {
+    "name": "final-disclosure-normal",
+    "script": "check_alive_clip_observation.py",
+    "flags": {},
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-clip-ci-fix/final-disclosure-normal"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 30.86944034499902
+  },
+  {
+    "name": "final-disclosure-write-error",
+    "script": "check_alive_clip_observation.py",
+    "flags": {
+      "ALIVE_TEST_DISCLOSURE_WRITE_ERROR": "1"
+    },
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-clip-ci-fix/final-disclosure-write-error"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 29.205558641995594
+  },
+  {
+    "name": "final-disclosure-blocked",
+    "script": "check_alive_clip_observation.py",
+    "flags": {
+      "ALIVE_TEST_DISCLOSURE_WRITE_ERROR": "1",
+      "ALIVE_TEST_DISCLOSURE_BLOCKED": "1"
+    },
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-clip-ci-fix/final-disclosure-blocked"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 11.481776710999839
+  },
+  {
+    "name": "final-disclosure-input-error",
+    "script": "check_alive_clip_observation.py",
+    "flags": {
+      "ALIVE_TEST_DISCLOSURE_INPUT_ERROR": "1"
+    },
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-clip-ci-fix/final-disclosure-input-error"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 9.496062106998579
+  },
+  {
+    "name": "final-native-input",
+    "script": "check_alive_native_input.py",
+    "flags": {},
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-clip-ci-fix/final-native-input"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 24.030209937998734
+  },
+  {
+    "name": "final-chooser-diagnostics",
+    "script": "check_alive_chooser_diagnostics.py",
+    "flags": {},
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-clip-ci-fix/final-chooser-diagnostics"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 21.46040900400112
+  },
+  {
+    "name": "final-editor-normal",
+    "script": "check_alive_editor_diagnostics.py",
+    "flags": {},
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-clip-ci-fix/final-editor-normal"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 12.96265944300103
+  },
+  {
+    "name": "final-editor-observer-error",
+    "script": "check_alive_editor_diagnostics.py",
+    "flags": {
+      "ALIVE_TEST_EDITOR_OBSERVATION_ERROR": "1"
+    },
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-clip-ci-fix/final-editor-observer-error"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 12.933182577005937
+  },
+  {
+    "name": "final-editor-original-focus-error",
+    "script": "check_alive_editor_diagnostics.py",
+    "flags": {
+      "ALIVE_TEST_EDITOR_FOCUS_FAILURE": "1"
+    },
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-clip-ci-fix/final-editor-original-focus-error"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 19.389981789994636
+  },
+  {
+    "name": "final-editor-queued-write-error",
+    "script": "check_alive_editor_diagnostics.py",
+    "flags": {
+      "ALIVE_TEST_EDITOR_WRITE_ERROR": "queued"
+    },
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-clip-ci-fix/final-editor-queued-write-error"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 13.022636649009655
+  },
+  {
+    "name": "final-editor-result-write-error",
+    "script": "check_alive_editor_diagnostics.py",
+    "flags": {
+      "ALIVE_TEST_EDITOR_WRITE_ERROR": "result"
+    },
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-clip-ci-fix/final-editor-result-write-error"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 12.933462332002819
+  },
+  {
+    "name": "final-observability-green",
+    "script": "check_alive_observability.py",
+    "flags": {},
+    "command": [
+      "bash",
+      "apps/ultra/tests/check_canvas_desktop.sh",
+      "/tmp/alive-workspaces-clip-ci-fix/final-observability-green"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 125.46175962898997
+  }
+]

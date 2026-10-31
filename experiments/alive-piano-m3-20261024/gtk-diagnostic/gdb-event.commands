@@ -1,0 +1,22 @@
+set pagination off
+set confirm off
+set debuginfod enabled off
+set print thread-events off
+set env G_DEBUG fatal-criticals
+set breakpoint pending on
+handle SIGPIPE nostop noprint pass
+break gtk_widget_event
+commands
+silent
+set $last_widget=(void*)$rdi
+set $last_event=(void*)$rsi
+set $last_event_type=*(int*)$rsi
+continue
+end
+run
+p $last_event_type
+p *(unsigned int*)((char*)$last_event+28)
+p ((char*(*)(void*))g_type_name_from_instance)($last_widget)
+p ((int(*)(void*))gtk_widget_get_realized)($last_widget)
+bt 30
+quit

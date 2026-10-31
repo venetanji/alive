@@ -1,0 +1,130 @@
+{
+  "base": "72af9f0031b298d723bd73df3ec84efacd05a600",
+  "candidate": "81220d33348b2baa0890b0d74f1e517aa5474722",
+  "delta_sha256": "039cb328837963618b9547ed1af4b59157e0abfa1574b19f5c81688a872863e9",
+  "workspace": "/home/venetanji/.codex/worktrees/bb01/alive",
+  "compiler": {
+    "pinned_path": "experiments/clockwork-faust/.deps/rust/bin/rustc",
+    "pinned_version": "1.85.1 (4eb161250 2025-03-15), LLVM 19.1.7",
+    "system_path": "/usr/bin/rustc",
+    "system_version": "1.99.1 (58cf8f9c3 2026-10-13), LLVM 23.1.3",
+    "cc": "GCC 16.2.1 20260810",
+    "readelf": "GNU Binutils 2.47"
+  },
+  "fixture_order": [
+    "actual full library",
+    "old anchor-only",
+    "partial with trapped limits",
+    "anchor with optional symbols only in dependency"
+  ],
+  "fixture_order_attribution": "Reconstructed from the unchanged ordered shell loop and four successful test outputs; individual outputs have no printed fixture label.",
+  "commands": [
+    {
+      "name": "root_original_native_suite",
+      "command": "bash apps/ultra/tests/ci/check-native.sh",
+      "compiler": "root pinned 1.85.1",
+      "exit": 127,
+      "log": "root-native-red.log",
+      "attribution": "Original root receipt and log retained."
+    },
+    {
+      "name": "pinned_resolver_red",
+      "command": "PATH=\"$PWD/experiments/clockwork-faust/.deps/rust/bin:$PATH\" bash apps/ultra/tests/alive_session_master_resolver_test.sh",
+      "exit": 127,
+      "log": "alive-resolver-pinned-red.log",
+      "attribution": "Reproduced before one-file fix; initial full fixture passes then old fixture fails at ELF loader."
+    },
+    {
+      "name": "elf_invariant_red",
+      "command": "readelf --dyn-syms --wide /tmp/alive-resolver-link-investigation/pinned-full | awk '$7 == \"UND\" && $8 ~ /^(_ZN|_R)/ { print; bad=1 } END { exit bad }'",
+      "exit": 1,
+      "log": "alive-resolver-elf-regression-red.log",
+      "attribution": "135 undefined Rust-mangled dynamic symbols in full-linked pinned binary; zero in minimal-anchor-linked binary."
+    },
+    {
+      "name": "pinned_resolver_green",
+      "command": "PATH=\"$PWD/experiments/clockwork-faust/.deps/rust/bin:$PATH\" bash apps/ultra/tests/alive_session_master_resolver_test.sh",
+      "exit": 0,
+      "log": "alive-resolver-pinned-green.log",
+      "fixtures": 4
+    },
+    {
+      "name": "system_resolver_green",
+      "command": "bash apps/ultra/tests/alive_session_master_resolver_test.sh",
+      "exit": 0,
+      "log": "alive-resolver-system-green.log",
+      "fixtures": 4
+    },
+    {
+      "name": "root_full_green",
+      "command": "LD_LIBRARY_PATH=/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/build /tmp/alive-resolver-link-investigation/pinned-anchor --exact tests::resolves_the_loaded_native_image",
+      "exit": 0,
+      "log": "root-full-green.log"
+    },
+    {
+      "name": "pinned_native_ci_green",
+      "command": "PATH=\"$PWD/experiments/clockwork-faust/.deps/rust/bin:$PATH\" bash apps/ultra/tests/ci/check-native.sh",
+      "exit": 0,
+      "log": "pinned-native-ci-green.log",
+      "attribution": "Started before candidate commit with identical script bytes; cmp against retained candidate script passed."
+    },
+    {
+      "name": "minimal_anchor_build",
+      "command": "cc -shared -fPIC /tmp/alive-resolver-link-investigation/anchor.c -o /tmp/alive-resolver-link-investigation/libultra_native.so",
+      "exit": 0,
+      "attribution": "Reconstructed from successful combined probe; anchor source and binary are retained."
+    },
+    {
+      "name": "pinned_full_link",
+      "command": "experiments/clockwork-faust/.deps/rust/bin/rustc --edition=2021 --test apps/ultra/src-tauri/src/session/native_master.rs -L native=\"$PWD/apps/ultra/build\" -C link-arg=-Wl,-rpath,\"$PWD/apps/ultra/build\" -o /tmp/alive-resolver-link-investigation/pinned-full",
+      "exit": 0,
+      "attribution": "Reconstructed from combined probe; executable and ELF symbol table retained."
+    },
+    {
+      "name": "pinned_anchor_link",
+      "command": "experiments/clockwork-faust/.deps/rust/bin/rustc --edition=2021 --test apps/ultra/src-tauri/src/session/native_master.rs -L native=/tmp/alive-resolver-link-investigation -C link-arg=-Wl,-rpath,\"$PWD/apps/ultra/build\" -o /tmp/alive-resolver-link-investigation/pinned-anchor",
+      "exit": 0,
+      "attribution": "Reconstructed from successful combined probe; executable and ELF symbol table retained."
+    },
+    {
+      "name": "pinned_full_against_anchor_red",
+      "command": "ALIVE_MASTER_EXPECT_UNAVAILABLE=1 LD_LIBRARY_PATH=/tmp/alive-resolver-link-investigation /tmp/alive-resolver-link-investigation/pinned-full --exact tests::resolves_the_loaded_native_image",
+      "exit": 127,
+      "attribution": "Observed in combined ELF probe; same undefined StringError as retained pinned resolver red."
+    },
+    {
+      "name": "pinned_anchor_against_anchor_green",
+      "command": "ALIVE_MASTER_EXPECT_UNAVAILABLE=1 LD_LIBRARY_PATH=/tmp/alive-resolver-link-investigation /tmp/alive-resolver-link-investigation/pinned-anchor --exact tests::resolves_the_loaded_native_image",
+      "exit": 0,
+      "attribution": "Observed in combined probe; same old-fixture case included in retained pinned resolver green."
+    }
+  ],
+  "elf_artifacts": [
+    "pinned-full",
+    "pinned-anchor",
+    "pinned-full-symbols.txt",
+    "pinned-anchor-symbols.txt",
+    "elf-counts.txt",
+    "anchor.c",
+    "libultra_native.so"
+  ],
+  "files_sha256": {
+    "alive-resolver-elf-regression-red.log": "eef67899de00ca1c35bb4d098bc513aa0e01f1ff8c919ba00115066b436c579e",
+    "alive-resolver-pinned-green.log": "c66fc80ed45807b40f114b62e8ebd51c8576b17f143217a592f0cf5c46681cee",
+    "alive-resolver-pinned-red.log": "530bce89fd490820c50eb887101ebdcd245e17a6096cdf7b2010874cd089b45c",
+    "alive-resolver-system-green.log": "c66fc80ed45807b40f114b62e8ebd51c8576b17f143217a592f0cf5c46681cee",
+    "anchor.c": "2bc69d2c5a971d38965cb494b4343a9897644f93a072b321d015b1c234bb806a",
+    "elf-counts.txt": "48f4e54c0d0be4b9f2431b625155493940053ce12f55e28fd42c4857f9b6830d",
+    "hashes.txt": "61f7e3d35099db2aca8d30ea097ea1bbbd4d34a55fa9cdf719216986a06ffeb5",
+    "libultra_native.so": "0bf427ad747862053c7e73dbeb418bc0a09e7c8fcd1e48b5829a6d07573ef2af",
+    "pinned-anchor": "092226663289df8bac3c206db2af2854c132ac9d4b10aae8c7363006c6c62e73",
+    "pinned-anchor-symbols.txt": "a17e265a4ec8f91bdd4bfe9503a0d044c7670f38e5371d8b034ab0833cf70f33",
+    "pinned-full": "fe64a3c0d3c8cec709d267d71d660d0581fb6c0adc105f65cfae62cbbcc58273",
+    "pinned-full-symbols.txt": "151e1f29b40a81e8a6489c51bfcece13cf84ef4b52d58a7fa25b789310a686f3",
+    "pinned-native-ci-green.log": "5671c49db7b01f629abad6250287b9c327d1fcd1fd61817d3771cb40530343d8",
+    "resolver-script-81220d3.sh": "0bfa2bee3c1e19325377bad18faa476333ae4c37fa9c99c83a0bae1ca2afb335",
+    "root-full-green.log": "34d761a2d66c2841ae2ab25b7738299de69102fe90e88cf1f7123d7d72b65cd6",
+    "root-native-red.log": "5be32efda47763c7eae139f6808517086794272074a347023d4ff0a1494dd5cf",
+    "root-validation-receipt.json": "7d0f6c36a497e5a3b9492aaed42949bf58b3db0561db1fbc5a6f4afe6fe7b14c"
+  }
+}

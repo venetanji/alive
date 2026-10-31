@@ -1,0 +1,8 @@
+CALL actual extracted observer with window destroyed after hit-path receipt
+OBSERVER RETURNED [{'action': 'chooser input before', 'monotonic': 55344.547225729, 'name': 'Replace Pulse device', 'scope': 'Alive', 'rect': [0, 0, 10, 10], 'point': [5, 5], 'x_errors': [], 'hit_path': [2097153], 'windows': [{'window': 2097153, 'title': '', 'map_state': None, 'pid': [], 'type': [], 'unavailable': True, 'x_errors': [{'code': 3, 'request': 20, 'minor': 0, 'resource': 2097153, 'serial': 13}, {'code': 3, 'request': 3, 'minor': 0, 'resource': 2097153, 'serial': 14}]}], 'observation_seconds': 0.00030565699853468686}]
+EXPECT restored default handler to terminate unrelated subsequent BadWindow
+X Error of failed request:  BadWindow (invalid Window parameter)
+  Major opcode of failed request:  20 (X_GetProperty)
+  Resource id in failed request:  0x200001
+  Serial number of failed request:  17
+  Current serial number in output stream:  17

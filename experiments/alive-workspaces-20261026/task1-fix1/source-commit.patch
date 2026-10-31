@@ -1,0 +1,105 @@
+commit 97533b805c9831766a244163076e16a297f32c5d
+Author:     Giovanni Lion <giovanni.lion@gmail.com>
+AuthorDate: Mon Oct 26 11:21:54 2026 +0800
+Commit:     Giovanni Lion <giovanni.lion@gmail.com>
+CommitDate: Mon Oct 26 11:21:54 2026 +0800
+
+    Preserve unfinished detail fields during workspace navigation
+
+diff --git a/apps/ultra/tests/ci/alive-chain.spec.mjs b/apps/ultra/tests/ci/alive-chain.spec.mjs
+index b2ecbd2..78567f1 100644
+--- a/apps/ultra/tests/ci/alive-chain.spec.mjs
++++ b/apps/ultra/tests/ci/alive-chain.spec.mjs
+@@ -140,6 +140,47 @@ test('hiding Session preserves an unfinished gain field without issuing a mixer
+   await gain.focus();await gain.press('Tab');expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_mixer').map(c=>c.args.gain))).toEqual([0.85]);
+ });
+ 
++for(const kind of ['device','note'])test(`detail navigation preserves an unfinished ${kind} field until one deliberate commit`,async({page})=>{
++  await page.setViewportSize({width:1280,height:800});await openSession(page,false,true);
++  const device=kind==='device',own=device?'devices':'clip',other=device?'clip':'devices',typed=device?'1717':'73';
++  if(device)await page.locator('#detail-devices').click();else await page.locator('.note-table>summary').click();
++  const input=page.getByRole('spinbutton',{name:device?'Cutoff base':'Note 1 pitch',exact:true,includeHidden:true});
++  const original=JSON.parse(readFileSync(new URL('../../../alive/examples/two-instruments.alive',import.meta.url)));
++  const mutations=()=>page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'));
++  const acrossPolls=async()=>{
++    const before=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length);
++    await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length)).toBeGreaterThan(before+2);
++    expect(await mutations()).toEqual([]);await expect(input).toHaveValue(typed);
++  };
++  await input.fill(typed);
++  for(let i=0;i<3;i++){
++    await page.locator('#detail-'+other).click();await acrossPolls();
++    await page.locator('#toggle-detail').click();await acrossPolls();
++    await page.locator('#toggle-detail').click();await acrossPolls();
++    expect(await input.evaluate(e=>document.activeElement===e)).toBe(false);
++    await page.locator('#detail-'+own).click();await acrossPolls();
++    await page.locator('#toggle-detail').click();await acrossPolls();
++    await page.locator('#detail-'+other).click();await acrossPolls();
++    expect(await input.evaluate(e=>document.activeElement===e)).toBe(false);
++    await page.locator('#detail-'+own).click();await acrossPolls();
++  }
++  await input.focus();await input.press('Tab');
++  await expect.poll(async()=>(await mutations()).length).toBe(1);
++  const [call]=await mutations();
++  if(device){expect(call.name).toBe('alive_base');expect(call.args).toMatchObject({instanceId:'instrument-0',key:'cutoff',value:1717});}
++  else{
++    expect(call.name).toBe('alive_edit');expect(call.args.label).toBe('Edit note');
++    const expected=structuredClone(original.tracks[0].notes);expected[0].pitch=73;
++    const tracks=call.args.document.tracks;
++    expect(tracks[0].id).toBe(original.tracks[0].id);expect(tracks[0].slots[0].id).toBe(`clip-${original.tracks[0].id}`);
++    expect(tracks[0].slots[0].notes).toEqual(expected.map((note,i)=>({...note,id:`note-${original.tracks[0].id}-${i}`})));
++    expect(tracks[1].slots[0].notes.map(({id,...note})=>note)).toEqual(original.tracks[1].notes);
++  }
++  const before=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length);
++  await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length)).toBeGreaterThan(before+2);
++  expect(await mutations()).toHaveLength(1);
++});
++
+ test('maximum detail resize leaves the entire detail and workspace reachable',async({page})=>{
+   await page.setViewportSize({width:1280,height:800});await openSession(page,false,true);
+   const handle=page.getByRole('separator',{name:'Resize detail area'});await handle.focus();await page.keyboard.press('End');
+diff --git a/apps/ultra/ui/alive-workspace.mjs b/apps/ultra/ui/alive-workspace.mjs
+index 9d5f666..970cf9d 100644
+--- a/apps/ultra/ui/alive-workspace.mjs
++++ b/apps/ultra/ui/alive-workspace.mjs
+@@ -4,6 +4,7 @@ export function mountWorkspace({doc,win}){
+   let view='session',detail='clip',expanded=true,browser=true,height=220,resize=null;
+   const handle=$('detail-resizer'),shell=$('workspace-shell');
+   const parked=new Map();
++  const detailRoot=()=>$(detail==='clip'?'clip-detail':'device-detail');
+   const maxHeight=()=>Math.max(160,shell.clientHeight-$('schedule-controls').getBoundingClientRect().height-($('detail-panel').getBoundingClientRect().height-$('detail-content').getBoundingClientRect().height)-150);
+   function park(root){const element=doc.activeElement;if(root.contains?.(element)&&element.matches?.('input,select,textarea'))parked.set(element,{root,value:element.value,visible:false,changed:parked.get(element)?.changed??false});}
+   function restore(root){for(const [element,state]of parked){if(element.isConnected===false){parked.delete(element);continue;}if(state.root!==root||state.visible)continue;element.value=state.value;state.visible=true;if(!doc.activeElement?.closest?.('input,select,textarea,button,[contenteditable]'))element.focus();}}
+@@ -21,6 +22,7 @@ export function mountWorkspace({doc,win}){
+     for(const name of ['clip','devices']){$('detail-'+name).setAttribute('aria-pressed',String(detail===name));$(name==='clip'?'clip-detail':'device-detail').hidden=detail!==name;}
+     shell.style.setProperty('--detail-height',`${height}px`);handle.setAttribute('aria-valuenow',height);handle.setAttribute('aria-valuemax',maxHeight());
+     if(view==='session')restore($('session-workspace'));
++    if(expanded)restore(detailRoot());
+   }
+   function setHeight(value){height=Math.round(Math.max(160,Math.min(maxHeight(),value)));paint();}
+   function cancelResize(){if(!resize)return;const old=resize;resize=null;setHeight(old.height);if(handle.hasPointerCapture?.(old.id))handle.releasePointerCapture(old.id);}
+@@ -28,9 +30,9 @@ export function mountWorkspace({doc,win}){
+   for(const name of ['session','arrangement'])$('view-'+name).addEventListener('click',()=>navigate(name));
+   // A pointer navigation must not blur an unfinished field and publish its change.
+   for(const id of ['view-session','view-arrangement','toggle-browser','toggle-detail','detail-clip','detail-devices'])$(id).addEventListener('pointerdown',event=>event.preventDefault());
+-  for(const name of ['clip','devices'])$('detail-'+name).addEventListener('click',()=>{cancelResize();detail=name;expanded=true;paint();});
++  for(const name of ['clip','devices'])$('detail-'+name).addEventListener('click',()=>{cancelResize();if(expanded&&detail!==name)park(detailRoot());detail=name;expanded=true;paint();});
+   $('toggle-browser').addEventListener('click',()=>{browser=!browser;paint();});
+-  $('toggle-detail').addEventListener('click',()=>{cancelResize();expanded=!expanded;paint();});
++  $('toggle-detail').addEventListener('click',()=>{cancelResize();if(expanded)park(detailRoot());expanded=!expanded;paint();});
+   handle.addEventListener('pointerdown',event=>{if(event.button!==0)return;resize={id:event.pointerId,y:event.clientY,height};handle.setPointerCapture?.(event.pointerId);event.preventDefault();});
+   handle.addEventListener('pointermove',event=>{if(resize?.id===event.pointerId)setHeight(resize.height+resize.y-event.clientY);});
+   handle.addEventListener('pointerup',event=>{if(resize?.id!==event.pointerId)return;resize=null;handle.releasePointerCapture?.(event.pointerId);});
+diff --git a/apps/ultra/ui/alive.mjs b/apps/ultra/ui/alive.mjs
+index 03c9d0d..09997de 100644
+--- a/apps/ultra/ui/alive.mjs
++++ b/apps/ultra/ui/alive.mjs
+@@ -374,7 +374,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
+     });
+     for(const[bindingIndex,binding]of (instanceView(selectedInstance).manifest.parameters??[]).entries()){
+       const view=parameterViews.get(binding.key),reading=parameterReading(binding,snapshot.state.devices[instanceView(selectedInstance).index],bindingIndex);if(!view)continue;
+-      if(doc.activeElement!==view.number)view.number.value=reading.base;if(doc.activeElement!==view.range)view.range.value=reading.base;
++      if(doc.activeElement!==view.number&&!workspace.preserves(view.number))view.number.value=reading.base;if(doc.activeElement!==view.range&&!workspace.preserves(view.range))view.range.value=reading.base;
+       view.output.textContent=`${reading.owner}: ${Number(reading.effective.toFixed(3))}${binding.unit?' '+binding.unit:''}`;view.section.classList.toggle('automated',reading.owner==='Automation');
+     }
+     const frameBeat=value=>typeof value==='string'?Number(nativeInteger(value)*1000000n/48000n)/1000000*snapshot.document.tempo/60:value/(48000*60/snapshot.document.tempo);const beat=frameBeat(snapshot.state.position);$('position').textContent=`${beat.toFixed(3)} beats`;

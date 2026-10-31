@@ -1,0 +1,42 @@
+{
+  "format": "alive-session-v6",
+  "score": {
+    "format": "alive-session-v4",
+    "title": "Untitled",
+    "tempo": 120.0,
+    "lengthBeats": 16,
+    "loopEnabled": true,
+    "loopStartBeats": 0.0,
+    "loopEndBeats": 16.0,
+    "tracks": [
+      {
+        "id": "track-1",
+        "name": "MIDI 1",
+        "color": "#c77b61",
+        "chain": {
+          "kind": "midi",
+          "instrument": null
+        },
+        "effects": [],
+        "slots": [
+          null,
+          null,
+          null,
+          null
+        ],
+        "gain": 0.7,
+        "mute": false,
+        "solo": false
+      }
+    ],
+    "sources": [],
+    "placements": []
+  },
+  "master": {
+    "gain": 1.0
+  },
+  "launch": {
+    "globalQuantization": "bar1",
+    "clipQuantization": []
+  }
+}

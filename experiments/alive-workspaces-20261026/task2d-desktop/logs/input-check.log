@@ -1,0 +1,172 @@
+    Checking ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+warning: method `reserve_native` is never used
+  --> src/document_windows.rs:47:8
+   |
+36 | impl QuitSession {
+   | ---------------- method in this implementation
+...
+47 |     fn reserve_native(&mut self) -> Option<u64> {
+   |        ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: variant `Audio` is never constructed
+  --> src/session/prepare.rs:20:59
+   |
+20 | pub enum PreparedTrackInput { Midi { instrument: usize }, Audio }
+   |          ------------------ variant in this enum          ^^^^^
+   |
+   = note: `PreparedTrackInput` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+
+warning: method `format` is never used
+  --> src/session/document.rs:19:12
+   |
+16 | impl Document {
+   | ------------- method in this implementation
+...
+19 |     pub fn format(&self) -> &str {match self {Self::LegacyV2(s)=>&s.format,Self::ClipsV3(s)=>&s.common.format,Self::WorkspacesV4(s)=...
+   |            ^^^^^^
+
+warning: field `name` is never read
+ --> src/session/prepare_workspaces.rs:6:46
+  |
+6 | pub struct PreparedSource {pub id:String,pub name:String,pub descriptor:native::SourceV4}
+  |            --------------                    ^^^^
+  |            |
+  |            field in this struct
+  |
+  = note: `PreparedSource` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+
+warning: fields `id`, `name`, `slot`, and `descriptor` are never read
+ --> src/session/prepare_workspaces.rs:8:30
+  |
+8 | pub struct PreparedSlot {pub id:String,pub name:String,pub slot:usize,pub descriptor:native::SlotV4}
+  |            ------------      ^^            ^^^^            ^^^^           ^^^^^^^^^^
+  |            |
+  |            fields in this struct
+  |
+  = note: `PreparedSlot` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+
+warning: fields `slots` and `placements` are never read
+  --> src/session/prepare_workspaces.rs:12:68
+   |
+12 | pub struct PreparedWorkspaces {pub sources:Vec<PreparedSource>,pub slots:Vec<PreparedSlot>,pub placements:Vec<PreparedPlacement>}
+   |            ------------------ fields in this struct                ^^^^^                       ^^^^^^^^^^
+   |
+   = note: `PreparedWorkspaces` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+
+warning: enum `OccurrenceV4` is never used
+   --> src/session/workspaces.rs:144:10
+    |
+144 | pub enum OccurrenceV4 {
+    |          ^^^^^^^^^^^^
+
+warning: enum `WorkspaceEditV4` is never used
+   --> src/session/workspaces.rs:155:10
+    |
+155 | pub enum WorkspaceEditV4 {
+    |          ^^^^^^^^^^^^^^^
+
+warning: struct `EditResultV4` is never constructed
+   --> src/session/workspaces.rs:259:12
+    |
+259 | pub struct EditResultV4 {
+    |            ^^^^^^^^^^^^
+
+warning: function `encode` is never used
+   --> src/session/workspaces.rs:278:8
+    |
+278 | pub fn encode(project: &ProjectV4) -> Result<String, String> {
+    |        ^^^^^^
+
+warning: function `decode_edit` is never used
+   --> src/session/workspaces.rs:284:8
+    |
+284 | pub fn decode_edit(text: &str) -> Result<WorkspaceEditV4, String> {
+    |        ^^^^^^^^^^^
+
+warning: methods `identities` and `reference_ids` are never used
+   --> src/session/workspaces.rs:686:12
+    |
+399 | impl ProjectV4 {
+    | -------------- methods in this implementation
+...
+686 |     pub fn identities(&self) -> HashSet<String> {
+    |            ^^^^^^^^^^
+...
+702 |     pub fn reference_ids(&self, source_id: &str) -> Vec<String> {
+    |            ^^^^^^^^^^^^^
+
+warning: function `prospective_from_document` is never used
+   --> src/session/workspaces.rs:809:8
+    |
+809 | pub fn prospective_from_document(document: &Document) -> Result<ProjectV4, String> {
+    |        ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `prospective_from_legacy_text` is never used
+   --> src/session/workspaces.rs:915:8
+    |
+915 | pub fn prospective_from_legacy_text(
+    |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: function `identity` is never used
+   --> src/session/workspaces.rs:934:4
+    |
+934 | fn identity(prefix: &str, parts: &[&str]) -> String {
+    |    ^^^^^^^^
+
+warning: function `apply_edit` is never used
+   --> src/session/workspaces.rs:945:8
+    |
+945 | pub fn apply_edit(
+    |        ^^^^^^^^^^
+
+warning: function `apply_edit_with` is never used
+   --> src/session/workspaces.rs:955:8
+    |
+955 | pub fn apply_edit_with<F: FnMut(&str) -> String>(
+    |        ^^^^^^^^^^^^^^^
+
+warning: methods `track_mut`, `source_mut`, `placement_mut`, `slot_mut`, `notes_mut`, and `edit` are never used
+    --> src/session/workspaces.rs:987:8
+     |
+ 986 | impl ProjectV4 {
+     | -------------- methods in this implementation
+ 987 |     fn track_mut(&mut self, id: &str) -> Result<&mut TrackV4, String> {
+     |        ^^^^^^^^^
+...
+ 993 |     fn source_mut(&mut self, id: &str) -> Result<&mut SourceV4, String> {
+     |        ^^^^^^^^^^
+...
+ 999 |     fn placement_mut(&mut self, id: &str) -> Result<&mut PlacementV4, String> {
+     |        ^^^^^^^^^^^^^
+...
+1005 |     fn slot_mut(&mut self, track_id: &str, slot_id: &str) -> Result<&mut SlotV4, String> {
+     |        ^^^^^^^^
+...
+1013 |     fn notes_mut(&mut self, source_id: &str) -> Result<&mut Vec<ClipNote>, String> {
+     |        ^^^^^^^^^
+...
+1021 |     fn edit(
+     |        ^^^^
+
+warning: function `affected` is never used
+    --> src/session/workspaces.rs:1287:4
+     |
+1287 | fn affected(before: &ProjectV4, after: &ProjectV4) -> Result<Vec<String>, String> {
+     |    ^^^^^^^^
+
+warning: suspicious definition of the runtime `write` symbol used by the standard library
+   --> src/audio.rs:420:13
+    |
+420 |             fn write(fd: i32, buf: *const u8, len: usize) -> isize;
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: expected `unsafe extern "C" fn(i32, *const c_void, usize) -> isize` (for the current target)
+            found    `unsafe extern "C" fn(i32, *const u8, usize) -> isize`
+    = help: either fix the signature or remove any attributes like `#[unsafe(no_mangle)]`, `#[unsafe(export_name = "write")]`, or `#[link_name = "write"]`
+    = help: allow this lint if the signature is compatible
+    = note: `#[warn(suspicious_runtime_symbol_definitions)]` on by default
+
+warning: `ultra` (lib) generated 20 warnings
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 4.66s

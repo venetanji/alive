@@ -1,0 +1,31 @@
+
+running 1 test
+
+thread 'session::tests::v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal' (2063632) panicked at src/session/tests.rs:691:9:
+
+running 1 test
+test session::tests::v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal ... FAILED
+
+failures:
+
+failures:
+    session::tests::v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 248 filtered out; finished in 0.07s
+
+
+
+thread 'session::tests::v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal' (2063634) panicked at src/session/tests.rs:711:85:
+called `Result::unwrap()` on an `Err` value: "Source 'source-c14c8a2f75fe0bac19a1b7a73302e9e6': level requires an integer"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test session::tests::v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal ... FAILED
+
+failures:
+
+failures:
+    session::tests::v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 248 filtered out; finished in 0.07s
+

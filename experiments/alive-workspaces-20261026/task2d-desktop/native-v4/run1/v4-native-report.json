@@ -1,0 +1,108 @@
+{
+  "physical_audio": false,
+  "kind": "actual Tauri/WebKit, private Xvfb and software PipeWire/CPAL",
+  "hardware": {
+    "system": "Linux",
+    "node": "prometheus",
+    "release": "7.2.8-10-omarchy",
+    "version": "#1 SMP PREEMPT_DYNAMIC Wed, 21 Oct 2026 10:51:38 +0000",
+    "machine": "x86_64",
+    "processor": ""
+  },
+  "actions": [
+    {
+      "action": "loaded artifacts",
+      "monotonic": 62789.727209737,
+      "executable": "/tmp/alive-workspaces-task2d-desktop/app/alive",
+      "native_mappings": [
+        "7fbfbe800000-7fbfbe862000 r--p 00000000 00:37 56830                      /tmp/alive-workspaces-task2d-desktop/app/libultra_native.so",
+        "7fbfbe862000-7fbfbe9d0000 r-xp 00062000 00:37 56830                      /tmp/alive-workspaces-task2d-desktop/app/libultra_native.so",
+        "7fbfbe9d0000-7fbfbea47000 r--p 001d0000 00:37 56830                      /tmp/alive-workspaces-task2d-desktop/app/libultra_native.so",
+        "7fbfbea47000-7fbfbea52000 r--p 00247000 00:37 56830                      /tmp/alive-workspaces-task2d-desktop/app/libultra_native.so",
+        "7fbfbea52000-7fbfbed28000 rw-p 00252000 00:37 56830                      /tmp/alive-workspaces-task2d-desktop/app/libultra_native.so"
+      ]
+    },
+    {
+      "action": "save",
+      "monotonic": 62792.069015411,
+      "path": "/tmp/alive-workspaces-task2d-native/run1/before-conversion.alive",
+      "format": "alive-session-v3"
+    },
+    {
+      "action": "save",
+      "monotonic": 62794.080481239,
+      "path": "/tmp/alive-workspaces-task2d-native/run1/converted.alive",
+      "format": "alive-session-v4"
+    },
+    {
+      "action": "explicit conversion",
+      "monotonic": 62794.080642083,
+      "sources": 2,
+      "placements": 2
+    },
+    {
+      "action": "pending notes and automation applied",
+      "monotonic": 62801.738350056,
+      "original_velocity": "76",
+      "original_cutoff_point": "1800"
+    },
+    {
+      "action": "track state",
+      "monotonic": 62818.821391027,
+      "track": "Pulse",
+      "value": "Arrangement: Playing Clip 1"
+    },
+    {
+      "action": "track state",
+      "monotonic": 62819.213285341,
+      "track": "Harmony",
+      "value": "Arrangement: Playing Clip 1"
+    },
+    {
+      "action": "track state",
+      "monotonic": 62819.743055303,
+      "track": "Pulse",
+      "value": "Session: Playing Clip 1 / request 3 applied for Clip 1"
+    },
+    {
+      "action": "track state",
+      "monotonic": 62819.939212455,
+      "track": "Harmony",
+      "value": "Arrangement: Playing Clip 1"
+    },
+    {
+      "action": "track state",
+      "monotonic": 62821.918464858,
+      "track": "Pulse",
+      "value": "Arrangement: Playing Clip 1 / request 4 applied"
+    },
+    {
+      "action": "track state",
+      "monotonic": 62824.0924029,
+      "track": "Pulse",
+      "value": "Session: Session silence / request 5 applied"
+    },
+    {
+      "action": "track state",
+      "monotonic": 62824.740175089,
+      "track": "Harmony",
+      "value": "Arrangement: Playing Clip 1"
+    },
+    {
+      "action": "failure",
+      "monotonic": 62833.129168713,
+      "error": "AssertionError(\"Pulse clip runtime: unexpected value 'Session: Session silence / request 5 applied'\")"
+    }
+  ],
+  "audio_settings": {
+    "saved": {
+      "host": "default",
+      "device": "default",
+      "sample_rate": 48000,
+      "buffer_frames": 512
+    },
+    "unsupported_buffer_preserved_settings": true,
+    "stop_audio_terminated_notes": true,
+    "restart_kept_transport_stopped": true
+  }
+}

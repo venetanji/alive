@@ -1,0 +1,24 @@
+{
+  "sampledAt": "2026-10-28T15:18:43.131169+00:00",
+  "head": "3b3df87572722d2349d0725f4059cfc4afd467ae",
+  "run": 40710079202,
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "UI, protocol, and reference tests",
+      "conclusion": "success",
+      "completedAt": "2026-10-28T14:53:55Z"
+    },
+    {
+      "name": "Chromium canvas editing smoke",
+      "conclusion": "success",
+      "completedAt": "2026-10-28T14:55:12Z"
+    },
+    {
+      "name": "Linux native build, Rust bridge, and CPAL loopback",
+      "conclusion": "success",
+      "completedAt": "2026-10-28T15:17:01Z"
+    }
+  ],
+  "limits": "Full CI success qualifies 3b3df87 only, before Master Node/Rust changes. Packages remain separately sampled."
+}

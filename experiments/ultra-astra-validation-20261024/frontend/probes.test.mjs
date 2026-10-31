@@ -49,9 +49,9 @@ const {createSharedCanvasController}=await import(new URL('apps/ultra/ui/canvas-
 
 const clone = value => structuredClone(value);
 const tick = () => new Promise(resolve=>setImmediate(resolve));
-const initial = () => ({version:2,profile:'ultra-patcher-v2',nodes:[
+const initial = () => ({version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[
   makeNode('number',1),makeNode('number',2),
-  {...makeNode('patcher',3),patcher:{nodes:[makeNode('number',4)],edges:[]}},
+  {...makeNode('patcher',3),patcher:{presentation:null,nodes:[makeNode('number',4)],edges:[]}},
 ],edges:[]});
 
 // This service owns the tree/history. Each controller gets only an IPC view of it.

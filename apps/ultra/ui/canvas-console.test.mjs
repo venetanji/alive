@@ -3,7 +3,7 @@ import {test} from 'node:test';
 import {createCanvasController, makeNode, nodeSpec, validatePatch} from './canvas-model.mjs';
 import {parseObjectText, objectText} from './canvas-catalog.mjs';
 
-const patch = nodes => ({version:1,profile:'ultra-canvas-v1',nodes,edges:[]});
+const patch = nodes => ({version:1,profile:'ultra-canvas-v1',presentation:null,nodes,edges:[]});
 test('print is a typed native sink with a bounded label and live severity',()=>{
   const parsed=parseObjectText('print notes @level 2');
   assert.deepEqual(parsed,{type:'print',params:{label:'notes',level:2,popup:0}});

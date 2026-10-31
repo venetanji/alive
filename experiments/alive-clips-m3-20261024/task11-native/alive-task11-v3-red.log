@@ -1,0 +1,25 @@
+/usr/bin/ld: /tmp/ccwAhwjg.o: in function `(anonymous namespace)::state()':
+alive_session_v3_test.cpp:(.text+0x21): undefined reference to `alive_session_state_v3'
+/usr/bin/ld: /tmp/ccwAhwjg.o: in function `(anonymous namespace)::request(unsigned int, unsigned long, unsigned int, unsigned int, unsigned int, bool) [clone .constprop.0]':
+alive_session_v3_test.cpp:(.text+0x1b2): undefined reference to `alive_session_request_v3'
+/usr/bin/ld: /tmp/ccwAhwjg.o: in function `(anonymous namespace)::start(AliveSessionConfigV3&)':
+alive_session_v3_test.cpp:(.text+0x256): undefined reference to `alive_session_configure_v3'
+/usr/bin/ld: /tmp/ccwAhwjg.o: in function `(anonymous namespace)::queue_stop()':
+alive_session_v3_test.cpp:(.text+0x630): undefined reference to `alive_session_stop_v3'
+/usr/bin/ld: /tmp/ccwAhwjg.o: in function `(anonymous namespace)::admission()':
+alive_session_v3_test.cpp:(.text+0x71e): undefined reference to `alive_session_validate_v3'
+/usr/bin/ld: alive_session_v3_test.cpp:(.text+0x73f): undefined reference to `alive_session_validate_prepared_v3'
+/usr/bin/ld: alive_session_v3_test.cpp:(.text+0x779): undefined reference to `alive_session_validate_v3'
+/usr/bin/ld: alive_session_v3_test.cpp:(.text+0x7b3): undefined reference to `alive_session_validate_v3'
+/usr/bin/ld: alive_session_v3_test.cpp:(.text+0x7ed): undefined reference to `alive_session_validate_v3'
+/usr/bin/ld: alive_session_v3_test.cpp:(.text+0x827): undefined reference to `alive_session_validate_v3'
+/usr/bin/ld: alive_session_v3_test.cpp:(.text+0x861): undefined reference to `alive_session_validate_v3'
+/usr/bin/ld: /tmp/ccwAhwjg.o:alive_session_v3_test.cpp:(.text+0x89b): more undefined references to `alive_session_validate_v3' follow
+/usr/bin/ld: /tmp/ccwAhwjg.o: in function `(anonymous namespace)::admission()':
+alive_session_v3_test.cpp:(.text+0xb93): undefined reference to `alive_session_configure_v3'
+/usr/bin/ld: alive_session_v3_test.cpp:(.text+0xba8): undefined reference to `alive_session_configure_v3'
+/usr/bin/ld: alive_session_v3_test.cpp:(.text+0xc34): undefined reference to `alive_session_limits_v3'
+/usr/bin/ld: alive_session_v3_test.cpp:(.text+0xc55): undefined reference to `alive_session_limits_v3'
+/usr/bin/ld: /tmp/ccwAhwjg.o: in function `(anonymous namespace)::transitions()':
+alive_session_v3_test.cpp:(.text+0xf88): undefined reference to `alive_session_stop_v3'
+collect2: error: ld returned 1 exit status

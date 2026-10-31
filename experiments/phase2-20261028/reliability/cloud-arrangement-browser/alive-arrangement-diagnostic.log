@@ -1,0 +1,60 @@
+(node:633870) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [28/Oct/2026 22:29:19] "GET /canvas.html HTTP/1.1" 200 -
+
+
+Running 2 tests using 1 worker
+
+[1A[2K(node:633888) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:633888) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+
+[1A[2K(node:633888) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[1/2] alive-chain.spec.mjs:1164:3 › Arrangement pointer edits, cancellation and local view controls at 1440
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [28/Oct/2026 22:29:22] "GET /alive.html HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [28/Oct/2026 22:29:22] "GET /alive.css HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [28/Oct/2026 22:29:22] "GET /alive.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [28/Oct/2026 22:29:22] "GET /audio-settings.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [28/Oct/2026 22:29:22] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [28/Oct/2026 22:29:22] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [28/Oct/2026 22:29:22] "GET /alive-piano.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [28/Oct/2026 22:29:22] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [28/Oct/2026 22:29:22] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+
+[1A[2Kalive-chain.spec.mjs:1164:3 › Arrangement pointer edits, cancellation and local view controls at 1440
+DIAGNOSTIC [33m1440[39m [{"time":133.69999999552965,"width":1268,"removed":5,"added":0},{"time":134.59999999403954,"width":1268,"removed":0,"added":1},{"time":134.59999999403954,"width":1268,"removed":0,"added":1},{"time":134.59999999403954,"width":1268,"removed":0,"added":1},{"time":134.59999999403954,"width":1268,"removed":0,"added":1},{"time":134.59999999403954,"width":1268,"removed":0,"added":1}] {"x":348,"y":221,"width":192,"height":52}
+
+[1A[2K[2/2] alive-chain.spec.mjs:1164:3 › Arrangement pointer edits, cancellation and local view controls at 1280
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [28/Oct/2026 22:29:23] "GET /alive.html HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [28/Oct/2026 22:29:23] "GET /alive.css HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [28/Oct/2026 22:29:23] "GET /alive.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [28/Oct/2026 22:29:23] "GET /audio-settings.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [28/Oct/2026 22:29:23] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [28/Oct/2026 22:29:23] "GET /alive-piano.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [28/Oct/2026 22:29:23] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [28/Oct/2026 22:29:23] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [28/Oct/2026 22:29:23] "GET /alive-model.mjs HTTP/1.1" 200 -
+
+[1A[2Kalive-chain.spec.mjs:1164:3 › Arrangement pointer edits, cancellation and local view controls at 1280
+DIAGNOSTIC [33m1280[39m [{"time":127.80000000447035,"width":1124,"removed":5,"added":0},{"time":128.70000000298023,"width":1124,"removed":0,"added":1},{"time":128.70000000298023,"width":1124,"removed":0,"added":1},{"time":128.70000000298023,"width":1124,"removed":0,"added":1},{"time":128.70000000298023,"width":1124,"removed":0,"added":1},{"time":128.70000000298023,"width":1124,"removed":0,"added":1}] {"x":332,"y":221,"width":192,"height":52}
+
+[1A[2K  2 passed (5.5s)

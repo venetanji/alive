@@ -1,6 +1,8 @@
 #include "backend.h"
 #include "sequence.hpp"
 #include "canvas_workspace.hpp"
+#include "alive_session.hpp"
+#include "alive-master-v1.h"
 #include "../../core/engine.hpp"
 #include <atomic>
 #include <array>
@@ -90,6 +92,7 @@ bool document_action(ControlKind kind){return kind==ControlKind::CanvasEvent||ki
 
 std::array<uint64_t,MaxDocuments> closed_console_revision{};
 ultra::CanvasWorkspace canvas; // One callback owner across independent document slots.
+ultra::AliveSession session;
 using CanvasClock=std::chrono::steady_clock;
 auto canvas_idle_mark=CanvasClock::now();
 double canvas_idle_fraction=0;
@@ -215,6 +218,7 @@ void configure_canvas_audio(){
  }
 }
 void tick_canvas_idle(){
+ if(session.configured())return;
  if(running.load()||engine.status().ready||!canvas_requested.load()||!callback_canvas){reset_canvas_idle_clock();return;}
  const auto now=CanvasClock::now();
  const double elapsed=std::chrono::duration<double>(now-canvas_idle_mark).count();canvas_idle_mark=now;
@@ -300,6 +304,7 @@ int render_audio(Frames n,float* l,float* r,bool with_midi){
  // cleanup was already emitted by the mailbox before draining this FIFO.
  auto stopped_edit=[](alive::Event){return true;};
  canvas.begin_callback();
+ session.begin(canvas);
  auto leave_canvas=[&]{if(callback_canvas){for(unsigned d=0;d<MaxDocuments;++d)canvas.close(d,0,emit);canvas_silence=64;callback_canvas=false;for(unsigned d=0;d<2;++d)emit({0,uint8_t(d),alive::Kind::Reset,0,0});}};
  auto manual=[&](alive::Event e){
   // A has a single owner while armed. B and A's envelope/level remain independent.
@@ -381,20 +386,22 @@ int render_audio(Frames n,float* l,float* r,bool with_midi){
  }
  // Merge external clock/transport and musical events on the audio timeline.
  // At most 1024 samples and 128 MIDI records, never an unbounded catch-up loop.
+ const bool render_canvas=callback_canvas||session.configured();
  std::array<float,alive::DocumentDevices> voice_frame{};
  std::array<float*,alive::DocumentDevices> voice_buses{};
  for(unsigned d=0;d<voice_buses.size();++d)voice_buses[d]=&voice_frame[d];
- if(callback_canvas){std::fill(l,l+n,0.f);std::fill(r,r+n,0.f);}
+ if(render_canvas){std::fill(l,l+n,0.f);std::fill(r,r+n,0.f);}
  unsigned next=0;
  for(unsigned frame=0;frame<n&&!engine.status().fault;frame++){
-  if(callback_canvas)engine_frame=frame;
+  if(render_canvas)engine_frame=frame;
+  session.sample(canvas);
   while(next<admitted&&input[next].time==frame){
    const auto& e=input[next++];const auto status=e.data[0];
-   if(callback_canvas){
+   if(render_canvas){
     const unsigned channel=(status&15)+1,cmd=status&0xf0;
     if(e.size==3&&(cmd==0x90||cmd==0x80)){
      if(e.data[1]>127||e.data[2]>127){engine.panic();break;}
-     for(unsigned d=0;d<MaxDocuments;++d)if(canvas.live(d))canvas.runtime(d).midi_input(channel,e.data[1],cmd==0x80?0:e.data[2],frame,emit);
+     for(unsigned d=0;d<MaxDocuments;++d)if(canvas.live(d)&&!session.hosted(d))canvas.runtime(d).midi_input(channel,e.data[1],cmd==0x80?0:e.data[2],frame,emit);
     }
     continue;
    }
@@ -407,15 +414,16 @@ int render_audio(Frames n,float* l,float* r,bool with_midi){
    else continue;
    if(e.data[1]>127||e.data[2]>127){engine.panic();break;}manual(event);
   }
-  if(callback_canvas){
+  if(render_canvas){
    if(!canvas.sample(frame,emit)){engine.panic();break;}
    engine.render_devices({voice_buses.data(),unsigned(voice_buses.size())},nullptr,1);
    // Signal observations can emit controls for the next engine input sample.
    engine_frame=frame+1;
-   double left=0,right=0;
-   for(unsigned d=0;d<MaxDocuments;++d)if(canvas.live(d)){
-    const auto sample=canvas.runtime(d).signal_sample(voice_frame[d*2],voice_frame[d*2+1],frame+1,emit,true);
-    if(!document_silence[d]){left+=sample[0];right+=sample[1];}
+   const auto hosted=session.render_sample(canvas,voice_frame,frame+1,emit);
+   double left=hosted[0],right=hosted[1];
+   for(unsigned d=0;d<MaxDocuments;++d)if(canvas.live(d)&&!session.hosted(d)){
+    const auto signal=canvas.runtime(d).signal_sample(voice_frame[d*2],voice_frame[d*2+1],frame+1,emit,true);
+    if(!document_silence[d]){left+=signal[0];right+=signal[1];}
     else --document_silence[d];
    }
    // Finish every document's signal frame before delivering sampled controls.
@@ -424,10 +432,11 @@ int render_audio(Frames n,float* l,float* r,bool with_midi){
    if(canvas.failed()||!std::isfinite(left)||!std::isfinite(right)||std::abs(left)>std::numeric_limits<float>::max()||std::abs(right)>std::numeric_limits<float>::max()){
     engine.panic();break;
    }
-   l[frame]=float(left);r[frame]=float(right);
-  }else sequence.sample(frame,emit);
+   session.observe_master(hosted);l[frame]=float(left);r[frame]=float(right);
+   session.advance(canvas,left,right);
+  }else {sequence.sample(frame,emit);session.advance(canvas,0,0);}
  }
- if(callback_canvas){
+ if(render_canvas){
   if(engine.status().fault){std::fill(l,l+n,0.f);std::fill(r,r+n,0.f);}
  }else{
   float* channels[]={l,r};engine.render_bus({channels,2},nullptr,n);
@@ -436,7 +445,7 @@ int render_audio(Frames n,float* l,float* r,bool with_midi){
   if(!(mask&2))std::fill(r,r+n,0.f);
  }
  if(engine.status().fault){sequence.clear();sequence_requested.store(false,std::memory_order_relaxed);canvas.clear_timers();}
- publish_canvas();publish_sequence();return 0;
+ publish_canvas();publish_sequence();session.publish(canvas);return 0;
 }
 int process(Frames n,void*){
  auto* l=static_cast<float*>(jack.port_get_buffer(jack.l,n));auto* r=static_cast<float*>(jack.port_get_buffer(jack.r,n));
@@ -455,10 +464,91 @@ void put16(FILE*f,uint16_t n){unsigned char b[]={static_cast<unsigned char>(n),s
 void put32(FILE*f,uint32_t n){put16(f,n);put16(f,n>>16);}
 }
 extern "C" {
+int alive_session_master_limits(AliveMasterLimitsV1* out){
+ if(!out)return ALIVE_MASTER_INVALID;
+ if(out->version!=ALIVE_MASTER_V1||out->struct_bytes!=sizeof(*out))return ALIVE_MASTER_UNSUPPORTED;
+ *out={ALIVE_MASTER_V1,sizeof(*out),ALIVE_MASTER_FEATURE_GAIN|ALIVE_MASTER_FEATURE_METER|ALIVE_MASTER_FEATURE_RESET,64,4.};
+ return ALIVE_MASTER_OK;
+}
+int alive_session_master_set(uint32_t version,double gain,uint64_t serial){return session.master_command(version,gain,serial,false,!running.load()&&!engine.status().ready,canvas);}
+int alive_session_master_reset_clip(uint32_t version,uint64_t serial){return session.master_command(version,0,serial,true,!running.load()&&!engine.status().ready,canvas);}
+#define MASTER_SNAPSHOT(N) \
+int alive_session_master_snapshot_v##N(AliveSessionStateV##N* score,AliveMasterStateV1* master){ \
+ if(!score||!master)return ALIVE_MASTER_INVALID; \
+ if(master->version!=ALIVE_MASTER_V1||master->struct_bytes!=sizeof(*master)||score->version!=N||score->struct_bytes!=sizeof(*score))return ALIVE_MASTER_UNSUPPORTED; \
+ if(master->reserved)return ALIVE_MASTER_INVALID; \
+ return session.master_snapshot(*score,*master); \
+}
+MASTER_SNAPSHOT(2)
+MASTER_SNAPSHOT(3)
+MASTER_SNAPSHOT(4)
+#undef MASTER_SNAPSHOT
+int alive_session_validate_v2(const AliveSessionConfigV2* config){return config&&session.validate_v2(*config);}
+int alive_session_validate_device_v2(const AliveSessionDeviceV2* device,const UltraCanvasGraph* graph){return device&&graph&&session.validate_device_v2(*device,*graph);}
+int alive_session_validate_prepared_v2(const AliveSessionConfigV2* config,const UltraCanvasGraph* graphs,uint32_t count){return config&&session.validate_prepared_v2(*config,graphs,count);}
+int alive_session_configure_v2(const AliveSessionConfigV2* config){
+ if(running.load()||engine.status().ready||!config)return 0;
+ const int result=session.configure_v2(*config,canvas);publish_canvas();return result;
+}
+int alive_session_base_v2(uint32_t document,uint64_t revision,uint32_t parameter,double value){const int result=session.base_v2(document,revision,parameter,value);if(result&&!running.load()&&!engine.status().ready){session.begin(canvas);session.publish(canvas);publish_canvas();}return result;}
+int alive_session_bypass_v2(uint32_t document,uint64_t revision,uint32_t bypassed){const int result=session.bypass_v2(document,revision,bypassed);if(result&&!running.load()&&!engine.status().ready){session.begin(canvas);session.publish(canvas);}return result;}
+int alive_session_state_v2(AliveSessionStateV2* state){return state&&session.snapshot_v2(*state);}
+int alive_session_limits_v3(uint32_t profile,AliveSessionLimitsV3* limits){return limits&&session.limits_v3(profile,*limits);}
+int alive_session_validate_v3(const AliveSessionConfigV3* config){return config&&session.validate_v3(*config);}
+int alive_session_validate_prepared_v3(const AliveSessionConfigV3* config,const UltraCanvasGraph* graphs,uint32_t count){return config&&session.validate_prepared_v3(*config,graphs,count);}
+int alive_session_configure_v3(const AliveSessionConfigV3* config){
+ if(!config||running.load()||engine.status().ready)return 0;
+ const int result=session.configure_v3(*config,canvas);publish_canvas();return result;
+}
+int alive_session_request_v3(const AliveSessionRequestV3* request,AliveSessionReceiptV3* immediate){const AliveSessionRequestV3 invalid{};return immediate&&session.request_v3(request?*request:invalid,*immediate);}
+int alive_midi_limits_v1(AliveMidiLimitsV1* out){return out&&session.midi_limits(*out);}
+int alive_midi_edit_v1(const AliveMidiEditV1* r){const int result=r&&session.midi_edit(*r);if(result&&!running.load()&&!engine.status().ready){session.begin(canvas);session.sample(canvas);session.publish(canvas);publish_canvas();}return result;}
+int alive_midi_preview_v1(const AliveMidiPreviewV1* r){return r&&session.midi_preview(*r);}
+int alive_midi_release_v1(uint64_t preparation,uint64_t serial){const int result=session.midi_release(preparation,serial);if(result&&!running.load()&&!engine.status().ready){session.begin(canvas);session.sample(canvas);session.publish(canvas);publish_canvas();}return result;}
+int alive_midi_state_v1(AliveMidiStateV1* out){return out&&session.midi_snapshot(*out);}
+int alive_launch_limits_v1(AliveLaunchLimitsV1* out){return out&&session.launch_limits(*out);}
+int alive_launch_request_v3_v1(const AliveLaunchRequestV1* r,AliveSessionReceiptV3* out){return r&&out&&session.launch_request<AliveSessionRequestV3>(*r,*out,3);}
+int alive_launch_request_v4_v1(const AliveLaunchRequestV1* r,AliveSessionReceiptV4* out){return r&&out&&session.launch_request<AliveSessionRequestV4>(*r,*out,4);}
+uint64_t alive_session_stop_v3(){const auto epoch=session.stop();if(!running.load()&&!engine.status().ready){session.begin(canvas);session.publish(canvas);publish_canvas();}return epoch;}
+int alive_session_state_v3(AliveSessionStateV3* state){return state&&session.snapshot_v3(*state);}
+int alive_session_diagnostic_v3(AliveSessionDiagnosticV3* diagnostic){return diagnostic&&session.diagnostic_v3(*diagnostic);}
+int alive_session_limits_v4(uint32_t profile,AliveSessionLimitsV4* out){return out&&session.limits_v4(profile,*out);}
+int alive_session_validate_v4(const AliveSessionConfigV4* config){return config&&session.validate_v4(*config);}
+int alive_session_validate_prepared_v4(const AliveSessionConfigV4* config,const UltraCanvasGraph* graphs,uint32_t count,const AliveSessionAudioBufferV4* audio,uint32_t audio_count){return config&&session.validate_prepared_v4(*config,graphs,count,audio,audio_count);}
+int alive_session_configure_v4(const AliveSessionConfigV4* config,const AliveSessionAudioBufferV4* audio,uint32_t count){
+ if(!config||running.load()||engine.status().ready)return 0;
+ const int result=session.configure_v4(*config,audio,count,canvas);publish_canvas();return result;
+}
+int alive_session_publish_v4(const AliveSessionConfigV4* config,const AliveSessionAudioBufferV4* audio,uint32_t count,const AliveSessionPublicationV4* request){
+ const int result=config&&request&&session.publication(*config,audio,count,*request,canvas);
+ if(result&&!running.load()&&!engine.status().ready){session.publication_pump(canvas);publish_canvas();}
+ return result;
+}
+int alive_session_publication_state_v4(AliveSessionPublicationStateV4* state){return state&&session.publication_snapshot(*state);}
+int alive_session_request_v4(const AliveSessionRequestV4* request,AliveSessionReceiptV4* immediate){const AliveSessionRequestV4 invalid{};return immediate&&session.request_v4(request?*request:invalid,*immediate);}
+uint64_t alive_session_stop_v4(){return alive_session_stop_v3();}
+int alive_session_state_v4(AliveSessionStateV4* state){return state&&session.snapshot_v4(*state);}
+int alive_session_diagnostic_v4(AliveSessionDiagnosticV4* diagnostic){return diagnostic&&session.diagnostic_v4(*diagnostic);}
+int alive_session_validate(const AliveSessionConfig* config){return config&&session.validate(*config);}
+int alive_session_validate_graph(const AliveSessionTrack* track,const UltraCanvasGraph* graph){return track&&graph&&session.validate_graph(*track,*graph);}
+int alive_session_validate_prepared(const AliveSessionConfig* config,const UltraCanvasGraph* graphs,uint32_t count){return config&&session.validate_prepared(*config,graphs,count);}
+int alive_session_configure(const AliveSessionConfig* config){
+ if(running.load()||engine.status().ready||!config)return 0;
+ const int result=session.configure(*config,canvas);publish_canvas();return result;
+}
+int alive_session_reset(){if(running.load()||engine.status().ready)return 0;session.reset(canvas);publish_canvas();return 1;}
+int alive_session_start(){return running.load()&&session.start();}
+void alive_session_stop(){session.stop();if(!running.load()&&!engine.status().ready){session.begin(canvas);session.publish(canvas);publish_canvas();}}
+int alive_session_seek(uint64_t position){const int result=session.seek(position);if(result&&!running.load()&&!engine.status().ready){session.begin(canvas);session.publish(canvas);publish_canvas();}return result;}
+int alive_session_base(uint32_t track,uint32_t parameter,double value){const int result=session.base(track,parameter,value);if(result&&!running.load()&&!engine.status().ready){session.begin(canvas);session.publish(canvas);publish_canvas();}return result;}
+int alive_session_mixer(uint32_t track,double gain,uint32_t mute,uint32_t solo){const int result=session.mixer(track,gain,mute,solo);if(result&&!running.load()&&!engine.status().ready){session.begin(canvas);session.publish(canvas);}return result;}
+int alive_session_state(AliveSessionState* state){return state&&session.snapshot(*state);}
+const char* alive_session_error(){return session.error();}
 static void stop_audio_impl(bool stop_timers){
  if(!running.load()&&!engine.status().ready)tick_canvas_idle();
  running.store(false);if(jack.client){jack.deactivate(jack.client);jack.client_close(jack.client);jack.client=nullptr;}
  engine.shutdown();drain_stopped_canvas_controls();sequence.clear();publish_sequence();synchronize_canvas_runtime(stop_timers);reset_canvas_idle_clock();publish_canvas();sequence_requested=false;control_head=0;control_tail=0;jack.close_library();lost.store(false);error="Audio is stopped.";
+ session.device_stopped(canvas);
 }
 void ultra_audio_stop(){stop_audio_impl(true);}
 static int start_impl(){
@@ -512,12 +602,14 @@ int ultra_audio_event(unsigned device,unsigned kind,unsigned note,unsigned value
  return accepted;
 }
 int ultra_audio_sequence(const UltraSequenceConfig* config){
+ if(session.configured())return 0;
  if(!config||!ultra::valid_sequence(*config)||!running.load()||(config->enabled&&!(routes.load()&1)))return 0;
  const bool accepted=queue_control({{},0,ControlKind::Sequence,*config});
  if(accepted){sequence_requested.store(config->enabled!=0,std::memory_order_release);clear_canvas_requests();}
  return accepted;
 }
 void ultra_audio_routes(unsigned mask){
+ if(session.configured())return;
  mask&=3;unsigned old=routes.load(std::memory_order_relaxed);
  routes.store(mask);const bool was_canvas=canvas_requested.load();
  if(old!=mask||was_canvas){if((old^mask)&1)sequence_requested=false;if(engine.status().ready){if(queue_control({{},mask,ControlKind::Route,{}}))clear_canvas_requests();}else {clear_canvas_requests();auto discard=[](alive::Event){return true;};for(unsigned d=0;d<MaxDocuments;++d)canvas.close(d,0,discard);callback_canvas=false;publish_canvas();}}
@@ -578,6 +670,7 @@ static bool canvas_release_message(unsigned document,unsigned node,unsigned inle
  return noteoff||pedal||panic;
 }
 int ultra_canvas_install_document(uint32_t document,const UltraCanvasGraph* graph){
+ if(session.configured())return 0;
  if(document>=MaxDocuments||!graph||graph->revision<=admitted_canvas[document].graph.revision)return 0;
  ultra::CanvasPlan next{};if(!ultra::compile_canvas(*graph,next))return 0;
  const bool was_running=running.load();
@@ -596,6 +689,7 @@ int ultra_canvas_event_document(uint32_t document,uint64_t revision,uint32_t nod
  return ultra_canvas_message_document(document,revision,node,inlet,&message);
 }
 int ultra_canvas_message_document(uint32_t document,uint64_t revision,uint32_t node,uint32_t inlet,const UltraCanvasMessage* message){
+ if(session.hosted(document))return 0;
  if(document>=MaxDocuments||!message||!requested_documents[document].load())return 0;
  const auto m=ultra::canvas_message_from_pod(*message);
  if(!ultra::canvas_event_valid(admitted_canvas[document],revision,node,inlet,m))return 0;
@@ -612,6 +706,7 @@ int ultra_canvas_message_document(uint32_t document,uint64_t revision,uint32_t n
  const bool accepted=canvas.event(document,revision,node,inlet,m,0,discard);publish_canvas();return accepted;
 }
 int ultra_canvas_message_text_document(uint32_t document,uint64_t revision,uint32_t node,uint64_t serial,const char* text,uint32_t length){
+ if(session.hosted(document))return 0;
  if(document>=MaxDocuments||!requested_documents[document].load()||revision!=admitted_canvas[document].graph.revision||!serial||serial>9007199254740991ULL||serial<=admitted_message_serial[document]||!text||length>127)return 0;
  const int slot=admitted_canvas[document].find(node);if(slot<0||admitted_canvas[document].graph.nodes[slot].kind!=ultra::MessageBox)return 0;
  char source[128]{};for(unsigned i=0;i<length;++i){if(!text[i])return 0;source[i]=text[i];}
@@ -650,6 +745,7 @@ int ultra_canvas_param_document(uint32_t document,uint64_t revision,uint32_t nod
  return ultra_canvas_param_hot_document(document,revision,node,param,value,0);
 }
 int ultra_canvas_tab_document(uint32_t document,uint64_t revision,uint32_t node){
+ if(session.hosted(document))return 0;
  if(document>=MaxDocuments||!requested_documents[document].load()||!ultra::canvas_tab_valid(admitted_canvas[document],revision,node))return 0;
  if(running.load()){
   Control c{};c.kind=ControlKind::CanvasTab;c.document=document;c.revision=revision;c.node=node;return queue_control(c,false);
@@ -659,6 +755,7 @@ int ultra_canvas_tab_document(uint32_t document,uint64_t revision,uint32_t node)
  const bool accepted=canvas.tab(document,revision,node,0,discard);publish_canvas();return accepted;
 }
 int ultra_canvas_param_hot_document(uint32_t document,uint64_t revision,uint32_t node,uint32_t param,double value,uint32_t hot){
+ if(session.hosted(document))return 0; // Bound edits use alive_session_base ownership.
  if(hot>1)return 0;
  if(document>=MaxDocuments||!requested_documents[document].load()||revision!=admitted_canvas[document].graph.revision)return 0;
  auto next=admitted_canvas[document];if(!ultra::change_canvas_param(next,node,param,value))return 0;
@@ -677,6 +774,7 @@ int ultra_canvas_param_hot_document(uint32_t document,uint64_t revision,uint32_t
  admitted_canvas[document]=next;return 1;
 }
 int ultra_canvas_stop_document(uint32_t document){
+ if(session.hosted(document)){alive_session_stop();return 1;}
  if(document>=MaxDocuments)return 0;
  if(!requested_documents[document].load())return 1;
  if(running.load()){request_document_stop(document);return 1;}
@@ -684,6 +782,7 @@ int ultra_canvas_stop_document(uint32_t document){
  tick_canvas_idle();auto discard=[](alive::Event){return true;};canvas.stop(document,0,discard);publish_canvas();return 1;
 }
 int ultra_canvas_close_document(uint32_t document){
+ if(session.hosted(document))return 0;
  if(document>=MaxDocuments)return 0;
  if(!requested_documents[document].load()){discard_canvas_console(document);return 1;}
  const bool was_running=running.load();
@@ -694,6 +793,7 @@ int ultra_canvas_close_document(uint32_t document){
  requested_documents[document]=false;update_canvas_requested();discard_canvas_console(document);return 1;
 }
 void ultra_canvas_stop_all(){
+ if(session.configured())alive_session_stop();
  if(running.load())request_documents_stop((1u<<MaxDocuments)-1);
  else if(engine.status().ready)engine.panic();
  else {auto discard=[](alive::Event){return true;};for(unsigned d=0;d<MaxDocuments;++d)canvas.stop(d,0,discard);reset_canvas_idle_clock();publish_canvas();}
@@ -799,4 +899,3 @@ int ultra_render_chord_demo(const char*path){try{return render_chord_demo_impl(p
 int ultra_render_demo(const char*path){try{return render_demo_impl(path);}catch(...){ultra_audio_stop();return 0;}}
 
 }
-

@@ -1,0 +1,194 @@
+{
+  "kind": "native Tauri on private software PipeWire",
+  "physical_audio": false,
+  "actions": [
+    {
+      "action": "initial artifact identity",
+      "monotonic": 73106.56111028,
+      "identity": {
+        "executable_path": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/alive",
+        "executable": {
+          "device": 53,
+          "inode": 8395135,
+          "sha256": "741cc7ede7f76257f9caec8a8052d42aaa2a484e7a60ea662ce26e5a8851d1a1"
+        },
+        "libraries": [
+          {
+            "path": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/libultra_native.so",
+            "mapping_device": [
+              0,
+              29
+            ],
+            "mapping_inode": 8395136,
+            "device": 53,
+            "inode": 8395136,
+            "sha256": "9fd076115b2a914fa2d156dab37b0a1d99676d40634e23f78ba2c50c110062c4"
+          }
+        ]
+      }
+    },
+    {
+      "action": "viewport",
+      "monotonic": 73164.666367099,
+      "view": "session",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "action": "viewport",
+      "monotonic": 73165.813053517,
+      "view": "session",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "action": "viewport",
+      "monotonic": 73166.90699618,
+      "view": "arrangement",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "action": "viewport",
+      "monotonic": 73167.444538773,
+      "view": "arrangement",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "action": "saved v5 and actual quit",
+      "monotonic": 73172.431083264,
+      "identity": {
+        "executable_path": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/alive",
+        "executable": {
+          "device": 53,
+          "inode": 8395135,
+          "sha256": "741cc7ede7f76257f9caec8a8052d42aaa2a484e7a60ea662ce26e5a8851d1a1"
+        },
+        "libraries": [
+          {
+            "path": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/libultra_native.so",
+            "mapping_device": [
+              0,
+              29
+            ],
+            "mapping_inode": 8395136,
+            "device": 53,
+            "inode": 8395136,
+            "sha256": "9fd076115b2a914fa2d156dab37b0a1d99676d40634e23f78ba2c50c110062c4"
+          }
+        ]
+      }
+    },
+    {
+      "action": "same executable and module, reopened owner and replay",
+      "monotonic": 73180.798148243,
+      "identity": {
+        "executable_path": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/alive",
+        "executable": {
+          "device": 53,
+          "inode": 8395135,
+          "sha256": "741cc7ede7f76257f9caec8a8052d42aaa2a484e7a60ea662ce26e5a8851d1a1"
+        },
+        "libraries": [
+          {
+            "path": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/libultra_native.so",
+            "mapping_device": [
+              0,
+              29
+            ],
+            "mapping_inode": 8395136,
+            "device": 53,
+            "inode": 8395136,
+            "sha256": "9fd076115b2a914fa2d156dab37b0a1d99676d40634e23f78ba2c50c110062c4"
+          }
+        ]
+      },
+      "complete": true
+    }
+  ],
+  "first_audio": {
+    "frames": 1115648,
+    "seconds": 23.24266666666667,
+    "peak": 0.14162153005599976,
+    "one_second_peaks": [
+      0.14162153005599976,
+      0.13599134981632233,
+      0.09507033228874207,
+      0.09329555183649063,
+      0.055488042533397675,
+      0.06197041645646095,
+      0.08348129689693451,
+      0.08268166333436966,
+      0.06431451439857483,
+      0.06197041645646095,
+      0.08348129689693451,
+      0.08268166333436966,
+      0.06431451439857483,
+      0.04994873329997063,
+      0.06197041645646095,
+      0.08348129689693451,
+      0.08268166333436966,
+      0.06431451439857483,
+      0.06197041645646095,
+      0.08348129689693451,
+      0.08268166333436966,
+      0.04968900978565216,
+      0.0,
+      0.0
+    ],
+    "unequal_stereo_samples_after_setup": 0,
+    "sha256": "22a340cba40937eefaab3c8a9b5cdca4a7e4166f52de03986dbe048e5f3af6e4",
+    "path": "master-before-restart.f32",
+    "physical_audio": false,
+    "supervision": {
+      "complete": true,
+      "reason": "requested_stop",
+      "group_id": 1051757,
+      "recorder_pid": 1051760,
+      "returncode": 1,
+      "wall_seconds": 23.394200654001907,
+      "audio_bytes": 8925184,
+      "stderr_bytes": 0,
+      "limits": {
+        "wall_seconds": 2700.0,
+        "audio_bytes": 1073741824,
+        "metadata_bytes": 67108864,
+        "stderr_bytes": 1048576,
+        "disk_reserve_bytes": 268435456
+      }
+    }
+  },
+  "reopened_audio": {
+    "frames": 171008,
+    "seconds": 3.562666666666667,
+    "peak": 0.08348129689693451,
+    "one_second_peaks": [
+      0.05892585217952728,
+      0.06197041645646095,
+      0.08348129689693451,
+      0.0
+    ],
+    "unequal_stereo_samples_after_setup": 0,
+    "sha256": "d886eb6810cff5b0e9dc401e521c1810517c2d041021e54d5e10878b77e0b9fd",
+    "path": "master-reopened-playback.f32",
+    "physical_audio": false,
+    "supervision": {
+      "complete": true,
+      "reason": "requested_stop",
+      "group_id": 1053549,
+      "recorder_pid": 1053552,
+      "returncode": 1,
+      "wall_seconds": 3.719841052996344,
+      "audio_bytes": 1368064,
+      "stderr_bytes": 0,
+      "limits": {
+        "wall_seconds": 2700.0,
+        "audio_bytes": 1073741824,
+        "metadata_bytes": 67108864,
+        "stderr_bytes": 1048576,
+        "disk_reserve_bytes": 268435456
+      }
+    }
+  }
+}

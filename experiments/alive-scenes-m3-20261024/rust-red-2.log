@@ -1,0 +1,36 @@
+warning: suspicious definition of the runtime `write` symbol used by the standard library
+   --> src/audio.rs:420:13
+    |
+420 |             fn write(fd: i32, buf: *const u8, len: usize) -> isize;
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: expected `unsafe extern "C" fn(i32, *const c_void, usize) -> isize` (for the current target)
+            found    `unsafe extern "C" fn(i32, *const u8, usize) -> isize`
+    = help: either fix the signature or remove any attributes like `#[unsafe(no_mangle)]`, `#[unsafe(export_name = "write")]`, or `#[link_name = "write"]`
+    = help: allow this lint if the signature is compatible
+    = note: `#[warn(suspicious_runtime_symbol_definitions)]` on by default
+
+warning: `ultra` (lib test) generated 1 warning
+    Finished `release` profile [optimized] target(s) in 0.27s
+     Running unittests src/lib.rs (apps/ultra/src-tauri/target/release/deps/ultra_desktop-6028613c5e5ac959)
+
+running 1 test
+test session::runtime::tests::scene_projection_retains_authoritative_member_masks ... FAILED
+
+failures:
+
+---- session::runtime::tests::scene_projection_retains_authoritative_member_masks stdout ----
+
+thread 'session::runtime::tests::scene_projection_retains_authoritative_member_masks' (1118954) panicked at src/session/runtime.rs:75:9:
+assertion `left == right` failed
+  left: Null
+ right: 5
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    session::runtime::tests::scene_projection_retains_authoritative_member_masks
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 210 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `--lib`

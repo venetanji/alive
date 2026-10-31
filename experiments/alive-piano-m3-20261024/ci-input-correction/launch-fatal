@@ -1,0 +1,2 @@
+#!/bin/sh
+exec env G_DEBUG=fatal-criticals /home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri/target/release/alive "$@"

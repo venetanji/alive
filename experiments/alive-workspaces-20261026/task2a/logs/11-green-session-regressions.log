@@ -1,0 +1,96 @@
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+warning: suspicious definition of the runtime `write` symbol used by the standard library
+   --> src/audio.rs:420:13
+    |
+420 |             fn write(fd: i32, buf: *const u8, len: usize) -> isize;
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: expected `unsafe extern "C" fn(i32, *const c_void, usize) -> isize` (for the current target)
+            found    `unsafe extern "C" fn(i32, *const u8, usize) -> isize`
+    = help: either fix the signature or remove any attributes like `#[unsafe(no_mangle)]`, `#[unsafe(export_name = "write")]`, or `#[link_name = "write"]`
+    = help: allow this lint if the signature is compatible
+    = note: `#[warn(suspicious_runtime_symbol_definitions)]` on by default
+
+warning: `ultra` (lib test) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.09s
+     Running unittests src/lib.rs (apps/ultra/src-tauri/target/debug/deps/ultra_desktop-6951be0eecdd253e)
+
+running 75 tests
+test session::desktop::tests::actual_registered_window_binding_authenticates_instance_and_generation ... ok
+test session::desktop::tests::alive_companion_loads_the_installed_shared_example_without_source_tree ... ok
+test session::desktop::tests::canonical_musical_drafts_cannot_change_format_identity_fingerprint_or_effect_order ... ok
+test session::desktop::tests::delayed_retirement_preserves_draft_history_generation_and_prepared_roots ... ok
+test session::desktop::tests::draft_rejects_device_substitution_and_overload_before_retention ... ok
+test session::desktop::tests::edit_admission_rejects_ranges_targets_rounded_overlap_and_truncation_atomically ... ok
+test session::desktop::tests::explicit_load_captures_fresh_identity_and_original_source_before_bases ... ok
+test session::desktop::tests::failed_apply_source_and_native_density_preserve_retained_history ... ok
+test session::desktop::tests::focused_clips_duplicate_scores_and_history_retains_ids_without_changing_devices ... ok
+test session::desktop::tests::pending_history_versions_noops_baseline_redo_and_live_merge ... ok
+test session::desktop::tests::pending_schedule_merges_latest_live_bases_and_mixer ... ok
+test session::desktop::tests::polling_or_close_during_native_dialog_never_blocks_the_ui ... ok
+test session::desktop::tests::removing_an_instrument_removes_its_whole_track_and_preserves_the_other_chain ... ok
+test session::desktop::tests::scenes_authenticate_origin_generation_preparation_and_audio_before_mutation ... ok
+test session::desktop::tests::shared_changed_source_blocks_either_selected_replace_until_original_is_restored ... ok
+test session::desktop::tests::stale_generation_and_unrelated_main_actions_reject ... ok
+test session::desktop::tests::structural_reorder_and_removal_keep_unrelated_instance_automation ... ok
+test session::desktop::tests::undo_redo_merge_same_source_effect_bases_bypass_and_mixer_by_identity ... ok
+test session::history::tests::byte_eviction_and_strict_directions_are_bounded ... ok
+test session::history::tests::musical_history_is_bounded_and_redo_is_transactional ... ok
+test session::history::tests::projection_restores_music_onto_current_chain_without_live_fields ... ok
+test session::runtime::tests::receipts_match_both_identities_and_keep_queued_until_consumed ... ok
+test session::runtime::tests::scene_mapper_uses_immutable_prepared_slots_and_empty_members_stop ... ok
+test session::runtime::tests::scene_members_keep_terminal_outcomes_when_remaining_observation_is_unavailable ... ok
+test session::runtime::tests::scene_projection_retains_authoritative_member_masks ... ok
+test session::tests::frame_collision_voice_release_ambiguity_and_loop_seam_overload_are_rejected ... ok
+test session::tests::frame_conversion_orders_off_automation_on_and_preserves_required_offsets ... ok
+test session::tests::global_root_and_chain_bounds_reject_before_dependency_reads ... ok
+test session::tests::hashes_cover_original_json_before_instance_bases_and_formatting_is_irrelevant ... ok
+test session::tests::legacy_read_returns_canonical_v2_with_stable_instance_targets ... ok
+test session::tests::missing_and_incompatible_devices_identify_track_and_preserve_input ... ok
+test session::tests::native_v3_layout_matches_fixed_c_interface ... ok
+test session::tests::native_wire_layouts_have_matching_sizes_headers_and_offsets ... ok
+test session::tests::rejects_invalid_schedule_and_parameter_binding_before_admission ... ok
+test session::tests::rust_host_installs_the_saved_session_without_editor_windows ... ok
+test session::tests::save_as_rebases_references_and_failed_save_retains_file ... ok
+test session::tests::save_as_relocates_every_effect_and_cannot_overwrite_any_dependency ... ok
+test session::tests::save_cannot_replace_source_device_or_accept_oversized_file ... ok
+test session::tests::saved_effect_order_and_automation_resolve_by_instance_not_chain_index ... ok
+test session::tests::saved_session_resolves_two_real_independent_device_references ... ok
+test session::tests::saving_through_a_session_symlink_keeps_dependency_paths_relative_to_target ... ok
+test session::tests::session_roundtrip_preserves_notes_automation_and_mixer ... ok
+test session::tests::session_v1_accepts_version_two_instruments_and_checks_declared_version ... ok
+test session::tests::session_v1_rejects_effects_with_an_explicit_chain_runtime_error ... ok
+test session::tests::stable_parameter_keys_survive_explicit_source_manifest_reordering ... ok
+test session::tests::v1_dispatch_is_strict_and_v2_never_infers_missing_instance_data ... ok
+test session::tests::v3_compiles_independent_clip_ranges_and_empty_lane_ownership ... ok
+test session::tests::v3_eight_track_host_roundtrip_and_mixer ... ok
+test session::tests::v3_native_host_defaults_requests_and_graph_fallback_are_real ... ok
+test session::tests::v3_save_as_preserves_bank_ids_beats_defaults_and_source_hashes ... ok
+test session::tests::v3_scene_is_one_native_queue_entry_with_prepared_member_identities ... ok
+test session::tests::v3_strict_ids_disabled_aggregate_and_source_free_range_rejections ... ok
+test session::tests::v3_strict_wire_migration_and_roundtrip_preserve_score_identity ... ok
+test session::workspaces::tests::audio_suffix_descriptors_and_automation_retain_exact_frames ... ok
+test session::workspaces::tests::byte_limits_unicode_controls_and_document_size_are_enforced ... ok
+test session::workspaces::tests::endpoint_difference_controls_duration_and_beats_still_detect_subframe_overlap ... ok
+test session::workspaces::tests::every_nested_wire_record_rejects_missing_or_unknown_fields ... ok
+test session::workspaces::tests::finite_bounds_and_loop_brace_apply_even_when_disabled ... ok
+test session::workspaces::tests::fresh_ids_check_current_and_reserved_history_and_undo_keeps_originals ... ok
+test session::workspaces::tests::invalid_id_generators_and_occupied_targets_leave_input_unchanged ... ok
+test session::workspaces::tests::legacy_prospective_conversion_preserves_input_and_rejects_held_voice_excess ... ok
+test session::workspaces::tests::notes_reject_overlap_and_five_held_voices_but_allow_touching_ends ... ok
+test session::workspaces::tests::occupied_slot_names_identity_and_delete_assign_mints_a_new_occurrence ... ok
+test session::workspaces::tests::offsets_suffix_bounds_and_touching_occurrences_use_endpoint_frames ... ok
+test session::workspaces::tests::per_track_and_global_bounds_include_disabled_automation ... ok
+test session::workspaces::tests::prospective_migration_preserves_music_and_uses_length_prefixed_id_domains ... ok
+test session::workspaces::tests::real_cross_track_references_and_duplicate_lane_targets_reject ... ok
+test session::workspaces::tests::shared_source_edits_and_independent_copy_preserve_occurrence_identity ... ok
+test session::workspaces::tests::source_event_pool_counts_rounded_note_ends_and_enabled_points_once ... ok
+test session::workspaces::tests::source_slot_note_placement_lifecycle_returns_stable_affected_ids ... ok
+test session::workspaces::tests::strict_edits_reject_duplicate_unknown_and_missing_fields ... ok
+test session::workspaces::tests::strict_roundtrip_keeps_explicit_empty_slots_and_no_audio_instrument ... ok
+test session::workspaces::tests::tempo_and_source_shrink_fail_transactionally_with_referring_ids ... ok
+test session::workspaces::tests::validation_rejects_identity_kind_ownership_and_device_targets ... ok
+test session::workspaces::tests::wire_rejects_unknown_missing_duplicate_and_noncanonical_decimal_members ... ok
+
+test result: ok. 75 passed; 0 failed; 0 ignored; 0 measured; 162 filtered out; finished in 4.41s
+

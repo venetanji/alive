@@ -1,0 +1,66 @@
+Running 64 tests using 1 worker
+[1/64] alive-chain.spec.mjs:3:1 › musical toolbar and open session adapt to live window resizing without issuing commands
+[2/64] alive-chain.spec.mjs:43:1 › transport options retain precise controls without crowding the musical toolbar
+[3/64] alive-chain.spec.mjs:66:1 › Arrangement resizing keeps transport and Master usable with a wide browser
+[4/64] alive-chain.spec.mjs:103:1 › expanded audio diagnostics keep their summary anchored as active identifiers change
+[5/64] alive-chain.spec.mjs:132:1 › browser search and keyboard selection never launch or change the score
+[6/64] alive-chain.spec.mjs:172:1 › browser device double-click requests one validated load and reports native refusal
+[7/64] alive-chain.spec.mjs:689:1 › empty body double-click creates one draft clip and never launches
+[8/64] alive-chain.spec.mjs:721:1 › scene receipts leave the visual and accessibility tree in legacy mode and refresh on return
+[9/64] alive-chain.spec.mjs:808:1 › vertical gain fader sends one bounded change and reflects external snapshots without erasing focused numeric text
+[10/64] alive-chain.spec.mjs:845:5 › two fixed track columns leave blank stage and expose piano roll at 1440x900
+[11/64] alive-chain.spec.mjs:845:5 › two fixed track columns leave blank stage and expose piano roll at 1280x800
+[12/64] alive-chain.spec.mjs:884:5 › expanded inspector preserves shared mixer baseline in v4 two-track at 1440x900
+[13/64] alive-chain.spec.mjs:884:5 › expanded inspector preserves shared mixer baseline in v3 eight-track at 1440x900
+[14/64] alive-chain.spec.mjs:884:5 › expanded inspector preserves shared mixer baseline in v4 two-track at 1280x800
+[15/64] alive-chain.spec.mjs:884:5 › expanded inspector preserves shared mixer baseline in v3 eight-track at 1280x800
+[16/64] alive-chain.spec.mjs:939:1 › Add note queued behind track removal never edits the surviving track
+[17/64] alive-chain.spec.mjs:966:1 › selected instance controls, keyboard automation target, draft guard and desktop bounds
+[18/64] alive-chain.spec.mjs:1017:1 › long saved device names fit the minimum desktop window
+[19/64] alive-chain.spec.mjs:1029:1 › piano body, resize, velocity, cancellation and keyboard gestures are bounded transactions
+[20/64] alive-chain.spec.mjs:1125:1 › piano navigation and live resize preserve the score and recompute editing geometry
+[21/64] alive-chain.spec.mjs:1187:1 › a chord velocity drag edits the selected note when markers overlap
+[22/64] alive-chain.spec.mjs:1220:1 › browser selection and transport dismissal preserve unfinished musical fields
+[23/64] alive-chain.spec.mjs:1282:1 › four-slot bank preserves numeric note identity and fits the minimum desktop
+[24/64] alive-chain.spec.mjs:1342:5 › eight columns align with four scene rows at 1440x900
+[25/64] alive-chain.spec.mjs:1342:5 › eight columns align with four scene rows at 1280x800
+[26/64] alive-chain.spec.mjs:1396:1 › view buttons preserve focused uncommitted values and native Tab navigation
+[27/64] alive-chain.spec.mjs:1419:1 › hiding Session preserves an unfinished gain field without issuing a mixer mutation
+[28/64] alive-chain.spec.mjs:1441:40 › detail navigation preserves an unfinished device field until one deliberate commit
+[29/64] alive-chain.spec.mjs:1441:40 › detail navigation preserves an unfinished note field until one deliberate commit
+[30/64] alive-chain.spec.mjs:1518:1 › maximum detail resize leaves the entire detail and workspace reachable
+[31/64] alive-chain.spec.mjs:1539:1 › track name and metadata line boxes fit the fixed Session header without clipping
+[32/64] alive-chain.spec.mjs:1560:38 › v4 navigation and polling preserve unfinished gain without changing runtime authority
+[33/64] alive-chain.spec.mjs:1560:38 › v4 navigation and polling preserve unfinished note without changing runtime authority
+[34/64] alive-chain.spec.mjs:1667:3 › Arrangement pointer edits, cancellation and local view controls at 1440
+[35/64] alive-chain.spec.mjs:1759:98 › Arrangement unfinished Placement start survives hiding and polling at 1440
+[36/64] alive-chain.spec.mjs:1759:98 › Arrangement unfinished Placement source offset survives hiding and polling at 1440
+[37/64] alive-chain.spec.mjs:1759:98 › Arrangement unfinished Arrangement source name survives hiding and polling at 1440
+[38/64] alive-chain.spec.mjs:1667:3 › Arrangement pointer edits, cancellation and local view controls at 1280
+[39/64] alive-chain.spec.mjs:1759:98 › Arrangement unfinished Placement start survives hiding and polling at 1280
+[40/64] alive-chain.spec.mjs:1759:98 › Arrangement unfinished Placement source offset survives hiding and polling at 1280
+[41/64] alive-chain.spec.mjs:1759:98 › Arrangement unfinished Arrangement source name survives hiding and polling at 1280
+[42/64] alive-chain.spec.mjs:1790:1 › Arrangement creates separate source and occurrence history and cancels stale gestures and brace previews
+[43/64] alive-chain.spec.mjs:1836:1 › Arrangement blank-lane drag selects the range after a timeline redraw
+[44/64] alive-chain.spec.mjs:1882:5 › Arrangement eight-track scrolling, long names and expanded detail stay bounded at 1440
+[45/64] alive-chain.spec.mjs:1882:5 › Arrangement eight-track scrolling, long names and expanded detail stay bounded at 1280
+[46/64] alive-chain.spec.mjs:1937:1 › Arrangement selection opens Clip detail and piano Delete never deletes its occurrence
+[47/64] alive-chain.spec.mjs:1965:5 › Arrangement gain preserves unfinished input and shares Session mixer at 1440
+[48/64] alive-chain.spec.mjs:1965:5 › Arrangement gain preserves unfinished input and shares Session mixer at 1280
+[49/64] alive-chain.spec.mjs:2000:41 › Master and compact workspace geometry v4 1440
+[50/64] alive-chain.spec.mjs:2000:41 › Master and compact workspace geometry v3 1440
+[51/64] alive-chain.spec.mjs:2000:41 › Master and compact workspace geometry v4 1280
+[52/64] alive-chain.spec.mjs:2000:41 › Master and compact workspace geometry v3 1280
+[53/64] alive-chain.spec.mjs:2088:1 › both Master views share native gain, interval peaks, overload reset and local selection
+[54/64] alive-chain.spec.mjs:2130:1 › vertical Session faders respond to real upward and downward pointer drags
+[55/64] alive-chain.spec.mjs:2161:1 › Master pressure retains the final intent and reports reset refusal without claiming it saved
+[56/64] alive-chain.spec.mjs:2227:1 › Master unavailable and stale observations remain explicit
+[57/64] alive-chain.spec.mjs:2251:1 › Master selection parks unfinished clip text and caret without a native edit
+[58/64] alive-chain.spec.mjs:2274:1 › browser and column widths resize locally and Master selection preserves device binding
+[59/64] alive-chain.spec.mjs:2311:1 › Master numeric validation and double-click unity use the same admission path
+[60/64] alive-chain.spec.mjs:2337:1 › Arrangement Master aligns with right track controls and source fields have visible context
+[61/64] alive-chain.spec.mjs:2374:1 › returning from Master to the same Arrangement occurrence retains parked text
+[62/64] alive-chain.spec.mjs:2397:1 › generation change visibly cancels a pending Master intent and ignores its late receipt
+[63/64] alive-chain.spec.mjs:2430:1 › Arrangement Master markings and meter remain separate in the right-hand control group
+[64/64] alive-chain.spec.mjs:2455:1 › pointer-derived track gain remains readable in both mixer and Arrangement detail
+  64 passed (1.9m)

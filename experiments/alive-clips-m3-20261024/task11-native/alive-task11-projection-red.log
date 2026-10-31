@@ -1,0 +1,9 @@
+In file included from /usr/include/c++/16/cassert:46,
+                 from apps/ultra/tests/alive_session_v3_test.cpp:5:
+apps/ultra/tests/alive_session_v3_test.cpp: In function ‘void {anonymous}::admission()’:
+apps/ultra/tests/alive_session_v3_test.cpp:139:63: error: ‘project_v2’ is not a member of ‘ultra::AliveSession’
+  139 |   const auto original=projection;assert(!ultra::AliveSession::project_v2(wide,projection));assert(std::memcmp(&projection,&original,sizeof projection)==0);
+      |                                                               ^~~~~~~~~~
+apps/ultra/tests/alive_session_v3_test.cpp:139:63: error: ‘project_v2’ is not a member of ‘ultra::AliveSession’
+  139 |   const auto original=projection;assert(!ultra::AliveSession::project_v2(wide,projection));assert(std::memcmp(&projection,&original,sizeof projection)==0);
+      |                                                               ^~~~~~~~~~

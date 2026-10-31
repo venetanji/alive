@@ -1,0 +1,56 @@
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+warning: methods `format` and `is_workspaces` are never used
+  --> src/session/document.rs:19:12
+   |
+16 | impl Document {
+   | ------------- methods in this implementation
+...
+19 |     pub fn format(&self) -> &str {match self {Self::LegacyV2(s)=>&s.format,Self::ClipsV3(s)=>&s.common.format,Self::WorkspacesV4(s)=...
+   |            ^^^^^^
+...
+24 |     pub fn is_workspaces(&self) -> bool {matches!(self,Self::WorkspacesV4(_))}
+   |            ^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: suspicious definition of the runtime `write` symbol used by the standard library
+   --> src/audio.rs:420:13
+    |
+420 |             fn write(fd: i32, buf: *const u8, len: usize) -> isize;
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: expected `unsafe extern "C" fn(i32, *const c_void, usize) -> isize` (for the current target)
+            found    `unsafe extern "C" fn(i32, *const u8, usize) -> isize`
+    = help: either fix the signature or remove any attributes like `#[unsafe(no_mangle)]`, `#[unsafe(export_name = "write")]`, or `#[link_name = "write"]`
+    = help: allow this lint if the signature is compatible
+    = note: `#[warn(suspicious_runtime_symbol_definitions)]` on by default
+
+warning: `ultra` (lib test) generated 2 warnings
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.81s
+     Running unittests src/lib.rs (apps/ultra/src-tauri/target/debug/deps/ultra_desktop-6951be0eecdd253e)
+
+running 2 tests
+test session::tests::active_v4_preparation_compiles_shared_sources_once ... FAILED
+test session::tests::active_v4_preparation_rejects_audio_before_reading_dependencies ... FAILED
+
+failures:
+
+---- session::tests::active_v4_preparation_compiles_shared_sources_once stdout ----
+
+thread 'session::tests::active_v4_preparation_compiles_shared_sources_once' (2045602) panicked at src/session/tests.rs:56:87:
+called `Result::unwrap()` on an `Err` value: "This operation requires a legacy or v3 clip document"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- session::tests::active_v4_preparation_rejects_audio_before_reading_dependencies stdout ----
+
+thread 'session::tests::active_v4_preparation_rejects_audio_before_reading_dependencies' (2045603) panicked at src/session/tests.rs:72:5:
+This operation requires a legacy or v3 clip document
+
+
+failures:
+    session::tests::active_v4_preparation_compiles_shared_sources_once
+    session::tests::active_v4_preparation_rejects_audio_before_reading_dependencies
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 242 filtered out; finished in 0.05s
+
+error: test failed, to rerun pass `--lib`

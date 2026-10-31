@@ -1,0 +1,23 @@
+{
+  "base": "6ab77758959d47891ad45dc458f4c9cbe16ff282",
+  "commit": "a634f4db4f060c5e0f80042e08f5156599d41e22",
+  "scoped_files": [
+    ".github/workflows/ultra-ci.yml",
+    "apps/ultra/tests/check_alive_clip_observation.py",
+    "apps/ultra/tests/test_alive_clip_observation_failure.py"
+  ],
+  "index_empty": true,
+  "scoped_worktree_clean": true,
+  "executed_green_source_matches_commit": true,
+  "sha256": {
+    "apps/ultra/tests/check_alive_clip_observation.py": "0f0224a9dae8c25eb1a6d26d078e7bcd7080ade1700699b13aa72729a5dd982f",
+    "apps/ultra/tests/test_alive_clip_observation_failure.py": "6ba15b6f170098e1b2d3c465c37bec70c47d091011039f10c5fa5841ffb3aead",
+    ".github/workflows/ultra-ci.yml": "3cca518ee8c248d30bc0194dfc0d400e40cf66cd3fccfa48f3d765dd5b1c5ac7"
+  },
+  "red_expected_exit": 1,
+  "green_exit": 0,
+  "cheap_checks_pass": true,
+  "native_checks_not_rerun": true,
+  "native_evidence_commit": "6ab77758959d47891ad45dc458f4c9cbe16ff282",
+  "pushed": false
+}

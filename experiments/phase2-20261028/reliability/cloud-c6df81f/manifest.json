@@ -1,0 +1,66 @@
+{
+  "source_commit": "c6df81f2d4fd6164930bca6847faf783b1949624",
+  "run": "https://github.com/venetanji/alive/actions/runs/40695723200",
+  "artifact": {
+    "id": 12819639786,
+    "name": "alive-desktop-40695723200-1"
+  },
+  "conclusion": "failure; original late native chooser timeout, not a green gate",
+  "files": [
+    {
+      "path": "app.log",
+      "bytes": 1050,
+      "sha256": "ac27a125e6b7d32496a3d7be4da1e8fe7fd95031a665895a10f262145434da74"
+    },
+    {
+      "path": "apply-receipt.json",
+      "bytes": 2753,
+      "sha256": "9e09524ec5a9bc25923bf3f4a48f32e0b107903fbc6240e94da04952a15b38ac"
+    },
+    {
+      "path": "chooser-failure.json",
+      "bytes": 42212,
+      "sha256": "5efe12106a1e13b523f4a227ec44ee6bef0584c8ce63bd6039f77a79baa35c3b"
+    },
+    {
+      "path": "chooser-focus.jsonl",
+      "bytes": 3048,
+      "sha256": "9fe51ef7a998f7e9f322ffc055fcb6f93c292cff0727ff4c1004acd21cfa1abe"
+    },
+    {
+      "path": "ci-failed.log",
+      "bytes": 67079,
+      "sha256": "4af1b33ea6d39d399be22804edca1cd75d527c1bd7053d795a10fb9f84bafea8"
+    },
+    {
+      "path": "journey-failure.json",
+      "bytes": 14506,
+      "sha256": "2d4df0e799016f640cd010be77f2e355acdec02755e8436d3879738a54a82e41"
+    },
+    {
+      "path": "journey-failure.png",
+      "bytes": 81898,
+      "sha256": "5c1c9d8b20e54293362877638a10ca4e252cb41584a0369521097d206a2ffef2"
+    },
+    {
+      "path": "journey-timing.json",
+      "bytes": 64336,
+      "sha256": "95234b413e155b33a9812a51350f0b6b3b2dc000e774be7dbda155546f517571"
+    },
+    {
+      "path": "native-inputs.json",
+      "bytes": 17589,
+      "sha256": "5e45dad6fe496c4f845e8666ac3fa7baf0e061dd6f4cd1ca5903070bb30cf558"
+    },
+    {
+      "path": "native-walkthrough.capture.json",
+      "bytes": 334,
+      "sha256": "2b3cee8068b3c780e4f8c77dc2a053583bfe37fd9f827badb78563e48d1e7bb2"
+    },
+    {
+      "path": "operations.json",
+      "bytes": 1994,
+      "sha256": "e03a154eba53781ce7c514d9bf6c64a481bb7abcb36f97d4a7eacc2a725858e8"
+    }
+  ]
+}

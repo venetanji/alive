@@ -1,0 +1,39 @@
+{
+  "starting_head": "46b86a2a7545abf8832c50c1c8290c28dc56b33a",
+  "finalization_product_changes": false,
+  "tests": {
+    "contracts": {
+      "exit_code": 0,
+      "log": "contracts.log",
+      "ui_passed": 657,
+      "astra_probes_passed": 6,
+      "optional_hierarchy_oracle": "UNAVAILABLE",
+      "existing_python_skips": 1,
+      "excluded_generic_comparison_cases": 2
+    },
+    "rust": {
+      "exit_code": 0,
+      "log": "rust.log",
+      "passed": 297,
+      "failed": 0,
+      "ignored": 4
+    },
+    "chromium": {
+      "exit_code": 0,
+      "passed": 130,
+      "failed": 0,
+      "retries": 0,
+      "sandbox": true,
+      "workers": 1,
+      "result_excerpt": "browser-results.txt"
+    }
+  },
+  "fresh_native_runtime": false,
+  "fresh_cross_platform_packages": false,
+  "installed_source": "9ced05eb38e0620865e4c9401646657669c1f6ae",
+  "known_failures": [
+    "Retained native Arrangement Return-gap observation; restart checks not reached",
+    "Historical 56720e5 Master hosted Cutoff automation ownership"
+  ],
+  "all_existing_evidence_preserved": true
+}

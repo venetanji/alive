@@ -1,0 +1,67 @@
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Activating service name='org.freedesktop.portal.Desktop' requested by ':1.0' (uid=1000 pid=2136055 comm="/home/venetanji/.codex/worktrees/edd5/alive/apps/u")
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Activating service name='org.freedesktop.impl.portal.PermissionStore' requested by ':1.1' (uid=1000 pid=2136062 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.PermissionStore'
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Activating service name='org.freedesktop.portal.Documents' requested by ':1.1' (uid=1000 pid=2136062 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Successfully activated service 'org.freedesktop.portal.Documents'
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=2136062 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Activating service name='org.a11y.Bus' requested by ':1.4' (uid=1000 pid=2136084 comm="/usr/lib/xdg-desktop-portal-gtk")
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Successfully activated service 'org.a11y.Bus'
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=2136094 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=2136094 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.gtk'
+
+** (xdg-desktop-portal-gtk:2136084): WARNING **: 04:24:29.595: AT-SPI: Could not obtain desktop path or name
+
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=2136094 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+
+** (xdg-desktop-portal-gtk:2136084): WARNING **: 04:24:29.597: atk-bridge: GetRegisteredEvents returned message with unknown signature
+
+** (xdg-desktop-portal-gtk:2136084): WARNING **: 04:24:29.597: atk-bridge: get_device_events_reply: unknown signature
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2136062 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2136062 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2136062 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2136062 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2136000]: [session uid=1000 pid=2136000 pidfd=5] Successfully activated service 'org.freedesktop.portal.Desktop'
+PASS secondary file delivery during initialization preserves main and opens its own window
+Traceback (most recent call last):
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_clip_observation.py", line 116, in <module>
+    run()
+    ~~~^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_clip_observation.py", line 60, in run
+    runtime = alive.value('Pulse clip runtime')
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_desktop.py", line 60, in value
+    prepare_workspace_control(name)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/alive_workspace_navigation.py", line 23, in prepare
+    expand(runtime.group(1) + ' runtime details', activate_disclosure)
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/alive_workspace_navigation.py", line 16, in expand
+    activate(name)
+    ~~~~~~~~^^^^^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_desktop.py", line 30, in <lambda>
+    activate_disclosure=lambda name: native_control_click(name, 'disclosure'),
+                                     ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_desktop.py", line 413, in native_control_click
+    return input_record(kind + ' click', name=name, owner=owner, samples=samples,
+                        presses=1, releases=1, final_rect=rect)
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_desktop.py", line 146, in input_record
+    (ui.output / 'native-inputs.json').write_text(json.dumps(native_inputs, indent=2))
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_clip_observation.py", line 44, in unavailable_write
+    raise OSError('Deliberately unavailable disclosure receipt write')
+OSError: Deliberately unavailable disclosure receipt write

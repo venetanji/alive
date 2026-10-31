@@ -1,0 +1,53 @@
+{
+  "baseline": "a0c34e3006dc920632ec95609ff6e280a70769dd",
+  "unchanged_original_functions": [
+    "checkpoint",
+    "screenshot",
+    "value",
+    "select_clip",
+    "score",
+    "numeric",
+    "wait_value",
+    "detail",
+    "log",
+    "transport",
+    "input_record",
+    "window_property",
+    "owned_frame_window",
+    "native_hit_path",
+    "reorder_point",
+    "native_control_click",
+    "reorder_click",
+    "select_device_click",
+    "force_covering_tooltip",
+    "location_entry",
+    "choose_file",
+    "start_capture",
+    "finish_capture",
+    "measured_finish_capture",
+    "process_sample",
+    "editor_edit",
+    "automation_target",
+    "prepare_chain",
+    "close_effect_editor",
+    "piano_history_with_effect_editor",
+    "live_chain",
+    "request_native_close",
+    "check_separate_apps",
+    "check_audio_settings",
+    "run"
+  ],
+  "changed_original_functions": [
+    "focus_chooser"
+  ],
+  "prior_build_pins_match": {
+    "apps/ultra/ui/alive.html": "5931bf6685b5efd62dfc36536d5bd05a5763e802e66d210c029657aee231711d",
+    "apps/ultra/ui/alive.css": "6ce6f76ae4d1f393431ee33a07eb7e1719a637c1e2b64fd22517bbad780834f1",
+    "apps/ultra/ui/alive.mjs": "22a9ee4c6eae86cccf5af3c4e6c0abd41ca44af68c74d045e2c34cc82e70c326",
+    "apps/ultra/ui/alive-workspace.mjs": "1da002edbf18400d07fc06b06023e919d471ae747a4e4f37869e8a1e5e644b70",
+    "apps/ultra/src-tauri/target/release/alive": "f9ae9e6e2e33f9ffc875f4438ba5b8c641df16a1ecee923e3e884e8917d7640a",
+    "apps/ultra/src-tauri/target/release/libultra_native.so": "9a43a0314e76061f4e1407d98d9e27944b96b4fe8b14f8f432540093bcd1dbb5"
+  },
+  "prior_build_report": "/tmp/alive-session-ui-revision-report.md",
+  "prior_product_ui_commit": "ad47d2af2ed3422661a6d1e7984821bd57febbae"
+}

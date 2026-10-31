@@ -1,0 +1,254 @@
+{
+  "physical_audio": false,
+  "actions": [
+    {
+      "action": "loaded",
+      "monotonic": 4246.931837123,
+      "process_identity": {
+        "executable_path": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/src-tauri/target/debug/alive",
+        "executable": {
+          "device": 52,
+          "inode": 8847018,
+          "sha256": "cc78df48554c38bf2010e12d53ce5a5e4c12c880409740f1a4d7febb0292efb1"
+        },
+        "libraries": [
+          {
+            "path": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/build/libultra_native.so",
+            "mapping_device": [
+              0,
+              29
+            ],
+            "mapping_inode": 8388916,
+            "device": 52,
+            "inode": 8388916,
+            "sha256": "9fd076115b2a914fa2d156dab37b0a1d99676d40634e23f78ba2c50c110062c4"
+          }
+        ]
+      }
+    },
+    {
+      "action": "native create, note, place, move, right resize, fixed-end left trim",
+      "monotonic": 4272.237034018,
+      "placement_id": "placement-8e39e4b7f6aed1abc4d6449b10a2d75e",
+      "video": "arrangement-interaction.mp4",
+      "video_scope": "UI interaction only; no audio or exact timing proof"
+    },
+    {
+      "action": "complete candidate refused without changing preparation or clearing pending history",
+      "monotonic": 4328.677784727,
+      "refusal": "Measured workspace profile 1 refused the complete candidate: Complete MIDI envelope exceeds bounded preparation policy. (resource 2, observed 21, limit 18). Keep the current playable project, reduce simultaneous music or simplify chains. Profile 2 is not admitted.",
+      "native_generation": "3",
+      "prepared_placement": "placement-c532c9612459d4c4de79a3c4caaaa690"
+    },
+    {
+      "action": "explicit original-occurrence trim to fit partial-brace admission",
+      "monotonic": 4346.763258705,
+      "range": [
+        2,
+        8
+      ],
+      "offset": 2
+    },
+    {
+      "action": "saved",
+      "monotonic": 4353.401329696,
+      "path": "/tmp/alive-ui-fidelity-native-complete/authored.alive"
+    },
+    {
+      "action": "occurrence edits, refusal, independent copy, Session reuse, delete/undo/redo, stopped Apply",
+      "monotonic": 4353.401652497,
+      "first": {
+        "id": "placement-8e39e4b7f6aed1abc4d6449b10a2d75e",
+        "trackId": "track-1",
+        "sourceId": "source-1dc0152376c9f5fef18b29c1e5cc927c",
+        "start": 9.5,
+        "duration": 2.5,
+        "sourceOffset": {
+          "kind": "beats",
+          "value": 0.25
+        },
+        "loopEnabled": true
+      },
+      "independent": {
+        "id": "placement-080e8ac8edc5e4f760cf853ec223d73e",
+        "trackId": "track-1",
+        "sourceId": "source-ca7ebc24ab69ef52ed5bdc2f8d3b54d4",
+        "start": 12.5,
+        "duration": 2.5,
+        "sourceOffset": {
+          "kind": "beats",
+          "value": 0.25
+        },
+        "loopEnabled": true
+      }
+    },
+    {
+      "action": "newly authored MIDI is native-active inside extended brace",
+      "monotonic": 4384.937806581,
+      "placement": "placement-8e39e4b7f6aed1abc4d6449b10a2d75e",
+      "source": "source-1dc0152376c9f5fef18b29c1e5cc927c",
+      "absolute_frame": "1490432"
+    },
+    {
+      "action": "view navigation during pending Return",
+      "monotonic": 4457.546188876,
+      "observed": "Session silence / pending return"
+    },
+    {
+      "action": "failure",
+      "monotonic": 4468.766679172,
+      "error": "AssertionError(\"Track 1 active source: unexpected value 'source-c14c8a2f75fe0bac19a1b7a73302e9e6'\")"
+    },
+    {
+      "action": "capture finalized after interrupted journey",
+      "monotonic": 4472.623929411
+    }
+  ],
+  "kind": "Actual Tauri/WebKit with private software PipeWire",
+  "expected_admission_rejections": 1,
+  "playing_started": 4357.909773524,
+  "interrupted_audio": {
+    "frames": 5534720,
+    "seconds": 115.30666666666667,
+    "peak": 0.16379322111606598,
+    "one_second_peaks": [
+      0.0,
+      0.10983739048242569,
+      0.16347549855709076,
+      0.1610753834247589,
+      0.09816010296344757,
+      0.04603293910622597,
+      0.04603293910622597,
+      0.03937757387757301,
+      0.10983739048242569,
+      0.16347549855709076,
+      0.1610753834247589,
+      0.12252677977085114,
+      0.04603293910622597,
+      0.04603293910622597,
+      0.03937757387757301,
+      0.03937757387757301,
+      0.10983739048242569,
+      0.16347549855709076,
+      0.1610753834247589,
+      0.09816010296344757,
+      0.04603293910622597,
+      0.04603293910622597,
+      0.03937757387757301,
+      0.10983739048242569,
+      0.16347549855709076,
+      0.1610753834247589,
+      0.10418026149272919,
+      0.04603293910622597,
+      0.04603293910622597,
+      0.03937757387757301,
+      0.03937757387757301,
+      0.10983739048242569,
+      0.16347549855709076,
+      0.1610753834247589,
+      0.09816010296344757,
+      0.04603293910622597,
+      0.04603293910622597,
+      0.03937757387757301,
+      0.11144816130399704,
+      0.09550442546606064,
+      0.16379322111606598,
+      0.12484265863895416,
+      0.08638431131839752,
+      0.07074441760778427,
+      0.06564316898584366,
+      0.12430903315544128,
+      0.16163133084774017,
+      0.10244010388851166,
+      0.0941300168633461,
+      0.12430903315544128,
+      0.12484265863895416,
+      0.08625908195972443,
+      0.07074441760778427,
+      0.1433371901512146,
+      0.14396750926971436,
+      0.11385612189769745,
+      0.07074441760778427,
+      0.12430903315544128,
+      0.12484265863895416,
+      0.11364255845546722,
+      0.07142509520053864,
+      0.11096525937318802,
+      0.16294345259666443,
+      0.16071027517318726,
+      0.0979372039437294,
+      0.07074441760778427,
+      0.12430903315544128,
+      0.12484265863895416,
+      0.08625908195972443,
+      0.042277704924345016,
+      0.04247090965509415,
+      0.027428120374679565,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.040909525007009506,
+      0.042277704924345016,
+      0.04247090965509415,
+      0.02742581069469452,
+      0.0,
+      0.0,
+      0.0,
+      0.042092014104127884,
+      0.04202752560377121,
+      0.042277704924345016,
+      0.04247090965509415,
+      0.042092014104127884,
+      0.04202752560377121,
+      0.03973720595240593,
+      0.042277704924345016,
+      0.04247090965509415,
+      0.042092014104127884,
+      0.04202752560377121,
+      0.042277704924345016,
+      0.04247090965509415,
+      0.042092014104127884,
+      0.04202752560377121,
+      0.042277704924345016,
+      0.04247090965509415,
+      0.042092014104127884,
+      0.04202752560377121,
+      0.06079220026731491,
+      0.06400465220212936,
+      0.08942417055368423,
+      0.14097973704338074,
+      0.13977666199207306,
+      0.09293445944786072,
+      0.06462462991476059,
+      0.06213494390249252,
+      0.05882209539413452,
+      0.08529780060052872,
+      0.14097973704338074,
+      0.14108960330486298,
+      0.10928674787282944,
+      0.026717975735664368
+    ],
+    "unequal_stereo_samples_after_setup": 0,
+    "sha256": "3a740272fa508358e5e458f6f6bddeb570cfe4a1a2cf429b1a4fef591a5e5530",
+    "path": "midi-arrangement-playback.f32",
+    "physical_audio": false,
+    "supervision": {
+      "complete": true,
+      "reason": "requested_stop",
+      "group_id": 82357,
+      "recorder_pid": 82365,
+      "returncode": 1,
+      "wall_seconds": 115.63611290500012,
+      "audio_bytes": 44277760,
+      "stderr_bytes": 0,
+      "limits": {
+        "wall_seconds": 2700.0,
+        "audio_bytes": 1073741824,
+        "metadata_bytes": 67108864,
+        "stderr_bytes": 1048576,
+        "disk_reserve_bytes": 268435456
+      }
+    }
+  }
+}

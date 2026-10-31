@@ -1,0 +1,254 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - strong [ref=e3]: Alive
+    - generic [ref=e4]: First Light
+    - generic [ref=e5]: Modified
+    - navigation "Session files" [ref=e6]:
+      - button "New session" [ref=e7] [cursor=pointer]:
+        - img [ref=e8]
+        - text: New
+      - button "Open session" [ref=e10] [cursor=pointer]:
+        - img [ref=e11]
+        - text: Open...
+      - button "Save session" [ref=e13] [cursor=pointer]:
+        - img [ref=e14]
+        - text: Save
+      - button "Save session as" [ref=e16] [cursor=pointer]:
+        - img [ref=e17]
+        - text: Save As...
+      - button "Quit Alive" [ref=e19] [cursor=pointer]: Quit
+  - region "Transport" [ref=e20]:
+    - button "Start transport" [ref=e21] [cursor=pointer]:
+      - img [ref=e22]
+      - generic [ref=e24]: Start
+    - button "Stop transport" [ref=e25] [cursor=pointer]:
+      - img [ref=e26]
+      - generic [ref=e28]: Stop
+    - generic [ref=e29]:
+      - text: Tempo
+      - spinbutton "Tempo" [ref=e30]: "112"
+      - generic [ref=e31]: BPM
+    - generic [ref=e32]:
+      - text: Transport length
+      - spinbutton "Transport length beats" [ref=e33]: "16"
+      - generic [ref=e34]: beats
+    - generic [ref=e35]:
+      - checkbox "Loop session" [checked] [ref=e36]
+      - text: Loop
+    - status "Transport position" [ref=e37]: 0.000 beats
+    - generic [ref=e38]:
+      - text: Seek
+      - spinbutton "Seek beat" [ref=e39]: "0"
+    - button "Seek transport" [ref=e40] [cursor=pointer]: Go
+  - generic [ref=e41]:
+    - button "Toggle browser" [expanded] [ref=e42] [cursor=pointer]:
+      - img [ref=e43]
+      - text: Browser
+    - navigation "Workspaces" [ref=e45]:
+      - button "Session workspace" [ref=e46] [cursor=pointer]:
+        - img [ref=e47]
+        - text: Session
+      - button "Arrangement workspace" [pressed] [ref=e49] [cursor=pointer]:
+        - img [ref=e50]
+        - text: Arrangement
+    - generic [ref=e52]:
+      - text: Track width
+      - slider "Track column width" [ref=e53]: "128"
+    - generic [ref=e54]: Arrangement
+    - button "Return all tracks to Arrangement" [ref=e55] [cursor=pointer]: Return all
+  - main [ref=e56]:
+    - complementary "Device and file browser" [ref=e57]:
+      - heading "Browser" [level=2] [ref=e58]
+      - button "Add instrument track" [disabled] [ref=e59]:
+        - img [ref=e60]
+        - generic [ref=e62]: Add instrument...
+      - button "Add effect" [disabled] [ref=e63]:
+        - img [ref=e64]
+        - generic [ref=e66]: Add effect...
+      - group [ref=e67]:
+        - generic "Supported media" [ref=e68] [cursor=pointer]
+    - separator "Resize browser" [ref=e69]
+    - generic [ref=e70]:
+      - region "Arrangement workspace" [ref=e71]:
+        - generic [ref=e72]:
+          - generic [ref=e73]:
+            - status [ref=e74]: Range 0 - 4 beats
+            - generic [ref=e75]: Drag a blank lane to choose a range
+            - button "Zoom timeline out" [ref=e76] [cursor=pointer]: "-"
+            - button "Zoom timeline in" [ref=e77] [cursor=pointer]: +
+            - button "Fit timeline" [ref=e78] [cursor=pointer]: Fit
+            - generic [ref=e79]:
+              - text: Loop from
+              - spinbutton "Song loop start" [ref=e80]: "0"
+            - generic [ref=e81]:
+              - text: to
+              - spinbutton "Song loop end" [ref=e82]: "8"
+            - group [ref=e83]:
+              - generic "Return receipts" [ref=e84] [cursor=pointer]
+          - generic [ref=e86]:
+            - generic [ref=e87]:
+              - button "Seek to beat 0" [ref=e88] [cursor=pointer]: "1.1"
+              - button "Seek to beat 1" [ref=e89] [cursor=pointer]: "1.2"
+              - button "Seek to beat 2" [ref=e90] [cursor=pointer]: "1.3"
+              - button "Seek to beat 3" [ref=e91] [cursor=pointer]: "1.4"
+              - button "Seek to beat 4" [ref=e92] [cursor=pointer]: "2.1"
+              - button "Seek to beat 5" [ref=e93] [cursor=pointer]: "2.2"
+              - button "Seek to beat 6" [ref=e94] [cursor=pointer]: "2.3"
+              - button "Seek to beat 7" [ref=e95] [cursor=pointer]: "2.4"
+              - button "Seek to beat 8" [ref=e96] [cursor=pointer]: "3.1"
+              - button "Seek to beat 9" [ref=e97] [cursor=pointer]: "3.2"
+              - button "Seek to beat 10" [ref=e98] [cursor=pointer]: "3.3"
+              - button "Seek to beat 11" [ref=e99] [cursor=pointer]: "3.4"
+              - button "Seek to beat 12" [ref=e100] [cursor=pointer]: "4.1"
+              - button "Seek to beat 13" [ref=e101] [cursor=pointer]: "4.2"
+              - button "Seek to beat 14" [ref=e102] [cursor=pointer]: "4.3"
+              - button "Seek to beat 15" [ref=e103] [cursor=pointer]: "4.4"
+              - button "Seek to beat 16" [ref=e104] [cursor=pointer]: "5.1"
+            - generic "Song loop brace" [ref=e105]: Song loop 0 - 8
+            - generic [ref=e108]:
+              - generic [ref=e109]:
+                - 'generic "Prepared Clip 1: 0 - 4. Apply stopped to replace this schedule."': "Prepared: Clip 1"
+                - button "Select placement p-0" [ref=e110] [cursor=pointer]:
+                  - text: Clip 1
+                  - img
+              - generic [ref=e113]:
+                - button "Select Pulse Arrangement track" [ref=e114] [cursor=pointer]: Pulse
+                - button "Pulse Arrangement mute" [ref=e115] [cursor=pointer]: M
+                - button "Pulse Arrangement solo" [ref=e116] [cursor=pointer]: S
+                - status "Pulse Arrangement authority" [ref=e117]: Arrangement gap
+                - button "Return Pulse" [ref=e118] [cursor=pointer]: Return
+            - generic [ref=e119]:
+              - button "Select placement p-1" [ref=e121] [cursor=pointer]:
+                - text: Clip 1
+                - img
+              - generic [ref=e124]:
+                - button "Select Harmony Arrangement track" [ref=e125] [cursor=pointer]: Harmony
+                - button "Harmony Arrangement mute" [ref=e126] [cursor=pointer]: M
+                - button "Harmony Arrangement solo" [ref=e127] [cursor=pointer]: S
+                - status "Harmony Arrangement authority" [ref=e128]: Arrangement gap
+                - button "Return Harmony" [ref=e129] [cursor=pointer]: Return
+          - generic [ref=e130]:
+            - button "Select Master output in Arrangement" [ref=e131] [cursor=pointer]: Master
+            - generic [ref=e133]:
+              - spinbutton "Master gain" [ref=e134]: "1"
+              - status "Master gain decibels" [ref=e135]: 0.0 dB
+              - generic [ref=e136]:
+                - slider "Master gain fader" [ref=e137]: "1"
+                - generic [ref=e138]:
+                  - status "Master left peak" [ref=e142]: L 0.200
+                  - status "Master right peak" [ref=e143]: R 1.200 overload
+              - button "Reset Master gain to unity" [ref=e144] [cursor=pointer]: Unity
+              - button "Reset Master digital overload" [ref=e145] [cursor=pointer]: Reset overload
+              - status "Master output status" [ref=e146]: Saved target 0.0 dB; applied 0.0 dB.
+      - generic [ref=e147]:
+        - generic [ref=e148]: Pending schedule edits
+        - button "Undo pending edit" [ref=e149] [cursor=pointer]:
+          - img [ref=e150]
+          - text: Undo pending edit
+        - button "Redo pending edit" [disabled] [ref=e152]:
+          - img [ref=e153]
+          - text: Redo pending edit
+        - button "Prepare / Apply" [ref=e155] [cursor=pointer]
+        - button "Discard edits" [ref=e156] [cursor=pointer]
+      - region "Selected track detail" [ref=e157]:
+        - separator "Resize detail area" [ref=e158]
+        - generic [ref=e159]:
+          - button "Clip detail" [pressed] [ref=e160] [cursor=pointer]:
+            - img [ref=e161]
+            - text: Clip
+          - button "Devices detail" [ref=e163] [cursor=pointer]:
+            - img [ref=e164]
+            - text: Devices
+          - generic "MIDI workspace profile 1. Practical device buffers of at least 256 frames are recommended; delivered periods may differ." [ref=e166]
+          - button "Toggle detail" [expanded] [ref=e167] [cursor=pointer]:
+            - img [ref=e168]
+            - text: Detail
+        - generic [ref=e171]:
+          - generic [ref=e172]:
+            - generic [ref=e173]:
+              - text: Gain
+              - spinbutton "Pulse Arrangement gain" [ref=e174]: "0.7"
+            - generic [ref=e175]:
+              - text: Source
+              - textbox "Arrangement source name" [ref=e176]: Clip 1
+            - generic [ref=e177]:
+              - text: Start
+              - spinbutton "Placement start" [ref=e178]: "0"
+            - generic [ref=e179]:
+              - text: Duration
+              - spinbutton "Placement duration" [ref=e180]: "4"
+            - generic [ref=e181]:
+              - text: Offset
+              - spinbutton "Placement source offset" [ref=e182]: "0.5"
+            - generic [ref=e183]:
+              - text: Loop suffix
+              - checkbox "Loop source suffix" [checked] [ref=e184]
+            - generic [ref=e185]:
+              - text: Copy to
+              - spinbutton "Duplicate placement start" [ref=e186]: "4"
+            - button "Duplicate placement" [ref=e187] [cursor=pointer]
+            - button "Make placement independent" [ref=e188] [cursor=pointer]
+            - button "Delete placement" [ref=e189] [cursor=pointer]
+          - generic "Selected clip controls" [ref=e190]:
+            - combobox "MIDI source" [ref=e191]:
+              - option "Choose source"
+              - option "Clip 1" [selected]
+            - button "Create MIDI source" [ref=e192] [cursor=pointer]
+            - button "Place source in range" [ref=e193] [cursor=pointer]
+            - generic [ref=e194]: 2 references. Notes and automation edit every reference.
+            - textbox "MIDI source name" [ref=e195]: Clip 1
+            - generic [ref=e196]:
+              - text: Source length
+              - spinbutton "MIDI source length" [ref=e197]: "8"
+            - combobox "Assign source to Session slot" [ref=e198]:
+              - option "Slot 2" [selected]
+              - option "Slot 3"
+              - option "Slot 4"
+            - button "Assign source to Session" [ref=e199] [cursor=pointer]
+          - region "Pulse / Clip 1" [ref=e200]:
+            - generic [ref=e201]:
+              - heading "Pulse / Clip 1" [level=1] [ref=e202]
+              - button "Add note" [ref=e203] [cursor=pointer]
+            - generic [ref=e204]:
+              - generic [ref=e205]:
+                - group "Selected clip piano roll" [ref=e206]:
+                  - generic [ref=e207]: C3
+                  - generic [ref=e213]: C4
+                  - generic [ref=e219]: C5
+                  - generic [ref=e225]: C6
+                  - generic [ref=e227]: "0"
+                  - generic [ref=e228]: "1"
+                  - generic [ref=e229]: "2"
+                  - generic [ref=e230]: "3"
+                  - generic [ref=e231]: "4"
+                  - generic [ref=e232]: "5"
+                  - generic [ref=e233]: "6"
+                  - generic [ref=e234]: "7"
+                  - generic [ref=e235]: "8"
+                - generic [ref=e260]:
+                  - text: Selected velocity
+                  - slider "Selected note velocity" [disabled] [ref=e261]: "100"
+                  - status [ref=e262]: Select a note
+              - group [ref=e263]:
+                - generic "Note inspector" [ref=e264] [cursor=pointer]
+          - group "Selected clip automation" [ref=e265]:
+            - generic "Automation inspector" [ref=e266] [cursor=pointer]
+            - option "Subtractive instrument / Attack" [selected]
+            - option "Subtractive instrument / Decay"
+            - option "Subtractive instrument / Sustain"
+            - option "Subtractive instrument / Release"
+            - option "Subtractive instrument / Cutoff"
+            - option "Subtractive instrument / Resonance"
+            - option "Subtractive instrument / Level"
+            - option "Stereo Utility effect 1 / Gain"
+            - option "Stereo Lowpass effect 2 / Cutoff"
+            - option "Stereo Lowpass effect 2 / Resonance"
+  - contentinfo [ref=e267]:
+    - status "Session status" [ref=e268]: Ready. Select a clip to edit notes or automation.
+    - button "Alive audio settings" [ref=e269] [cursor=pointer]: Audio settings
+    - group [ref=e270]:
+      - generic "Audio details" [ref=e271] [cursor=pointer]
+```

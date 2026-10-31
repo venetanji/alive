@@ -2,18 +2,48 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {makeNode, nodeSpec, validatePatch, CanvasDocument} from './canvas-model.mjs';
 import {parseObjectText, objectText} from './canvas-catalog.mjs';
+import {readFileSync} from 'node:fs';
+import {deviceValues,presetParameters} from './canvas-device.mjs';
+import {packageInstrument,subtractivePatch} from './canvas-instrument.mjs';
 
-const manifest=()=>({version:1,id:'org.alive.test',name:'Test synth',midi:{node:1,inlet:0},
-  audio:{inputs:0,outputs:2,layout:'stereo'},parameters:[{key:'cutoff',label:'Cutoff',node:3,param:'cutoff',min:20,max:20000,unit:'Hz'}],
+const manifest=()=>({version:2,kind:'instrument',id:'org.alive.test',name:'Test synth',midi:{input:{node:1,inlet:0},output:null},
+  audio:{input:null,output:{channels:2,layout:'stereo'}},parameters:[{key:'cutoff',label:'Cutoff',node:3,param:'cutoff',min:20,max:20000,unit:'Hz'}],
   presets:[{name:'Soft',values:{cutoff:350}}]});
 
-const graph = () => ({version:1,profile:'ultra-canvas-v1',nodes:[
+const graph = () => ({version:1,profile:'ultra-canvas-v1',presentation:{version:1,openOnLoad:false,size:{width:640,height:120},items:[]},nodes:[
   makeNode('poly_note',1),makeNode('saw_voice',2),makeNode('filter_voice',3),
   makeNode('adsr_voice',4),makeNode('multiply_voice',5),makeNode('mix_voice',6),
   makeNode('gain',7),makeNode('join',8),makeNode('dac',9),
 ],edges:[[1,0,2,0],[2,0,3,0],[1,1,4,0],[3,0,5,0],[4,0,5,1],
   [5,0,6,0],[6,0,7,0],[7,0,8,0],[7,0,8,1],[8,0,9,0]]
   .map(([from,outlet,to,inlet])=>({from,outlet,to,inlet}))});
+
+test('repackaging retains authored bindings, ranges, presets and interfaces',()=>{
+  const before=subtractivePatch();
+  before.device.parameters[4]={...before.device.parameters[4],key:'tone',label:'Tone',min:100,max:9000,unit:'Hz'};
+  for(const preset of before.device.presets){preset.values.tone=preset.values.cutoff;delete preset.values.cutoff;}
+  const after=packageInstrument(before,{id:before.device.id,name:'Renamed'});
+  assert.deepEqual(after.device.presets,before.device.presets);
+  assert.deepEqual(after.device.parameters,before.device.parameters);
+  assert.deepEqual(after.device.midi,before.device.midi);
+  assert.deepEqual(after.device.audio,before.device.audio);
+  assert.equal(after.device.name,'Renamed');
+  assert.deepEqual(before,subtractivePatchWithTone());
+});
+function subtractivePatchWithTone(){
+  const patch=subtractivePatch();patch.device.parameters[4]={...patch.device.parameters[4],key:'tone',label:'Tone',min:100,max:9000,unit:'Hz'};
+  for(const preset of patch.device.presets){preset.values.tone=preset.values.cutoff;delete preset.values.cutoff;}return patch;
+}
+test('repackaging rejects incompatible saved bindings without changing the input',()=>{
+  const before=subtractivePatch();before.device.parameters[0].node=999;const snapshot=structuredClone(before);
+  assert.throws(()=>packageInstrument(before,{id:before.device.id,name:'Renamed'}),/binding.*attack/i);
+  assert.deepEqual(before,snapshot);
+});
+test('repackaging accepts a valid non-template version 2 device',()=>{
+  const before={...graph(),device:{...manifest(),version:2,kind:'instrument',midi:{input:{node:1,inlet:0},output:null},audio:{input:null,output:{channels:2,layout:'stereo'}}}};
+  const after=packageInstrument(before,{id:before.device.id,name:'Renamed'});
+  assert.deepEqual(after.device,{...before.device,name:'Renamed'});
+});
 
 test('a subtractive voice graph connects through an explicit four-lane mixdown to stereo',()=>{
   const patch=validatePatch(graph());
@@ -69,5 +99,45 @@ test('malformed device interfaces, duplicate bindings and out-of-range presets f
   ]){
     const patch={...graph(),device:manifest()};change(patch.device);
     assert.throws(()=>validatePatch(patch),/device/i);
+  }
+});
+
+test('version 2 instruments retain authored MIDI with explicit stereo output',()=>{
+  const patch={...graph(),device:{...manifest(),version:2,kind:'instrument',
+    midi:{input:{node:1,inlet:0},output:null},audio:{input:null,output:{channels:2,layout:'stereo'}}}};
+  assert.equal(validatePatch(patch).device.kind,'instrument');
+  for(const change of [d=>delete d.kind,d=>d.audio.input={node:3,bundle:{channels:2,layout:'stereo'}},
+    d=>d.midi.output={},d=>delete d.midi.output,d=>d.audio.output.layout='discrete',d=>d.kind='audioEffect']){
+    const invalid=structuredClone(patch);change(invalid.device);assert.throws(()=>validatePatch(invalid),/device/i);
+  }
+});
+
+test('version 2 effects bind stereo audio input and live filter parameters without MIDI',()=>{
+  const patch={version:1,profile:'ultra-canvas-v1',presentation:{version:1,openOnLoad:false,size:{width:640,height:120},items:[]},nodes:[makeNode('audio_in',1),makeNode('filter_stereo',2),makeNode('signal_dac',3,0,0,{channels:'1 2'})],
+    edges:[[1,0,2,0],[1,1,2,1],[2,0,3,0],[2,1,3,1]].map(([from,outlet,to,inlet])=>({from,outlet,to,inlet})),
+    device:{version:2,id:'org.alive.test-effect',name:'Stereo lowpass',kind:'audioEffect',midi:{input:null,output:null},
+      audio:{input:{node:1,bundle:{channels:2,layout:'stereo'}},output:{channels:2,layout:'stereo'}},
+      parameters:[{key:'cutoff',label:'Cutoff',node:2,param:'cutoff',min:20,max:20000}],presets:[{name:'Soft',values:{cutoff:350}}]}};
+  assert.equal(validatePatch(patch).device.kind,'audioEffect');
+  for(const change of [d=>d.midi.input={node:1,inlet:0},d=>d.audio.input=null,d=>d.audio.input.node=2,
+    d=>d.audio.input.bundle.channels=1,d=>d.audio.input.bundle.layout='mono',d=>d.audio.output.channels=4,
+    d=>d.audio.input.extra=true,d=>delete d.audio.input,d=>d.kind='effect']){
+    const invalid=structuredClone(patch);change(invalid.device);assert.throws(()=>validatePatch(invalid),/device/i);
+  }
+});
+
+test('saved stereo effects retain authored routes, stable parameter keys and working presets',()=>{
+  for(const [file,id,keys] of [['utility','org.alive.utility',['gain']],['stereo-lowpass','org.alive.stereo-lowpass',['cutoff','resonance']]]){
+    const patch=validatePatch(JSON.parse(readFileSync(new URL(`../examples/${file}.ultra`,import.meta.url),'utf8')));
+    assert.equal(patch.device.id,id);assert.equal(patch.device.kind,'audioEffect');assert.deepEqual(patch.device.parameters.map(p=>p.key),keys);
+    const doc=new CanvasDocument(patch);
+    for(const change of presetParameters(patch,patch.device.presets[1].name))doc.parameter(change.node,change.key,change.value);
+    assert.deepEqual(deviceValues(doc.document),patch.device.presets[1].values);
+    for(const node of patch.nodes)if(['audio_in','filter_stereo'].includes(node.type))assert.equal(parseObjectText(objectText(node)).type,node.type);
+    if(file==='utility'){
+      assert.equal(patch.nodes.filter(n=>n.type==='signal_multiply').length,2);
+      const gain=patch.nodes.find(n=>n.type==='line_signal');assert.equal(patch.device.parameters[0].node,gain.id);
+      assert.equal(patch.edges.filter(e=>e.from===gain.id).length,2);
+    }
   }
 });

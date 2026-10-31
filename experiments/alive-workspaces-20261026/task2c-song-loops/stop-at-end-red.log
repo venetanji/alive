@@ -1,0 +1,2 @@
+v4_authority-test: apps/ultra/tests/alive_session_v4_authority_test.cpp:2049: void song_stop_resume(): Assertion `state().position == c.loop_start + 1 && state().tracks[1].phase == before.tracks[1].phase + 1 && state().tracks[1].active_slot == 7' failed.
+/tmp/alive-workspaces-task2c-song-loops/targeted.sh: line 4: 1935277 Aborted                    (core dumped) "$DIR/$name-test" --song

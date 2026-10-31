@@ -1,0 +1,66 @@
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:29:37.3613430Z 
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:29:37.3613730Z warning: function `affected` is never used
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:29:37.3614660Z     --> /Users/runner/work/alive/alive/apps/ultra/src-tauri/src/session/workspaces.rs:1287:4
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:29:37.3615440Z      |
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:29:37.3616280Z 1287 | fn affected(before: &ProjectV4, after: &ProjectV4) -> Result<Vec<String>, String> {
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:29:37.3617150Z      |    ^^^^^^^^
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:29:37.3617360Z 
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:02.1526980Z warning: `ultra` (lib) generated 25 warnings
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:10.3687670Z     Finished `release` profile [optimized] target(s) in 3m 28s
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:10.4448130Z        Built [tauri_cli::build] application at: /Users/runner/work/alive/alive/apps/alive/src-tauri/target/x86_64-apple-darwin/release/alive
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:10.4453240Z     Bundling [tauri_bundler::bundle::macos::app] Alive.app (/Users/runner/work/alive/alive/apps/alive/src-tauri/target/x86_64-apple-darwin/release/bundle/macos/Alive.app)
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:10.4870730Z      Running [tauri_bundler::utils] Command `xattr  -crs /Users/runner/work/alive/alive/apps/alive/src-tauri/target/x86_64-apple-darwin/release/bundle/macos/Alive.app`
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:10.4995790Z      Signing [tauri_bundler::bundle::macos::sign] with identity "-"
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:10.4996600Z Signing with identity "-"
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:10.5006170Z      Running [tauri_macos_sign] Command `codesign  --force -s - /Users/runner/work/alive/alive/apps/alive/src-tauri/target/x86_64-apple-darwin/release/bundle/macos/Alive.app/Contents/Frameworks/libultra_native.dylib`
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:10.5026410Z Signing /Users/runner/work/alive/alive/apps/alive/src-tauri/target/x86_64-apple-darwin/release/bundle/macos/Alive.app/Contents/Frameworks/libultra_native.dylib
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:10.6220550Z      Running [tauri_macos_sign] Command `codesign  --force -s - --options runtime /Users/runner/work/alive/alive/apps/alive/src-tauri/target/x86_64-apple-darwin/release/bundle/macos/Alive.app/Contents/MacOS/alive`
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:10.6226330Z Signing with identity "-"
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:10.6272990Z Signing /Users/runner/work/alive/alive/apps/alive/src-tauri/target/x86_64-apple-darwin/release/bundle/macos/Alive.app/Contents/MacOS/alive
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:10.8010270Z      Running [tauri_macos_sign] Command `codesign  --force -s - --options runtime /Users/runner/work/alive/alive/apps/alive/src-tauri/target/x86_64-apple-darwin/release/bundle/macos/Alive.app`
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:10.8013900Z Signing with identity "-"
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:10.8020260Z Signing /Users/runner/work/alive/alive/apps/alive/src-tauri/target/x86_64-apple-darwin/release/bundle/macos/Alive.app
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:10.8302860Z /Users/runner/work/alive/alive/apps/alive/src-tauri/target/x86_64-apple-darwin/release/bundle/macos/Alive.app: replacing existing signature
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:10.9099570Z         Warn [tauri_bundler::bundle::macos::app] skipping app notarization, no APPLE_ID & APPLE_PASSWORD & APPLE_TEAM_ID or APPLE_API_KEY & APPLE_API_ISSUER & APPLE_API_KEY_PATH environment variables found
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:10.9102820Z     Bundling [tauri_bundler::bundle::macos::dmg] Alive_0.1.0-rc.1_x64.dmg (/Users/runner/work/alive/alive/apps/alive/src-tauri/target/x86_64-apple-darwin/release/bundle/dmg/Alive_0.1.0-rc.1_x64.dmg)
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:10.9203530Z      Running [tauri_bundler::bundle::macos::dmg] bundle_dmg.sh
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:10.9208190Z      Running [tauri_bundler::utils] Command `/Users/runner/work/alive/alive/apps/alive/src-tauri/target/x86_64-apple-darwin/release/bundle/dmg/bundle_dmg.sh  --volname Alive --icon Alive.app 180 170 --app-drop-link 480 170 --window-size 660 400 --hide-extension Alive.app --volicon /Users/runner/work/alive/alive/apps/alive/src-tauri/target/x86_64-apple-darwin/release/bundle/dmg/icon.icns --skip-jenkins Alive_0.1.0-rc.1_x64.dmg Alive.app`
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:11.0178740Z Creating disk image...
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:16.1500140Z created: /Users/runner/work/alive/alive/apps/alive/src-tauri/target/x86_64-apple-darwin/release/bundle/macos/rw.36291.Alive_0.1.0-rc.1_x64.dmg
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:16.3269580Z Mounting disk image...
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:18.4818980Z Device name:     /dev/disk2
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:18.4858610Z Searching for mounted interstitial disk image using /dev/disk2s...
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:18.5194240Z Mount dir:       /Volumes/dmg.D5Oh1C
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:18.5197230Z Making link to Applications dir...
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:18.5198770Z /Volumes/dmg.D5Oh1C
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:18.8258710Z Copying volume icon file '/Users/runner/work/alive/alive/apps/alive/src-tauri/target/x86_64-apple-darwin/release/bundle/dmg/icon.icns'...
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:19.1646180Z 
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:19.1647680Z Will skip running AppleScript to configure DMG aesthetics because of --skip-jenkins option.
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:19.1649020Z This will result in a DMG without any custom background or icons positioning.
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:19.1650040Z More info at https://github.com/create-dmg/create-dmg/issues/72
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:19.1650510Z 
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:19.1650690Z Fixing permissions...
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:19.2765460Z Done fixing permissions
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:19.2765990Z Skipping blessing on sandbox
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:19.3111190Z Deleting .fseventsd
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:19.3186950Z Unmounting disk image...
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:20.2251030Z hdiutil: couldn't eject "disk2" - Resource busy
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:20.2258660Z Wait a moment...
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:22.2617600Z Unmounting disk image...
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:22.2962730Z hdiutil: couldn't eject "disk2" - Resource busy
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:22.2970300Z Wait a moment...
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:26.4524570Z Unmounting disk image...
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:26.4871160Z hdiutil: couldn't eject "disk2" - Resource busy
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:26.7397330Z failed to bundle project: error running bundle_dmg.sh: `failed to run /Users/runner/work/alive/alive/apps/alive/src-tauri/target/x86_64-apple-darwin/release/bundle/dmg/bundle_dmg.sh`
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:26.7402790Z        Error [tauri_cli_node] failed to bundle project: error running bundle_dmg.sh: `failed to run /Users/runner/work/alive/alive/apps/alive/src-tauri/target/x86_64-apple-darwin/release/bundle/dmg/bundle_dmg.sh`
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:26.8198960Z Traceback (most recent call last):
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:26.8200010Z   File "/Users/runner/work/alive/alive/apps/ultra/scripts/release.py", line 369, in <module>
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:26.8224550Z     main()
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:26.8225920Z   File "/Users/runner/work/alive/alive/apps/ultra/scripts/release.py", line 365, in main
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:26.8227390Z     run(*cli, '-v', 'build', '--target', args.target, '--bundles', bundles, '--config', config, '--', '--locked', cwd=app, env=env)
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:26.8228830Z   File "/Users/runner/work/alive/alive/apps/ultra/scripts/release.py", line 39, in run
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:26.8229890Z     subprocess.run([str(a) for a in args], cwd=cwd, env=env, check=True)
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:26.8236270Z   File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 571, in run
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:27.1510900Z     raise CalledProcessError(retcode, process.args,
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:27.1514650Z subprocess.CalledProcessError: Command '['node', '/Users/runner/work/alive/alive/apps/ultra/scripts/tooling/node_modules/@tauri-apps/cli/tauri.js', '-v', 'build', '--target', 'x86_64-apple-darwin', '--bundles', 'app,dmg', '--config', '/Users/runner/work/alive/alive/apps/alive/src-tauri/tauri.release.generated.json', '--', '--locked']' returned non-zero exit status 1.
+Package x86_64-apple-darwin	Build unsigned or ad-hoc test packages	2026-10-26T04:31:27.7105340Z ##[error]Process completed with exit code 1.

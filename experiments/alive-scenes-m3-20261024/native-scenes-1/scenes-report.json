@@ -1,0 +1,489 @@
+{
+  "complete": true,
+  "atomic_scene_partial_override": true,
+  "all_empty_scene": true,
+  "saved_defaults_restored": true,
+  "physical_audio": false,
+  "physical_xruns": null,
+  "settings": {
+    "saved": {
+      "host": "default",
+      "device": "default",
+      "sample_rate": 48000,
+      "buffer_frames": 512
+    },
+    "unsupported_buffer_preserved_settings": true,
+    "stop_audio_terminated_notes": true,
+    "restart_kept_transport_stopped": true
+  },
+  "audio": {
+    "frames": 2482176,
+    "seconds": 51.712,
+    "peak": 0.13149361312389374,
+    "one_second_peaks": [
+      0.10394720733165741,
+      0.13149361312389374,
+      0.10406102240085602,
+      0.13149361312389374,
+      0.10406102240085602,
+      0.13149361312389374,
+      0.10406102240085602,
+      0.13149361312389374,
+      0.10406102240085602,
+      0.13149361312389374,
+      0.10406102240085602,
+      0.13149361312389374,
+      0.10406102240085602,
+      0.13149361312389374,
+      0.10406102240085602,
+      0.13149361312389374,
+      0.10406102240085602,
+      0.13149361312389374,
+      0.10406102240085602,
+      0.11041653156280518,
+      0.13037645816802979,
+      0.13037645816802979,
+      0.11493624001741409,
+      0.13037645816802979,
+      0.11493624001741409,
+      0.13037645816802979,
+      0.1299724131822586,
+      0.1299724131822586,
+      0.10838492959737778,
+      0.1299724131822586,
+      0.10838492959737778,
+      0.1299724131822586,
+      0.10838492959737778,
+      0.12693889439105988,
+      0.10459607094526291,
+      0.12693889439105988,
+      0.10838492959737778,
+      0.1299724131822586,
+      0.10838492959737778,
+      0.1299724131822586,
+      0.10838492959737778,
+      0.1299724131822586,
+      0.11693057417869568,
+      0.11292976886034012,
+      0.1020578145980835,
+      0.1217380166053772,
+      0.09835682809352875,
+      0.1217380166053772,
+      0.09835682809352875,
+      0.1217380166053772,
+      0.09835682809352875,
+      0.1217380166053772
+    ],
+    "unequal_stereo_samples_after_setup": 0,
+    "sha256": "94da8ae34b0f0244846b5f24acb13fc953fdc704b37a2b36ae23e840de7d181f",
+    "path": "scenes-playback.f32",
+    "physical_audio": false,
+    "supervision": {
+      "complete": true,
+      "reason": "requested_stop",
+      "group_id": 1142898,
+      "recorder_pid": 1142901,
+      "returncode": 1,
+      "wall_seconds": 51.870218142008525,
+      "audio_bytes": 19857408,
+      "stderr_bytes": 0,
+      "limits": {
+        "wall_seconds": 2700.0,
+        "audio_bytes": 1073741824,
+        "metadata_bytes": 67108864,
+        "stderr_bytes": 1048576,
+        "disk_reserve_bytes": 268435456
+      }
+    }
+  },
+  "completed_epochs": 4,
+  "resources": {
+    "path": "/tmp/alive-task14-evidence/native-scenes-1/scenes-resources.jsonl",
+    "bytes": 628837,
+    "sha256": "38cc7280dc6da093b9c7a290458231c35bbfff7a9a82d5c412318a1ff1507c81"
+  },
+  "epoch_log": {
+    "path": "/tmp/alive-task14-evidence/native-scenes-1/scenes-epochs.jsonl",
+    "bytes": 55712,
+    "sha256": "3979a67ec3b5c02459bf9ec71ebf485b3d1e3cfc90abe15bf51de7f67cdba674"
+  },
+  "observations": [
+    {
+      "label": "prepared-eight",
+      "monotonic": 81067.427444235,
+      "playing": "false",
+      "frame": "329216",
+      "voices": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "label": "stopped-empty-row-and-cued-row",
+      "monotonic": 81073.60365591,
+      "playing": "false",
+      "frame": "624128",
+      "voices": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "label": "playing-0",
+      "monotonic": 81079.438793606,
+      "playing": "true",
+      "frame": "904192",
+      "voices": [
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3"
+      ]
+    },
+    {
+      "label": "playing-1",
+      "monotonic": 81084.560589261,
+      "playing": "true",
+      "frame": "1152512",
+      "voices": [
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3"
+      ]
+    },
+    {
+      "label": "playing-2",
+      "monotonic": 81089.769950286,
+      "playing": "true",
+      "frame": "1399808",
+      "voices": [
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3"
+      ]
+    },
+    {
+      "label": "scene-partial-individual-override",
+      "monotonic": 81099.364163402,
+      "playing": "true",
+      "frame": "1863680",
+      "voices": [
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3"
+      ]
+    },
+    {
+      "label": "scene-mixed-native-receipt",
+      "monotonic": 81102.173846723,
+      "receipt": "Scene 2 request 6 mixed at frame 1723300. Pulse: superseded / Harmony: applied / Track 3: applied / Track 4: applied / Track 5: applied / Track 6: applied / Track 7: applied / Track 8: applied. Request summary: replaced request."
+    },
+    {
+      "label": "scene-all-applied-native-receipt",
+      "monotonic": 81103.153836749,
+      "receipt": "Scene 2 request 8 applied at frame 2011300. Pulse: applied / Harmony: applied / Track 3: applied / Track 4: applied / Track 5: applied / Track 6: applied / Track 7: applied / Track 8: applied"
+    },
+    {
+      "label": "quantized-eight-scene",
+      "monotonic": 81104.714301414,
+      "playing": "true",
+      "frame": "2119680",
+      "voices": [
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3"
+      ]
+    },
+    {
+      "label": "local-stop-keeps-seven-tracks",
+      "monotonic": 81125.24198176,
+      "playing": "true",
+      "frame": "3106816",
+      "voices": [
+        "0",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3"
+      ]
+    },
+    {
+      "label": "opened-stopped",
+      "monotonic": 81135.937402412,
+      "playing": "false",
+      "frame": "3489792",
+      "voices": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "label": "playing-0",
+      "monotonic": 81142.925412103,
+      "playing": "true",
+      "frame": "3654144",
+      "voices": [
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3"
+      ]
+    },
+    {
+      "label": "playing-1",
+      "monotonic": 81148.136458802,
+      "playing": "true",
+      "frame": "3907072",
+      "voices": [
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3"
+      ]
+    },
+    {
+      "label": "saved-opened-eight",
+      "monotonic": 81152.804445314,
+      "playing": "false",
+      "frame": "4127232",
+      "voices": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "label": "rebuilt-prepared",
+      "monotonic": 81162.58342228,
+      "playing": "false",
+      "frame": "4274176",
+      "voices": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "label": "playing-0",
+      "monotonic": 81167.743169849,
+      "playing": "true",
+      "frame": "4419584",
+      "voices": [
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "0"
+      ]
+    },
+    {
+      "label": "playing-1",
+      "monotonic": 81172.447837865,
+      "playing": "true",
+      "frame": "4647424",
+      "voices": [
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "3",
+        "0"
+      ]
+    },
+    {
+      "label": "remove-add-create-apply",
+      "monotonic": 81176.552562593,
+      "playing": "false",
+      "frame": "4844032",
+      "voices": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    },
+    {
+      "label": "witnessed-final-retirement",
+      "monotonic": 81185.824783391,
+      "playing": "false",
+      "frame": "5089280",
+      "voices": [
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0",
+        "0"
+      ]
+    }
+  ],
+  "sampling_errors": [],
+  "duration_intervals": {
+    "1": {
+      "samples": 328,
+      "maximum": 7179906,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 2332239,
+          "upper_inclusive": 2435496
+        },
+        "p95": {
+          "lower_exclusive": 3158448,
+          "upper_inclusive": 3298284
+        },
+        "p99": {
+          "lower_exclusive": 4096000,
+          "upper_inclusive": 4277345
+        },
+        "p999": {
+          "lower_exclusive": 6888623,
+          "upper_inclusive": 7193609
+        }
+      }
+    },
+    "2": {
+      "samples": 6488,
+      "maximum": 5477679,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 2332239,
+          "upper_inclusive": 2435496
+        },
+        "p95": {
+          "lower_exclusive": 3444312,
+          "upper_inclusive": 3596804
+        },
+        "p99": {
+          "lower_exclusive": 4096000,
+          "upper_inclusive": 4277345
+        },
+        "p999": {
+          "lower_exclusive": 4466720,
+          "upper_inclusive": 4664478
+        }
+      }
+    },
+    "3": {
+      "samples": 1532,
+      "maximum": 4606818,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 2332239,
+          "upper_inclusive": 2435496
+        },
+        "p95": {
+          "lower_exclusive": 3298284,
+          "upper_inclusive": 3444312
+        },
+        "p99": {
+          "lower_exclusive": 4096000,
+          "upper_inclusive": 4277345
+        },
+        "p999": {
+          "lower_exclusive": 4466720,
+          "upper_inclusive": 4664478
+        }
+      }
+    },
+    "4": {
+      "samples": 1592,
+      "maximum": 4390991,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 2138673,
+          "upper_inclusive": 2233360
+        },
+        "p95": {
+          "lower_exclusive": 3158448,
+          "upper_inclusive": 3298284
+        },
+        "p99": {
+          "lower_exclusive": 3756049,
+          "upper_inclusive": 3922343
+        },
+        "p999": {
+          "lower_exclusive": 4277345,
+          "upper_inclusive": 4466720
+        }
+      }
+    }
+  }
+}

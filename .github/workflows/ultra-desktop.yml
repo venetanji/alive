@@ -1,12 +1,6 @@
-name: Ultra desktop packages
+name: Alive and Ultra desktop packages
 
 on:
-  pull_request:
-    paths:
-      - 'apps/ultra/**'
-      - 'experiments/clockwork-faust/**'
-      - 'experiments/faust-reference/**'
-      - '.github/workflows/ultra-desktop.yml'
   push:
     tags: ['v*']
   workflow_dispatch:
@@ -16,8 +10,8 @@ permissions:
 
 concurrency:
   group: ultra-desktop-${{ github.ref }}
-  # Superseded PR builds can stop; tag releases are never interrupted.
-  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+  # Superseded manual builds can stop; tag releases are never interrupted.
+  cancel-in-progress: ${{ github.event_name == 'workflow_dispatch' }}
 
 defaults:
   run:
@@ -40,7 +34,7 @@ jobs:
             target: x86_64-apple-darwin
     runs-on: ${{ matrix.os }}
     timeout-minutes: 90
-    # PR/manual builds never enter the signing environment.
+    # Manual builds never enter the signing environment.
     environment: ${{ github.event_name == 'push' && startsWith(matrix.os, 'macos-') && 'desktop-build' || 'desktop-checks' }}
     env:
       JOBS: '2'
@@ -65,6 +59,9 @@ jobs:
         run: |
           python apps/ultra/scripts/test_release.py
           python apps/ultra/scripts/test_notices.py
+          if [[ "$RUNNER_OS" == macOS ]]; then
+            python apps/ultra/scripts/test_diagnose_dmg.py
+          fi
           if [[ "$EVENT" == push ]]; then
             python apps/ultra/scripts/release.py check-version --tag "$RELEASE_TAG"
             git merge-base --is-ancestor HEAD origin/main
@@ -90,11 +87,23 @@ jobs:
             libasound2-dev libpipewire-0.3-dev libspa-0.2-dev libclang-dev \
             libayatana-appindicator3-dev librsvg2-dev patchelf libfuse2t64
       - name: Build unsigned or ad-hoc test packages
+        id: unsigned_build
         if: github.event_name != 'push' || runner.os != 'macOS'
         env:
           APPLE_SIGNING_IDENTITY: '-'
           APPIMAGE_EXTRACT_AND_RUN: '1'
         run: python apps/ultra/scripts/release.py build --target '${{ matrix.target }}'
+      - name: Diagnose failed macOS DMG build
+        if: ${{ failure() && runner.os == 'macOS' && github.event_name != 'push' && steps.unsigned_build.outcome == 'failure' }}
+        run: python apps/ultra/scripts/diagnose_dmg.py --target '${{ matrix.target }}' --output test-results/dmg-diagnostic/report.txt
+      - name: Retain failed macOS DMG diagnostic
+        if: ${{ failure() && runner.os == 'macOS' && github.event_name != 'push' && steps.unsigned_build.outcome == 'failure' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: dmg-failure-diagnostic-${{ matrix.target }}
+          path: test-results/dmg-diagnostic/report.txt
+          if-no-files-found: warn
+          retention-days: 7
       - name: Build signed and notarized macOS release packages
         if: github.event_name == 'push' && runner.os == 'macOS'
         env:
@@ -105,12 +114,27 @@ jobs:
           ASC_API_KEY_ID: ${{ secrets.ASC_API_KEY_ID }}
           ASC_API_ISSUER_ID: ${{ secrets.ASC_API_ISSUER_ID }}
         run: bash apps/ultra/scripts/sign-macos.sh '${{ matrix.target }}'
+      - name: Test Windows Master resolver fixtures
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: ./apps/ultra/tests/windows/master_resolver_fixtures.ps1
+      - name: Retain Windows Master resolver report
+        if: ${{ always() && runner.os == 'Windows' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: windows-master-resolver-report
+          path: test-results/windows-master-resolver/report.txt
+          if-no-files-found: warn
+          retention-days: 14
       - name: Collect exact target artifacts and checksums
-        run: python apps/ultra/scripts/release.py collect --target '${{ matrix.target }}'
+        run: |
+          python apps/ultra/scripts/release.py collect --target '${{ matrix.target }}'
+          mkdir -p dist/desktop
+          cp dist/ultra/* dist/alive/* dist/desktop/
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: ultra-${{ matrix.target }}
-          path: dist/ultra/*
+          name: desktop-${{ matrix.target }}
+          path: dist/desktop/*
           if-no-files-found: error
           retention-days: 14
 
@@ -124,14 +148,15 @@ jobs:
     steps:
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
-          pattern: ultra-*
+          pattern: desktop-*
           path: dist
           merge-multiple: true
       - name: Verify artifact inventory and checksums
         working-directory: dist
         run: |
-          test "$(find . -maxdepth 1 -name 'SHA256SUMS-*.txt' | wc -l)" -eq 4
+          test "$(find . -maxdepth 1 -name 'SHA256SUMS-*.txt' | wc -l)" -eq 8
           test "$(find . -maxdepth 1 -name 'Ultra-*' | wc -l)" -eq 5
+          test "$(find . -maxdepth 1 -name 'Alive-*' | wc -l)" -eq 5
           cat SHA256SUMS-*.txt > SHA256SUMS.txt
           sha256sum --check SHA256SUMS.txt
       - name: Create release only after all platforms succeed
@@ -147,6 +172,6 @@ jobs:
           fi
           args=()
           [[ "$RELEASE_TAG" == *-* ]] && args+=(--prerelease)
-          gh release create "$RELEASE_TAG" dist/Ultra-* dist/SHA256SUMS.txt \
-            --verify-tag --draft --title "Ultra $RELEASE_TAG" --generate-notes "${args[@]}"
+          gh release create "$RELEASE_TAG" dist/Ultra-* dist/Alive-* dist/SHA256SUMS.txt \
+            --verify-tag --draft --title "Alive and Ultra $RELEASE_TAG" --generate-notes "${args[@]}"
           gh release edit "$RELEASE_TAG" --draft=false

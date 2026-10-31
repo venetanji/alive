@@ -1,0 +1,306 @@
+{
+  "physical_audio": false,
+  "physical_xruns": null,
+  "complete": true,
+  "playing_seconds_proven": 8.010979165995028,
+  "excluded_seconds": 46.919748601998435,
+  "completed_epochs": 6,
+  "resources": {
+    "path": "/tmp/alive-task13a-evidence/native-accepted/observability-resources.jsonl",
+    "bytes": 401906,
+    "sha256": "7f8b77772b10b089d98e7b64567cad95a8f276a046426583d8b9419134e55166"
+  },
+  "epochs": {
+    "path": "/tmp/alive-task13a-evidence/native-accepted/observability-epochs.jsonl",
+    "bytes": 149932,
+    "sha256": "b28e71b77d79b999ac9291f5799e766171eb0d504b62efbbfd1f13f59c851072"
+  },
+  "actions": {
+    "path": "/tmp/alive-task13a-evidence/native-accepted/observability-actions.jsonl",
+    "bytes": 5918,
+    "sha256": "a70fa1de0b9b62ed5f46595b8116534bd1b2eb8e55bbd003440b61fd0c5d3c1b"
+  },
+  "wall_seconds": 105.96830414699798,
+  "sampling_errors": [],
+  "cpu_coverage": "observed identities; transient workers and exited final deltas remain unavailable",
+  "epoch_duration_intervals": {
+    "1": {
+      "samples": 314,
+      "maximum": 1733112,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 663982,
+          "upper_inclusive": 693379
+        },
+        "p95": {
+          "lower_exclusive": 1166120,
+          "upper_inclusive": 1217748
+        },
+        "p99": {
+          "lower_exclusive": 1386758,
+          "upper_inclusive": 1448155
+        },
+        "p999": {
+          "lower_exclusive": 1722156,
+          "upper_inclusive": 1798402
+        }
+      }
+    },
+    "2": {
+      "samples": 1447,
+      "maximum": 1740104,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 635831,
+          "upper_inclusive": 663982
+        },
+        "p95": {
+          "lower_exclusive": 1069336,
+          "upper_inclusive": 1116680
+        },
+        "p99": {
+          "lower_exclusive": 1271662,
+          "upper_inclusive": 1327964
+        },
+        "p999": {
+          "lower_exclusive": 1512270,
+          "upper_inclusive": 1579224
+        }
+      }
+    },
+    "3": {
+      "samples": 441,
+      "maximum": 1991248,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 756135,
+          "upper_inclusive": 789612
+        },
+        "p95": {
+          "lower_exclusive": 1327964,
+          "upper_inclusive": 1386758
+        },
+        "p99": {
+          "lower_exclusive": 1448155,
+          "upper_inclusive": 1512270
+        },
+        "p999": {
+          "lower_exclusive": 1961172,
+          "upper_inclusive": 2048000
+        }
+      }
+    },
+    "4": {
+      "samples": 632,
+      "maximum": 1768348,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 663982,
+          "upper_inclusive": 693379
+        },
+        "p95": {
+          "lower_exclusive": 1166120,
+          "upper_inclusive": 1217748
+        },
+        "p99": {
+          "lower_exclusive": 1386758,
+          "upper_inclusive": 1448155
+        },
+        "p999": {
+          "lower_exclusive": 1722156,
+          "upper_inclusive": 1798402
+        }
+      }
+    },
+    "5": {
+      "samples": 632,
+      "maximum": 1492219,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 663982,
+          "upper_inclusive": 693379
+        },
+        "p95": {
+          "lower_exclusive": 1116680,
+          "upper_inclusive": 1166120
+        },
+        "p99": {
+          "lower_exclusive": 1217748,
+          "upper_inclusive": 1271662
+        },
+        "p999": {
+          "lower_exclusive": 1448155,
+          "upper_inclusive": 1512270
+        }
+      }
+    },
+    "6": {
+      "samples": 342,
+      "maximum": 1506145,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 635831,
+          "upper_inclusive": 663982
+        },
+        "p95": {
+          "lower_exclusive": 1069336,
+          "upper_inclusive": 1116680
+        },
+        "p99": {
+          "lower_exclusive": 1217748,
+          "upper_inclusive": 1271662
+        },
+        "p999": {
+          "lower_exclusive": 1448155,
+          "upper_inclusive": 1512270
+        }
+      }
+    }
+  },
+  "epoch_utilization_intervals": {
+    "1": {
+      "samples": 314,
+      "maximum": 162479,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 6,
+          "upper_inclusive": 7
+        },
+        "p95": {
+          "lower_exclusive": 11,
+          "upper_inclusive": 12
+        },
+        "p99": {
+          "lower_exclusive": 13,
+          "upper_inclusive": 14
+        },
+        "p999": {
+          "lower_exclusive": 16,
+          "upper_inclusive": 17
+        }
+      }
+    },
+    "2": {
+      "samples": 1447,
+      "maximum": 163134,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 6,
+          "upper_inclusive": 7
+        },
+        "p95": {
+          "lower_exclusive": 10,
+          "upper_inclusive": 11
+        },
+        "p99": {
+          "lower_exclusive": 12,
+          "upper_inclusive": 13
+        },
+        "p999": {
+          "lower_exclusive": 14,
+          "upper_inclusive": 15
+        }
+      }
+    },
+    "3": {
+      "samples": 441,
+      "maximum": 186679,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 7,
+          "upper_inclusive": 8
+        },
+        "p95": {
+          "lower_exclusive": 12,
+          "upper_inclusive": 13
+        },
+        "p99": {
+          "lower_exclusive": 14,
+          "upper_inclusive": 15
+        },
+        "p999": {
+          "lower_exclusive": 18,
+          "upper_inclusive": 19
+        }
+      }
+    },
+    "4": {
+      "samples": 632,
+      "maximum": 165782,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 6,
+          "upper_inclusive": 7
+        },
+        "p95": {
+          "lower_exclusive": 11,
+          "upper_inclusive": 12
+        },
+        "p99": {
+          "lower_exclusive": 13,
+          "upper_inclusive": 14
+        },
+        "p999": {
+          "lower_exclusive": 16,
+          "upper_inclusive": 17
+        }
+      }
+    },
+    "5": {
+      "samples": 632,
+      "maximum": 139895,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 6,
+          "upper_inclusive": 7
+        },
+        "p95": {
+          "lower_exclusive": 10,
+          "upper_inclusive": 11
+        },
+        "p99": {
+          "lower_exclusive": 11,
+          "upper_inclusive": 12
+        },
+        "p999": {
+          "lower_exclusive": 13,
+          "upper_inclusive": 14
+        }
+      }
+    },
+    "6": {
+      "samples": 342,
+      "maximum": 141201,
+      "overflow_samples": 0,
+      "intervals": {
+        "p50": {
+          "lower_exclusive": 6,
+          "upper_inclusive": 7
+        },
+        "p95": {
+          "lower_exclusive": 10,
+          "upper_inclusive": 11
+        },
+        "p99": {
+          "lower_exclusive": 11,
+          "upper_inclusive": 12
+        },
+        "p999": {
+          "lower_exclusive": 14,
+          "upper_inclusive": 15
+        }
+      }
+    }
+  }
+}

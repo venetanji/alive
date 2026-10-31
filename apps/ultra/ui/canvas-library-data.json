@@ -1,6 +1,375 @@
 {
   "entries": [
     {
+      "key": "example:utility",
+      "kind": "example",
+      "title": "Stereo Utility",
+      "group": "Effects",
+      "summary": "A reusable stereo effect with one line~ gain shared by two authored multiplies. Host audio input is silent when opened alone.",
+      "patch": {
+        "version": 1,
+        "profile": "ultra-canvas-v1",
+        "presentation": {
+          "version": 1,
+          "openOnLoad": false,
+          "size": {
+            "width": 160,
+            "height": 112
+          },
+          "items": [
+            {
+              "id": "gain",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 2,
+                "param": "value"
+              },
+              "widget": "dial",
+              "label": "Gain",
+              "rect": {
+                "x": 8,
+                "y": 8,
+                "width": 88,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "cyan",
+                "labelPosition": "above"
+              }
+            }
+          ]
+        },
+        "nodes": [
+          {
+            "id": 1,
+            "type": "audio_in",
+            "x": 75,
+            "y": 70,
+            "params": {}
+          },
+          {
+            "id": 2,
+            "type": "line_signal",
+            "x": 350,
+            "y": 70,
+            "params": {
+              "value": 1,
+              "time": 0
+            }
+          },
+          {
+            "id": 3,
+            "type": "signal_multiply",
+            "x": 75,
+            "y": 190,
+            "params": {
+              "rhs": 0
+            }
+          },
+          {
+            "id": 4,
+            "type": "signal_multiply",
+            "x": 240,
+            "y": 190,
+            "params": {
+              "rhs": 0
+            }
+          },
+          {
+            "id": 5,
+            "type": "signal_dac",
+            "x": 75,
+            "y": 300,
+            "params": {
+              "channels": "1 2"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": 1,
+            "outlet": 0,
+            "to": 3,
+            "inlet": 0
+          },
+          {
+            "from": 1,
+            "outlet": 1,
+            "to": 4,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 0,
+            "to": 3,
+            "inlet": 1
+          },
+          {
+            "from": 2,
+            "outlet": 0,
+            "to": 4,
+            "inlet": 1
+          },
+          {
+            "from": 3,
+            "outlet": 0,
+            "to": 5,
+            "inlet": 0
+          },
+          {
+            "from": 4,
+            "outlet": 0,
+            "to": 5,
+            "inlet": 1
+          }
+        ],
+        "device": {
+          "version": 2,
+          "kind": "audioEffect",
+          "id": "org.alive.utility",
+          "name": "Stereo Utility",
+          "midi": {
+            "input": null,
+            "output": null
+          },
+          "audio": {
+            "input": {
+              "node": 1,
+              "bundle": {
+                "channels": 2,
+                "layout": "stereo"
+              }
+            },
+            "output": {
+              "channels": 2,
+              "layout": "stereo"
+            }
+          },
+          "parameters": [
+            {
+              "key": "gain",
+              "label": "Gain",
+              "node": 2,
+              "param": "value",
+              "min": 0,
+              "max": 2,
+              "unit": "linear"
+            }
+          ],
+          "presets": [
+            {
+              "name": "Unity",
+              "values": {
+                "gain": 1
+              }
+            },
+            {
+              "name": "Half",
+              "values": {
+                "gain": 0.5
+              }
+            },
+            {
+              "name": "Silence",
+              "values": {
+                "gain": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "example:stereo-lowpass",
+      "kind": "example",
+      "title": "Stereo Lowpass",
+      "group": "Effects",
+      "summary": "A reusable stereo Faust lowpass effect with live cutoff, resonance and presets. Host audio input is silent when opened alone.",
+      "patch": {
+        "version": 1,
+        "profile": "ultra-canvas-v1",
+        "presentation": {
+          "version": 1,
+          "openOnLoad": false,
+          "size": {
+            "width": 240,
+            "height": 112
+          },
+          "items": [
+            {
+              "id": "cutoff",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 2,
+                "param": "cutoff"
+              },
+              "widget": "dial",
+              "label": "Cutoff",
+              "rect": {
+                "x": 8,
+                "y": 8,
+                "width": 88,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "cyan",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "resonance",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 2,
+                "param": "resonance"
+              },
+              "widget": "dial",
+              "label": "Resonance",
+              "rect": {
+                "x": 112,
+                "y": 8,
+                "width": 88,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "cyan",
+                "labelPosition": "above"
+              }
+            }
+          ]
+        },
+        "nodes": [
+          {
+            "id": 1,
+            "type": "audio_in",
+            "x": 75,
+            "y": 70,
+            "params": {}
+          },
+          {
+            "id": 2,
+            "type": "filter_stereo",
+            "x": 75,
+            "y": 190,
+            "params": {
+              "cutoff": 2400,
+              "resonance": 0.7
+            }
+          },
+          {
+            "id": 3,
+            "type": "signal_dac",
+            "x": 75,
+            "y": 300,
+            "params": {
+              "channels": "1 2"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": 1,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          },
+          {
+            "from": 1,
+            "outlet": 1,
+            "to": 2,
+            "inlet": 1
+          },
+          {
+            "from": 2,
+            "outlet": 0,
+            "to": 3,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 1,
+            "to": 3,
+            "inlet": 1
+          }
+        ],
+        "device": {
+          "version": 2,
+          "kind": "audioEffect",
+          "id": "org.alive.stereo-lowpass",
+          "name": "Stereo Lowpass",
+          "midi": {
+            "input": null,
+            "output": null
+          },
+          "audio": {
+            "input": {
+              "node": 1,
+              "bundle": {
+                "channels": 2,
+                "layout": "stereo"
+              }
+            },
+            "output": {
+              "channels": 2,
+              "layout": "stereo"
+            }
+          },
+          "parameters": [
+            {
+              "key": "cutoff",
+              "label": "Cutoff",
+              "node": 2,
+              "param": "cutoff",
+              "min": 20,
+              "max": 20000,
+              "unit": "Hz"
+            },
+            {
+              "key": "resonance",
+              "label": "Resonance",
+              "node": 2,
+              "param": "resonance",
+              "min": 0.1,
+              "max": 20,
+              "unit": "Q"
+            }
+          ],
+          "presets": [
+            {
+              "name": "Init",
+              "values": {
+                "cutoff": 2400,
+                "resonance": 0.7
+              }
+            },
+            {
+              "name": "Warm",
+              "values": {
+                "cutoff": 700,
+                "resonance": 0.8
+              }
+            },
+            {
+              "name": "Resonant",
+              "values": {
+                "cutoff": 4200,
+                "resonance": 2.5
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
       "key": "example:subtractive",
       "kind": "example",
       "title": "Subtractive instrument",
@@ -9,6 +378,177 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": {
+          "version": 1,
+          "openOnLoad": false,
+          "size": {
+            "width": 640,
+            "height": 112
+          },
+          "items": [
+            {
+              "id": "attack",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "attack"
+              },
+              "widget": "dial",
+              "label": "Attack",
+              "rect": {
+                "x": 8,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "decay",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "decay"
+              },
+              "widget": "dial",
+              "label": "Decay",
+              "rect": {
+                "x": 96,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "sustain",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "sustain"
+              },
+              "widget": "dial",
+              "label": "Sustain",
+              "rect": {
+                "x": 184,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "release",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "release"
+              },
+              "widget": "dial",
+              "label": "Release",
+              "rect": {
+                "x": 272,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "cutoff",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "cutoff"
+              },
+              "widget": "dial",
+              "label": "Cutoff",
+              "rect": {
+                "x": 360,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "resonance",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "resonance"
+              },
+              "widget": "dial",
+              "label": "Resonance",
+              "rect": {
+                "x": 448,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "level",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 9,
+                "param": "value"
+              },
+              "widget": "dial",
+              "label": "Level",
+              "rect": {
+                "x": 536,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            }
+          ]
+        },
         "nodes": [
           {
             "id": 1,
@@ -265,17 +805,23 @@
           }
         ],
         "device": {
-          "version": 1,
+          "version": 2,
+          "kind": "instrument",
           "id": "org.alive.subtractive",
           "name": "Subtractive",
           "midi": {
-            "node": 2,
-            "inlet": 0
+            "input": {
+              "node": 2,
+              "inlet": 0
+            },
+            "output": null
           },
           "audio": {
-            "inputs": 0,
-            "outputs": 2,
-            "layout": "stereo"
+            "input": null,
+            "output": {
+              "channels": 2,
+              "layout": "stereo"
+            }
           },
           "parameters": [
             {
@@ -392,6 +938,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -648,6 +1195,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -703,6 +1251,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -758,6 +1307,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -815,6 +1365,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -872,6 +1423,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -929,6 +1481,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -986,6 +1539,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -1043,6 +1597,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -1100,6 +1655,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -1158,6 +1714,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -1216,6 +1773,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -1274,6 +1832,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -1332,6 +1891,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -1389,6 +1949,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -1446,6 +2007,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -1503,6 +2065,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -1560,6 +2123,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -1618,6 +2182,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -1676,6 +2241,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -1734,6 +2300,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -1792,6 +2359,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -1834,6 +2402,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -1876,6 +2445,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -2132,6 +2702,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -2388,6 +2959,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -2644,6 +3216,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -2900,6 +3473,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -3156,6 +3730,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -3412,6 +3987,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -3668,6 +4244,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -3924,6 +4501,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -3982,6 +4560,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -4040,6 +4619,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -4098,6 +4678,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -4156,6 +4737,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -4212,6 +4794,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -4268,6 +4851,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -4315,6 +4899,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -4362,6 +4947,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -4510,6 +5096,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -4658,6 +5245,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -4752,6 +5340,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -4846,6 +5435,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -4934,6 +5524,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -5022,6 +5613,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -5146,6 +5738,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -5270,6 +5863,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -5359,6 +5953,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -5448,6 +6043,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -5571,6 +6167,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -5694,6 +6291,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -5766,6 +6364,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -5838,6 +6437,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -5904,6 +6504,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -5970,6 +6571,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -6036,6 +6638,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -6102,6 +6705,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -6172,6 +6776,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -6242,6 +6847,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -6329,6 +6935,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -6416,6 +7023,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -6503,6 +7111,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -6590,6 +7199,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -6677,6 +7287,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -6764,6 +7375,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -6851,6 +7463,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -6938,6 +7551,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -7008,6 +7622,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -7078,6 +7693,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -7165,6 +7781,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -7252,6 +7869,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -7356,6 +7974,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -7460,6 +8079,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -7530,6 +8150,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -7600,6 +8221,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -7687,6 +8309,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -7774,6 +8397,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -7880,6 +8504,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -7986,6 +8611,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -8074,6 +8700,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -8162,6 +8789,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -8250,6 +8878,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -8338,6 +8967,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -8426,6 +9056,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -8514,6 +9145,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -8602,6 +9234,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -8690,6 +9323,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -8764,6 +9398,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -8838,6 +9473,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -8912,6 +9548,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -8986,6 +9623,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -9042,6 +9680,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -9098,6 +9737,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -9187,6 +9827,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -9276,6 +9917,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -9382,6 +10024,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -9488,6 +10131,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -9577,6 +10221,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -9666,6 +10311,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -9761,6 +10407,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -9856,6 +10503,7 @@
       "patch": {
         "version": 2,
         "profile": "ultra-patcher-v2",
+        "presentation": null,
         "nodes": [
           {
             "id": 3,
@@ -9907,6 +10555,7 @@
       "patch": {
         "version": 2,
         "profile": "ultra-patcher-v2",
+        "presentation": null,
         "nodes": [
           {
             "id": 3,
@@ -9958,6 +10607,7 @@
       "patch": {
         "version": 2,
         "profile": "ultra-patcher-v2",
+        "presentation": null,
         "nodes": [
           {
             "id": 3,
@@ -10009,6 +10659,7 @@
       "patch": {
         "version": 2,
         "profile": "ultra-patcher-v2",
+        "presentation": null,
         "nodes": [
           {
             "id": 3,
@@ -10060,6 +10711,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -10136,6 +10788,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -10212,6 +10865,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -10312,6 +10966,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -10412,6 +11067,7 @@
       "patch": {
         "version": 2,
         "profile": "ultra-patcher-v2",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -10431,6 +11087,7 @@
               "name": "basic"
             },
             "patcher": {
+              "presentation": null,
               "nodes": [
                 {
                   "id": 3,
@@ -10518,6 +11175,7 @@
       "patch": {
         "version": 2,
         "profile": "ultra-patcher-v2",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -10537,6 +11195,7 @@
               "name": "basic"
             },
             "patcher": {
+              "presentation": null,
               "nodes": [
                 {
                   "id": 3,
@@ -10624,6 +11283,7 @@
       "patch": {
         "version": 2,
         "profile": "ultra-patcher-v2",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -10643,6 +11303,7 @@
               "name": "basic"
             },
             "patcher": {
+              "presentation": null,
               "nodes": [
                 {
                   "id": 3,
@@ -10730,6 +11391,7 @@
       "patch": {
         "version": 2,
         "profile": "ultra-patcher-v2",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -10749,6 +11411,7 @@
               "name": "basic"
             },
             "patcher": {
+              "presentation": null,
               "nodes": [
                 {
                   "id": 3,
@@ -10836,6 +11499,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -10922,6 +11586,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -11008,6 +11673,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -11094,6 +11760,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -11180,6 +11847,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -11266,6 +11934,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -11352,6 +12021,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -11438,6 +12108,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -11524,6 +12195,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -11610,6 +12282,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -11696,6 +12369,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -11753,6 +12427,7 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": null,
         "nodes": [
           {
             "id": 1,
@@ -11810,6 +12485,177 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": {
+          "version": 1,
+          "openOnLoad": false,
+          "size": {
+            "width": 640,
+            "height": 112
+          },
+          "items": [
+            {
+              "id": "attack",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "attack"
+              },
+              "widget": "dial",
+              "label": "Attack",
+              "rect": {
+                "x": 8,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "decay",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "decay"
+              },
+              "widget": "dial",
+              "label": "Decay",
+              "rect": {
+                "x": 96,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "sustain",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "sustain"
+              },
+              "widget": "dial",
+              "label": "Sustain",
+              "rect": {
+                "x": 184,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "release",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "release"
+              },
+              "widget": "dial",
+              "label": "Release",
+              "rect": {
+                "x": 272,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "cutoff",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "cutoff"
+              },
+              "widget": "dial",
+              "label": "Cutoff",
+              "rect": {
+                "x": 360,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "resonance",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "resonance"
+              },
+              "widget": "dial",
+              "label": "Resonance",
+              "rect": {
+                "x": 448,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "level",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 9,
+                "param": "value"
+              },
+              "widget": "dial",
+              "label": "Level",
+              "rect": {
+                "x": 536,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            }
+          ]
+        },
         "nodes": [
           {
             "id": 1,
@@ -12066,17 +12912,23 @@
           }
         ],
         "device": {
-          "version": 1,
+          "version": 2,
+          "kind": "instrument",
           "id": "org.alive.subtractive",
           "name": "Subtractive",
           "midi": {
-            "node": 2,
-            "inlet": 0
+            "input": {
+              "node": 2,
+              "inlet": 0
+            },
+            "output": null
           },
           "audio": {
-            "inputs": 0,
-            "outputs": 2,
-            "layout": "stereo"
+            "input": null,
+            "output": {
+              "channels": 2,
+              "layout": "stereo"
+            }
           },
           "parameters": [
             {
@@ -12194,6 +13046,177 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": {
+          "version": 1,
+          "openOnLoad": false,
+          "size": {
+            "width": 640,
+            "height": 112
+          },
+          "items": [
+            {
+              "id": "attack",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "attack"
+              },
+              "widget": "dial",
+              "label": "Attack",
+              "rect": {
+                "x": 8,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "decay",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "decay"
+              },
+              "widget": "dial",
+              "label": "Decay",
+              "rect": {
+                "x": 96,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "sustain",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "sustain"
+              },
+              "widget": "dial",
+              "label": "Sustain",
+              "rect": {
+                "x": 184,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "release",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "release"
+              },
+              "widget": "dial",
+              "label": "Release",
+              "rect": {
+                "x": 272,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "cutoff",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "cutoff"
+              },
+              "widget": "dial",
+              "label": "Cutoff",
+              "rect": {
+                "x": 360,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "resonance",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "resonance"
+              },
+              "widget": "dial",
+              "label": "Resonance",
+              "rect": {
+                "x": 448,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "level",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 9,
+                "param": "value"
+              },
+              "widget": "dial",
+              "label": "Level",
+              "rect": {
+                "x": 536,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            }
+          ]
+        },
         "nodes": [
           {
             "id": 1,
@@ -12450,17 +13473,23 @@
           }
         ],
         "device": {
-          "version": 1,
+          "version": 2,
+          "kind": "instrument",
           "id": "org.alive.subtractive",
           "name": "Subtractive",
           "midi": {
-            "node": 2,
-            "inlet": 0
+            "input": {
+              "node": 2,
+              "inlet": 0
+            },
+            "output": null
           },
           "audio": {
-            "inputs": 0,
-            "outputs": 2,
-            "layout": "stereo"
+            "input": null,
+            "output": {
+              "channels": 2,
+              "layout": "stereo"
+            }
           },
           "parameters": [
             {
@@ -12578,6 +13607,177 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": {
+          "version": 1,
+          "openOnLoad": false,
+          "size": {
+            "width": 640,
+            "height": 112
+          },
+          "items": [
+            {
+              "id": "attack",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "attack"
+              },
+              "widget": "dial",
+              "label": "Attack",
+              "rect": {
+                "x": 8,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "decay",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "decay"
+              },
+              "widget": "dial",
+              "label": "Decay",
+              "rect": {
+                "x": 96,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "sustain",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "sustain"
+              },
+              "widget": "dial",
+              "label": "Sustain",
+              "rect": {
+                "x": 184,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "release",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "release"
+              },
+              "widget": "dial",
+              "label": "Release",
+              "rect": {
+                "x": 272,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "cutoff",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "cutoff"
+              },
+              "widget": "dial",
+              "label": "Cutoff",
+              "rect": {
+                "x": 360,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "resonance",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "resonance"
+              },
+              "widget": "dial",
+              "label": "Resonance",
+              "rect": {
+                "x": 448,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "level",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 9,
+                "param": "value"
+              },
+              "widget": "dial",
+              "label": "Level",
+              "rect": {
+                "x": 536,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            }
+          ]
+        },
         "nodes": [
           {
             "id": 1,
@@ -12834,17 +14034,23 @@
           }
         ],
         "device": {
-          "version": 1,
+          "version": 2,
+          "kind": "instrument",
           "id": "org.alive.subtractive",
           "name": "Subtractive",
           "midi": {
-            "node": 2,
-            "inlet": 0
+            "input": {
+              "node": 2,
+              "inlet": 0
+            },
+            "output": null
           },
           "audio": {
-            "inputs": 0,
-            "outputs": 2,
-            "layout": "stereo"
+            "input": null,
+            "output": {
+              "channels": 2,
+              "layout": "stereo"
+            }
           },
           "parameters": [
             {
@@ -12962,6 +14168,177 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": {
+          "version": 1,
+          "openOnLoad": false,
+          "size": {
+            "width": 640,
+            "height": 112
+          },
+          "items": [
+            {
+              "id": "attack",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "attack"
+              },
+              "widget": "dial",
+              "label": "Attack",
+              "rect": {
+                "x": 8,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "decay",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "decay"
+              },
+              "widget": "dial",
+              "label": "Decay",
+              "rect": {
+                "x": 96,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "sustain",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "sustain"
+              },
+              "widget": "dial",
+              "label": "Sustain",
+              "rect": {
+                "x": 184,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "release",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "release"
+              },
+              "widget": "dial",
+              "label": "Release",
+              "rect": {
+                "x": 272,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "cutoff",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "cutoff"
+              },
+              "widget": "dial",
+              "label": "Cutoff",
+              "rect": {
+                "x": 360,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "resonance",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "resonance"
+              },
+              "widget": "dial",
+              "label": "Resonance",
+              "rect": {
+                "x": 448,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "level",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 9,
+                "param": "value"
+              },
+              "widget": "dial",
+              "label": "Level",
+              "rect": {
+                "x": 536,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            }
+          ]
+        },
         "nodes": [
           {
             "id": 1,
@@ -13218,17 +14595,23 @@
           }
         ],
         "device": {
-          "version": 1,
+          "version": 2,
+          "kind": "instrument",
           "id": "org.alive.subtractive",
           "name": "Subtractive",
           "midi": {
-            "node": 2,
-            "inlet": 0
+            "input": {
+              "node": 2,
+              "inlet": 0
+            },
+            "output": null
           },
           "audio": {
-            "inputs": 0,
-            "outputs": 2,
-            "layout": "stereo"
+            "input": null,
+            "output": {
+              "channels": 2,
+              "layout": "stereo"
+            }
           },
           "parameters": [
             {
@@ -13346,6 +14729,177 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": {
+          "version": 1,
+          "openOnLoad": false,
+          "size": {
+            "width": 640,
+            "height": 112
+          },
+          "items": [
+            {
+              "id": "attack",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "attack"
+              },
+              "widget": "dial",
+              "label": "Attack",
+              "rect": {
+                "x": 8,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "decay",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "decay"
+              },
+              "widget": "dial",
+              "label": "Decay",
+              "rect": {
+                "x": 96,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "sustain",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "sustain"
+              },
+              "widget": "dial",
+              "label": "Sustain",
+              "rect": {
+                "x": 184,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "release",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "release"
+              },
+              "widget": "dial",
+              "label": "Release",
+              "rect": {
+                "x": 272,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "cutoff",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "cutoff"
+              },
+              "widget": "dial",
+              "label": "Cutoff",
+              "rect": {
+                "x": 360,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "resonance",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "resonance"
+              },
+              "widget": "dial",
+              "label": "Resonance",
+              "rect": {
+                "x": 448,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "level",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 9,
+                "param": "value"
+              },
+              "widget": "dial",
+              "label": "Level",
+              "rect": {
+                "x": 536,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            }
+          ]
+        },
         "nodes": [
           {
             "id": 1,
@@ -13602,17 +15156,23 @@
           }
         ],
         "device": {
-          "version": 1,
+          "version": 2,
+          "kind": "instrument",
           "id": "org.alive.subtractive",
           "name": "Subtractive",
           "midi": {
-            "node": 2,
-            "inlet": 0
+            "input": {
+              "node": 2,
+              "inlet": 0
+            },
+            "output": null
           },
           "audio": {
-            "inputs": 0,
-            "outputs": 2,
-            "layout": "stereo"
+            "input": null,
+            "output": {
+              "channels": 2,
+              "layout": "stereo"
+            }
           },
           "parameters": [
             {
@@ -13730,6 +15290,177 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": {
+          "version": 1,
+          "openOnLoad": false,
+          "size": {
+            "width": 640,
+            "height": 112
+          },
+          "items": [
+            {
+              "id": "attack",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "attack"
+              },
+              "widget": "dial",
+              "label": "Attack",
+              "rect": {
+                "x": 8,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "decay",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "decay"
+              },
+              "widget": "dial",
+              "label": "Decay",
+              "rect": {
+                "x": 96,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "sustain",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "sustain"
+              },
+              "widget": "dial",
+              "label": "Sustain",
+              "rect": {
+                "x": 184,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "release",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "release"
+              },
+              "widget": "dial",
+              "label": "Release",
+              "rect": {
+                "x": 272,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "cutoff",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "cutoff"
+              },
+              "widget": "dial",
+              "label": "Cutoff",
+              "rect": {
+                "x": 360,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "resonance",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "resonance"
+              },
+              "widget": "dial",
+              "label": "Resonance",
+              "rect": {
+                "x": 448,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "level",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 9,
+                "param": "value"
+              },
+              "widget": "dial",
+              "label": "Level",
+              "rect": {
+                "x": 536,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            }
+          ]
+        },
         "nodes": [
           {
             "id": 1,
@@ -13986,17 +15717,23 @@
           }
         ],
         "device": {
-          "version": 1,
+          "version": 2,
+          "kind": "instrument",
           "id": "org.alive.subtractive",
           "name": "Subtractive",
           "midi": {
-            "node": 2,
-            "inlet": 0
+            "input": {
+              "node": 2,
+              "inlet": 0
+            },
+            "output": null
           },
           "audio": {
-            "inputs": 0,
-            "outputs": 2,
-            "layout": "stereo"
+            "input": null,
+            "output": {
+              "channels": 2,
+              "layout": "stereo"
+            }
           },
           "parameters": [
             {
@@ -14114,6 +15851,177 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": {
+          "version": 1,
+          "openOnLoad": false,
+          "size": {
+            "width": 640,
+            "height": 112
+          },
+          "items": [
+            {
+              "id": "attack",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "attack"
+              },
+              "widget": "dial",
+              "label": "Attack",
+              "rect": {
+                "x": 8,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "decay",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "decay"
+              },
+              "widget": "dial",
+              "label": "Decay",
+              "rect": {
+                "x": 96,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "sustain",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "sustain"
+              },
+              "widget": "dial",
+              "label": "Sustain",
+              "rect": {
+                "x": 184,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "release",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "release"
+              },
+              "widget": "dial",
+              "label": "Release",
+              "rect": {
+                "x": 272,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "cutoff",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "cutoff"
+              },
+              "widget": "dial",
+              "label": "Cutoff",
+              "rect": {
+                "x": 360,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "resonance",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "resonance"
+              },
+              "widget": "dial",
+              "label": "Resonance",
+              "rect": {
+                "x": 448,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "level",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 9,
+                "param": "value"
+              },
+              "widget": "dial",
+              "label": "Level",
+              "rect": {
+                "x": 536,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            }
+          ]
+        },
         "nodes": [
           {
             "id": 1,
@@ -14370,17 +16278,23 @@
           }
         ],
         "device": {
-          "version": 1,
+          "version": 2,
+          "kind": "instrument",
           "id": "org.alive.subtractive",
           "name": "Subtractive",
           "midi": {
-            "node": 2,
-            "inlet": 0
+            "input": {
+              "node": 2,
+              "inlet": 0
+            },
+            "output": null
           },
           "audio": {
-            "inputs": 0,
-            "outputs": 2,
-            "layout": "stereo"
+            "input": null,
+            "output": {
+              "channels": 2,
+              "layout": "stereo"
+            }
           },
           "parameters": [
             {
@@ -14498,6 +16412,177 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": {
+          "version": 1,
+          "openOnLoad": false,
+          "size": {
+            "width": 640,
+            "height": 112
+          },
+          "items": [
+            {
+              "id": "attack",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "attack"
+              },
+              "widget": "dial",
+              "label": "Attack",
+              "rect": {
+                "x": 8,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "decay",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "decay"
+              },
+              "widget": "dial",
+              "label": "Decay",
+              "rect": {
+                "x": 96,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "sustain",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "sustain"
+              },
+              "widget": "dial",
+              "label": "Sustain",
+              "rect": {
+                "x": 184,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "release",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "release"
+              },
+              "widget": "dial",
+              "label": "Release",
+              "rect": {
+                "x": 272,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "cutoff",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "cutoff"
+              },
+              "widget": "dial",
+              "label": "Cutoff",
+              "rect": {
+                "x": 360,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "resonance",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "resonance"
+              },
+              "widget": "dial",
+              "label": "Resonance",
+              "rect": {
+                "x": 448,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "level",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 9,
+                "param": "value"
+              },
+              "widget": "dial",
+              "label": "Level",
+              "rect": {
+                "x": 536,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            }
+          ]
+        },
         "nodes": [
           {
             "id": 1,
@@ -14754,17 +16839,23 @@
           }
         ],
         "device": {
-          "version": 1,
+          "version": 2,
+          "kind": "instrument",
           "id": "org.alive.subtractive",
           "name": "Subtractive",
           "midi": {
-            "node": 2,
-            "inlet": 0
+            "input": {
+              "node": 2,
+              "inlet": 0
+            },
+            "output": null
           },
           "audio": {
-            "inputs": 0,
-            "outputs": 2,
-            "layout": "stereo"
+            "input": null,
+            "output": {
+              "channels": 2,
+              "layout": "stereo"
+            }
           },
           "parameters": [
             {
@@ -14882,6 +16973,177 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": {
+          "version": 1,
+          "openOnLoad": false,
+          "size": {
+            "width": 640,
+            "height": 112
+          },
+          "items": [
+            {
+              "id": "attack",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "attack"
+              },
+              "widget": "dial",
+              "label": "Attack",
+              "rect": {
+                "x": 8,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "decay",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "decay"
+              },
+              "widget": "dial",
+              "label": "Decay",
+              "rect": {
+                "x": 96,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "sustain",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "sustain"
+              },
+              "widget": "dial",
+              "label": "Sustain",
+              "rect": {
+                "x": 184,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "release",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "release"
+              },
+              "widget": "dial",
+              "label": "Release",
+              "rect": {
+                "x": 272,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "cutoff",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "cutoff"
+              },
+              "widget": "dial",
+              "label": "Cutoff",
+              "rect": {
+                "x": 360,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "resonance",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "resonance"
+              },
+              "widget": "dial",
+              "label": "Resonance",
+              "rect": {
+                "x": 448,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "level",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 9,
+                "param": "value"
+              },
+              "widget": "dial",
+              "label": "Level",
+              "rect": {
+                "x": 536,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            }
+          ]
+        },
         "nodes": [
           {
             "id": 1,
@@ -15138,17 +17400,23 @@
           }
         ],
         "device": {
-          "version": 1,
+          "version": 2,
+          "kind": "instrument",
           "id": "org.alive.subtractive",
           "name": "Subtractive",
           "midi": {
-            "node": 2,
-            "inlet": 0
+            "input": {
+              "node": 2,
+              "inlet": 0
+            },
+            "output": null
           },
           "audio": {
-            "inputs": 0,
-            "outputs": 2,
-            "layout": "stereo"
+            "input": null,
+            "output": {
+              "channels": 2,
+              "layout": "stereo"
+            }
           },
           "parameters": [
             {
@@ -15266,6 +17534,177 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": {
+          "version": 1,
+          "openOnLoad": false,
+          "size": {
+            "width": 640,
+            "height": 112
+          },
+          "items": [
+            {
+              "id": "attack",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "attack"
+              },
+              "widget": "dial",
+              "label": "Attack",
+              "rect": {
+                "x": 8,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "decay",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "decay"
+              },
+              "widget": "dial",
+              "label": "Decay",
+              "rect": {
+                "x": 96,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "sustain",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "sustain"
+              },
+              "widget": "dial",
+              "label": "Sustain",
+              "rect": {
+                "x": 184,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "release",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "release"
+              },
+              "widget": "dial",
+              "label": "Release",
+              "rect": {
+                "x": 272,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "cutoff",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "cutoff"
+              },
+              "widget": "dial",
+              "label": "Cutoff",
+              "rect": {
+                "x": 360,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "resonance",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "resonance"
+              },
+              "widget": "dial",
+              "label": "Resonance",
+              "rect": {
+                "x": 448,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "level",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 9,
+                "param": "value"
+              },
+              "widget": "dial",
+              "label": "Level",
+              "rect": {
+                "x": 536,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            }
+          ]
+        },
         "nodes": [
           {
             "id": 1,
@@ -15522,17 +17961,23 @@
           }
         ],
         "device": {
-          "version": 1,
+          "version": 2,
+          "kind": "instrument",
           "id": "org.alive.subtractive",
           "name": "Subtractive",
           "midi": {
-            "node": 2,
-            "inlet": 0
+            "input": {
+              "node": 2,
+              "inlet": 0
+            },
+            "output": null
           },
           "audio": {
-            "inputs": 0,
-            "outputs": 2,
-            "layout": "stereo"
+            "input": null,
+            "output": {
+              "channels": 2,
+              "layout": "stereo"
+            }
           },
           "parameters": [
             {
@@ -15650,6 +18095,177 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": {
+          "version": 1,
+          "openOnLoad": false,
+          "size": {
+            "width": 640,
+            "height": 112
+          },
+          "items": [
+            {
+              "id": "attack",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "attack"
+              },
+              "widget": "dial",
+              "label": "Attack",
+              "rect": {
+                "x": 8,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "decay",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "decay"
+              },
+              "widget": "dial",
+              "label": "Decay",
+              "rect": {
+                "x": 96,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "sustain",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "sustain"
+              },
+              "widget": "dial",
+              "label": "Sustain",
+              "rect": {
+                "x": 184,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "release",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "release"
+              },
+              "widget": "dial",
+              "label": "Release",
+              "rect": {
+                "x": 272,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "cutoff",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "cutoff"
+              },
+              "widget": "dial",
+              "label": "Cutoff",
+              "rect": {
+                "x": 360,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "resonance",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "resonance"
+              },
+              "widget": "dial",
+              "label": "Resonance",
+              "rect": {
+                "x": 448,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "level",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 9,
+                "param": "value"
+              },
+              "widget": "dial",
+              "label": "Level",
+              "rect": {
+                "x": 536,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            }
+          ]
+        },
         "nodes": [
           {
             "id": 1,
@@ -15906,17 +18522,23 @@
           }
         ],
         "device": {
-          "version": 1,
+          "version": 2,
+          "kind": "instrument",
           "id": "org.alive.subtractive",
           "name": "Subtractive",
           "midi": {
-            "node": 2,
-            "inlet": 0
+            "input": {
+              "node": 2,
+              "inlet": 0
+            },
+            "output": null
           },
           "audio": {
-            "inputs": 0,
-            "outputs": 2,
-            "layout": "stereo"
+            "input": null,
+            "output": {
+              "channels": 2,
+              "layout": "stereo"
+            }
           },
           "parameters": [
             {
@@ -16034,6 +18656,177 @@
       "patch": {
         "version": 1,
         "profile": "ultra-canvas-v1",
+        "presentation": {
+          "version": 1,
+          "openOnLoad": false,
+          "size": {
+            "width": 640,
+            "height": 112
+          },
+          "items": [
+            {
+              "id": "attack",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "attack"
+              },
+              "widget": "dial",
+              "label": "Attack",
+              "rect": {
+                "x": 8,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "decay",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "decay"
+              },
+              "widget": "dial",
+              "label": "Decay",
+              "rect": {
+                "x": 96,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "sustain",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "sustain"
+              },
+              "widget": "dial",
+              "label": "Sustain",
+              "rect": {
+                "x": 184,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "release",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 5,
+                "param": "release"
+              },
+              "widget": "dial",
+              "label": "Release",
+              "rect": {
+                "x": 272,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "cutoff",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "cutoff"
+              },
+              "widget": "dial",
+              "label": "Cutoff",
+              "rect": {
+                "x": 360,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "resonance",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 4,
+                "param": "resonance"
+              },
+              "widget": "dial",
+              "label": "Resonance",
+              "rect": {
+                "x": 448,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "level",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 9,
+                "param": "value"
+              },
+              "widget": "dial",
+              "label": "Level",
+              "rect": {
+                "x": 536,
+                "y": 8,
+                "width": 80,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "default",
+                "labelPosition": "above"
+              }
+            }
+          ]
+        },
         "nodes": [
           {
             "id": 1,
@@ -16290,17 +19083,23 @@
           }
         ],
         "device": {
-          "version": 1,
+          "version": 2,
+          "kind": "instrument",
           "id": "org.alive.subtractive",
           "name": "Subtractive",
           "midi": {
-            "node": 2,
-            "inlet": 0
+            "input": {
+              "node": 2,
+              "inlet": 0
+            },
+            "output": null
           },
           "audio": {
-            "inputs": 0,
-            "outputs": 2,
-            "layout": "stereo"
+            "input": null,
+            "output": {
+              "channels": 2,
+              "layout": "stereo"
+            }
           },
           "parameters": [
             {
@@ -16402,6 +19201,748 @@
                 "cutoff": 4200,
                 "resonance": 2.5,
                 "level": 85
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "help:audio_in",
+      "kind": "help",
+      "title": "audio.in~ help",
+      "group": "Audio",
+      "summary": "Read stereo audio supplied by the device host; ordinary roots are silent.",
+      "objectType": "audio_in",
+      "patch": {
+        "version": 1,
+        "profile": "ultra-canvas-v1",
+        "presentation": {
+          "version": 1,
+          "openOnLoad": false,
+          "size": {
+            "width": 160,
+            "height": 112
+          },
+          "items": [
+            {
+              "id": "gain",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 2,
+                "param": "value"
+              },
+              "widget": "dial",
+              "label": "Gain",
+              "rect": {
+                "x": 8,
+                "y": 8,
+                "width": 88,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "cyan",
+                "labelPosition": "above"
+              }
+            }
+          ]
+        },
+        "nodes": [
+          {
+            "id": 1,
+            "type": "audio_in",
+            "x": 75,
+            "y": 70,
+            "params": {}
+          },
+          {
+            "id": 2,
+            "type": "line_signal",
+            "x": 350,
+            "y": 70,
+            "params": {
+              "value": 1,
+              "time": 0
+            }
+          },
+          {
+            "id": 3,
+            "type": "signal_multiply",
+            "x": 75,
+            "y": 190,
+            "params": {
+              "rhs": 0
+            }
+          },
+          {
+            "id": 4,
+            "type": "signal_multiply",
+            "x": 240,
+            "y": 190,
+            "params": {
+              "rhs": 0
+            }
+          },
+          {
+            "id": 5,
+            "type": "signal_dac",
+            "x": 75,
+            "y": 300,
+            "params": {
+              "channels": "1 2"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": 1,
+            "outlet": 0,
+            "to": 3,
+            "inlet": 0
+          },
+          {
+            "from": 1,
+            "outlet": 1,
+            "to": 4,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 0,
+            "to": 3,
+            "inlet": 1
+          },
+          {
+            "from": 2,
+            "outlet": 0,
+            "to": 4,
+            "inlet": 1
+          },
+          {
+            "from": 3,
+            "outlet": 0,
+            "to": 5,
+            "inlet": 0
+          },
+          {
+            "from": 4,
+            "outlet": 0,
+            "to": 5,
+            "inlet": 1
+          }
+        ],
+        "device": {
+          "version": 2,
+          "kind": "audioEffect",
+          "id": "org.alive.utility",
+          "name": "Stereo Utility",
+          "midi": {
+            "input": null,
+            "output": null
+          },
+          "audio": {
+            "input": {
+              "node": 1,
+              "bundle": {
+                "channels": 2,
+                "layout": "stereo"
+              }
+            },
+            "output": {
+              "channels": 2,
+              "layout": "stereo"
+            }
+          },
+          "parameters": [
+            {
+              "key": "gain",
+              "label": "Gain",
+              "node": 2,
+              "param": "value",
+              "min": 0,
+              "max": 2,
+              "unit": "linear"
+            }
+          ],
+          "presets": [
+            {
+              "name": "Unity",
+              "values": {
+                "gain": 1
+              }
+            },
+            {
+              "name": "Half",
+              "values": {
+                "gain": 0.5
+              }
+            },
+            {
+              "name": "Silence",
+              "values": {
+                "gain": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "example:audio_in",
+      "kind": "example",
+      "title": "audio.in~ example",
+      "group": "Audio",
+      "summary": "Read stereo audio supplied by the device host; ordinary roots are silent.",
+      "objectType": "audio_in",
+      "patch": {
+        "version": 1,
+        "profile": "ultra-canvas-v1",
+        "presentation": {
+          "version": 1,
+          "openOnLoad": false,
+          "size": {
+            "width": 160,
+            "height": 112
+          },
+          "items": [
+            {
+              "id": "gain",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 2,
+                "param": "value"
+              },
+              "widget": "dial",
+              "label": "Gain",
+              "rect": {
+                "x": 8,
+                "y": 8,
+                "width": 88,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "cyan",
+                "labelPosition": "above"
+              }
+            }
+          ]
+        },
+        "nodes": [
+          {
+            "id": 1,
+            "type": "audio_in",
+            "x": 75,
+            "y": 70,
+            "params": {}
+          },
+          {
+            "id": 2,
+            "type": "line_signal",
+            "x": 350,
+            "y": 70,
+            "params": {
+              "value": 1,
+              "time": 0
+            }
+          },
+          {
+            "id": 3,
+            "type": "signal_multiply",
+            "x": 75,
+            "y": 190,
+            "params": {
+              "rhs": 0
+            }
+          },
+          {
+            "id": 4,
+            "type": "signal_multiply",
+            "x": 240,
+            "y": 190,
+            "params": {
+              "rhs": 0
+            }
+          },
+          {
+            "id": 5,
+            "type": "signal_dac",
+            "x": 75,
+            "y": 300,
+            "params": {
+              "channels": "1 2"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": 1,
+            "outlet": 0,
+            "to": 3,
+            "inlet": 0
+          },
+          {
+            "from": 1,
+            "outlet": 1,
+            "to": 4,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 0,
+            "to": 3,
+            "inlet": 1
+          },
+          {
+            "from": 2,
+            "outlet": 0,
+            "to": 4,
+            "inlet": 1
+          },
+          {
+            "from": 3,
+            "outlet": 0,
+            "to": 5,
+            "inlet": 0
+          },
+          {
+            "from": 4,
+            "outlet": 0,
+            "to": 5,
+            "inlet": 1
+          }
+        ],
+        "device": {
+          "version": 2,
+          "kind": "audioEffect",
+          "id": "org.alive.utility",
+          "name": "Stereo Utility",
+          "midi": {
+            "input": null,
+            "output": null
+          },
+          "audio": {
+            "input": {
+              "node": 1,
+              "bundle": {
+                "channels": 2,
+                "layout": "stereo"
+              }
+            },
+            "output": {
+              "channels": 2,
+              "layout": "stereo"
+            }
+          },
+          "parameters": [
+            {
+              "key": "gain",
+              "label": "Gain",
+              "node": 2,
+              "param": "value",
+              "min": 0,
+              "max": 2,
+              "unit": "linear"
+            }
+          ],
+          "presets": [
+            {
+              "name": "Unity",
+              "values": {
+                "gain": 1
+              }
+            },
+            {
+              "name": "Half",
+              "values": {
+                "gain": 0.5
+              }
+            },
+            {
+              "name": "Silence",
+              "values": {
+                "gain": 0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "help:filter_stereo",
+      "kind": "help",
+      "title": "lowpass.stereo~ help",
+      "group": "Audio",
+      "summary": "Filter two independent mono channels with live Faust cutoff and resonance.",
+      "objectType": "filter_stereo",
+      "patch": {
+        "version": 1,
+        "profile": "ultra-canvas-v1",
+        "presentation": {
+          "version": 1,
+          "openOnLoad": false,
+          "size": {
+            "width": 240,
+            "height": 112
+          },
+          "items": [
+            {
+              "id": "cutoff",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 2,
+                "param": "cutoff"
+              },
+              "widget": "dial",
+              "label": "Cutoff",
+              "rect": {
+                "x": 8,
+                "y": 8,
+                "width": 88,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "cyan",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "resonance",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 2,
+                "param": "resonance"
+              },
+              "widget": "dial",
+              "label": "Resonance",
+              "rect": {
+                "x": 112,
+                "y": 8,
+                "width": 88,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "cyan",
+                "labelPosition": "above"
+              }
+            }
+          ]
+        },
+        "nodes": [
+          {
+            "id": 1,
+            "type": "audio_in",
+            "x": 75,
+            "y": 70,
+            "params": {}
+          },
+          {
+            "id": 2,
+            "type": "filter_stereo",
+            "x": 75,
+            "y": 190,
+            "params": {
+              "cutoff": 2400,
+              "resonance": 0.7
+            }
+          },
+          {
+            "id": 3,
+            "type": "signal_dac",
+            "x": 75,
+            "y": 300,
+            "params": {
+              "channels": "1 2"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": 1,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          },
+          {
+            "from": 1,
+            "outlet": 1,
+            "to": 2,
+            "inlet": 1
+          },
+          {
+            "from": 2,
+            "outlet": 0,
+            "to": 3,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 1,
+            "to": 3,
+            "inlet": 1
+          }
+        ],
+        "device": {
+          "version": 2,
+          "kind": "audioEffect",
+          "id": "org.alive.stereo-lowpass",
+          "name": "Stereo Lowpass",
+          "midi": {
+            "input": null,
+            "output": null
+          },
+          "audio": {
+            "input": {
+              "node": 1,
+              "bundle": {
+                "channels": 2,
+                "layout": "stereo"
+              }
+            },
+            "output": {
+              "channels": 2,
+              "layout": "stereo"
+            }
+          },
+          "parameters": [
+            {
+              "key": "cutoff",
+              "label": "Cutoff",
+              "node": 2,
+              "param": "cutoff",
+              "min": 20,
+              "max": 20000,
+              "unit": "Hz"
+            },
+            {
+              "key": "resonance",
+              "label": "Resonance",
+              "node": 2,
+              "param": "resonance",
+              "min": 0.1,
+              "max": 20,
+              "unit": "Q"
+            }
+          ],
+          "presets": [
+            {
+              "name": "Init",
+              "values": {
+                "cutoff": 2400,
+                "resonance": 0.7
+              }
+            },
+            {
+              "name": "Warm",
+              "values": {
+                "cutoff": 700,
+                "resonance": 0.8
+              }
+            },
+            {
+              "name": "Resonant",
+              "values": {
+                "cutoff": 4200,
+                "resonance": 2.5
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "key": "example:filter_stereo",
+      "kind": "example",
+      "title": "lowpass.stereo~ example",
+      "group": "Audio",
+      "summary": "Filter two independent mono channels with live Faust cutoff and resonance.",
+      "objectType": "filter_stereo",
+      "patch": {
+        "version": 1,
+        "profile": "ultra-canvas-v1",
+        "presentation": {
+          "version": 1,
+          "openOnLoad": false,
+          "size": {
+            "width": 240,
+            "height": 112
+          },
+          "items": [
+            {
+              "id": "cutoff",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 2,
+                "param": "cutoff"
+              },
+              "widget": "dial",
+              "label": "Cutoff",
+              "rect": {
+                "x": 8,
+                "y": 8,
+                "width": 88,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "cyan",
+                "labelPosition": "above"
+              }
+            },
+            {
+              "id": "resonance",
+              "kind": "control",
+              "target": {
+                "kind": "parameter",
+                "node": 2,
+                "param": "resonance"
+              },
+              "widget": "dial",
+              "label": "Resonance",
+              "rect": {
+                "x": 112,
+                "y": 8,
+                "width": 88,
+                "height": 96
+              },
+              "included": true,
+              "visible": true,
+              "style": {
+                "accent": "cyan",
+                "labelPosition": "above"
+              }
+            }
+          ]
+        },
+        "nodes": [
+          {
+            "id": 1,
+            "type": "audio_in",
+            "x": 75,
+            "y": 70,
+            "params": {}
+          },
+          {
+            "id": 2,
+            "type": "filter_stereo",
+            "x": 75,
+            "y": 190,
+            "params": {
+              "cutoff": 2400,
+              "resonance": 0.7
+            }
+          },
+          {
+            "id": 3,
+            "type": "signal_dac",
+            "x": 75,
+            "y": 300,
+            "params": {
+              "channels": "1 2"
+            }
+          }
+        ],
+        "edges": [
+          {
+            "from": 1,
+            "outlet": 0,
+            "to": 2,
+            "inlet": 0
+          },
+          {
+            "from": 1,
+            "outlet": 1,
+            "to": 2,
+            "inlet": 1
+          },
+          {
+            "from": 2,
+            "outlet": 0,
+            "to": 3,
+            "inlet": 0
+          },
+          {
+            "from": 2,
+            "outlet": 1,
+            "to": 3,
+            "inlet": 1
+          }
+        ],
+        "device": {
+          "version": 2,
+          "kind": "audioEffect",
+          "id": "org.alive.stereo-lowpass",
+          "name": "Stereo Lowpass",
+          "midi": {
+            "input": null,
+            "output": null
+          },
+          "audio": {
+            "input": {
+              "node": 1,
+              "bundle": {
+                "channels": 2,
+                "layout": "stereo"
+              }
+            },
+            "output": {
+              "channels": 2,
+              "layout": "stereo"
+            }
+          },
+          "parameters": [
+            {
+              "key": "cutoff",
+              "label": "Cutoff",
+              "node": 2,
+              "param": "cutoff",
+              "min": 20,
+              "max": 20000,
+              "unit": "Hz"
+            },
+            {
+              "key": "resonance",
+              "label": "Resonance",
+              "node": 2,
+              "param": "resonance",
+              "min": 0.1,
+              "max": 20,
+              "unit": "Q"
+            }
+          ],
+          "presets": [
+            {
+              "name": "Init",
+              "values": {
+                "cutoff": 2400,
+                "resonance": 0.7
+              }
+            },
+            {
+              "name": "Warm",
+              "values": {
+                "cutoff": 700,
+                "resonance": 0.8
+              }
+            },
+            {
+              "name": "Resonant",
+              "values": {
+                "cutoff": 4200,
+                "resonance": 2.5
               }
             }
           ]

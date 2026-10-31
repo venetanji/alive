@@ -1,0 +1,69 @@
+{
+  "checked_utc": "2026-10-29T16:54:50.930715+00:00",
+  "head": "a8ffe03066ae658a69facaa6cf27f714f1dc5308",
+  "boot_id": "fd503527-d3be-4271-b4d2-4ab25eee6760",
+  "native_run_boot_id": "5e8667ce-d189-4221-bef9-98847865eafc",
+  "diagnostic_exit": 1,
+  "diagnostic_failure": "check_alive_arrangement.py:226, later Session transition (CI failed earlier at line 222)",
+  "attempt_5": {
+    "rectangles": [
+      [
+        12,
+        544,
+        1416,
+        17
+      ],
+      [
+        12,
+        576,
+        1416,
+        17
+      ]
+    ],
+    "find_elapsed_ns": [
+      1026797205,
+      1024600497,
+      1072596874
+    ],
+    "sampled_hits_contain_owned_window": true,
+    "presses": 0,
+    "releases": 0,
+    "attempt_elapsed_ns": 3271803715
+  },
+  "limitations": [
+    "Nested wait/find times overlap; wrapper overhead unquantified.",
+    "Content wrapping/bottom anchoring hypothesis still needs rendered regression.",
+    "Does not prove native-window occlusion or identical CI root cause.",
+    "No new playback qualification or endurance admission."
+  ],
+  "artifacts": {
+    "alive": {
+      "sha256": "741cc7ede7f76257f9caec8a8052d42aaa2a484e7a60ea662ce26e5a8851d1a1",
+      "bytes": 14521336,
+      "inode": 8395135,
+      "device_now": 54,
+      "device_in_historical_receipt": 53,
+      "hash_size_inode_match": true
+    },
+    "ultra": {
+      "sha256": "e793a74b6c2db82198f70de7c8a1c85fd72d5620969d2b5d42525739b48f2097",
+      "bytes": 18435280,
+      "inode": 8395063,
+      "device_now": 54,
+      "device_in_historical_receipt": 53,
+      "hash_size_inode_match": true
+    },
+    "libultra_native.so": {
+      "sha256": "9fd076115b2a914fa2d156dab37b0a1d99676d40634e23f78ba2c50c110062c4",
+      "bytes": 12990840,
+      "inode": 8395136,
+      "device_now": 54,
+      "device_in_historical_receipt": 53,
+      "hash_size_inode_match": true
+    }
+  },
+  "artifact_note": "All content hashes, sizes and inodes match final64. st_dev is 54 versus historical 53 after reboot; do not claim unchanged device/inode tuple.",
+  "owned_test_processes": [],
+  "all_runtime_leases_released": true,
+  "evidence_manifest_sha256": "5c54d902729fc48540d1d13603b0e2f33ea143a39f1bbba11b4883a6ac7bfcd7"
+}

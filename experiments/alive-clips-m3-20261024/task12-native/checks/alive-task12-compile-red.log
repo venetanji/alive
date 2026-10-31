@@ -1,0 +1,33 @@
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+warning: unused imports: `ClipBank`, `ClipNote`, and `Clip`
+ --> src/session/mod.rs:9:27
+  |
+9 | pub use clips::{Document, Clip, ClipNote, ClipBank};
+  |                           ^^^^  ^^^^^^^^  ^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `Session`
+  --> src/session/probe.rs:93:52
+   |
+93 |     use super::{DeviceInstance, Lane, Note, Point, Session, Track};
+   |                                                    ^^^^^^^
+
+error[E0609]: no field `schedule` on type `session::prepare::PreparedSession`
+  --> src/session/tests.rs:73:42
+   |
+73 |     let Schedule::Clips(clips)=&prepared.schedule else {panic!("expected clips")};
+   |                                          ^^^^^^^^ unknown field
+   |
+   = note: available fields are: `origin`, `document`, `tracks`, `devices`, `events`, `length_frames`
+
+error[E0433]: cannot find type `Schedule` in this scope
+  --> src/session/tests.rs:73:9
+   |
+73 |     let Schedule::Clips(clips)=&prepared.schedule else {panic!("expected clips")};
+   |         ^^^^^^^^ use of undeclared type `Schedule`
+
+Some errors have detailed explanations: E0433, E0609.
+For more information about an error, try `rustc --explain E0433`.
+warning: `ultra` (lib test) generated 2 warnings
+error: could not compile `ultra` (lib test) due to 2 previous errors; 2 warnings emitted

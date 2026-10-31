@@ -1,0 +1,21 @@
+{
+  "foundation": "c9f257763dacfb7b8d2b49e346e79d7a11d8b82c",
+  "scope": "sha256 records the local native walkthrough binaries and final source files; the only source update after that production build corrects a cfg(test) fixture directory. finalBuildSha256 records the subsequent full rebuild tested with CLI/headless checks. Final pushed-commit CI validates the final build and full native journey separately. No DSP or scheduler changes. Prior ten-minute receipt retains its original runtime identity.",
+  "sha256": {
+    "apps/ultra/src-tauri/target/release/alive": "478ca3bc9068e08924ba120165e89e4cfcde9dfc2c841acefcba95ddbe0d12bb",
+    "apps/ultra/src-tauri/target/release/ultra": "072dd6141d906b75fcb0f53771926424c4725345da7da752f1304735757d1d85",
+    "apps/ultra/src-tauri/target/release/libultra_native.so": "69ff624852edb539099e97e457d86e85bcb1ce3629b71f9a0f6d91c6622ccf8f",
+    "apps/ultra/src-tauri/Cargo.toml": "1b190a47cf1a0b387ad5a684b68d6750b9e65cff96ed8b46ebc9a7dd8d05e7df",
+    "apps/ultra/src-tauri/tauri.alive.conf.json": "dde59d68900a364b0cee923f935129742a4678b3ec1d47bd21e59ce88963cacd",
+    "apps/ultra/src-tauri/tauri.conf.json": "81660a537316835f5e76e7859e5893b9038074a708a536ca5687bacf7d46f04b",
+    "apps/ultra/src-tauri/src/lib.rs": "1636815a7971c29c1e04dff43a962644b791b74ac5f97639eef1ad999bf44c59",
+    "apps/ultra/src-tauri/src/main.rs": "f41ca2464e5de9caeee0ee90b41491c2ae7d01e42ab2e7049a9f1e1be12261ca",
+    "apps/ultra/src-tauri/src/bin/alive.rs": "3244e3fc6e00da5598ce6139714f3a2bb006831d5a300ca72f5416417c74a8b4",
+    "apps/ultra/src-tauri/src/session/desktop.rs": "b915defce1e9e84a5602c7827c1bfca129f483caa60268440e2281523a5666d6"
+  },
+  "finalBuildSha256": {
+    "apps/ultra/src-tauri/target/release/alive": "d229c6961b713aa1267aaabe57f7e0d584ea8b7f88400353c53ceac2800d2942",
+    "apps/ultra/src-tauri/target/release/ultra": "fdaabc7997b33035674ef8828cf6f5633adba4766e6fff4f0043a7f32c532dc2",
+    "apps/ultra/src-tauri/target/release/libultra_native.so": "69ff624852edb539099e97e457d86e85bcb1ce3629b71f9a0f6d91c6622ccf8f"
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "physical_audio": false,
+  "actions": [
+    {
+      "action": "loaded",
+      "monotonic": 1020.360549322,
+      "process_identity": {
+        "executable_path": "/home/runner/work/alive/alive/apps/ultra/src-tauri/target/release/alive",
+        "executable": {
+          "device": 66305,
+          "inode": 9724043,
+          "sha256": "9c19286961ed61033e0521b25f9ab0c069e278cecd2dce5b4d6a70065940e6f1"
+        },
+        "libraries": [
+          {
+            "path": "/home/runner/work/alive/alive/apps/ultra/src-tauri/target/release/libultra_native.so",
+            "mapping_device": [
+              259,
+              1
+            ],
+            "mapping_inode": 9724038,
+            "device": 66305,
+            "inode": 9724038,
+            "sha256": "523593dbe36350e1b304f821de829eb450fa4dad9062b28866692c5ca752c818"
+          }
+        ]
+      }
+    },
+    {
+      "action": "native create, note, place, move, right resize, fixed-end left trim",
+      "monotonic": 1031.772232582,
+      "placement_id": "placement-e392ee8173e238db933882afd29bf867",
+      "video": "arrangement-interaction.mp4",
+      "video_scope": "UI interaction only; no audio or exact timing proof"
+    },
+    {
+      "action": "failure",
+      "monotonic": 1049.000040116,
+      "error": "AssertionError()"
+    }
+  ],
+  "kind": "Actual Tauri/WebKit with private software PipeWire"
+}

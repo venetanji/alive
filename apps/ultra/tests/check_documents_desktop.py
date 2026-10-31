@@ -33,10 +33,13 @@ ui.x.XFree.argtypes = [C.c_void_p]
 
 def app_frames():
     frames = []
-    for root in Atspi.get_desktop(0):
+    for root in ui.desktop_apps():
         try:
             if root.get_process_id() != ui.pid: continue
             for node in [root.get_child_at_index(i) for i in range(root.get_child_count())]:
+                # Closing native dialogs can leave a null accessibility child for one scan.
+                if node is None:
+                    continue
                 try:
                     if node.get_role_name() in ('frame', 'dialog', 'file chooser', 'alert'):
                         if node not in frames:
@@ -147,7 +150,7 @@ def native_menu(action):
 
 def write_patch(name, nodes, edges):
     path = output / name
-    path.write_text(json.dumps({'version': 1, 'profile': 'ultra-canvas-v1', 'nodes': nodes, 'edges': edges}) + '\n')
+    path.write_text(json.dumps({'version': 1, 'profile': 'ultra-canvas-v1','presentation': None, 'nodes': nodes, 'edges': edges}) + '\n')
     return path
 
 
@@ -180,7 +183,7 @@ def capture(name):
 
 def hierarchy_scenario(signal_document, other_signal_document):
     control = node(3, 'patcher', {'name': 'control boundary'}, y=155)
-    control['patcher'] = {
+    control['patcher'] = {'presentation': None,
         'nodes': [node(10, 'inlet', {}, y=45), node(11, 'add', {'rhs': 10}, y=115),
                   node(13, 'number', {}, y=185), node(12, 'outlet', {}, y=255),
                   node(14, 'comment', {'text': 'Original native hierarchy probe.'}, x=250, y=45),
@@ -190,10 +193,10 @@ def hierarchy_scenario(signal_document, other_signal_document):
         'edges': [edge(10, 11), edge(11, 13), edge(13, 12), edge(13, 15), edge(17, 16, 1)],
     }
     signal = node(7, 'patcher', {'name': 'signal boundary'}, x=430, y=155)
-    signal['patcher'] = {'nodes': [node(20, 'inlet', {}, y=45), node(21, 'outlet', {}, y=155)],
+    signal['patcher'] = {'presentation': None,'nodes': [node(20, 'inlet', {}, y=45), node(21, 'outlet', {}, y=155)],
                          'edges': [edge(20, 21)]}
     patch = {
-        'version': 2, 'profile': 'ultra-patcher-v2',
+        'version': 2, 'profile': 'ultra-patcher-v2','presentation': None,
         'nodes': [node(1, 'message', {'text': '7'}), node(2, 'message', {'text': '9'}, x=220),
                   control, node(4, 'number', {}, y=245),
                   node(5, 'print', {'label': 'hierarchy-control'}, x=220, y=245),

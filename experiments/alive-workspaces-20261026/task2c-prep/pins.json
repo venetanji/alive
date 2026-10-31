@@ -1,0 +1,30 @@
+{
+  "base": "5abd9ebe8aeefcbf7d5aaa77d9c144d39a07d606",
+  "sha256": {
+    "apps/ultra/src-tauri/native/alive_session.hpp": "4b6f42c7121f6cac75a34fce241cf8320467b1b17fd3deca551922b07531b72c",
+    "apps/ultra/src-tauri/native/alive_session_workspaces.hpp": "51f3f6a989c54f6d770f39ad62d2257a09bff6e48a86352c203713cf6b7b7809",
+    "apps/ultra/src-tauri/native/alive_session_workspace_envelope.hpp": "33be00fccb3d083150581feaa6363a1506fa9be6668be0b7087fe005869ca8e0",
+    "apps/ultra/tests/alive_session_workspace_envelope_test.cpp": "90d1c61c9c0f68b4611bc25b62a0dbd838357b535446df1c2a3ba4551a854a28",
+    "apps/ultra/tests/ci/check-native.sh": "48daf3252eaa18bcab410276c2ba4bf333b2dd7b39f7a7daf2a878478d705acb",
+    "apps/ultra/build/libultra_native.so": "9a43a0314e76061f4e1407d98d9e27944b96b4fe8b14f8f432540093bcd1dbb5",
+    "apps/ultra/build/core/libultra_core_bundle.a": "23bc0108d83e4b6d6300651a2945621ed25ece9ca49bc913313b306f1f153402",
+    "/tmp/alive-workspaces-task2c-prep/envelope-test": "05e778ed2f3417d9416e49df8f603e3b72f1e91d4fc935f0cc4ecca0cd9c15ba",
+    "/tmp/alive-workspaces-task2c-prep/saved_graphs.hpp": "e096ba0b46205eb70ac4b0cf782783779620e50aaf8aa33f59482b64a28bb43b"
+  },
+  "implementation_commit": "c8f6522780b1b8c79b8c9056a94073d839518f90",
+  "source_scope": [
+    "apps/ultra/src-tauri/native/alive_session.hpp",
+    "apps/ultra/src-tauri/native/alive_session_workspace_envelope.hpp",
+    "apps/ultra/src-tauri/native/alive_session_workspaces.hpp",
+    "apps/ultra/tests/alive_session_workspace_envelope_test.cpp",
+    "apps/ultra/tests/ci/check-native.sh"
+  ],
+  "compiler": "c++ (GCC) 16.2.1 20260810",
+  "verification": {
+    "focused_compile_exit": 0,
+    "focused_run_exit": 0,
+    "full_native_ci_exit": 0,
+    "diff_check_exit": 0,
+    "index_empty_exit": 0
+  }
+}

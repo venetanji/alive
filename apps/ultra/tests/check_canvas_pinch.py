@@ -17,7 +17,7 @@ subprocess.run(['cc', '-shared', '-fPIC', '-O2', '-Wall', '-Wextra', '-Werror',
                 'apps/ultra/tests/canvas_pinch_probe.c', '-o', str(probe), *flags], check=True)
 steps = output / 'pinch-steps.txt'
 initial = output / 'pinch.ultra'
-initial.write_text('{"version":1,"profile":"ultra-canvas-v1","nodes":[],"edges":[]}\n')
+initial.write_text('{"version":1,"profile":"ultra-canvas-v1","presentation":null,"nodes":[],"edges":[]}\n')
 env = {**os.environ, 'LD_LIBRARY_PATH': str(binary.parent),
        'LD_PRELOAD': str(probe), 'ULTRA_TEST_PINCH_STEPS': str(steps)}
 

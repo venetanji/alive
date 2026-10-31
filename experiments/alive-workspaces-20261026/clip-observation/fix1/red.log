@@ -1,0 +1,16 @@
+test_screenshot_failure_preserves_identical_primary_exception (__main__.ClipObservationFailureTests.test_screenshot_failure_preserves_identical_primary_exception) ... FAIL
+test_successful_failure_screenshot_is_retained (__main__.ClipObservationFailureTests.test_successful_failure_screenshot_is_retained) ... ok
+
+======================================================================
+FAIL: test_screenshot_failure_preserves_identical_primary_exception (__main__.ClipObservationFailureTests.test_screenshot_failure_preserves_identical_primary_exception)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/test_alive_clip_observation_failure.py", line 40, in test_screenshot_failure_preserves_identical_primary_exception
+    self.assertIs(caught.exception, primary)
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: OSError('diagnostic capture unavailable') is not AssertionError('original native observation failure')
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.012s
+
+FAILED (failures=1)

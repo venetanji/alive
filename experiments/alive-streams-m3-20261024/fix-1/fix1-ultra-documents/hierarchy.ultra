@@ -1,0 +1,294 @@
+{
+  "edges": [
+    {
+      "from": 1,
+      "inlet": 0,
+      "outlet": 0,
+      "to": 3
+    },
+    {
+      "from": 2,
+      "inlet": 0,
+      "outlet": 0,
+      "to": 3
+    },
+    {
+      "from": 3,
+      "inlet": 0,
+      "outlet": 0,
+      "to": 4
+    },
+    {
+      "from": 3,
+      "inlet": 0,
+      "outlet": 0,
+      "to": 5
+    },
+    {
+      "from": 6,
+      "inlet": 0,
+      "outlet": 0,
+      "to": 7
+    },
+    {
+      "from": 7,
+      "inlet": 0,
+      "outlet": 0,
+      "to": 8
+    },
+    {
+      "from": 9,
+      "inlet": 1,
+      "outlet": 0,
+      "to": 8
+    },
+    {
+      "from": 23,
+      "inlet": 1,
+      "outlet": 0,
+      "to": 22
+    },
+    {
+      "from": 23,
+      "inlet": 1,
+      "outlet": 0,
+      "to": 3
+    }
+  ],
+  "nodes": [
+    {
+      "id": 1,
+      "params": {
+        "text": "7"
+      },
+      "type": "message",
+      "x": 70,
+      "y": 70
+    },
+    {
+      "id": 2,
+      "params": {
+        "text": "9"
+      },
+      "type": "message",
+      "x": 220,
+      "y": 70
+    },
+    {
+      "id": 3,
+      "params": {
+        "name": "control boundary"
+      },
+      "patcher": {
+        "edges": [
+          {
+            "from": 10,
+            "inlet": 0,
+            "outlet": 0,
+            "to": 11
+          },
+          {
+            "from": 11,
+            "inlet": 0,
+            "outlet": 0,
+            "to": 13
+          },
+          {
+            "from": 13,
+            "inlet": 0,
+            "outlet": 0,
+            "to": 12
+          },
+          {
+            "from": 13,
+            "inlet": 0,
+            "outlet": 0,
+            "to": 15
+          },
+          {
+            "from": 17,
+            "inlet": 1,
+            "outlet": 0,
+            "to": 16
+          }
+        ],
+        "nodes": [
+          {
+            "id": 10,
+            "params": {},
+            "type": "inlet",
+            "x": 70,
+            "y": 45
+          },
+          {
+            "id": 11,
+            "params": {
+              "numericmode": 0,
+              "rhs": 10
+            },
+            "type": "add",
+            "x": 70,
+            "y": 115
+          },
+          {
+            "id": 13,
+            "params": {
+              "value": 0
+            },
+            "type": "number",
+            "x": 70,
+            "y": 185
+          },
+          {
+            "id": 12,
+            "params": {},
+            "type": "outlet",
+            "x": 70,
+            "y": 255
+          },
+          {
+            "id": 14,
+            "params": {
+              "text": "Edited in the native child view."
+            },
+            "type": "comment",
+            "x": 250,
+            "y": 45
+          },
+          {
+            "id": 15,
+            "params": {
+              "label": "hierarchy-child",
+              "level": 0,
+              "popup": 0
+            },
+            "type": "print",
+            "x": 250,
+            "y": 185
+          },
+          {
+            "id": 16,
+            "params": {
+              "text": "saved $1 $2"
+            },
+            "type": "message_box",
+            "x": 420,
+            "y": 270
+          },
+          {
+            "id": 17,
+            "params": {},
+            "type": "inlet",
+            "x": 420,
+            "y": 110
+          }
+        ]
+      },
+      "type": "patcher",
+      "x": 70,
+      "y": 155
+    },
+    {
+      "id": 4,
+      "params": {
+        "value": 0
+      },
+      "type": "number",
+      "x": 70,
+      "y": 245
+    },
+    {
+      "id": 5,
+      "params": {
+        "label": "hierarchy-control",
+        "level": 0,
+        "popup": 0
+      },
+      "type": "print",
+      "x": 220,
+      "y": 245
+    },
+    {
+      "id": 6,
+      "params": {
+        "args": "0.0625"
+      },
+      "type": "sig",
+      "x": 430,
+      "y": 70
+    },
+    {
+      "id": 7,
+      "params": {
+        "name": "signal boundary"
+      },
+      "patcher": {
+        "edges": [
+          {
+            "from": 20,
+            "inlet": 0,
+            "outlet": 0,
+            "to": 21
+          }
+        ],
+        "nodes": [
+          {
+            "id": 20,
+            "params": {},
+            "type": "inlet",
+            "x": 70,
+            "y": 45
+          },
+          {
+            "id": 21,
+            "params": {},
+            "type": "outlet",
+            "x": 70,
+            "y": 155
+          }
+        ]
+      },
+      "type": "patcher",
+      "x": 430,
+      "y": 155
+    },
+    {
+      "id": 8,
+      "params": {
+        "channels": "1 2"
+      },
+      "type": "signal_dac",
+      "x": 430,
+      "y": 245
+    },
+    {
+      "id": 9,
+      "params": {
+        "args": "0.03125"
+      },
+      "type": "sig",
+      "x": 610,
+      "y": 70
+    },
+    {
+      "id": 22,
+      "params": {
+        "text": "saved $1 $2"
+      },
+      "type": "message_box",
+      "x": 650,
+      "y": 360
+    },
+    {
+      "id": 23,
+      "params": {
+        "text": "list 5 pear 2.25"
+      },
+      "type": "message",
+      "x": 650,
+      "y": 290
+    }
+  ],
+  "profile": "ultra-patcher-v2",
+  "version": 2
+}

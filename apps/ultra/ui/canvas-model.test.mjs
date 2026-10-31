@@ -31,7 +31,7 @@ test('starter is a valid real editable graph, including independent MIDI voice a
   assert.deepEqual(parsePatch(readFileSync(new URL('./canvas-preset.json',import.meta.url),'utf8')),patch);
 });
 test('add/delete/connect/disconnect and layout retain stable IDs and explicit fan-out order', () => {
-  const model = new CanvasDocument({version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]});
+  const model = new CanvasDocument({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[],edges:[]});
   const a=model.add('bang',20,20), b=model.add('message',30,130), c=model.add('number',240,130);
   model.connect(a,0,b,0); model.connect(a,0,c,0);
   assert.deepEqual(model.patch.edges.map(e=>e.to),[b,c]);
@@ -81,7 +81,7 @@ test('standalone help hosting initializes Basic and navigation preserves runtime
   assert.deepEqual(JSON.parse(c.export()),validatePatch(helpShell()));
 });
 test('standalone load and history reconcile shell identity and helper-only history never sends parameters',async()=>{
-  const h=host(),c=createCanvasController({invoke:h.invoke,patch:{version:2,profile:'ultra-patcher-v2',nodes:[],edges:[]}});await c.prepare();
+  const h=host(),c=createCanvasController({invoke:h.invoke,patch:{version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[],edges:[]}});await c.prepare();
   assert.equal(c.getState().helpShell,null);assert.equal(c.hostHelpBasic(),false);
   c.load(helpShell());await c.flush();assert.deepEqual(c.getState().path,[3]);const identity=c.getState().helpIdentity;
   c.load(c.export());await c.flush();assert.deepEqual(c.getState().path,[3]);
@@ -94,7 +94,7 @@ test('standalone load and history reconcile shell identity and helper-only histo
 test('message-text history admission also reconciles appearance of a shell with the same executable graph',async()=>{
   const h=host();let serial=0;
   const c=createCanvasController({patch:helpShell(),invoke:(name,args)=>name==='canvas_message_text'?Promise.resolve({serial:++serial}):h.invoke(name,args)});
-  await c.prepare();const ordinary={version:2,profile:'ultra-patcher-v2',nodes:helpShell().nodes[2].patcher.nodes.filter(node=>node.type!=='help_helper'),edges:helpShell().nodes[2].patcher.edges};
+  await c.prepare();const ordinary={version:2,profile:'ultra-patcher-v2',presentation:null,nodes:helpShell().nodes[2].patcher.nodes.filter(node=>node.type!=='help_helper'),edges:helpShell().nodes[2].patcher.edges};
   ordinary.nodes.find(node=>node.id===7).params.text='42';c.load(ordinary);await c.flush();
   assert.equal(c.getState().helpShell,null);await c.undo();await c.flush();
   assert.deepEqual(c.getState().path,[3]);assert.equal(c.getState().helpShell.object,'append');
@@ -110,7 +110,7 @@ test('prepare precedes audio; actual events include revision and own hot number 
   const applied=h.calls.filter(x=>x.name==='canvas_apply').length; c.move(number.id,10,10); await c.flush(); assert.equal(h.calls.filter(x=>x.name==='canvas_apply').length,applied);
 });
 test('starting audio leaves continuous DSP running without requiring a control event',async()=>{
-  const h=host(),c=createCanvasController({invoke:h.invoke,patch:{version:1,profile:'ultra-canvas-v1',nodes:[
+  const h=host(),c=createCanvasController({invoke:h.invoke,patch:{version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[
     {id:1,type:'noise',x:40,y:40,params:{}},{id:2,type:'signal_dac',x:40,y:140,params:{channels:'1'}}],
     edges:[{from:1,outlet:0,to:2,inlet:0}]}});
   await c.startAudio();
@@ -188,7 +188,7 @@ test('native audio fault retains the backend reason and recovery instruction',as
   assert.match(c.getState().notice,/Stop audio/);
 });
 
-const bentPatch=()=>({version:1,profile:'ultra-canvas-v1',nodes:[
+const bentPatch=()=>({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[
   {id:1,type:'bang',x:10,y:20,params:{}},{id:2,type:'bang',x:80,y:100,params:{}},
 ],edges:[{from:1,outlet:0,to:2,inlet:0,midpoints:[30,40,30,40]}]});
 test('flat authoring retains valid midpoint arrays and refuses invalid geometry without weakening cable schema',()=>{

@@ -1,0 +1,68 @@
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Activating service name='org.freedesktop.portal.Desktop' requested by ':1.0' (uid=1000 pid=2016704 comm="/home/venetanji/.codex/worktrees/edd5/alive/apps/u")
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Activating service name='org.freedesktop.impl.portal.PermissionStore' requested by ':1.1' (uid=1000 pid=2016713 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.PermissionStore'
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Activating service name='org.freedesktop.portal.Documents' requested by ':1.1' (uid=1000 pid=2016713 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Successfully activated service 'org.freedesktop.portal.Documents'
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=2016713 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Activating service name='org.a11y.Bus' requested by ':1.4' (uid=1000 pid=2016735 comm="/usr/lib/xdg-desktop-portal-gtk")
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Successfully activated service 'org.a11y.Bus'
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=2016745 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=2016745 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.gtk'
+
+** (xdg-desktop-portal-gtk:2016735): WARNING **: 02:58:31.761: AT-SPI: Could not obtain desktop path or name
+
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=2016745 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+
+** (xdg-desktop-portal-gtk:2016735): WARNING **: 02:58:31.763: atk-bridge: GetRegisteredEvents returned message with unknown signature
+
+** (xdg-desktop-portal-gtk:2016735): WARNING **: 02:58:31.763: atk-bridge: get_device_events_reply: unknown signature
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2016713 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2016713 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2016713 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2016713 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2016642]: [session uid=1000 pid=2016642 pidfd=5] Successfully activated service 'org.freedesktop.portal.Desktop'
+PASS secondary file delivery during initialization preserves main and opens its own window
+Traceback (most recent call last):
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_desktop.py", line 598, in editor_edit
+    windows.focus('Pulse - Ultra Hosted Editor')
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_editor_diagnostics.py", line 38, in observed_focus
+    return original_focus(absent_title if focus_failure and title == 'Pulse - Ultra Hosted Editor' else title)
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_documents_desktop.py", line 126, in focus
+    raise AssertionError('Native window did not open: ' + title)
+AssertionError: Native window did not open: Diagnostic absent hosted editor
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_editor_diagnostics.py", line 127, in <module>
+    run()
+    ~~~^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_editor_diagnostics.py", line 58, in run
+    alive.editor_edit()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_desktop.py", line 600, in editor_edit
+    observe_editor_window(False, error)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_desktop.py", line 350, in observe_editor_window
+    (ui.output / 'native-inputs.json').write_text(json.dumps(native_inputs, indent=2))
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_editor_diagnostics.py", line 47, in unavailable_write
+    raise OSError('Deliberately unavailable editor receipt write')
+OSError: Deliberately unavailable editor receipt write

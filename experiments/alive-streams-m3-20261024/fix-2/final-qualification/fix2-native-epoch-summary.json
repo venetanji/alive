@@ -1,0 +1,141 @@
+{
+  "complete": true,
+  "epochs": 6,
+  "lifetime": {
+    "budget_samples": "3787",
+    "buffer_frames_last": "512",
+    "buffer_frames_max": "512",
+    "buffer_frames_min": "512",
+    "buffer_size_changed_count": "0",
+    "callbacks_after_failure": "0",
+    "callbacks_entered": "3787",
+    "clock_anomaly_count": "0",
+    "counter_overflow": "0",
+    "cpal_error_total": "0",
+    "cpal_non_xrun_reports": "0",
+    "cpal_xrun_reports": "0",
+    "duration_max_ns": "2263079",
+    "duration_samples": "3787",
+    "duration_sum_ns": "2773524421",
+    "invalid_callback_shape": "0",
+    "max_utilization_ppm": "212163",
+    "native_render_failures": "0",
+    "output_frames": "1938944",
+    "over_buffer_budget_count": "0",
+    "render_calls": "3787",
+    "silenced_callbacks": "0",
+    "valid_callbacks": "3787",
+    "zero_frame_callbacks": "0"
+  },
+  "configs": [
+    {
+      "channels": 2,
+      "device": "default_output",
+      "host": "PipeWire",
+      "rate_hz": 48000,
+      "requested_buffer_frames": 512,
+      "sample_format": "f32",
+      "source_id": "db3937551d59a00e195d7ed23440fb0d2b5d6cacf37fb2534e98e34c25c09d75",
+      "timing_enabled": true
+    },
+    {
+      "channels": 2,
+      "device": "default_output",
+      "host": "PipeWire",
+      "rate_hz": 48000,
+      "requested_buffer_frames": 512,
+      "sample_format": "f32",
+      "source_id": "db3937551d59a00e195d7ed23440fb0d2b5d6cacf37fb2534e98e34c25c09d75",
+      "timing_enabled": true
+    },
+    {
+      "channels": 2,
+      "device": "default_output",
+      "host": "PipeWire",
+      "rate_hz": 48000,
+      "requested_buffer_frames": 512,
+      "sample_format": "f32",
+      "source_id": "db3937551d59a00e195d7ed23440fb0d2b5d6cacf37fb2534e98e34c25c09d75",
+      "timing_enabled": true
+    },
+    {
+      "channels": 2,
+      "device": "default_output",
+      "host": "PipeWire",
+      "rate_hz": 48000,
+      "requested_buffer_frames": 512,
+      "sample_format": "f32",
+      "source_id": "db3937551d59a00e195d7ed23440fb0d2b5d6cacf37fb2534e98e34c25c09d75",
+      "timing_enabled": true
+    },
+    {
+      "channels": 2,
+      "device": "default_output",
+      "host": "PipeWire",
+      "rate_hz": 48000,
+      "requested_buffer_frames": 512,
+      "sample_format": "f32",
+      "source_id": "db3937551d59a00e195d7ed23440fb0d2b5d6cacf37fb2534e98e34c25c09d75",
+      "timing_enabled": true
+    },
+    {
+      "channels": 2,
+      "device": "default_output",
+      "host": "PipeWire",
+      "rate_hz": 48000,
+      "requested_buffer_frames": 512,
+      "sample_format": "f32",
+      "source_id": "db3937551d59a00e195d7ed23440fb0d2b5d6cacf37fb2534e98e34c25c09d75",
+      "timing_enabled": true
+    }
+  ],
+  "duration": {
+    "samples": 3787,
+    "maximum": 2263079,
+    "overflow_samples": 0,
+    "intervals": {
+      "p50": {
+        "lower_exclusive": 663982,
+        "upper_inclusive": 693379
+      },
+      "p95": {
+        "lower_exclusive": 1217748,
+        "upper_inclusive": 1271662
+      },
+      "p99": {
+        "lower_exclusive": 1448155,
+        "upper_inclusive": 1512270
+      },
+      "p999": {
+        "lower_exclusive": 1579224,
+        "upper_inclusive": 1649142
+      }
+    }
+  },
+  "utilization": {
+    "samples": 3787,
+    "maximum": 212163,
+    "overflow_samples": 0,
+    "intervals": {
+      "p50": {
+        "lower_exclusive": 6,
+        "upper_inclusive": 7
+      },
+      "p95": {
+        "lower_exclusive": 11,
+        "upper_inclusive": 12
+      },
+      "p99": {
+        "lower_exclusive": 13,
+        "upper_inclusive": 14
+      },
+      "p999": {
+        "lower_exclusive": 15,
+        "upper_inclusive": 16
+      }
+    },
+    "maximum_unit": "ppm",
+    "interval_unit": "percent"
+  },
+  "sha256": "ff6a2fa38c631ea56d2a79a0d93f9ded6ab404fe2e1239bd2fed7c15365f508e"
+}

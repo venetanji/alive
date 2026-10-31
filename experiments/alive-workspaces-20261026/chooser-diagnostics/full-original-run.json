@@ -1,0 +1,16 @@
+{
+  "command": [
+    "bash",
+    "apps/ultra/tests/check_canvas_desktop.sh",
+    "/tmp/alive-workspaces-chooser-ci-fix/full-original"
+  ],
+  "environment": {
+    "ULTRA_TEST_ALIVE": "1",
+    "ULTRA_TEST_SCRIPT": "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_desktop.py"
+  },
+  "start_utc": "2026-10-26T17:06:09.554702+00:00",
+  "start_monotonic": 53302.357331147,
+  "exit": 0,
+  "duration_seconds": 193.5566362440004,
+  "end_utc": "2026-10-26T17:09:23.111352+00:00"
+}

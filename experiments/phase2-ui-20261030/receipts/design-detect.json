@@ -1,0 +1,249 @@
+[
+  {
+    "antipattern": "cramped-padding",
+    "name": "Cramped padding",
+    "description": "Text is too close to the edge of its container. Two shapes: (1) an element with its own text where the space between the rendered text and the border box is too small for the font size, and (2) a wrapper whose children's text lands flush against a visible boundary (border, outline, or non-transparent background) with nothing to inset it. Add at least 8px (ideally 12–16px) of space inside bordered, outlined, or colored containers.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/alive.html",
+    "line": 0,
+    "snippet": "<div> \"workspace-tools\": children flush against border-bottom on bottom (no inset)"
+  },
+  {
+    "antipattern": "tiny-text",
+    "name": "Tiny body text",
+    "description": "Body text below 12px is hard to read, especially on high-DPI screens. Use at least 14px for body content, 16px is ideal.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/alive.html",
+    "line": 0,
+    "snippet": "11px body text"
+  },
+  {
+    "antipattern": "cramped-padding",
+    "name": "Cramped padding",
+    "description": "Text is too close to the edge of its container. Two shapes: (1) an element with its own text where the space between the rendered text and the border box is too small for the font size, and (2) a wrapper whose children's text lands flush against a visible boundary (border, outline, or non-transparent background) with nothing to inset it. Add at least 8px (ideally 12–16px) of space inside bordered, outlined, or colored containers.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/alive.html",
+    "line": 0,
+    "snippet": "<div> \"timeline-tools\": children flush against border-bottom+bg on top/bottom (no inset)"
+  },
+  {
+    "antipattern": "undersized-ui-text",
+    "name": "Undersized functional text",
+    "description": "Interactive and content-bearing UI text (links, buttons, nav items, labels, table cells, meta rows, timecodes) below 11px is a legibility failure, not a style choice. WCAG sets no absolute pixel floor, but functional text under 11px is a defensible quality bar: it fails on high-DPI and small viewports and it degrades tap and read targets. The 11px floor holds even inside a footer; only non-interactive legal smallprint gets the softer 10px floor. Being ON the DESIGN.md size ramp does not exempt a value here: adding 8px to the ramp launders the token but not the legibility problem, and that is exactly the escape hatch this rule closes. Exempts sup/sub, visually-hidden (sr-only) text, and code/terminal contexts. Decorative letterspaced micro-labels are still functional and stay in scope.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/alive.html",
+    "line": 0,
+    "snippet": "10px functional text \"Return receipts\" (below 11px floor)"
+  },
+  {
+    "antipattern": "cramped-padding",
+    "name": "Cramped padding",
+    "description": "Text is too close to the edge of its container. Two shapes: (1) an element with its own text where the space between the rendered text and the border box is too small for the font size, and (2) a wrapper whose children's text lands flush against a visible boundary (border, outline, or non-transparent background) with nothing to inset it. Add at least 8px (ideally 12–16px) of space inside bordered, outlined, or colored containers.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/alive.html",
+    "line": 0,
+    "snippet": "<div>: children flush against border-top+bg on top/bottom (no inset)"
+  },
+  {
+    "antipattern": "undersized-ui-text",
+    "name": "Undersized functional text",
+    "description": "Interactive and content-bearing UI text (links, buttons, nav items, labels, table cells, meta rows, timecodes) below 11px is a legibility failure, not a style choice. WCAG sets no absolute pixel floor, but functional text under 11px is a defensible quality bar: it fails on high-DPI and small viewports and it degrades tap and read targets. The 11px floor holds even inside a footer; only non-interactive legal smallprint gets the softer 10px floor. Being ON the DESIGN.md size ramp does not exempt a value here: adding 8px to the ramp launders the token but not the legibility problem, and that is exactly the escape hatch this rule closes. Exempts sup/sub, visually-hidden (sr-only) text, and code/terminal contexts. Decorative letterspaced micro-labels are still functional and stay in scope.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/alive.html",
+    "line": 0,
+    "snippet": "10px functional text \"Prepare / Apply\" (below 11px floor)"
+  },
+  {
+    "antipattern": "undersized-ui-text",
+    "name": "Undersized functional text",
+    "description": "Interactive and content-bearing UI text (links, buttons, nav items, labels, table cells, meta rows, timecodes) below 11px is a legibility failure, not a style choice. WCAG sets no absolute pixel floor, but functional text under 11px is a defensible quality bar: it fails on high-DPI and small viewports and it degrades tap and read targets. The 11px floor holds even inside a footer; only non-interactive legal smallprint gets the softer 10px floor. Being ON the DESIGN.md size ramp does not exempt a value here: adding 8px to the ramp launders the token but not the legibility problem, and that is exactly the escape hatch this rule closes. Exempts sup/sub, visually-hidden (sr-only) text, and code/terminal contexts. Decorative letterspaced micro-labels are still functional and stay in scope.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/alive.html",
+    "line": 0,
+    "snippet": "10px functional text \"Discard edits\" (below 11px floor)"
+  },
+  {
+    "antipattern": "cramped-padding",
+    "name": "Cramped padding",
+    "description": "Text is too close to the edge of its container. Two shapes: (1) an element with its own text where the space between the rendered text and the border box is too small for the font size, and (2) a wrapper whose children's text lands flush against a visible boundary (border, outline, or non-transparent background) with nothing to inset it. Add at least 8px (ideally 12–16px) of space inside bordered, outlined, or colored containers.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/alive.html",
+    "line": 0,
+    "snippet": "<section>: children flush against border-top on top (no inset)"
+  },
+  {
+    "antipattern": "tiny-text",
+    "name": "Tiny body text",
+    "description": "Body text below 12px is hard to read, especially on high-DPI screens. Use at least 14px for body content, 16px is ideal.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/alive.html",
+    "line": 0,
+    "snippet": "11px body text"
+  },
+  {
+    "antipattern": "tiny-text",
+    "name": "Tiny body text",
+    "description": "Body text below 12px is hard to read, especially on high-DPI screens. Use at least 14px for body content, 16px is ideal.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/alive.html",
+    "line": 0,
+    "snippet": "10px body text"
+  },
+  {
+    "antipattern": "tiny-text",
+    "name": "Tiny body text",
+    "description": "Body text below 12px is hard to read, especially on high-DPI screens. Use at least 14px for body content, 16px is ideal.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/alive.html",
+    "line": 0,
+    "snippet": "10px body text"
+  },
+  {
+    "antipattern": "cramped-padding",
+    "name": "Cramped padding",
+    "description": "Text is too close to the edge of its container. Two shapes: (1) an element with its own text where the space between the rendered text and the border box is too small for the font size, and (2) a wrapper whose children's text lands flush against a visible boundary (border, outline, or non-transparent background) with nothing to inset it. Add at least 8px (ideally 12–16px) of space inside bordered, outlined, or colored containers.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/alive.html",
+    "line": 0,
+    "snippet": "<section> \"clip-section\": children flush against border-bottom on bottom (no inset)"
+  },
+  {
+    "antipattern": "cramped-padding",
+    "name": "Cramped padding",
+    "description": "Text is too close to the edge of its container. Two shapes: (1) an element with its own text where the space between the rendered text and the border box is too small for the font size, and (2) a wrapper whose children's text lands flush against a visible boundary (border, outline, or non-transparent background) with nothing to inset it. Add at least 8px (ideally 12–16px) of space inside bordered, outlined, or colored containers.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/alive.html",
+    "line": 0,
+    "snippet": "<div> \"piano-area\": children flush against bg on top/bottom (no inset)"
+  },
+  {
+    "antipattern": "tiny-text",
+    "name": "Tiny body text",
+    "description": "Body text below 12px is hard to read, especially on high-DPI screens. Use at least 14px for body content, 16px is ideal.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/alive.html",
+    "line": 0,
+    "snippet": "10px body text"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/alive.html",
+    "line": 0,
+    "snippet": "border-bottom rgb(80, 80, 80) on header \"AliveOpening session...NewOpen...SaveSav\" is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "rgb(80, 80, 80)"
+  },
+  {
+    "antipattern": "design-system-font",
+    "name": "Font outside DESIGN.md",
+    "description": "A font is used that is not declared in DESIGN.md typography. Use the documented type system or update DESIGN.md if this is an intentional brand addition.",
+    "severity": "warning",
+    "category": "quality",
+    "file": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/alive.html",
+    "line": 0,
+    "snippet": "strong \"Alive\" uses sans\",\"helvetica neue\",sans-serif; not declared in DESIGN.md typography",
+    "ignoreValue": "sans\",\"helvetica neue\",sans-serif"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/alive.html",
+    "line": 0,
+    "snippet": "border-top rgb(104, 104, 104) on input is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "rgb(104, 104, 104)"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/alive.html",
+    "line": 0,
+    "snippet": "border-right rgb(115, 115, 115) on aside \"LibraryOpen instrument...Open effect...\" is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "rgb(115, 115, 115)"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/alive.html",
+    "line": 0,
+    "snippet": "border-left rgb(119, 119, 119) on aside \"MasterScene receipts\" is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "rgb(119, 119, 119)"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/alive.html",
+    "line": 0,
+    "snippet": "text color rgb(255, 255, 255) on button \"Master\" is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "rgb(255, 255, 255)"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/alive.html",
+    "line": 0,
+    "snippet": "background rgb(117, 96, 57) on button \"Master\" is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "rgb(117, 96, 57)"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/alive.html",
+    "line": 0,
+    "snippet": "border-top rgb(133, 113, 76) on button \"Prepare / Apply\" is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "rgb(133, 113, 76)"
+  },
+  {
+    "antipattern": "design-system-color",
+    "name": "Color outside DESIGN.md",
+    "description": "A literal color is outside the DESIGN.md palette and sidecar tonal ramps. This may be legitimate, but it should be an intentional design-system addition rather than drift.",
+    "severity": "advisory",
+    "category": "quality",
+    "file": "/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/ui/alive.html",
+    "line": 0,
+    "snippet": "border-bottom rgb(75, 75, 75) on header \"ClipClip length is independent. Global l\" is outside DESIGN.md colors",
+    "advisory": true,
+    "ignoreValue": "rgb(75, 75, 75)"
+  }
+]

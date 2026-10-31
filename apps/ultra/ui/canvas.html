@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Ultra - patcher</title><link rel="stylesheet" href="canvas.css"><link rel="stylesheet" href="canvas-console.css"><link rel="stylesheet" href="canvas-help.css"><link rel="stylesheet" href="canvas-device.css">
+  <title>Ultra - patcher</title><link rel="stylesheet" href="canvas.css"><link rel="stylesheet" href="canvas-console.css"><link rel="stylesheet" href="canvas-help.css"><link rel="stylesheet" href="canvas-device.css"><link rel="stylesheet" href="canvas-presentation-view.css">
 </head>
 <body>
 <svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
@@ -109,15 +109,14 @@
   </aside>
   <aside id="instrument-panel" aria-label="Instrument panel" hidden>
     <header class="panel-header"><h2 id="instrument-title">Instrument</h2><button id="instrument-close" class="icon-button" aria-label="Close instrument panel"><svg><use href="#i-close"/></svg></button></header>
-    <section id="instrument-empty"><p>Wire a poly.note~, saw.voice~, lowpass.voice~, adsr.voice~, *.voice~ and mix.voice~ into gain~ and stereo output. Package the graph to expose its controls here.</p></section>
+    <section id="instrument-empty"><p>This patch has no saved presentation. Package a device or author a presentation to show its controls here.</p></section>
     <section id="instrument-playable" hidden>
       <div id="instrument-controls"></div>
       <div class="instrument-presets"><select id="instrument-preset" aria-label="Instrument preset"></select><button id="instrument-recall">Recall</button></div>
       <div class="instrument-presets"><input id="instrument-preset-name" aria-label="New preset name" placeholder="Preset name" maxlength="64"><button id="instrument-store">Store preset</button></div>
-      <p id="instrument-keyboard-note"></p><div id="instrument-keyboard" aria-label="Instrument keyboard" role="group" tabindex="0"></div>
-      <div class="instrument-actions"><button id="instrument-release">Release all</button><button id="instrument-instance">New instance</button></div>
+      <div class="instrument-actions"><button id="instrument-instance">New instance</button></div>
     </section>
-    <section><label class="instrument-name-field">Instrument name<input id="instrument-name" maxlength="64" placeholder="Subtractive instrument"></label><button id="instrument-package" class="panel-action">Package instrument</button><p>Save the patch to keep its device interface and presets. Alive session hosting is not connected yet.</p></section>
+    <section><label class="instrument-name-field">Device name<input id="instrument-name" maxlength="64" placeholder="Subtractive instrument"></label><button id="instrument-package" class="panel-action">Package device</button><p>Save the patch to keep its device interface and presets. Alive hosts instruments and stereo effects.</p></section>
   </aside>
 </main>
 <section id="patch-console" aria-label="Console" hidden>

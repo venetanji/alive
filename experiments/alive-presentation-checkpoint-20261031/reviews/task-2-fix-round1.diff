@@ -1,0 +1,266 @@
+# Review package: 36aaba1c670060cbf900b1573047695c87cb6c41..0c98d72
+
+## Commits
+0c98d72 fix(presentation): reconcile final values and refresh mounted state
+
+## Files changed
+ apps/ultra/src-tauri/src/document_commands.rs      |  3 ++-
+ .../src-tauri/src/document_parameter_gestures.rs   | 27 ++++++++++++++++++++++
+ apps/ultra/ui/canvas-presentation-hosts.mjs        | 10 +++++---
+ apps/ultra/ui/canvas-presentation-hosts.test.mjs   | 24 +++++++++++++++++++
+ apps/ultra/ui/canvas-presentation-view.mjs         | 16 +++++++++----
+ 5 files changed, 71 insertions(+), 9 deletions(-)
+
+## Diff
+diff --git a/apps/ultra/src-tauri/src/document_commands.rs b/apps/ultra/src-tauri/src/document_commands.rs
+index 34d560e..924cbe4 100644
+--- a/apps/ultra/src-tauri/src/document_commands.rs
++++ b/apps/ultra/src-tauri/src/document_commands.rs
+@@ -90,21 +90,22 @@ pub fn admit_message(control: &mut canvas::CanvasState, owner: &Document, patch:
+         let revision=control.revision();
+         control.message_text(revision,edit.node,&edit.text,|serial| unsafe {
+             crate::ultra_canvas_message_text_document(owner.id,revision,edit.node,serial,edit.text.as_ptr().cast(),edit.text.len() as u32)!=0
+         })?;
+         return Ok(documents::Admission { revision,message_text_serial:control.message_text_serial() });
+     }
+     let inferred = if !force && parameter.is_none() {
+         control.single_parameter_change(&plan).map(|(node, key, value, hot)| Parameter { node, key: key.into(), value, hot })
+     } else { None };
+     let parameter = parameter.or(inferred.as_ref());
+-    if !force && control.matches(&plan) && !parameter.is_some_and(|parameter| parameter.hot) {
++    // A cold hint can reconcile native preview state even when canonical values match.
++    if !force && control.matches(&plan) && parameter.is_none() {
+         return Ok(documents::Admission {revision:control.revision(),message_text_serial:control.message_text_serial()});
+     }
+     if let Some(parameter) = parameter.filter(|_| !force) {
+         if control.parameter_matches(&plan, parameter.node, &parameter.key, parameter.value)? {
+             let revision = control.revision();
+             if parameter.hot { control.event(revision, parameter.node, 0, serde_json::json!([parameter.value]))?; }
+             control.parameter(revision, parameter.node, &parameter.key, parameter.value, |slot, value| unsafe {
+                 crate::ultra_canvas_param_hot_document(owner.id, revision, parameter.node, slot, value, u32::from(parameter.hot)) != 0
+             })?;
+             return Ok(documents::Admission {revision,message_text_serial:control.message_text_serial()});
+diff --git a/apps/ultra/src-tauri/src/document_parameter_gestures.rs b/apps/ultra/src-tauri/src/document_parameter_gestures.rs
+index 75f0ca9..5384f17 100644
+--- a/apps/ultra/src-tauri/src/document_parameter_gestures.rs
++++ b/apps/ultra/src-tauri/src/document_parameter_gestures.rs
+@@ -60,20 +60,47 @@ pub fn settle(registry:&mut Registry,audio:&mut crate::AudioControl,io:&mut crat
+     }registry.descriptor(label)
+ }
+ 
+ #[cfg(test)]
+ mod tests {
+     use super::*;
+     fn snapshot(id:u32)->canvas::NativeStatus{let mut s=canvas::NativeStatus::default();unsafe{crate::ultra_canvas_status_document(id,&mut s);}s}
+     fn value(id:u32,node:u32)->f64{let s=snapshot(id);s.nodes[..s.node_count as usize].iter().find(|n|n.id==node).unwrap().value}
+     fn pulses(id:u32,node:u32)->u64{let s=snapshot(id);s.nodes[..s.node_count as usize].iter().find(|n|n.id==node).unwrap().pulses}
+     #[test]
++    fn non_hot_baseline_return_commit_reconciles_native_value_without_output_or_reinstall(){
++        const NAME:&str="document_windows::commands::parameter_gestures::tests::non_hot_baseline_return_commit_reconciles_native_value_without_output_or_reinstall";
++        if std::env::var("ULTRA_PRESENTATION_BASELINE_TEST_PROCESS").as_deref()!=Ok("1"){
++            let child=std::process::Command::new(std::env::current_exe().unwrap()).args(["--exact",NAME,"--nocapture"]).env("ULTRA_PRESENTATION_BASELINE_TEST_PROCESS","1").output().unwrap();
++            assert!(child.status.success(),"{}\n{}",String::from_utf8_lossy(&child.stdout),String::from_utf8_lossy(&child.stderr));return;
++        }
++        let _guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
++        let patch=serde_json::json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,"nodes":[
++            {"id":1,"type":"multiply","x":0,"y":0,"params":{"rhs":0.65}},
++            {"id":2,"type":"number","x":0,"y":0,"params":{"value":0}}],"edges":[{"from":1,"outlet":0,"to":2,"inlet":0}]});
++        let mut registry=Registry::default();let owner=registry.add("Cold reconciliation".into(),Kind::Patch,Some(patch),None,None).unwrap();
++        let mut audio=crate::AudioControl::default();let mut io=crate::audio::Driver::load(PathBuf::from("/nonexistent/ultra-baseline-return-test.json"));
++        let owner=registry.prepare_runtime(&owner.label,|owner|admit_owned(&mut io,&mut audio.graphs[owner.id as usize],owner,owner.patch.as_ref().unwrap(),None,None,true)).unwrap();
++        let request=|token,phase:&str,value|GestureRequest{owner_label:owner.label.clone(),runtime_revision:owner.runtime_revision,token,node:1,key:"rhs".into(),phase:phase.into(),value};
++        let token=apply(&mut registry,&mut audio,&mut io,&owner.label,request(None,"begin",0.65)).unwrap().token;
++        apply(&mut registry,&mut audio,&mut io,&owner.label,request(Some(token),"preview",0.4)).unwrap();
++        let message=audio.graphs[owner.id as usize].event(owner.runtime_revision,1,0,serde_json::json!([1])).unwrap();
++        assert_eq!(unsafe{crate::ultra_canvas_message_document(owner.id,owner.runtime_revision,1,0,&message)},1);assert_eq!(value(owner.id,2),0.4);
++        let before=pulses(owner.id,2);
++        let final_state=apply(&mut registry,&mut audio,&mut io,&owner.label,request(Some(token),"commit",0.65)).unwrap().document;
++        assert_eq!(final_state.patch.unwrap()["nodes"][0]["params"]["rhs"],0.65);assert!(final_state.parameter_previews.is_empty());
++        assert_eq!(snapshot(owner.id).revision,owner.runtime_revision);assert_eq!(pulses(owner.id,2),before,"cold reconciliation must not emit a hot output");
++        assert_eq!(unsafe{crate::ultra_canvas_message_document(owner.id,owner.runtime_revision,1,0,&message)},1);
++        assert_eq!(value(owner.id,2),0.65,"baseline-return commit left native rhs at its earlier preview");
++        close_owned(&mut io,owner.id).unwrap();
++    }
++    #[test]
+     fn live_preview_metadata_other_parameter_cancel_commit_history_and_detached_settlement(){
+         const NAME:&str="document_windows::commands::parameter_gestures::tests::live_preview_metadata_other_parameter_cancel_commit_history_and_detached_settlement";
+         if std::env::var("ULTRA_PRESENTATION_GESTURE_TEST_PROCESS").as_deref()!=Ok("1"){
+             let child=std::process::Command::new(std::env::current_exe().unwrap()).args(["--exact",NAME,"--nocapture"]).env("ULTRA_PRESENTATION_GESTURE_TEST_PROCESS","1").output().unwrap();
+             assert!(child.status.success(),"{}\n{}",String::from_utf8_lossy(&child.stdout),String::from_utf8_lossy(&child.stderr));return;
+         }
+         let _guard=crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+         let patch=serde_json::json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,"nodes":[{"id":10,"type":"patcher","x":0,"y":0,"params":{"name":"test"},"patcher":{"presentation":null,"nodes":[
+             {"id":1,"type":"number","x":0,"y":0,"params":{"value":1}},{"id":2,"type":"number","x":0,"y":0,"params":{"value":2}},{"id":3,"type":"number","x":0,"y":0,"params":{"value":0}}],"edges":[{"from":1,"outlet":0,"to":3,"inlet":0}]}}],"edges":[]});
+         let mut r=Registry::default();let root=r.add("Preview".into(),Kind::Patch,Some(patch),None,None).unwrap();
+diff --git a/apps/ultra/ui/canvas-presentation-hosts.mjs b/apps/ultra/ui/canvas-presentation-hosts.mjs
+index e58abeb..1b6b7dc 100644
+--- a/apps/ultra/ui/canvas-presentation-hosts.mjs
++++ b/apps/ultra/ui/canvas-presentation-hosts.mjs
+@@ -1,20 +1,21 @@
+ import {REGISTRY,nodeSpec} from './canvas-model.mjs';
+ import {treeNodes} from './canvas-hierarchy.mjs';
+ import {actualDevices,parameterReading} from './alive-model.mjs';
+ 
+ const equalScope=(a,b)=>['ownerId','generation','instanceId','sourceRevision'].every(key=>a?.[key]===b?.[key]);
++const endedGesture=(gestureId,message)=>Object.assign(Error(message),{code:'PRESENTATION_GESTURE_ENDED',gestureId});
+ const unavailable=()=>{throw Error('Installed device panels are unavailable for this host.');};
+ function lifetime(readScope){
+   const listeners=new Set(),gestures=new Map();let disposed=false,serial=0;
+   const assert=scope=>{if(disposed||!equalScope(scope,readScope()))throw Error('Presentation scope changed. Select the device again.');};
+-  return{assert,gestures,get scope(){return Object.freeze({...readScope()});},beginGesture(bindingId,original){const scope=readScope();assert(scope);const id=`gesture-${++serial}`;gestures.set(id,{bindingId,original,latest:original,scope:{...scope}});return id;},gesture(request){assert(request.scope);const gesture=gestures.get(request.gestureId);if(!gesture||gesture.bindingId!==request.bindingId||!equalScope(gesture.scope,request.scope))throw Error('Presentation gesture is no longer authorized.');if(!['preview','commit','cancel'].includes(request.phase))throw Error('Invalid presentation gesture phase.');return gesture;},subscribe(fn){listeners.add(fn);return()=>listeners.delete(fn);},publish(){if(!disposed)for(const fn of listeners)fn();},dispose(){disposed=true;gestures.clear();listeners.clear();}};
++  return{assert,gestures,get scope(){return Object.freeze({...readScope()});},beginGesture(bindingId,original){const scope=readScope();assert(scope);const id=`gesture-${++serial}`;gestures.set(id,{bindingId,original,latest:original,scope:{...scope}});return id;},gesture(request){assert(request.scope);const gesture=gestures.get(request.gestureId);if(!gesture||gesture.bindingId!==request.bindingId||!equalScope(gesture.scope,request.scope))throw endedGesture(request.gestureId,'Presentation gesture is no longer authorized.');if(!['preview','commit','cancel'].includes(request.phase))throw Error('Invalid presentation gesture phase.');return gesture;},subscribe(fn){listeners.add(fn);return()=>listeners.delete(fn);},publish(){if(!disposed)for(const fn of listeners)fn();},dispose(){disposed=true;gestures.clear();listeners.clear();}};
+ }
+ function validate(value,descriptor){if(!Number.isFinite(value)||value<descriptor.min||value>descriptor.max||descriptor.integral&&!Number.isInteger(value))throw Error(`Parameter requires a value from ${descriptor.min} to ${descriptor.max}.`);}
+ 
+ export function createUltraPresentationHost({controller,ownerId='ultra-document'}={}){
+   const state=()=>controller.getState(),document=()=>state().document??state().patch;
+   const scope=()=>{const s=state();return{ownerId:s.ownerId??ownerId,generation:s.revision??0,instanceId:'root',sourceRevision:s.shared?s.revision:s.desiredRevision};};
+   const life=lifetime(scope),targets=new Map();
+   function resolve(target){
+     const node=treeNodes(document()).find(node=>node.id===target.node);if(!node)throw Error('Presentation target is missing.');
+     if(target.kind==='text')return{text:node.params[target.param]??REGISTRY[node.type]?.params[target.param]?.value??'',style:node.style??{},capabilities:{text:true}};
+@@ -38,35 +39,38 @@ export function createUltraPresentationHost({controller,ownerId='ultra-document'
+     if(request.phase!=='preview')life.gestures.delete(request.gestureId);
+     life.publish();return snapshot(request.bindingId);
+   },async sendEvent(request){life.assert(request.scope);if(request.action!=='bang'||request.target.kind!=='event'||!resolve(request.target).capabilities.event)throw Error('Unsupported presentation event.');const accepted=await controller.deviceEvent(request.target.node,request.target.inlet,null);life.assert(request.scope);if(!accepted)throw Error('Presentation event was refused by the current graph.');return accepted;},writeBatch:unavailable,acquirePanel:unavailable,dispose:life.dispose};
+ }
+ 
+ export function createAlivePresentationHost({instanceId,getSnapshot,writeBase}={}){
+   const instance=()=>getSnapshot()?.deviceInstances[instanceId];
+   const reference=()=>getSnapshot()?.document.tracks.flatMap(actualDevices).find(device=>device.instanceId===instanceId);
+   const scope=()=>{const s=getSnapshot(),r=reference();return{ownerId:'alive-session',generation:s?.generation,instanceId,sourceRevision:r?JSON.stringify([r.sourceSha256,r.path,r.id,r.version]):null};};
+   const life=lifetime(scope);let writes=Promise.resolve();
++  function assertBase(request,gesture){
++    if(instance()?.manifest.parameters.find(p=>p.key===request.bindingId)?.base!==gesture.latest){life.gestures.delete(request.gestureId);throw endedGesture(request.gestureId,'The base value changed during this presentation gesture. Try the control again.');}
++  }
+   function resolve(target){
+     const item=instance()?.manifest.presentation?.items.find(item=>JSON.stringify(item.target)===JSON.stringify(target)),resolved=item?.resolved;
+     if(!resolved)throw Error('Saved presentation target is unavailable in the accepted manifest.');
+     if(resolved.kind==='text')return{...resolved,capabilities:{text:true}};
+     if(resolved.kind==='event')return{capabilities:{event:false}};
+     return{...resolved,capabilities:{write:!!resolved.bindingId}};
+   }
+   function snapshot(bindingId){
+     const s=getSnapshot(),device=instance(),index=device?.manifest.parameters.findIndex(p=>p.key===bindingId);if(index===undefined||index<0)return null;
+     const binding=device.manifest.parameters[index],runtime=s.state.devices[device.index],reading=parameterReading(binding,runtime,index);
+     return{commanded:reading.base,applied:runtime?.base?.[index]??reading.base,effective:reading.effective,owner:reading.owner,enabled:!!reference(),revision:s.editRevision??0};
+   }
+   return{get scope(){return life.scope;},resolve,snapshot,subscribe:life.subscribe,publish:life.publish,beginGesture(bindingId){return life.beginGesture(bindingId,snapshot(bindingId)?.commanded);},write(request){
+     const run=async()=>{
+       const gesture=life.gesture(request),binding=instance()?.manifest.parameters.find(p=>p.key===request.bindingId);if(!binding||!reference())throw Error('The device instance is no longer available.');
+-      if(binding.base!==gesture.latest)throw Error('The base value changed during this presentation gesture. Finish the other edit and try again.');
++      assertBase(request,gesture);
+       const value=request.phase==='cancel'?gesture.original:request.value;validate(value,binding);
+       const assert=()=>life.assert(request.scope);
+-      const assertValue=()=>{if(instance()?.manifest.parameters.find(p=>p.key===request.bindingId)?.base!==gesture.latest)throw Error('The base value changed during this presentation gesture.');};
++      const assertValue=()=>assertBase(request,gesture);
+       await writeBase({generation:request.scope.generation,instanceId:request.scope.instanceId,key:request.bindingId,value},assert,assertValue);life.assert(request.scope);gesture.latest=value;
+       if(request.phase!=='preview')life.gestures.delete(request.gestureId);life.publish();return snapshot(request.bindingId);
+     };
+     const result=writes.then(run);writes=result.catch(()=>{});return result;
+   },sendEvent:unavailable,writeBatch:unavailable,acquirePanel:unavailable,dispose:life.dispose};
+ }
+diff --git a/apps/ultra/ui/canvas-presentation-hosts.test.mjs b/apps/ultra/ui/canvas-presentation-hosts.test.mjs
+index 80a5b79..4cc1005 100644
+--- a/apps/ultra/ui/canvas-presentation-hosts.test.mjs
++++ b/apps/ultra/ui/canvas-presentation-hosts.test.mjs
+@@ -32,18 +32,42 @@ test('Alive retains generation/instance authorization and base/effective ownersh
+ test('Alive rejects stale writes and delayed replies after source replacement or owner disposal',async()=>{
+   const h=alive(),scope=h.host.scope,gestureId=h.host.beginGesture('gain'),gate=h.delay();
+   const pending=h.host.write({scope,bindingId:'gain',gestureId,phase:'commit',value:1.5});await settle();h.state.document.tracks[0].chain.instrument.sourceSha256='replacement';gate.resolve();await assert.rejects(pending,/scope changed/);
+   await assert.rejects(h.host.write({scope,bindingId:'gain',gestureId,phase:'commit',value:1}),/scope changed/);assert.equal(h.calls.length,1);
+   const next=h.host.scope,id=h.host.beginGesture('gain');h.host.dispose();await assert.rejects(h.host.write({scope:next,bindingId:'gain',gestureId:id,phase:'commit',value:1}),/scope changed/);
+ });
+ test('Alive cancellation cannot overwrite an observed edit from another parameter owner',async()=>{
+   const h=alive(),scope=h.host.scope,gestureId=h.host.beginGesture('gain');await h.host.write({scope,bindingId:'gain',gestureId,phase:'preview',value:1.2});
+   h.binding.base=1.6;await assert.rejects(h.host.write({scope,bindingId:'gain',gestureId,phase:'cancel',value:1}),/changed during/);assert.equal(h.binding.base,1.6);assert.equal(h.calls.length,1);h.host.dispose();
+ });
++for(const commitBeforeReply of [false,true])test(`Alive mounted control recovers from an ownership conflict with a newer ${commitBeforeReply?'gesture':'draft'}`,async()=>{
++  const h=alive(),page=dom(),errors=[],presentation={version:1,openOnLoad:false,size:{width:120,height:140},items:[{id:'gain',kind:'control',target:{kind:'parameter',node:1,param:'gain'},widget:'dial',label:'Gain',included:true,visible:true,rect:{x:0,y:0,width:100,height:120},style:{accent:'default',labelPosition:'above'}}]};
++  const view=mountPresentation({...page,presentation,host:h.host,onError:error=>errors.push(error)}),range=all(page.root).find(e=>e.type==='range'),number=all(page.root).find(e=>e.type==='number');
++  range.fire('pointerdown',{pointerId:1,clientX:0,clientY:0});range.fire('pointermove',{pointerId:1,clientX:16,clientY:0});await settle();assert.equal(h.binding.base,1.2);
++  h.binding.base=1.6;h.host.publish();range.fire('keydown',{key:'Escape'});number.value='1.7';number.fire('input');if(commitBeforeReply)number.fire('change');await settle();
++  assert.equal(number.value,'1.7');
++  if(!commitBeforeReply){assert.equal(h.binding.base,1.6);assert.equal(view.hasDraft(),true);number.fire('change');await settle();}
++  assert.equal(h.binding.base,1.7);assert.deepEqual(h.calls.map(call=>call.value),[1.2,1.7]);assert.equal(errors.length,commitBeforeReply?0:1);assert.equal(view.hasDraft(),false);
++  view.dispose();h.host.dispose();
++});
++test('mounted Ultra comment and message text refresh with current and cleared appearance',async()=>{
++  const presentation={version:1,openOnLoad:false,size:{width:240,height:120},items:[1,2].map((node,index)=>({id:`text-${node}`,kind:'control',target:{kind:'text',node,param:'text'},widget:'text',label:'',included:true,visible:true,rect:{x:0,y:index*50,width:220,height:40},style:{accent:'default',labelPosition:'above'}}))};
++  const patch={version:2,profile:'ultra-patcher-v2',presentation,nodes:[{id:1,type:'comment',x:0,y:0,params:{text:'Before'},style:{fontsize:18,textcolor:[1,0,0,1],bgcolor:[0,0,0,1]}},{id:2,type:'message_box',x:0,y:50,params:{text:'1'}}],edges:[]};
++  const controller=createCanvasController({patch}),host=createUltraPresentationHost({controller}),page=dom(),view=mountPresentation({...page,presentation,host});
++  const texts=all(page.root).filter(e=>e.classList.contains('presentation-text')),scope=host.scope;
++  assert.equal(texts[0].textContent,'Before');assert.equal(texts[0].style.fontSize,'18px');
++  controller.parameter(1,'text','After');host.publish();assert.equal(texts[0].textContent,'After');
++  controller.parameter(2,'text','2');view.update();assert.equal(texts[1].textContent,'2');assert.deepEqual(host.scope,scope);
++  controller.style(1,'fontsize',24);host.publish();assert.equal(texts[0].style.fontSize,'24px');
++  controller.style(1,null);view.update();assert.equal(texts[0].style.fontSize,'');assert.equal(texts[0].style.color,'');assert.equal(texts[0].style.backgroundColor,'');
++  assert.equal(all(page.root).find(e=>e.classList.contains('presentation-text')),texts[0]);
++  controller.load({...patch,nodes:[{...patch.nodes[0],params:{text:'Replacement'}},patch.nodes[1]]});host.publish();assert.equal(texts[0].textContent,'After');
++  view.dispose();host.dispose();await controller.dispose();
++});
+ test('disposing a surface during preview writes nothing and owner settlement persists its accepted value',async()=>{
+   const calls=[],patch={version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[{id:1,type:'number',x:0,y:0,params:{value:.4}}],edges:[]};
+   const controller=createCanvasController({patch,invoke:async(name,args)=>{calls.push({name,args});if(name==='canvas_apply')return{revision:1};if(name==='document_parameter_gesture')return{token:1,document:{}};}});await controller.prepare();
+   const host=createUltraPresentationHost({controller}),page=dom(),presentation={version:1,openOnLoad:false,size:{width:120,height:140},items:[{id:'value',kind:'control',target:{kind:'parameter',node:1,param:'value'},widget:'dial',label:'Value',included:true,visible:true,rect:{x:0,y:0,width:100,height:120},style:{accent:'default',labelPosition:'above'}}]};
+   const view=mountPresentation({...page,presentation,host}),range=all(page.root).find(e=>e.type==='range');range.value='7';range.fire('input');await settle();
+   const before=calls.length;view.dispose();host.dispose();range.fire('change');await settle();assert.equal(calls.length,before);assert.equal(controller.getState().parameterPreviews[0].value,7);assert.equal(controller.getState().document.nodes[0].params.value,.4);
+   await controller.settleParameterGestures();assert.equal(controller.getState().document.nodes[0].params.value,7);assert.equal(calls.at(-1).args.request.phase,'commit');await controller.dispose();
+ });
+diff --git a/apps/ultra/ui/canvas-presentation-view.mjs b/apps/ultra/ui/canvas-presentation-view.mjs
+index de85bbc..406ca82 100644
+--- a/apps/ultra/ui/canvas-presentation-view.mjs
++++ b/apps/ultra/ui/canvas-presentation-view.mjs
+@@ -8,41 +8,47 @@ export function mountPresentation({doc,root,presentation,host,mode='preview',onE
+   const scope=Object.freeze({...host.scope}),key=scopeKey(scope),views=[],cleanup=[];
+   let disposed=false,replaced=null,current=presentation;
+   const active=()=>!disposed&&scopeKey(host.scope)===key;
+   const make=(tag,cls,text)=>{const e=doc.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e;};
+   const viewport=make('div','presentation-viewport'),surface=make('div','presentation-surface');
+   surface.dataset.mode=mode;surface.style.width=presentation.size.width+'px';surface.style.height=presentation.size.height+'px';viewport.append(surface);root.replaceChildren(viewport);
+   const report=(error,container)=>{if(!active())return;if(container){container.textContent=String(error.message??error);container.hidden=false;}onError(error);};
+   function mountControl(item,box){
+     const resolved=host.resolve(item.target),descriptor=resolved?.descriptor;
+     if(item.target.kind==='text'){
+-      const text=make('div','presentation-text',resolved?.text??'');
+-      const style=resolved?.style??{},color=rgba=>`rgba(${rgba.slice(0,3).map(c=>Math.round(c*255)).join(',')},${rgba[3]})`;
+-      if(style.fontsize)text.style.fontSize=style.fontsize+'px';if(style.textcolor)text.style.color=color(style.textcolor);if(style.bgcolor)text.style.backgroundColor=color(style.bgcolor);
+-      box.append(text);return;
++      const text=make('div','presentation-text'),color=rgba=>`rgba(${rgba.slice(0,3).map(c=>Math.round(c*255)).join(',')},${rgba[3]})`;
++      function refresh(){
++        if(!active())return;
++        const current=host.resolve(item.target),style=current?.style??{};text.textContent=current?.text??'';
++        text.style.fontSize=style.fontsize?style.fontsize+'px':'';text.style.color=style.textcolor?color(style.textcolor):'';text.style.backgroundColor=style.bgcolor?color(style.bgcolor):'';
++      }
++      box.append(text);views.push({refresh,hasDraft:()=>false,dispose(){}});refresh();return;
+     }
+     const error=make('div','presentation-error');error.setAttribute('role','alert');error.hidden=true;
+     let gesture=null,serial=0,control;
+     const read=()=>resolved?.bindingId?host.snapshot(resolved.bindingId):null;
+     const finish=()=>{gesture=null;};
+     function write(value,phase){
+       if(!active()||!resolved?.bindingId||!read()?.enabled)return false;
+       value=Number(value);
+       if(!Number.isFinite(value)||value<descriptor.min||value>descriptor.max||descriptor.integral&&!Number.isInteger(value)){report(Error(`${item.label} requires a value from ${descriptor.min} to ${descriptor.max}.`),error);return false;}
+       try{gesture??=host.beginGesture(resolved.bindingId);}catch(e){report(e,error);return false;}
+       const gestureId=gesture,ticket=++serial;if(phase!=='preview')finish();
+       let request;try{request=host.write({scope,bindingId:resolved.bindingId,gestureId,phase,value});}catch(e){request=Promise.reject(e);}
+       Promise.resolve(request).then(snapshot=>{
+         if(!active()||ticket!==serial)return;
+         error.hidden=true;if(snapshot&&!control.hasDraft?.())control.update?.(snapshot.commanded);
+         refresh();
+-      },e=>{if(active()&&ticket===serial){gesture=gestureId;report(e,error);refresh();}});
++      },e=>{if(active()&&ticket===serial){
++        if(e.code==='PRESENTATION_GESTURE_ENDED'&&e.gestureId===gestureId){if(gesture===gestureId)gesture=null;}else gesture=gestureId;
++        report(e,error);refresh();
++      }});
+       return true;
+     }
+     const state=read(),value=state?.commanded??descriptor?.min??0;
+     const options={label:item.label,value,checked:!!value,min:descriptor?.min,max:descriptor?.max,step:descriptor?.integral?1:'any',unit:descriptor?.unit??'',options:item.options??[],disabled:!state?.enabled,onInput:v=>write(v,'preview'),onChange:v=>write(v,'commit'),onCancel:v=>write(v,'cancel'),onClick:()=>{
+       if(!active())return;
+       Promise.resolve().then(()=>{if(!active())return;return host.sendEvent({scope,target:item.target,action:item.target.action});}).catch(e=>report(e,error));
+     }};
+     control=factories[item.widget](doc,options);
+     if(mode==='performance'){
+       if(control.number)control.number.setAttribute('aria-label',`${item.label} base`);

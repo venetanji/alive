@@ -1,0 +1,2265 @@
+{
+  "base": "6f407a488478800b358228c53a73349c8cf72a0d",
+  "candidate": "72af9f0031b298d723bd73df3ec84efacd05a600",
+  "diffSha256": "9249a482684473fbbe2e17e48b33dabc25fdba249a453a5b706733c8cb381dd2",
+  "artifacts": [
+    {
+      "file": "worker/build-dense-comparison.sh",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/build-dense-comparison.sh",
+      "originalBytes": 1704,
+      "originalSha256": "b1dfef18496e506099e496da959331bc1183b43aa347a67c108523bdd5a53eb0",
+      "storedSha256": "b1dfef18496e506099e496da959331bc1183b43aa347a67c108523bdd5a53eb0"
+    },
+    {
+      "file": "worker/build-v3-measure.sh",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/build-v3-measure.sh",
+      "originalBytes": 1386,
+      "originalSha256": "4c4d2254c99e8e41b0c063e2789647179a92e2f539f75a16d239f47975246058",
+      "storedSha256": "4c4d2254c99e8e41b0c063e2789647179a92e2f539f75a16d239f47975246058"
+    },
+    {
+      "file": "worker/cargo-old-loader-red.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/cargo-old-loader-red.log",
+      "originalBytes": 42320,
+      "originalSha256": "415d922fc7fb10be161074d102f14b0284572d049c02eb72f58a2ea3db0bf008",
+      "storedSha256": "f34929ec8b7358b7f049d2d3efc87d3c8052ba107cc148c08843e53ef350afef"
+    },
+    {
+      "file": "worker/current-loader.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/current-loader.log",
+      "originalBytes": 8368,
+      "originalSha256": "422a68d6db8fe72a4809414f4d530c8865027f0334e55ffab7715a86e6787e2e",
+      "storedSha256": "db112e3b099d4627e437f6217c5b2ed83022ee6eebc7c85a703d6fb92a99f8af"
+    },
+    {
+      "file": "worker/dense-control-comparison.cpp",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-control-comparison.cpp",
+      "originalBytes": 1894,
+      "originalSha256": "ea532aa4c5b62c7b7049a4a544e2a158f19f72f7e0e9670d72090ba18700ef6a",
+      "storedSha256": "ea532aa4c5b62c7b7049a4a544e2a158f19f72f7e0e9670d72090ba18700ef6a"
+    },
+    {
+      "file": "worker/dense-controlled-72af9f0/baseline-1-end.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline-1-end.txt",
+      "originalBytes": 87,
+      "originalSha256": "0b91d1017781e4675f272d39e3b956228034161994ff62777f32a58962401022",
+      "storedSha256": "0b91d1017781e4675f272d39e3b956228034161994ff62777f32a58962401022"
+    },
+    {
+      "file": "worker/dense-controlled-72af9f0/baseline-1-start.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline-1-start.txt",
+      "originalBytes": 87,
+      "originalSha256": "f4b0840a29deb7d66c9f57784dd15d6a9e2febe3774c28337695821e2b572133",
+      "storedSha256": "f4b0840a29deb7d66c9f57784dd15d6a9e2febe3774c28337695821e2b572133"
+    },
+    {
+      "file": "worker/dense-controlled-72af9f0/baseline-1.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline-1.log",
+      "originalBytes": 111690,
+      "originalSha256": "5ea35cb249897d7d98f143b8ce0bde391b98d71770378a9dfbd7861068d9a6a2",
+      "storedSha256": "af60c7f32f0493697a01656e6c26d3b944d448619aded7e812f7e96e827dc3d1"
+    },
+    {
+      "file": "worker/dense-controlled-72af9f0/baseline-2-end.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline-2-end.txt",
+      "originalBytes": 87,
+      "originalSha256": "2ddf2e6c7a92c5a0ac2351fdf8b0014c132457d520243d3008b96d151017952f",
+      "storedSha256": "2ddf2e6c7a92c5a0ac2351fdf8b0014c132457d520243d3008b96d151017952f"
+    },
+    {
+      "file": "worker/dense-controlled-72af9f0/baseline-2-start.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline-2-start.txt",
+      "originalBytes": 87,
+      "originalSha256": "65f23799d451e2d2947d8b912a4e4ac00072abed3eb26c479bda9cd148c65e95",
+      "storedSha256": "65f23799d451e2d2947d8b912a4e4ac00072abed3eb26c479bda9cd148c65e95"
+    },
+    {
+      "file": "worker/dense-controlled-72af9f0/baseline-2.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline-2.log",
+      "originalBytes": 111690,
+      "originalSha256": "8b02455ad2c58f1a2bdbb6fee4180ad7d72ca4b19de5e451f63010f3c7b5dcbc",
+      "storedSha256": "8b5c6d36850dba7f46932a538a366122c4f0f6a391ad4fb7721fd3e05a622cf8"
+    },
+    {
+      "file": "worker/dense-controlled-72af9f0/candidate-1-end.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate-1-end.txt",
+      "originalBytes": 87,
+      "originalSha256": "65f23799d451e2d2947d8b912a4e4ac00072abed3eb26c479bda9cd148c65e95",
+      "storedSha256": "65f23799d451e2d2947d8b912a4e4ac00072abed3eb26c479bda9cd148c65e95"
+    },
+    {
+      "file": "worker/dense-controlled-72af9f0/candidate-1-start.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate-1-start.txt",
+      "originalBytes": 87,
+      "originalSha256": "0b91d1017781e4675f272d39e3b956228034161994ff62777f32a58962401022",
+      "storedSha256": "0b91d1017781e4675f272d39e3b956228034161994ff62777f32a58962401022"
+    },
+    {
+      "file": "worker/dense-controlled-72af9f0/candidate-1.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate-1.log",
+      "originalBytes": 111691,
+      "originalSha256": "f2c97d9804cd79720ada3dd8632354b2724bc893161931f7e54901cdb5e4d51a",
+      "storedSha256": "1cd48bd6a1e5de8cbd3e7040f34de4fb859d734f7bb2026e12915fcb8f87729b"
+    },
+    {
+      "file": "worker/dense-controlled-72af9f0/candidate-2-end.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate-2-end.txt",
+      "originalBytes": 87,
+      "originalSha256": "b6bebbf031816569a369d495cc38b2e04fa3f1cc4fbe2c557c8f0a1a91994982",
+      "storedSha256": "b6bebbf031816569a369d495cc38b2e04fa3f1cc4fbe2c557c8f0a1a91994982"
+    },
+    {
+      "file": "worker/dense-controlled-72af9f0/candidate-2-start.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate-2-start.txt",
+      "originalBytes": 87,
+      "originalSha256": "2ddf2e6c7a92c5a0ac2351fdf8b0014c132457d520243d3008b96d151017952f",
+      "storedSha256": "2ddf2e6c7a92c5a0ac2351fdf8b0014c132457d520243d3008b96d151017952f"
+    },
+    {
+      "file": "worker/dense-controlled-72af9f0/candidate-2.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate-2.log",
+      "originalBytes": 111691,
+      "originalSha256": "86792c4c3d0595d460699c2bbe005a2af897e5f07effcbef5dfe7f7a9c7da22b",
+      "storedSha256": "99f721308b46d6496789602072211243e0db2fcde585ccf9de46fc51629364a3"
+    },
+    {
+      "file": "worker/dense-controlled-72af9f0/hashes.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/hashes.txt",
+      "originalBytes": 1737,
+      "originalSha256": "7b65c957f5e2524bc99ae00c19a9ca2d7377457b4eee7275dd9491443656b4e9",
+      "storedSha256": "7b65c957f5e2524bc99ae00c19a9ca2d7377457b4eee7275dd9491443656b4e9"
+    },
+    {
+      "file": "worker/dense-controlled-72af9f0/summary.json",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/summary.json",
+      "originalBytes": 1193,
+      "originalSha256": "0383a65e22ade171b0ef5dc9633d331b0b2ffde8fd39edf9f292ffc0cf2d116d",
+      "storedSha256": "0383a65e22ade171b0ef5dc9633d331b0b2ffde8fd39edf9f292ffc0cf2d116d"
+    },
+    {
+      "file": "worker/initial-red-transcripts.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/initial-red-transcripts.txt",
+      "originalBytes": 1484,
+      "originalSha256": "e88c6cc810876372fc6ea0d916d9446f8ed7f44f80da575e8da5e50984e3feb1",
+      "storedSha256": "e88c6cc810876372fc6ea0d916d9446f8ed7f44f80da575e8da5e50984e3feb1"
+    },
+    {
+      "file": "worker/master-c-layout.c",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/master-c-layout.c",
+      "originalBytes": 130,
+      "originalSha256": "e7b72ec9e5cebd2dcbdeeb2f92e851eb54aeabc16496e4d05ba5c2075d6c060b",
+      "storedSha256": "e7b72ec9e5cebd2dcbdeeb2f92e851eb54aeabc16496e4d05ba5c2075d6c060b"
+    },
+    {
+      "file": "worker/native-ci-ad314e5.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/native-ci-ad314e5.log",
+      "originalBytes": 17215,
+      "originalSha256": "2f76e4841c6d3fd9a18bf677ab674addd73a964d49642ab4f94843a689a6b10e",
+      "storedSha256": "dbe997718c9e291cbb6a9b12ff806322fc4220046c851189f89971d052dbbe9d"
+    },
+    {
+      "file": "worker/old-library-final.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/old-library-final.log",
+      "originalBytes": 287,
+      "originalSha256": "02e7e907d4c63f9501a03435d4687952f1d8572dbc270ae19b61068feaaca1b5",
+      "storedSha256": "81cb4f2bc860e04e54db3af8332d7bb446ff95806b5ac7dcd05bd38972c666c4"
+    },
+    {
+      "file": "worker/partial-library/exports.map",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/partial-library/exports.map",
+      "originalBytes": 206,
+      "originalSha256": "e2732b4b2c47465d99bb7fd481890e4034cfe1d6f1aeddcd5b6b075a54fc4969",
+      "storedSha256": "e2732b4b2c47465d99bb7fd481890e4034cfe1d6f1aeddcd5b6b075a54fc4969"
+    },
+    {
+      "file": "worker/partial-library/exports.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/partial-library/exports.txt",
+      "originalBytes": 262430,
+      "originalSha256": "bb03e619971c34dfd728752b2efb2aeb72f9b2f57bb18654a506e5ac0a25ce00",
+      "storedSha256": "bb03e619971c34dfd728752b2efb2aeb72f9b2f57bb18654a506e5ac0a25ce00"
+    },
+    {
+      "file": "worker/partial-library-4b4687d.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/partial-library-4b4687d.log",
+      "originalBytes": 400,
+      "originalSha256": "b8a570c0e9550c8118d8f57d861dc2798420436e2676a83852c1ecbc8f7625d8",
+      "storedSha256": "eb77053040a5e1b34d362b612abe18d6b8a2b6cbb98cf2b0592d4d373fb86cae"
+    },
+    {
+      "file": "worker/partial-library-final.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/partial-library-final.log",
+      "originalBytes": 287,
+      "originalSha256": "02e7e907d4c63f9501a03435d4687952f1d8572dbc270ae19b61068feaaca1b5",
+      "storedSha256": "81cb4f2bc860e04e54db3af8332d7bb446ff95806b5ac7dcd05bd38972c666c4"
+    },
+    {
+      "file": "worker/ramp-red.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/ramp-red.log",
+      "originalBytes": 176,
+      "originalSha256": "aa57389ddd747d91f7d44fff1eef19744cc654f6600c69e0651410459f4664da",
+      "storedSha256": "7b4e1dfe5fc4939c34f65420372b2210acf828f4323f1ce996115125aa4440fb"
+    },
+    {
+      "file": "worker/rollback-mutation-red.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/rollback-mutation-red.log",
+      "originalBytes": 1138,
+      "originalSha256": "d9cf5a4fb525f5345024b257d0d5d50672a5baacedab3eac21c02fe56cc7d502",
+      "storedSha256": "e38b2eb4e806334538920eb3b05518fcf046b164e046d17a7edef0b4044ec9cb"
+    },
+    {
+      "file": "worker/run-dense-comparison.sh",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/run-dense-comparison.sh",
+      "originalBytes": 417,
+      "originalSha256": "6edc2bde9199e6799370f705b34e43f6d2fb13f96452665db22625cb057f6e16",
+      "storedSha256": "6edc2bde9199e6799370f705b34e43f6d2fb13f96452665db22625cb057f6e16"
+    },
+    {
+      "file": "worker/run-v2-guard.sh",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/run-v2-guard.sh",
+      "originalBytes": 747,
+      "originalSha256": "7a5e801f25a508c1b98a006df9dec315ded36a48a21eab32d66b96907d819fde",
+      "storedSha256": "7a5e801f25a508c1b98a006df9dec315ded36a48a21eab32d66b96907d819fde"
+    },
+    {
+      "file": "worker/rust-tests-72af9f0.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/rust-tests-72af9f0.log",
+      "originalBytes": 27854,
+      "originalSha256": "c313f8a84e2f79c0aa685210e9952721da9635c47c529f908d0295f13651012f",
+      "storedSha256": "f914c56a72a0bce6cefc7ff5b40f0b0b7bf693d68dffa8ac5203aa8f86e2aea2"
+    },
+    {
+      "file": "worker/source-and-binary-hashes.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/source-and-binary-hashes.txt",
+      "originalBytes": 1197,
+      "originalSha256": "80bffbcab47a433b77a149e20b497383959e990c39358d96ef566f9d35e39330",
+      "storedSha256": "80bffbcab47a433b77a149e20b497383959e990c39358d96ef566f9d35e39330"
+    },
+    {
+      "file": "worker/summarize-dense.py",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/summarize-dense.py",
+      "originalBytes": 1138,
+      "originalSha256": "f132e6cdda14f1498e99bf062f6b299303d4043d1b6f9ea8327b1d7b917cfdfd",
+      "storedSha256": "f132e6cdda14f1498e99bf062f6b299303d4043d1b6f9ea8327b1d7b917cfdfd"
+    },
+    {
+      "file": "worker/summarize-v3.py",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/summarize-v3.py",
+      "originalBytes": 1014,
+      "originalSha256": "0a003ac2ab29819820af75e58a11187f73f6559f854e7342d567575d8c300d64",
+      "storedSha256": "0a003ac2ab29819820af75e58a11187f73f6559f854e7342d567575d8c300d64"
+    },
+    {
+      "file": "worker/v2-guard.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v2-guard.log",
+      "originalBytes": 75,
+      "originalSha256": "bf65e87c52797a6168ddff0091ffdca8f6c1a91ecdd680b5c310a8dd92f70254",
+      "storedSha256": "f5b562e9fd0726b15f363616c045b7f39e5866ada7f499114f55acb45fab2402"
+    },
+    {
+      "file": "worker/v2-master-guard.cpp",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v2-master-guard.cpp",
+      "originalBytes": 1782,
+      "originalSha256": "8c19da29a8a2b71580cd0ca10aa11ecb9490a671319c0413c3525d234ad5ed2e",
+      "storedSha256": "8c19da29a8a2b71580cd0ca10aa11ecb9490a671319c0413c3525d234ad5ed2e"
+    },
+    {
+      "file": "worker/v3-binaries/saved_graphs.hpp",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v3-binaries/saved_graphs.hpp",
+      "originalBytes": 3378,
+      "originalSha256": "e096ba0b46205eb70ac4b0cf782783779620e50aaf8aa33f59482b64a28bb43b",
+      "storedSha256": "e096ba0b46205eb70ac4b0cf782783779620e50aaf8aa33f59482b64a28bb43b"
+    },
+    {
+      "file": "worker/v3-graphs-end.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v3-graphs-end.txt",
+      "originalBytes": 87,
+      "originalSha256": "13b45dbd9705a556bd2a20561baec34da4fc263705d4ba21df7aae1b18a50df0",
+      "storedSha256": "13b45dbd9705a556bd2a20561baec34da4fc263705d4ba21df7aae1b18a50df0"
+    },
+    {
+      "file": "worker/v3-graphs-start.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v3-graphs-start.txt",
+      "originalBytes": 87,
+      "originalSha256": "fe16449322112083c62dd3ccb9e090d142bdbfe75a8f3a4837bbd9ad893d9c9e",
+      "storedSha256": "fe16449322112083c62dd3ccb9e090d142bdbfe75a8f3a4837bbd9ad893d9c9e"
+    },
+    {
+      "file": "worker/v3-graphs.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v3-graphs.log",
+      "originalBytes": 28042,
+      "originalSha256": "f231cc6f465ff9e3ec8a209107be863b743179cf77b88e03951982e6497ccb1c",
+      "storedSha256": "fde750df67047958bf677b1191b221ac866885b40a7135f590b5d22e69dc72ab"
+    },
+    {
+      "file": "worker/v3-guards-scenes.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v3-guards-scenes.log",
+      "originalBytes": 88595,
+      "originalSha256": "c5ccc9c95329be2d03e6079b22565098b30574a6a18b0c57a61021e9f4cf69d8",
+      "storedSha256": "402d741f9be9ac945f776216b2510dae4db87c0abcb2d445fdd2c40e339c3bb2"
+    },
+    {
+      "file": "worker/v3-guards.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v3-guards.log",
+      "originalBytes": 373663,
+      "originalSha256": "a39ae03f51da30f4b3633813ac0714bd1a935415e5cc73f8b17c95e4b1c96cc8",
+      "storedSha256": "d18fe642c8c0f364cb5d3348f54842ff0cc155432fbcb401f865d42a21540e0e"
+    },
+    {
+      "file": "worker/v3-load-observations.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v3-load-observations.txt",
+      "originalBytes": 957,
+      "originalSha256": "62fb4aa3eb78cfb37bd0c2b124ed07025134e85fdc14c9a1b77ca282c0a90c62",
+      "storedSha256": "62fb4aa3eb78cfb37bd0c2b124ed07025134e85fdc14c9a1b77ca282c0a90c62"
+    },
+    {
+      "file": "worker/v3-scenes-end.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v3-scenes-end.txt",
+      "originalBytes": 87,
+      "originalSha256": "dd55b7bf2d18759711175fc4f76392dfb4e60a1e83f3cf19a6525e2ab1c78d82",
+      "storedSha256": "dd55b7bf2d18759711175fc4f76392dfb4e60a1e83f3cf19a6525e2ab1c78d82"
+    },
+    {
+      "file": "worker/v3-scenes-start.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v3-scenes-start.txt",
+      "originalBytes": 87,
+      "originalSha256": "92260debecc70b09d07de055cbb48687e379792130a6528ec04cce405bd81346",
+      "storedSha256": "92260debecc70b09d07de055cbb48687e379792130a6528ec04cce405bd81346"
+    },
+    {
+      "file": "worker/v3-scenes.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v3-scenes.log",
+      "originalBytes": 3236678,
+      "originalSha256": "de2219b5a0f1a6d5b7176df9b89f22bdf7999450e9347558eaddf991da81ea5e",
+      "storedSha256": "8b861bd1541d0abc2c64a581accd4328025277c154445eb57db0e6fba6443af9"
+    },
+    {
+      "file": "worker/v3-summary.json",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v3-summary.json",
+      "originalBytes": 49453,
+      "originalSha256": "8cdaaad452c126f615b10e6f93a7f16f2682132ffd51ffed11cd157c79fc5f9d",
+      "storedSha256": "8cdaaad452c126f615b10e6f93a7f16f2682132ffd51ffed11cd157c79fc5f9d"
+    },
+    {
+      "file": "worker/v3-timing-end.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v3-timing-end.txt",
+      "originalBytes": 87,
+      "originalSha256": "ef2c295b9f1d450b1c934e98179ae524dbf73d10e9b8de06f82c3b3158ccb038",
+      "storedSha256": "ef2c295b9f1d450b1c934e98179ae524dbf73d10e9b8de06f82c3b3158ccb038"
+    },
+    {
+      "file": "worker/v3-timing-interrupted.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v3-timing-interrupted.log",
+      "originalBytes": 10765428,
+      "originalSha256": "93e1b3e037a9791d995d614b2b8a60de2178b42215de9e097f69461ea925f3d0",
+      "storedSha256": "f83ced66bcdb0a888739f58f36e51e8dff116651fc4e37a58e59fee52c283a1a"
+    },
+    {
+      "file": "worker/v3-timing-start.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v3-timing-start.txt",
+      "originalBytes": 87,
+      "originalSha256": "bf49abbf8e91591b04b390ec62360156b75165da5e6c5eeab6b9df4652dd13a6",
+      "storedSha256": "bf49abbf8e91591b04b390ec62360156b75165da5e6c5eeab6b9df4652dd13a6"
+    },
+    {
+      "file": "worker/v3-timing.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v3-timing.log",
+      "originalBytes": 13442980,
+      "originalSha256": "b79cee6fbe6d89ed0bac07b17346063730cf9a614a9aa791b9b50756f0a8fa52",
+      "storedSha256": "113daa19d88fe9057fe9229b2e2fba0d0667ff409bb8bca4cccd617ef3839830"
+    },
+    {
+      "file": "worker/v4-end.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-end.txt",
+      "originalBytes": 87,
+      "originalSha256": "398a009e94523f52925f17783ce0796a16dda66063e64e9ac323fac3fa0103e0",
+      "storedSha256": "398a009e94523f52925f17783ce0796a16dda66063e64e9ac323fac3fa0103e0"
+    },
+    {
+      "file": "worker/v4-load-observations.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-load-observations.txt",
+      "originalBytes": 348,
+      "originalSha256": "5f68a1a12962a93d6dafb51503652f789899368ebebdb0e2e86de073e5d0ba03",
+      "storedSha256": "5f68a1a12962a93d6dafb51503652f789899368ebebdb0e2e86de073e5d0ba03"
+    },
+    {
+      "file": "worker/v4-qualification/authority/dispatch.tsv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/authority/dispatch.tsv",
+      "originalBytes": 73,
+      "originalSha256": "3a7a855bf4117e3f7748ec4dbcb1db7de0fd0f6a15a07793a40d020300236d85",
+      "storedSha256": "1255fba31d9e9d2799ef84fcb2e7a5f4e585e554d68d04bbc72c86f738648802"
+    },
+    {
+      "file": "worker/v4-qualification/authority/receipts.tsv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/authority/receipts.tsv",
+      "originalBytes": 7958,
+      "originalSha256": "8f5495a1f86752fb28675cfa6493f462651aac74dd4f8ae57a5ba205d3fd5ad4",
+      "storedSha256": "c4f989110b391de9f158eac61f345b78f61d2ed78b9fa2df8f68de859b900bf9"
+    },
+    {
+      "file": "worker/v4-qualification/authority/refused-seek-control-pcm-dispatch.tsv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/authority/refused-seek-control-pcm-dispatch.tsv",
+      "originalBytes": 0,
+      "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "storedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "worker/v4-qualification/authority/refused-seek-pcm-dispatch.tsv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/authority/refused-seek-pcm-dispatch.tsv",
+      "originalBytes": 0,
+      "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "storedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "worker/v4-qualification/authority/seek-gestures-pcm-dispatch.tsv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/authority/seek-gestures-pcm-dispatch.tsv",
+      "originalBytes": 286,
+      "originalSha256": "f71668630558143be10e1624a6d03c05a373f1bfb34b495aa8f4acb5e0d5989e",
+      "storedSha256": "4a540a043be03b588b26edb1dc9f702f5c55f75055c910efb24ec8c007d3e665"
+    },
+    {
+      "file": "worker/v4-qualification/authority/seek-receipts.tsv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/authority/seek-receipts.tsv",
+      "originalBytes": 459,
+      "originalSha256": "f4467c85c0a3c448d2036b3d3830b0195d6df9e9a9dfaaced811930e486fa760",
+      "storedSha256": "52db8e76068c00f73934bcef13346d4b2375127798ae12e49219233f457855e3"
+    },
+    {
+      "file": "worker/v4-qualification/authority/song-gestures-control-pcm-dispatch.tsv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/authority/song-gestures-control-pcm-dispatch.tsv",
+      "originalBytes": 618,
+      "originalSha256": "32a1bc570b46442dd9862db0562a12a6dc59802155bc6908d1c13351a165c99a",
+      "storedSha256": "90834a0e30794727e564995da71e0300678f9041957d784c688a675ea584b213"
+    },
+    {
+      "file": "worker/v4-qualification/authority/song-gestures-pcm-dispatch.tsv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/authority/song-gestures-pcm-dispatch.tsv",
+      "originalBytes": 530,
+      "originalSha256": "3fc952d87315081c5b342a5a2486e1675958b08b87b53d85bd9630ccd674049c",
+      "storedSha256": "90834ddfe34f25ec182b18767f4a3612111a65cd81a7d88e06cf706a9f699f87"
+    },
+    {
+      "file": "worker/v4-qualification/authority/song-pcm-dispatch.tsv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/authority/song-pcm-dispatch.tsv",
+      "originalBytes": 355,
+      "originalSha256": "2e4279526051757f1fbd5bdf6dce22ec40959bf706a811d7fb2169f3365022f1",
+      "storedSha256": "0619b1e717e1ed15b30b8b1864327b309a909229d00659cb63b60b017483ba14"
+    },
+    {
+      "file": "worker/v4-qualification/authority/song-session-control-pcm-dispatch.tsv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/authority/song-session-control-pcm-dispatch.tsv",
+      "originalBytes": 235,
+      "originalSha256": "5aaa9c84d90b3f71418531f9dc89427c1837b6b136e7c6d925a4803dae8e0e56",
+      "storedSha256": "beb56b499bd397a906576cd6f8ffcf02b42976f1f610eef01efdf50932c781d4"
+    },
+    {
+      "file": "worker/v4-qualification/authority/song-session-pcm-dispatch.tsv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/authority/song-session-pcm-dispatch.tsv",
+      "originalBytes": 355,
+      "originalSha256": "2e4279526051757f1fbd5bdf6dce22ec40959bf706a811d7fb2169f3365022f1",
+      "storedSha256": "0619b1e717e1ed15b30b8b1864327b309a909229d00659cb63b60b017483ba14"
+    },
+    {
+      "file": "worker/v4-qualification/authority/song-work.tsv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/authority/song-work.tsv",
+      "originalBytes": 582920,
+      "originalSha256": "9a26e0436fafb1beec2fc18f4e0e998186c59be845ae0082bc40ceacf2ef5b51",
+      "storedSha256": "6e35e04801e457156945986599d17208ce8886323f75f63b74bc9819832f897e"
+    },
+    {
+      "file": "worker/v4-qualification/authority/suffix-pcm-dispatch.tsv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/authority/suffix-pcm-dispatch.tsv",
+      "originalBytes": 443,
+      "originalSha256": "fb66d9eb52ded14b2701eb5e55f155ec54e5cbb4cd4df9045f4194621b73fe14",
+      "storedSha256": "d3c06f695000e9e9225c6e84577b30b3a83a505c005eda83821a4d6090951627"
+    },
+    {
+      "file": "worker/v4-qualification/authority/suffix-work.tsv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/authority/suffix-work.tsv",
+      "originalBytes": 528925,
+      "originalSha256": "221bd830d636f53ac4ceecad8f5f99b428bea1ba2095e1a64b0f5899c2c33402",
+      "storedSha256": "9e43dbac5f2a54d623dd953dae3a147e3d6be3e2282e82a66bd26e24941bd07c"
+    },
+    {
+      "file": "worker/v4-qualification/authority/work.tsv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/authority/work.tsv",
+      "originalBytes": 279,
+      "originalSha256": "d24c083f14c2aaf8952ce13c592415397d6141fd935c1b9cf0dea2862a8ddb05",
+      "storedSha256": "1a766babeb2eb8a79cae5293b1d90af3f33b6b3201b1a9ccb827d91e3086bbf4"
+    },
+    {
+      "file": "worker/v4-qualification/commands.json",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/commands.json",
+      "originalBytes": 12002,
+      "originalSha256": "4dd64467612580c0b6fd0156bf4cb24cac1633ebd243f4b3f19fbf7002c9c05b",
+      "storedSha256": "4dd64467612580c0b6fd0156bf4cb24cac1633ebd243f4b3f19fbf7002c9c05b"
+    },
+    {
+      "file": "worker/v4-qualification/fixtures.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/fixtures.log",
+      "originalBytes": 0,
+      "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "storedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700030-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700030-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700038-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700038-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700039-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700039-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700040-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700040-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700041-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700041-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700042-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700042-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700043-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700043-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700044-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700044-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700045-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700045-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700046-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700046-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700047-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700047-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700048-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700048-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700049-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700049-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700050-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700050-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700051-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p1-t2-r3-extended-prep700051-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p1-t2-r3-saved-prep700018-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p1-t2-r3-saved-prep700018-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e822e89a647b633362d4f97622e098aa44e3d27c877657e532643733a8385941",
+      "storedSha256": "ce473f3196e14e343374e67aa742d957afccdcd4b88179f035a472cab0f5af65"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700083-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700083-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700091-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700091-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700092-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700092-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700093-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700093-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700094-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700094-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700095-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700095-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700096-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700096-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700097-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700097-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700098-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700098-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700099-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700099-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700100-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700100-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700101-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700101-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700102-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700102-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700103-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700103-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700104-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p2-t8-r10-extended-prep700104-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/guards/arrangement-p2-t8-r10-saved-prep700071-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/arrangement-p2-t8-r10-saved-prep700071-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "45725047e553c351bbe2873bbf943870393c98e8efcae320ad7df95822d6d578",
+      "storedSha256": "97262119406615ece7e13937f01f76a840f9febe5529a55a7c425902b4cb296d"
+    },
+    {
+      "file": "worker/v4-qualification/guards/idle-p1-t2-r6-extended-prep700026-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/idle-p1-t2-r6-extended-prep700026-envelope.csv",
+      "originalBytes": 20446,
+      "originalSha256": "fa173d40d5b25ba669a7f2fc6af9d551fae9183ff8adc2db97d4b357a59d6460",
+      "storedSha256": "b4b0fd8ff5a4ae7ffcd6589775549139bcb46efc38b56843d662ff6f9f3ce35e"
+    },
+    {
+      "file": "worker/v4-qualification/guards/idle-p1-t2-r6-extended-prep700120-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/idle-p1-t2-r6-extended-prep700120-envelope.csv",
+      "originalBytes": 20446,
+      "originalSha256": "fa173d40d5b25ba669a7f2fc6af9d551fae9183ff8adc2db97d4b357a59d6460",
+      "storedSha256": "b4b0fd8ff5a4ae7ffcd6589775549139bcb46efc38b56843d662ff6f9f3ce35e"
+    },
+    {
+      "file": "worker/v4-qualification/guards/idle-p1-t2-r6-heavy-prep700122-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/idle-p1-t2-r6-heavy-prep700122-envelope.csv",
+      "originalBytes": 20446,
+      "originalSha256": "5c2a1f3dda38f1773e9c6d2e6bb2749360c5fb116f56cc7203e7991e0255f35d",
+      "storedSha256": "f43e2391f31e131e3bd2f2bcd02dcac06db99c14aa6b0068f19aaca9434ee40c"
+    },
+    {
+      "file": "worker/v4-qualification/guards/idle-p1-t2-r6-saved-prep700014-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/idle-p1-t2-r6-saved-prep700014-envelope.csv",
+      "originalBytes": 20446,
+      "originalSha256": "5c2a1f3dda38f1773e9c6d2e6bb2749360c5fb116f56cc7203e7991e0255f35d",
+      "storedSha256": "f43e2391f31e131e3bd2f2bcd02dcac06db99c14aa6b0068f19aaca9434ee40c"
+    },
+    {
+      "file": "worker/v4-qualification/guards/idle-p2-t8-r16-extended-prep700079-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/idle-p2-t8-r16-extended-prep700079-envelope.csv",
+      "originalBytes": 21470,
+      "originalSha256": "17121077828e55aba938041bff8491299b6f738f0a990ff034ec67f699671968",
+      "storedSha256": "0aa659985d3466adad5f7346a620494cb5eb228bc0ec4b7e0552c3f2343d6732"
+    },
+    {
+      "file": "worker/v4-qualification/guards/idle-p2-t8-r16-extended-prep700124-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/idle-p2-t8-r16-extended-prep700124-envelope.csv",
+      "originalBytes": 21470,
+      "originalSha256": "17121077828e55aba938041bff8491299b6f738f0a990ff034ec67f699671968",
+      "storedSha256": "0aa659985d3466adad5f7346a620494cb5eb228bc0ec4b7e0552c3f2343d6732"
+    },
+    {
+      "file": "worker/v4-qualification/guards/idle-p2-t8-r16-heavy-prep700126-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/idle-p2-t8-r16-heavy-prep700126-envelope.csv",
+      "originalBytes": 20446,
+      "originalSha256": "077d465c4ca01a61959c417222ac1f6335914eef607ebaf01f9e3a4259deafcc",
+      "storedSha256": "b92c9466701e37e13370cdf264ada167fa0dc3e7d3a93721c8e447533eb92988"
+    },
+    {
+      "file": "worker/v4-qualification/guards/idle-p2-t8-r16-saved-prep700067-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/idle-p2-t8-r16-saved-prep700067-envelope.csv",
+      "originalBytes": 20446,
+      "originalSha256": "077d465c4ca01a61959c417222ac1f6335914eef607ebaf01f9e3a4259deafcc",
+      "storedSha256": "b92c9466701e37e13370cdf264ada167fa0dc3e7d3a93721c8e447533eb92988"
+    },
+    {
+      "file": "worker/v4-qualification/guards/pool_max-p1-t2-r6-extended-prep700053-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/pool_max-p1-t2-r6-extended-prep700053-envelope.csv",
+      "originalBytes": 22494,
+      "originalSha256": "7ab1727c2b1c2d81430dc58872e71707c053c53467dc0000cd7b5e9ad2953a41",
+      "storedSha256": "3ef68887b157d74b883f37d9a5d7d75bc3bd9f8c629fc5c9988e661c38c6f55b"
+    },
+    {
+      "file": "worker/v4-qualification/guards/pool_max-p2-t8-r16-extended-prep700106-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/pool_max-p2-t8-r16-extended-prep700106-envelope.csv",
+      "originalBytes": 23518,
+      "originalSha256": "1f4c998c4cd7852cee45d8f54295e5b492ae2f66c62d022b86ae426ec411aa06",
+      "storedSha256": "93e8c07094b27dc661e0b0198f2fc34bb76b399e72644022602e159b7795b097"
+    },
+    {
+      "file": "worker/v4-qualification/guards/samples.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/samples.csv",
+      "originalBytes": 558353,
+      "originalSha256": "c94fc834ce3ae84fb2eb54a39f61975f5b90c28da9121fd5b224c6d548d5b4b6",
+      "storedSha256": "a6d245571d954e2acbe72cb60471c242091b14d978871609344819a92e99d66f"
+    },
+    {
+      "file": "worker/v4-qualification/guards/session-p1-t2-r3-extended-prep700028-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/session-p1-t2-r3-extended-prep700028-envelope.csv",
+      "originalBytes": 20446,
+      "originalSha256": "f00c5b8ba772bdba983d301562420f654e8d9a8eec90d864f19a0cd63754bc42",
+      "storedSha256": "e08c57817fc4a0954eefe64eebf59c0957c38480b2799f1592849300003790e3"
+    },
+    {
+      "file": "worker/v4-qualification/guards/session-p1-t2-r3-saved-prep700016-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/session-p1-t2-r3-saved-prep700016-envelope.csv",
+      "originalBytes": 20446,
+      "originalSha256": "51c4d9144f1a3163ae1d62a389d5041215e4a80b05212ff1c77220193122ea78",
+      "storedSha256": "8264c06e1ddffc68e3036df71e02a8af6df2312186b374b9477eac1f9ed3fd0c"
+    },
+    {
+      "file": "worker/v4-qualification/guards/session-p2-t2-r6-extended-prep700114-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/session-p2-t2-r6-extended-prep700114-envelope.csv",
+      "originalBytes": 23515,
+      "originalSha256": "3d8f596c1c6a2fe7d1c34f2b195fd07f836c3b1b2f109ab2169735c846d381c0",
+      "storedSha256": "08058519e6e4576edd5449df1c3a85b4445c193c4848bc93f0f5c4ddb0b93a6d"
+    },
+    {
+      "file": "worker/v4-qualification/guards/session-p2-t2-r6-saved-prep700108-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/session-p2-t2-r6-saved-prep700108-envelope.csv",
+      "originalBytes": 22493,
+      "originalSha256": "68670328f603c603e0a859e00557dad556b8575c7234cf5e0429f52304a6d5c6",
+      "storedSha256": "faba117858af17ca55f23e102066dbbe396d627b274c9473f6bcd04a5e8ca21d"
+    },
+    {
+      "file": "worker/v4-qualification/guards/session-p2-t8-r10-extended-prep700081-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/session-p2-t8-r10-extended-prep700081-envelope.csv",
+      "originalBytes": 21470,
+      "originalSha256": "33acce61be74fa658b6c9e44ea7660f3b72698aab781641b5917f48b25870717",
+      "storedSha256": "fef4cf2ed43465517c7430ee12b121ad9a508526e8cebfe2d6d70da76756f853"
+    },
+    {
+      "file": "worker/v4-qualification/guards/session-p2-t8-r10-saved-prep700069-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/session-p2-t8-r10-saved-prep700069-envelope.csv",
+      "originalBytes": 20446,
+      "originalSha256": "3fe1eb75e1fdb7fb596ed1ea101d186cd6cc1094aa06f1784545ca6c9144b43e",
+      "storedSha256": "28fc035cc19d20e1e5a99bf6edd66d2deb2aef5731e47cc23b0ae7f079654b11"
+    },
+    {
+      "file": "worker/v4-qualification/guards/song-p1-t2-r3-extended-prep700034-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/song-p1-t2-r3-extended-prep700034-envelope.csv",
+      "originalBytes": 21294,
+      "originalSha256": "62ab58ecc5da7f81491fd8f722df8ba3ada54969e4fffd327f9290bc11d689b1",
+      "storedSha256": "897523c57089b10b7159e130155643a0610f0c993619e6990131dcc425a72a05"
+    },
+    {
+      "file": "worker/v4-qualification/guards/song-p1-t2-r3-saved-prep700022-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/song-p1-t2-r3-saved-prep700022-envelope.csv",
+      "originalBytes": 21294,
+      "originalSha256": "e926948d8d1faaffc2cc71b4dd2ae0f3963442bd4c8b6e08f9bd98330315b829",
+      "storedSha256": "e8bf36127dccfdb058adaf8dbe3a0261e5b0e8056695b9bced81dab90c688ad4"
+    },
+    {
+      "file": "worker/v4-qualification/guards/song-p2-t2-r6-extended-prep700116-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/song-p2-t2-r6-extended-prep700116-envelope.csv",
+      "originalBytes": 23517,
+      "originalSha256": "d70206df2d80ea82b94258938e453001486923213105e8d19c93dadd46b4f926",
+      "storedSha256": "78ee490cb135c4463889b0101ade677ab4967b3382252063a271a1223bdf0d44"
+    },
+    {
+      "file": "worker/v4-qualification/guards/song-p2-t2-r6-saved-prep700110-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/song-p2-t2-r6-saved-prep700110-envelope.csv",
+      "originalBytes": 22494,
+      "originalSha256": "ff522b44adc254a4f8d52b22d6a7c60c0d67517fc04df5717dcea2179dc6429e",
+      "storedSha256": "ddf87c61db4b7202c6ae0d9958019527e1f9a7465a38d65468009ff59ff0d037"
+    },
+    {
+      "file": "worker/v4-qualification/guards/song-p2-t8-r10-extended-prep700087-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/song-p2-t8-r10-extended-prep700087-envelope.csv",
+      "originalBytes": 22318,
+      "originalSha256": "7e93b759281ea46e9bf0882be21fb3a214b31f959e91d7195f6cccc7aa53f3e1",
+      "storedSha256": "ee99185a6764891c55e152ea01241612035683c633ce9f967999889a7be36c83"
+    },
+    {
+      "file": "worker/v4-qualification/guards/song-p2-t8-r10-saved-prep700075-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/song-p2-t8-r10-saved-prep700075-envelope.csv",
+      "originalBytes": 21294,
+      "originalSha256": "523b74c8f3b9c9c53f1647eff7e89601555ebb1dccdb1373138023cefc89a4bb",
+      "storedSha256": "c02f6b71100bcbfb3b2928c6d8d707b7e2d93ad3640fe872f4d460595ae42590"
+    },
+    {
+      "file": "worker/v4-qualification/guards/storage-p1-t2-r3-extended-prep700036-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/storage-p1-t2-r3-extended-prep700036-envelope.csv",
+      "originalBytes": 24542,
+      "originalSha256": "df9c396d0bf85e468f12c16cfe841b335049e4a2882f16319ccb0d32edfddf7f",
+      "storedSha256": "7ac745f523be4042f57354d76c6525f49c9867545dd7acd831502723752b9a8e"
+    },
+    {
+      "file": "worker/v4-qualification/guards/storage-p1-t2-r3-saved-prep700024-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/storage-p1-t2-r3-saved-prep700024-envelope.csv",
+      "originalBytes": 24542,
+      "originalSha256": "d8d9c38945bdf4deed3a2e771594c823cc6074eca967de14f68e321b2b5cee6d",
+      "storedSha256": "69c5378ef265f582dfc9679686abd951c09fd58f9027bfed75003df4315aace6"
+    },
+    {
+      "file": "worker/v4-qualification/guards/storage-p2-t2-r6-extended-prep700118-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/storage-p2-t2-r6-extended-prep700118-envelope.csv",
+      "originalBytes": 25565,
+      "originalSha256": "5fce0e417cbf44685a927479384f102ce0b531b7a15bb0225ba5462b3b809470",
+      "storedSha256": "038ebd88d5315fff960135c838296bfc2f63bc39afd3c3359fdfd5c9313fcd02"
+    },
+    {
+      "file": "worker/v4-qualification/guards/storage-p2-t2-r6-saved-prep700112-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/storage-p2-t2-r6-saved-prep700112-envelope.csv",
+      "originalBytes": 24542,
+      "originalSha256": "1ce2c4082b5a08b2716078c193bfc94f8010db7fa1637c8c8998a48df495178b",
+      "storedSha256": "701b0bc064f84c870ff534c08e1c5ad7584a87a3c9607b2c0d7b778632c02930"
+    },
+    {
+      "file": "worker/v4-qualification/guards/suffix_min-p1-t2-r3-extended-prep700032-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/suffix_min-p1-t2-r3-extended-prep700032-envelope.csv",
+      "originalBytes": 21736,
+      "originalSha256": "bee9a8348955524f5698f70a4b669dc77d8e30d4fb2f38c7fd159c4b826b5600",
+      "storedSha256": "53f04c013435865a3776927b8c48490e819a6eb532775d27a2a7de6843cc0823"
+    },
+    {
+      "file": "worker/v4-qualification/guards/suffix_min-p1-t2-r3-saved-prep700020-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/suffix_min-p1-t2-r3-saved-prep700020-envelope.csv",
+      "originalBytes": 21736,
+      "originalSha256": "91bc6b0f6f72503c340ae796009bbcb5e98b58754e24cf65423c7f1b2c32bf92",
+      "storedSha256": "1746c17b7012aa927308899b8039c8cef0b46dd6a65c771aac58261110ecf889"
+    },
+    {
+      "file": "worker/v4-qualification/guards/suffix_min-p2-t8-r10-extended-prep700085-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/suffix_min-p2-t8-r10-extended-prep700085-envelope.csv",
+      "originalBytes": 22760,
+      "originalSha256": "cac0987026ad9509630b576f41a949eca7a834743ce82fbd6918726314534e75",
+      "storedSha256": "103b04d809e366616a0f7db90aac9c591c576fb4dbc45655ad8f271020600d76"
+    },
+    {
+      "file": "worker/v4-qualification/guards/suffix_min-p2-t8-r10-saved-prep700073-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/suffix_min-p2-t8-r10-saved-prep700073-envelope.csv",
+      "originalBytes": 21736,
+      "originalSha256": "97526884f12e2c266f4178559e7f32b5df725b7c8bb61ccd0a7f6fd0ebd424d8",
+      "storedSha256": "6671e55515c979d18412242995028e65869e7af8a2d7543fa051bf7a948cc194"
+    },
+    {
+      "file": "worker/v4-qualification/guards/work.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards/work.csv",
+      "originalBytes": 1785907,
+      "originalSha256": "d76dd5ea3a63dcf133866be7a1df3bec994269670fdc025fc3da9b87a8d0ff02",
+      "storedSha256": "6d6dbeb8563dea7438998fe637e8276a5f5bd99ae618f84d601f05138ea06172"
+    },
+    {
+      "file": "worker/v4-qualification/guards-backend.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards-backend.log",
+      "originalBytes": 0,
+      "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "storedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "worker/v4-qualification/guards-build.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards-build.log",
+      "originalBytes": 0,
+      "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "storedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "worker/v4-qualification/guards.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/guards.log",
+      "originalBytes": 103563,
+      "originalSha256": "1cf19787a9a7ae3466519e61f7b5532597a0fb1a031089f3b7c4e4faa7740910",
+      "storedSha256": "a2a4c8e40d414c8413f50ee0e70f1d857d651dc99caf270757a93dff88cb085e"
+    },
+    {
+      "file": "worker/v4-qualification/manifest.json",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/manifest.json",
+      "originalBytes": 117767,
+      "originalSha256": "cf180d1169f100334fabaec953fab665be51c16660ab6b3e77be75f7d06c260a",
+      "storedSha256": "cf180d1169f100334fabaec953fab665be51c16660ab6b3e77be75f7d06c260a"
+    },
+    {
+      "file": "worker/v4-qualification/runner.py",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/runner.py",
+      "originalBytes": 7123,
+      "originalSha256": "fe9331478e7479373c9ffeb1dc8b530096b0c2647d75d9de0b3ce3feb4eb2342",
+      "storedSha256": "fe9331478e7479373c9ffeb1dc8b530096b0c2647d75d9de0b3ce3feb4eb2342"
+    },
+    {
+      "file": "worker/v4-qualification/shipping-build.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/shipping-build.log",
+      "originalBytes": 0,
+      "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "storedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "worker/v4-qualification/shipping.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/shipping.log",
+      "originalBytes": 80,
+      "originalSha256": "2d35fdb7a0a98543a1ecd4f943f921674b1cd13ab7e0bb556b71305982d55ca1",
+      "storedSha256": "7395e40ccacd830c1711173b14ddad0b8013171f79e4e4babafcf35de0baec25"
+    },
+    {
+      "file": "worker/v4-qualification/summary.json",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/summary.json",
+      "originalBytes": 66145,
+      "originalSha256": "c9608b96183c93a745b0842122d6e34af17b108f4b6ac480d08e9b56f898a415",
+      "storedSha256": "c9608b96183c93a745b0842122d6e34af17b108f4b6ac480d08e9b56f898a415"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700030-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700030-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700038-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700038-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700039-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700039-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700040-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700040-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700041-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700041-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700042-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700042-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700043-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700043-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700044-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700044-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700045-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700045-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700046-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700046-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700047-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700047-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700048-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700048-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700049-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700049-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700050-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700050-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700051-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p1-t2-r3-extended-prep700051-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e38ac210cb4407cac31c9744da5423d7ca920a5db507af1f62e1160c42ae44ba",
+      "storedSha256": "5d58719758e08af584894498aa98eee33d8556e70fd3841a7c32e8f3b6af7afe"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p1-t2-r3-saved-prep700018-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p1-t2-r3-saved-prep700018-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "e822e89a647b633362d4f97622e098aa44e3d27c877657e532643733a8385941",
+      "storedSha256": "ce473f3196e14e343374e67aa742d957afccdcd4b88179f035a472cab0f5af65"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700083-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700083-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700091-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700091-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700092-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700092-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700093-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700093-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700094-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700094-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700095-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700095-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700096-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700096-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700097-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700097-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700098-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700098-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700099-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700099-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700100-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700100-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700101-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700101-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700102-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700102-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700103-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700103-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700104-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p2-t8-r10-extended-prep700104-envelope.csv",
+      "originalBytes": 22492,
+      "originalSha256": "d431391a8ec576f63be5fa3a7e87861acdddff74e024118396ec1a5bc68d5a9f",
+      "storedSha256": "404ba301a1070bcdd2ecc7fe175dc73e22424253a8dab5871b979ceeb7cd578c"
+    },
+    {
+      "file": "worker/v4-qualification/timing/arrangement-p2-t8-r10-saved-prep700071-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/arrangement-p2-t8-r10-saved-prep700071-envelope.csv",
+      "originalBytes": 21468,
+      "originalSha256": "45725047e553c351bbe2873bbf943870393c98e8efcae320ad7df95822d6d578",
+      "storedSha256": "97262119406615ece7e13937f01f76a840f9febe5529a55a7c425902b4cb296d"
+    },
+    {
+      "file": "worker/v4-qualification/timing/idle-p1-t2-r6-extended-prep700026-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/idle-p1-t2-r6-extended-prep700026-envelope.csv",
+      "originalBytes": 20446,
+      "originalSha256": "fa173d40d5b25ba669a7f2fc6af9d551fae9183ff8adc2db97d4b357a59d6460",
+      "storedSha256": "b4b0fd8ff5a4ae7ffcd6589775549139bcb46efc38b56843d662ff6f9f3ce35e"
+    },
+    {
+      "file": "worker/v4-qualification/timing/idle-p1-t2-r6-extended-prep700120-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/idle-p1-t2-r6-extended-prep700120-envelope.csv",
+      "originalBytes": 20446,
+      "originalSha256": "fa173d40d5b25ba669a7f2fc6af9d551fae9183ff8adc2db97d4b357a59d6460",
+      "storedSha256": "b4b0fd8ff5a4ae7ffcd6589775549139bcb46efc38b56843d662ff6f9f3ce35e"
+    },
+    {
+      "file": "worker/v4-qualification/timing/idle-p1-t2-r6-heavy-prep700122-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/idle-p1-t2-r6-heavy-prep700122-envelope.csv",
+      "originalBytes": 20446,
+      "originalSha256": "5c2a1f3dda38f1773e9c6d2e6bb2749360c5fb116f56cc7203e7991e0255f35d",
+      "storedSha256": "f43e2391f31e131e3bd2f2bcd02dcac06db99c14aa6b0068f19aaca9434ee40c"
+    },
+    {
+      "file": "worker/v4-qualification/timing/idle-p1-t2-r6-saved-prep700014-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/idle-p1-t2-r6-saved-prep700014-envelope.csv",
+      "originalBytes": 20446,
+      "originalSha256": "5c2a1f3dda38f1773e9c6d2e6bb2749360c5fb116f56cc7203e7991e0255f35d",
+      "storedSha256": "f43e2391f31e131e3bd2f2bcd02dcac06db99c14aa6b0068f19aaca9434ee40c"
+    },
+    {
+      "file": "worker/v4-qualification/timing/idle-p2-t8-r16-extended-prep700079-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/idle-p2-t8-r16-extended-prep700079-envelope.csv",
+      "originalBytes": 21470,
+      "originalSha256": "17121077828e55aba938041bff8491299b6f738f0a990ff034ec67f699671968",
+      "storedSha256": "0aa659985d3466adad5f7346a620494cb5eb228bc0ec4b7e0552c3f2343d6732"
+    },
+    {
+      "file": "worker/v4-qualification/timing/idle-p2-t8-r16-extended-prep700124-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/idle-p2-t8-r16-extended-prep700124-envelope.csv",
+      "originalBytes": 21470,
+      "originalSha256": "17121077828e55aba938041bff8491299b6f738f0a990ff034ec67f699671968",
+      "storedSha256": "0aa659985d3466adad5f7346a620494cb5eb228bc0ec4b7e0552c3f2343d6732"
+    },
+    {
+      "file": "worker/v4-qualification/timing/idle-p2-t8-r16-heavy-prep700126-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/idle-p2-t8-r16-heavy-prep700126-envelope.csv",
+      "originalBytes": 20446,
+      "originalSha256": "077d465c4ca01a61959c417222ac1f6335914eef607ebaf01f9e3a4259deafcc",
+      "storedSha256": "b92c9466701e37e13370cdf264ada167fa0dc3e7d3a93721c8e447533eb92988"
+    },
+    {
+      "file": "worker/v4-qualification/timing/idle-p2-t8-r16-saved-prep700067-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/idle-p2-t8-r16-saved-prep700067-envelope.csv",
+      "originalBytes": 20446,
+      "originalSha256": "077d465c4ca01a61959c417222ac1f6335914eef607ebaf01f9e3a4259deafcc",
+      "storedSha256": "b92c9466701e37e13370cdf264ada167fa0dc3e7d3a93721c8e447533eb92988"
+    },
+    {
+      "file": "worker/v4-qualification/timing/pool_max-p1-t2-r6-extended-prep700053-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/pool_max-p1-t2-r6-extended-prep700053-envelope.csv",
+      "originalBytes": 22494,
+      "originalSha256": "7ab1727c2b1c2d81430dc58872e71707c053c53467dc0000cd7b5e9ad2953a41",
+      "storedSha256": "3ef68887b157d74b883f37d9a5d7d75bc3bd9f8c629fc5c9988e661c38c6f55b"
+    },
+    {
+      "file": "worker/v4-qualification/timing/pool_max-p2-t8-r16-extended-prep700106-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/pool_max-p2-t8-r16-extended-prep700106-envelope.csv",
+      "originalBytes": 23518,
+      "originalSha256": "1f4c998c4cd7852cee45d8f54295e5b492ae2f66c62d022b86ae426ec411aa06",
+      "storedSha256": "93e8c07094b27dc661e0b0198f2fc34bb76b399e72644022602e159b7795b097"
+    },
+    {
+      "file": "worker/v4-qualification/timing/samples.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/samples.csv",
+      "originalBytes": 34867213,
+      "originalSha256": "3d7ee0b26a51e70816ad0f3f2920e3e407e092e1c3b72b6c1a20c026bd213172",
+      "storedSha256": "61f88fa80aefd859f65fb3014c502f5b1a7ac0a2344079fa452398806084933d"
+    },
+    {
+      "file": "worker/v4-qualification/timing/session-p1-t2-r3-extended-prep700028-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/session-p1-t2-r3-extended-prep700028-envelope.csv",
+      "originalBytes": 20446,
+      "originalSha256": "f00c5b8ba772bdba983d301562420f654e8d9a8eec90d864f19a0cd63754bc42",
+      "storedSha256": "e08c57817fc4a0954eefe64eebf59c0957c38480b2799f1592849300003790e3"
+    },
+    {
+      "file": "worker/v4-qualification/timing/session-p1-t2-r3-saved-prep700016-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/session-p1-t2-r3-saved-prep700016-envelope.csv",
+      "originalBytes": 20446,
+      "originalSha256": "51c4d9144f1a3163ae1d62a389d5041215e4a80b05212ff1c77220193122ea78",
+      "storedSha256": "8264c06e1ddffc68e3036df71e02a8af6df2312186b374b9477eac1f9ed3fd0c"
+    },
+    {
+      "file": "worker/v4-qualification/timing/session-p2-t2-r6-extended-prep700114-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/session-p2-t2-r6-extended-prep700114-envelope.csv",
+      "originalBytes": 23515,
+      "originalSha256": "3d8f596c1c6a2fe7d1c34f2b195fd07f836c3b1b2f109ab2169735c846d381c0",
+      "storedSha256": "08058519e6e4576edd5449df1c3a85b4445c193c4848bc93f0f5c4ddb0b93a6d"
+    },
+    {
+      "file": "worker/v4-qualification/timing/session-p2-t2-r6-saved-prep700108-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/session-p2-t2-r6-saved-prep700108-envelope.csv",
+      "originalBytes": 22493,
+      "originalSha256": "68670328f603c603e0a859e00557dad556b8575c7234cf5e0429f52304a6d5c6",
+      "storedSha256": "faba117858af17ca55f23e102066dbbe396d627b274c9473f6bcd04a5e8ca21d"
+    },
+    {
+      "file": "worker/v4-qualification/timing/session-p2-t8-r10-extended-prep700081-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/session-p2-t8-r10-extended-prep700081-envelope.csv",
+      "originalBytes": 21470,
+      "originalSha256": "33acce61be74fa658b6c9e44ea7660f3b72698aab781641b5917f48b25870717",
+      "storedSha256": "fef4cf2ed43465517c7430ee12b121ad9a508526e8cebfe2d6d70da76756f853"
+    },
+    {
+      "file": "worker/v4-qualification/timing/session-p2-t8-r10-saved-prep700069-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/session-p2-t8-r10-saved-prep700069-envelope.csv",
+      "originalBytes": 20446,
+      "originalSha256": "3fe1eb75e1fdb7fb596ed1ea101d186cd6cc1094aa06f1784545ca6c9144b43e",
+      "storedSha256": "28fc035cc19d20e1e5a99bf6edd66d2deb2aef5731e47cc23b0ae7f079654b11"
+    },
+    {
+      "file": "worker/v4-qualification/timing/song-p1-t2-r3-extended-prep700034-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/song-p1-t2-r3-extended-prep700034-envelope.csv",
+      "originalBytes": 21294,
+      "originalSha256": "62ab58ecc5da7f81491fd8f722df8ba3ada54969e4fffd327f9290bc11d689b1",
+      "storedSha256": "897523c57089b10b7159e130155643a0610f0c993619e6990131dcc425a72a05"
+    },
+    {
+      "file": "worker/v4-qualification/timing/song-p1-t2-r3-saved-prep700022-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/song-p1-t2-r3-saved-prep700022-envelope.csv",
+      "originalBytes": 21294,
+      "originalSha256": "e926948d8d1faaffc2cc71b4dd2ae0f3963442bd4c8b6e08f9bd98330315b829",
+      "storedSha256": "e8bf36127dccfdb058adaf8dbe3a0261e5b0e8056695b9bced81dab90c688ad4"
+    },
+    {
+      "file": "worker/v4-qualification/timing/song-p2-t2-r6-extended-prep700116-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/song-p2-t2-r6-extended-prep700116-envelope.csv",
+      "originalBytes": 23517,
+      "originalSha256": "d70206df2d80ea82b94258938e453001486923213105e8d19c93dadd46b4f926",
+      "storedSha256": "78ee490cb135c4463889b0101ade677ab4967b3382252063a271a1223bdf0d44"
+    },
+    {
+      "file": "worker/v4-qualification/timing/song-p2-t2-r6-saved-prep700110-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/song-p2-t2-r6-saved-prep700110-envelope.csv",
+      "originalBytes": 22494,
+      "originalSha256": "ff522b44adc254a4f8d52b22d6a7c60c0d67517fc04df5717dcea2179dc6429e",
+      "storedSha256": "ddf87c61db4b7202c6ae0d9958019527e1f9a7465a38d65468009ff59ff0d037"
+    },
+    {
+      "file": "worker/v4-qualification/timing/song-p2-t8-r10-extended-prep700087-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/song-p2-t8-r10-extended-prep700087-envelope.csv",
+      "originalBytes": 22318,
+      "originalSha256": "7e93b759281ea46e9bf0882be21fb3a214b31f959e91d7195f6cccc7aa53f3e1",
+      "storedSha256": "ee99185a6764891c55e152ea01241612035683c633ce9f967999889a7be36c83"
+    },
+    {
+      "file": "worker/v4-qualification/timing/song-p2-t8-r10-saved-prep700075-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/song-p2-t8-r10-saved-prep700075-envelope.csv",
+      "originalBytes": 21294,
+      "originalSha256": "523b74c8f3b9c9c53f1647eff7e89601555ebb1dccdb1373138023cefc89a4bb",
+      "storedSha256": "c02f6b71100bcbfb3b2928c6d8d707b7e2d93ad3640fe872f4d460595ae42590"
+    },
+    {
+      "file": "worker/v4-qualification/timing/storage-p1-t2-r3-extended-prep700036-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/storage-p1-t2-r3-extended-prep700036-envelope.csv",
+      "originalBytes": 24542,
+      "originalSha256": "df9c396d0bf85e468f12c16cfe841b335049e4a2882f16319ccb0d32edfddf7f",
+      "storedSha256": "7ac745f523be4042f57354d76c6525f49c9867545dd7acd831502723752b9a8e"
+    },
+    {
+      "file": "worker/v4-qualification/timing/storage-p1-t2-r3-saved-prep700024-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/storage-p1-t2-r3-saved-prep700024-envelope.csv",
+      "originalBytes": 24542,
+      "originalSha256": "d8d9c38945bdf4deed3a2e771594c823cc6074eca967de14f68e321b2b5cee6d",
+      "storedSha256": "69c5378ef265f582dfc9679686abd951c09fd58f9027bfed75003df4315aace6"
+    },
+    {
+      "file": "worker/v4-qualification/timing/storage-p2-t2-r6-extended-prep700118-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/storage-p2-t2-r6-extended-prep700118-envelope.csv",
+      "originalBytes": 25565,
+      "originalSha256": "5fce0e417cbf44685a927479384f102ce0b531b7a15bb0225ba5462b3b809470",
+      "storedSha256": "038ebd88d5315fff960135c838296bfc2f63bc39afd3c3359fdfd5c9313fcd02"
+    },
+    {
+      "file": "worker/v4-qualification/timing/storage-p2-t2-r6-saved-prep700112-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/storage-p2-t2-r6-saved-prep700112-envelope.csv",
+      "originalBytes": 24542,
+      "originalSha256": "1ce2c4082b5a08b2716078c193bfc94f8010db7fa1637c8c8998a48df495178b",
+      "storedSha256": "701b0bc064f84c870ff534c08e1c5ad7584a87a3c9607b2c0d7b778632c02930"
+    },
+    {
+      "file": "worker/v4-qualification/timing/suffix_min-p1-t2-r3-extended-prep700032-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/suffix_min-p1-t2-r3-extended-prep700032-envelope.csv",
+      "originalBytes": 21736,
+      "originalSha256": "bee9a8348955524f5698f70a4b669dc77d8e30d4fb2f38c7fd159c4b826b5600",
+      "storedSha256": "53f04c013435865a3776927b8c48490e819a6eb532775d27a2a7de6843cc0823"
+    },
+    {
+      "file": "worker/v4-qualification/timing/suffix_min-p1-t2-r3-saved-prep700020-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/suffix_min-p1-t2-r3-saved-prep700020-envelope.csv",
+      "originalBytes": 21736,
+      "originalSha256": "91bc6b0f6f72503c340ae796009bbcb5e98b58754e24cf65423c7f1b2c32bf92",
+      "storedSha256": "1746c17b7012aa927308899b8039c8cef0b46dd6a65c771aac58261110ecf889"
+    },
+    {
+      "file": "worker/v4-qualification/timing/suffix_min-p2-t8-r10-extended-prep700085-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/suffix_min-p2-t8-r10-extended-prep700085-envelope.csv",
+      "originalBytes": 22760,
+      "originalSha256": "cac0987026ad9509630b576f41a949eca7a834743ce82fbd6918726314534e75",
+      "storedSha256": "103b04d809e366616a0f7db90aac9c591c576fb4dbc45655ad8f271020600d76"
+    },
+    {
+      "file": "worker/v4-qualification/timing/suffix_min-p2-t8-r10-saved-prep700073-envelope.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/suffix_min-p2-t8-r10-saved-prep700073-envelope.csv",
+      "originalBytes": 21736,
+      "originalSha256": "97526884f12e2c266f4178559e7f32b5df725b7c8bb61ccd0a7f6fd0ebd424d8",
+      "storedSha256": "6671e55515c979d18412242995028e65869e7af8a2d7543fa051bf7a948cc194"
+    },
+    {
+      "file": "worker/v4-qualification/timing/work.csv.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing/work.csv",
+      "originalBytes": 2995451,
+      "originalSha256": "cee7767dc3be91f4f03df054c6f6f7f683db22126cdc9ad4b4c8c8add3318bb1",
+      "storedSha256": "b950053bf97dcc6f41eda5bf3e71ebf31e082193ab824f64ee5b07b2e8ff39d4"
+    },
+    {
+      "file": "worker/v4-qualification/timing-backend.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing-backend.log",
+      "originalBytes": 0,
+      "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "storedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "worker/v4-qualification/timing-build.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing-build.log",
+      "originalBytes": 0,
+      "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "storedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "worker/v4-qualification/timing.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/timing.log",
+      "originalBytes": 104681,
+      "originalSha256": "3b36b694a76b292fe858d2576bbee705b0e9cb31737c4428bfe566c86634982c",
+      "storedSha256": "f098d41d249772d2ba01df6af5accdef4f1ba0e77010c6cc1fa21494ed3877e5"
+    },
+    {
+      "file": "worker/v4-qualification/v4-build.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/v4-build.log",
+      "originalBytes": 0,
+      "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "storedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "worker/v4-qualification/v4.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/v4.log",
+      "originalBytes": 3284,
+      "originalSha256": "764b32e4d6083d17dd1246d5080c57678181b3941976d1df39bad040ed166201",
+      "storedSha256": "3d5b94285a148292f967d7448250dd627cb4658ab96869a3a6ef80e4775e4472"
+    },
+    {
+      "file": "worker/v4-qualification/v4_authority-build.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/v4_authority-build.log",
+      "originalBytes": 0,
+      "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "storedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "worker/v4-qualification/v4_authority.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/v4_authority.log",
+      "originalBytes": 4163,
+      "originalSha256": "b9106ee6c77a61852f4bb413a0aebba96032f3861c7fc1c327fc0f67dd2e2950",
+      "storedSha256": "f92b1a398f4d0cb1fe0459fd9a35c0d410ead29cc3bfc514f0dd4cf697c5b9bb"
+    },
+    {
+      "file": "worker/v4-qualification/v4_midi-build.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/v4_midi-build.log",
+      "originalBytes": 0,
+      "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "storedSha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "file": "worker/v4-qualification/v4_midi.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/v4_midi.log",
+      "originalBytes": 2562,
+      "originalSha256": "6a97f6ffeb919b208411485d46e1b65113cf1bd327885845a338c02ef8feff47",
+      "storedSha256": "83fc2750e41ead25691c1484f6719027956bbbedca40202704ef7696d015125e"
+    },
+    {
+      "file": "worker/v4-qualification/work-maxima.json",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-qualification/work-maxima.json",
+      "originalBytes": 176719,
+      "originalSha256": "8f148cc8e8fe0bcddc60296b2eeaa311e3cf96dd23b788e7ec5176734af66be7",
+      "storedSha256": "8f148cc8e8fe0bcddc60296b2eeaa311e3cf96dd23b788e7ec5176734af66be7"
+    },
+    {
+      "file": "worker/v4-runner.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-runner.log",
+      "originalBytes": 129,
+      "originalSha256": "e9d7b854cf916b1db158fe857186e4d81931b89e193560b0501e24164a9da5a0",
+      "storedSha256": "e02ac328852e2ddb75bded79bc966fa4da362f636a39ef199a7d311ae6e87dec"
+    },
+    {
+      "file": "worker/v4-start.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/v4-start.txt",
+      "originalBytes": 87,
+      "originalSha256": "24078c021ad8247927db405daaea59ce2137649e86ab884313c724a7dcb8c787",
+      "storedSha256": "24078c021ad8247927db405daaea59ce2137649e86ab884313c724a7dcb8c787"
+    },
+    {
+      "file": "reviews/task-7-evidence-review.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-review.md",
+      "originalBytes": 6937,
+      "originalSha256": "f29edb8f57c1b662c4d074d42916913bbd8858c936ce674ee629ca5adfbbbd34",
+      "storedSha256": "f29edb8f57c1b662c4d074d42916913bbd8858c936ce674ee629ca5adfbbbd34"
+    },
+    {
+      "file": "reviews/task-7-full-final-quality-review.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-full-final-quality-review.md",
+      "originalBytes": 2272,
+      "originalSha256": "f02504443ff986f13150846f5005fd130d62570863345bddf0291ae45f1c684f",
+      "storedSha256": "f02504443ff986f13150846f5005fd130d62570863345bddf0291ae45f1c684f"
+    },
+    {
+      "file": "reviews/task-7-full-final-spec-review.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-full-final-spec-review.md",
+      "originalBytes": 1541,
+      "originalSha256": "cff79ea9401a199ae2dd7917497adcba6487d5717f2891e8cea691d33b17f7a1",
+      "storedSha256": "cff79ea9401a199ae2dd7917497adcba6487d5717f2891e8cea691d33b17f7a1"
+    },
+    {
+      "file": "reviews/task-7-partition-quality-review.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-partition-quality-review.md",
+      "originalBytes": 1474,
+      "originalSha256": "d0012a9eea437ee15211573288e936592bf7b092c385f7b8f99eee54ce0f46d6",
+      "storedSha256": "d0012a9eea437ee15211573288e936592bf7b092c385f7b8f99eee54ce0f46d6"
+    },
+    {
+      "file": "reviews/task-7-partition-spec-review.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-partition-spec-review.md",
+      "originalBytes": 1718,
+      "originalSha256": "d18ce5a65273dba47ca535480a6a422a57c2510fd216584ecce0cd43f43deb91",
+      "storedSha256": "d18ce5a65273dba47ca535480a6a422a57c2510fd216584ecce0cd43f43deb91"
+    },
+    {
+      "file": "reviews/task-7-quality-review.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-quality-review.md",
+      "originalBytes": 1467,
+      "originalSha256": "dac3f240ca831674b5efa35c2c09f153e18892220ee60ca86d068f8934d84a52",
+      "storedSha256": "dac3f240ca831674b5efa35c2c09f153e18892220ee60ca86d068f8934d84a52"
+    },
+    {
+      "file": "reviews/task-7-ramp-quality-review.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-ramp-quality-review.md",
+      "originalBytes": 1480,
+      "originalSha256": "13f1133167ac69db50a210f1296ffa1d24cd2fb5c77fe2570e27770943cba3ed",
+      "storedSha256": "13f1133167ac69db50a210f1296ffa1d24cd2fb5c77fe2570e27770943cba3ed"
+    },
+    {
+      "file": "reviews/task-7-ramp-spec-review.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-ramp-spec-review.md",
+      "originalBytes": 1592,
+      "originalSha256": "a85ea8720a5bd6ba8bd7b825757426acb53094ae0b461a84ef3354fd3f6ba664",
+      "storedSha256": "a85ea8720a5bd6ba8bd7b825757426acb53094ae0b461a84ef3354fd3f6ba664"
+    },
+    {
+      "file": "reviews/task-7-spec-review.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-spec-review.md",
+      "originalBytes": 3677,
+      "originalSha256": "38971900697f44d45da42cc89c101983daa10181c8d2c17502db4b2d5b282025",
+      "storedSha256": "38971900697f44d45da42cc89c101983daa10181c8d2c17502db4b2d5b282025"
+    },
+    {
+      "file": "task-7-report.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-report.md",
+      "originalBytes": 17608,
+      "originalSha256": "57755ca70e9489d01834dafe571261ae663fba1be288f74e128366bb009e46c1",
+      "storedSha256": "57755ca70e9489d01834dafe571261ae663fba1be288f74e128366bb009e46c1"
+    },
+    {
+      "file": "root-integration.json",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-root-integration.json",
+      "originalBytes": 3265,
+      "originalSha256": "2ee9b25a794530f528dafd981d40513d8b23e9d90d20832005a41d6a42dab4a6",
+      "storedSha256": "2ee9b25a794530f528dafd981d40513d8b23e9d90d20832005a41d6a42dab4a6"
+    },
+    {
+      "file": "root-original/native-build.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-root-validation/native-build.log",
+      "originalBytes": 820,
+      "originalSha256": "538d971f38a1c22132a6dd3296ef13d1430cd3e3c8b655467b40c271eebeff4b",
+      "storedSha256": "88513f7afd6b2b6be6749c263de6967a84c4a8cf1b189217c6244acaeb67991f"
+    },
+    {
+      "file": "root-original/native-suite.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-root-validation/native-suite.log",
+      "originalBytes": 1459,
+      "originalSha256": "5be32efda47763c7eae139f6808517086794272074a347023d4ff0a1494dd5cf",
+      "storedSha256": "4d203225141ba8b57bc1f390eb8a07f9389d729ceabdfe2489f9fe2410eee803"
+    },
+    {
+      "file": "root-original/receipt.json",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-root-validation/receipt.json",
+      "originalBytes": 684,
+      "originalSha256": "7d0f6c36a497e5a3b9492aaed42949bf58b3db0561db1fbc5a6f4afe6fe7b14c",
+      "storedSha256": "7d0f6c36a497e5a3b9492aaed42949bf58b3db0561db1fbc5a6f4afe6fe7b14c"
+    },
+    {
+      "file": "resolver-fix/report.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-resolver-integration-fix.md",
+      "originalBytes": 4715,
+      "originalSha256": "7efa74a10d2546da7f57b30ed7f216d36304ae52f06d752c925d8002c67c08ff",
+      "storedSha256": "7efa74a10d2546da7f57b30ed7f216d36304ae52f06d752c925d8002c67c08ff"
+    },
+    {
+      "file": "resolver-fix/spec-review.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-resolver-fix-spec-review.md",
+      "originalBytes": 2598,
+      "originalSha256": "4138e24a9856b10b5434a1f3660fa3c38de2ea754fcab3f4329c0aadf0f8687b",
+      "storedSha256": "4138e24a9856b10b5434a1f3660fa3c38de2ea754fcab3f4329c0aadf0f8687b"
+    },
+    {
+      "file": "resolver-fix/quality-review.md",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-resolver-fix-quality-review.md",
+      "originalBytes": 2486,
+      "originalSha256": "699b6b0c28176b85a36c35cf27600cddbfef45bcd98b9c151e4c1c7b934c82ef",
+      "storedSha256": "699b6b0c28176b85a36c35cf27600cddbfef45bcd98b9c151e4c1c7b934c82ef"
+    },
+    {
+      "file": "root-integration-81220d3.json",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-root-integration-81220d3.json",
+      "originalBytes": 3265,
+      "originalSha256": "2936f88031341b9a17b76fc63604ef931c9f0ea9edeae4ef0d5ebbe4815de905",
+      "storedSha256": "2936f88031341b9a17b76fc63604ef931c9f0ea9edeae4ef0d5ebbe4815de905"
+    },
+    {
+      "file": "resolver-fix/evidence/alive-resolver-elf-regression-red.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-resolver-integration-fix-evidence/alive-resolver-elf-regression-red.log",
+      "originalBytes": 19309,
+      "originalSha256": "eef67899de00ca1c35bb4d098bc513aa0e01f1ff8c919ba00115066b436c579e",
+      "storedSha256": "099b1fc37a2dca4a54fb8280326e418ed4aa12b684b5b2288da7b5c7a6304c5e"
+    },
+    {
+      "file": "resolver-fix/evidence/alive-resolver-pinned-green.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-resolver-integration-fix-evidence/alive-resolver-pinned-green.log",
+      "originalBytes": 656,
+      "originalSha256": "c66fc80ed45807b40f114b62e8ebd51c8576b17f143217a592f0cf5c46681cee",
+      "storedSha256": "508108c5a9e1bf4898e03be12cdb68f08ad68be0d3391f3976a28bdc5c70cba8"
+    },
+    {
+      "file": "resolver-fix/evidence/alive-resolver-pinned-red.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-resolver-integration-fix-evidence/alive-resolver-pinned-red.log",
+      "originalBytes": 550,
+      "originalSha256": "530bce89fd490820c50eb887101ebdcd245e17a6096cdf7b2010874cd089b45c",
+      "storedSha256": "ae4469400732c5f15a1b3f6577dfe6d13806514ac858ae80156a03db2c548960"
+    },
+    {
+      "file": "resolver-fix/evidence/alive-resolver-system-green.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-resolver-integration-fix-evidence/alive-resolver-system-green.log",
+      "originalBytes": 656,
+      "originalSha256": "c66fc80ed45807b40f114b62e8ebd51c8576b17f143217a592f0cf5c46681cee",
+      "storedSha256": "508108c5a9e1bf4898e03be12cdb68f08ad68be0d3391f3976a28bdc5c70cba8"
+    },
+    {
+      "file": "resolver-fix/evidence/anchor.c",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-resolver-integration-fix-evidence/anchor.c",
+      "originalBytes": 63,
+      "originalSha256": "2bc69d2c5a971d38965cb494b4343a9897644f93a072b321d015b1c234bb806a",
+      "storedSha256": "2bc69d2c5a971d38965cb494b4343a9897644f93a072b321d015b1c234bb806a"
+    },
+    {
+      "file": "resolver-fix/evidence/elf-counts.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-resolver-integration-fix-evidence/elf-counts.txt",
+      "originalBytes": 162,
+      "originalSha256": "48f4e54c0d0be4b9f2431b625155493940053ce12f55e28fd42c4857f9b6830d",
+      "storedSha256": "48f4e54c0d0be4b9f2431b625155493940053ce12f55e28fd42c4857f9b6830d"
+    },
+    {
+      "file": "resolver-fix/evidence/hashes.txt",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-resolver-integration-fix-evidence/hashes.txt",
+      "originalBytes": 608,
+      "originalSha256": "61f7e3d35099db2aca8d30ea097ea1bbbd4d34a55fa9cdf719216986a06ffeb5",
+      "storedSha256": "61f7e3d35099db2aca8d30ea097ea1bbbd4d34a55fa9cdf719216986a06ffeb5"
+    },
+    {
+      "file": "resolver-fix/evidence/pinned-anchor-symbols.txt.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-resolver-integration-fix-evidence/pinned-anchor-symbols.txt",
+      "originalBytes": 10871,
+      "originalSha256": "a17e265a4ec8f91bdd4bfe9503a0d044c7670f38e5371d8b034ab0833cf70f33",
+      "storedSha256": "990fc426d87bd8077ad5feea6853afa98b4dbc84c6bc04906ab060bfebada87c"
+    },
+    {
+      "file": "resolver-fix/evidence/pinned-full-symbols.txt.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-resolver-integration-fix-evidence/pinned-full-symbols.txt",
+      "originalBytes": 158705,
+      "originalSha256": "151e1f29b40a81e8a6489c51bfcece13cf84ef4b52d58a7fa25b789310a686f3",
+      "storedSha256": "c989ad0baa6eacffa7089a7618407645a98deb4a3ae5d1621f13028db7693d9d"
+    },
+    {
+      "file": "resolver-fix/evidence/pinned-native-ci-green.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-resolver-integration-fix-evidence/pinned-native-ci-green.log",
+      "originalBytes": 17215,
+      "originalSha256": "5671c49db7b01f629abad6250287b9c327d1fcd1fd61817d3771cb40530343d8",
+      "storedSha256": "541598d7e08aab2b2e835635fe1710cf34c29abd18ab4ed153ade8a49ff2554e"
+    },
+    {
+      "file": "resolver-fix/evidence/receipt.json",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-resolver-integration-fix-evidence/receipt.json",
+      "originalBytes": 7120,
+      "originalSha256": "c4ca00ee8cfa403170f27d503d8fbc4e92a307ba214d646854fc4bf31ba220df",
+      "storedSha256": "c4ca00ee8cfa403170f27d503d8fbc4e92a307ba214d646854fc4bf31ba220df"
+    },
+    {
+      "file": "resolver-fix/evidence/resolver-script-81220d3.sh",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-resolver-integration-fix-evidence/resolver-script-81220d3.sh",
+      "originalBytes": 1972,
+      "originalSha256": "0bfa2bee3c1e19325377bad18faa476333ae4c37fa9c99c83a0bae1ca2afb335",
+      "storedSha256": "0bfa2bee3c1e19325377bad18faa476333ae4c37fa9c99c83a0bae1ca2afb335"
+    },
+    {
+      "file": "resolver-fix/evidence/root-full-green.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-resolver-integration-fix-evidence/root-full-green.log",
+      "originalBytes": 164,
+      "originalSha256": "34d761a2d66c2841ae2ab25b7738299de69102fe90e88cf1f7123d7d72b65cd6",
+      "storedSha256": "4954f29840082346c20f2f20b52555fb8b5381f090b5e4f64675b59b1efaa412"
+    },
+    {
+      "file": "resolver-fix/evidence/root-native-red.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-resolver-integration-fix-evidence/root-native-red.log",
+      "originalBytes": 1459,
+      "originalSha256": "5be32efda47763c7eae139f6808517086794272074a347023d4ff0a1494dd5cf",
+      "storedSha256": "4d203225141ba8b57bc1f390eb8a07f9389d729ceabdfe2489f9fe2410eee803"
+    },
+    {
+      "file": "resolver-fix/evidence/root-validation-receipt.json",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-resolver-integration-fix-evidence/root-validation-receipt.json",
+      "originalBytes": 684,
+      "originalSha256": "7d0f6c36a497e5a3b9492aaed42949bf58b3db0561db1fbc5a6f4afe6fe7b14c",
+      "storedSha256": "7d0f6c36a497e5a3b9492aaed42949bf58b3db0561db1fbc5a6f4afe6fe7b14c"
+    },
+    {
+      "file": "root-final/alive-compile.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-root-validation-81220d3/alive-compile.log",
+      "originalBytes": 604938,
+      "originalSha256": "6b1268bb1d001f5c80bb8d97fe8fc9544e7b8fe2cb0657070cc735099cd5b82f",
+      "storedSha256": "856b3a993745ea8a8405a49a49de05d95c702e68a79eb6c57246207d6f4a09ac"
+    },
+    {
+      "file": "root-final/alive-tests.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-root-validation-81220d3/alive-tests.log",
+      "originalBytes": 198,
+      "originalSha256": "9d8e4fcce3ea9868c769f5782fb50fd9b71e2b96e12aa8f10c3f50ffae4e7b3a",
+      "storedSha256": "a81c945238b9696997daccc0f992a5c60dbd1f8e6b11ed69c87c00c656332e6e"
+    },
+    {
+      "file": "root-final/loader-proof.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-root-validation-81220d3/loader-proof.log",
+      "originalBytes": 103566,
+      "originalSha256": "2f6c21fc3671571a52948696fa949aa33ccb0945b2d3ead93a4e833515d1759a",
+      "storedSha256": "74e6ea1456e179fbdd642574988707b6cc5063e0b679a35bad7145cbe079d443"
+    },
+    {
+      "file": "root-final/native-suite.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-root-validation-81220d3/native-suite.log",
+      "originalBytes": 17215,
+      "originalSha256": "d023067ca04e99d2235d0e8056455f5e787319eb3bb470b83aa3ab771e0ea74e",
+      "storedSha256": "73ca338d7bc772fe325ded778b385bff77d43ae34857f9a5729e954bcfad1230"
+    },
+    {
+      "file": "root-final/receipt.json",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-root-validation-81220d3/receipt.json",
+      "originalBytes": 3045,
+      "originalSha256": "6cdbe0151368517a6cc7c57679253cd15c89627123a1e6cdc6a68acc4aa493aa",
+      "storedSha256": "6cdbe0151368517a6cc7c57679253cd15c89627123a1e6cdc6a68acc4aa493aa"
+    },
+    {
+      "file": "root-final/toolchain.json",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-root-validation-81220d3/toolchain.json",
+      "originalBytes": 661,
+      "originalSha256": "c9c6f99457f60a3480e7560ac3022dd500d6c48c17d0d830563ec78ba9851e5e",
+      "storedSha256": "c9c6f99457f60a3480e7560ac3022dd500d6c48c17d0d830563ec78ba9851e5e"
+    },
+    {
+      "file": "root-final/ultra-compile.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-root-validation-81220d3/ultra-compile.log",
+      "originalBytes": 601218,
+      "originalSha256": "4764e6a2a3814b6b103052b8c408b6d1159691a4333a573f8e8551dca67b1474",
+      "storedSha256": "eed6a91ad3cb6e2ce911408dced5a56cd1953165f3a62f7b013c4938ebf6c3cc"
+    },
+    {
+      "file": "root-final/ultra-tests.log.gz",
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-root-validation-81220d3/ultra-tests.log",
+      "originalBytes": 27854,
+      "originalSha256": "7c779e2252854f54305f1cc82a7c68c4130a3244518a9fa1f34302d47bf20f18",
+      "storedSha256": "504fdbfa4a9678e7c76d13311752919f9f147bc19b65a38b68bab68068c4f6cf"
+    }
+  ],
+  "limits": "Accepted Linux native functional/bounded-work packet at c71b608, integrated byte-identically from81220d3; root pinned native suite,286Rust/fourignored,1Alive and mapped-module proof pass. Earlier original measurements retain exact production-source attribution, not final-head CI. Four original eight-track1024-frame v3 dense-control overruns remain; paired repeats do not establish cause. Provisional v4 profile2 remains refused. Binary/PCM/copied-source archives remain local and hash-pinned; final integrated-head CI/packages, UI, actual app save/Quit/restart, endurance, foreign runtimes and physical output remain separate gates. Root original resolver loader failure, reviewed test-only correction and final green are all preserved.",
+  "integrationCorrectionCandidate": "81220d33348b2baa0890b0d74f1e517aa5474722",
+  "integrationCorrectionDiffSha256": "039cb328837963618b9547ed1af4b59157e0abfa1574b19f5c81688a872863e9",
+  "integratedSource": "c71b60805e0e877915fb2b9efaf83b479252d5e3",
+  "omittedSourceCopies": [
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/core/CMakeLists.txt",
+      "sha256": "ed26b3cbc4936054a4c9d8a22b2ad853a8e8fa51a928b990277de05d06e8a8d9",
+      "bytes": 2562,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/core/VOICE.txt",
+      "sha256": "3305f3b0ba3c62f647365a18e2b17ee07bc60c9582df6b4d6e0f3d54fc8133cd",
+      "bytes": 14723,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/core/app_voice.hpp",
+      "sha256": "3b173f9a042544f2ca37cfd1f6385fe2ff584203002d79497cf2d616e8593d23",
+      "bytes": 2480,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/core/engine.cpp",
+      "sha256": "397f6b59debd7bbff899aaeaa4bbbdb18a2e6fe8ff0f7adc4fd0e7287f75413c",
+      "bytes": 9601,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/core/engine.hpp",
+      "sha256": "b4690e8317b44a2ded3844c97ca614da9c9a9ea3dbf67fa90ed7ae115e8d0b1d",
+      "bytes": 2444,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/core/generate_voice.py",
+      "sha256": "69e21a65ddefcf4af28101d1dc63d947b201d4544c4f28cbab01432de51ca236",
+      "bytes": 1510,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/core/generate_voice_kernels.py",
+      "sha256": "a3a440cf998a941a37ec3a0bb0f482e5079a91b830b7c62d4f6b1fb0f191d24c",
+      "bytes": 1624,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/core/generated/app_voice.hpp",
+      "sha256": "c963956717a1b7e9f9b2724d2505c256e0471bc32086968958bf1ac45b2cc03c",
+      "bytes": 7541,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/core/generated/voice_adsr.hpp",
+      "sha256": "5ea3f39e7b914a092eec3881e037d20f5e327457d05736ac947baf392a0b7cbc",
+      "bytes": 4692,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/core/generated/voice_filter.hpp",
+      "sha256": "fb60632045bfdf657a9523befd92f703c8ef97350ce204594fc9fe6746b1e2ab",
+      "bytes": 5296,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/core/generated/voice_saw.hpp",
+      "sha256": "166654639bdea705b3fb64582f04524aa69511f70d9f27e7e2a686ff1a86fae7",
+      "bytes": 3949,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/core/guest/CMakeLists.txt",
+      "sha256": "676ba806ab1ac8078dcc49064138b4faeff415dc78889df77a6cfbd0471e7f1b",
+      "bytes": 249,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/core/guest/guest.cpp",
+      "sha256": "32756a243c3823c8b0e965bff5104b7435aff8136b6227b42460aed98acb067b",
+      "bytes": 7473,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/core/guest/observe.hpp",
+      "sha256": "ad0de5f6c80c49877eb7d042b88562cf673a814d259b42a8ac732773ca82b677",
+      "bytes": 558,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/core/tests/envelope.cpp",
+      "sha256": "844092afe8edc2b916c148fb8bf2edf0a7e7fab892cfbed66b08f3a9e4cb886f",
+      "bytes": 13834,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/src-tauri/native/alive_session.hpp",
+      "sha256": "c3cc67f057fbb6c1fc5689979bf1c215f5f94b0befb0942be32706b2ee5b3bec",
+      "bytes": 34609,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/src-tauri/native/alive_session_bits.hpp",
+      "sha256": "a260614bc600dc8fcd294c24e3fad35f7e9be2452aa007fa54b49b150d3411b4",
+      "bytes": 435,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/src-tauri/native/alive_session_clip_policy.hpp",
+      "sha256": "b4466cd286908d2d2fee873902640c225703e987bf5e890e57320df5e3af72d8",
+      "bytes": 2818,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/src-tauri/native/alive_session_clips.hpp",
+      "sha256": "dcf4de4f8699d759e37d23a4ec2db8271af728576fe9dd0d59602aca0ea4ff5d",
+      "bytes": 59156,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/src-tauri/native/alive_session_envelope.hpp",
+      "sha256": "d8da367ebdce8a26dd69941a4217c7a6ece0e751d8d1a33115a9babc603405fd",
+      "bytes": 2137,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/src-tauri/native/alive_session_workspace_envelope.hpp",
+      "sha256": "33be00fccb3d083150581feaa6363a1506fa9be6668be0b7087fe005869ca8e0",
+      "bytes": 13720,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/src-tauri/native/alive_session_workspaces.hpp",
+      "sha256": "9a98ba44c320643536e4fa8bc9bd1186ab729d4e373155c7758f272daf52c344",
+      "bytes": 34775,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/src-tauri/native/backend.cpp",
+      "sha256": "3661829328ba4d90b143a8a3b3989a297e8a2f12fae069731975c5d9f59ca191",
+      "bytes": 62416,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/src-tauri/native/canvas_list_objects.hpp",
+      "sha256": "c83e71885c5ad41663663479500d545c114603eb3ecc47aa9eb60278665dd834",
+      "bytes": 3459,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/src-tauri/native/canvas_message.hpp",
+      "sha256": "ec4cc2bb786ac9317341ec7d1af20c03a6290849c1c8984cc7af6a9697b3ed96",
+      "bytes": 9066,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/src-tauri/native/canvas_message_box.hpp",
+      "sha256": "1a800c9756c8be9c0b365e9480ee3236b994568c09e78af977b3a6aa82483713",
+      "bytes": 4465,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/src-tauri/native/canvas_objects.hpp",
+      "sha256": "235f8b19fd162e0851d38627d0774f97da69411fbaf5ce4af91cca4a849830c0",
+      "bytes": 2669,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/src-tauri/native/canvas_signal_objects.hpp",
+      "sha256": "ea9f52ecf50080406a2a0b985cfbeef23f0dbd56b52827fff87f297459167940",
+      "bytes": 1699,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/src-tauri/native/canvas_voice_objects.hpp",
+      "sha256": "0a93e181210fc2163c9db68c45ff9827077da3376acc73f7d286463774045586",
+      "bytes": 4145,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/src-tauri/native/canvas_workspace.hpp",
+      "sha256": "0f9a388b4dfa1ea3eeb0a37845b3db75d59d479e3e33fae8baec191aa73b1458",
+      "bytes": 3488,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/src-tauri/native/diagnostic.cpp",
+      "sha256": "e5412a4f3587e4b2f80a9240b6d067ed532e9475172f98fca96c6116037802ee",
+      "bytes": 1453,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/src-tauri/native/patch_graph.hpp",
+      "sha256": "d2ccf60d3a4b5fd6b30c427507351b7c7f92004b003a8582ef0c2df30f8cf5c0",
+      "bytes": 63141,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/src-tauri/native/sequence.hpp",
+      "sha256": "0602d22c09e6cee84d7ef79ccc3ea2809359bb8b2ab635af28d3f0983a20bff3",
+      "bytes": 3906,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/tests/alive_session_capacity_fixture.hpp",
+      "sha256": "8466164ab3f9e5561719a641138eb5757c6fec203824e65b7473bc290c145a09",
+      "bytes": 7299,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/tests/alive_session_v3_fixtures.py",
+      "sha256": "24db29015bbe20f3575ded260fd4ecca80e4764f137e9c2176560d39660a60ef",
+      "bytes": 2832,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/baseline/apps/ultra/tests/saved_graphs.hpp",
+      "sha256": "e096ba0b46205eb70ac4b0cf782783779620e50aaf8aa33f59482b64a28bb43b",
+      "bytes": 3378,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/core/CMakeLists.txt",
+      "sha256": "ed26b3cbc4936054a4c9d8a22b2ad853a8e8fa51a928b990277de05d06e8a8d9",
+      "bytes": 2562,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/core/VOICE.txt",
+      "sha256": "3305f3b0ba3c62f647365a18e2b17ee07bc60c9582df6b4d6e0f3d54fc8133cd",
+      "bytes": 14723,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/core/app_voice.hpp",
+      "sha256": "3b173f9a042544f2ca37cfd1f6385fe2ff584203002d79497cf2d616e8593d23",
+      "bytes": 2480,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/core/engine.cpp",
+      "sha256": "397f6b59debd7bbff899aaeaa4bbbdb18a2e6fe8ff0f7adc4fd0e7287f75413c",
+      "bytes": 9601,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/core/engine.hpp",
+      "sha256": "b4690e8317b44a2ded3844c97ca614da9c9a9ea3dbf67fa90ed7ae115e8d0b1d",
+      "bytes": 2444,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/core/generate_voice.py",
+      "sha256": "69e21a65ddefcf4af28101d1dc63d947b201d4544c4f28cbab01432de51ca236",
+      "bytes": 1510,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/core/generate_voice_kernels.py",
+      "sha256": "a3a440cf998a941a37ec3a0bb0f482e5079a91b830b7c62d4f6b1fb0f191d24c",
+      "bytes": 1624,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/core/generated/app_voice.hpp",
+      "sha256": "c963956717a1b7e9f9b2724d2505c256e0471bc32086968958bf1ac45b2cc03c",
+      "bytes": 7541,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/core/generated/voice_adsr.hpp",
+      "sha256": "5ea3f39e7b914a092eec3881e037d20f5e327457d05736ac947baf392a0b7cbc",
+      "bytes": 4692,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/core/generated/voice_filter.hpp",
+      "sha256": "fb60632045bfdf657a9523befd92f703c8ef97350ce204594fc9fe6746b1e2ab",
+      "bytes": 5296,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/core/generated/voice_saw.hpp",
+      "sha256": "166654639bdea705b3fb64582f04524aa69511f70d9f27e7e2a686ff1a86fae7",
+      "bytes": 3949,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/core/guest/CMakeLists.txt",
+      "sha256": "676ba806ab1ac8078dcc49064138b4faeff415dc78889df77a6cfbd0471e7f1b",
+      "bytes": 249,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/core/guest/guest.cpp",
+      "sha256": "32756a243c3823c8b0e965bff5104b7435aff8136b6227b42460aed98acb067b",
+      "bytes": 7473,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/core/guest/observe.hpp",
+      "sha256": "ad0de5f6c80c49877eb7d042b88562cf673a814d259b42a8ac732773ca82b677",
+      "bytes": 558,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/core/tests/envelope.cpp",
+      "sha256": "844092afe8edc2b916c148fb8bf2edf0a7e7fab892cfbed66b08f3a9e4cb886f",
+      "bytes": 13834,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/src-tauri/native/alive_session.hpp",
+      "sha256": "9b158e3c9e4a788dc8d3764ead16a40875961ee8f07f5667e947f365c3231a25",
+      "bytes": 39305,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/src-tauri/native/alive_session_bits.hpp",
+      "sha256": "a260614bc600dc8fcd294c24e3fad35f7e9be2452aa007fa54b49b150d3411b4",
+      "bytes": 435,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/src-tauri/native/alive_session_clip_policy.hpp",
+      "sha256": "b4466cd286908d2d2fee873902640c225703e987bf5e890e57320df5e3af72d8",
+      "bytes": 2818,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/src-tauri/native/alive_session_clips.hpp",
+      "sha256": "fa1c31700a1920bb289a775f3419f3f27c431330a7516c704ecdb5d2c66cf9ba",
+      "bytes": 59279,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/src-tauri/native/alive_session_envelope.hpp",
+      "sha256": "d8da367ebdce8a26dd69941a4217c7a6ece0e751d8d1a33115a9babc603405fd",
+      "bytes": 2137,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/src-tauri/native/alive_session_workspace_envelope.hpp",
+      "sha256": "33be00fccb3d083150581feaa6363a1506fa9be6668be0b7087fe005869ca8e0",
+      "bytes": 13720,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/src-tauri/native/alive_session_workspaces.hpp",
+      "sha256": "9af8e015c210303c4ba67e85db8d5f60a0222c6dc656a9a340c4ced0ff17e01d",
+      "bytes": 34793,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/src-tauri/native/backend.cpp",
+      "sha256": "cb4c318a3e71159552c06097ee135ca8be9f47d203d9a86579dd7df1a6c0ef03",
+      "bytes": 63708,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/src-tauri/native/canvas_list_objects.hpp",
+      "sha256": "c83e71885c5ad41663663479500d545c114603eb3ecc47aa9eb60278665dd834",
+      "bytes": 3459,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/src-tauri/native/canvas_message.hpp",
+      "sha256": "ec4cc2bb786ac9317341ec7d1af20c03a6290849c1c8984cc7af6a9697b3ed96",
+      "bytes": 9066,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/src-tauri/native/canvas_message_box.hpp",
+      "sha256": "1a800c9756c8be9c0b365e9480ee3236b994568c09e78af977b3a6aa82483713",
+      "bytes": 4465,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/src-tauri/native/canvas_objects.hpp",
+      "sha256": "235f8b19fd162e0851d38627d0774f97da69411fbaf5ce4af91cca4a849830c0",
+      "bytes": 2669,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/src-tauri/native/canvas_signal_objects.hpp",
+      "sha256": "ea9f52ecf50080406a2a0b985cfbeef23f0dbd56b52827fff87f297459167940",
+      "bytes": 1699,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/src-tauri/native/canvas_voice_objects.hpp",
+      "sha256": "0a93e181210fc2163c9db68c45ff9827077da3376acc73f7d286463774045586",
+      "bytes": 4145,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/src-tauri/native/canvas_workspace.hpp",
+      "sha256": "0f9a388b4dfa1ea3eeb0a37845b3db75d59d479e3e33fae8baec191aa73b1458",
+      "bytes": 3488,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/src-tauri/native/diagnostic.cpp",
+      "sha256": "e5412a4f3587e4b2f80a9240b6d067ed532e9475172f98fca96c6116037802ee",
+      "bytes": 1453,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/src-tauri/native/patch_graph.hpp",
+      "sha256": "d2ccf60d3a4b5fd6b30c427507351b7c7f92004b003a8582ef0c2df30f8cf5c0",
+      "bytes": 63141,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/src-tauri/native/sequence.hpp",
+      "sha256": "0602d22c09e6cee84d7ef79ccc3ea2809359bb8b2ab635af28d3f0983a20bff3",
+      "bytes": 3906,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/tests/alive_session_capacity_fixture.hpp",
+      "sha256": "8466164ab3f9e5561719a641138eb5757c6fec203824e65b7473bc290c145a09",
+      "bytes": 7299,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/tests/alive_session_v3_fixtures.py",
+      "sha256": "24db29015bbe20f3575ded260fd4ecca80e4764f137e9c2176560d39660a60ef",
+      "bytes": 2832,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    },
+    {
+      "source": ".superpowers/sdd/2026-10-28-phase2-live-max/task-7-evidence-ad314e5/dense-controlled-72af9f0/candidate/apps/ultra/tests/saved_graphs.hpp",
+      "sha256": "e096ba0b46205eb70ac4b0cf782783779620e50aaf8aa33f59482b64a28bb43b",
+      "bytes": 3378,
+      "reason": "Redundant source copies remain in local paired-comparison archive; reproduce from pinned git commits and scripts."
+    }
+  ]
+}

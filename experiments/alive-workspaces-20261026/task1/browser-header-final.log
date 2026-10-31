@@ -1,0 +1,103 @@
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:32] "GET /canvas.html HTTP/1.1" 200 -
+
+Running 11 tests using 1 worker
+
+(node:123961) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:123961) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:35] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:35] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:35] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:35] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:35] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:35] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:35] "GET /alive-piano.mjs HTTP/1.1" 200 -
+  ✓   1 apps/ultra/tests/ci/alive-chain.spec.mjs:41:1 › Add note queued behind track removal never edits the surviving track (2.2s)
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:35] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:35] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:35] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:35] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:35] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:35] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:35] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+  ✓   2 apps/ultra/tests/ci/alive-chain.spec.mjs:52:1 › selected instance controls, keyboard automation target, draft guard and desktop bounds (437ms)
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:36] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:36] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:36] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:36] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:36] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:36] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:36] "GET /alive-model.mjs HTTP/1.1" 200 -
+  ✓   3 apps/ultra/tests/ci/alive-chain.spec.mjs:68:1 › long saved device names fit the minimum desktop window (125ms)
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:36] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:36] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:36] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:36] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:36] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:36] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:36] "GET /audio-settings.mjs HTTP/1.1" 200 -
+  ✓   4 apps/ultra/tests/ci/alive-chain.spec.mjs:75:1 › piano body, resize, velocity, cancellation and keyboard gestures are bounded transactions (792ms)
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:37] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:37] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:37] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:37] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:37] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:37] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:37] "GET /alive-model.mjs HTTP/1.1" 200 -
+  ✓   5 apps/ultra/tests/ci/alive-chain.spec.mjs:98:1 › four-slot bank preserves numeric note identity and fits the minimum desktop (371ms)
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:37] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:37] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:37] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:37] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:37] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:37] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:37] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+  ✓   6 apps/ultra/tests/ci/alive-chain.spec.mjs:111:69 › eight columns align with four scene rows at 1440x900 (262ms)
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /audio-settings.mjs HTTP/1.1" 200 -
+  ✓   7 apps/ultra/tests/ci/alive-chain.spec.mjs:111:69 › eight columns align with four scene rows at 1280x800 (258ms)
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive-piano.mjs HTTP/1.1" 200 -
+  ✓   8 apps/ultra/tests/ci/alive-chain.spec.mjs:124:1 › view buttons preserve focused uncommitted values and native Tab navigation (199ms)
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+  ✓   9 apps/ultra/tests/ci/alive-chain.spec.mjs:135:1 › hiding Session preserves an unfinished gain field without issuing a mixer mutation (327ms)
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /audio-settings.mjs HTTP/1.1" 200 -
+  ✓  10 apps/ultra/tests/ci/alive-chain.spec.mjs:143:1 › maximum detail resize leaves the entire detail and workspace reachable (111ms)
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive.html HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive.css HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive-model.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[2m[WebServer] [22m127.0.0.1 - - [26/Oct/2026 11:01:38] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+  ✓  11 apps/ultra/tests/ci/alive-chain.spec.mjs:150:1 › track name and metadata line boxes fit the fixed Session header without clipping (148ms)
+
+  11 passed (6.3s)
+
+To open last HTML report run:
+[36m[39m
+[36m  npx playwright show-report apps/ultra/tests/ci/playwright-report[39m
+[36m[39m

@@ -1,7 +1,12 @@
 import {makeNode,validatePatch} from './canvas-model.mjs';
 import {deviceValues} from './canvas-device.mjs';
 
-export function packageInstrument(patch,{id='org.alive.instrument',name='Subtractive instrument'}={}){
+export function packageInstrument(patch,{id=patch.device?.id??'org.alive.instrument',name=patch.device?.name??'Subtractive instrument'}={}){
+  if(Object.hasOwn(patch,'device')){
+    // Validate the existing interface against the graph before changing its identity.
+    validatePatch(patch);
+    return validatePatch({...patch,device:{...patch.device,id,name}});
+  }
   const all=scope=>scope.nodes.flatMap(node=>[node,...(node.type==='patcher'?all(node.patcher):[])]);
   const nodes=all(patch),find=type=>{
     const matches=nodes.filter(node=>node.type===type);
@@ -10,7 +15,8 @@ export function packageInstrument(patch,{id='org.alive.instrument',name='Subtrac
   };
   const poly=find('poly_note'),envelope=find('adsr_voice'),filter=find('filter_voice'),gain=find('gain');
   const parameter=(key,label,node,param,min,max,unit)=>({key,label,node,param,min,max,unit});
-  const next={...patch,device:{version:1,id,name,midi:{node:poly,inlet:0},audio:{inputs:0,outputs:2,layout:'stereo'},parameters:[
+  const presentation={version:1,openOnLoad:false,size:{width:640,height:112},items:[]};
+  const next={...patch,presentation:patch.presentation===null?presentation:patch.presentation,device:{version:2,kind:'instrument',id,name,midi:{input:{node:poly,inlet:0},output:null},audio:{input:null,output:{channels:2,layout:'stereo'}},parameters:[
     parameter('attack','Attack',envelope,'attack',1,10000,'ms'),
     parameter('decay','Decay',envelope,'decay',1,10000,'ms'),
     parameter('sustain','Sustain',envelope,'sustain',0,1,''),
@@ -48,7 +54,14 @@ export function subtractivePatch(){
     [5,0,6,1],[6,0,7,0],[2,2,7,1],[7,0,8,0],[8,0,9,0],
     [9,0,10,0],[9,0,10,1],[10,0,11,0],[12,0,13,0],[13,0,14,0],
     [14,0,15,0],[15,0,16,0],[16,0,2,0]].map(([from,outlet,to,inlet])=>({from,outlet,to,inlet}));
-  const patch=packageInstrument({version:1,profile:'ultra-canvas-v1',nodes,edges},{id:'org.alive.subtractive',name:'Subtractive'});
+  const control=(id,label,node,param,x)=>({id,kind:'control',target:{kind:'parameter',node,param},widget:'dial',label,rect:{x,y:8,width:80,height:96},included:true,visible:true,style:{accent:'default',labelPosition:'above'}});
+  const presentation={version:1,openOnLoad:false,size:{width:640,height:112},items:[
+    control('attack','Attack',5,'attack',8),control('decay','Decay',5,'decay',96),
+    control('sustain','Sustain',5,'sustain',184),control('release','Release',5,'release',272),
+    control('cutoff','Cutoff',4,'cutoff',360),control('resonance','Resonance',4,'resonance',448),
+    control('level','Level',9,'value',536),
+  ]};
+  const patch=packageInstrument({version:1,profile:'ultra-canvas-v1',presentation,nodes,edges},{id:'org.alive.subtractive',name:'Subtractive'});
   patch.device.presets.push({name:'Soft',values:{attack:80,decay:450,sustain:0.5,release:800,cutoff:700,resonance:0.8,level:80}},
     {name:'Pluck',values:{attack:2,decay:170,sustain:0.12,release:120,cutoff:4200,resonance:2.5,level:85}});
   return validatePatch(patch);

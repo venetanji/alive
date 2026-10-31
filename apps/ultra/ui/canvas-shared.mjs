@@ -1,10 +1,11 @@
+import {createParameterGestures} from './canvas-parameter-gestures.mjs';
 import {CanvasDocument, createHelpViewState, nodeSpec, parseMessage, parsePatch, serializePatch,structuralParameter} from './canvas-model.mjs';
 import {mergeMessageDisplays, parseMessageTemplate} from './canvas-message-ui.mjs';
 import {mergePrintPopups} from './canvas-print-ui.mjs';
 
 const copy=value=>value===undefined?undefined:JSON.parse(JSON.stringify(value));
 const equal=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
-const empty=()=>({version:2,profile:'ultra-patcher-v2',nodes:[],edges:[]});
+const empty=()=>({version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[],edges:[]});
 const treeNodes=scope=>scope.nodes.flatMap(node=>[node,...(node.type==='patcher'?treeNodes(node.patcher):[])]);
 
 // Merge individual fields and stable node IDs. Ordered cable edits conflict when
@@ -26,6 +27,7 @@ function rebase(base,local,remote,key='') {
 
 export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
   if(typeof invoke!=='function')throw Error('Shared canvas requires native document IPC.');
+  let parameterGestures;
   let document=new CanvasDocument(empty()),descriptor=null,prepareTask=null,drainTask=null,pollTask=null;
   const helpView=createHelpViewState();
   let status={},observations={},messageBoxes={},printPopups={},consoleRecords=[],consoleDropped=0,consoleBaseline=0,consoleEpoch=0;
@@ -34,7 +36,7 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
   const MAX_PENDING_EDITS=64;
   let activeItem=null;
   const getState=()=>({patch:copy(document.patch),document:copy(document.document),path:[...document.path],...helpView.getState(),
-    native:true,shared:true,revision:descriptor?.runtimeRevision??null,
+    native:true,shared:true,ownerId:descriptor?.ownerLabel,parameterPreviews:[...(descriptor?.parameterPreviews??[]),...(parameterGestures?.snapshots()??[])],revision:descriptor?.runtimeRevision??null,
     desiredRevision:(descriptor?.authoringRevision??0)+queue.filter(item=>item.kind==='edit').length,
     activeDocumentRevision:descriptor?.authoringRevision??0,
     status:{...status},observations:copy(observations),messageBoxes:copy(messageBoxes),printPopups:copy(printPopups),console:copy(consoleRecords),
@@ -44,6 +46,7 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
     ready:!!descriptor&&!queue.length&&!faulted&&!panicked&&!disposed&&!detaching&&!closeBarriers.size&&!status.fault&&!status.server_lost,
     canUndo:!!descriptor?.canUndo,canRedo:!!descriptor?.canRedo});
   const emit=()=>{if(!disposed)onState(getState());};
+  parameterGestures=createParameterGestures({native:true,invoke,scope:()=>({ownerLabel:descriptor?.ownerLabel,runtimeRevision:descriptor?.runtimeRevision}),read:(id,key)=>treeNodes(document.document).find(node=>node.id===id)?.params[key],onReply:value=>{if(value?.shared)acceptDescriptor(value);},onChange:emit});
   const report=error=>{notice=String(error?.message||error);emit();};
   function reconcileHelp(next=document,restore=false) {
     helpView.reconcile(next,{owner:descriptor?.ownerLabel??'',path:descriptor?.viewPath??[],restore});
@@ -185,6 +188,7 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
     return result;
   }
   function parameter(id,key,value,{history=true,root=false}={}) {
+    parameterGestures.assertTarget(id,key);
     const node=(root?treeNodes(document.document):document.patch.nodes).find(node=>node.id===id);
     if(!node)throw Error('Missing object.');
     const structural=structuralParameter(node.type,key);
@@ -194,7 +198,10 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
     return edit((...args)=>root?document.parameterRoot(...args):document.parameter(...args),[id,key,value,{history}],{history,parameter,messageText});
   }
   function event(node,inlet=0,value=null,action,root=false) {
-    if(disposed||detaching||closeBarriers.size||!descriptor)return Promise.resolve(false);
+    const releasingDeviceNote=closeBarriers.size&&root&&inlet===0&&Array.isArray(value)&&value.length===2&&value[1]===0&&
+      treeNodes(document.document).some(target=>target.id===node&&target.type==='poly_note');
+    if(disposed||detaching||!descriptor||closeBarriers.size&&
+      (!releasingDeviceNote||[...closeBarriers.values()].some(barrier=>barrier.purpose!=='save')))return Promise.resolve(false);
     const target=(root?treeNodes(document.document):document.patch.nodes).find(item=>item.id===node),port=target&&nodeSpec(target).inlets[inlet];
     if(!port||!(port.accepts??[port.type]).includes('control'))throw Error('Events require an inlet that accepts control messages.');
     if(typeof value==='string'){
@@ -244,14 +251,18 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
   }
   async function flushBeforeClose(request) {
     const existing=closeBarriers.get(request.requestLabel);
-    if(!existing||existing.token!==request.token)closeBarriers.set(request.requestLabel,{token:request.token,error:null});
-    emit();await flush();
+    if(!existing||existing.token!==request.token)closeBarriers.set(request.requestLabel,{token:request.token,purpose:request.purpose,error:null});
+    emit();await settleParameterGestures();
     const barrier=closeBarriers.get(request.requestLabel);
     if(barrier?.token===request.token&&barrier.error)throw barrier.error;
   }
   function cancelClose(request) {
     if(closeBarriers.get(request.requestLabel)?.token!==request.token)return;
     closeBarriers.delete(request.requestLabel);emit();
+  }
+  async function settleParameterGestures(){
+    await parameterGestures.settle();await flush();
+    if(descriptor?.parameterPreviews?.length){const captured=descriptor.ownerLabel,runtime=descriptor.runtimeRevision;const value=await invoke('document_settle_parameter_gestures');if(descriptor.ownerLabel!==captured||descriptor.runtimeRevision!==runtime)throw Error('Presentation settlement scope changed.');acceptDescriptor(value);}
   }
   function operation(run,priority=false) {if(disposed||detaching)return Promise.resolve(false);return enqueue({kind:'operation',run},{priority});}
   function stop(message='Timers and notes stopped.') {
@@ -260,9 +271,9 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
   }
   async function dispose() {
     if(disposed)return;
-    detaching=true;epoch++;await flush();disposed=true;observations={};
+    await settleParameterGestures();detaching=true;epoch++;await flush();disposed=true;observations={};
   }
-  return {getState,prepare,adoptDescriptor,acceptDescriptor,flush,flushBeforeClose,cancelClose,poll,dispose,disposeDocument:dispose,parameter,event,tab,stop,
+  return {beginParameterGesture:parameterGestures.begin,writeParameterGesture:parameterGestures.write,settleParameterGestures,getState,prepare,adoptDescriptor,acceptDescriptor,flush,flushBeforeClose,cancelClose,poll,dispose,disposeDocument:dispose,parameter,event,tab,stop,
     deviceParameter:(id,key,value,options)=>parameter(id,key,value,{...options,root:true}),
     deviceEvent:(node,inlet,value)=>event(node,inlet,value,undefined,true),
     startAudio:()=>{const token=epoch;return operation(async()=>{if(token!==epoch)return false;if(panicked){report('Panic is latched. Stop audio, then Start audio to recover.');return false;}
@@ -273,7 +284,7 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
     enter:id=>{document.enter(id);helpView.navigate(document);emit();},leave:depth=>{document.leave(depth);helpView.navigate(document);emit();},reveal:id=>{document.reveal(id);helpView.navigate(document);emit();},
     hostHelpBasic:()=>{if(disposed||detaching||closeBarriers.size)return false;const hosted=helpView.hostBasic(document);if(hosted)emit();return hosted;},
     clearConsole:()=>{consoleRecords=[];consoleBaseline=consoleDropped;consoleEpoch++;emit();},
-    ...Object.fromEntries(['add','configure','remove','removeMany','connect','disconnect','move','moveMany','resize','style']
+    ...Object.fromEntries(['add','configure','remove','removeMany','connect','disconnect','move','moveMany','resize','style','setPresentation','updatePresentationItem','duplicateMany']
       .map(method=>[method,(...args)=>edit((...values)=>document[method](...values),args,{history:args.at(-1)?.history!==false,coalesceKey:`${method}:${JSON.stringify(args[0])}`})])),
     configure:(id,type,params)=>type==='message_box'&&document.patch.nodes.find(node=>node.id===id)?.type===type?
       parameter(id,'text',params.text):edit((...args)=>document.configure(...args),[id,type,params]),

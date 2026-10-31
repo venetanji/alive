@@ -1,0 +1,1642 @@
+{
+  "base": "a04f259c753a7b644aa806830b1f96e24c1c5d2d",
+  "head": "223dd34b48869d3c548e7add2e39c8da959a154d",
+  "scope": "immutable test-only fix1 raw sources/logs/mutation evidence; executables/objects excluded",
+  "files": [
+    {
+      "path": "fix-1-complete-verify/build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fix-1-complete-verify/commands.json",
+      "bytes": 899,
+      "sha256": "e1135c3b105845d8935ef5a5b22c142d1deab63386c64ba7036c6d39e08b5610"
+    },
+    {
+      "path": "fix-1-complete-verify/fixtures.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fix-1-complete-verify/manifest.json",
+      "bytes": 7191,
+      "sha256": "d42bd112d53a5c946a20e0bb45261308305fd0345b59971b2e22fc3fec6c3516"
+    },
+    {
+      "path": "fix-1-complete-verify/probe.log",
+      "bytes": 2712,
+      "sha256": "b8e001e5cae16e446962e2fb68c2982cf4a18cf31ddcb53acae2cb68d1af0ee2"
+    },
+    {
+      "path": "fix-1-complete-verify/runner.py",
+      "bytes": 2776,
+      "sha256": "41b0aa2d9ceedce0a2d03ba92aad09aaa5798335c96afb47885a069e76c815b0"
+    },
+    {
+      "path": "fix-1-complete-verify/source/core/CMakeLists.txt",
+      "bytes": 2562,
+      "sha256": "ed26b3cbc4936054a4c9d8a22b2ad853a8e8fa51a928b990277de05d06e8a8d9"
+    },
+    {
+      "path": "fix-1-complete-verify/source/core/VOICE.txt",
+      "bytes": 14723,
+      "sha256": "3305f3b0ba3c62f647365a18e2b17ee07bc60c9582df6b4d6e0f3d54fc8133cd"
+    },
+    {
+      "path": "fix-1-complete-verify/source/core/app_voice.hpp",
+      "bytes": 2480,
+      "sha256": "3b173f9a042544f2ca37cfd1f6385fe2ff584203002d79497cf2d616e8593d23"
+    },
+    {
+      "path": "fix-1-complete-verify/source/core/engine.cpp",
+      "bytes": 9601,
+      "sha256": "397f6b59debd7bbff899aaeaa4bbbdb18a2e6fe8ff0f7adc4fd0e7287f75413c"
+    },
+    {
+      "path": "fix-1-complete-verify/source/core/engine.hpp",
+      "bytes": 2444,
+      "sha256": "b4690e8317b44a2ded3844c97ca614da9c9a9ea3dbf67fa90ed7ae115e8d0b1d"
+    },
+    {
+      "path": "fix-1-complete-verify/source/core/generate_voice.py",
+      "bytes": 1510,
+      "sha256": "69e21a65ddefcf4af28101d1dc63d947b201d4544c4f28cbab01432de51ca236"
+    },
+    {
+      "path": "fix-1-complete-verify/source/core/generate_voice_kernels.py",
+      "bytes": 1624,
+      "sha256": "a3a440cf998a941a37ec3a0bb0f482e5079a91b830b7c62d4f6b1fb0f191d24c"
+    },
+    {
+      "path": "fix-1-complete-verify/source/core/generated/app_voice.hpp",
+      "bytes": 7541,
+      "sha256": "c963956717a1b7e9f9b2724d2505c256e0471bc32086968958bf1ac45b2cc03c"
+    },
+    {
+      "path": "fix-1-complete-verify/source/core/generated/voice_adsr.hpp",
+      "bytes": 4692,
+      "sha256": "5ea3f39e7b914a092eec3881e037d20f5e327457d05736ac947baf392a0b7cbc"
+    },
+    {
+      "path": "fix-1-complete-verify/source/core/generated/voice_filter.hpp",
+      "bytes": 5296,
+      "sha256": "fb60632045bfdf657a9523befd92f703c8ef97350ce204594fc9fe6746b1e2ab"
+    },
+    {
+      "path": "fix-1-complete-verify/source/core/generated/voice_saw.hpp",
+      "bytes": 3949,
+      "sha256": "166654639bdea705b3fb64582f04524aa69511f70d9f27e7e2a686ff1a86fae7"
+    },
+    {
+      "path": "fix-1-complete-verify/source/core/guest/CMakeLists.txt",
+      "bytes": 249,
+      "sha256": "676ba806ab1ac8078dcc49064138b4faeff415dc78889df77a6cfbd0471e7f1b"
+    },
+    {
+      "path": "fix-1-complete-verify/source/core/guest/guest.cpp",
+      "bytes": 7473,
+      "sha256": "32756a243c3823c8b0e965bff5104b7435aff8136b6227b42460aed98acb067b"
+    },
+    {
+      "path": "fix-1-complete-verify/source/core/guest/observe.hpp",
+      "bytes": 558,
+      "sha256": "ad0de5f6c80c49877eb7d042b88562cf673a814d259b42a8ac732773ca82b677"
+    },
+    {
+      "path": "fix-1-complete-verify/source/core/merge.cmake",
+      "bytes": 305,
+      "sha256": "ec1ca4b0f81c3d250c66267c08571eee08ce64f85b907808013885e004d9fa3c"
+    },
+    {
+      "path": "fix-1-complete-verify/source/core/tests/envelope.cpp",
+      "bytes": 13834,
+      "sha256": "844092afe8edc2b916c148fb8bf2edf0a7e7fab892cfbed66b08f3a9e4cb886f"
+    },
+    {
+      "path": "fix-1-complete-verify/source/core/ultra_core.h",
+      "bytes": 1816,
+      "sha256": "505d8479af06859369e311e2cf3eb9d4e4be3088a74a46ed3934f4e16d7123dd"
+    },
+    {
+      "path": "fix-1-complete-verify/source/core/voice.dsp",
+      "bytes": 551,
+      "sha256": "68476cb0fb81285bdbbb24a5bf0e3c72cddbdeafbffb976bf04b6584a6d6b74d"
+    },
+    {
+      "path": "fix-1-complete-verify/source/core/voice_adsr.dsp",
+      "bytes": 213,
+      "sha256": "7a6e53d5d9689e830e0f9ec060e792c755d9ba343255261ee7d8a9f4e395c27e"
+    },
+    {
+      "path": "fix-1-complete-verify/source/core/voice_filter.dsp",
+      "bytes": 154,
+      "sha256": "ca1d6abfe3735c3c38ced43184667d154ec533e7cac14820b839d50a0e133373"
+    },
+    {
+      "path": "fix-1-complete-verify/source/core/voice_saw.dsp",
+      "bytes": 122,
+      "sha256": "bf9bcf4dd162c645750e398fcb4bfc39e3b35cb82704013fd55bde726aee459f"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/alive_session.h",
+      "bytes": 11226,
+      "sha256": "51d418dc48aebac8ebd2d2f6285bc20a0d041585e765a75de1125b29bc1be012"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/alive_session.hpp",
+      "bytes": 31336,
+      "sha256": "98697bfdd67602140f4795a5231bc28144abdb58ba01c2b66a452ee51ad77e38"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/alive_session_bits.hpp",
+      "bytes": 435,
+      "sha256": "a260614bc600dc8fcd294c24e3fad35f7e9be2452aa007fa54b49b150d3411b4"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/alive_session_clip_policy.hpp",
+      "bytes": 2722,
+      "sha256": "98648b3a53e06ab7715f02fc98150093c2f78b3b6a4d22b3e5808df15ec6a82e"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/alive_session_clips.hpp",
+      "bytes": 46907,
+      "sha256": "8862ca42aef94a9794521d20c04c7d756a12de1004892433b582c721d13cc4b0"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/alive_session_envelope.hpp",
+      "bytes": 2137,
+      "sha256": "d8da367ebdce8a26dd69941a4217c7a6ece0e751d8d1a33115a9babc603405fd"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/alive_session_v3_policy.md",
+      "bytes": 14412,
+      "sha256": "115a303d3fef3fcff511df5b8ddc58ea7ca03cbb3aae37682ea1c005e8de0c10"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/backend.cpp",
+      "bytes": 61130,
+      "sha256": "f5b69a2e72ade4e23a6b4b55a070bd402c8cbcab1b7ec81f468d359a0482aec1"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/backend.h",
+      "bytes": 1468,
+      "sha256": "da19583d032e2d8268411b40f2fe4453ba3aa945fd4a1c71b202462a9e805039"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/canvas_list_objects.hpp",
+      "bytes": 3459,
+      "sha256": "c83e71885c5ad41663663479500d545c114603eb3ecc47aa9eb60278665dd834"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/canvas_message.hpp",
+      "bytes": 9066,
+      "sha256": "ec4cc2bb786ac9317341ec7d1af20c03a6290849c1c8984cc7af6a9697b3ed96"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/canvas_message_box.hpp",
+      "bytes": 4465,
+      "sha256": "1a800c9756c8be9c0b365e9480ee3236b994568c09e78af977b3a6aa82483713"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/canvas_objects.hpp",
+      "bytes": 2669,
+      "sha256": "235f8b19fd162e0851d38627d0774f97da69411fbaf5ce4af91cca4a849830c0"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/canvas_signal_objects.hpp",
+      "bytes": 1699,
+      "sha256": "ea9f52ecf50080406a2a0b985cfbeef23f0dbd56b52827fff87f297459167940"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/canvas_voice_objects.hpp",
+      "bytes": 4145,
+      "sha256": "0a93e181210fc2163c9db68c45ff9827077da3376acc73f7d286463774045586"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/canvas_workspace.hpp",
+      "bytes": 3488,
+      "sha256": "0f9a388b4dfa1ea3eeb0a37845b3db75d59d479e3e33fae8baec191aa73b1458"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/diagnostic.cpp",
+      "bytes": 1453,
+      "sha256": "e5412a4f3587e4b2f80a9240b6d067ed532e9475172f98fca96c6116037802ee"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/patch_graph.h",
+      "bytes": 4797,
+      "sha256": "a71ee3af318d0b7d974c08fca93e7a48921aa16bea73526590945d15a91ceeb5"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/patch_graph.hpp",
+      "bytes": 63141,
+      "sha256": "d2ccf60d3a4b5fd6b30c427507351b7c7f92004b003a8582ef0c2df30f8cf5c0"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/sequence.hpp",
+      "bytes": 3906,
+      "sha256": "0602d22c09e6cee84d7ef79ccc3ea2809359bb8b2ab635af28d3f0983a20bff3"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/vendor/fast_float/LICENSE-APACHE",
+      "bytes": 10767,
+      "sha256": "097a889aa954d04e088b790b10a4014d6189561d0a6013935a73ce3d4ddaaf06"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/vendor/fast_float/LICENSE-BOOST",
+      "bytes": 1337,
+      "sha256": "8d8291caf1cee26d23acf3eb67c9f9a2d58f1c681b16a4fbe8cbfb9e3c0b5a9b"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/vendor/fast_float/LICENSE-MIT",
+      "bytes": 1079,
+      "sha256": "e562f3f974ced7e69dd1db77b820b36bcf8f30377f1aa105723fba449c53c4e6"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/vendor/fast_float/PROVENANCE.md",
+      "bytes": 544,
+      "sha256": "42636ec7c1dfa38ed75220d12ea0f17523cf4d9c3583c103705b6511a38bc19d"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/vendor/fast_float/ascii_number.h",
+      "bytes": 18903,
+      "sha256": "a034d44ff5b945a51c4797ecf4be7ef50c3a9730d50f5a26a6dc75a2c02d5b11"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/vendor/fast_float/bigint.h",
+      "bytes": 18631,
+      "sha256": "1ed0b598da0b522613399897ddc748792dee6f804debf9fee131359252f80763"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/vendor/fast_float/constexpr_feature_detect.h",
+      "bytes": 1629,
+      "sha256": "2dd2dc5f98a8f1a78813e62d47e82a19ebe42af726356723d60f6eb387c6dd38"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/vendor/fast_float/decimal_to_binary.h",
+      "bytes": 8333,
+      "sha256": "82fad8134c272a3f1bc545b3ef367a2e9e3c7464b9dcef75640c37e325dfb973"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/vendor/fast_float/digit_comparison.h",
+      "bytes": 15623,
+      "sha256": "941d18ff89a9164f6ad447542a7b369252cdd5d63d289f1064a71641bd9c99b6"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/vendor/fast_float/fast_float.h",
+      "bytes": 2521,
+      "sha256": "2427cd297f5b4d524e696ab9c69f957ffb9f851e59262f5d0b07930ba7dae016"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/vendor/fast_float/fast_table.h",
+      "bytes": 31278,
+      "sha256": "c18e0a0a2513215730557cc1dd53541cacd72855ddc0287934e78b364f989edb"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/vendor/fast_float/float_common.h",
+      "bytes": 39545,
+      "sha256": "c09daa98e482d9a068c4174f208227741a64f82c7cd1b9cf0db0e8b96fee5562"
+    },
+    {
+      "path": "fix-1-complete-verify/source/src-tauri/native/vendor/fast_float/parse_number.h",
+      "bytes": 14316,
+      "sha256": "8bb35524d9b52107ac28215e932307a5a1765de8cb099599a7412f429cfb7e33"
+    },
+    {
+      "path": "fix-1-complete-verify/source/tests/alive_session_capacity.cpp",
+      "bytes": 20918,
+      "sha256": "145ff2100183c72d26cf2487638eb244015a46cff1e682695a0cdbdc786c671c"
+    },
+    {
+      "path": "fix-1-complete-verify/source/tests/alive_session_capacity_fixture.hpp",
+      "bytes": 6499,
+      "sha256": "484e1d59a91db0bc5be429e9e52ba166ebfbb824917b740c0a6766891d6d0c25"
+    },
+    {
+      "path": "fix-1-complete-verify/source/tests/canvas_callback_guard.hpp",
+      "bytes": 1728,
+      "sha256": "f1ed3a11569b6dd99d27dae991a52b3a62111f5f455b121374733dc0b24e6e67"
+    },
+    {
+      "path": "fix-1-complete-verify/source/tests/saved_graphs.hpp",
+      "bytes": 3378,
+      "sha256": "e096ba0b46205eb70ac4b0cf782783779620e50aaf8aa33f59482b64a28bb43b"
+    },
+    {
+      "path": "fix-1-complete-verify-runner.log",
+      "bytes": 50,
+      "sha256": "e07e2dbdafb92c98e195f97c6146db090d9d4400eca4eee967edcc732a0aeec7"
+    },
+    {
+      "path": "fix-1-final-verify/build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fix-1-final-verify/commands.json",
+      "bytes": 884,
+      "sha256": "fc79fc321df77eaff5e71dd5e9832f421cf76a57cff4b99f65e003394aab9eef"
+    },
+    {
+      "path": "fix-1-final-verify/fixtures.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fix-1-final-verify/manifest.json",
+      "bytes": 7188,
+      "sha256": "12811a5d95b079e983339f202a71b5447b72263a4cad949e4ca0b50949b964bd"
+    },
+    {
+      "path": "fix-1-final-verify/probe.log",
+      "bytes": 2712,
+      "sha256": "ba788355bc97ef4daf57ef8fce4b2314b705868872d35c9facceb82173387f00"
+    },
+    {
+      "path": "fix-1-final-verify/runner.py",
+      "bytes": 2776,
+      "sha256": "41b0aa2d9ceedce0a2d03ba92aad09aaa5798335c96afb47885a069e76c815b0"
+    },
+    {
+      "path": "fix-1-final-verify/source/core/CMakeLists.txt",
+      "bytes": 2562,
+      "sha256": "ed26b3cbc4936054a4c9d8a22b2ad853a8e8fa51a928b990277de05d06e8a8d9"
+    },
+    {
+      "path": "fix-1-final-verify/source/core/VOICE.txt",
+      "bytes": 14723,
+      "sha256": "3305f3b0ba3c62f647365a18e2b17ee07bc60c9582df6b4d6e0f3d54fc8133cd"
+    },
+    {
+      "path": "fix-1-final-verify/source/core/app_voice.hpp",
+      "bytes": 2480,
+      "sha256": "3b173f9a042544f2ca37cfd1f6385fe2ff584203002d79497cf2d616e8593d23"
+    },
+    {
+      "path": "fix-1-final-verify/source/core/engine.cpp",
+      "bytes": 9601,
+      "sha256": "397f6b59debd7bbff899aaeaa4bbbdb18a2e6fe8ff0f7adc4fd0e7287f75413c"
+    },
+    {
+      "path": "fix-1-final-verify/source/core/engine.hpp",
+      "bytes": 2444,
+      "sha256": "b4690e8317b44a2ded3844c97ca614da9c9a9ea3dbf67fa90ed7ae115e8d0b1d"
+    },
+    {
+      "path": "fix-1-final-verify/source/core/generate_voice.py",
+      "bytes": 1510,
+      "sha256": "69e21a65ddefcf4af28101d1dc63d947b201d4544c4f28cbab01432de51ca236"
+    },
+    {
+      "path": "fix-1-final-verify/source/core/generate_voice_kernels.py",
+      "bytes": 1624,
+      "sha256": "a3a440cf998a941a37ec3a0bb0f482e5079a91b830b7c62d4f6b1fb0f191d24c"
+    },
+    {
+      "path": "fix-1-final-verify/source/core/generated/app_voice.hpp",
+      "bytes": 7541,
+      "sha256": "c963956717a1b7e9f9b2724d2505c256e0471bc32086968958bf1ac45b2cc03c"
+    },
+    {
+      "path": "fix-1-final-verify/source/core/generated/voice_adsr.hpp",
+      "bytes": 4692,
+      "sha256": "5ea3f39e7b914a092eec3881e037d20f5e327457d05736ac947baf392a0b7cbc"
+    },
+    {
+      "path": "fix-1-final-verify/source/core/generated/voice_filter.hpp",
+      "bytes": 5296,
+      "sha256": "fb60632045bfdf657a9523befd92f703c8ef97350ce204594fc9fe6746b1e2ab"
+    },
+    {
+      "path": "fix-1-final-verify/source/core/generated/voice_saw.hpp",
+      "bytes": 3949,
+      "sha256": "166654639bdea705b3fb64582f04524aa69511f70d9f27e7e2a686ff1a86fae7"
+    },
+    {
+      "path": "fix-1-final-verify/source/core/guest/CMakeLists.txt",
+      "bytes": 249,
+      "sha256": "676ba806ab1ac8078dcc49064138b4faeff415dc78889df77a6cfbd0471e7f1b"
+    },
+    {
+      "path": "fix-1-final-verify/source/core/guest/guest.cpp",
+      "bytes": 7473,
+      "sha256": "32756a243c3823c8b0e965bff5104b7435aff8136b6227b42460aed98acb067b"
+    },
+    {
+      "path": "fix-1-final-verify/source/core/guest/observe.hpp",
+      "bytes": 558,
+      "sha256": "ad0de5f6c80c49877eb7d042b88562cf673a814d259b42a8ac732773ca82b677"
+    },
+    {
+      "path": "fix-1-final-verify/source/core/merge.cmake",
+      "bytes": 305,
+      "sha256": "ec1ca4b0f81c3d250c66267c08571eee08ce64f85b907808013885e004d9fa3c"
+    },
+    {
+      "path": "fix-1-final-verify/source/core/tests/envelope.cpp",
+      "bytes": 13834,
+      "sha256": "844092afe8edc2b916c148fb8bf2edf0a7e7fab892cfbed66b08f3a9e4cb886f"
+    },
+    {
+      "path": "fix-1-final-verify/source/core/ultra_core.h",
+      "bytes": 1816,
+      "sha256": "505d8479af06859369e311e2cf3eb9d4e4be3088a74a46ed3934f4e16d7123dd"
+    },
+    {
+      "path": "fix-1-final-verify/source/core/voice.dsp",
+      "bytes": 551,
+      "sha256": "68476cb0fb81285bdbbb24a5bf0e3c72cddbdeafbffb976bf04b6584a6d6b74d"
+    },
+    {
+      "path": "fix-1-final-verify/source/core/voice_adsr.dsp",
+      "bytes": 213,
+      "sha256": "7a6e53d5d9689e830e0f9ec060e792c755d9ba343255261ee7d8a9f4e395c27e"
+    },
+    {
+      "path": "fix-1-final-verify/source/core/voice_filter.dsp",
+      "bytes": 154,
+      "sha256": "ca1d6abfe3735c3c38ced43184667d154ec533e7cac14820b839d50a0e133373"
+    },
+    {
+      "path": "fix-1-final-verify/source/core/voice_saw.dsp",
+      "bytes": 122,
+      "sha256": "bf9bcf4dd162c645750e398fcb4bfc39e3b35cb82704013fd55bde726aee459f"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/alive_session.h",
+      "bytes": 11226,
+      "sha256": "51d418dc48aebac8ebd2d2f6285bc20a0d041585e765a75de1125b29bc1be012"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/alive_session.hpp",
+      "bytes": 31336,
+      "sha256": "98697bfdd67602140f4795a5231bc28144abdb58ba01c2b66a452ee51ad77e38"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/alive_session_bits.hpp",
+      "bytes": 435,
+      "sha256": "a260614bc600dc8fcd294c24e3fad35f7e9be2452aa007fa54b49b150d3411b4"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/alive_session_clip_policy.hpp",
+      "bytes": 2722,
+      "sha256": "98648b3a53e06ab7715f02fc98150093c2f78b3b6a4d22b3e5808df15ec6a82e"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/alive_session_clips.hpp",
+      "bytes": 46907,
+      "sha256": "8862ca42aef94a9794521d20c04c7d756a12de1004892433b582c721d13cc4b0"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/alive_session_envelope.hpp",
+      "bytes": 2137,
+      "sha256": "d8da367ebdce8a26dd69941a4217c7a6ece0e751d8d1a33115a9babc603405fd"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/alive_session_v3_policy.md",
+      "bytes": 14412,
+      "sha256": "115a303d3fef3fcff511df5b8ddc58ea7ca03cbb3aae37682ea1c005e8de0c10"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/backend.cpp",
+      "bytes": 61130,
+      "sha256": "f5b69a2e72ade4e23a6b4b55a070bd402c8cbcab1b7ec81f468d359a0482aec1"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/backend.h",
+      "bytes": 1468,
+      "sha256": "da19583d032e2d8268411b40f2fe4453ba3aa945fd4a1c71b202462a9e805039"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/canvas_list_objects.hpp",
+      "bytes": 3459,
+      "sha256": "c83e71885c5ad41663663479500d545c114603eb3ecc47aa9eb60278665dd834"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/canvas_message.hpp",
+      "bytes": 9066,
+      "sha256": "ec4cc2bb786ac9317341ec7d1af20c03a6290849c1c8984cc7af6a9697b3ed96"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/canvas_message_box.hpp",
+      "bytes": 4465,
+      "sha256": "1a800c9756c8be9c0b365e9480ee3236b994568c09e78af977b3a6aa82483713"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/canvas_objects.hpp",
+      "bytes": 2669,
+      "sha256": "235f8b19fd162e0851d38627d0774f97da69411fbaf5ce4af91cca4a849830c0"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/canvas_signal_objects.hpp",
+      "bytes": 1699,
+      "sha256": "ea9f52ecf50080406a2a0b985cfbeef23f0dbd56b52827fff87f297459167940"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/canvas_voice_objects.hpp",
+      "bytes": 4145,
+      "sha256": "0a93e181210fc2163c9db68c45ff9827077da3376acc73f7d286463774045586"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/canvas_workspace.hpp",
+      "bytes": 3488,
+      "sha256": "0f9a388b4dfa1ea3eeb0a37845b3db75d59d479e3e33fae8baec191aa73b1458"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/diagnostic.cpp",
+      "bytes": 1453,
+      "sha256": "e5412a4f3587e4b2f80a9240b6d067ed532e9475172f98fca96c6116037802ee"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/patch_graph.h",
+      "bytes": 4797,
+      "sha256": "a71ee3af318d0b7d974c08fca93e7a48921aa16bea73526590945d15a91ceeb5"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/patch_graph.hpp",
+      "bytes": 63141,
+      "sha256": "d2ccf60d3a4b5fd6b30c427507351b7c7f92004b003a8582ef0c2df30f8cf5c0"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/sequence.hpp",
+      "bytes": 3906,
+      "sha256": "0602d22c09e6cee84d7ef79ccc3ea2809359bb8b2ab635af28d3f0983a20bff3"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/vendor/fast_float/LICENSE-APACHE",
+      "bytes": 10767,
+      "sha256": "097a889aa954d04e088b790b10a4014d6189561d0a6013935a73ce3d4ddaaf06"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/vendor/fast_float/LICENSE-BOOST",
+      "bytes": 1337,
+      "sha256": "8d8291caf1cee26d23acf3eb67c9f9a2d58f1c681b16a4fbe8cbfb9e3c0b5a9b"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/vendor/fast_float/LICENSE-MIT",
+      "bytes": 1079,
+      "sha256": "e562f3f974ced7e69dd1db77b820b36bcf8f30377f1aa105723fba449c53c4e6"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/vendor/fast_float/PROVENANCE.md",
+      "bytes": 544,
+      "sha256": "42636ec7c1dfa38ed75220d12ea0f17523cf4d9c3583c103705b6511a38bc19d"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/vendor/fast_float/ascii_number.h",
+      "bytes": 18903,
+      "sha256": "a034d44ff5b945a51c4797ecf4be7ef50c3a9730d50f5a26a6dc75a2c02d5b11"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/vendor/fast_float/bigint.h",
+      "bytes": 18631,
+      "sha256": "1ed0b598da0b522613399897ddc748792dee6f804debf9fee131359252f80763"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/vendor/fast_float/constexpr_feature_detect.h",
+      "bytes": 1629,
+      "sha256": "2dd2dc5f98a8f1a78813e62d47e82a19ebe42af726356723d60f6eb387c6dd38"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/vendor/fast_float/decimal_to_binary.h",
+      "bytes": 8333,
+      "sha256": "82fad8134c272a3f1bc545b3ef367a2e9e3c7464b9dcef75640c37e325dfb973"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/vendor/fast_float/digit_comparison.h",
+      "bytes": 15623,
+      "sha256": "941d18ff89a9164f6ad447542a7b369252cdd5d63d289f1064a71641bd9c99b6"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/vendor/fast_float/fast_float.h",
+      "bytes": 2521,
+      "sha256": "2427cd297f5b4d524e696ab9c69f957ffb9f851e59262f5d0b07930ba7dae016"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/vendor/fast_float/fast_table.h",
+      "bytes": 31278,
+      "sha256": "c18e0a0a2513215730557cc1dd53541cacd72855ddc0287934e78b364f989edb"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/vendor/fast_float/float_common.h",
+      "bytes": 39545,
+      "sha256": "c09daa98e482d9a068c4174f208227741a64f82c7cd1b9cf0db0e8b96fee5562"
+    },
+    {
+      "path": "fix-1-final-verify/source/src-tauri/native/vendor/fast_float/parse_number.h",
+      "bytes": 14316,
+      "sha256": "8bb35524d9b52107ac28215e932307a5a1765de8cb099599a7412f429cfb7e33"
+    },
+    {
+      "path": "fix-1-final-verify/source/tests/alive_session_capacity.cpp",
+      "bytes": 20918,
+      "sha256": "1ff32e1136f738f7def9fafc665468b7a5f29ee78cb32936188f42527bf5e6f7"
+    },
+    {
+      "path": "fix-1-final-verify/source/tests/alive_session_capacity_fixture.hpp",
+      "bytes": 6499,
+      "sha256": "484e1d59a91db0bc5be429e9e52ba166ebfbb824917b740c0a6766891d6d0c25"
+    },
+    {
+      "path": "fix-1-final-verify/source/tests/canvas_callback_guard.hpp",
+      "bytes": 1728,
+      "sha256": "f1ed3a11569b6dd99d27dae991a52b3a62111f5f455b121374733dc0b24e6e67"
+    },
+    {
+      "path": "fix-1-final-verify/source/tests/saved_graphs.hpp",
+      "bytes": 3378,
+      "sha256": "e096ba0b46205eb70ac4b0cf782783779620e50aaf8aa33f59482b64a28bb43b"
+    },
+    {
+      "path": "fix-1-final-verify-runner.log",
+      "bytes": 47,
+      "sha256": "9edb243514bcf793a44907fd1b46e62897bf12bb2130929aaa66d6a2cbe7c4a6"
+    },
+    {
+      "path": "fix-1-local-verify/build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fix-1-local-verify/commands.json",
+      "bytes": 884,
+      "sha256": "e17d50d9dc009a5e5ce669345ebd4b0e450bc45a1bf39c54004791c56433658d"
+    },
+    {
+      "path": "fix-1-local-verify/fixtures.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fix-1-local-verify/manifest.json",
+      "bytes": 7188,
+      "sha256": "1eb60b9114f5d64797e0d73ae891b18320e0bdc87d9c497397b583fb2c4a5a12"
+    },
+    {
+      "path": "fix-1-local-verify/probe.log",
+      "bytes": 2566,
+      "sha256": "814ef285f16918232120cc8f6379f5aa2aa6dccf13141618beb5a31eb3d6d1d4"
+    },
+    {
+      "path": "fix-1-local-verify/runner.py",
+      "bytes": 2776,
+      "sha256": "41b0aa2d9ceedce0a2d03ba92aad09aaa5798335c96afb47885a069e76c815b0"
+    },
+    {
+      "path": "fix-1-local-verify/source/core/CMakeLists.txt",
+      "bytes": 2562,
+      "sha256": "ed26b3cbc4936054a4c9d8a22b2ad853a8e8fa51a928b990277de05d06e8a8d9"
+    },
+    {
+      "path": "fix-1-local-verify/source/core/VOICE.txt",
+      "bytes": 14723,
+      "sha256": "3305f3b0ba3c62f647365a18e2b17ee07bc60c9582df6b4d6e0f3d54fc8133cd"
+    },
+    {
+      "path": "fix-1-local-verify/source/core/app_voice.hpp",
+      "bytes": 2480,
+      "sha256": "3b173f9a042544f2ca37cfd1f6385fe2ff584203002d79497cf2d616e8593d23"
+    },
+    {
+      "path": "fix-1-local-verify/source/core/engine.cpp",
+      "bytes": 9601,
+      "sha256": "397f6b59debd7bbff899aaeaa4bbbdb18a2e6fe8ff0f7adc4fd0e7287f75413c"
+    },
+    {
+      "path": "fix-1-local-verify/source/core/engine.hpp",
+      "bytes": 2444,
+      "sha256": "b4690e8317b44a2ded3844c97ca614da9c9a9ea3dbf67fa90ed7ae115e8d0b1d"
+    },
+    {
+      "path": "fix-1-local-verify/source/core/generate_voice.py",
+      "bytes": 1510,
+      "sha256": "69e21a65ddefcf4af28101d1dc63d947b201d4544c4f28cbab01432de51ca236"
+    },
+    {
+      "path": "fix-1-local-verify/source/core/generate_voice_kernels.py",
+      "bytes": 1624,
+      "sha256": "a3a440cf998a941a37ec3a0bb0f482e5079a91b830b7c62d4f6b1fb0f191d24c"
+    },
+    {
+      "path": "fix-1-local-verify/source/core/generated/app_voice.hpp",
+      "bytes": 7541,
+      "sha256": "c963956717a1b7e9f9b2724d2505c256e0471bc32086968958bf1ac45b2cc03c"
+    },
+    {
+      "path": "fix-1-local-verify/source/core/generated/voice_adsr.hpp",
+      "bytes": 4692,
+      "sha256": "5ea3f39e7b914a092eec3881e037d20f5e327457d05736ac947baf392a0b7cbc"
+    },
+    {
+      "path": "fix-1-local-verify/source/core/generated/voice_filter.hpp",
+      "bytes": 5296,
+      "sha256": "fb60632045bfdf657a9523befd92f703c8ef97350ce204594fc9fe6746b1e2ab"
+    },
+    {
+      "path": "fix-1-local-verify/source/core/generated/voice_saw.hpp",
+      "bytes": 3949,
+      "sha256": "166654639bdea705b3fb64582f04524aa69511f70d9f27e7e2a686ff1a86fae7"
+    },
+    {
+      "path": "fix-1-local-verify/source/core/guest/CMakeLists.txt",
+      "bytes": 249,
+      "sha256": "676ba806ab1ac8078dcc49064138b4faeff415dc78889df77a6cfbd0471e7f1b"
+    },
+    {
+      "path": "fix-1-local-verify/source/core/guest/guest.cpp",
+      "bytes": 7473,
+      "sha256": "32756a243c3823c8b0e965bff5104b7435aff8136b6227b42460aed98acb067b"
+    },
+    {
+      "path": "fix-1-local-verify/source/core/guest/observe.hpp",
+      "bytes": 558,
+      "sha256": "ad0de5f6c80c49877eb7d042b88562cf673a814d259b42a8ac732773ca82b677"
+    },
+    {
+      "path": "fix-1-local-verify/source/core/merge.cmake",
+      "bytes": 305,
+      "sha256": "ec1ca4b0f81c3d250c66267c08571eee08ce64f85b907808013885e004d9fa3c"
+    },
+    {
+      "path": "fix-1-local-verify/source/core/tests/envelope.cpp",
+      "bytes": 13834,
+      "sha256": "844092afe8edc2b916c148fb8bf2edf0a7e7fab892cfbed66b08f3a9e4cb886f"
+    },
+    {
+      "path": "fix-1-local-verify/source/core/ultra_core.h",
+      "bytes": 1816,
+      "sha256": "505d8479af06859369e311e2cf3eb9d4e4be3088a74a46ed3934f4e16d7123dd"
+    },
+    {
+      "path": "fix-1-local-verify/source/core/voice.dsp",
+      "bytes": 551,
+      "sha256": "68476cb0fb81285bdbbb24a5bf0e3c72cddbdeafbffb976bf04b6584a6d6b74d"
+    },
+    {
+      "path": "fix-1-local-verify/source/core/voice_adsr.dsp",
+      "bytes": 213,
+      "sha256": "7a6e53d5d9689e830e0f9ec060e792c755d9ba343255261ee7d8a9f4e395c27e"
+    },
+    {
+      "path": "fix-1-local-verify/source/core/voice_filter.dsp",
+      "bytes": 154,
+      "sha256": "ca1d6abfe3735c3c38ced43184667d154ec533e7cac14820b839d50a0e133373"
+    },
+    {
+      "path": "fix-1-local-verify/source/core/voice_saw.dsp",
+      "bytes": 122,
+      "sha256": "bf9bcf4dd162c645750e398fcb4bfc39e3b35cb82704013fd55bde726aee459f"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/alive_session.h",
+      "bytes": 11226,
+      "sha256": "51d418dc48aebac8ebd2d2f6285bc20a0d041585e765a75de1125b29bc1be012"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/alive_session.hpp",
+      "bytes": 31336,
+      "sha256": "98697bfdd67602140f4795a5231bc28144abdb58ba01c2b66a452ee51ad77e38"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/alive_session_bits.hpp",
+      "bytes": 435,
+      "sha256": "a260614bc600dc8fcd294c24e3fad35f7e9be2452aa007fa54b49b150d3411b4"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/alive_session_clip_policy.hpp",
+      "bytes": 2722,
+      "sha256": "98648b3a53e06ab7715f02fc98150093c2f78b3b6a4d22b3e5808df15ec6a82e"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/alive_session_clips.hpp",
+      "bytes": 46907,
+      "sha256": "8862ca42aef94a9794521d20c04c7d756a12de1004892433b582c721d13cc4b0"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/alive_session_envelope.hpp",
+      "bytes": 2137,
+      "sha256": "d8da367ebdce8a26dd69941a4217c7a6ece0e751d8d1a33115a9babc603405fd"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/alive_session_v3_policy.md",
+      "bytes": 14412,
+      "sha256": "115a303d3fef3fcff511df5b8ddc58ea7ca03cbb3aae37682ea1c005e8de0c10"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/backend.cpp",
+      "bytes": 61130,
+      "sha256": "f5b69a2e72ade4e23a6b4b55a070bd402c8cbcab1b7ec81f468d359a0482aec1"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/backend.h",
+      "bytes": 1468,
+      "sha256": "da19583d032e2d8268411b40f2fe4453ba3aa945fd4a1c71b202462a9e805039"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/canvas_list_objects.hpp",
+      "bytes": 3459,
+      "sha256": "c83e71885c5ad41663663479500d545c114603eb3ecc47aa9eb60278665dd834"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/canvas_message.hpp",
+      "bytes": 9066,
+      "sha256": "ec4cc2bb786ac9317341ec7d1af20c03a6290849c1c8984cc7af6a9697b3ed96"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/canvas_message_box.hpp",
+      "bytes": 4465,
+      "sha256": "1a800c9756c8be9c0b365e9480ee3236b994568c09e78af977b3a6aa82483713"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/canvas_objects.hpp",
+      "bytes": 2669,
+      "sha256": "235f8b19fd162e0851d38627d0774f97da69411fbaf5ce4af91cca4a849830c0"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/canvas_signal_objects.hpp",
+      "bytes": 1699,
+      "sha256": "ea9f52ecf50080406a2a0b985cfbeef23f0dbd56b52827fff87f297459167940"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/canvas_voice_objects.hpp",
+      "bytes": 4145,
+      "sha256": "0a93e181210fc2163c9db68c45ff9827077da3376acc73f7d286463774045586"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/canvas_workspace.hpp",
+      "bytes": 3488,
+      "sha256": "0f9a388b4dfa1ea3eeb0a37845b3db75d59d479e3e33fae8baec191aa73b1458"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/diagnostic.cpp",
+      "bytes": 1453,
+      "sha256": "e5412a4f3587e4b2f80a9240b6d067ed532e9475172f98fca96c6116037802ee"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/patch_graph.h",
+      "bytes": 4797,
+      "sha256": "a71ee3af318d0b7d974c08fca93e7a48921aa16bea73526590945d15a91ceeb5"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/patch_graph.hpp",
+      "bytes": 63141,
+      "sha256": "d2ccf60d3a4b5fd6b30c427507351b7c7f92004b003a8582ef0c2df30f8cf5c0"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/sequence.hpp",
+      "bytes": 3906,
+      "sha256": "0602d22c09e6cee84d7ef79ccc3ea2809359bb8b2ab635af28d3f0983a20bff3"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/vendor/fast_float/LICENSE-APACHE",
+      "bytes": 10767,
+      "sha256": "097a889aa954d04e088b790b10a4014d6189561d0a6013935a73ce3d4ddaaf06"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/vendor/fast_float/LICENSE-BOOST",
+      "bytes": 1337,
+      "sha256": "8d8291caf1cee26d23acf3eb67c9f9a2d58f1c681b16a4fbe8cbfb9e3c0b5a9b"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/vendor/fast_float/LICENSE-MIT",
+      "bytes": 1079,
+      "sha256": "e562f3f974ced7e69dd1db77b820b36bcf8f30377f1aa105723fba449c53c4e6"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/vendor/fast_float/PROVENANCE.md",
+      "bytes": 544,
+      "sha256": "42636ec7c1dfa38ed75220d12ea0f17523cf4d9c3583c103705b6511a38bc19d"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/vendor/fast_float/ascii_number.h",
+      "bytes": 18903,
+      "sha256": "a034d44ff5b945a51c4797ecf4be7ef50c3a9730d50f5a26a6dc75a2c02d5b11"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/vendor/fast_float/bigint.h",
+      "bytes": 18631,
+      "sha256": "1ed0b598da0b522613399897ddc748792dee6f804debf9fee131359252f80763"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/vendor/fast_float/constexpr_feature_detect.h",
+      "bytes": 1629,
+      "sha256": "2dd2dc5f98a8f1a78813e62d47e82a19ebe42af726356723d60f6eb387c6dd38"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/vendor/fast_float/decimal_to_binary.h",
+      "bytes": 8333,
+      "sha256": "82fad8134c272a3f1bc545b3ef367a2e9e3c7464b9dcef75640c37e325dfb973"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/vendor/fast_float/digit_comparison.h",
+      "bytes": 15623,
+      "sha256": "941d18ff89a9164f6ad447542a7b369252cdd5d63d289f1064a71641bd9c99b6"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/vendor/fast_float/fast_float.h",
+      "bytes": 2521,
+      "sha256": "2427cd297f5b4d524e696ab9c69f957ffb9f851e59262f5d0b07930ba7dae016"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/vendor/fast_float/fast_table.h",
+      "bytes": 31278,
+      "sha256": "c18e0a0a2513215730557cc1dd53541cacd72855ddc0287934e78b364f989edb"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/vendor/fast_float/float_common.h",
+      "bytes": 39545,
+      "sha256": "c09daa98e482d9a068c4174f208227741a64f82c7cd1b9cf0db0e8b96fee5562"
+    },
+    {
+      "path": "fix-1-local-verify/source/src-tauri/native/vendor/fast_float/parse_number.h",
+      "bytes": 14316,
+      "sha256": "8bb35524d9b52107ac28215e932307a5a1765de8cb099599a7412f429cfb7e33"
+    },
+    {
+      "path": "fix-1-local-verify/source/tests/alive_session_capacity.cpp",
+      "bytes": 18098,
+      "sha256": "9214ba6321552282aff5d9e33bdcc0ad09e4c8da40532ca9f3235bd6003ebb43"
+    },
+    {
+      "path": "fix-1-local-verify/source/tests/alive_session_capacity_fixture.hpp",
+      "bytes": 6499,
+      "sha256": "484e1d59a91db0bc5be429e9e52ba166ebfbb824917b740c0a6766891d6d0c25"
+    },
+    {
+      "path": "fix-1-local-verify/source/tests/canvas_callback_guard.hpp",
+      "bytes": 1728,
+      "sha256": "f1ed3a11569b6dd99d27dae991a52b3a62111f5f455b121374733dc0b24e6e67"
+    },
+    {
+      "path": "fix-1-local-verify/source/tests/saved_graphs.hpp",
+      "bytes": 3378,
+      "sha256": "e096ba0b46205eb70ac4b0cf782783779620e50aaf8aa33f59482b64a28bb43b"
+    },
+    {
+      "path": "fix-1-local-verify-runner.log",
+      "bytes": 47,
+      "sha256": "ac9a15c957566681b524d490cb317a7e4aadcf34ca5f7628b803f4f14f2bd844"
+    },
+    {
+      "path": "fix-1-mutations-1/backend-build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fix-1-mutations-1/commands.json",
+      "bytes": 3003,
+      "sha256": "ac85c1ef13f4b3f9f9311c93c33f422ae1a263682c39550cf8828f3bed28bb53"
+    },
+    {
+      "path": "fix-1-mutations-1/complete.json",
+      "bytes": 181,
+      "sha256": "96720de7f891b280bee855356e9fc46cc3f14b44af9e1439decd9fa98593a1e5"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/manifest.json",
+      "bytes": 7897,
+      "sha256": "68e8e958e0db958b84e5b8d98af37a89a437b7bd4e956e200b55d7d28b067dce"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/probe.log",
+      "bytes": 310,
+      "sha256": "0dd0808fd0805c8b2dda41cab33d887acb233cfcda40632c1b1f6797588eb2d0"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/core/CMakeLists.txt",
+      "bytes": 2562,
+      "sha256": "ed26b3cbc4936054a4c9d8a22b2ad853a8e8fa51a928b990277de05d06e8a8d9"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/core/VOICE.txt",
+      "bytes": 14723,
+      "sha256": "3305f3b0ba3c62f647365a18e2b17ee07bc60c9582df6b4d6e0f3d54fc8133cd"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/core/app_voice.hpp",
+      "bytes": 2480,
+      "sha256": "3b173f9a042544f2ca37cfd1f6385fe2ff584203002d79497cf2d616e8593d23"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/core/engine.cpp",
+      "bytes": 9601,
+      "sha256": "397f6b59debd7bbff899aaeaa4bbbdb18a2e6fe8ff0f7adc4fd0e7287f75413c"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/core/engine.hpp",
+      "bytes": 2444,
+      "sha256": "b4690e8317b44a2ded3844c97ca614da9c9a9ea3dbf67fa90ed7ae115e8d0b1d"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/core/generate_voice.py",
+      "bytes": 1510,
+      "sha256": "69e21a65ddefcf4af28101d1dc63d947b201d4544c4f28cbab01432de51ca236"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/core/generate_voice_kernels.py",
+      "bytes": 1624,
+      "sha256": "a3a440cf998a941a37ec3a0bb0f482e5079a91b830b7c62d4f6b1fb0f191d24c"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/core/generated/app_voice.hpp",
+      "bytes": 7541,
+      "sha256": "c963956717a1b7e9f9b2724d2505c256e0471bc32086968958bf1ac45b2cc03c"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/core/generated/voice_adsr.hpp",
+      "bytes": 4692,
+      "sha256": "5ea3f39e7b914a092eec3881e037d20f5e327457d05736ac947baf392a0b7cbc"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/core/generated/voice_filter.hpp",
+      "bytes": 5296,
+      "sha256": "fb60632045bfdf657a9523befd92f703c8ef97350ce204594fc9fe6746b1e2ab"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/core/generated/voice_saw.hpp",
+      "bytes": 3949,
+      "sha256": "166654639bdea705b3fb64582f04524aa69511f70d9f27e7e2a686ff1a86fae7"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/core/guest/CMakeLists.txt",
+      "bytes": 249,
+      "sha256": "676ba806ab1ac8078dcc49064138b4faeff415dc78889df77a6cfbd0471e7f1b"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/core/guest/guest.cpp",
+      "bytes": 7473,
+      "sha256": "32756a243c3823c8b0e965bff5104b7435aff8136b6227b42460aed98acb067b"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/core/guest/observe.hpp",
+      "bytes": 558,
+      "sha256": "ad0de5f6c80c49877eb7d042b88562cf673a814d259b42a8ac732773ca82b677"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/core/merge.cmake",
+      "bytes": 305,
+      "sha256": "ec1ca4b0f81c3d250c66267c08571eee08ce64f85b907808013885e004d9fa3c"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/core/tests/envelope.cpp",
+      "bytes": 13834,
+      "sha256": "844092afe8edc2b916c148fb8bf2edf0a7e7fab892cfbed66b08f3a9e4cb886f"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/core/ultra_core.h",
+      "bytes": 1816,
+      "sha256": "505d8479af06859369e311e2cf3eb9d4e4be3088a74a46ed3934f4e16d7123dd"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/core/voice.dsp",
+      "bytes": 551,
+      "sha256": "68476cb0fb81285bdbbb24a5bf0e3c72cddbdeafbffb976bf04b6584a6d6b74d"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/core/voice_adsr.dsp",
+      "bytes": 213,
+      "sha256": "7a6e53d5d9689e830e0f9ec060e792c755d9ba343255261ee7d8a9f4e395c27e"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/core/voice_filter.dsp",
+      "bytes": 154,
+      "sha256": "ca1d6abfe3735c3c38ced43184667d154ec533e7cac14820b839d50a0e133373"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/core/voice_saw.dsp",
+      "bytes": 122,
+      "sha256": "bf9bcf4dd162c645750e398fcb4bfc39e3b35cb82704013fd55bde726aee459f"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/alive_session.h",
+      "bytes": 11226,
+      "sha256": "51d418dc48aebac8ebd2d2f6285bc20a0d041585e765a75de1125b29bc1be012"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/alive_session.hpp",
+      "bytes": 31336,
+      "sha256": "98697bfdd67602140f4795a5231bc28144abdb58ba01c2b66a452ee51ad77e38"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/alive_session_bits.hpp",
+      "bytes": 435,
+      "sha256": "a260614bc600dc8fcd294c24e3fad35f7e9be2452aa007fa54b49b150d3411b4"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/alive_session_clip_policy.hpp",
+      "bytes": 2722,
+      "sha256": "98648b3a53e06ab7715f02fc98150093c2f78b3b6a4d22b3e5808df15ec6a82e"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/alive_session_clips.hpp",
+      "bytes": 46907,
+      "sha256": "8862ca42aef94a9794521d20c04c7d756a12de1004892433b582c721d13cc4b0"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/alive_session_envelope.hpp",
+      "bytes": 2137,
+      "sha256": "d8da367ebdce8a26dd69941a4217c7a6ece0e751d8d1a33115a9babc603405fd"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/alive_session_v3_policy.md",
+      "bytes": 14412,
+      "sha256": "115a303d3fef3fcff511df5b8ddc58ea7ca03cbb3aae37682ea1c005e8de0c10"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/backend.cpp",
+      "bytes": 61130,
+      "sha256": "f5b69a2e72ade4e23a6b4b55a070bd402c8cbcab1b7ec81f468d359a0482aec1"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/backend.h",
+      "bytes": 1468,
+      "sha256": "da19583d032e2d8268411b40f2fe4453ba3aa945fd4a1c71b202462a9e805039"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/canvas_list_objects.hpp",
+      "bytes": 3459,
+      "sha256": "c83e71885c5ad41663663479500d545c114603eb3ecc47aa9eb60278665dd834"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/canvas_message.hpp",
+      "bytes": 9066,
+      "sha256": "ec4cc2bb786ac9317341ec7d1af20c03a6290849c1c8984cc7af6a9697b3ed96"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/canvas_message_box.hpp",
+      "bytes": 4465,
+      "sha256": "1a800c9756c8be9c0b365e9480ee3236b994568c09e78af977b3a6aa82483713"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/canvas_objects.hpp",
+      "bytes": 2669,
+      "sha256": "235f8b19fd162e0851d38627d0774f97da69411fbaf5ce4af91cca4a849830c0"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/canvas_signal_objects.hpp",
+      "bytes": 1699,
+      "sha256": "ea9f52ecf50080406a2a0b985cfbeef23f0dbd56b52827fff87f297459167940"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/canvas_voice_objects.hpp",
+      "bytes": 4145,
+      "sha256": "0a93e181210fc2163c9db68c45ff9827077da3376acc73f7d286463774045586"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/canvas_workspace.hpp",
+      "bytes": 3488,
+      "sha256": "0f9a388b4dfa1ea3eeb0a37845b3db75d59d479e3e33fae8baec191aa73b1458"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/diagnostic.cpp",
+      "bytes": 1453,
+      "sha256": "e5412a4f3587e4b2f80a9240b6d067ed532e9475172f98fca96c6116037802ee"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/patch_graph.h",
+      "bytes": 4797,
+      "sha256": "a71ee3af318d0b7d974c08fca93e7a48921aa16bea73526590945d15a91ceeb5"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/patch_graph.hpp",
+      "bytes": 63141,
+      "sha256": "d2ccf60d3a4b5fd6b30c427507351b7c7f92004b003a8582ef0c2df30f8cf5c0"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/sequence.hpp",
+      "bytes": 3906,
+      "sha256": "0602d22c09e6cee84d7ef79ccc3ea2809359bb8b2ab635af28d3f0983a20bff3"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/vendor/fast_float/LICENSE-APACHE",
+      "bytes": 10767,
+      "sha256": "097a889aa954d04e088b790b10a4014d6189561d0a6013935a73ce3d4ddaaf06"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/vendor/fast_float/LICENSE-BOOST",
+      "bytes": 1337,
+      "sha256": "8d8291caf1cee26d23acf3eb67c9f9a2d58f1c681b16a4fbe8cbfb9e3c0b5a9b"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/vendor/fast_float/LICENSE-MIT",
+      "bytes": 1079,
+      "sha256": "e562f3f974ced7e69dd1db77b820b36bcf8f30377f1aa105723fba449c53c4e6"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/vendor/fast_float/PROVENANCE.md",
+      "bytes": 544,
+      "sha256": "42636ec7c1dfa38ed75220d12ea0f17523cf4d9c3583c103705b6511a38bc19d"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/vendor/fast_float/ascii_number.h",
+      "bytes": 18903,
+      "sha256": "a034d44ff5b945a51c4797ecf4be7ef50c3a9730d50f5a26a6dc75a2c02d5b11"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/vendor/fast_float/bigint.h",
+      "bytes": 18631,
+      "sha256": "1ed0b598da0b522613399897ddc748792dee6f804debf9fee131359252f80763"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/vendor/fast_float/constexpr_feature_detect.h",
+      "bytes": 1629,
+      "sha256": "2dd2dc5f98a8f1a78813e62d47e82a19ebe42af726356723d60f6eb387c6dd38"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/vendor/fast_float/decimal_to_binary.h",
+      "bytes": 8333,
+      "sha256": "82fad8134c272a3f1bc545b3ef367a2e9e3c7464b9dcef75640c37e325dfb973"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/vendor/fast_float/digit_comparison.h",
+      "bytes": 15623,
+      "sha256": "941d18ff89a9164f6ad447542a7b369252cdd5d63d289f1064a71641bd9c99b6"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/vendor/fast_float/fast_float.h",
+      "bytes": 2521,
+      "sha256": "2427cd297f5b4d524e696ab9c69f957ffb9f851e59262f5d0b07930ba7dae016"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/vendor/fast_float/fast_table.h",
+      "bytes": 31278,
+      "sha256": "c18e0a0a2513215730557cc1dd53541cacd72855ddc0287934e78b364f989edb"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/vendor/fast_float/float_common.h",
+      "bytes": 39545,
+      "sha256": "c09daa98e482d9a068c4174f208227741a64f82c7cd1b9cf0db0e8b96fee5562"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/src-tauri/native/vendor/fast_float/parse_number.h",
+      "bytes": 14316,
+      "sha256": "8bb35524d9b52107ac28215e932307a5a1765de8cb099599a7412f429cfb7e33"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/tests/alive_session_capacity.cpp",
+      "bytes": 20999,
+      "sha256": "b0dd643582fef5f65f30b0593df6619befe3f38a2d83b3b3909750abe5304d7b"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/tests/alive_session_capacity_fixture.hpp",
+      "bytes": 6499,
+      "sha256": "484e1d59a91db0bc5be429e9e52ba166ebfbb824917b740c0a6766891d6d0c25"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/tests/canvas_callback_guard.hpp",
+      "bytes": 1728,
+      "sha256": "f1ed3a11569b6dd99d27dae991a52b3a62111f5f455b121374733dc0b24e6e67"
+    },
+    {
+      "path": "fix-1-mutations-1/discarded-action/source/tests/saved_graphs.hpp",
+      "bytes": 3378,
+      "sha256": "e096ba0b46205eb70ac4b0cf782783779620e50aaf8aa33f59482b64a28bb43b"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/build.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/manifest.json",
+      "bytes": 7921,
+      "sha256": "0c782f525f54ccc2df3813b3a1b7bdedb9e213eadb944a310d11164e55819514"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/probe.log",
+      "bytes": 104,
+      "sha256": "91f81036c863ecd3621abfd9e6d2e2164266308e057bb4ec783322fe0883ec57"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/core/CMakeLists.txt",
+      "bytes": 2562,
+      "sha256": "ed26b3cbc4936054a4c9d8a22b2ad853a8e8fa51a928b990277de05d06e8a8d9"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/core/VOICE.txt",
+      "bytes": 14723,
+      "sha256": "3305f3b0ba3c62f647365a18e2b17ee07bc60c9582df6b4d6e0f3d54fc8133cd"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/core/app_voice.hpp",
+      "bytes": 2480,
+      "sha256": "3b173f9a042544f2ca37cfd1f6385fe2ff584203002d79497cf2d616e8593d23"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/core/engine.cpp",
+      "bytes": 9601,
+      "sha256": "397f6b59debd7bbff899aaeaa4bbbdb18a2e6fe8ff0f7adc4fd0e7287f75413c"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/core/engine.hpp",
+      "bytes": 2444,
+      "sha256": "b4690e8317b44a2ded3844c97ca614da9c9a9ea3dbf67fa90ed7ae115e8d0b1d"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/core/generate_voice.py",
+      "bytes": 1510,
+      "sha256": "69e21a65ddefcf4af28101d1dc63d947b201d4544c4f28cbab01432de51ca236"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/core/generate_voice_kernels.py",
+      "bytes": 1624,
+      "sha256": "a3a440cf998a941a37ec3a0bb0f482e5079a91b830b7c62d4f6b1fb0f191d24c"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/core/generated/app_voice.hpp",
+      "bytes": 7541,
+      "sha256": "c963956717a1b7e9f9b2724d2505c256e0471bc32086968958bf1ac45b2cc03c"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/core/generated/voice_adsr.hpp",
+      "bytes": 4692,
+      "sha256": "5ea3f39e7b914a092eec3881e037d20f5e327457d05736ac947baf392a0b7cbc"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/core/generated/voice_filter.hpp",
+      "bytes": 5296,
+      "sha256": "fb60632045bfdf657a9523befd92f703c8ef97350ce204594fc9fe6746b1e2ab"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/core/generated/voice_saw.hpp",
+      "bytes": 3949,
+      "sha256": "166654639bdea705b3fb64582f04524aa69511f70d9f27e7e2a686ff1a86fae7"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/core/guest/CMakeLists.txt",
+      "bytes": 249,
+      "sha256": "676ba806ab1ac8078dcc49064138b4faeff415dc78889df77a6cfbd0471e7f1b"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/core/guest/guest.cpp",
+      "bytes": 7473,
+      "sha256": "32756a243c3823c8b0e965bff5104b7435aff8136b6227b42460aed98acb067b"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/core/guest/observe.hpp",
+      "bytes": 558,
+      "sha256": "ad0de5f6c80c49877eb7d042b88562cf673a814d259b42a8ac732773ca82b677"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/core/merge.cmake",
+      "bytes": 305,
+      "sha256": "ec1ca4b0f81c3d250c66267c08571eee08ce64f85b907808013885e004d9fa3c"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/core/tests/envelope.cpp",
+      "bytes": 13834,
+      "sha256": "844092afe8edc2b916c148fb8bf2edf0a7e7fab892cfbed66b08f3a9e4cb886f"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/core/ultra_core.h",
+      "bytes": 1816,
+      "sha256": "505d8479af06859369e311e2cf3eb9d4e4be3088a74a46ed3934f4e16d7123dd"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/core/voice.dsp",
+      "bytes": 551,
+      "sha256": "68476cb0fb81285bdbbb24a5bf0e3c72cddbdeafbffb976bf04b6584a6d6b74d"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/core/voice_adsr.dsp",
+      "bytes": 213,
+      "sha256": "7a6e53d5d9689e830e0f9ec060e792c755d9ba343255261ee7d8a9f4e395c27e"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/core/voice_filter.dsp",
+      "bytes": 154,
+      "sha256": "ca1d6abfe3735c3c38ced43184667d154ec533e7cac14820b839d50a0e133373"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/core/voice_saw.dsp",
+      "bytes": 122,
+      "sha256": "bf9bcf4dd162c645750e398fcb4bfc39e3b35cb82704013fd55bde726aee459f"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/alive_session.h",
+      "bytes": 11226,
+      "sha256": "51d418dc48aebac8ebd2d2f6285bc20a0d041585e765a75de1125b29bc1be012"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/alive_session.hpp",
+      "bytes": 31336,
+      "sha256": "98697bfdd67602140f4795a5231bc28144abdb58ba01c2b66a452ee51ad77e38"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/alive_session_bits.hpp",
+      "bytes": 435,
+      "sha256": "a260614bc600dc8fcd294c24e3fad35f7e9be2452aa007fa54b49b150d3411b4"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/alive_session_clip_policy.hpp",
+      "bytes": 2722,
+      "sha256": "98648b3a53e06ab7715f02fc98150093c2f78b3b6a4d22b3e5808df15ec6a82e"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/alive_session_clips.hpp",
+      "bytes": 46907,
+      "sha256": "8862ca42aef94a9794521d20c04c7d756a12de1004892433b582c721d13cc4b0"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/alive_session_envelope.hpp",
+      "bytes": 2137,
+      "sha256": "d8da367ebdce8a26dd69941a4217c7a6ece0e751d8d1a33115a9babc603405fd"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/alive_session_v3_policy.md",
+      "bytes": 14412,
+      "sha256": "115a303d3fef3fcff511df5b8ddc58ea7ca03cbb3aae37682ea1c005e8de0c10"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/backend.cpp",
+      "bytes": 61130,
+      "sha256": "f5b69a2e72ade4e23a6b4b55a070bd402c8cbcab1b7ec81f468d359a0482aec1"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/backend.h",
+      "bytes": 1468,
+      "sha256": "da19583d032e2d8268411b40f2fe4453ba3aa945fd4a1c71b202462a9e805039"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/canvas_list_objects.hpp",
+      "bytes": 3459,
+      "sha256": "c83e71885c5ad41663663479500d545c114603eb3ecc47aa9eb60278665dd834"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/canvas_message.hpp",
+      "bytes": 9066,
+      "sha256": "ec4cc2bb786ac9317341ec7d1af20c03a6290849c1c8984cc7af6a9697b3ed96"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/canvas_message_box.hpp",
+      "bytes": 4465,
+      "sha256": "1a800c9756c8be9c0b365e9480ee3236b994568c09e78af977b3a6aa82483713"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/canvas_objects.hpp",
+      "bytes": 2669,
+      "sha256": "235f8b19fd162e0851d38627d0774f97da69411fbaf5ce4af91cca4a849830c0"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/canvas_signal_objects.hpp",
+      "bytes": 1699,
+      "sha256": "ea9f52ecf50080406a2a0b985cfbeef23f0dbd56b52827fff87f297459167940"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/canvas_voice_objects.hpp",
+      "bytes": 4145,
+      "sha256": "0a93e181210fc2163c9db68c45ff9827077da3376acc73f7d286463774045586"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/canvas_workspace.hpp",
+      "bytes": 3488,
+      "sha256": "0f9a388b4dfa1ea3eeb0a37845b3db75d59d479e3e33fae8baec191aa73b1458"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/diagnostic.cpp",
+      "bytes": 1453,
+      "sha256": "e5412a4f3587e4b2f80a9240b6d067ed532e9475172f98fca96c6116037802ee"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/patch_graph.h",
+      "bytes": 4797,
+      "sha256": "a71ee3af318d0b7d974c08fca93e7a48921aa16bea73526590945d15a91ceeb5"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/patch_graph.hpp",
+      "bytes": 63141,
+      "sha256": "d2ccf60d3a4b5fd6b30c427507351b7c7f92004b003a8582ef0c2df30f8cf5c0"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/sequence.hpp",
+      "bytes": 3906,
+      "sha256": "0602d22c09e6cee84d7ef79ccc3ea2809359bb8b2ab635af28d3f0983a20bff3"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/vendor/fast_float/LICENSE-APACHE",
+      "bytes": 10767,
+      "sha256": "097a889aa954d04e088b790b10a4014d6189561d0a6013935a73ce3d4ddaaf06"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/vendor/fast_float/LICENSE-BOOST",
+      "bytes": 1337,
+      "sha256": "8d8291caf1cee26d23acf3eb67c9f9a2d58f1c681b16a4fbe8cbfb9e3c0b5a9b"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/vendor/fast_float/LICENSE-MIT",
+      "bytes": 1079,
+      "sha256": "e562f3f974ced7e69dd1db77b820b36bcf8f30377f1aa105723fba449c53c4e6"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/vendor/fast_float/PROVENANCE.md",
+      "bytes": 544,
+      "sha256": "42636ec7c1dfa38ed75220d12ea0f17523cf4d9c3583c103705b6511a38bc19d"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/vendor/fast_float/ascii_number.h",
+      "bytes": 18903,
+      "sha256": "a034d44ff5b945a51c4797ecf4be7ef50c3a9730d50f5a26a6dc75a2c02d5b11"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/vendor/fast_float/bigint.h",
+      "bytes": 18631,
+      "sha256": "1ed0b598da0b522613399897ddc748792dee6f804debf9fee131359252f80763"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/vendor/fast_float/constexpr_feature_detect.h",
+      "bytes": 1629,
+      "sha256": "2dd2dc5f98a8f1a78813e62d47e82a19ebe42af726356723d60f6eb387c6dd38"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/vendor/fast_float/decimal_to_binary.h",
+      "bytes": 8333,
+      "sha256": "82fad8134c272a3f1bc545b3ef367a2e9e3c7464b9dcef75640c37e325dfb973"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/vendor/fast_float/digit_comparison.h",
+      "bytes": 15623,
+      "sha256": "941d18ff89a9164f6ad447542a7b369252cdd5d63d289f1064a71641bd9c99b6"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/vendor/fast_float/fast_float.h",
+      "bytes": 2521,
+      "sha256": "2427cd297f5b4d524e696ab9c69f957ffb9f851e59262f5d0b07930ba7dae016"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/vendor/fast_float/fast_table.h",
+      "bytes": 31278,
+      "sha256": "c18e0a0a2513215730557cc1dd53541cacd72855ddc0287934e78b364f989edb"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/vendor/fast_float/float_common.h",
+      "bytes": 39545,
+      "sha256": "c09daa98e482d9a068c4174f208227741a64f82c7cd1b9cf0db0e8b96fee5562"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/src-tauri/native/vendor/fast_float/parse_number.h",
+      "bytes": 14316,
+      "sha256": "8bb35524d9b52107ac28215e932307a5a1765de8cb099599a7412f429cfb7e33"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/tests/alive_session_capacity.cpp",
+      "bytes": 21093,
+      "sha256": "09d01449b4ba4309e98ccd966e8d21d04f9a7f0ad2674a53e92a62111590963e"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/tests/alive_session_capacity_fixture.hpp",
+      "bytes": 6499,
+      "sha256": "484e1d59a91db0bc5be429e9e52ba166ebfbb824917b740c0a6766891d6d0c25"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/tests/canvas_callback_guard.hpp",
+      "bytes": 1728,
+      "sha256": "f1ed3a11569b6dd99d27dae991a52b3a62111f5f455b121374733dc0b24e6e67"
+    },
+    {
+      "path": "fix-1-mutations-1/late-reader/source/tests/saved_graphs.hpp",
+      "bytes": 3378,
+      "sha256": "e096ba0b46205eb70ac4b0cf782783779620e50aaf8aa33f59482b64a28bb43b"
+    },
+    {
+      "path": "fix-1-mutations-1/results.json",
+      "bytes": 1058,
+      "sha256": "11e997299597212fb55860a398791c612a113d18f10feb0e0e47554d3bc11c99"
+    },
+    {
+      "path": "fix-1-mutations-1/runner.py",
+      "bytes": 4807,
+      "sha256": "e55c5146a79ca2c7ea7bb1c26a0514f3b0bfc75ae192b55fbea4d3a697767faf"
+    },
+    {
+      "path": "fix-1-mutations-1-runner.log",
+      "bytes": 478,
+      "sha256": "50c3591e26cc298ad3da2a98b6171c6fd505b6671f6462f1e16ae8e2eecb05fc"
+    },
+    {
+      "path": "run-fix-1-mutations.py",
+      "bytes": 4807,
+      "sha256": "e55c5146a79ca2c7ea7bb1c26a0514f3b0bfc75ae192b55fbea4d3a697767faf"
+    },
+    {
+      "path": "review/fix-1-task-13b-report.md",
+      "bytes": 28007,
+      "sha256": "9fde0bf5fd5e62cb71fea11d472795c3bb90bd716ce1015ade0a655d6eee7e37"
+    },
+    {
+      "path": "review/fix-1-task-13b-fix-1-brief.md",
+      "bytes": 5217,
+      "sha256": "e9ca9a5b7f53557a377259b8ed02d31cb6487e503bb674b1fb69ecfcef4e75b4"
+    },
+    {
+      "path": "review/fix-1-task-13b-fix-1-review.diff",
+      "bytes": 36999,
+      "sha256": "90b02566023154c19fbfd22efc265920fbef7e028857271ae4f5eb856361c6d6"
+    }
+  ]
+}

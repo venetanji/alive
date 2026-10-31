@@ -6,6 +6,13 @@ authors = ["Alive contributors"]
 edition = "2021"
 license = "AGPL-3.0-or-later"
 rust-version = "1.85"
+default-run = "ultra"
+
+[features]
+telemetry-disabled = []
+
+[lib]
+name = "ultra_desktop"
 
 [build-dependencies]
 tauri-build = { version = "=2.4.1", features = [] }
@@ -13,7 +20,7 @@ tauri-build = { version = "=2.4.1", features = [] }
 [dependencies]
 tauri = { version = "=2.8.5", features = [] }
 serde = { version = "=1.0.228", features = ["derive"] }
-serde_json = "=1.0.145"
+serde_json = { version = "=1.0.145", features = ["raw_value"] }
 sha2 = "=0.10.9"
 quick-xml = "=0.38.4"
 cpal = "=0.18.2"

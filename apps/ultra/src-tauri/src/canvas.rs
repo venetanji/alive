@@ -16,8 +16,10 @@ const NUMBER_LIMIT: f64 = 100_000.;
 
 #[path = "canvas_hierarchy.rs"]
 mod hierarchy;
+#[path = "canvas_presentation.rs"]
+mod presentation;
 #[path = "canvas_device.rs"]
-mod device;
+pub(crate) mod device;
 
 // Keep these C-layout types in sync with native/patch_graph.h. Tests pin sizes.
 #[repr(C)]
@@ -269,9 +271,12 @@ struct Document {
     profile: String,
     nodes: Vec<Node>,
     edges: Vec<Edge>,
+    #[serde(rename = "presentation", deserialize_with = "required_presentation")]
+    _presentation: Value,
     #[serde(default, deserialize_with = "device::present")]
     device: Option<device::Device>,
 }
+fn required_presentation<'de,D:serde::Deserializer<'de>>(deserializer:D)->Result<Value,D::Error>{Value::deserialize(deserializer)}
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 struct Node {
@@ -310,6 +315,14 @@ where
 #[derive(Clone, Debug)]
 pub struct Prepared {
     pub native: NativeGraph,
+}
+impl Prepared {
+    pub fn parameter_hot(&self,id:u32,key:&str)->bool{key=="value"&&self.native.nodes[..self.native.node_count as usize].iter().any(|n|n.id==id&&matches!(n.kind,2|3|15..=18|52))}
+    pub fn parameter_value(&self, id:u32, key:&str)->Result<f64,String>{
+        let node=self.native.nodes[..self.native.node_count as usize].iter().find(|n|n.id==id).ok_or("Unknown canvas node")?;
+        let spec=parameters(node.kind).iter().find(|s|s.key==key&&s.live).ok_or("Unknown or structural canvas parameter")?;
+        Ok([node.p0,node.p1,node.p2,node.p3,node.p4,node.p5][spec.slot as usize])
+    }
 }
 
 /// Count the serialized input without allocating another unbounded JSON string.
@@ -386,6 +399,8 @@ fn inlet(node: &NativeNode, port: u32) -> Option<Port> {
         62 if port <= 2 => Some(Port::Control),
         63 if port <= 4 => Some(Port::Control),
         64 if port <= 1 => Some(Port::Voice4),
+        67 if port <= 1 => Some(Port::Mono),
+        67 if port <= 3 => Some(Port::Control),
         _ => None,
     }
 }
@@ -407,8 +422,12 @@ fn outlet(node: &NativeNode, port: u32) -> Option<Port> {
         60 if port <= 2 => Some(Port::Voice4),
         61..=64 if port == 0 => Some(Port::Voice4),
         65 if port == 0 => Some(Port::Mono),
+        66..=67 if port <= 1 => Some(Port::Mono),
         _ => None,
     }
+}
+fn default_arguments(kind:u32)->&'static str{
+    match kind{19..=20=>"0 0",21..=22|38=>"0",29..=32=>"",49=>"1 2",_=>"i i"}
 }
 fn argument_count(node: &NativeNode) -> u32 {
     let end = node
@@ -431,6 +450,7 @@ fn kind(name: &str) -> Option<u32> {
         "inlet", "outlet", "number_int", "message_box",
         "subtract", "divide", "modulo", "reverse_subtract", "reverse_divide", "abs",
         "poly_note", "saw_voice", "filter_voice", "adsr_voice", "multiply_voice", "mix_voice",
+        "audio_in", "filter_stereo",
     ]
     .iter()
     .position(|candidate| *candidate == name)
@@ -476,7 +496,7 @@ fn parameters(kind: u32) -> &'static [Parameter] {
         55..=56 | 58 => &[p!("rhs", 0, 1., -NUMBER_LIMIT, NUMBER_LIMIT, false, true), p!("numericmode", 1, 1., 1., 2., true, false)],
         59 => &[p!("numericmode", 1, 1., 1., 2., true, false)],
         60 => &[p!("voices", 0, 4., 1., 4., true, false)],
-        62 => &[
+        62 | 67 => &[
             p!("cutoff", 0, 2400., 20., 20000., false, true),
             p!("resonance", 1, 0.7, 0.1, 20., false, true),
         ],
@@ -780,6 +800,10 @@ fn validate_style(kind: u32, name: &str, style: &Map<String, Value>) -> Result<(
 }
 
 pub fn prepare(patch: Value) -> Result<Prepared, String> {
+    if patch["version"]==2 {validate_json_size(&patch,1024*1024,"Hierarchy patch exceeds 1 MiB JSON")?;}
+    else {validate_json_size(&patch,MAX_JSON_BYTES,"Canvas patch exceeds 64 KiB JSON")?;}
+    presentation::validate(&patch)?;
+    if patch.get("device").is_some() && patch["presentation"].is_null(){return Err("Reusable devices require a root presentation".into());}
     if patch.get("version").and_then(Value::as_u64) == Some(2) {
         return hierarchy::prepare(patch);
     }
@@ -865,14 +889,7 @@ fn prepare_flat(doc: Document, allow_relays: bool) -> Result<Prepared, String> {
             }
             let text = match node.params.get(key) {
                 Some(value) => value.as_str().ok_or("Creation args must be a string")?,
-                None => match kind {
-                    19..=20 => "0 0",
-                    21..=22 => "0",
-                    29..=32 => "",
-                    38 => "0",
-                    49 => "1 2",
-                    _ => "i i",
-                },
+                None => default_arguments(kind),
             };
             let arguments = arguments_config(text, (29..=32).contains(&kind))?;
             if matches!(kind, 38 | 49) {
@@ -1011,6 +1028,19 @@ pub struct CanvasState {
 impl CanvasState {
     pub fn revision(&self) -> u64 { self.revision }
     pub fn message_text_serial(&self) -> u64 { self.message_text_serial }
+
+    pub fn live_changes_only(old:&Prepared,next:&Prepared)->bool{
+        let mut current=Self{graph:Some(old.clone()),revision:1,..Self::default()};
+        for node in &next.native.nodes[..next.native.node_count as usize]{for spec in parameters(node.kind).iter().filter(|s|s.live){
+            let value=[node.p0,node.p1,node.p2,node.p3,node.p4,node.p5][spec.slot as usize];
+            if current.parameter(1,node.id,spec.key,value,|_,_|true).is_err(){return false;}
+        }}current.matches(next)
+    }
+
+    // Native preview is transient; canonical comparison still reflects the authored graph.
+    pub fn preview_parameter(&self,revision:u64,node:u32,key:&str,value:f64,send:impl FnOnce(u32,f64)->bool)->Result<(),String>{
+        self.clone().parameter(revision,node,key,value,send)
+    }
 
     pub fn matches(&self, plan: &Prepared) -> bool {
         self.graph.as_ref().is_some_and(|current| {

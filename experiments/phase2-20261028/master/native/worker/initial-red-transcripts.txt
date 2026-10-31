@@ -1,0 +1,15 @@
+Actual-library limits red before native implementation:
+  command: c++ -std=c++17 -O2 -Wall -Wextra -Werror -Iapps/ultra/src-tauri/native apps/ultra/tests/alive_session_master_test.cpp -Lapps/ultra/build -lultra_native -Wl,-rpath,"$PWD/apps/ultra/build" -ldl -o /tmp/alive-master-red && /tmp/alive-master-red
+  assertion: limits && "native Master limits must be exported"
+  exit: 134
+
+Fault interval red against e8c51aa before the fix:
+  command: c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -Iapps/ultra/src-tauri/native apps/ultra/tests/alive_session_master_test.cpp -Lapps/ultra/build -lultra_native -Wl,-rpath,"$PWD/apps/ultra/build" -ldl -o /tmp/alive-master-fault-red && /tmp/alive-master-fault-red
+  assertion: master.observation_start_frame==master.observation_end_frame && master.peak_left==0. && master.peak_right==0. && master.clip_mask==3
+  exit: 134
+
+Original grouped fresh-Host fixture failure, before process isolation:
+  command: LD_LIBRARY_PATH="$PWD/apps/ultra/build" apps/ultra/src-tauri/target/release/deps/ultra_desktop-6028613c5e5ac959 master_ --test-threads=1
+  master_gain_admission_promotes_only_on_change: Native device 1 installation failed; prior session remains saved in memory but audio restoration failed: Native device 1 installation failed
+  master_host_install_publishes_saved_gain_before_audio: PoisonError following the first fixture failure
+  Result: 14 passed, 2 failed. The later fresh-process fixture preserves native revision validation.

@@ -1,9 +1,11 @@
+import {createParameterGestures} from './canvas-parameter-gestures.mjs';
 // ultra-canvas-v1: a document/editor and bounded native command adapter, never a JS scheduler or DSP.
 import {appearanceFields, validateStyle} from './canvas-appearance.mjs';
 import {validateMidpoints, translatedMidpoints} from './canvas-cable-geometry.mjs';
 import {parseMessageTemplate, mergeMessageDisplays} from './canvas-message-ui.mjs';
 import {mergePrintPopups} from './canvas-print-ui.mjs';
 import {HELP_HELPER_SPEC} from './canvas-help-shell.mjs';
+import {validatePresentation,removePresentationTargets,remapPresentation} from './canvas-presentation.mjs';
 import {validateDevice} from './canvas-device.mjs';
 import {isArithmetic} from './canvas-arithmetic.mjs';
 import {boundaryNodes, hierarchyType, HIERARCHY_LIMITS, lowerHierarchy, remapBoundaryEdges, treeNodes, validateHierarchy, visiblePatcher} from './canvas-hierarchy.mjs';
@@ -12,7 +14,7 @@ const port = (type, label, side, accepts) => ({type, label, side,...({mono:1,ste
 const ports = (items, side) => items.map(([type,label,accepts])=>port(type,label,side,accepts));
 const mixed = label => [M,label,[C,M]];
 const number = (value,min,max,integer=false) => ({value,min,max,integer});
-const spec = (label, params, inputs, outputs, help) => ({label,params,inlets:ports(inputs,'top'),outlets:ports(outputs,'bottom'),help});
+const spec = (label, params, inputs, outputs, help) => ({label,params,presentationInlets:node=>nodeSpec(node).inlets,inlets:ports(inputs,'top'),outlets:ports(outputs,'bottom'),help});
 const zlSpec = (label,params,inputs,outputs,help) => spec(label,params,inputs,outputs,`${help} Either inlet accepts zlclear to clear retained lists and reset the mode parameter to zero, or zlreset to clear lists while keeping that parameter.`);
 const inletSpec={...spec('inlet',{},[],[],'Forward parent inlet messages and mono signals into this patcher.'),outlets:[{type:'mixed',label:'message / signal',side:'bottom',emits:[C,M]}]};
 export const REGISTRY = Object.freeze({
@@ -84,6 +86,8 @@ export const REGISTRY = Object.freeze({
   adsr_voice:spec('adsr.voice~',{attack:number(10,1,10000),decay:number(150,1,10000),sustain:number(0.65,0,1),release:number(300,1,10000)},[[V,'gate / 4 voices'],[C,'attack ms'],[C,'decay ms'],[C,'sustain'],[C,'release ms']],[[V,'envelope / 4 voices']],'Faust ADSR envelope per voice. Live attack, decay, sustain and release controls, in milliseconds except sustain.'),
   multiply_voice:spec('*.voice~',{},[[V,'left / 4 voices'],[V,'right / 4 voices']],[[V,'product / 4 voices']],'Multiply corresponding voice lanes, for envelope and velocity scaling.'),
   mix_voice:spec('mix.voice~',{},[[V,'audio / 4 voices']],[[M,'mono mix']],'Explicitly sum the four voice lanes and divide by four for headroom. Output is one mono channel.'),
+  audio_in:spec('audio.in~',{},[],[[M,'host input left'],[M,'host input right']],'Read an explicit stereo sample pair supplied by a reusable-device host. Ordinary Ultra roots receive silence; this is not physical audio input.'),
+  filter_stereo:spec('lowpass.stereo~',{cutoff:number(2400,20,20000),resonance:number(0.7,0.1,20)},[[M,'left audio'],[M,'right audio'],[C,'cutoff Hz'],[C,'resonance Q']],[[M,'filtered left'],[M,'filtered right']],'Two independent channels through the shared Faust resonant low-pass kernel. Cutoff and resonance are live; Stop clears filter tails.'),
 });
 export const structuralParameter=(type,key)=>['text','args','label','name','channels'].includes(key)||
   (isArithmetic(type)&&key==='numericmode')||(type==='midiin'&&key==='channel')||(type==='voice'&&key==='device')||(type==='poly_note'&&key==='voices');
@@ -143,14 +147,14 @@ export function nodeSpec(node) {
 export function validatePatch(input) {
   if(input?.version===2){
     if(input.profile!=='ultra-patcher-v2')fail('Expected version 2, profile ultra-patcher-v2.');
-    const patch=validateHierarchy(input,{nodeSpec,validateStyle,validateLeaf:node=>validateFlatPatch({version:1,profile:'ultra-canvas-v1',nodes:[node],edges:[]},true).nodes[0],validateExecution:patch=>validateFlatPatch(patch,true)});
-    validateDevice(patch,REGISTRY,structuralParameter);return patch;
+    const patch=validateHierarchy(input,{nodeSpec,validateStyle,validateLeaf:node=>validateFlatPatch({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[node],edges:[]},true).nodes[0],validateExecution:patch=>validateFlatPatch(patch,true)});
+    validatePresentation(patch,REGISTRY,structuralParameter);validateDevice(patch,REGISTRY,structuralParameter);return patch;
   }
   return validateFlatPatch(input);
 }
 const executionSpec=node=>['inlet','outlet'].includes(node.type)?{inlets:[port(M,'boundary','top',[C,M])],outlets:[{type:'mixed',emits:[C,M]}]}:nodeSpec(node);
 function validateFlatPatch(input,internal=false) {
-  fields(input,['version','profile','nodes','edges','device'],'patch',['version','profile','nodes','edges']);
+  fields(input,['version','profile','nodes','edges','device','presentation'],'patch',['version','profile','nodes','edges',...(!internal?['presentation']:[])]);
   if(input.version!==1||input.profile!=='ultra-canvas-v1') fail('Expected version 1, profile ultra-canvas-v1.');
   if(!Array.isArray(input.nodes)||input.nodes.length>32) fail('A patch supports at most 32 objects.');
   if(!Array.isArray(input.edges)||input.edges.length>64) fail('A patch supports at most 64 cables.');
@@ -210,7 +214,7 @@ function validateFlatPatch(input,internal=false) {
   }
   if(new TextEncoder().encode(JSON.stringify(input)).length>65536) fail('Patch exceeds 64 KiB.');
   const patch={...input,nodes:[...nodes.values()]};
-  validateDevice(patch,REGISTRY,structuralParameter);return copy(patch);
+  if(!internal)validatePresentation(patch,REGISTRY,structuralParameter);validateDevice(patch,REGISTRY,structuralParameter);return copy(patch);
 }
 export function parsePatch(text) {
   if(typeof text!=='string'||new TextEncoder().encode(text).length>8*HIERARCHY_LIMITS.bytes) fail('Patch file exceeds 8 MiB.');
@@ -221,7 +225,7 @@ export function parsePatch(text) {
 export const serializePatch = patch => JSON.stringify(validatePatch(patch),null,2);
 export function makeNode(type,id,x=40,y=40,params={}) {
   if(!REGISTRY[type]) fail(`Unknown object type: ${type}.`);
-  return {id,type,x,y,params:{...Object.fromEntries(Object.entries(REGISTRY[type].params).map(([key,p])=>[key,p.value])),...params},...(type==='patcher'?{patcher:{nodes:[],edges:[]}}:{})};
+  return {id,type,x,y,params:{...Object.fromEntries(Object.entries(REGISTRY[type].params).map(([key,p])=>[key,p.value])),...params},...(type==='patcher'?{patcher:{presentation:null,nodes:[],edges:[]}}:{})};
 }
 export function starterPatch() {
   const nodes=[
@@ -233,7 +237,7 @@ export function starterPatch() {
     makeNode('number',15,180,50,{value:150}), makeNode('number',16,460,50,{value:90}),
   ];
   const edges=[[1,0,2,0],[2,0,3,0],[3,0,4,0],[4,0,5,0],[5,0,6,0],[6,0,7,0],[7,0,8,0],[10,0,11,0],[11,0,12,0],[12,0,8,1],[8,0,9,0],[13,0,14,0],[14,0,5,0],[15,0,2,1],[16,0,7,1],[16,0,12,1]].map(([from,outlet,to,inlet])=>({from,outlet,to,inlet}));
-  return {version:1,profile:'ultra-canvas-v1',nodes,edges};
+  return {version:1,profile:'ultra-canvas-v1',presentation:null,nodes,edges};
 }
 export class CanvasDocument {
   constructor(patch=starterPatch()) { this.document=validatePatch(patch);this.path=[];this.past=[];this.future=[];this.nextId=Math.max(0,...treeNodes(this.document).map(n=>n.id))+1; }
@@ -244,6 +248,26 @@ export class CanvasDocument {
     const validated=validatePatch(next);
     if(JSON.stringify(validated)===JSON.stringify(this.document))return false;
     this.remember();this.document=validated;return true;
+  }
+  setPresentation(value){return this.edit(scope=>{scope.presentation=copy(value);});}
+  updatePresentationItem(id,changes){return this.edit(scope=>{
+    const item=scope.presentation?.items.find(item=>item.id===id);if(!item)fail('Missing presentation item.');
+    Object.assign(item,copy(changes));
+  });}
+  duplicateMany(ids,{dx=20,dy=20}={}){
+    const selected=new Set(ids),mapping=new Map();let nextId=this.nextId;
+    return this.edit(scope=>{
+      const originals=scope.nodes.filter(node=>selected.has(node.id));
+      for(const node of treeNodes({nodes:originals}))mapping.set(node.id,nextId++);
+      const used=new Set();const collect=p=>{for(const item of p.presentation?.items??[])used.add(item.id);for(const node of p.nodes)if(node.type==='patcher')collect(node.patcher);};collect(this.document);
+      const itemId=id=>{let n=2,candidate;do{const suffix=`_${n++}`;candidate=id.slice(0,64-suffix.length)+suffix;}while(used.has(candidate));used.add(candidate);return candidate;};
+      const remap=node=>{const result=copy(node);result.id=mapping.get(node.id);result.x+=dx;result.y+=dy;
+        if(node.type==='patcher')result.patcher={...copy(node.patcher),nodes:node.patcher.nodes.map(child=>{const mapped=remap(child);mapped.x-=dx;mapped.y-=dy;return mapped;}),edges:node.patcher.edges.map(edge=>({...edge,from:mapping.get(edge.from),to:mapping.get(edge.to)})),presentation:remapPresentation(node.patcher.presentation,mapping,itemId)};
+        return result;};
+      scope.nodes.push(...originals.map(remap));
+      scope.edges.push(...scope.edges.filter(edge=>mapping.has(edge.from)&&mapping.has(edge.to)).map(edge=>({...copy(edge),from:mapping.get(edge.from),to:mapping.get(edge.to)})));
+      if(scope.presentation){const copied=scope.presentation.items.filter(item=>mapping.has(item.target.node));scope.presentation.items.push(...remapPresentation({...scope.presentation,items:copied},mapping,itemId).items);}
+    })?[...selected].filter(id=>mapping.has(id)).map(id=>mapping.get(id)):[];
   }
   enter(id){visiblePatcher(this.document,[...this.path,id]);this.path.push(id);}
   leave(depth=this.path.length-1){this.path=this.path.slice(0,Math.max(0,depth));}
@@ -260,6 +284,8 @@ export class CanvasDocument {
   edit(fn,{history=true}={}) {
     const next=copy(this.document);fn(visiblePatcher(next,this.path));
     if(next.version===1&&treeNodes(next).some(node=>hierarchyType(node.type))){next.version=2;next.profile='ultra-patcher-v2';}
+    const remaining=new Set(treeNodes(next).map(node=>node.id));
+    removePresentationTargets(next,new Set(treeNodes(this.document).map(node=>node.id).filter(id=>!remaining.has(id))));
     if(next.version===2)remapBoundaryEdges(this.document,next);
     const validated=validatePatch(next);
     if(JSON.stringify(validated)===JSON.stringify(this.document)) return false;
@@ -343,18 +369,21 @@ export function createHelpViewState() {
 export function createCanvasController({invoke,patch=starterPatch(),onState=()=>{}}={}) {
   const document=new CanvasDocument(patch),native=typeof invoke==='function';
   const helpView=createHelpViewState();helpView.reconcile(document);
+  let parameterGestures;
   let revision=null,desired=1,applied=0,applyTask=null,paramTask=null,eventTask=null,operation=null;
   let status={},observations={},messageBoxes={},printPopups={},messageSerial=0,inFlightText=null,consoleRecords=[],consoleDropped=0,consoleDroppedBaseline=0,consoleEpoch=0,notice=native?'Preparing native patch…':'Browser preview: native execution is unavailable.',faulted=false,panicked=false,disposed=false,actionEpoch=0;
   let pendingParams=new Map(),events=[],pollTask=null,stopTask=null,stopping=false,lifecycle=0;
-  const getState=()=>({patch:copy(document.patch),document:copy(document.document),path:[...document.path],...helpView.getState(),native,revision,desiredRevision:desired,activeDocumentRevision:applied,status:{...status},observations:copy(observations),messageBoxes:copy(messageBoxes),printPopups:copy(printPopups),console:copy(consoleRecords),consoleDropped:Math.max(0,consoleDropped-consoleDroppedBaseline),notice,faulted:faulted||panicked,
+  const getState=()=>({patch:copy(document.patch),document:copy(document.document),path:[...document.path],...helpView.getState(),native,ownerId:'main',parameterPreviews:parameterGestures?.snapshots()??[],revision,desiredRevision:desired,activeDocumentRevision:applied,status:{...status},observations:copy(observations),messageBoxes:copy(messageBoxes),printPopups:copy(printPopups),console:copy(consoleRecords),consoleDropped:Math.max(0,consoleDropped-consoleDroppedBaseline),notice,faulted:faulted||panicked,
     busy:!!operation,applying:!!applyTask,ready:native&&applied===desired&&!status.fault&&!status.server_lost&&!faulted&&!panicked&&!operation&&!stopping&&!disposed,canUndo:!!document.past.length,canRedo:!!document.future.length});
   const emit=()=>onState(getState());
+  parameterGestures=createParameterGestures({native,invoke,scope:()=>({ownerLabel:'main',runtimeRevision:revision,sourceRevision:desired}),read:(id,key)=>treeNodes(document.document).find(node=>node.id===id)?.params[key],onCommit:(id,key,value)=>document.parameterRoot(id,key,value,{history:true}),onChange:emit});
   const report=error=>{notice=String(error?.message||error);emit();};
   const textPending=()=>inFlightText!==null||events.some(item=>item.kind==='text');
   const requireTextAdmission=()=>{if(textPending())fail('Wait for the message text edit to finish before changing the document.');};
   const resetRuntime=({replaceGraph=false}={})=>{observations={};messageBoxes={};if(replaceGraph)printPopups={};messageSerial=0;inFlightText=null;actionEpoch++;for(const item of events)item.resolve?.(false);events=[];};
   const execution=p=>{const flat=p.version===2?lowerHierarchy(p):p;return JSON.stringify({nodes:flat.nodes.map(({id,type,params})=>({id,type,params})),edges:flat.edges.map(({from,outlet,to,inlet})=>({from,outlet,to,inlet}))});};
   function structural(fn,force=false) {
+    parameterGestures.assertSettled();
     requireTextAdmission();
     const before=execution(document.document),result=fn();
     helpView.reconcile(document);
@@ -392,6 +421,7 @@ export function createCanvasController({invoke,patch=starterPatch(),onState=()=>
     })().finally(()=>{paramTask=null;emit();});return paramTask;
   }
   function parameter(id,key,value,{history=true,root=false}={}) {
+    parameterGestures.assertTarget(id,key);
     const node=(root?treeNodes(document.document):document.patch.nodes).find(n=>n.id===id);if(!node)fail('Missing object.');
     const write=(...args)=>root?document.parameterRoot(...args):document.parameter(...args);
     if(node.type==='message_box'&&key==='text'){
@@ -570,6 +600,7 @@ export function createCanvasController({invoke,patch=starterPatch(),onState=()=>
     }
   }
   async function dispose(){
+    await parameterGestures.settle();
     lifecycle++;resetRuntime();
     return exclusive(async()=>{
       if(disposed)return;
@@ -577,11 +608,14 @@ export function createCanvasController({invoke,patch=starterPatch(),onState=()=>
       disposed=true;
     });
   }
-  return {getState,prepare:ensureApply,startAudio,stopAudio,stop,panic,poll,flush,dispose,disposeDocument:dispose,event,tab,parameter,
+  return {beginParameterGesture:parameterGestures.begin,writeParameterGesture:parameterGestures.write,settleParameterGestures:parameterGestures.settle,getState,prepare:ensureApply,startAudio,stopAudio,stop,panic,poll,flush,dispose,disposeDocument:dispose,event,tab,parameter,
     deviceParameter:(id,key,value,options)=>parameter(id,key,value,{...options,root:true}),
     deviceEvent:(node,inlet,value)=>event(node,inlet,value,undefined,true),
     enter:id=>{document.enter(id);helpView.navigate(document);emit();},leave:depth=>{document.leave(depth);helpView.navigate(document);emit();},reveal:id=>{document.reveal(id);helpView.navigate(document);emit();},
     hostHelpBasic:()=>{if(disposed)return false;const hosted=helpView.hostBasic(document);if(hosted)emit();return hosted;},
+    setPresentation:value=>{requireTextAdmission();const changed=document.setPresentation(value);if(changed)emit();return changed;},
+    updatePresentationItem:(id,changes)=>{requireTextAdmission();const changed=document.updatePresentationItem(id,changes);if(changed)emit();return changed;},
+    duplicateMany:(ids,options)=>structural(()=>document.duplicateMany(ids,options)),
     clearConsole:()=>{consoleRecords=[];consoleDroppedBaseline=consoleDropped;consoleEpoch++;emit();},
     resize:(...args)=>{requireTextAdmission();const changed=document.resize(...args);if(changed)emit();return changed;},
     style:(...args)=>{requireTextAdmission();const changed=document.style(...args);if(changed)emit();return changed;},

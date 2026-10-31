@@ -1,0 +1,42 @@
+{
+  "rust": {
+    "log": "56-rust-all.log",
+    "exit": 0,
+    "passed": 252,
+    "ignored": 4
+  },
+  "ui": {
+    "log": "39-ui-green.log",
+    "exit": 0,
+    "passed": 79
+  },
+  "browser": {
+    "log": "36-browser-all.log",
+    "exit": 0,
+    "passed": 20
+  },
+  "browser_final": {
+    "log": "43-browser-final.log",
+    "exit": 0,
+    "passed": 2
+  },
+  "native": {
+    "log": "53-native-suite.log",
+    "exit": 0
+  },
+  "shipping": {
+    "log": "50-shipping-green.log",
+    "exit": 0
+  },
+  "native_v3": {
+    "log": "57-native-v3-coherent.log",
+    "status": "passed",
+    "exit": 0
+  },
+  "native_v4": {
+    "log": "/tmp/alive-workspaces-task2d-native/run3-final.log",
+    "exit": 0,
+    "source": "qualified-source-pins.json",
+    "build": "qualified-build-pins.json"
+  }
+}

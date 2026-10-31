@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "alive-windows",
+  "description": "Alive session and device editor windows receive session actions and close themselves.",
+  "windows": ["main", "alive-editor-*"],
+  "permissions": ["core:event:allow-listen", "core:event:allow-unlisten", "core:window:allow-close"]
+}

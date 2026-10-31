@@ -1,0 +1,27 @@
+[
+  [
+    "python3",
+    "apps/ultra/tests/alive_session_v3_fixtures.py",
+    "/tmp/alive-task13b-evidence/final-release-matrix-1/source/tests/saved_graphs.hpp"
+  ],
+  [
+    "c++",
+    "-std=c++17",
+    "-O2",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-pthread",
+    "/tmp/alive-task13b-evidence/final-release-matrix-1/source/tests/alive_session_capacity.cpp",
+    "/tmp/alive-task13b-evidence/final-release-matrix-1/source/src-tauri/native/backend.cpp",
+    "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/build/core/libultra_core_bundle.a",
+    "-ldl",
+    "-lrt",
+    "-o",
+    "/tmp/alive-task13b-evidence/final-release-matrix-1/probe"
+  ],
+  [
+    "/tmp/alive-task13b-evidence/final-release-matrix-1/probe",
+    "1200"
+  ]
+]

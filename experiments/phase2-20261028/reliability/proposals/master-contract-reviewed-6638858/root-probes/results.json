@@ -1,0 +1,62 @@
+[
+  {
+    "fixture": "legacy-v1.json",
+    "fixture_sha256": "821c8d8e32a44156487b10da8d6463fbb323b41112bda29730cd4bca6bfec25c",
+    "source_application_head": "b4b1a5c526830026321e3c3c02db24d7c9a76d3c",
+    "current_head": "c6df81f2d4fd6164930bca6847faf783b1949624",
+    "exit_code": 0,
+    "expected_later_probe_scope_refusal": null,
+    "read_and_prepare_witness_passed": true,
+    "elapsed_seconds": 3.938,
+    "binary_sha256": "609083363f0b60f986223c2a35097ae070f0dbba9c8ab279a2b5f0fbb45078e8",
+    "native_library_sha256": "5ac56cce5977a12f8efa477bfe9b705b8b478f5b8c765bbf858ea1719b92acde"
+  },
+  {
+    "fixture": "legacy-v2.json",
+    "fixture_sha256": "caa0094c6156dd2c9bc4c9f8fc83c4ad1031fda82855398d7bd25b386c34515f",
+    "source_application_head": "b4b1a5c526830026321e3c3c02db24d7c9a76d3c",
+    "current_head": "c6df81f2d4fd6164930bca6847faf783b1949624",
+    "exit_code": 0,
+    "expected_later_probe_scope_refusal": null,
+    "read_and_prepare_witness_passed": true,
+    "elapsed_seconds": 3.978,
+    "binary_sha256": "609083363f0b60f986223c2a35097ae070f0dbba9c8ab279a2b5f0fbb45078e8",
+    "native_library_sha256": "5ac56cce5977a12f8efa477bfe9b705b8b478f5b8c765bbf858ea1719b92acde"
+  },
+  {
+    "fixture": "legacy-v3.json",
+    "fixture_sha256": "6a3f5c76a219845f30aa55c3b15dbfa9c0654b964be0bec081751b92d7ee6bc9",
+    "source_application_head": "b4b1a5c526830026321e3c3c02db24d7c9a76d3c",
+    "current_head": "c6df81f2d4fd6164930bca6847faf783b1949624",
+    "exit_code": 1,
+    "expected_later_probe_scope_refusal": "Use identity-bearing v3 requests",
+    "read_and_prepare_witness_passed": true,
+    "elapsed_seconds": 0.108,
+    "binary_sha256": "609083363f0b60f986223c2a35097ae070f0dbba9c8ab279a2b5f0fbb45078e8",
+    "native_library_sha256": "5ac56cce5977a12f8efa477bfe9b705b8b478f5b8c765bbf858ea1719b92acde"
+  },
+  {
+    "fixture": "legacy-v4.json",
+    "fixture_sha256": "aacc566435ce42aec08271cb298b70139c8475a005ea07a150869d0d2b226f3e",
+    "source_application_head": "b4b1a5c526830026321e3c3c02db24d7c9a76d3c",
+    "current_head": "c6df81f2d4fd6164930bca6847faf783b1949624",
+    "exit_code": 1,
+    "expected_later_probe_scope_refusal": "This operation requires a legacy or v3 clip document",
+    "read_and_prepare_witness_passed": true,
+    "elapsed_seconds": 0.083,
+    "binary_sha256": "609083363f0b60f986223c2a35097ae070f0dbba9c8ab279a2b5f0fbb45078e8",
+    "native_library_sha256": "5ac56cce5977a12f8efa477bfe9b705b8b478f5b8c765bbf858ea1719b92acde"
+  },
+  {
+    "fixture": "v5-v3-eight.json",
+    "fixture_sha256": "27cb7c81b5c1ced67e1b30c18b75ba136cce936d1645748e34e4b08fbd8d6888",
+    "source_application_head": "b4b1a5c526830026321e3c3c02db24d7c9a76d3c",
+    "current_head": "c6df81f2d4fd6164930bca6847faf783b1949624",
+    "exit_code": 1,
+    "expected_later_probe_scope_refusal": "The session proof requires two saved device references",
+    "read_and_prepare_witness_passed": true,
+    "elapsed_seconds": 0.085,
+    "binary_sha256": "609083363f0b60f986223c2a35097ae070f0dbba9c8ab279a2b5f0fbb45078e8",
+    "native_library_sha256": "5ac56cce5977a12f8efa477bfe9b705b8b478f5b8c765bbf858ea1719b92acde"
+  }
+]

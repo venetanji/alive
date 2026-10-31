@@ -10,7 +10,7 @@ import time
 assert os.environ.get('ULTRA_TEST_PRIVATE_SESSION') == '1'
 assert os.environ.get('XAUTHORITY') and not os.environ.get('WAYLAND_DISPLAY')
 
-binary = Path('apps/ultra/src-tauri/target/release/ultra').resolve()
+binary = Path(os.environ.get('ULTRA_TEST_STARTUP_ULTRA_BINARY', 'apps/ultra/src-tauri/target/release/ultra')).resolve()
 output = Path(os.environ['ULTRA_TEST_OUTPUT_DIR'])
 assert (binary.parent / 'libultra_native.so').is_file(), 'Build the adjacent native library first'
 env = {**os.environ, 'LD_LIBRARY_PATH': os.pathsep.join(filter(None,
@@ -32,7 +32,7 @@ def run():
         blocked = directory / 'initial.ultra'
         os.mkfifo(blocked)
         receiver = directory / 'startup-receiver.ultra'
-        receiver.write_text(json.dumps({'version': 1, 'profile': 'ultra-canvas-v1',
+        receiver.write_text(json.dumps({'version': 1, 'profile': 'ultra-canvas-v1','presentation': None,
                                        'nodes': [], 'edges': []}) + '\n')
         probe = directory / 'secondary-exit-probe.so'
         subprocess.run(['cc', '-shared', '-fPIC', '-O2', '-Wall', '-Wextra', '-Werror',
@@ -72,7 +72,7 @@ def run():
 
             def ready_windows():
                 frames = {}
-                for root in Atspi.get_desktop(0):
+                for root in ui.desktop_apps():
                     try:
                         if root.get_process_id() != primary.pid:
                             continue

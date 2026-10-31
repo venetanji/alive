@@ -1,0 +1,30 @@
+{
+  "physical_audio": false,
+  "actions": [
+    {
+      "action": "loaded",
+      "monotonic": 67562.071448393,
+      "executable": "/tmp/alive-workspaces-task4-midi/app-final/alive",
+      "native_mappings": [
+        "7f5a11e00000-7f5a11e62000 r--p 00000000 00:37 72502                      /tmp/alive-workspaces-task4-midi/app-final/libultra_native.so",
+        "7f5a11e62000-7f5a11fd0000 r-xp 00062000 00:37 72502                      /tmp/alive-workspaces-task4-midi/app-final/libultra_native.so",
+        "7f5a11fd0000-7f5a12047000 r--p 001d0000 00:37 72502                      /tmp/alive-workspaces-task4-midi/app-final/libultra_native.so",
+        "7f5a12047000-7f5a12052000 r--p 00247000 00:37 72502                      /tmp/alive-workspaces-task4-midi/app-final/libultra_native.so",
+        "7f5a12052000-7f5a12328000 rw-p 00252000 00:37 72502                      /tmp/alive-workspaces-task4-midi/app-final/libultra_native.so"
+      ]
+    },
+    {
+      "action": "native create, note, place, move, right resize, fixed-end left trim",
+      "monotonic": 67572.941106808,
+      "placement_id": "placement-bbb3ce16ad3b2a99fe2747d4a1ce104b",
+      "video": "arrangement-interaction.mp4",
+      "video_scope": "UI interaction only; no audio or exact timing proof"
+    },
+    {
+      "action": "failure",
+      "monotonic": 67593.656786342,
+      "error": "AssertionError(\"Session status: unexpected value 'Measured workspace profile 1 refused the complete candidate: Complete MIDI envelope exceeds bounded preparation policy. (resource 2, observed 21, limit 18). Keep the current playable project, reduce simultaneous music or simplify chains. Profile 2 is not admitted.'\")"
+    }
+  ],
+  "kind": "Actual Tauri/WebKit with private software PipeWire"
+}

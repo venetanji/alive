@@ -1,0 +1,27 @@
+{
+  "products": {
+    "alive": {
+      "stage": "/tmp/alive-m1-final-staged-6t8eq1q0",
+      "executable": "/tmp/alive-m1-final-staged-6t8eq1q0/usr/bin/alive",
+      "session": "/tmp/alive-m1-final-staged-6t8eq1q0/usr/lib/Alive/alive-session/alive/examples/two-instruments.alive",
+      "artifact": "/home/venetanji/.codex/worktrees/edd5/alive/dist/alive/Alive-0.1.0-rc.1-x86_64-unknown-linux-gnu.deb",
+      "sha256": "124db7e25baa75a4da256df3d12c43be9146bf2026a18a4228c33c74c2828733",
+      "sizeBytes": 7788196,
+      "packagedNoticesVerified": true,
+      "nativeLibraryAndOfflineSessionProbePassed": true
+    },
+    "ultra": {
+      "stage": "/tmp/ultra-m1-final-staged-lghv9ou4",
+      "executable": "/tmp/ultra-m1-final-staged-lghv9ou4/usr/bin/ultra",
+      "session": "/tmp/ultra-m1-final-staged-lghv9ou4/usr/lib/Ultra Research/alive-session/alive/examples/two-instruments.alive",
+      "artifact": "/home/venetanji/.codex/worktrees/edd5/alive/dist/ultra/Ultra-0.1.0-rc.1-x86_64-unknown-linux-gnu.deb",
+      "sha256": "3ba3f44b515e2d9b53a6ecd8490225cea675629c429b27ad98f1ba97d986648a",
+      "sizeBytes": 9049048,
+      "packagedNoticesVerified": true,
+      "nativeLibraryAndOfflineSessionProbePassed": true
+    }
+  },
+  "coinstalledFileCollisions": [],
+  "scope": "actual extracted Linux DEBs; native library lookup and offline session rendering; GUI validation runs separately",
+  "appimage": "blocked by legacy linuxdeploy strip and GTK plugin against Arch gdk-pixbuf 2.44 glycin loader layout"
+}

@@ -6,13 +6,15 @@ subset. They contain no installed Max help content. Use File / Open and choose a
 operate its controls. Control examples work with audio stopped; browser preview
 only edits documents. Signal examples require Start audio to evaluate DSP, even
 when their only output is a console observation. Help & Examples in the app
-offers 138 original entries: help and an example for all 68 supported objects,
-plus the starter and subtractive instrument. This directory also provides standalone control, list and
+offers 144 original entries: help and an example for all 70 supported objects,
+plus the starter, subtractive instrument and two reusable effects. This directory also provides standalone control, list and
 signal-object examples.
 
 | File | Action And Expected Behavior |
 | --- | --- |
 | `subtractive.ultra` | Start audio and open Perform. Play the on-screen keyboard or focus it and use A W S E D F T G Y H U J K. Live ADSR/filter/level controls and Init/Soft/Pluck presets edit the authored graph. Lock the canvas and click its toggle for a deterministic chord score. New instance creates independent voices and controls. Save retains the interface, values and presets. |
+| `utility.ultra` | Stereo reusable effect with an authored `audio.in~`, shared `line~` gain, two `*~` objects and `dac~ 1 2`. Perform exposes Gain and Unity/Half/Silence presets. Host audio input is silent when opened alone; it is not a microphone input. |
+| `stereo-lowpass.ultra` | Stereo reusable effect with authored input/filter/output routes using the existing Faust lowpass kernel. Perform exposes Cutoff/Resonance and Init/Warm/Resonant presets. Opened alone, its host input is silent. Alive session-v1 rejects effects until chain hosting lands. |
 | `int.ultra` | Click `12.75`: the bottom floating-point box shows `12`. The `int` hot inlet truncates toward zero. |
 | `float.ultra` | Click `12.75`: the bottom box retains the fraction. |
 | `subtract.ultra` | Click `7` to print floating-point `5` for `7 - 2`. Click the cold `4` control, then bang: the result becomes `3`. |

@@ -1,0 +1,7 @@
+placement input=0 native=0 legacy=64 host_alignment=0
+placement input=1 native=1 legacy=65 host_alignment=0
+placement input=31 native=31 legacy=95 host_alignment=0
+placement input=63 native=63 legacy=127 host_alignment=0
+placement input=64 native=64 legacy=128 host_alignment=0
+placement input=127 native=127 legacy=191 host_alignment=0
+PASS: Alive exact frames, partitions, ownership, overload Stop, seek, loop, isolation, mono join, mixer and callback guard

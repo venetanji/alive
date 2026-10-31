@@ -1,0 +1,23 @@
+{
+  "base": "f69125cd289365424cd0661975291d8c12a96cac",
+  "candidate": "d5078669b923f481fc6b84ce3ab34819109199f6",
+  "root_parent": "58057f980afd3365e106433c7102cfc19450c130",
+  "canonical_patch_sha256": "30846a45d1a1fe9984bfb52da7c12b2e32ddc3d2280908cb5b7dfd7b5987e833",
+  "producer_patch_sha256": "30846a45d1a1fe9984bfb52da7c12b2e32ddc3d2280908cb5b7dfd7b5987e833",
+  "files": {
+    ".github/workflows/ultra-ci.yml": "573f3cde30c0bc530eb1b6a7795cd5e02954720d08e3cf1a471ae4810cccb304",
+    "apps/ultra/tests/check_alive_desktop.py": "95e8bdd902d5d7f2a13d86bd1e66ddd6a1677a28758b51c4127c338f76d39e8f",
+    "apps/ultra/tests/check_alive_master.py": "2fdf429c4107c1d429cacf5c9b006694a4f3766d5290489a225e61d7c564e017",
+    "apps/ultra/tests/check_canvas_desktop.sh": "27286408df62475c9eaa6cd20a1ca0fd4d27d7e4f8007cd227407c435541469b",
+    "apps/ultra/tests/check_document_startup.py": "277e4ce6b83443c47f88f902a76cf9b83dffca45ef4f752c4aa952162b5e8e3f",
+    "apps/ultra/tests/desktop_checkpoint.py": "7c9e1038366f5da621994c9ce425df013402d2305499ba00828694d78f503d04",
+    "apps/ultra/tests/desktop_launch_config.sh": "ea95f6b6560e10bed91ff1dff3d46648687d84149789a70219423e96e2009b3e",
+    "apps/ultra/tests/desktop_sustained.py": "5c8feb9707b2d86d61e3c856436ee4a1e6df0eb94f3650c325aa6a561793f478",
+    "apps/ultra/tests/test_desktop_checkpoint.py": "4c4e6485b271eadbf226acd4d2a5ddc5714202817eb5dd88576230aab9189bf9",
+    "apps/ultra/tests/test_desktop_launch_config.py": "1ac8bcd654761a2d5b769c3b595a670f841eef779df46fddb01f5760a18313d2",
+    "apps/ultra/tests/test_desktop_sustained_integration.py": "73ccc9ddade288f0e1970282c5d6b0cf32422aa68918c64c7e2507c1dcf8eeae"
+  },
+  "qualification": "All11files applied byte-identically after independent source/spec and quality scoped reviews. Pinned app artifacts not rebuilt; worker44focusedtests/3CIdiscoveries; root runtime tests held during nativepilot lease. Pilot06 and fullrun remain separate gates.",
+  "integration_commit": "85adb2e8f15bd820a93f9096ff190f699807c2c5",
+  "static_checks": "All Python AST and shell bash-n checks exit0; stageddiffcheckexit0; all11blobs matchd507."
+}

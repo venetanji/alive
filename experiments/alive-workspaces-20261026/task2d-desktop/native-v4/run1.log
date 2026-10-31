@@ -1,0 +1,54 @@
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Activating service name='org.freedesktop.portal.Desktop' requested by ':1.0' (uid=1000 pid=2065725 comm="/home/venetanji/.codex/worktrees/edd5/alive/apps/u")
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Activating service name='org.freedesktop.impl.portal.PermissionStore' requested by ':1.1' (uid=1000 pid=2065732 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.PermissionStore'
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Activating service name='org.freedesktop.portal.Documents' requested by ':1.1' (uid=1000 pid=2065732 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Successfully activated service 'org.freedesktop.portal.Documents'
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=2065732 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Activating service name='org.a11y.Bus' requested by ':1.4' (uid=1000 pid=2065754 comm="/usr/lib/xdg-desktop-portal-gtk")
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Successfully activated service 'org.a11y.Bus'
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=2065764 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=2065764 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.gtk'
+
+** (xdg-desktop-portal-gtk:2065754): WARNING **: 03:44:12.613: AT-SPI: Could not obtain desktop path or name
+
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=2065764 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+
+** (xdg-desktop-portal-gtk:2065754): WARNING **: 03:44:12.615: atk-bridge: GetRegisteredEvents returned message with unknown signature
+
+** (xdg-desktop-portal-gtk:2065754): WARNING **: 03:44:12.615: atk-bridge: get_device_events_reply: unknown signature
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2065732 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2065732 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2065732 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=2065732 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Successfully activated service 'org.freedesktop.portal.Desktop'
+PASS secondary file delivery during initialization preserves main and opens its own window
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Activating service name='ca.desrt.dconf' requested by ':1.113' (uid=1000 pid=2066347 comm="/tmp/alive-workspaces-task2d-desktop/app/alive /tm")
+dbus-daemon[2065674]: [session uid=1000 pid=2065674 pidfd=5] Successfully activated service 'ca.desrt.dconf'
+Traceback (most recent call last):
+  File "/tmp/alive-workspaces-task2d-native/journey.py", line 114, in <module>
+    run()
+    ~~~^^
+  File "/tmp/alive-workspaces-task2d-native/journey.py", line 84, in run
+    ui.click('Return Pulse to Arrangement');state('Pulse',lambda s:s.startswith('Arrangement: Playing') and 'applied' in s)
+                                            ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/alive-workspaces-task2d-native/journey.py", line 35, in state
+    result=alive.wait_value(track+' clip runtime',expected)
+  File "/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/tests/check_alive_desktop.py", line 94, in wait_value
+    raise AssertionError(f'{name}: unexpected value {current!r}')
+AssertionError: Pulse clip runtime: unexpected value 'Session: Session silence / request 5 applied'

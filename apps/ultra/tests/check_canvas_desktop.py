@@ -25,6 +25,11 @@ pid = int(os.environ['ULTRA_TEST_PID'])
 output = Path(os.environ['ULTRA_TEST_OUTPUT_DIR'])
 
 
+def desktop_apps():
+    desktop = Atspi.get_desktop(0)
+    return (desktop.get_child_at_index(i) for i in range(desktop.get_child_count()))
+
+
 def walk(a):
     if a is None:
         return
@@ -38,7 +43,7 @@ def walk(a):
 
 
 def find(name, text_content=False):
-    for root in Atspi.get_desktop(0):
+    for root in desktop_apps():
         try:
             if root.get_process_id() != pid:
                 continue
@@ -61,7 +66,7 @@ def wait_for(name, text_content=False):
         except (StopIteration, GLib.GError):
             time.sleep(.1)
     nodes = []
-    for root in Atspi.get_desktop(0):
+    for root in desktop_apps():
         if root.get_process_id() != pid:
             continue
         for item in walk(root):
@@ -76,7 +81,7 @@ def wait_for(name, text_content=False):
     raise AssertionError('Missing native control: ' + name)
 
 
-def click(name):
+def click(name, observer=None):
     for _ in range(30):
         control = wait_for(name)
         if control.get_state_set().contains(Atspi.StateType.ENABLED):
@@ -84,7 +89,7 @@ def click(name):
         time.sleep(.1)
     if not control.get_state_set().contains(Atspi.StateType.ENABLED):
         names = []
-        for root in Atspi.get_desktop(0):
+        for root in desktop_apps():
             if root.get_process_id() != pid:
                 continue
             for a in walk(root):
@@ -98,20 +103,28 @@ def click(name):
         image = Gdk.pixbuf_get_from_window(root, 0, 0, root.get_width(), root.get_height())
         image.savev(str(output/'native-action-failure.png'), 'png', [], [])
         raise AssertionError(name + ' is disabled')
+    if observer is not None:
+        observer('pre-focus', name, None, control)
     Atspi.Component.grab_focus(control)
     rect = Atspi.Component.get_extents(control, Atspi.CoordType.SCREEN)
     assert rect.width > 0 and rect.height > 0, name
+    if observer is not None:
+        observer('before', name, rect, control)
     assert t.XTestFakeMotionEvent(display, 0, rect.x+rect.width//2, rect.y+rect.height//2, 0)
     assert t.XTestFakeButtonEvent(display, 1, 1, 0)
     assert t.XTestFakeButtonEvent(display, 1, 0, 0)
     x.XFlush(display)
+    if observer is not None:
+        observer('queued', name, rect, control)
     time.sleep(.15)
+    if observer is not None:
+        observer('settled', name, rect, control)
 
 
 def text(name, value):
     target = wait_for(name)
     candidates = list(walk(target))
-    for root in Atspi.get_desktop(0):
+    for root in desktop_apps():
         try:
             if root.get_process_id() != pid:
                 continue
@@ -310,7 +323,7 @@ def native_revision_text():
 def message_box_scenario():
     # A graph reinstall would erase int 9's remembered77, while a stale face
     # would leave the saved template visible after silent runtime replacement.
-    fixture = {'version': 1, 'profile': 'ultra-canvas-v1', 'nodes': [
+    fixture = {'version': 1, 'profile': 'ultra-canvas-v1','presentation': None, 'nodes': [
         {'id': 1, 'type': 'message_box', 'x': 280, 'y': 235, 'params': {'text': 'saved $1 $2'}},
         {'id': 2, 'type': 'message', 'x': 70, 'y': 60, 'params': {'text': '6.25'}},
         {'id': 3, 'type': 'message', 'x': 230, 'y': 60, 'params': {'text': 'list 5 pear 2.25'}},
@@ -397,7 +410,7 @@ def message_box_scenario():
 
 
 def print_popup_scenario():
-    fixture = {'version': 1, 'profile': 'ultra-canvas-v1', 'nodes': [
+    fixture = {'version': 1, 'profile': 'ultra-canvas-v1','presentation': None, 'nodes': [
         {'id': 1, 'type': 'message', 'x': 70, 'y': 70, 'params': {'text': 'list 3.5 <native> 7'}},
         {'id': 2, 'type': 'message', 'x': 330, 'y': 70, 'params': {'text': 'popup 0'}},
         {'id': 3, 'type': 'bang', 'x': 560, 'y': 70, 'params': {}},
@@ -444,7 +457,7 @@ def print_popup_scenario():
             Gdk.pixbuf_get_from_window(root, 0, 0, root.get_width(), root.get_height()).savev(
                 str(output/'print-popup-first-poll.png'), 'png', [], [])
             nodes = []
-            for app in Atspi.get_desktop(0):
+            for app in desktop_apps():
                 if app.get_process_id() != pid:
                     continue
                 for item in walk(app):
@@ -534,6 +547,18 @@ def print_popup_scenario():
 
 
 
+def slider_help_targets(converted):
+    nodes, edges = converted['nodes'], converted['edges']
+    comments = [node for node in nodes if node['type'] == 'comment']
+    executable = [node for node in nodes if node['type'] != 'comment']
+    assert len(nodes) == 21 and len(comments) == 5 and len(executable) == 16 and len(edges) == 10
+    slider, number = executable[3], executable[8]
+    assert slider['type'] == 'slider' and number['type'] == 'number_int'
+    assert any(edge['from'] == slider['id'] and edge['outlet'] == 0 and
+               edge['to'] == number['id'] and edge['inlet'] == 0 for edge in edges)
+    return slider['id'], number['id']
+
+
 def run():
     try:
         wait_for('Start audio')
@@ -560,17 +585,18 @@ def run():
         keys('Control_L', 'e')
 
         # Real X input checks WebKit pointer capture and the native apply boundary.
-        wiring = {'version': 1, 'profile': 'ultra-canvas-v1', 'nodes': [
-            {'id': 1, 'type': 'add', 'x': 80, 'y': 80, 'params': {'rhs': 0}},
+        wiring = {'version': 1, 'profile': 'ultra-canvas-v1','presentation': None, 'nodes': [
+            {'id': 1, 'type': 'add', 'x': 80, 'y': 80, 'params': {'rhs': 0, 'numericmode': 0}},
             {'id': 2, 'type': 'number', 'x': 300, 'y': 240, 'params': {'value': 0}},
         ], 'edges': []}
         import_json()
         text('Patch JSON', json.dumps(wiring))
         click('Import JSON')
-        source = '+ 1, Outlet 0: Sum (control)'
+        source = '+ 1, Outlet 0: sum (control)'
         target = 'number.legacy 2, Inlet 0: Value (control)'
         drag_port(source, target, y_offset=9)
         connected = export()
+        print('WIRING-NODES', json.dumps({'imported': wiring['nodes'], 'after_drag': connected['nodes']}), flush=True)
         assert connected['edges'] == [{'from': 1, 'outlet': 0, 'to': 2, 'inlet': 0}], 'Native cord drag failed'
         assert connected['nodes'] == wiring['nodes'], 'Wiring moved the objects'
         keys('Control_L', 'z')
@@ -583,7 +609,7 @@ def run():
         assert export() == connected, 'Native click-to-connect regressed'
         (output/'wiring.ultra.json').write_text(json.dumps(connected, indent=2)+'\n')
 
-        controls = {'version': 1, 'profile': 'ultra-canvas-v1', 'nodes': [
+        controls = {'version': 1, 'profile': 'ultra-canvas-v1','presentation': None, 'nodes': [
             {'id': 1, 'type': 'toggle', 'x': 80, 'y': 60, 'params': {}},
             {'id': 2, 'type': 'bang', 'x': 160, 'y': 60, 'params': {}},
             {'id': 3, 'type': 'number', 'x': 80, 'y': 220, 'params': {}},
@@ -675,17 +701,25 @@ def run():
             click('Allow partial import with the listed omissions and behavior differences')
             click('Import supported portion')
             converted = export()
-            assert len(converted['nodes']) == 16 and len(converted['edges']) == 10
+            comment_count = sum(node['type'] == 'comment' for node in converted['nodes'])
+            print('SLIDER-HELP-COUNTS', json.dumps({'nodes': len(converted['nodes']),
+                  'comments': comment_count, 'executable': len(converted['nodes']) - comment_count,
+                  'edges': len(converted['edges'])}), flush=True)
+            slider_id, number_id = slider_help_targets(converted)
             Atspi.Component.grab_focus(wait_for('Editable patch canvas'))
             keys('Control_L', 'e')
-            drag_control('slider value, object 4', (.1, .5), (.75, .5))
-            first = numeric_value('number value, object 9')
+            drag_control(f'slider value, object {slider_id}', (.1, .5), (.75, .5))
+            first = numeric_value(f'number value, object {number_id}')
             assert 80 < first < 110, 'Imported installed slider branch did not run through Tauri'
-            drag_control('slider value, object 4', (.75, .5), (.2, .5))
-            second = numeric_value('number value, object 9')
+            drag_control(f'slider value, object {slider_id}', (.75, .5), (.2, .5))
+            second = numeric_value(f'number value, object {number_id}')
             assert 15 < second < 40, 'Imported installed slider branch did not update'
             imported_help = {'tested': True, 'source': str(max_help), 'partial': True,
-                             'selected_tab': 'basic', 'imported_nodes': 16, 'imported_edges': 10,
+                             'selected_tab': 'basic', 'imported_nodes': len(converted['nodes']),
+                             'imported_comments': comment_count,
+                             'imported_executable_nodes': len(converted['nodes']) - comment_count,
+                             'imported_edges': len(converted['edges']),
+                             'slider_id': slider_id, 'number_id': number_id,
                              'native_downstream_values': [first, second],
                              'whole_help_executed': False}
             (output/'imported-slider.ultra.json').write_text(json.dumps(converted, indent=2)+'\n')
@@ -745,7 +779,7 @@ def run():
             time.sleep(.1)
         if not settings:
             names = []
-            for root in Atspi.get_desktop(0):
+            for root in desktop_apps():
                 try:
                     if root.get_process_id() != pid: continue
                     for a in walk(root):

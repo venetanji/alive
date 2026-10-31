@@ -1,0 +1,1020 @@
+{
+  "status": "pass",
+  "qualification": "raw distributions only; not final committed-source or native-runtime acceptance",
+  "manifest_sha256": "4a05d0b07f5b7497186dc21166de2b81b99ad3ba3a23c97133053e04469a860e",
+  "probe_log_sha256": "03bd5ae02a9e6a2ea2929f1046356e71550ef9d7695ee9004fdb01fffc5ce7d7",
+  "verified_files": 60,
+  "cases": 56,
+  "samples": 67200,
+  "results": [
+    {
+      "case": "scene_running_64",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 64,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 64,
+        "count": 1200,
+        "p50_ns": 225637,
+        "p99_ns": 247018,
+        "p999_ns": 294007,
+        "max_ns": 356485,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 303475
+    },
+    {
+      "case": "scene_stopped_64",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 64,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 64,
+        "count": 1200,
+        "p50_ns": 73860,
+        "p99_ns": 84390,
+        "p999_ns": 94670,
+        "max_ns": 105059,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 96132
+    },
+    {
+      "case": "scene_seek_accepted",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 64,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 64,
+        "count": 1200,
+        "p50_ns": 271404,
+        "p99_ns": 302683,
+        "p999_ns": 313764,
+        "max_ns": 320156,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 316660
+    },
+    {
+      "case": "scene_cheap_refusal",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 64,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 64,
+        "count": 1200,
+        "p50_ns": 222391,
+        "p99_ns": 239614,
+        "p999_ns": 265663,
+        "max_ns": 372295,
+        "work_refused": 1200
+      },
+      "nearest_rank_p999_ns": 274750
+    },
+    {
+      "case": "scene_stop_full_queue",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 64,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 64,
+        "count": 1200,
+        "p50_ns": 106833,
+        "p99_ns": 131930,
+        "p999_ns": 147429,
+        "max_ns": 168609,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 159162
+    },
+    {
+      "case": "scene_running_64",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 256,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 256,
+        "count": 1200,
+        "p50_ns": 869867,
+        "p99_ns": 908159,
+        "p999_ns": 948767,
+        "max_ns": 1065157,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 963685
+    },
+    {
+      "case": "scene_stopped_64",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 256,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 256,
+        "count": 1200,
+        "p50_ns": 266956,
+        "p99_ns": 281653,
+        "p999_ns": 329695,
+        "max_ns": 430586,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 329875
+    },
+    {
+      "case": "scene_seek_accepted",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 256,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 256,
+        "count": 1200,
+        "p50_ns": 922206,
+        "p99_ns": 972291,
+        "p999_ns": 1181166,
+        "max_ns": 1450306,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 1292106
+    },
+    {
+      "case": "scene_cheap_refusal",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 256,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 256,
+        "count": 1200,
+        "p50_ns": 874997,
+        "p99_ns": 906797,
+        "p999_ns": 1057832,
+        "max_ns": 1201164,
+        "work_refused": 1200
+      },
+      "nearest_rank_p999_ns": 1172680
+    },
+    {
+      "case": "scene_stop_full_queue",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 256,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 256,
+        "count": 1200,
+        "p50_ns": 300389,
+        "p99_ns": 342769,
+        "p999_ns": 383246,
+        "max_ns": 395650,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 384709
+    },
+    {
+      "case": "scene_running_64",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 512,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 512,
+        "count": 1200,
+        "p50_ns": 1699688,
+        "p99_ns": 1734643,
+        "p999_ns": 1767487,
+        "max_ns": 1774159,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 1770782
+    },
+    {
+      "case": "scene_stopped_64",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 512,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 512,
+        "count": 1200,
+        "p50_ns": 526446,
+        "p99_ns": 543889,
+        "p999_ns": 548358,
+        "max_ns": 549390,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 548468
+    },
+    {
+      "case": "scene_seek_accepted",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 512,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 512,
+        "count": 1200,
+        "p50_ns": 1764571,
+        "p99_ns": 1817460,
+        "p999_ns": 1960832,
+        "max_ns": 2464135,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 2042156
+    },
+    {
+      "case": "scene_cheap_refusal",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 512,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 512,
+        "count": 1200,
+        "p50_ns": 1714706,
+        "p99_ns": 1739163,
+        "p999_ns": 1751706,
+        "max_ns": 1762336,
+        "work_refused": 1200
+      },
+      "nearest_rank_p999_ns": 1754701
+    },
+    {
+      "case": "scene_stop_full_queue",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 512,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 512,
+        "count": 1200,
+        "p50_ns": 561784,
+        "p99_ns": 591389,
+        "p999_ns": 652435,
+        "max_ns": 1028587,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 942213
+    },
+    {
+      "case": "scene_running_64",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 1024,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 1024,
+        "count": 1200,
+        "p50_ns": 3429410,
+        "p99_ns": 3519903,
+        "p999_ns": 4092305,
+        "max_ns": 5803394,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 4448850
+    },
+    {
+      "case": "scene_stopped_64",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 1024,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 1024,
+        "count": 1200,
+        "p50_ns": 1042423,
+        "p99_ns": 1092207,
+        "p999_ns": 1237332,
+        "max_ns": 1522982,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 1363370
+    },
+    {
+      "case": "scene_seek_accepted",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 1024,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 1024,
+        "count": 1200,
+        "p50_ns": 3466551,
+        "p99_ns": 3541814,
+        "p999_ns": 3746490,
+        "max_ns": 3869102,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 3787929
+    },
+    {
+      "case": "scene_cheap_refusal",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 1024,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 1024,
+        "count": 1200,
+        "p50_ns": 3428569,
+        "p99_ns": 3479794,
+        "p999_ns": 3703138,
+        "max_ns": 3916622,
+        "work_refused": 1200
+      },
+      "nearest_rank_p999_ns": 3723627
+    },
+    {
+      "case": "scene_stop_full_queue",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 1024,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 1024,
+        "count": 1200,
+        "p50_ns": 1077449,
+        "p99_ns": 1110601,
+        "p999_ns": 1130369,
+        "max_ns": 1288889,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 1205361
+    },
+    {
+      "case": "scene_dense_seek",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 256,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 256,
+        "count": 1200,
+        "p50_ns": 788481,
+        "p99_ns": 825232,
+        "p999_ns": 852002,
+        "max_ns": 868844,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 852393
+    },
+    {
+      "case": "scene_dense_seek",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 512,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 512,
+        "count": 1200,
+        "p50_ns": 1534052,
+        "p99_ns": 1792070,
+        "p999_ns": 2768087,
+        "max_ns": 3019032,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 2920576
+    },
+    {
+      "case": "scene_dense_seek",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 1024,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 1024,
+        "count": 1200,
+        "p50_ns": 2986510,
+        "p99_ns": 3235792,
+        "p999_ns": 4351252,
+        "max_ns": 4798849,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 4705713
+    },
+    {
+      "case": "scene_combined_policy_work",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 64,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 64,
+        "count": 1200,
+        "p50_ns": 994431,
+        "p99_ns": 1134086,
+        "p999_ns": 1240687,
+        "max_ns": 1372657,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 1315178
+    },
+    {
+      "case": "scene_combined_policy_work",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 128,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 128,
+        "count": 1200,
+        "p50_ns": 1207183,
+        "p99_ns": 1390210,
+        "p999_ns": 1491502,
+        "max_ns": 1955099,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 1501820
+    },
+    {
+      "case": "scene_combined_policy_work",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 256,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 256,
+        "count": 1200,
+        "p50_ns": 1628841,
+        "p99_ns": 1799664,
+        "p999_ns": 1822026,
+        "max_ns": 1838708,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 1836855
+    },
+    {
+      "case": "scene_combined_policy_work",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 512,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 512,
+        "count": 1200,
+        "p50_ns": 2489789,
+        "p99_ns": 2704185,
+        "p999_ns": 3282398,
+        "max_ns": 3628122,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 3292448
+    },
+    {
+      "case": "scene_combined_policy_work",
+      "tracks": 2,
+      "devices": 6,
+      "frames": 1024,
+      "printed": {
+        "tracks": 2,
+        "devices": 6,
+        "frames": 1024,
+        "count": 1200,
+        "p50_ns": 4188142,
+        "p99_ns": 4368582,
+        "p999_ns": 4687786,
+        "max_ns": 4989236,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 4812302
+    },
+    {
+      "case": "scene_running_64",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 64,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 64,
+        "count": 1200,
+        "p50_ns": 612057,
+        "p99_ns": 716254,
+        "p999_ns": 766690,
+        "max_ns": 802578,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 773644
+    },
+    {
+      "case": "scene_stopped_64",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 64,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 64,
+        "count": 1200,
+        "p50_ns": 167487,
+        "p99_ns": 364209,
+        "p999_ns": 380810,
+        "max_ns": 385590,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 382073
+    },
+    {
+      "case": "scene_seek_accepted",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 64,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 64,
+        "count": 1200,
+        "p50_ns": 721494,
+        "p99_ns": 864585,
+        "p999_ns": 940268,
+        "max_ns": 1397283,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 1026461
+    },
+    {
+      "case": "scene_cheap_refusal",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 64,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 64,
+        "count": 1200,
+        "p50_ns": 611246,
+        "p99_ns": 715984,
+        "p999_ns": 773342,
+        "max_ns": 840629,
+        "work_refused": 1200
+      },
+      "nearest_rank_p999_ns": 777360
+    },
+    {
+      "case": "scene_stop_full_queue",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 64,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 64,
+        "count": 1200,
+        "p50_ns": 253349,
+        "p99_ns": 374368,
+        "p999_ns": 500596,
+        "max_ns": 547214,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 536324
+    },
+    {
+      "case": "scene_running_64",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 256,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 256,
+        "count": 1200,
+        "p50_ns": 2403123,
+        "p99_ns": 2584947,
+        "p999_ns": 2630253,
+        "max_ns": 3051018,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 2665139
+    },
+    {
+      "case": "scene_stopped_64",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 256,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 256,
+        "count": 1200,
+        "p50_ns": 625733,
+        "p99_ns": 652633,
+        "p999_ns": 661340,
+        "max_ns": 669496,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 667492
+    },
+    {
+      "case": "scene_seek_accepted",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 256,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 256,
+        "count": 1200,
+        "p50_ns": 2516187,
+        "p99_ns": 2733978,
+        "p999_ns": 2932955,
+        "max_ns": 3090513,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 2965957
+    },
+    {
+      "case": "scene_cheap_refusal",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 256,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 256,
+        "count": 1200,
+        "p50_ns": 2393915,
+        "p99_ns": 2586249,
+        "p999_ns": 2641563,
+        "max_ns": 2881828,
+        "work_refused": 1200
+      },
+      "nearest_rank_p999_ns": 2820101
+    },
+    {
+      "case": "scene_stop_full_queue",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 256,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 256,
+        "count": 1200,
+        "p50_ns": 709240,
+        "p99_ns": 767411,
+        "p999_ns": 796416,
+        "max_ns": 1451934,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 830409
+    },
+    {
+      "case": "scene_running_64",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 512,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 512,
+        "count": 1200,
+        "p50_ns": 4781106,
+        "p99_ns": 5038121,
+        "p999_ns": 5183025,
+        "max_ns": 5188316,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 5185601
+    },
+    {
+      "case": "scene_stopped_64",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 512,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 512,
+        "count": 1200,
+        "p50_ns": 1237228,
+        "p99_ns": 1276733,
+        "p999_ns": 1294476,
+        "max_ns": 1300689,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 1297863
+    },
+    {
+      "case": "scene_seek_accepted",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 512,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 512,
+        "count": 1200,
+        "p50_ns": 4916821,
+        "p99_ns": 5146787,
+        "p999_ns": 5399413,
+        "max_ns": 5634929,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 5437375
+    },
+    {
+      "case": "scene_cheap_refusal",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 512,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 512,
+        "count": 1200,
+        "p50_ns": 4801543,
+        "p99_ns": 5054130,
+        "p999_ns": 5459315,
+        "max_ns": 6406063,
+        "work_refused": 1200
+      },
+      "nearest_rank_p999_ns": 5720528
+    },
+    {
+      "case": "scene_stop_full_queue",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 512,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 512,
+        "count": 1200,
+        "p50_ns": 1320465,
+        "p99_ns": 1409624,
+        "p999_ns": 1504382,
+        "max_ns": 1640840,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 1511356
+    },
+    {
+      "case": "scene_running_64",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 1024,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 1024,
+        "count": 1200,
+        "p50_ns": 9634762,
+        "p99_ns": 9955466,
+        "p999_ns": 10084330,
+        "max_ns": 10209026,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 10111632
+    },
+    {
+      "case": "scene_stopped_64",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 1024,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 1024,
+        "count": 1200,
+        "p50_ns": 2458214,
+        "p99_ns": 2506355,
+        "p999_ns": 2540098,
+        "max_ns": 2564274,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 2547973
+    },
+    {
+      "case": "scene_seek_accepted",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 1024,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 1024,
+        "count": 1200,
+        "p50_ns": 9702327,
+        "p99_ns": 10053398,
+        "p999_ns": 10270078,
+        "max_ns": 10619628,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 10406636
+    },
+    {
+      "case": "scene_cheap_refusal",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 1024,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 1024,
+        "count": 1200,
+        "p50_ns": 9592055,
+        "p99_ns": 9874568,
+        "p999_ns": 9968217,
+        "max_ns": 10021116,
+        "work_refused": 1200
+      },
+      "nearest_rank_p999_ns": 9972523
+    },
+    {
+      "case": "scene_stop_full_queue",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 1024,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 1024,
+        "count": 1200,
+        "p50_ns": 2540727,
+        "p99_ns": 2622922,
+        "p999_ns": 2652870,
+        "max_ns": 2847728,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 2698335
+    },
+    {
+      "case": "scene_dense_seek",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 256,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 256,
+        "count": 1200,
+        "p50_ns": 2010205,
+        "p99_ns": 2142977,
+        "p999_ns": 2174305,
+        "max_ns": 2247674,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 2188051
+    },
+    {
+      "case": "scene_dense_seek",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 512,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 512,
+        "count": 1200,
+        "p50_ns": 3909561,
+        "p99_ns": 4066087,
+        "p999_ns": 4120440,
+        "max_ns": 4876516,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 4789834
+    },
+    {
+      "case": "scene_dense_seek",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 1024,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 1024,
+        "count": 1200,
+        "p50_ns": 7705498,
+        "p99_ns": 7907179,
+        "p999_ns": 8015654,
+        "max_ns": 15419031,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 8056892
+    },
+    {
+      "case": "scene_combined_policy_work",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 64,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 64,
+        "count": 1200,
+        "p50_ns": 2656955,
+        "p99_ns": 3448440,
+        "p999_ns": 3639671,
+        "max_ns": 4310186,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 3783974
+    },
+    {
+      "case": "scene_combined_policy_work",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 128,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 128,
+        "count": 1200,
+        "p50_ns": 3258831,
+        "p99_ns": 3860166,
+        "p999_ns": 4003287,
+        "max_ns": 4540039,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 4005692
+    },
+    {
+      "case": "scene_combined_policy_work",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 256,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 256,
+        "count": 1200,
+        "p50_ns": 4497298,
+        "p99_ns": 5354666,
+        "p999_ns": 5606953,
+        "max_ns": 5912639,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 5697854
+    },
+    {
+      "case": "scene_combined_policy_work",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 512,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 512,
+        "count": 1200,
+        "p50_ns": 6949646,
+        "p99_ns": 7973969,
+        "p999_ns": 8477349,
+        "max_ns": 9065259,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 8804767
+    },
+    {
+      "case": "scene_combined_policy_work",
+      "tracks": 8,
+      "devices": 16,
+      "frames": 1024,
+      "printed": {
+        "tracks": 8,
+        "devices": 16,
+        "frames": 1024,
+        "count": 1200,
+        "p50_ns": 11843441,
+        "p99_ns": 12648498,
+        "p999_ns": 14591876,
+        "max_ns": 16742724,
+        "work_refused": 0
+      },
+      "nearest_rank_p999_ns": 15514588
+    }
+  ],
+  "parent_initial_probe": "Initial ad-hoc check wrongly interpreted printed quantiles as nearest rank and rejected p50; corrected to inspect actual probe indices. Raw input unchanged."
+}

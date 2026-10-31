@@ -1,0 +1,311 @@
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/edd5/alive/apps/ultra/src-tauri)
+error[E0425]: cannot find type `ProjectV4` in this scope
+  --> src/session/workspaces_tests.rs:19:17
+   |
+19 | fn project() -> ProjectV4 { decode(&wire().to_string()).unwrap() }
+   |                 ^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `decode` in this scope
+  --> src/session/workspaces_tests.rs:19:29
+   |
+19 | fn project() -> ProjectV4 { decode(&wire().to_string()).unwrap() }
+   |                             ^^^^^^ not found in this scope
+   |
+help: consider importing this function
+   |
+ 1 + use crate::session::persistence::decode;
+   |
+
+error[E0425]: cannot find type `ProjectV4` in this scope
+  --> src/session/workspaces_tests.rs:20:13
+   |
+20 | fn edit(p: &ProjectV4, value: Value) -> Result<EditResultV4, String> {
+   |             ^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find type `EditResultV4` in this scope
+  --> src/session/workspaces_tests.rs:20:48
+   |
+20 | fn edit(p: &ProjectV4, value: Value) -> Result<EditResultV4, String> {
+   |                                                ^^^^^^^^^^^^ not found in this scope
+   |
+help: you might be missing a type parameter
+   |
+20 | fn edit<EditResultV4>(p: &ProjectV4, value: Value) -> Result<EditResultV4, String> {
+   |        ++++++++++++++
+
+error[E0425]: cannot find function `decode` in this scope
+  --> src/session/workspaces_tests.rs:39:17
+   |
+39 |         let p = decode(&v.to_string()).unwrap();
+   |                 ^^^^^^ not found in this scope
+   |
+help: consider importing this function
+   |
+ 1 + use crate::session::persistence::decode;
+   |
+
+error[E0425]: cannot find function `decode` in this scope
+  --> src/session/workspaces_tests.rs:40:20
+   |
+40 |         assert_eq!(decode(&encode(&p).unwrap()).unwrap(), p);
+   |                    ^^^^^^ not found in this scope
+   |
+help: consider importing this function
+   |
+ 1 + use crate::session::persistence::decode;
+   |
+
+error[E0425]: cannot find function `decode` in this scope
+  --> src/session/workspaces_tests.rs:50:17
+   |
+50 |         assert!(decode(&bad).unwrap_err().contains("Duplicate"));
+   |                 ^^^^^^ not found in this scope
+   |
+help: consider importing this function
+   |
+ 1 + use crate::session::persistence::decode;
+   |
+
+error[E0425]: cannot find function `decode` in this scope
+  --> src/session/workspaces_tests.rs:55:17
+   |
+55 |         assert!(decode(&v.to_string()).is_err(), "{pointer}");
+   |                 ^^^^^^ not found in this scope
+   |
+help: consider importing this function
+   |
+ 1 + use crate::session::persistence::decode;
+   |
+
+error[E0425]: cannot find function `decode` in this scope
+  --> src/session/workspaces_tests.rs:58:13
+   |
+58 |     assert!(decode(&v.to_string()).is_err());
+   |             ^^^^^^ not found in this scope
+   |
+help: consider importing this function
+   |
+ 1 + use crate::session::persistence::decode;
+   |
+
+error[E0425]: cannot find function `decode` in this scope
+  --> src/session/workspaces_tests.rs:61:17
+   |
+61 |         assert!(decode(&v.to_string()).is_err());
+   |                 ^^^^^^ not found in this scope
+   |
+help: consider importing this function
+   |
+ 1 + use crate::session::persistence::decode;
+   |
+
+error[E0425]: cannot find function `decode` in this scope
+  --> src/session/workspaces_tests.rs:64:13
+   |
+64 |     assert!(decode(&v.to_string()).is_err());
+   |             ^^^^^^ not found in this scope
+   |
+help: consider importing this function
+   |
+ 1 + use crate::session::persistence::decode;
+   |
+
+error[E0425]: cannot find function `decode` in this scope
+  --> src/session/workspaces_tests.rs:87:17
+   |
+87 |         assert!(decode(&v.to_string()).is_err(), "{pointer}");
+   |                 ^^^^^^ not found in this scope
+   |
+help: consider importing this function
+   |
+ 1 + use crate::session::persistence::decode;
+   |
+
+error[E0425]: cannot find function `decode` in this scope
+  --> src/session/workspaces_tests.rs:90:13
+   |
+90 |     assert!(decode(&v.to_string()).is_err());
+   |             ^^^^^^ not found in this scope
+   |
+help: consider importing this function
+   |
+ 1 + use crate::session::persistence::decode;
+   |
+
+error[E0425]: cannot find function `decode` in this scope
+  --> src/session/workspaces_tests.rs:92:13
+   |
+92 |     assert!(decode(&v.to_string()).is_err());
+   |             ^^^^^^ not found in this scope
+   |
+help: consider importing this function
+   |
+ 1 + use crate::session::persistence::decode;
+   |
+
+error[E0425]: cannot find function `decode` in this scope
+   --> src/session/workspaces_tests.rs:102:17
+    |
+102 |         assert!(decode(&v.to_string()).is_err(),"{pointer}");
+    |                 ^^^^^^ not found in this scope
+    |
+help: consider importing this function
+    |
+  1 + use crate::session::persistence::decode;
+    |
+
+error[E0425]: cannot find function `decode` in this scope
+   --> src/session/workspaces_tests.rs:115:13
+    |
+115 |     assert!(decode(&v.to_string()).unwrap_err().contains("placement"));
+    |             ^^^^^^ not found in this scope
+    |
+help: consider importing this function
+    |
+  1 + use crate::session::persistence::decode;
+    |
+
+error[E0425]: cannot find function `decode` in this scope
+   --> src/session/workspaces_tests.rs:116:55
+    |
+116 |     v["placements"][0]["duration"]=json!(3.); assert!(decode(&v.to_string()).is_ok());
+    |                                                       ^^^^^^ not found in this scope
+    |
+help: consider importing this function
+    |
+  1 + use crate::session::persistence::decode;
+    |
+
+error[E0425]: cannot find function `decode` in this scope
+   --> src/session/workspaces_tests.rs:118:13
+    |
+118 |     assert!(decode(&v.to_string()).is_ok());
+    |             ^^^^^^ not found in this scope
+    |
+help: consider importing this function
+    |
+  1 + use crate::session::persistence::decode;
+    |
+
+error[E0425]: cannot find function `decode` in this scope
+   --> src/session/workspaces_tests.rs:120:13
+    |
+120 |     assert!(decode(&v.to_string()).is_err());
+    |             ^^^^^^ not found in this scope
+    |
+help: consider importing this function
+    |
+  1 + use crate::session::persistence::decode;
+    |
+
+error[E0425]: cannot find function `decode` in this scope
+   --> src/session/workspaces_tests.rs:128:16
+    |
+128 |     assert_eq!(decode(&v.to_string()).unwrap().placements[0].duration,1. / 24000.);
+    |                ^^^^^^ not found in this scope
+    |
+help: consider importing this function
+    |
+  1 + use crate::session::persistence::decode;
+    |
+
+error[E0425]: cannot find function `decode` in this scope
+   --> src/session/workspaces_tests.rs:133:11
+    |
+133 |     let p=decode(&audio_wire().to_string()).unwrap(); let before=p.clone();
+    |           ^^^^^^ not found in this scope
+    |
+help: consider importing this function
+    |
+  1 + use crate::session::persistence::decode;
+    |
+
+error[E0425]: cannot find function `decode` in this scope
+   --> src/session/workspaces_tests.rs:168:16
+    |
+168 |     assert_eq!(decode(&encode(&p).unwrap()).unwrap(),p);
+    |                ^^^^^^ not found in this scope
+    |
+help: consider importing this function
+    |
+  1 + use crate::session::persistence::decode;
+    |
+
+warning: unused import: `super::*`
+ --> src/session/workspaces_tests.rs:1:5
+  |
+1 | use super::*;
+  |     ^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error[E0425]: cannot find function `decode_edit` in this scope
+  --> src/session/workspaces_tests.rs:21:21
+   |
+21 |     let operation = decode_edit(&value.to_string())?;
+   |                     ^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `apply_edit_with` in this scope
+  --> src/session/workspaces_tests.rs:23:5
+   |
+23 |     apply_edit_with(p, operation, &HashSet::new(), |prefix| { next += 1; format!("{prefix}-fresh-{next}") })
+   |     ^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `encode` in this scope
+  --> src/session/workspaces_tests.rs:40:28
+   |
+40 |         assert_eq!(decode(&encode(&p).unwrap()).unwrap(), p);
+   |                            ^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `decode_edit` in this scope
+  --> src/session/workspaces_tests.rs:73:17
+   |
+73 |         assert!(decode_edit(s).is_err());
+   |                 ^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `frame_at` in this scope
+   --> src/session/workspaces_tests.rs:107:13
+    |
+107 |     assert!(frame_at(f64::INFINITY,120.).is_err());
+    |             ^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `frame_at` in this scope
+   --> src/session/workspaces_tests.rs:108:13
+    |
+108 |     assert!(frame_at(1e308,120.).is_err());
+    |             ^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `frame_at` in this scope
+   --> src/session/workspaces_tests.rs:109:16
+    |
+109 |     assert_eq!(frame_at(0.5 / 24000.,120.).unwrap(),1);
+    |                ^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `decode_edit` in this scope
+   --> src/session/workspaces_tests.rs:164:30
+    |
+164 |     let r=apply_edit_with(&p,decode_edit(r#"{"kind":"noteCreate","sourceId":"source","beat":2,"duration":1,"pitch":61,"velocity":90...
+    |                              ^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `apply_edit_with` in this scope
+   --> src/session/workspaces_tests.rs:164:11
+    |
+164 |     let r=apply_edit_with(&p,decode_edit(r#"{"kind":"noteCreate","sourceId":"source","beat":2,"duration":1,"pitch":61,"velocity":90...
+    |           ^^^^^^^^^^^^^^^ not found in this scope
+
+error[E0425]: cannot find function `encode` in this scope
+   --> src/session/workspaces_tests.rs:168:24
+    |
+168 |     assert_eq!(decode(&encode(&p).unwrap()).unwrap(),p);
+    |                        ^^^^^^ not found in this scope
+
+error[E0433]: cannot find type `SourceV4` in this scope
+   --> src/session/workspaces_tests.rs:152:9
+    |
+152 |     let SourceV4::Midi { notes,.. }=&r.project.sources[0] else {panic!()}; assert_eq!(notes[0].pitch,60);
+    |         ^^^^^^^^ use of undeclared type `SourceV4`
+
+Some errors have detailed explanations: E0425, E0433.
+For more information about an error, try `rustc --explain E0425`.
+warning: `ultra` (lib test) generated 1 warning
+error: could not compile `ultra` (lib test) due to 33 previous errors; 1 warning emitted

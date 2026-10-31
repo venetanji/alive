@@ -3,7 +3,7 @@ import {test} from 'node:test';
 import {readFileSync} from 'node:fs';
 import {REGISTRY, CanvasDocument, createCanvasController, makeNode, parsePatch, serializePatch, validatePatch} from './canvas-model.mjs';
 
-const patch = (type='number', style) => ({version:['comment','patcher'].includes(type)?2:1,profile:['comment','patcher'].includes(type)?'ultra-patcher-v2':'ultra-canvas-v1',nodes:[{...makeNode(type,1),...(style===undefined?{}:{style})}],edges:[]});
+const patch = (type='number', style) => ({version:['comment','patcher'].includes(type)?2:1,profile:['comment','patcher'].includes(type)?'ultra-patcher-v2':'ultra-canvas-v1',presentation:null,nodes:[{...makeNode(type,1),...(style===undefined?{}:{style})}],edges:[]});
 
 test('optional display style round-trips without changing the required legacy document fields', () => {
   const source=patch('number',{bgcolor:[0.1,0.2,0.3,0.4],fontsize:18,width:180,height:44,triangle:0});
