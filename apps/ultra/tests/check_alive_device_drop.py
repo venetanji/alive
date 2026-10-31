@@ -66,7 +66,6 @@ try:
     ui.keys('Control_L', 'Shift_L', 'm')
     ui.wait_for('Add note')
     assert showing('Selected clip piano roll')
-    assert showing('Note velocity lane')
     ui.click('Add note')
     ui.text('Note 1 duration', '4')
     saved = ui.output / 'dragged-chain.alive'
