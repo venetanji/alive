@@ -23,9 +23,16 @@ to configure every object through permanent side panels.
 
 ## Capabilities and Constraints
 
+- A patch-authored four-voice subtractive instrument combines Faust saw/filter/
+  ADSR primitives, explicit voice-lane mixdown and stereo output. Its Perform
+  panel, saved parameter/preset interface, independent instances and headless
+  host harness form the reusable-device slice. Alive session hosting is absent;
+  panel keys and an authored score provide playback without physical MIDI.
+
 - Up to 16 native patch, help and example windows each run an independent
-  `ultra-canvas-v1` graph with 50 object kinds, 32 nodes and 64 edges. Ports
-  distinguish control, mono audio, mixed control/mono and legacy stereo bundles.
+  `ultra-canvas-v1` graph with 66 native object kinds, 32 nodes and 64 edges. Ports
+  distinguish control, mono audio, mixed control/mono, stereo and explicit
+  four-lane discrete voice bundles.
 - Native control objects and ramps operate with audio off. Typed messages and
   variadic object ports are bounded. Plain-name `send`/`receive` connects typed
   messages across open windows, including while audio is off. Max patch-local
@@ -36,8 +43,8 @@ to configure every object through permanent side panels.
   file. Max files expose named help tabs/patchers and compatibility reports;
   partial selections require explicit acceptance. Whole Max help files and
   arbitrary Max objects are not executable.
-- Help & Examples searches 101 original entries: help and an example for each
-  supported kind, plus the starter. Object help opens or focuses its own patch
+- Help & Examples searches 138 original entries: help and an example for each
+  supported kind, plus the starter and subtractive instrument. Object help opens or focuses its own patch
   window; the library also switches between open native windows.
 - Existing controls operate across their face when locked or with Ctrl/Cmd while
   editing. Optional Max-named appearance overrides save with the document and

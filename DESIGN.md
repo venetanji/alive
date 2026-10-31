@@ -272,6 +272,14 @@ outlet menu is an Ultra addition, not an observed Max feature.
 
 ### Panels and JSON dialog
 
+Perform is an optional compact instrument panel beside the authored graph. Seven
+bound controls, named presets and an octave keyboard provide a playable surface;
+the panel edits existing nodes and sends notes through the saved interface.
+It never substitutes a fixed synthesis route for the cables. Close, focus loss
+and hiding release panel-held keys. New instance opens an independent native
+document. Small windows overlay the panel with internal scrolling; phone-width
+toolbars wrap the optional panel actions onto a second row to keep them reachable.
+
 Console opens independently beneath the canvas from the toolbar or Ctrl/Cmd M.
 The shortcut also closes it while a Console filter has focus and returns focus
 to the canvas.

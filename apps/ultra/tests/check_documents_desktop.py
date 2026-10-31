@@ -124,7 +124,9 @@ def focus(title):
 
 
 def open_file(path):
-    env = {**os.environ, 'LD_LIBRARY_PATH': str(binary.parent)}
+    assert (binary.parent / 'libultra_native.so').is_file(), 'Build the adjacent native library first'
+    env = {**os.environ, 'LD_LIBRARY_PATH': os.pathsep.join(filter(None,
+        [str(binary.parent), os.environ.get('LD_LIBRARY_PATH')]))}
     result = subprocess.run([str(binary), str(path.resolve())], env=env, capture_output=True, text=True, timeout=12)
     assert result.returncode == 0, f'File delivery exited {result.returncode}: {result.stderr}'
     focus(path.name + ' - Ultra')

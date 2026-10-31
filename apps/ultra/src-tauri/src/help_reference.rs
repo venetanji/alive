@@ -89,6 +89,10 @@ fn local_root()->Result<PathBuf,&'static str>{resources_root(std::env::var_os("U
 fn read_contained(root:&Path,relative:&str,limit:usize)->Result<Vec<u8>,&'static str>{
     let path=root.join(relative).canonicalize().map_err(|_|"not-found")?;
     if !path.starts_with(root){return Err("invalid-reference");}
+    // Windows refuses File::open on directories before handle metadata can
+    // classify them. Reject non-files consistently, and still recheck the
+    // opened handle below rather than trusting this preflight for size safety.
+    if !std::fs::metadata(&path).map_err(|_|"not-found")?.is_file(){return Err("invalid-reference");}
     let file=File::open(path).map_err(|_|"not-found")?;let metadata=file.metadata().map_err(|_|"not-found")?;
     if !metadata.is_file()||metadata.len()>limit as u64{return Err("invalid-reference");}
     let mut bytes=Vec::new();file.take(limit as u64+1).read_to_end(&mut bytes).map_err(|_|"not-found")?;
@@ -247,8 +251,14 @@ mod tests {
     use super::*;
     use std::sync::atomic::{AtomicU64,Ordering};
     const XML:&str=r#"<?xml version="1.0"?><c74object name="append"><digest>Synthetic summary</digest><description><p>First &amp; <b>second</b>.</p><p>Unicode &#x03B1;.</p></description><objarglist><objarg name="tail" type="anything" optional="1"><description>Original argument.</description></objarg></objarglist><methodlist><method name="bang"><description>Original method.</description></method></methodlist><inletlist><inlet id="0"><description>Input.</description></inlet></inletlist><outletlist><outlet id="0"><description>Output.</description></outlet></outletlist><seealsolist><seealso name="pack"/><seealso name="outside"/></seealsolist></c74object>"#;
+    // Match resources_root: macOS /var and Windows verbatim prefixes normalize
+    // before containment checks. Never loosen the production boundary for tests.
+    fn symlink_file(original:PathBuf,link:PathBuf){
+        #[cfg(unix)] std::os::unix::fs::symlink(original,link).unwrap();
+        #[cfg(windows)] std::os::windows::fs::symlink_file(original,link).unwrap();
+    }
     struct Tree(std::path::PathBuf);
-    impl Tree {fn new()->Self{static NEXT:AtomicU64=AtomicU64::new(0);let p=std::env::temp_dir().join(format!("ultra-help-provider-{}-{}",std::process::id(),NEXT.fetch_add(1,Ordering::Relaxed)));std::fs::create_dir(&p).unwrap();Self(p)}
+    impl Tree {fn new()->Self{static NEXT:AtomicU64=AtomicU64::new(0);let p=std::env::temp_dir().join(format!("ultra-help-provider-{}-{}",std::process::id(),NEXT.fetch_add(1,Ordering::Relaxed)));std::fs::create_dir(&p).unwrap();Self(p.canonicalize().unwrap())}
         fn write(&self,path:&str,text:&str){let p=self.0.join(path);std::fs::create_dir_all(p.parent().unwrap()).unwrap();std::fs::write(p,text).unwrap();}}
     impl Drop for Tree {fn drop(&mut self){let _=std::fs::remove_dir_all(&self.0);}}
     #[test]
@@ -343,13 +353,15 @@ mod tests {
                 assert!(matches!(read_pinned_reference(&tree.0,&wrong_identity),Err("identity-mismatch")));
             }
             std::fs::remove_file(tree.0.join(route)).unwrap();
-            tree.write(&format!("docs/refpages/max-ref/{symbol}.maxref.xml"),&xml);
+            // '*' cannot be a filename on Windows. Still verify missing fixed
+            // routes there; Unix additionally proves no symbolic-name fallback.
+            if cfg!(unix)||symbol!="*" {tree.write(&format!("docs/refpages/max-ref/{symbol}.maxref.xml"),&xml);}
             assert!(matches!(read_pinned_reference(&tree.0,&identity),Err("not-found")));
             std::fs::create_dir(tree.0.join(route)).unwrap();
             assert!(matches!(read_pinned_reference(&tree.0,&identity),Err("invalid-reference")));
             std::fs::remove_dir(tree.0.join(route)).unwrap();
             let outside=Tree::new();outside.write("external.xml",&xml);
-            std::os::unix::fs::symlink(outside.0.join("external.xml"),tree.0.join(route)).unwrap();
+            symlink_file(outside.0.join("external.xml"),tree.0.join(route));
             assert!(matches!(read_pinned_reference(&tree.0,&identity),Err("invalid-reference")));
             std::fs::remove_file(tree.0.join(route)).unwrap();
             tree.write(route,&"x".repeat(XML_LIMIT+1));
@@ -379,7 +391,7 @@ mod tests {
         assert!(matches!(reference_at("int",Ok(tree.0.clone())),Reference::Unavailable{reason:"not-found"}));
         assert!(resources_root(Some(tree.0.join("missing").into_os_string()),Some(tree.0.clone().into_os_string())).is_err());
         let outside=Tree::new();outside.write("external.xml",XML);
-        std::os::unix::fs::symlink(outside.0.join("external.xml"),tree.0.join("docs/refpages/max-ref/int.maxref.xml")).unwrap();
+        symlink_file(outside.0.join("external.xml"),tree.0.join("docs/refpages/max-ref/int.maxref.xml"));
         assert!(matches!(reference_at("int",Ok(tree.0.clone())),Reference::Unavailable{reason:"invalid-reference"}));
     }
     #[test]
@@ -478,3 +490,4 @@ mod tests {
         println!("Verified 7 exact help sources, 4 exact helper sources, 13 existing local references, and 3 pinned arithmetic references.");
     }
 }
+

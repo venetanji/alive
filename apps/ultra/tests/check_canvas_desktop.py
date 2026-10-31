@@ -543,7 +543,9 @@ def run():
         text('Object name and arguments', '+ 7')
         keys('Return')
         patch = export()
-        assert len(patch['nodes']) == 1 and patch['nodes'][0]['params'] == {'rhs': 7}
+        assert (len(patch['nodes']) == 1 and patch['nodes'][0]['type'] == 'add'
+                and patch['nodes'][0]['params'].get('rhs') == 7
+                and patch['nodes'][0]['params'].get('numericmode') == 1), patch
         object_id = patch['nodes'][0]['id']
         keys('Return')
         text('Object name and arguments', '* 2')

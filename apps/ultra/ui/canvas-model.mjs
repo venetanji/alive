@@ -4,10 +4,11 @@ import {validateMidpoints, translatedMidpoints} from './canvas-cable-geometry.mj
 import {parseMessageTemplate, mergeMessageDisplays} from './canvas-message-ui.mjs';
 import {mergePrintPopups} from './canvas-print-ui.mjs';
 import {HELP_HELPER_SPEC} from './canvas-help-shell.mjs';
+import {validateDevice} from './canvas-device.mjs';
 import {isArithmetic} from './canvas-arithmetic.mjs';
 import {boundaryNodes, hierarchyType, HIERARCHY_LIMITS, lowerHierarchy, remapBoundaryEdges, treeNodes, validateHierarchy, visiblePatcher} from './canvas-hierarchy.mjs';
-const C = 'control', M = 'mono', S = 'stereo';
-const port = (type, label, side, accepts) => ({type, label, side,...(accepts?{accepts}:{})});
+const C = 'control', M = 'mono', S = 'stereo', V = 'voice4';
+const port = (type, label, side, accepts) => ({type, label, side,...({mono:1,stereo:2,voice4:4}[type]?{channels:{mono:1,stereo:2,voice4:4}[type]}:{}),...(accepts?{accepts}:{})});
 const ports = (items, side) => items.map(([type,label,accepts])=>port(type,label,side,accepts));
 const mixed = label => [M,label,[C,M]];
 const number = (value,min,max,integer=false) => ({value,min,max,integer});
@@ -77,9 +78,15 @@ export const REGISTRY = Object.freeze({
   reverse_subtract:spec('!-',{rhs:number(0,-100000,100000),numericmode:number(1,1,2,true)},[[C,'hot: subtrahend'],[C,'cold: minuend']],[[C,'difference']],'Subtract the left operand from the stored right operand. Fixed integer or float mode.'),
   reverse_divide:spec('!/',{rhs:number(1,-100000,100000),numericmode:number(1,1,2,true)},[[C,'hot: divisor'],[C,'cold: dividend']],[[C,'quotient']],'Divide the stored right operand by the left operand. Fixed integer or float mode; outputs must fit the bounded control profile.'),
   abs:spec('abs',{numericmode:number(1,1,2,true)},[[C,'numeric value']],[[C,'absolute value']],'Emit an absolute value in a fixed integer or float mode.'),
+  poly_note:spec('poly.note~',{voices:number(4,1,4,true)},[[C,'MIDI pitch, velocity / panic'],[C,'sustain (0..127)']],[[V,'frequency / 4 voices'],[V,'gate / 4 voices'],[V,'velocity / 4 voices']],'Allocate 1 to 4 voices. Oldest voice is stolen at capacity; velocity zero releases. Four discrete voice lanes, independent of speaker channels.'),
+  saw_voice:spec('saw.voice~',{},[[V,'frequency / 4 voices']],[[V,'saw / 4 voices']],'Faust band-limited saw oscillator for each of four voice lanes.'),
+  filter_voice:spec('lowpass.voice~',{cutoff:number(2400,20,20000),resonance:number(0.7,0.1,20)},[[V,'audio / 4 voices'],[C,'cutoff Hz'],[C,'resonance Q']],[[V,'filtered / 4 voices']],'Faust resonant low-pass filter with live cutoff and resonance. Four discrete voice lanes.'),
+  adsr_voice:spec('adsr.voice~',{attack:number(10,1,10000),decay:number(150,1,10000),sustain:number(0.65,0,1),release:number(300,1,10000)},[[V,'gate / 4 voices'],[C,'attack ms'],[C,'decay ms'],[C,'sustain'],[C,'release ms']],[[V,'envelope / 4 voices']],'Faust ADSR envelope per voice. Live attack, decay, sustain and release controls, in milliseconds except sustain.'),
+  multiply_voice:spec('*.voice~',{},[[V,'left / 4 voices'],[V,'right / 4 voices']],[[V,'product / 4 voices']],'Multiply corresponding voice lanes, for envelope and velocity scaling.'),
+  mix_voice:spec('mix.voice~',{},[[V,'audio / 4 voices']],[[M,'mono mix']],'Explicitly sum the four voice lanes and divide by four for headroom. Output is one mono channel.'),
 });
 export const structuralParameter=(type,key)=>['text','args','label','name','channels'].includes(key)||
-  (isArithmetic(type)&&key==='numericmode')||(type==='midiin'&&key==='channel')||(type==='voice'&&key==='device');
+  (isArithmetic(type)&&key==='numericmode')||(type==='midiin'&&key==='channel')||(type==='voice'&&key==='device')||(type==='poly_note'&&key==='voices');
 const copy = value => JSON.parse(JSON.stringify(value));
 const fail = message => { throw Error(message); };
 function fields(value, allowed, context, required=true) {
@@ -136,13 +143,14 @@ export function nodeSpec(node) {
 export function validatePatch(input) {
   if(input?.version===2){
     if(input.profile!=='ultra-patcher-v2')fail('Expected version 2, profile ultra-patcher-v2.');
-    return validateHierarchy(input,{nodeSpec,validateStyle,validateLeaf:node=>validateFlatPatch({version:1,profile:'ultra-canvas-v1',nodes:[node],edges:[]},true).nodes[0],validateExecution:patch=>validateFlatPatch(patch,true)});
+    const patch=validateHierarchy(input,{nodeSpec,validateStyle,validateLeaf:node=>validateFlatPatch({version:1,profile:'ultra-canvas-v1',nodes:[node],edges:[]},true).nodes[0],validateExecution:patch=>validateFlatPatch(patch,true)});
+    validateDevice(patch,REGISTRY,structuralParameter);return patch;
   }
   return validateFlatPatch(input);
 }
 const executionSpec=node=>['inlet','outlet'].includes(node.type)?{inlets:[port(M,'boundary','top',[C,M])],outlets:[{type:'mixed',emits:[C,M]}]}:nodeSpec(node);
 function validateFlatPatch(input,internal=false) {
-  fields(input,['version','profile','nodes','edges'],'patch');
+  fields(input,['version','profile','nodes','edges','device'],'patch',['version','profile','nodes','edges']);
   if(input.version!==1||input.profile!=='ultra-canvas-v1') fail('Expected version 1, profile ultra-canvas-v1.');
   if(!Array.isArray(input.nodes)||input.nodes.length>32) fail('A patch supports at most 32 objects.');
   if(!Array.isArray(input.edges)||input.edges.length>64) fail('A patch supports at most 64 cables.');
@@ -170,7 +178,7 @@ function validateFlatPatch(input,internal=false) {
     if(['flonum','number_int'].includes(node.type)&&node.params.minimum>node.params.maximum)fail(`${node.type} minimum must not exceed maximum.`);
     if(isArithmetic(node.type)&&node.type!=='abs'&&node.params.numericmode===1&&!Number.isInteger(node.params.rhs))fail(`${node.type}.rhs must be an integer in integer numeric mode.`);
     if(node.type==='voice') { if(devices.has(node.params.device)) fail('Only one voice per logical device is supported.'); devices.add(node.params.device); }
-    if(['join','dac'].includes(node.type)) { if(singleton.has(node.type)) fail(`Only one ${node.type} is supported.`); singleton.add(node.type); }
+    if(['join','dac','poly_note'].includes(node.type)) { if(singleton.has(node.type)) fail(`Only one ${node.type} is supported.`); singleton.add(node.type); }
     nodes.set(node.id,node);
   }
   const duplicates=new Set(),audioInputs=new Set(),controlAdjacency=new Map(),signalAdjacency=new Map(),routes=[];
@@ -192,16 +200,17 @@ function validateFlatPatch(input,internal=false) {
       const dest=`${edge.to}:${edge.inlet}`; if(audioInputs.has(dest)) fail('An audio inlet accepts only one source.'); audioInputs.add(dest);
     }
   }
-  const active=new Set([...nodes.values()].filter(node=>!['inlet','outlet'].includes(node.type)&&executionSpec(node).outlets.some(port=>port.type===M||port.type===S)).map(node=>node.id));
+  const active=new Set([...nodes.values()].filter(node=>!['inlet','outlet'].includes(node.type)&&executionSpec(node).outlets.some(port=>[M,S,V].includes(port.type))).map(node=>node.id));
   for(let changed=true;changed;){changed=false;for(const {edge,domains}of routes)if(domains.includes(M)&&active.has(edge.from)&&['inlet','outlet'].includes(nodes.get(edge.to).type)&&!active.has(edge.to)){active.add(edge.to);changed=true;}}
-  for(const {edge,domains}of routes)if((domains.includes(M)||domains.includes(S))&&active.has(edge.from)){if(!signalAdjacency.has(edge.from))signalAdjacency.set(edge.from,[]);signalAdjacency.get(edge.from).push(edge.to);}
+  for(const {edge,domains}of routes)if(domains.some(type=>[M,S,V].includes(type))&&active.has(edge.from)){if(!signalAdjacency.has(edge.from))signalAdjacency.set(edge.from,[]);signalAdjacency.get(edge.from).push(edge.to);}
   for(const [label,adjacency]of [['Control',controlAdjacency],['Signal',signalAdjacency]]){
     const visiting=new Set(),visited=new Set();
     function visit(id) { if(visiting.has(id))fail(`${label} cycles are unsupported.`);if(visited.has(id))return;visiting.add(id);for(const child of adjacency.get(id)||[])visit(child);visiting.delete(id);visited.add(id); }
     for(const id of nodes.keys())visit(id);
   }
   if(new TextEncoder().encode(JSON.stringify(input)).length>65536) fail('Patch exceeds 64 KiB.');
-  return copy({...input,nodes:[...nodes.values()]});
+  const patch={...input,nodes:[...nodes.values()]};
+  validateDevice(patch,REGISTRY,structuralParameter);return copy(patch);
 }
 export function parsePatch(text) {
   if(typeof text!=='string'||new TextEncoder().encode(text).length>8*HIERARCHY_LIMITS.bytes) fail('Patch file exceeds 8 MiB.');
@@ -229,6 +238,13 @@ export function starterPatch() {
 export class CanvasDocument {
   constructor(patch=starterPatch()) { this.document=validatePatch(patch);this.path=[];this.past=[];this.future=[];this.nextId=Math.max(0,...treeNodes(this.document).map(n=>n.id))+1; }
   get patch(){return this.path.length?{version:2,profile:'ultra-patcher-v2',...visiblePatcher(this.document,this.path)}:this.document;}
+  setDevice(value){
+    const next=copy(this.document);
+    if(value===null)delete next.device;else next.device=copy(value);
+    const validated=validatePatch(next);
+    if(JSON.stringify(validated)===JSON.stringify(this.document))return false;
+    this.remember();this.document=validated;return true;
+  }
   enter(id){visiblePatcher(this.document,[...this.path,id]);this.path.push(id);}
   leave(depth=this.path.length-1){this.path=this.path.slice(0,Math.max(0,depth));}
   reveal(id){
@@ -277,6 +293,11 @@ export class CanvasDocument {
     p.edges.forEach((edge,index)=>{if(midpoints[index]!==undefined)edge.midpoints=midpoints[index];});
   },options);}
   parameter(id,key,value,options) { return this.edit(p=>{const n=p.nodes.find(n=>n.id===id);if(!n)fail('Missing object.');n.params[key]=value;},options); }
+  parameterRoot(id,key,value,options) {
+    const path=this.path;
+    try{this.reveal(id);return this.parameter(id,key,value,options);}
+    finally{this.path=path;this.repairPath();}
+  }
   style(id,key,value,options) { return this.edit(p=>{
     const node=p.nodes.find(node=>node.id===id);if(!node)fail('Missing object.');
     if(key===null){delete node.style;return;}
@@ -370,8 +391,9 @@ export function createCanvasController({invoke,patch=starterPatch(),onState=()=>
       }
     })().finally(()=>{paramTask=null;emit();});return paramTask;
   }
-  function parameter(id,key,value,{history=true}={}) {
-    const node=document.patch.nodes.find(n=>n.id===id);if(!node)fail('Missing object.');
+  function parameter(id,key,value,{history=true,root=false}={}) {
+    const node=(root?treeNodes(document.document):document.patch.nodes).find(n=>n.id===id);if(!node)fail('Missing object.');
+    const write=(...args)=>root?document.parameterRoot(...args):document.parameter(...args);
     if(node.type==='message_box'&&key==='text'){
       parseMessageTemplate(value);
       if(!native){document.parameter(id,key,value,{history});delete messageBoxes[id];emit();return;}
@@ -379,9 +401,9 @@ export function createCanvasController({invoke,patch=starterPatch(),onState=()=>
       return enqueueText(id,value,{history,path:[...document.path]});
     }
     requireTextAdmission();
-    if(['comment','patcher','help_helper'].includes(node.type)){document.parameter(id,key,value,{history});emit();return;}
-    if(structuralParameter(node.type,key))return structural(()=>document.parameter(id,key,value,{history}));
-    document.parameter(id,key,value,{history});
+    if(['comment','patcher','help_helper'].includes(node.type)){write(id,key,value,{history});emit();return;}
+    if(structuralParameter(node.type,key))return structural(()=>write(id,key,value,{history}));
+    write(id,key,value,{history});
     if(native)pendingParams.set(`${id}/${key}`,{id,key,value,epoch:actionEpoch,hot:getState().ready&&['number','number_int','toggle','int','float','flonum','slider'].includes(node.type)&&key==='value'});
     emit();return pumpParams();
   }
@@ -405,12 +427,15 @@ export function createCanvasController({invoke,patch=starterPatch(),onState=()=>
               try{document.parameter(event.node,'text',event.value,{history:event.history});}finally{document.path=path;document.repairPath();}
             }
             event.resolve?.(true);
-          }else await invoke('canvas_event',{revision:event.revision,node:event.node,inlet:event.inlet,value:event.value,...(event.action?{action:event.action}:{})});
+          }else {
+            const accepted=await invoke('canvas_event',{revision:event.revision,node:event.node,inlet:event.inlet,value:event.value,...(event.action?{action:event.action}:{})});
+            event.resolve?.(accepted!==false);
+          }
         }
         catch(error){event.resolve?.(false);if(event.epoch===actionEpoch){faulted=true;report(`Native event rejected: ${error?.message||error}. Stop and reapply to recover.`);}}
         finally{if(event.kind==='text'&&event.epoch===actionEpoch)inFlightText=null;emit();}
       }
-    })().finally(()=>{eventTask=null;emit();});return eventTask;
+    })().finally(()=>{eventTask=null;emit();if(events.length)pumpEvents();});return eventTask;
   }
   function enqueueText(node,value,options={}) {
     if(disposed||stopping||faulted||panicked)fail('Recover the native patch before editing message text.');
@@ -419,16 +444,17 @@ export function createCanvasController({invoke,patch=starterPatch(),onState=()=>
     const result=new Promise(resolve=>events.push({kind:'text',node,value,revision,documentRevision:desired,epoch:actionEpoch,resolve,...options}));
     emit();pumpEvents();return result;
   }
-  function event(node,inlet=0,value=null,action) {
+  function event(node,inlet=0,value=null,action,root=false) {
     if(!getState().ready){notice=native?'Wait for the current graph or recover the native fault before sending events.':'Browser preview: native execution is unavailable.';emit();return Promise.resolve(false);}
-    const n=document.patch.nodes.find(x=>x.id===node),port=n&&nodeSpec(n).inlets[inlet];if(!port||!(port.accepts??[port.type]).includes(C))fail('Events require an inlet that accepts control messages.');
+    const n=(root?treeNodes(document.document):document.patch.nodes).find(x=>x.id===node),port=n&&nodeSpec(n).inlets[inlet];if(!port||!(port.accepts??[port.type]).includes(C))fail('Events require an inlet that accepts control messages.');
     if(typeof value==='string'){
       if(n.type==='message_box'&&(inlet===1||/^set(?:\s|$)/.test(value.trimStart())))parseMessageTemplate(value);
       else parseMessage(value);
     }
     else if(value!==null){if(!Array.isArray(value)||value.length<1||value.length>8)fail('Events contain one to eight numbers or a literal message.');value.forEach(v=>numeric(v,-100000,100000,false,'Event value'));}
     if(events.length>=64){faulted=true;return stop('Event queue overflow. Native timers and notes stopped; reapply before playing.');}
-    events.push({node,inlet,value,revision,epoch:actionEpoch,...(action?{action}:{})});return pumpEvents();
+    const result=new Promise(resolve=>events.push({node,inlet,value,revision,epoch:actionEpoch,resolve,...(action?{action}:{})}));
+    pumpEvents();return result;
   }
   function tab(node) {
     if(!['flonum','number_int'].includes(document.patch.nodes.find(item=>item.id===node)?.type))fail('Tab requires a numeric UI box with a second outlet.');
@@ -552,6 +578,8 @@ export function createCanvasController({invoke,patch=starterPatch(),onState=()=>
     });
   }
   return {getState,prepare:ensureApply,startAudio,stopAudio,stop,panic,poll,flush,dispose,disposeDocument:dispose,event,tab,parameter,
+    deviceParameter:(id,key,value,options)=>parameter(id,key,value,{...options,root:true}),
+    deviceEvent:(node,inlet,value)=>event(node,inlet,value,undefined,true),
     enter:id=>{document.enter(id);helpView.navigate(document);emit();},leave:depth=>{document.leave(depth);helpView.navigate(document);emit();},reveal:id=>{document.reveal(id);helpView.navigate(document);emit();},
     hostHelpBasic:()=>{if(disposed)return false;const hosted=helpView.hostBasic(document);if(hosted)emit();return hosted;},
     clearConsole:()=>{consoleRecords=[];consoleDroppedBaseline=consoleDropped;consoleEpoch++;emit();},

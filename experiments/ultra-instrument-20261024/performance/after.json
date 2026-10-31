@@ -1,0 +1,128 @@
+{
+  "commit": "821745888794e3b792e76e455962db2d61858755",
+  "binary_sha256": "91d51d8c31cfbd3e2ecdaa682d1a0762634ba8bc0cf907c8fc6204eda38094f1",
+  "patch_sha256": "fe8f1e14140372a1971afc4abfd5b1f1511368777c00871bdb1b121cda562733",
+  "kernel": "7.2.8-10-omarchy",
+  "cpu": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           48 bits physical, 48 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  16\nOn-line CPU(s) list:                     0-15\nVendor ID:                               AuthenticAMD\nModel name:                              AMD Ryzen 9 5900HS with Radeon Graphics\nCPU family:                              25\nModel:                                   80\nThread(s) per core:                      2\nCore(s) per socket:                      8\nSocket(s):                               1\nStepping:                                0\nMicrocode version:                       0xa500012\nFrequency boost:                         enabled\nCPU(s) scaling MHz:                      65%\nCPU max MHz:                             3301.0000\nCPU min MHz:                             423.2060\nBogoMIPS:                                6587.66\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 hw_pstate ssbd mba ibrs ibpb stibp vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local user_shstk clzero irperf xsaveerptr rdpru wbnoinvd cppc arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif v_spec_ctrl umip pku ospke vaes vpclmulqdq rdpid overflow_recov succor smca fsrm debug_swap\nVirtualization:                          AMD-V\nL1d cache:                               256 KiB (8 instances)\nL1i cache:                               256 KiB (8 instances)\nL2 cache:                                4 MiB (8 instances)\nL3 cache:                                16 MiB (1 instance)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-15\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Old microcode:             Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Mitigation; Safe RET\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Retpolines; IBPB conditional; IBRS_FW; STIBP always-on; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Mitigation; Clear CPU buffers\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Mitigation; IBPB before exit to userspace\n",
+  "versions": "webkit2gtk-4.1 2.54.1-1\ngtk3 1:3.24.52-2\npipewire 1:1.6.10-1\nwireplumber 0.5.18-1\nopenmotif 2.3.8-4\n",
+  "audio": "private software-only CPAL PipeWire at 48 kHz / 512 frames",
+  "observed_audio_labels": [
+    "Rust / CPAL - PipeWire",
+    "The current DSP core runs at 48 kHz in stereo. Smaller buffers respond faster; larger buffers give your computer more time.",
+    "default_output (PipeWire)",
+    "512 frames / 10.67 ms",
+    "64 frames / 1.33 ms"
+  ],
+  "workload": "Original 16-object / 16-cable starter; DSP-on drives toggle -> metro 150ms -> chord -> makenote -> legacy voice -> gain/join/dac.",
+  "results": [
+    {
+      "case": "audio-off-visible",
+      "seconds": 10.000053047999245,
+      "wm_state": "WM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x400073",
+      "processes": [
+        {
+          "pid": 180360,
+          "process": "ultra",
+          "cpu_one_core_percent": 3.499981433298757,
+          "pss_kib": 102566
+        },
+        {
+          "pid": 180376,
+          "process": "WebKitNetworkPr",
+          "cpu_one_core_percent": 0.0,
+          "pss_kib": 38491
+        },
+        {
+          "pid": 180413,
+          "process": "WebKitWebProces",
+          "cpu_one_core_percent": 8.099957031348552,
+          "pss_kib": 176865
+        }
+      ],
+      "cpu_one_core_percent": 11.599938464647309,
+      "pss_kib": 317922
+    },
+    {
+      "case": "audio-off-minimized",
+      "seconds": 10.000070260000939,
+      "wm_state": "WM_STATE(WM_STATE):\n\t\twindow state: Iconic\n\t\ticon window: 0x400073",
+      "processes": [
+        {
+          "pid": 180360,
+          "process": "ultra",
+          "cpu_one_core_percent": 1.4999894610739057,
+          "pss_kib": 102558
+        },
+        {
+          "pid": 180376,
+          "process": "WebKitNetworkPr",
+          "cpu_one_core_percent": 0.0,
+          "pss_kib": 38491
+        },
+        {
+          "pid": 180413,
+          "process": "WebKitWebProces",
+          "cpu_one_core_percent": 1.2999908662640516,
+          "pss_kib": 180901
+        }
+      ],
+      "cpu_one_core_percent": 2.7999803273379573,
+      "pss_kib": 321950
+    },
+    {
+      "case": "audio-on-visible",
+      "seconds": 10.000071716000093,
+      "wm_state": "WM_STATE(WM_STATE):\n\t\twindow state: Normal\n\t\ticon window: 0x400073",
+      "processes": [
+        {
+          "pid": 180360,
+          "process": "ultra",
+          "cpu_one_core_percent": 6.699951950624529,
+          "pss_kib": 226717
+        },
+        {
+          "pid": 180376,
+          "process": "WebKitNetworkPr",
+          "cpu_one_core_percent": 0.0,
+          "pss_kib": 38491
+        },
+        {
+          "pid": 180413,
+          "process": "WebKitWebProces",
+          "cpu_one_core_percent": 17.49987449789989,
+          "pss_kib": 211728
+        }
+      ],
+      "cpu_one_core_percent": 24.19982644852442,
+      "pss_kib": 476936
+    },
+    {
+      "case": "audio-on-minimized",
+      "seconds": 10.000081129001046,
+      "wm_state": "WM_STATE(WM_STATE):\n\t\twindow state: Iconic\n\t\ticon window: 0x400073",
+      "processes": [
+        {
+          "pid": 180360,
+          "process": "ultra",
+          "cpu_one_core_percent": 6.099950511710856,
+          "pss_kib": 226736
+        },
+        {
+          "pid": 180376,
+          "process": "WebKitNetworkPr",
+          "cpu_one_core_percent": 0.0,
+          "pss_kib": 38492
+        },
+        {
+          "pid": 180413,
+          "process": "WebKitWebProces",
+          "cpu_one_core_percent": 14.499882363902852,
+          "pss_kib": 208170
+        }
+      ],
+      "cpu_one_core_percent": 20.599832875613707,
+      "pss_kib": 473398
+    }
+  ],
+  "window_scope": "Private Xvfb 1280x840 with actual Motif WM_STATE Normal/Iconic verified. No compositor/GPU or physical output qualification."
+}

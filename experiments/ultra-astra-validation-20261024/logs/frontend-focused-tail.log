@@ -1,0 +1,40 @@
+✔ opening root and child adopts one owner graph and child scope without resetting it (1.665034ms)
+✔ optimistic edits serialize and stale disjoint edits rebase without overwriting the owner (4.273589ms)
+✔ simultaneous changes to one field retain the canonical tree and report conflict (4.447816ms)
+✔ broadcasts during admission preserve later local edits and ignore older descriptors (13.598647ms)
+✔ numeric hot edits use one native admission and queued events wait for admission (3.734248ms)
+✔ native owner history includes edits from another child and continuous history groups (4.053466ms)
+✔ admission rejection restores the authoritative root and cancels dependent events (2.209586ms)
+✔ flush returns canonical descriptor for whole-owner save and layout preserves runtime revision (1.47648ms)
+✔ observations cover descendants and each view retains its own native console cursor (2.709874ms)
+✔ recursive model validation is atomic and detach never stops the owner graph (4.340345ms)
+✔ structural child edits publish a fresh runtime revision before events and never reinstall through legacy IPC (2.202603ms)
+✔ simultaneous additions cannot overwrite the other view when both allocate the same ID (3.594445ms)
+✔ a stale owner undo retains newer native changes and asks the caller to try again (4.099673ms)
+✔ same-node edits to independent fields rebase and history remains native (4.915935ms)
+✔ hot numeric admission restores a live value to unchanged saved state exactly once (2.458874ms)
+✔ whole-document loads keep a surviving native child view anchored to its descriptor path (2.441832ms)
+✔ native descriptors restore their view path after local navigation and repair removed paths (1.790349ms)
+✔ late descriptors cannot regress a runtime reapply at the same authoring revision (1.43366ms)
+✔ close flush reports a real pending admission failure and allows retry after cancellation (3.733697ms)
+✔ an acknowledged view blocks new authoring until every matching close barrier releases (5.806876ms)
+✔ a pending undo rejected by owner CAS cancels the close flush (1.926074ms)
+✔ help root hosts Basic locally while a real Basic child keeps its native binding (6.65099ms)
+✔ help hosting survives optimistic edits CAS publications save descriptors and rejected edit recovery (9.537547ms)
+✔ shell import into adopted owner and history reconcile identity and restore local Basic (12.351948ms)
+✔ pending shell import keeps hosting across older publications and rejected import restores ordinary state (22.286369ms)
+✔ local Basic navigation preserves numeric Message and Print observations and independent views (2.977998ms)
+✔ Panic then global Stop Audio recovers even when scoped stop rejects the fault state (1.788536ms)
+✔ continuous edits retain bounded snapshots and their native undo boundary (118.164902ms)
+✔ coalescing cannot cross an event or discrete undo boundary and backlog rejects atomically (97.567832ms)
+✔ Stop and Panic run immediately after in-flight admission ahead of queued edits in request order (3.056606ms)
+✔ queued event dispatch uses the admitted tree before a later deletion (6.046225ms)
+✔ pending native history blocks authoring until its canonical base arrives (3.637906ms)
+ℹ tests 84
+ℹ suites 0
+ℹ pass 84
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 849.970358

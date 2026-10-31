@@ -130,7 +130,8 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
           } else if(item.kind==='event') {
             result=false;
             if(item.epoch===epoch&&!faulted&&!panicked) {
-              const node=treeNodes(document.document).find(node=>node.id===item.node);
+              // Later optimistic edits must not change an earlier event's target.
+              const node=treeNodes(descriptor.patch).find(node=>node.id===item.node);
               if(node)result=await invoke('canvas_event',{revision:descriptor.runtimeRevision,node:item.node,inlet:item.inlet,value:item.value,...(item.action?{action:item.action}:{})});
             }
           } else result=await item.run();
@@ -162,6 +163,9 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
     if(disposed||detaching)throw Error('This patcher view is detached.');
     if(closeBarriers.size)throw Error('This patcher is closing. Cancel closing before editing.');
     if(!descriptor)throw Error('Wait for the shared document to prepare.');
+    // History has no speculative tree: wait for its canonical result before
+    // capturing another edit base, including while its IPC is in flight.
+    if(queue.some(item=>item.kind==='history'))throw Error('Native history is pending. Wait before editing.');
     coalesceKey??=parameter?`parameter:${parameter.node}:${parameter.key}`:undefined;
     const tail=queue.at(-1);
     const coalesce=history===false&&coalesceKey&&tail?.kind==='edit'&&tail!==activeItem&&tail.coalesceKey===coalesceKey&&tail.epoch===epoch;
@@ -180,18 +184,18 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
     }
     return result;
   }
-  function parameter(id,key,value,{history=true}={}) {
-    const node=document.patch.nodes.find(node=>node.id===id);
+  function parameter(id,key,value,{history=true,root=false}={}) {
+    const node=(root?treeNodes(document.document):document.patch.nodes).find(node=>node.id===id);
     if(!node)throw Error('Missing object.');
     const structural=structuralParameter(node.type,key);
     const parameter=typeof value==='number'&&!structural&&!['comment','patcher','help_helper'].includes(node.type)?
       {node:id,key,value,hot:key==='value'&&['number','number_int','toggle','int','float','flonum','slider'].includes(node.type)}:undefined;
     const messageText=node.type==='message_box'&&key==='text'?{node:id,text:value}:undefined;
-    return edit((...args)=>document.parameter(...args),[id,key,value,{history}],{history,parameter,messageText});
+    return edit((...args)=>root?document.parameterRoot(...args):document.parameter(...args),[id,key,value,{history}],{history,parameter,messageText});
   }
-  function event(node,inlet=0,value=null,action) {
+  function event(node,inlet=0,value=null,action,root=false) {
     if(disposed||detaching||closeBarriers.size||!descriptor)return Promise.resolve(false);
-    const target=document.patch.nodes.find(item=>item.id===node),port=target&&nodeSpec(target).inlets[inlet];
+    const target=(root?treeNodes(document.document):document.patch.nodes).find(item=>item.id===node),port=target&&nodeSpec(target).inlets[inlet];
     if(!port||!(port.accepts??[port.type]).includes('control'))throw Error('Events require an inlet that accepts control messages.');
     if(typeof value==='string'){
       if(target.type==='message_box'&&(inlet===1||/^set(?:\s|$)/.test(value.trimStart())))parseMessageTemplate(value);
@@ -259,6 +263,8 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
     detaching=true;epoch++;await flush();disposed=true;observations={};
   }
   return {getState,prepare,adoptDescriptor,acceptDescriptor,flush,flushBeforeClose,cancelClose,poll,dispose,disposeDocument:dispose,parameter,event,tab,stop,
+    deviceParameter:(id,key,value,options)=>parameter(id,key,value,{...options,root:true}),
+    deviceEvent:(node,inlet,value)=>event(node,inlet,value,undefined,true),
     startAudio:()=>{const token=epoch;return operation(async()=>{if(token!==epoch)return false;if(panicked){report('Panic is latched. Stop audio, then Start audio to recover.');return false;}
       if(!descriptor&&!(await prepare()))return false;faulted=false;await invoke('audio_start');await poll();
       notice=status.running?'Audio running.':'Audio could not start.';emit();return !!status.running;});},

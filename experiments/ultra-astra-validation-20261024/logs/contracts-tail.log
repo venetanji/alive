@@ -1,0 +1,40 @@
+test_bad_json_is_reported_not_passed (test_inventory.InventoryTests.test_bad_json_is_reported_not_passed) ... ok
+test_namespaces_nested_patchers_and_dependency_paths (test_inventory.InventoryTests.test_namespaces_nested_patchers_and_dependency_paths) ... ok
+test_nested_attribute_metadata_is_not_an_object_attribute (test_inventory.InventoryTests.test_nested_attribute_metadata_is_not_an_object_attribute) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.005s
+
+OK
+...............
+----------------------------------------------------------------------
+Ran 15 tests in 0.098s
+
+OK
+PASS build replaces native library atomically; existing mapping stays intact
+test_installer_advertises_file_opening_and_original_extensions (__main__.PatchFileLaunch.test_installer_advertises_file_opening_and_original_extensions) ... ok
+test_relative_paths_with_spaces_and_shell_characters_reach_native_app (__main__.PatchFileLaunch.test_relative_paths_with_spaces_and_shell_characters_reach_native_app) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.120s
+
+OK
+PASS isolated runner selects the checked release binary and native library, preserving its PID
+PASS normal launcher prefers the release build and retains standalone bundle support
+PASS: native sequencer chord maths, million-frame partition invariance, rational metro, gate/stop/reconfigure, MIDI Start/Continue/Stop/clock, clock-loss release and rejection safety
+PASS: native canvas validation, actual routing plans, depth-first messages/math, MIDI, stale events, million-step bounded timers, partition invariance, live params, stop and rejection safety
+PASS: native mapped object parsing, scalar state, dynamic ports, list coercion, outlet order, routing and ramps
+PASS: bounded typed list objects, state, atomic overflow and synchronous global outlet order
+PASS: native signal topology, arithmetic, fan-in, gains, oscillators, ramps, snapshots and document stop/resume
+PASS: transparent hierarchy relays, original 11-channel boundaries, typed messages, ordering, multiplicity and separate domain cycles
+PASS: independent documents, typed global messages, receive retarget, bounded cycles and device ownership
+help-root trace contracts passed
+help-root transport contracts passed
+contextual Message replacement contracts passed
+admitted/runtime parameter separation contracts passed
+compiled-out observer equivalence passed
+numeric UI contracts passed
+arithmetic contracts passed
+{"native_input_deliveries": 291, "status_counts": {"compared-pass": 287, "explicit-local-refusal": 4, "outside-qualified-creation": 9}, "failures": 0}
+message UI oracle contracts passed
+print popup contracts passed

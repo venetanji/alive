@@ -327,13 +327,13 @@ dialog p { line-height: 1.6; color: var(--muted); }
   .library-header { padding: 16px 14px 10px; }
   .library-search { padding: 0 14px; }
   .library-search select { max-width: 108px; }
-  .toolbar { padding: 0 6px; gap: 0; }
+  .toolbar { padding: 0 6px; gap: 0; height: auto; min-height: 39px; flex-wrap: wrap; }
   .toolbar-divider { margin: 0 2px; }
   #add-object kbd, #show-library, #reset-view { display: none; }
   .mode-button { min-width: 65px; }
   #add-object { padding: 4px; }
   .zoom-control select { width: 59px; }
-  .toolbar-end { gap: 0; }
+  .toolbar-end { gap: 0; width: 100%; margin-left: 0; justify-content: flex-end; padding-bottom: 3px; }
   .preview { font-size: 10px; line-height: 1.45; }
   #selection-hint { display: none; }
   .audio-bar { gap: 2px; padding: 3px 6px; }

@@ -42,7 +42,7 @@ export function createNodeView(node,{doc,select,dragStart,edit,portClick,portDow
     printPopup.append(dot,printValue);body.append(printPopup);
   }
   const control=['bang','toggle','message','message_box','number','number_int','flonum','gain','slider'].includes(node.type);
-  let currentNode=node,isLocked=false,gesture=null,sizing=null,resizeHandle=null,suppressClick=false,dirty=false,keyContinuous=false,temporaryEditing=false,displayedValue=node.params.value;
+  let currentNode=node,authoringPending=false,isLocked=false,gesture=null,sizing=null,resizeHandle=null,suppressClick=false,dirty=false,keyContinuous=false,temporaryEditing=false,displayedValue=node.params.value;
   const canOperate=e=>isLocked||e.ctrlKey||e.metaKey;
   const ranged=['gain','slider'].includes(node.type);
   const valueInput=()=>inputs.get('value');
@@ -55,9 +55,12 @@ export function createNodeView(node,{doc,select,dragStart,edit,portClick,portDow
     if(input.step==='1')value=node.type==='number_int'?Math.trunc(value):Math.round(value);
     value=Number(value.toFixed(9));
     const unchanged=value===displayedValue;
-    input.value=String(value);displayedValue=value;dirty=false;
-    if(unchanged)return false;
-    parameter(node.id,'value',value,{history});return true;
+    if(unchanged&&(!dirty||(!authoringPending&&value===currentNode.params.value))){input.value=String(value);dirty=false;return false;}
+    // Publish the draft before admission can synchronously render its thumb.
+    // Keep it retryable through admission failures and their renders.
+    dirty=true;input.value=String(value);
+    if(parameter(node.id,'value',value,{history})===false)return false;
+    input.value=String(value);displayedValue=value;dirty=false;return true;
   }
   function finishControl(){
     const previous=gesture;gesture=null;keyContinuous=false;temporaryEditing=false;
@@ -136,12 +139,12 @@ export function createNodeView(node,{doc,select,dragStart,edit,portClick,portDow
     const p=s.params.value;input.min=p.min;input.max=p.max;input.step=p.integer?'1':'any';input.value=node.params.value;input.dataset.parameter='value';
     input.setAttribute('aria-label',`${s.name} value, object ${node.id}`);
     input.addEventListener('input',()=>{if(!ranged){dirty=true;return;}if(isLocked)setValue(Number(input.value),!keyContinuous);});
-    input.addEventListener('change',()=>{if(canOperate({})||!input.readOnly)setValue(Number(input.value));dirty=false;});
+    input.addEventListener('change',()=>{if(canOperate({})||!input.readOnly)setValue(Number(input.value));});
     input.addEventListener('keydown',e=>{
       if(!canOperate(e)&&input.readOnly){if(e.key!=='Tab')e.preventDefault();return;}
       if(e.key==='Tab'||e.key==='Enter'){
         if(dirty)setValue(input.value===''?NaN:Number(input.value));
-        dirty=false;
+        if(dirty){if(e.key==='Enter')e.preventDefault();return;}
         if(['flonum','number_int'].includes(node.type)&&e.key==='Tab')tab(node.id);
         if(e.key==='Enter'){e.preventDefault();input.select();}return;
       }
@@ -152,7 +155,7 @@ export function createNodeView(node,{doc,select,dragStart,edit,portClick,portDow
       }
     });
     input.addEventListener('keyup',()=>{keyContinuous=false;});
-    input.addEventListener('blur',()=>{if(dirty)setValue(input.value===''?NaN:Number(input.value));dirty=false;finishControl();});
+    input.addEventListener('blur',()=>{if(dirty)setValue(input.value===''?NaN:Number(input.value));finishControl();});
     inputs.set('value',input);body.append(input);
     if(node.type==='gain'){level=make('span','gain-value',String(node.params.value));body.append(level);}
     if(node.type==='slider'){level=make('span','slider-value',String(node.params.value));body.append(level);}
@@ -187,7 +190,7 @@ export function createNodeView(node,{doc,select,dragStart,edit,portClick,portDow
   }
   let lastPulses=null;
   function update(current,state,{selected=false,locked=false,pending=null,moving=false}={}) {
-    currentNode=current;if(isLocked!==locked)cancelInteraction();isLocked=locked;
+    currentNode=current;authoringPending=!!state.busy;if(isLocked!==locked)cancelInteraction();isLocked=locked;
     if(!selected)finishResize();if(resizeHandle)resizeHandle.hidden=locked||!selected;
     if(!moving){element.style.left=`${current.x}px`;element.style.top=`${current.y}px`;}
     const text=objectText(current),parts=text.split(' ');name.textContent=parts[0];args.textContent=parts.slice(1).join(' ');
@@ -203,7 +206,7 @@ export function createNodeView(node,{doc,select,dragStart,edit,portClick,portDow
       if(node.type==='slider'){
         input.min=0;input.max=current.params.size-1;input.step=current.params.floatoutput?'any':1;
       }
-      if(doc.activeElement!==input&&!gesture){displayedValue=value;input.value=node.type==='flonum'?Number(value).toFixed(current.params.numdecimalplaces):String(value);}
+      if(doc.activeElement!==input&&!gesture&&!dirty){displayedValue=value;input.value=node.type==='flonum'?Number(value).toFixed(current.params.numdecimalplaces):String(value);}
       input.readOnly=!locked&&!gesture&&!temporaryEditing;
       input.setAttribute('aria-disabled',String(!locked&&!gesture&&!temporaryEditing));
       if(ranged){const vertical=current.style?.orientation===2||(current.style?.orientation!==1&&element.offsetHeight>element.offsetWidth);element.classList.toggle('vertical-control',vertical);input.setAttribute('aria-orientation',vertical?'vertical':'horizontal');}

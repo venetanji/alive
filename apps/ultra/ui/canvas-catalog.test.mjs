@@ -33,7 +33,7 @@ test('autocomplete ranks exact names before prefixes, and never invents unsuppor
   assert.equal(suggestObjects('+')[0].type,'add');
   assert.equal(suggestObjects('but')[0].type,'bang');
   assert.deepEqual(suggestObjects('buffer~'),[]);
-  assert.equal(suggestObjects('').length,62);
+  assert.deepEqual(suggestObjects('').map(object=>object.type).sort(),Object.keys(OBJECTS).sort());
 });
 test('comment creation text round-trips multiline whitespace and the full annotation limit',()=>{
   for(const text of ['', '  First\nSecond\nThird  ', 'Original annotation. '.repeat(150)+'\nFinal', 'a'.repeat(4096)]){

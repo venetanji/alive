@@ -69,7 +69,7 @@ pub fn broadcast(app: &AppHandle, registry: &Registry, label: &str) {
 pub fn changed(app: &AppHandle, registry: &mut Registry, label: &str) -> Vec<String> {
     let mut obsolete = registry.prune_views(label).unwrap_or_default();
     broadcast(app, registry, label);
-    obsolete.extend(registry.take_completed_closes());
+    obsolete.extend(super::route_completed_closes(app, registry.take_completed_closes()));
     obsolete
 }
 
@@ -79,6 +79,7 @@ pub fn close_views(app: &AppHandle, labels: Vec<String>) {
             if let Err(error) = window.close() {
                 let notice = app.state::<Documents>().0.lock().ok().and_then(|mut registry| registry.release_close(&label));
                 close_cancelled(app, notice);
+                super::cancel_quit(app);
                 let _ = window.emit_to(tauri::EventTarget::webview_window(&label), "document-error", error.to_string());
             }
         }
@@ -101,6 +102,7 @@ pub fn request_close_flush(app: &AppHandle, notice: documents::CloseNotice) {
         if let Err(error) = sent {
             let cancelled = app.state::<Documents>().0.lock().ok().and_then(|mut registry| registry.cancel_close(&notice.request_label, notice.token).ok());
             close_cancelled(app, cancelled);
+            super::cancel_quit(app);
             let _ = app.emit_to(tauri::EventTarget::webview_window(notice.request_label), "document-error", format!("Window remains open: {error}"));
             break;
         }
@@ -114,14 +116,18 @@ pub fn document_close_flushed(window: WebviewWindow, state: tauri::State<Documen
         let cancelled = registry.reject_close(window.label(), &request_label, token)?;
         drop(registry);
         close_cancelled(window.app_handle(), Some(cancelled));
+        super::cancel_quit(window.app_handle());
         let message = format!("Window remains open because pending changes could not be flushed: {}", error.chars().take(512).collect::<String>());
         let _ = window.emit_to(tauri::EventTarget::webview_window(&request_label), "document-error", message);
         return Ok(false);
     }
+    let quit_token = super::quit_token_for(window.app_handle(), &request_label);
     let completed = registry.acknowledge_close(window.label(), &request_label, token)?;
     drop(registry);
     if completed {
-        close_views(window.app_handle(), vec![request_label]);
+        if let Some(quit_token) = quit_token {
+            super::prepare_quit_owner(window.app_handle(), &request_label, quit_token);
+        } else { close_views(window.app_handle(), vec![request_label]); }
     }
     Ok(completed)
 }

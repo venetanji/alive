@@ -1,0 +1,61 @@
+{
+  "head_sha": "de663840346a12d0fe5b49eb669af1cc1788f25f",
+  "run_id": 39988671475,
+  "job_id": 120534743823,
+  "artifact_id": 12516339767,
+  "artifact_zip_sha256": "83442321a1b6097ca8b5ec6802512388f688da786f52ca2208613cf737de2a7a",
+  "artifact_zip_matches_github_digest": true,
+  "package": "Ultra-0.1.0-rc.1-x86_64-pc-windows-msvc.exe",
+  "package_sha256": "c71fcb5cfc5581e92ff068b98d6abee6a480d203e7a9af5e367575b6ad84dec1",
+  "matches_ci_sha256sums": true,
+  "extraction_tool": "7-Zip 26.05 Linux x64, NSIS payload extraction; no Windows code execution locally",
+  "notices": [
+    {
+      "name": "THIRD-PARTY.txt",
+      "path": "extracted/windows/licenses/THIRD-PARTY.txt",
+      "source_path": "apps/ultra/THIRD-PARTY.txt",
+      "bytes": 4544,
+      "sha256": "acfa7450a1a1f588bdeeb08a36268490eb84e735cc1dd8194a8e9b7a84c7e708",
+      "source_git_blob_sha256": "f4978676a34291c49548d6b501b34e3a243a1fd94d4548e4b31c836debde15b0",
+      "matches_git_blob_bytes": false,
+      "matches_source_after_crlf_to_lf": true,
+      "crlf_count": 73
+    },
+    {
+      "name": "THIRD-PARTY-CRATES.json",
+      "path": "extracted/windows/licenses/THIRD-PARTY-CRATES.json",
+      "source_path": "apps/ultra/THIRD-PARTY-CRATES.json",
+      "bytes": 202529,
+      "sha256": "37d45a91baa469ee1ec50aef94b02f417902c5564c3d12c54e5df3df5a686a04",
+      "source_git_blob_sha256": "45032e14f48889834352858d00a8e37f7b52b4f983dd2c64f7dfa6a848142f2e",
+      "matches_git_blob_bytes": false,
+      "matches_source_after_crlf_to_lf": true,
+      "crlf_count": 5118
+    },
+    {
+      "name": "Alive-LICENSE",
+      "path": "extracted/windows/licenses/Alive-LICENSE",
+      "source_path": "LICENSE",
+      "bytes": 35184,
+      "sha256": "e0eedba615d5cd1b986afb6c5b3a4b1ae33713e7e9dc74d19daec5e3221f9d2e",
+      "source_git_blob_sha256": "0d96a4ff68ad6d4b6f1f30f713b18d5184912ba8dd389f86aa7710db079abcb0",
+      "matches_git_blob_bytes": false,
+      "matches_source_after_crlf_to_lf": true,
+      "crlf_count": 661
+    },
+    {
+      "name": "fast_float-MIT",
+      "path": "extracted/windows/licenses/fast_float-MIT",
+      "source_path": "apps/ultra/src-tauri/native/vendor/fast_float/LICENSE-MIT",
+      "bytes": 1106,
+      "sha256": "bf1b57355feca8fce77ee95f48002f8d4789fb71b30ec7599c06cda4901fbb2b",
+      "source_git_blob_sha256": "e562f3f974ced7e69dd1db77b820b36bcf8f30377f1aa105723fba449c53c4e6",
+      "matches_git_blob_bytes": false,
+      "matches_source_after_crlf_to_lf": true,
+      "crlf_count": 27
+    }
+  ],
+  "inventory_count": 568,
+  "inventory_json_exactly_matches_source": true,
+  "line_ending_note": "All four files carry CRLF, matching LF Git blobs after only CRLF-to-LF normalization. Native CI verify_notice_resources checks SHA-256 against its Windows checkout source copies and passed."
+}

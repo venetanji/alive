@@ -1,0 +1,37 @@
+{
+  "reviewed_commit": "6d524cb474e54e6cea21897295921ed9cee5bb72",
+  "parent_commit": "bfe42ff060931eb23384093d9c133ab873f02546",
+  "platform": "Linux x86_64",
+  "compiler_flags": [
+    "-std=c++20",
+    "-O2",
+    "-UNDEBUG"
+  ],
+  "reviewed": {
+    "status": "passed",
+    "library_sha256": "5963b5431fe0da5b3ae86ffb5da0d442efaa03e0d7fe89873eb6608620787609",
+    "probe_sha256": "08010ec326f9e67062e874e20ca1993bf4c2bd2db0a8b3117399193ff162f659",
+    "assertions_enabled": true,
+    "physical_audio_tested": false,
+    "edits": {
+      "returncode": 0
+    },
+    "baseline": {
+      "returncode": 0
+    },
+    "samples_compared": 43008,
+    "bytes_compared": 172032,
+    "audio_sha256": "db265674da3bcad32b5582e699f5defa1efee1f24d931b72c279d57b93f9a0c3",
+    "byte_identical": true
+  },
+  "parent": {
+    "status": "expected_regression_reproduced",
+    "library_sha256": "334d9ecd4178d7550179e25db704635fbd5d954cfd84c9e63a59954c6b4b833d",
+    "probe_sha256": "08010ec326f9e67062e874e20ca1993bf4c2bd2db0a8b3117399193ff162f659",
+    "assertions_enabled": true,
+    "physical_audio_tested": false,
+    "edits": {
+      "returncode": -6
+    }
+  }
+}

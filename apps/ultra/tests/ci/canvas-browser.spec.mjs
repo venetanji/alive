@@ -1,5 +1,6 @@
 import {test, expect} from '@playwright/test';
 import {readFile} from 'node:fs/promises';
+import {OBJECTS} from '../../ui/canvas-catalog.mjs';
 
 // These tests use the real page and ordinary user controls. They deliberately
 // provide no __TAURI__ or native-IPC replacement and make no audio claim.
@@ -342,7 +343,7 @@ test('honest browser preview renders all inlets above outlets', async ({page}, t
   await expect(page.locator('#preview-banner')).toBeVisible();
   await expect(page.locator('#preview-banner')).toContainText(/native|preview/i);
   await expect(page.locator('#start-audio')).toBeDisabled();
-  await expect(page.locator('#palette [data-add]')).toHaveCount(62);
+  await expect(page.locator('#palette [data-add]')).toHaveCount(Object.keys(OBJECTS).length);
   await expect(page.locator('#objects [data-node]').first()).toBeVisible();
 
   const geometry = await page.locator('#objects [data-node]').evaluateAll(nodes =>
@@ -446,7 +447,7 @@ test('add and wire objects, delete and undo, export, and reject invalid import',
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('/canvas.html');
-  await expect(page.locator('#palette [data-add]')).toHaveCount(62);
+  await expect(page.locator('#palette [data-add]')).toHaveCount(Object.keys(OBJECTS).length);
   await importPatch(page, {version: 1, profile: 'ultra-canvas-v1', nodes: [], edges: []});
   await expect(page.locator('#patch-dialog')).not.toBeVisible();
   await expect(page.locator('#objects [data-node]')).toHaveCount(0);

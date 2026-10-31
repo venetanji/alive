@@ -44,7 +44,7 @@ export function validateHierarchy(input,{validateLeaf,validateExecution,nodeSpec
   function scope(patcher,depth,root=false){
     if(depth>HIERARCHY_LIMITS.depth)fail('Hierarchy exceeds 16 embedded patcher levels.');
     if(seen.has(patcher))fail('Hierarchy must be a tree.');seen.add(patcher);
-    fields(patcher,root?['version','profile','nodes','edges','helpShell']:['nodes','edges'],root?['version','profile','nodes','edges']:['nodes','edges']);
+    fields(patcher,root?['version','profile','nodes','edges','helpShell','device']:['nodes','edges'],root?['version','profile','nodes','edges']:['nodes','edges']);
     if(!Array.isArray(patcher.nodes)||!Array.isArray(patcher.edges))fail('Hierarchy nodes and edges must be arrays.');
     nodeCount+=patcher.nodes.length;edgeCount+=patcher.edges.length;
     if(nodeCount>HIERARCHY_LIMITS.nodes||edgeCount>HIERARCHY_LIMITS.edges)fail('Hierarchy exceeds 512 objects or 1024 cables.');
@@ -72,7 +72,7 @@ export function validateHierarchy(input,{validateLeaf,validateExecution,nodeSpec
       const key=`${edge.from}:${edge.outlet}>${edge.to}:${edge.inlet}`;if(duplicates.has(key))fail('Duplicate cable.');duplicates.add(key);
       return{...edge,...(Object.hasOwn(edge,'midpoints')?{midpoints:validateMidpoints(edge.midpoints)}:{})};
     });
-    return{...(root?{version:2,profile:'ultra-patcher-v2',...(Object.hasOwn(patcher,'helpShell')?{helpShell:patcher.helpShell}:{})}:{}),nodes,edges};
+    return{...(root?{version:2,profile:'ultra-patcher-v2',...(Object.hasOwn(patcher,'helpShell')?{helpShell:patcher.helpShell}:{}),...(Object.hasOwn(patcher,'device')?{device:patcher.device}:{})}:{}),nodes,edges};
   }
   const validated=scope(input,0,true);
   validateHelpShell(validated);

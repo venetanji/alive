@@ -1,0 +1,48 @@
+test_metadata_uses_utf8_under_windows_legacy_locale (test_notices.NoticesTests.test_metadata_uses_utf8_under_windows_legacy_locale) ... ERROR
+
+======================================================================
+ERROR: test_metadata_uses_utf8_under_windows_legacy_locale (test_notices.NoticesTests.test_metadata_uses_utf8_under_windows_legacy_locale)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "$LOCAL_EVIDENCE/packaging/de663840/source/apps/ultra/scripts/test_notices.py", line 51, in test_metadata_uses_utf8_under_windows_legacy_locale
+    self.assertEqual(notices.validate(app), payload)
+                     ~~~~~~~~~~~~~~~~^^^^^
+  File "$LOCAL_EVIDENCE/packaging/de663840/source/apps/ultra/scripts/notices.py", line 49, in validate
+    metadata = json.loads(subprocess.check_output([
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^
+        'cargo', 'metadata', '--manifest-path', str(app/'src-tauri/Cargo.toml'),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        '--locked', '--format-version', '1'], text=True, encoding='utf-8'))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1176, in __call__
+    return self._mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1180, in _mock_call
+    return self._execute_mock_call(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/unittest/mock.py", line 1247, in _execute_mock_call
+    result = effect(*args, **kwargs)
+  File "$LOCAL_EVIDENCE/packaging/de663840/source/apps/ultra/scripts/test_notices.py", line 42, in cargo_output
+    return real_check_output([
+        sys.executable, '-c',
+        'import sys; sys.stdout.buffer.write(' + repr(raw) + ')'], **kwargs)
+  File "/usr/lib/python3.14/subprocess.py", line 473, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               **kwargs).stdout
+               ^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 557, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 1208, in communicate
+    stdout = self.stdout.read()
+  File "/usr/lib/python3.14/encodings/cp1252.py", line 23, in decode
+    return codecs.charmap_decode(input,self.errors,decoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeDecodeError: 'charmap' codec can't decode byte 0x81 in position 31: character maps to <undefined>
+
+----------------------------------------------------------------------
+Ran 1 test in 0.019s
+
+FAILED (errors=1)
+Expected pre-fix regression failure confirmed; new code passes this test in packaging-tests.log

@@ -1,0 +1,1059 @@
+{
+  "sha": "bfe42ff060931eb23384093d9c133ab873f02546",
+  "instrumented": true,
+  "scope": "Actual release Tauri/WebKit, private Xvfb + twm, CPAL PipeWire software output",
+  "samples": [
+    {
+      "sample": "off-visible-1",
+      "seconds": 30.028612891001103,
+      "process_tree_cpu_percent_one_core": 30.27112851664243,
+      "cpu_by_process_name": {
+        "ultra": 4.762124728140668,
+        "WebKitNetworkPr": 0.0,
+        "WebKitWebProces": 25.50900378850176
+      },
+      "pss_mib_mean": 269.74615885416665,
+      "pss_mib_max": 277.21875,
+      "pss_missing": [],
+      "first_metric": {
+        "type": "metrics",
+        "time": 1792774464125,
+        "paths": 2400,
+        "rebuilds": 75,
+        "rects": 4801,
+        "polls": 73,
+        "ipc": {
+          "document_current": 1,
+          "audio_status": 73,
+          "canvas_status": 73
+        },
+        "hidden": false,
+        "visibility": "visible",
+        "audio": {
+          "running": false,
+          "ready": false,
+          "fault": false,
+          "server_lost": false,
+          "frames": 0,
+          "rejected": 0,
+          "period": 0,
+          "xruns": 0,
+          "sample_rate": 48000,
+          "delay_frames": 64,
+          "sequence_enabled": false,
+          "sequence_step": 0,
+          "sequence_note": 128,
+          "sequence_ticks": 0,
+          "sequence_clock_source": 0,
+          "message": "Saved audio configuration loaded. Audio is off.",
+          "output": {
+            "config": {
+              "host": "PipeWire",
+              "device": "default",
+              "sample_rate": 48000,
+              "buffer_frames": 512
+            },
+            "host": "",
+            "device": "",
+            "observed_buffer_frames": 0,
+            "callbacks": 0,
+            "stream_errors": 0,
+            "failed": false,
+            "message": "Saved audio configuration loaded. Audio is off."
+          }
+        },
+        "errors": [],
+        "summary": "16 objects / 16 cables",
+        "notice": "Shared native patch ready.",
+        "cables": 32
+      },
+      "last_metric": {
+        "type": "metrics",
+        "time": 1792774494245,
+        "paths": 11296,
+        "rebuilds": 353,
+        "rects": 22593,
+        "polls": 351,
+        "ipc": {
+          "document_current": 1,
+          "audio_status": 351,
+          "canvas_status": 351
+        },
+        "hidden": false,
+        "visibility": "visible",
+        "audio": {
+          "running": false,
+          "ready": false,
+          "fault": false,
+          "server_lost": false,
+          "frames": 0,
+          "rejected": 0,
+          "period": 0,
+          "xruns": 0,
+          "sample_rate": 48000,
+          "delay_frames": 64,
+          "sequence_enabled": false,
+          "sequence_step": 0,
+          "sequence_note": 128,
+          "sequence_ticks": 0,
+          "sequence_clock_source": 0,
+          "message": "Saved audio configuration loaded. Audio is off.",
+          "output": {
+            "config": {
+              "host": "PipeWire",
+              "device": "default",
+              "sample_rate": 48000,
+              "buffer_frames": 512
+            },
+            "host": "",
+            "device": "",
+            "observed_buffer_frames": 0,
+            "callbacks": 0,
+            "stream_errors": 0,
+            "failed": false,
+            "message": "Saved audio configuration loaded. Audio is off."
+          }
+        },
+        "errors": [],
+        "summary": "16 objects / 16 cables",
+        "notice": "Shared native patch ready.",
+        "cables": 32
+      },
+      "counter_interval_seconds": 30.12,
+      "counter_delta": {
+        "paths": 8896,
+        "rebuilds": 278,
+        "rects": 17792,
+        "polls": 278
+      },
+      "ipc_delta": {
+        "document_current": 0,
+        "audio_status": 278,
+        "canvas_status": 278
+      },
+      "poll_hz": 9.229747675962814
+    },
+    {
+      "sample": "off-visible-2",
+      "seconds": 30.026322516998334,
+      "process_tree_cpu_percent_one_core": 26.24364004462757,
+      "cpu_by_process_name": {
+        "ultra": 4.262926301665392,
+        "WebKitNetworkPr": 0.0,
+        "WebKitWebProces": 21.980713742962177
+      },
+      "pss_mib_mean": 260.3051432291667,
+      "pss_mib_max": 268.9658203125,
+      "pss_missing": [],
+      "first_metric": {
+        "type": "metrics",
+        "time": 1792774494245,
+        "paths": 11296,
+        "rebuilds": 353,
+        "rects": 22593,
+        "polls": 351,
+        "ipc": {
+          "document_current": 1,
+          "audio_status": 351,
+          "canvas_status": 351
+        },
+        "hidden": false,
+        "visibility": "visible",
+        "audio": {
+          "running": false,
+          "ready": false,
+          "fault": false,
+          "server_lost": false,
+          "frames": 0,
+          "rejected": 0,
+          "period": 0,
+          "xruns": 0,
+          "sample_rate": 48000,
+          "delay_frames": 64,
+          "sequence_enabled": false,
+          "sequence_step": 0,
+          "sequence_note": 128,
+          "sequence_ticks": 0,
+          "sequence_clock_source": 0,
+          "message": "Saved audio configuration loaded. Audio is off.",
+          "output": {
+            "config": {
+              "host": "PipeWire",
+              "device": "default",
+              "sample_rate": 48000,
+              "buffer_frames": 512
+            },
+            "host": "",
+            "device": "",
+            "observed_buffer_frames": 0,
+            "callbacks": 0,
+            "stream_errors": 0,
+            "failed": false,
+            "message": "Saved audio configuration loaded. Audio is off."
+          }
+        },
+        "errors": [],
+        "summary": "16 objects / 16 cables",
+        "notice": "Shared native patch ready.",
+        "cables": 32
+      },
+      "last_metric": {
+        "type": "metrics",
+        "time": 1792774524365,
+        "paths": 20256,
+        "rebuilds": 633,
+        "rects": 40513,
+        "polls": 631,
+        "ipc": {
+          "document_current": 1,
+          "audio_status": 631,
+          "canvas_status": 631
+        },
+        "hidden": false,
+        "visibility": "visible",
+        "audio": {
+          "running": false,
+          "ready": false,
+          "fault": false,
+          "server_lost": false,
+          "frames": 0,
+          "rejected": 0,
+          "period": 0,
+          "xruns": 0,
+          "sample_rate": 48000,
+          "delay_frames": 64,
+          "sequence_enabled": false,
+          "sequence_step": 0,
+          "sequence_note": 128,
+          "sequence_ticks": 0,
+          "sequence_clock_source": 0,
+          "message": "Saved audio configuration loaded. Audio is off.",
+          "output": {
+            "config": {
+              "host": "PipeWire",
+              "device": "default",
+              "sample_rate": 48000,
+              "buffer_frames": 512
+            },
+            "host": "",
+            "device": "",
+            "observed_buffer_frames": 0,
+            "callbacks": 0,
+            "stream_errors": 0,
+            "failed": false,
+            "message": "Saved audio configuration loaded. Audio is off."
+          }
+        },
+        "errors": [],
+        "summary": "16 objects / 16 cables",
+        "notice": "Shared native patch ready.",
+        "cables": 32
+      },
+      "counter_interval_seconds": 30.12,
+      "counter_delta": {
+        "paths": 8960,
+        "rebuilds": 280,
+        "rects": 17920,
+        "polls": 280
+      },
+      "ipc_delta": {
+        "document_current": 0,
+        "audio_status": 280,
+        "canvas_status": 280
+      },
+      "poll_hz": 9.296148738379813
+    },
+    {
+      "sample": "off-minimized-1",
+      "seconds": 30.032882919000258,
+      "process_tree_cpu_percent_one_core": 16.182262665584226,
+      "cpu_by_process_name": {
+        "ultra": 2.863527961399677,
+        "WebKitNetworkPr": 0.0,
+        "WebKitWebProces": 13.318734704184546
+      },
+      "pss_mib_mean": 252.55185231854838,
+      "pss_mib_max": 259.0009765625,
+      "pss_missing": [],
+      "first_metric": {
+        "type": "metrics",
+        "time": 1792774526961,
+        "paths": 21024,
+        "rebuilds": 657,
+        "rects": 42050,
+        "polls": 655,
+        "ipc": {
+          "document_current": 1,
+          "audio_status": 655,
+          "canvas_status": 655
+        },
+        "hidden": true,
+        "visibility": "hidden",
+        "audio": {
+          "running": false,
+          "ready": false,
+          "fault": false,
+          "server_lost": false,
+          "frames": 0,
+          "rejected": 0,
+          "period": 0,
+          "xruns": 0,
+          "sample_rate": 48000,
+          "delay_frames": 64,
+          "sequence_enabled": false,
+          "sequence_step": 0,
+          "sequence_note": 128,
+          "sequence_ticks": 0,
+          "sequence_clock_source": 0,
+          "message": "Saved audio configuration loaded. Audio is off.",
+          "output": {
+            "config": {
+              "host": "PipeWire",
+              "device": "default",
+              "sample_rate": 48000,
+              "buffer_frames": 512
+            },
+            "host": "",
+            "device": "",
+            "observed_buffer_frames": 0,
+            "callbacks": 0,
+            "stream_errors": 0,
+            "failed": false,
+            "message": "Saved audio configuration loaded. Audio is off."
+          }
+        },
+        "errors": [],
+        "summary": "16 objects / 16 cables",
+        "notice": "Shared native patch ready.",
+        "cables": 32
+      },
+      "last_metric": {
+        "type": "metrics",
+        "time": 1792774556961,
+        "paths": 29888,
+        "rebuilds": 934,
+        "rects": 59778,
+        "polls": 932,
+        "ipc": {
+          "document_current": 1,
+          "audio_status": 932,
+          "canvas_status": 932
+        },
+        "hidden": true,
+        "visibility": "hidden",
+        "audio": {
+          "running": false,
+          "ready": false,
+          "fault": false,
+          "server_lost": false,
+          "frames": 0,
+          "rejected": 0,
+          "period": 0,
+          "xruns": 0,
+          "sample_rate": 48000,
+          "delay_frames": 64,
+          "sequence_enabled": false,
+          "sequence_step": 0,
+          "sequence_note": 128,
+          "sequence_ticks": 0,
+          "sequence_clock_source": 0,
+          "message": "Saved audio configuration loaded. Audio is off.",
+          "output": {
+            "config": {
+              "host": "PipeWire",
+              "device": "default",
+              "sample_rate": 48000,
+              "buffer_frames": 512
+            },
+            "host": "",
+            "device": "",
+            "observed_buffer_frames": 0,
+            "callbacks": 0,
+            "stream_errors": 0,
+            "failed": false,
+            "message": "Saved audio configuration loaded. Audio is off."
+          }
+        },
+        "errors": [],
+        "summary": "16 objects / 16 cables",
+        "notice": "Shared native patch ready.",
+        "cables": 32
+      },
+      "counter_interval_seconds": 30.0,
+      "counter_delta": {
+        "paths": 8864,
+        "rebuilds": 277,
+        "rects": 17728,
+        "polls": 277
+      },
+      "ipc_delta": {
+        "document_current": 0,
+        "audio_status": 277,
+        "canvas_status": 277
+      },
+      "poll_hz": 9.233333333333333
+    },
+    {
+      "sample": "off-minimized-2",
+      "seconds": 30.030205923998437,
+      "process_tree_cpu_percent_one_core": 15.484409303647112,
+      "cpu_by_process_name": {
+        "ultra": 2.7638838111886237,
+        "WebKitNetworkPr": 0.0,
+        "WebKitWebProces": 12.720525492458487
+      },
+      "pss_mib_mean": 317.9911164314516,
+      "pss_mib_max": 331.126953125,
+      "pss_missing": [],
+      "first_metric": {
+        "type": "metrics",
+        "time": 1792774556961,
+        "paths": 29888,
+        "rebuilds": 934,
+        "rects": 59778,
+        "polls": 932,
+        "ipc": {
+          "document_current": 1,
+          "audio_status": 932,
+          "canvas_status": 932
+        },
+        "hidden": true,
+        "visibility": "hidden",
+        "audio": {
+          "running": false,
+          "ready": false,
+          "fault": false,
+          "server_lost": false,
+          "frames": 0,
+          "rejected": 0,
+          "period": 0,
+          "xruns": 0,
+          "sample_rate": 48000,
+          "delay_frames": 64,
+          "sequence_enabled": false,
+          "sequence_step": 0,
+          "sequence_note": 128,
+          "sequence_ticks": 0,
+          "sequence_clock_source": 0,
+          "message": "Saved audio configuration loaded. Audio is off.",
+          "output": {
+            "config": {
+              "host": "PipeWire",
+              "device": "default",
+              "sample_rate": 48000,
+              "buffer_frames": 512
+            },
+            "host": "",
+            "device": "",
+            "observed_buffer_frames": 0,
+            "callbacks": 0,
+            "stream_errors": 0,
+            "failed": false,
+            "message": "Saved audio configuration loaded. Audio is off."
+          }
+        },
+        "errors": [],
+        "summary": "16 objects / 16 cables",
+        "notice": "Shared native patch ready.",
+        "cables": 32
+      },
+      "last_metric": {
+        "type": "metrics",
+        "time": 1792774586961,
+        "paths": 38848,
+        "rebuilds": 1214,
+        "rects": 77698,
+        "polls": 1212,
+        "ipc": {
+          "document_current": 1,
+          "audio_status": 1212,
+          "canvas_status": 1212
+        },
+        "hidden": true,
+        "visibility": "hidden",
+        "audio": {
+          "running": false,
+          "ready": false,
+          "fault": false,
+          "server_lost": false,
+          "frames": 0,
+          "rejected": 0,
+          "period": 0,
+          "xruns": 0,
+          "sample_rate": 48000,
+          "delay_frames": 64,
+          "sequence_enabled": false,
+          "sequence_step": 0,
+          "sequence_note": 128,
+          "sequence_ticks": 0,
+          "sequence_clock_source": 0,
+          "message": "Saved audio configuration loaded. Audio is off.",
+          "output": {
+            "config": {
+              "host": "PipeWire",
+              "device": "default",
+              "sample_rate": 48000,
+              "buffer_frames": 512
+            },
+            "host": "",
+            "device": "",
+            "observed_buffer_frames": 0,
+            "callbacks": 0,
+            "stream_errors": 0,
+            "failed": false,
+            "message": "Saved audio configuration loaded. Audio is off."
+          }
+        },
+        "errors": [],
+        "summary": "16 objects / 16 cables",
+        "notice": "Shared native patch ready.",
+        "cables": 32
+      },
+      "counter_interval_seconds": 30.0,
+      "counter_delta": {
+        "paths": 8960,
+        "rebuilds": 280,
+        "rects": 17920,
+        "polls": 280
+      },
+      "ipc_delta": {
+        "document_current": 0,
+        "audio_status": 280,
+        "canvas_status": 280
+      },
+      "poll_hz": 9.333333333333334
+    },
+    {
+      "sample": "on-visible-1",
+      "seconds": 30.030495879000227,
+      "process_tree_cpu_percent_one_core": 30.169331990070443,
+      "cpu_by_process_name": {
+        "ultra": 6.326901852222278,
+        "WebKitNetworkPr": 0.0,
+        "WebKitWebProces": 23.84243013784816
+      },
+      "pss_mib_mean": 449.300056703629,
+      "pss_mib_max": 451.8486328125,
+      "pss_missing": [],
+      "first_metric": {
+        "type": "metrics",
+        "time": 1792774601385,
+        "paths": 42816,
+        "rebuilds": 1338,
+        "rects": 85636,
+        "polls": 1331,
+        "ipc": {
+          "document_current": 1,
+          "audio_status": 1332,
+          "canvas_status": 1332,
+          "audio_start": 1
+        },
+        "hidden": false,
+        "visibility": "visible",
+        "audio": {
+          "running": true,
+          "ready": true,
+          "fault": false,
+          "server_lost": false,
+          "frames": 260096,
+          "rejected": 0,
+          "period": 512,
+          "xruns": 0,
+          "sample_rate": 48000,
+          "delay_frames": 64,
+          "sequence_enabled": false,
+          "sequence_step": 0,
+          "sequence_note": 128,
+          "sequence_ticks": 0,
+          "sequence_clock_source": 0,
+          "message": "Audio output is running.",
+          "output": {
+            "config": {
+              "host": "PipeWire",
+              "device": "default",
+              "sample_rate": 48000,
+              "buffer_frames": 512
+            },
+            "host": "PipeWire",
+            "device": "default_output",
+            "observed_buffer_frames": 512,
+            "callbacks": 508,
+            "stream_errors": 0,
+            "failed": false,
+            "message": "Audio output is running."
+          }
+        },
+        "errors": [],
+        "summary": "16 objects / 16 cables",
+        "notice": "Audio running.",
+        "cables": 32
+      },
+      "last_metric": {
+        "type": "metrics",
+        "time": 1792774631505,
+        "paths": 51808,
+        "rebuilds": 1619,
+        "rects": 103620,
+        "polls": 1612,
+        "ipc": {
+          "document_current": 1,
+          "audio_status": 1613,
+          "canvas_status": 1613,
+          "audio_start": 1
+        },
+        "hidden": false,
+        "visibility": "visible",
+        "audio": {
+          "running": true,
+          "ready": true,
+          "fault": false,
+          "server_lost": false,
+          "frames": 1707008,
+          "rejected": 0,
+          "period": 512,
+          "xruns": 0,
+          "sample_rate": 48000,
+          "delay_frames": 64,
+          "sequence_enabled": false,
+          "sequence_step": 0,
+          "sequence_note": 128,
+          "sequence_ticks": 0,
+          "sequence_clock_source": 0,
+          "message": "Audio output is running.",
+          "output": {
+            "config": {
+              "host": "PipeWire",
+              "device": "default",
+              "sample_rate": 48000,
+              "buffer_frames": 512
+            },
+            "host": "PipeWire",
+            "device": "default_output",
+            "observed_buffer_frames": 512,
+            "callbacks": 3334,
+            "stream_errors": 0,
+            "failed": false,
+            "message": "Audio output is running."
+          }
+        },
+        "errors": [],
+        "summary": "16 objects / 16 cables",
+        "notice": "Audio running.",
+        "cables": 32
+      },
+      "counter_interval_seconds": 30.12,
+      "counter_delta": {
+        "paths": 8992,
+        "rebuilds": 281,
+        "rects": 17984,
+        "polls": 281
+      },
+      "ipc_delta": {
+        "document_current": 0,
+        "audio_status": 281,
+        "canvas_status": 281,
+        "audio_start": 0
+      },
+      "poll_hz": 9.329349269588313
+    },
+    {
+      "sample": "on-visible-2",
+      "seconds": 30.03078112300136,
+      "process_tree_cpu_percent_one_core": 26.73923121450082,
+      "cpu_by_process_name": {
+        "ultra": 5.96055091830093,
+        "WebKitNetworkPr": 0.0,
+        "WebKitWebProces": 20.77868029619989
+      },
+      "pss_mib_mean": 449.103767641129,
+      "pss_mib_max": 449.689453125,
+      "pss_missing": [],
+      "first_metric": {
+        "type": "metrics",
+        "time": 1792774631505,
+        "paths": 51808,
+        "rebuilds": 1619,
+        "rects": 103620,
+        "polls": 1612,
+        "ipc": {
+          "document_current": 1,
+          "audio_status": 1613,
+          "canvas_status": 1613,
+          "audio_start": 1
+        },
+        "hidden": false,
+        "visibility": "visible",
+        "audio": {
+          "running": true,
+          "ready": true,
+          "fault": false,
+          "server_lost": false,
+          "frames": 1707008,
+          "rejected": 0,
+          "period": 512,
+          "xruns": 0,
+          "sample_rate": 48000,
+          "delay_frames": 64,
+          "sequence_enabled": false,
+          "sequence_step": 0,
+          "sequence_note": 128,
+          "sequence_ticks": 0,
+          "sequence_clock_source": 0,
+          "message": "Audio output is running.",
+          "output": {
+            "config": {
+              "host": "PipeWire",
+              "device": "default",
+              "sample_rate": 48000,
+              "buffer_frames": 512
+            },
+            "host": "PipeWire",
+            "device": "default_output",
+            "observed_buffer_frames": 512,
+            "callbacks": 3334,
+            "stream_errors": 0,
+            "failed": false,
+            "message": "Audio output is running."
+          }
+        },
+        "errors": [],
+        "summary": "16 objects / 16 cables",
+        "notice": "Audio running.",
+        "cables": 32
+      },
+      "last_metric": {
+        "type": "metrics",
+        "time": 1792774661629,
+        "paths": 60800,
+        "rebuilds": 1900,
+        "rects": 121604,
+        "polls": 1893,
+        "ipc": {
+          "document_current": 1,
+          "audio_status": 1894,
+          "canvas_status": 1894,
+          "audio_start": 1
+        },
+        "hidden": false,
+        "visibility": "visible",
+        "audio": {
+          "running": true,
+          "ready": true,
+          "fault": false,
+          "server_lost": false,
+          "frames": 3151360,
+          "rejected": 0,
+          "period": 512,
+          "xruns": 0,
+          "sample_rate": 48000,
+          "delay_frames": 64,
+          "sequence_enabled": false,
+          "sequence_step": 0,
+          "sequence_note": 128,
+          "sequence_ticks": 0,
+          "sequence_clock_source": 0,
+          "message": "Audio output is running.",
+          "output": {
+            "config": {
+              "host": "PipeWire",
+              "device": "default",
+              "sample_rate": 48000,
+              "buffer_frames": 512
+            },
+            "host": "PipeWire",
+            "device": "default_output",
+            "observed_buffer_frames": 512,
+            "callbacks": 6155,
+            "stream_errors": 0,
+            "failed": false,
+            "message": "Audio output is running."
+          }
+        },
+        "errors": [],
+        "summary": "16 objects / 16 cables",
+        "notice": "Audio running.",
+        "cables": 32
+      },
+      "counter_interval_seconds": 30.124,
+      "counter_delta": {
+        "paths": 8992,
+        "rebuilds": 281,
+        "rects": 17984,
+        "polls": 281
+      },
+      "ipc_delta": {
+        "document_current": 0,
+        "audio_status": 281,
+        "canvas_status": 281,
+        "audio_start": 0
+      },
+      "poll_hz": 9.328110476696322
+    },
+    {
+      "sample": "on-minimized-1",
+      "seconds": 30.030590645998018,
+      "process_tree_cpu_percent_one_core": 22.277284116260077,
+      "cpu_by_process_name": {
+        "ultra": 4.761811104073528,
+        "WebKitNetworkPr": 0.0,
+        "WebKitWebProces": 17.515473012186543
+      },
+      "pss_mib_mean": 446.55758568548384,
+      "pss_mib_max": 449.7822265625,
+      "pss_missing": [],
+      "first_metric": {
+        "type": "metrics",
+        "time": 1792774663961,
+        "paths": 61504,
+        "rebuilds": 1922,
+        "rects": 123013,
+        "polls": 1915,
+        "ipc": {
+          "document_current": 1,
+          "audio_status": 1916,
+          "canvas_status": 1916,
+          "audio_start": 1
+        },
+        "hidden": true,
+        "visibility": "hidden",
+        "audio": {
+          "running": true,
+          "ready": true,
+          "fault": false,
+          "server_lost": false,
+          "frames": 3264512,
+          "rejected": 0,
+          "period": 512,
+          "xruns": 0,
+          "sample_rate": 48000,
+          "delay_frames": 64,
+          "sequence_enabled": false,
+          "sequence_step": 0,
+          "sequence_note": 128,
+          "sequence_ticks": 0,
+          "sequence_clock_source": 0,
+          "message": "Audio output is running.",
+          "output": {
+            "config": {
+              "host": "PipeWire",
+              "device": "default",
+              "sample_rate": 48000,
+              "buffer_frames": 512
+            },
+            "host": "PipeWire",
+            "device": "default_output",
+            "observed_buffer_frames": 512,
+            "callbacks": 6376,
+            "stream_errors": 0,
+            "failed": false,
+            "message": "Audio output is running."
+          }
+        },
+        "errors": [],
+        "summary": "16 objects / 16 cables",
+        "notice": "Audio running.",
+        "cables": 32
+      },
+      "last_metric": {
+        "type": "metrics",
+        "time": 1792774693961,
+        "paths": 70432,
+        "rebuilds": 2201,
+        "rects": 140869,
+        "polls": 2194,
+        "ipc": {
+          "document_current": 1,
+          "audio_status": 2195,
+          "canvas_status": 2195,
+          "audio_start": 1
+        },
+        "hidden": true,
+        "visibility": "hidden",
+        "audio": {
+          "running": true,
+          "ready": true,
+          "fault": false,
+          "server_lost": false,
+          "frames": 4702370,
+          "rejected": 0,
+          "period": 512,
+          "xruns": 0,
+          "sample_rate": 48000,
+          "delay_frames": 64,
+          "sequence_enabled": false,
+          "sequence_step": 0,
+          "sequence_note": 128,
+          "sequence_ticks": 0,
+          "sequence_clock_source": 0,
+          "message": "Audio output is running.",
+          "output": {
+            "config": {
+              "host": "PipeWire",
+              "device": "default",
+              "sample_rate": 48000,
+              "buffer_frames": 512
+            },
+            "host": "PipeWire",
+            "device": "default_output",
+            "observed_buffer_frames": 512,
+            "callbacks": 9185,
+            "stream_errors": 0,
+            "failed": false,
+            "message": "Audio output is running."
+          }
+        },
+        "errors": [],
+        "summary": "16 objects / 16 cables",
+        "notice": "Audio running.",
+        "cables": 32
+      },
+      "counter_interval_seconds": 30.0,
+      "counter_delta": {
+        "paths": 8928,
+        "rebuilds": 279,
+        "rects": 17856,
+        "polls": 279
+      },
+      "ipc_delta": {
+        "document_current": 0,
+        "audio_status": 279,
+        "canvas_status": 279,
+        "audio_start": 0
+      },
+      "poll_hz": 9.3
+    },
+    {
+      "sample": "on-minimized-2",
+      "seconds": 30.031739514000947,
+      "process_tree_cpu_percent_one_core": 18.34725556750121,
+      "cpu_by_process_name": {
+        "ultra": 5.16120619412466,
+        "WebKitNetworkPr": 0.0,
+        "WebKitWebProces": 13.186049373376552
+      },
+      "pss_mib_mean": 447.21446572580646,
+      "pss_mib_max": 449.380859375,
+      "pss_missing": [],
+      "first_metric": {
+        "type": "metrics",
+        "time": 1792774693961,
+        "paths": 70432,
+        "rebuilds": 2201,
+        "rects": 140869,
+        "polls": 2194,
+        "ipc": {
+          "document_current": 1,
+          "audio_status": 2195,
+          "canvas_status": 2195,
+          "audio_start": 1
+        },
+        "hidden": true,
+        "visibility": "hidden",
+        "audio": {
+          "running": true,
+          "ready": true,
+          "fault": false,
+          "server_lost": false,
+          "frames": 4702370,
+          "rejected": 0,
+          "period": 512,
+          "xruns": 0,
+          "sample_rate": 48000,
+          "delay_frames": 64,
+          "sequence_enabled": false,
+          "sequence_step": 0,
+          "sequence_note": 128,
+          "sequence_ticks": 0,
+          "sequence_clock_source": 0,
+          "message": "Audio output is running.",
+          "output": {
+            "config": {
+              "host": "PipeWire",
+              "device": "default",
+              "sample_rate": 48000,
+              "buffer_frames": 512
+            },
+            "host": "PipeWire",
+            "device": "default_output",
+            "observed_buffer_frames": 512,
+            "callbacks": 9185,
+            "stream_errors": 0,
+            "failed": false,
+            "message": "Audio output is running."
+          }
+        },
+        "errors": [],
+        "summary": "16 objects / 16 cables",
+        "notice": "Audio running.",
+        "cables": 32
+      },
+      "last_metric": {
+        "type": "metrics",
+        "time": 1792774723965,
+        "paths": 79360,
+        "rebuilds": 2480,
+        "rects": 158725,
+        "polls": 2473,
+        "ipc": {
+          "document_current": 1,
+          "audio_status": 2474,
+          "canvas_status": 2474,
+          "audio_start": 1
+        },
+        "hidden": true,
+        "visibility": "hidden",
+        "audio": {
+          "running": true,
+          "ready": true,
+          "fault": false,
+          "server_lost": false,
+          "frames": 6146560,
+          "rejected": 0,
+          "period": 512,
+          "xruns": 0,
+          "sample_rate": 48000,
+          "delay_frames": 64,
+          "sequence_enabled": false,
+          "sequence_step": 0,
+          "sequence_note": 128,
+          "sequence_ticks": 0,
+          "sequence_clock_source": 0,
+          "message": "Audio output is running.",
+          "output": {
+            "config": {
+              "host": "PipeWire",
+              "device": "default",
+              "sample_rate": 48000,
+              "buffer_frames": 512
+            },
+            "host": "PipeWire",
+            "device": "default_output",
+            "observed_buffer_frames": 512,
+            "callbacks": 12005,
+            "stream_errors": 0,
+            "failed": false,
+            "message": "Audio output is running."
+          }
+        },
+        "errors": [],
+        "summary": "16 objects / 16 cables",
+        "notice": "Audio running.",
+        "cables": 32
+      },
+      "counter_interval_seconds": 30.004,
+      "counter_delta": {
+        "paths": 8928,
+        "rebuilds": 279,
+        "rects": 17856,
+        "polls": 279
+      },
+      "ipc_delta": {
+        "document_current": 0,
+        "audio_status": 279,
+        "canvas_status": 279,
+        "audio_start": 0
+      },
+      "poll_hz": 9.298760165311291
+    }
+  ]
+}

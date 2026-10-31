@@ -12,7 +12,9 @@ assert os.environ.get('XAUTHORITY') and not os.environ.get('WAYLAND_DISPLAY')
 
 binary = Path('apps/ultra/src-tauri/target/release/ultra').resolve()
 output = Path(os.environ['ULTRA_TEST_OUTPUT_DIR'])
-env = {**os.environ, 'LD_LIBRARY_PATH': str(binary.parent)}
+assert (binary.parent / 'libultra_native.so').is_file(), 'Build the adjacent native library first'
+env = {**os.environ, 'LD_LIBRARY_PATH': os.pathsep.join(filter(None,
+    [str(binary.parent), os.environ.get('LD_LIBRARY_PATH')]))}
 
 
 def wait_until(check, description):

@@ -1,0 +1,40 @@
+✔ starter is a valid real editable graph, including independent MIDI voice and explicit stereo join (7.232895ms)
+✔ add/delete/connect/disconnect and layout retain stable IDs and explicit fan-out order (4.545ms)
+✔ strict validation rejects malformed, unknown, oversized, duplicate and cyclic edits atomically (6.10108ms)
+✔ audio supports missing paths, mono fan-in and parallel gains while rejecting duplicate devices (3.349807ms)
+✔ parameter edit and undo round trip without mutating past snapshots; message is structural (2.167388ms)
+✔ preview can edit and export but never invents runtime execution (4.176939ms)
+✔ standalone help hosting initializes Basic and navigation preserves runtime and saved content (13.507571ms)
+✔ standalone load and history reconcile shell identity and helper-only history never sends parameters (16.174146ms)
+✔ message-text history admission also reconciles appearance of a shell with the same executable graph (10.445093ms)
+✔ prepare precedes audio; actual events include revision and own hot number inlet (5.660954ms)
+✔ starting audio leaves continuous DSP running without requiring a control event (1.125633ms)
+✔ parameter dragging uses bounded latest-wins native admission and never stops/reapplies graph (54.766225ms)
+✔ structural apply prevents stale actions, resets observations, and retains valid graph on native rejection (2.244122ms)
+✔ latest structural graph wins while earlier apply is pending; intermediate controls never send (3.977595ms)
+✔ native observations, stop, panic and awaited navigation cleanup use native commands (2.179912ms)
+✔ MIDI channel and voice device edits are structural safety boundaries (1.58752ms)
+✔ failed native startup never claims audio ready and reports backend reason (1.321911ms)
+✔ event queue overflow fails closed instead of dropping a possible note termination (8.664271ms)
+✔ dispose while startup is pending cancels startup and stops only its document (2.310166ms)
+✔ missing known parameters normalize to protocol defaults but unknown parameters still reject (0.971613ms)
+✔ Panic cancels a pending startup and cannot be overwritten by an apply result (2.254462ms)
+✔ undo and redo of numeric parameters remain live, while topology undo reapplies (4.411951ms)
+✔ native audio fault retains the backend reason and recovery instruction (1.234597ms)
+✔ flat authoring retains valid midpoint arrays and refuses invalid geometry without weakening cable schema (1.392403ms)
+✔ movement keeps absolute bends for one endpoint and translates equal endpoint moves atomically with history (0.975852ms)
+✔ moving routed cables and undo redo preserve standalone native admission and live observations (2.36577ms)
+✔ Max number authoring uses an integer box while saved legacy numbers round-trip unchanged (7.675605ms)
+✔ Max integer bounds and Tab cables import without a number semantic or port warning (6.367039ms)
+✔ plain numeric send methods import but unresolved destination scope stays an error (3.909397ms)
+✔ integer bound messages outside the qualified integral profile keep an import error (1.656299ms)
+✔ physical Tab is a separate queued action after numeric commit and selector tab stays data (4.363028ms)
+✔ shared numeric Tab waits for atomic hot admission and close barriers cancel it (15.320854ms)
+ℹ tests 68
+ℹ suites 0
+ℹ pass 68
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 311.789458

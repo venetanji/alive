@@ -114,20 +114,7 @@ jobs:
       - name: Build actual Clockwork, Faust, and Ultra native engine
         run: bash apps/ultra/build.sh --native-only
       - name: Exercise the compiled native adapter with explicit JACK ABI tests
-        run: |
-          python3 apps/ultra/tests/check_backend.py
-          python3 apps/ultra/tests/check_sequence.py
-          python3 apps/ultra/tests/check_canvas.py
-          c++ -std=c++20 -O2 -Wall -Wextra -Werror apps/ultra/tests/external_audio_test.cpp \
-            -Lapps/ultra/build -lultra_native -Wl,-rpath,"$PWD/apps/ultra/build" \
-            -o apps/ultra/build/external-audio-test
-          apps/ultra/build/external-audio-test
-          for test in document_runtime document_audio signal_audio canvas_numeric_ui_backend canvas_message_ui_backend canvas_print_popup_backend; do
-            c++ -std=c++20 -O2 -Wall -Wextra -Werror "apps/ultra/tests/${test}_test.cpp" \
-              -Lapps/ultra/build -lultra_native -Wl,-rpath,"$PWD/apps/ultra/build" \
-              -o "apps/ultra/build/${test}-test"
-            "apps/ultra/build/${test}-test"
-          done
+        run: bash apps/ultra/tests/ci/check-native.sh
       - name: Build and test the real Rust/Tauri bridge
         run: |
           DEPS="$GITHUB_WORKSPACE/experiments/clockwork-faust/.deps"
@@ -139,6 +126,20 @@ jobs:
           cargo test --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked
           cargo build --manifest-path apps/ultra/src-tauri/Cargo.toml --release --locked
 
+      - name: Render the saved instrument without a desktop or editor
+        run: |
+          env -u DISPLAY -u WAYLAND_DISPLAY \
+            LD_LIBRARY_PATH="$GITHUB_WORKSPACE/apps/ultra/build" \
+            apps/ultra/src-tauri/target/release/ultra --instrument-probe \
+            apps/ultra/examples/subtractive.ultra "$GITHUB_WORKSPACE/apps/ultra/build/instrument-evidence"
+      - name: Save authored instrument render evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: authored-instrument-${{ github.run_id }}-${{ github.run_attempt }}
+          path: apps/ultra/build/instrument-evidence/
+          if-no-files-found: warn
+          retention-days: 7
       - name: Gate real CPAL output through a private software-only PipeWire graph
         timeout-minutes: 5
         run: bash apps/ultra/tests/check_cpal_audio.sh "$GITHUB_WORKSPACE/apps/ultra/build/cpal-evidence"

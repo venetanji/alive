@@ -7,6 +7,19 @@ if [[ ${ULTRA_TEST_PRIVATE_SESSION:-} != 1 ]]; then
   for tool in dbus-run-session xvfb-run Xvfb python3 pipewire wireplumber pw-cat pw-link; do
     command -v "$tool" >/dev/null
   done
+  ultra_registry_bin=$(command -v at-spi2-registryd || true)
+  for candidate in /usr/lib/at-spi2-registryd /usr/libexec/at-spi2-registryd \
+    /usr/lib/x86_64-linux-gnu/at-spi2-core/at-spi2-registryd \
+    "${ALIVE_SYSROOT:-/nonexistent}/usr/lib/at-spi2-registryd" \
+    "${ALIVE_SYSROOT:-/nonexistent}/usr/libexec/at-spi2-registryd" \
+    "${ALIVE_SYSROOT:-/nonexistent}/usr/lib/x86_64-linux-gnu/at-spi2-core/at-spi2-registryd"; do
+    if [[ -x "$candidate" ]]; then ultra_registry_bin=$candidate; break; fi
+  done
+  if [[ -z "$ultra_registry_bin" ]]; then
+    echo 'Desktop tests require at-spi2-registryd; none found on PATH or in system/published sysroot locations.' >&2
+    exit 2
+  fi
+  export ULTRA_TEST_REGISTRY_BIN="$ultra_registry_bin"
   if [[ ! -x "$ROOT/apps/ultra/src-tauri/target/release/ultra" ]]; then
     echo 'Build the native app with bash apps/ultra/build.sh first.' >&2
     exit 2
@@ -55,13 +68,15 @@ fi
 export GDK_BACKEND=x11 GDK_SCALE=1 GDK_DPI_SCALE=1
 export GTK_USE_PORTAL=0 GIO_USE_VFS=local XDG_CURRENT_DESKTOP=GNOME
 ultra_a11y_file=$(mktemp)
-ultra_a11y_pid='' ultra_registry_pid='' ultra_test_pid=''
+ultra_a11y_pid='' ultra_registry_pid='' ultra_test_pid='' ultra_wm_pid=''
 cleanup() {
   result=$?
   trap - EXIT
-  for pid in "$ultra_test_pid" "$ultra_registry_pid" "$ultra_a11y_pid"; do
+  for pid in "$ultra_test_pid" "$ultra_wm_pid" "$ultra_registry_pid" "$ultra_a11y_pid"; do
     if [[ -n "$pid" ]]; then
       kill "$pid" 2>/dev/null || true
+      # Motif may retain the session after TERM; never leave the private WM alive.
+      if [[ "$pid" == "$ultra_wm_pid" ]]; then sleep .1; kill -KILL "$pid" 2>/dev/null || true; fi
       wait "$pid" 2>/dev/null || true
     fi
   done
@@ -80,7 +95,7 @@ for attempt in {1..30}; do
 done
 IFS= read -r AT_SPI_BUS_ADDRESS <"$ultra_a11y_file"
 export AT_SPI_BUS_ADDRESS
-/usr/lib/at-spi2-registryd >"$ULTRA_TEST_OUTPUT_DIR/registry.log" 2>&1 &
+"${ULTRA_TEST_REGISTRY_BIN:-/usr/lib/at-spi2-registryd}" >"$ULTRA_TEST_OUTPUT_DIR/registry.log" 2>&1 &
 ultra_registry_pid=$!
 cd "$ROOT"
 python3 "$ROOT/apps/ultra/tests/check_document_startup.py"
@@ -91,11 +106,26 @@ if [[ ${ULTRA_TEST_PINCH_ONLY:-0} == 1 ]]; then
 fi
 # Test the same build checked above, not run.sh's preferred packaged copy.
 ultra_initial_patch="$ULTRA_TEST_OUTPUT_DIR/initial.ultra"
-printf '%s\n' '{"version":1,"profile":"ultra-canvas-v1","nodes":[],"edges":[]}' > "$ultra_initial_patch"
+if [[ -n ${ULTRA_TEST_INITIAL_PATCH:-} ]]; then
+  cp -- "$ULTRA_TEST_INITIAL_PATCH" "$ultra_initial_patch"
+else
+  printf '%s\n' '{"version":1,"profile":"ultra-canvas-v1","nodes":[],"edges":[]}' > "$ultra_initial_patch"
+fi
+if [[ ${ULTRA_TEST_WM:-0} == 1 ]]; then
+  mwm -xrm 'Mwm*interactivePlacement: False' -xrm 'Mwm*usePPosition: on' \
+    -xrm 'Mwm*configFile: /dev/null' >"$ULTRA_TEST_OUTPUT_DIR/wm.log" 2>&1 &
+  ultra_wm_pid=$!
+  sleep .3
+  kill -0 "$ultra_wm_pid"
+fi
 LD_LIBRARY_PATH="$ROOT/apps/ultra/src-tauri/target/release${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}" \
   "$ROOT/apps/ultra/src-tauri/target/release/ultra" "$ultra_initial_patch" >"$ULTRA_TEST_OUTPUT_DIR/app.log" 2>&1 &
 ultra_test_pid=$!
 export ULTRA_TEST_PID="$ultra_test_pid"
+if [[ -n ${ULTRA_TEST_SCRIPT:-} ]]; then
+  python3 "$ULTRA_TEST_SCRIPT"
+  exit
+fi
 if [[ ${ULTRA_TEST_COMMENTS_ONLY:-0} == 1 ]]; then
   python3 "$ROOT/apps/ultra/tests/check_comments_desktop.py"
   exit
