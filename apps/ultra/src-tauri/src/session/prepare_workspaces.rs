@@ -73,7 +73,7 @@ pub(super) fn prepare(
     {
         return Err("Workspace supports at most eight logical tracks and six device roots; the complete musical work envelope may impose a lower limit".into());
     }
-    let document = Document::WorkspacesV4(project.clone());
+    let document = project.clone();
     super::prepare::check_sources(&document, path, None)?;
     let mut references: Vec<_> = project
         .tracks
@@ -89,8 +89,7 @@ pub(super) fn prepare(
         devices: vec![],
         events: vec![],
         length_frames: frame_at(project.length_beats, project.tempo)?,
-        schedule: Schedule::Workspaces(PreparedWorkspaces::default()),
-        notice: None,
+        schedule: PreparedWorkspaces::default(),
     };
     for (track, reference) in references {
         let device = super::prepare::prepare_device(reference, path, track).map_err(|e| {
@@ -218,15 +217,12 @@ pub(super) fn compile(project: &ProjectV4, prepared: &mut PreparedSession) -> Re
                 if audio_frames > 8 * 1024 * 1024 {
                     return Err("Workspace exceeds 64 MiB of prepared stereo PCM".into());
                 }
-                let retained = match &prepared.schedule {
-                    Schedule::Workspaces(old) => old.audio.iter().find(|a| {
+                let retained = prepared.schedule.audio.iter().find(|a| {
                         a.source_id == id
                             && a.file == *file
                             && a.tempo == project.tempo
                             && a.source_tempo == *source_tempo
-                    }),
-                    _ => None,
-                };
+                    });
                 let (samples, waveform_peaks) = if let Some(retained) = retained {
                     (retained.samples.clone(), retained.waveform_peaks.clone())
                 } else {
@@ -359,12 +355,12 @@ pub(super) fn compile(project: &ProjectV4, prepared: &mut PreparedSession) -> Re
     prepared.events = events;
     prepared.tracks = tracks;
     prepared.length_frames = frame(project.length_beats)?;
-    prepared.schedule = Schedule::Workspaces(PreparedWorkspaces {
+    prepared.schedule = PreparedWorkspaces {
         sources,
         slots,
         placements,
         audio,
-    });
+    };
     Ok(())
 }
 
@@ -412,10 +408,9 @@ mod tests {
 
     fn saved(project: &ProjectV4) -> SavedSession {
         SavedSession {
-            score: Document::WorkspacesV4(project.clone()),
+            score: project.clone(),
             master: MasterSettings { gain: 1. },
             launch: Default::default(),
-            wire: SaveWire::V6,
         }
     }
 
@@ -427,7 +422,7 @@ mod tests {
             track_id: "track".into(),
             name: "Notes".into(),
             length_beats: 4.,
-            notes: vec![clips::ClipNote {
+            notes: vec![ClipNote {
                 id: "note".into(),
                 beat: 0.,
                 duration: 1.,
@@ -452,10 +447,8 @@ mod tests {
         assert!(prepared.events.is_empty());
         assert!(prepared.devices.is_empty());
         assert!(prepared.tracks[0].midi_instrument().is_err());
-        assert_eq!(prepared.saved.score, Document::WorkspacesV4(project));
-        let Schedule::Workspaces(schedule) = prepared.schedule else {
-            panic!()
-        };
+        assert_eq!(prepared.saved.score, project);
+        let schedule = prepared.schedule;
         let slot = schedule.slots[0].descriptor;
         assert_eq!(
             (
@@ -511,10 +504,10 @@ mod tests {
         let path = Path::new(env!("CARGO_MANIFEST_DIR"))
             .join("../../alive/examples/two-instruments.alive");
         let old = super::super::read(&path).unwrap();
-        let mut project = prospective_from_document(&old.saved.score).unwrap();
+        let mut project = old.saved.score.clone();
         let mut prepared = prepare(
             &old.saved
-                .with_score(Document::WorkspacesV4(project.clone())),
+                .with_score(project.clone()),
             &project,
             &path,
         )
@@ -582,9 +575,7 @@ mod tests {
             },
         });
         let mut prepared = prepare(&saved(&project), &project, &folder.join("set.alive")).unwrap();
-        let Schedule::Workspaces(initial) = &prepared.schedule else {
-            panic!()
-        };
+        let initial = &prepared.schedule;
         let retained = initial.audio[0].samples.clone();
         assert_eq!(
             &*retained,
@@ -610,9 +601,7 @@ mod tests {
         );
         project.tracks[0].slots[0].as_mut().unwrap().region.start = 1. / 24_000.;
         compile(&project, &mut prepared).unwrap();
-        let Schedule::Workspaces(updated) = &prepared.schedule else {
-            panic!()
-        };
+        let updated = &prepared.schedule;
         assert!(Arc::ptr_eq(&retained, &updated.audio[0].samples));
         let descriptors = updated.audio_descriptors();
         assert_eq!(descriptors[0].frames, 4);

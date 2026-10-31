@@ -5,22 +5,15 @@ export function browserEntries(bundled=[],document,instances={}){
   function device(entry){if(!entry.path||paths.has(entry.path))return;paths.add(entry.path);entries.push({...entry,id:`device:${entry.path}`});}
   for(const entry of bundled)device(entry);
   for(const track of document?.tracks??[]){
-    const instrument=track.chain?.instrument??track.device;
+    const instrument=track.chain.kind==='midi'?track.chain.instrument:null;
     for(const [reference,kind]of [[instrument,'instrument'],...(track.effects??[]).map(effect=>[effect,'effect'])]){
       if(!reference)continue;const manifest=instances[reference.instanceId]?.manifest;
       device({kind,path:instances[reference.instanceId]?.path??reference.path,name:manifest?.name??reference.id??'Saved device',description:`In project / ${track.name}`});
     }
   }
-  if(document?.format==='alive-session-v4'){
-    for(const source of document.sources??[]){
-      if(source.kind!=='midi')continue;
-      const track=document.tracks.find(track=>track.id===source.trackId);
-      entries.push({id:`source:${source.id}`,kind:'source',sourceId:source.id,trackId:source.trackId,name:source.name,description:`${track?.name??'MIDI'} / ${source.lengthBeats} beats`});
-    }
-  }else{
-    for(const track of document?.tracks??[])for(const [slot,clip]of (track.slots??[]).entries()){
-      if(clip)entries.push({id:`clip:${track.id}:${clip.id}`,kind:'source',name:clip.name,description:`${track.name} / ${clip.lengthBeats} beats`,trackId:track.id,slot,clipId:clip.id});
-    }
+  for(const source of document?.sources??[]){
+    const track=document.tracks.find(track=>track.id===source.trackId);
+    entries.push({id:`source:${source.id}`,kind:'source',sourceId:source.id,trackId:source.trackId,name:source.name,description:`${track.name} / ${source.kind==='audio'?'Audio':`${source.lengthBeats} beats`}`});
   }
   return entries;
 }

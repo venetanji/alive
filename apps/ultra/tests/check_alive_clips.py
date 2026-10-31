@@ -10,6 +10,22 @@ ui, windows = alive.ui, alive.windows
 events = []
 
 
+def shared_owner_fixture(document):
+    fixture = json.loads(json.dumps(document))
+    assert fixture['format'] == 'alive-session-v6'
+    score = fixture['score']
+    assert score['format'] == 'alive-session-v4'
+    harmony = next(track for track in score['tracks'] if track['name'] == 'Harmony')
+    removed_id = harmony['chain']['instrument']['instanceId']
+    # Pulse supplies audio while both tracks retain a shared Utility owner.
+    harmony['chain']['instrument'] = None
+    for source in score['sources']:
+        if source['trackId'] == harmony['id']:
+            source['automation'] = [lane for lane in source['automation']
+                                    if lane['instanceId'] != removed_id]
+    return fixture
+
+
 
 def set_audio_details(expanded):
     control = ui.wait_for('Audio details')
@@ -69,12 +85,11 @@ def run():
     windows.focus(alive.MAIN)
     ui.wait_for('Select Pulse slot 4')
     alive.screenshot('clips-initial.png')
-    # New exercises the accepted dirty guard for an in-memory legacy upgrade.
-    ui.click('New session')
-    windows.focus('Unsaved Alive Session'); ui.click('Discard'); windows.focus(alive.MAIN)
-    initial_path, initial = saved('initial-v3.alive')
-    assert json.loads(initial_path.read_text())['format'] == 'alive-session-v5'
-    assert initial['format'] == 'alive-session-v3'
+    initial_path, initial = saved('initial-v4.alive')
+    assert initial['format'] == 'alive-session-v4'
+    fixture_path = ui.output / 'shared-owner.alive'
+    fixture_path.write_text(json.dumps(shared_owner_fixture(json.loads(initial_path.read_text())), indent=2) + '\n')
+    alive.choose_file('Open session', 'Open Alive Session', fixture_path)
     shared = ui.output / 'shared-utility.ultra'
     original = Path('apps/ultra/examples/utility.ultra').read_bytes()
     shared.write_bytes(original)
@@ -87,36 +102,44 @@ def run():
     windows.focus('Pulse - Ultra Hosted Editor'); alive.numeric('Hosted Gain base', .65)
     windows.focus(alive.MAIN)
     ui.click('Duplicate clip')
+    ui.click('Select Pulse slot 2')
+    ui.text('Clip name', 'Clip 1 copy'); ui.keys('Tab')
+    _, duplicated = saved('clips-shared-source.alive')
+    assert duplicated['tracks'][0]['slots'][0]['sourceId'] == duplicated['tracks'][0]['slots'][1]['sourceId']
+    ui.click('Make source independent')
     alive.numeric('Note 1 pitch', 61)
-    ui.click('Undo pending edit'); assert alive.value('Note 1 pitch') == '60'
-    ui.click('Redo pending edit'); assert alive.value('Note 1 pitch') == '61'
-    alive.numeric('Selected clip length', .25)
-    alive.wait_value('Session status', lambda s: 'truncate' in s)
-    assert float(alive.value('Selected clip length')) == 8
-    ui.click('Select Pulse slot 1'); ui.click('Select Pulse slot 2')
-    assert float(alive.value('Selected clip length')) == 8
-    assert editor_exists()
+    ui.click('Undo'); alive.wait_value('Note 1 pitch', lambda value: value == '60')
+    ui.click('Redo'); alive.wait_value('Note 1 pitch', lambda value: value == '61')
+    alive.numeric('Loop Length', 4)
+    alive.numeric('Loop Position', 2)
+    alive.numeric('Clip Start', 1)
+    alive.settled()
+    assert editor_exists(), 'Immediate musical edits must retain the independent hosted editor'
+    ui.click('Select Pulse slot 1'); assert alive.value('Note 1 pitch') == '60'
+    assert float(alive.value('Clip Start')) == 0
     ui.click('Select Pulse slot 3'); ui.click('Create clip'); ui.click('Add note')
     assert alive.value('Note 1 velocity') == '100'
-    ui.click('Delete clip'); ui.click('Undo pending edit')
-    ui.click('Select Pulse slot 2'); ui.click('Set Saved Default')
-    assert editor_exists()
-    ui.click('Prepare / Apply'); time.sleep(.4)
-    assert not editor_exists(), 'Apply retains the existing generation/editor boundary'
-    path, bank = saved('clips-prepared.alive')
+    ui.click('Delete clip'); ui.click('Undo')
+    ui.click('Select Pulse slot 2')
+    assert float(alive.value('Clip Start')) == 1
+    assert float(alive.value('Loop Position')) == 2
+    assert float(alive.value('Loop Length')) == 4
+    path, bank = saved('clips-current.alive')
     track = bank['tracks'][0]
-    assert track['slots'][0]['notes'][0]['pitch'] == 60
-    assert track['slots'][1]['notes'][0]['pitch'] == 61
-    assert track['slots'][0]['notes'][0]['id'] != track['slots'][1]['notes'][0]['id']
-    assert track['defaultClipId'] == track['slots'][1]['id']
+    first = alive.source_score(bank, track)
+    independent = alive.source_score(bank, track, 1)
+    assert first['notes'][0]['pitch'] == 60
+    assert independent['notes'][0]['pitch'] == 61
+    assert track['slots'][0]['sourceId'] != track['slots'][1]['sourceId']
+    assert track['slots'][0]['region']['start'] == 0
+    assert track['slots'][1]['region'] == {'start': 1, 'end': 8, 'loopStart': 2, 'loopEnd': 6, 'loopEnabled': True}
     assert track['effects'][0]['parameters']['gain'] == .65
     settings = alive.check_audio_settings()
     assert alive.value('Audio buffer frames') == '512'
-    # Stopped transport + live audio accepts a cue without starting transport.
+    # A stopped cue changes Session authority without starting transport.
     alive.reorder_click('Launch Pulse Clip 1')
     alive.wait_value('Pulse clip runtime', lambda s: 'Cued Clip 1 /' in s and 'applied' in s)
     observed('Pulse clip runtime'); assert alive.value('Transport playing') == 'false'
-    # Port discovery and linking must finish before the transient launch window.
     capture = alive.start_capture('clips-rendered')
     alive.transport('start')
     launch_at_observable_phase('Launch Pulse Clip 1 copy')
@@ -127,11 +150,11 @@ def run():
     ui.click('Select Pulse Stereo Utility effect 1'); edit_selected()
     windows.focus('Pulse - Ultra Hosted Editor'); alive.numeric('Hosted Gain base', .55); windows.focus(alive.MAIN)
     ui.click('Bypass Pulse Stereo Utility effect 1')
-    ui.click('Select Pulse slot 1'); alive.numeric('Note 1 velocity', 82); ui.click('Undo pending edit')
+    ui.click('Select Pulse slot 1'); alive.numeric('Note 1 velocity', 82); ui.click('Undo')
     assert editor_exists()
     ui.click('Stop Pulse track')
-    alive.wait_value('Pulse clip runtime', lambda s: s.startswith('Stopped') and 'applied' in s)
-    observed('Pulse clip runtime'); assert observed('Harmony clip runtime').startswith('Playing')
+    alive.wait_value('Pulse clip runtime', lambda s: 'Session silence' in s and 'applied' in s)
+    observed('Pulse clip runtime'); assert 'Playing' in observed('Harmony clip runtime')
     assert editor_exists()
     alive.transport('stop'); assert editor_exists()
     audio = alive.finish_capture(capture); assert audio['peak'] > .0001
@@ -143,20 +166,20 @@ def run():
     alive.choose_file('Open session', 'Open Alive Session', relocated_path)
     assert not editor_exists()
     assert alive.value('Transport playing') == 'false'
-    assert 'Cued Clip 1 copy' in observed('Pulse clip runtime')
+    assert 'Arrangement' in observed('Pulse clip runtime')
     ui.click('Select Pulse slot 1'); ui.click('Select Pulse Stereo Utility effect 1')
     edit_selected()
     windows.focus('Pulse - Ultra Hosted Editor'); ui.wait_for('Hosted Gain base'); windows.focus(alive.MAIN)
-    # An external shared-source edit blocks either selected replacement atomically.
+    # A shared external input must validate for every owner before replacement.
     changed = json.loads(original); changed['nodes'][0]['x'] += 1
     shared.write_text(json.dumps(changed))
     errors = []
     for name in ('Pulse', 'Harmony'):
         ui.click(f'Select {name} slot 1')
         alive.choose_file(f'Replace {name} Stereo Utility effect 1', 'Load Ultra Device', shared)
-        text = alive.wait_value('Session status', lambda s: 'matching original backup' in s)
-        assert ('Harmony' if name == 'Pulse' else 'Pulse') in text
-        errors.append(text)
+        status = alive.wait_value('Session status', lambda s: 'matching original backup' in s)
+        assert ('Harmony' if name == 'Pulse' else 'Pulse') in status
+        errors.append(status)
         assert editor_exists()
     changed_path = ui.output / 'preserved-changed.ultra'; changed_path.write_bytes(shared.read_bytes())
     shared.write_bytes(original)
@@ -165,16 +188,16 @@ def run():
         ui.click(f'Select {name} slot 1')
         alive.choose_file(f'Replace {name} Stereo Utility effect 1', 'Load Ultra Device', changed_path)
         assert not editor_exists()
-        _, record = saved(f'recovered-{name}.alive'); recovery.append(record)
+        _, document = saved(f'recovered-{name}.alive'); recovery.append(document)
     assert recovery[0]['tracks'][1]['effects'][0]['instanceId'] == relocated['tracks'][1]['effects'][0]['instanceId']
     assert recovery[0]['tracks'][1]['effects'][0]['sourceSha256'] == relocated['tracks'][1]['effects'][0]['sourceSha256']
     assert recovery[1]['tracks'][0]['effects'][0]['instanceId'] == recovery[0]['tracks'][0]['effects'][0]['instanceId']
     report = {'kind': 'actual standalone release Alive; private Xvfb and software PipeWire',
               'physical_audio': False, 'settings': settings, 'observed_buffer': 512,
               'audio': audio, 'native_observations': events, 'shared_source_errors': errors,
-              'initial': str(initial_path), 'saved': str(relocated_path),
-              'draft_editor_continuity': True, 'apply_editor_boundary': True,
-              'reopen_stopped_default': True, 'sequential_shared_source_recovery': True,
+              'initial': str(initial_path), 'fixture': str(fixture_path), 'saved': str(relocated_path),
+              'immediate_edit_editor_continuity': True, 'independent_source_and_region': True,
+              'reopen_stopped_arrangement': True, 'sequential_shared_source_recovery': True,
               'failed_shared_replace_editor_continuity': True,
               'native_inputs': alive.native_inputs, 'final_audio': alive.detail()}
     (ui.output / 'native-clips-report.json').write_text(json.dumps(report, indent=2))

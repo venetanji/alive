@@ -1,12 +1,25 @@
-//! Prospective workspace data, deliberately outside the active Document.
+//! Current workspace model, persistent clip regions and transactional edits.
 //! Validation proves the saved model only: parameter bindings/ranges, graph
 //! eligibility, file contents, PCM ownership and runtime admission need preparation.
-use super::{clips::ClipNote, DeviceInstance, Document, Lane};
+use super::{DeviceInstance, Lane};
 use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use std::collections::{BTreeMap, BTreeSet, HashSet};
 
 const MAX_BYTES: usize = 1024 * 1024;
 const MIN_BEATS: f64 = 1. / 64.;
+
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct ClipNote { pub id:String,pub beat:f64,pub duration:f64,pub pitch:u32,pub velocity:u32 }
+
+pub(super) fn fresh(prefix:&str,ids:&mut HashSet<String>)->String {
+    use std::sync::atomic::{AtomicU64,Ordering};
+    static NEXT:AtomicU64=AtomicU64::new(1);
+    loop {
+        let seed=format!("{}-{:?}-{}",std::process::id(),std::time::SystemTime::now(),NEXT.fetch_add(1,Ordering::Relaxed));
+        let id=identity(prefix,&[&seed]);if ids.insert(id.clone()){return id;}
+    }
+}
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct DecimalU64(pub u64);
@@ -303,17 +316,19 @@ pub fn decode(text: &str) -> Result<ProjectV4, String> {
     project.validate()?;
     Ok(project)
 }
+#[cfg(test)]
 pub fn encode(project: &ProjectV4) -> Result<String, String> {
     project.validate()?;
     let text = serde_json::to_string_pretty(project).map_err(|e| e.to_string())?;
     check_size(text.len())?;
     Ok(text)
 }
+#[cfg(test)]
 pub fn decode_edit(text: &str) -> Result<WorkspaceEditV4, String> {
     strict_decode(text)
 }
 
-/// The operation order is shared with the prospective native v4 contract.
+/// Round beat endpoints before taking their frame difference.
 pub fn frame_at(beat: f64, tempo: f64) -> Result<u64, String> {
     super::prepare::bounded(tempo, 30., 240., "Tempo")?;
     let frame = (beat * 48000.0 * 60.0 / tempo).round();
@@ -333,7 +348,7 @@ fn check_size(size: usize) -> Result<(), String> {
         Ok(())
     }
 }
-fn strict_decode<T: serde::de::DeserializeOwned>(text: &str) -> Result<T, String> {
+pub(super) fn strict_decode<T: serde::de::DeserializeOwned>(text: &str) -> Result<T, String> {
     check_size(text.len())?;
     // Inspect the original text before typed enum dispatch or parameter map decoding.
     struct Unique;
@@ -848,134 +863,6 @@ fn checked_add(a: usize, b: usize) -> Result<usize, String> {
         .ok_or_else(|| "Workspace count overflow".into())
 }
 
-/// Deterministic candidate only. Graph eligibility, manifest bindings and native
-/// preparation must succeed before a later controller may enable workspaces.
-pub fn prospective_from_document(document: &Document) -> Result<ProjectV4, String> {
-    let converted = document.map_to_clips()?;
-    let Document::ClipsV3(clips) = &converted else {
-        return Err("Expected prospective v3 clip document".into());
-    };
-    if clips.banks.len() != clips.common.tracks.len()
-        || clips.banks.iter().any(|bank| {
-            clips
-                .banks
-                .iter()
-                .filter(|b| b.track_id == bank.track_id)
-                .count()
-                != 1
-                || !clips.common.tracks.iter().any(|t| t.id == bank.track_id)
-        })
-        || clips
-            .common
-            .tracks
-            .iter()
-            .any(|t| !t.notes.is_empty() || !t.automation.is_empty())
-    {
-        return Err("Invalid v3 bank membership or unsupported common musical schedule".into());
-    }
-    let palette = [
-        "#c77b61", "#86a59c", "#b4a269", "#8c9db4", "#b58e9a", "#88a26c", "#c09152", "#a39b8d",
-    ];
-    let mut project = ProjectV4 {
-        format: "alive-session-v4".into(),
-        title: clips.common.title.clone(),
-        tempo: clips.common.tempo,
-        length_beats: clips.common.length_beats,
-        loop_enabled: clips.common.loop_enabled,
-        loop_start_beats: 0.,
-        loop_end_beats: clips.common.length_beats,
-        tracks: vec![],
-        sources: vec![],
-        placements: vec![],
-    };
-    for (index, track) in clips.common.tracks.iter().enumerate() {
-        let bank = converted
-            .bank(&track.id)
-            .ok_or_else(|| format!("Missing bank for track '{}'", track.id))?;
-        if let Some(default) = &bank.default_clip_id {
-            if !bank.slots.iter().flatten().any(|clip| &clip.id == default) {
-                return Err(format!(
-                    "Saved default '{default}' must name a clip on track '{}'",
-                    track.id
-                ));
-            }
-        }
-        let mut slots: [Option<SlotV4>; 4] = std::array::from_fn(|_| None);
-        for (slot_number, clip) in bank.slots.iter().enumerate() {
-            let Some(clip) = clip else {
-                continue;
-            };
-            let source_id = identity("source", &["alive-v3-v4-source", &track.id, &clip.id]);
-            project.sources.push(SourceV4::Midi {
-                id: source_id.clone(),
-                track_id: track.id.clone(),
-                name: clip.name.clone(),
-                length_beats: clip.length_beats,
-                notes: clip.notes.clone(),
-                automation: clip.automation.clone(),
-            });
-            slots[slot_number] = Some(SlotV4 {
-                id: clip.id.clone(),
-                name: clip.name.clone(),
-                source_id: source_id.clone(),
-                region: ClipRegionV4::full(clip.length_beats),
-            });
-            if bank.default_clip_id.as_ref() == Some(&clip.id) {
-                project.placements.push(PlacementV4 {
-                    id: identity("placement", &["alive-v3-v4-placement", &track.id, &clip.id]),
-                    track_id: track.id.clone(),
-                    source_id,
-                    start: 0.,
-                    duration: clips.common.length_beats,
-                    region: ClipRegionV4::full(clip.length_beats),
-                });
-            }
-        }
-        project.tracks.push(TrackV4 {
-            id: track.id.clone(),
-            name: track.name.clone(),
-            color: palette
-                .get(index)
-                .ok_or("Workspace exceeds eight tracks")?
-                .to_string(),
-            chain: ChainV4::Midi {
-                instrument: Some(track.device.clone()),
-            },
-            effects: track.effects.clone(),
-            slots,
-            gain: track.gain,
-            mute: track.mute,
-            solo: track.solo,
-        });
-    }
-    project.validate()?;
-    Ok(project)
-}
-/// Shares strict v3 wire decoding without native admission; v1/v2 use the unchanged
-/// old decoder, including v1's existing strict source resolution.
-/// This does not open/install a v4 document or prove its runtime admission.
-pub fn prospective_from_legacy_text(
-    text: &str,
-    origin: &std::path::Path,
-) -> Result<ProjectV4, String> {
-    check_size(text.len())?;
-    super::clips::reject_duplicates(text)?;
-    // This header only selects the full decoder; it never replaces wire validation.
-    #[derive(Deserialize)]
-    struct Format {
-        format: String,
-    }
-    let format: Format =
-        serde_json::from_str(text).map_err(|e| format!("Invalid Alive session JSON: {e}"))?;
-    let document = if format.format == "alive-session-v3" {
-        super::clips::decode_v3_candidate(text)?
-    } else if format.format == "alive-session-v1" || format.format == "alive-session-v2" {
-        super::persistence::decode(text, origin)?.score
-    } else {
-        return Err("Expected a bare legacy score for workspace conversion".into());
-    };
-    prospective_from_document(&document)
-}
 fn identity(prefix: &str, parts: &[&str]) -> String {
     use sha2::{Digest, Sha256};
     let mut hash = Sha256::new();
@@ -985,7 +872,7 @@ fn identity(prefix: &str, parts: &[&str]) -> String {
     }
     format!("{prefix}-{}", &format!("{:x}", hash.finalize())[..32])
 }
-/// Pure transactional edit; `reserved` must include prepared, draft and retained-history IDs.
+/// Pure transactional edit; `reserved` must include prepared and retained-history IDs.
 /// Resolved manifest/graph checks, PCM loading and native admission remain separate gates.
 pub fn apply_edit(
     project: &ProjectV4,
@@ -993,7 +880,7 @@ pub fn apply_edit(
     reserved: &HashSet<String>,
 ) -> Result<EditResultV4, String> {
     apply_edit_with(project, edit, reserved, |prefix| {
-        super::clips::fresh(prefix, &mut HashSet::new())
+        fresh(prefix, &mut HashSet::new())
     })
 }
 

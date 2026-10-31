@@ -1,5 +1,5 @@
 //! Preparation-bound workspace observations and bounded request receipts.
-use super::{host::Host,native as n,Schedule,PreparedSession,prepare_workspaces::PreparedWorkspaces};
+use super::{host::Host,native as n,PreparedSession,prepare_workspaces::PreparedWorkspaces};
 use serde::{Deserialize,Serialize};
 
 #[derive(Clone,Deserialize)]
@@ -25,7 +25,7 @@ pub struct View {pub tracks:Vec<Track>,pub requests:Vec<RequestResult>,pub reque
 pub struct Runtime {revision:u64,requests:Vec<RequestResult>,pub master_observation:Option<super::native_master::State>}
 fn frame(value:u64)->Option<String>{(value!=n::V4_NO_FRAME).then(||value.to_string())}
 fn status(value:u32)->&'static str{match value{n::V4_QUEUED=>"queued",n::V4_PENDING=>"pending",n::V4_APPLIED=>"applied",n::V4_REJECTED=>"rejected",n::V4_SUPERSEDED=>"superseded",n::V4_CANCELED=>"canceled",n::V4_MIXED=>"mixed",_=>"unavailable"}}
-fn workspace(p:&PreparedSession)->Result<&PreparedWorkspaces,String>{Host::check_schedule(p)?;match &p.schedule {Schedule::Workspaces(w)=>Ok(w),_=>Err("Enable MIDI workspaces first".into())}}
+fn workspace(p:&PreparedSession)->Result<&PreparedWorkspaces,String>{Ok(&p.schedule)}
 impl RequestResult {
     fn observe(&mut self,r:&n::ReceiptV4){
         self.status=status(r.status).into();self.reason=r.error;self.target_frame=frame(r.target_frame);self.track_mask=r.track_mask;self.pending_mask=r.pending_mask;self.applied_mask=r.applied_mask;self.superseded_mask=r.superseded_mask;self.canceled_mask=r.canceled_mask;self.rejected_mask=r.rejected_mask;
@@ -50,11 +50,13 @@ impl Runtime {
             else if matches!(request.status.as_str(),"queued"|"pending")&&raw.last_consumed_request>=serial {request.status="unavailable".into();for m in &mut request.members {if matches!(m.status.as_str(),"queued"|"pending"){m.status="unavailable".into();}}}
         }
     }
-    pub fn poll(&mut self,host:&Host)->Result<(serde_json::Value,Option<serde_json::Value>),String>{
+    pub fn poll(&mut self,host:&Host)->Result<(serde_json::Value,serde_json::Value),String>{
         let p=host.prepared.as_ref().ok_or("No session")?;let w=workspace(p)?;
         let mut raw=Box::<n::StateV4>::default();
-        if let Some(capability)=n::master_capability(){let mut master=super::native_master::State::output();if unsafe{(capability.snapshot_v4)((&mut *raw as *mut n::StateV4).cast(),&mut master)}!=1{return Err("Workspace state is temporarily unavailable".into());}self.master_observation=Some(master);}
-        else {self.master_observation=None;if unsafe{n::alive_session_state_v4(&mut *raw)}==0{return Err("Workspace state is temporarily unavailable".into());}}
+        let capability=n::master_capability().ok_or("Current native Master support is required")?;
+        let mut master=super::native_master::State::output();
+        if unsafe{(capability.snapshot_v4)((&mut *raw as *mut n::StateV4).cast(),&mut master)}!=1{return Err("Workspace state is temporarily unavailable".into());}
+        self.master_observation=Some(master);
         if raw.preparation_revision!=host.preparation_revision{return Err("Native workspace preparation publication is temporarily unavailable".into());}
         if raw.bank_revision!=host.bank_revision{return Err("Native music publication is awaiting document acknowledgment".into());}
         if self.revision!=host.preparation_revision {self.requests.clear();self.revision=host.preparation_revision;}
@@ -63,7 +65,7 @@ impl Runtime {
         let devices=raw.devices[..p.devices.len()].iter().map(|d|serde_json::json!({"document":d.document,"bypassed":d.bypassed,"parameterCount":d.parameter_count,"revision":d.revision.to_string(),"base":d.base,"effective":d.effective,"owned":d.owned})).collect::<Vec<_>>();
         let state=serde_json::json!({"playing":raw.playing,"configured":raw.configured,"profile":raw.profile,"workPolicy":raw.work_policy,"absoluteFrame":raw.absolute_frame.to_string(),"position":raw.position.to_string(),"generation":raw.generation.to_string(),"rejected":raw.rejected.to_string(),"peakLeft":raw.peak_left,"peakRight":raw.peak_right,"tracks":raw.tracks[..p.tracks.len()].iter().map(|t|t.mixer).collect::<Vec<_>>(),"devices":devices,"fault":raw.fault});
         let view=View{tracks,requests:self.requests.clone(),requested_stop_epoch:raw.requested_stop_epoch.to_string(),applied_stop_epoch:raw.applied_stop_epoch.to_string()};
-        Ok((state,Some(serde_json::to_value(view).map_err(|e|e.to_string())?)))
+        Ok((state,serde_json::to_value(view).map_err(|e|e.to_string())?))
     }
     pub(super) fn request(&mut self,host:&Host,action:Action,serial:&mut u64)->Result<RequestResult,String>{
         let p=host.prepared.as_ref().ok_or("No session")?;let (mut request,mut result)=request(p,action)?;
@@ -104,12 +106,12 @@ fn request(p:&PreparedSession,action:Action)->Result<(n::RequestV4,RequestResult
     Ok((r,result))
 }
 
-pub fn prepared(host:&Host)->Result<Option<serde_json::Value>,String>{
-    let p=host.prepared.as_ref().ok_or("No session")?;if !p.saved.score.is_workspaces(){return Ok(None);}let w=workspace(p)?;let tracks=p.saved.score.tracks();
-    Ok(Some(serde_json::json!({"preparationRevision":host.preparation_revision.to_string(),
+pub fn prepared(host:&Host)->Result<serde_json::Value,String>{
+    let p=host.prepared.as_ref().ok_or("No session")?;let w=workspace(p)?;let tracks=p.saved.score.tracks();
+    Ok(serde_json::json!({"preparationRevision":host.preparation_revision.to_string(),
         "sources":w.sources.iter().map(|s|serde_json::json!({"trackId":tracks[s.descriptor.track as usize].id(),"sourceId":s.id,"kind":if s.descriptor.kind==n::V4_AUDIO{"audio"}else{"midi"},"name":s.name,"lengthFrames":s.descriptor.length_frames.to_string(),"waveformPeaks":w.audio.iter().find(|a|a.source_id==s.id).map(|a|&a.waveform_peaks)})).collect::<Vec<_>>(),
         "slots":w.slots.iter().map(|s|serde_json::json!({"trackId":tracks[s.descriptor.track as usize].id(),"slotId":s.id,"slot":s.slot,"sourceId":w.sources[s.descriptor.source as usize].id,"name":s.name,"region":{"startFrame":s.descriptor.start_marker.to_string(),"endFrame":s.descriptor.end_marker.to_string(),"loopStartFrame":s.descriptor.loop_start.to_string(),"loopEndFrame":s.descriptor.loop_end.to_string(),"loopEnabled":s.descriptor.loop_enabled!=0}})).collect::<Vec<_>>(),
-        "placements":w.placements.iter().map(|p|serde_json::json!({"trackId":tracks[p.descriptor.track as usize].id(),"placementId":p.id,"sourceId":w.sources[p.descriptor.source as usize].id,"startFrame":p.descriptor.start_frame.to_string(),"durationFrames":p.descriptor.duration_frames.to_string(),"region":{"startFrame":p.descriptor.start_marker.to_string(),"endFrame":p.descriptor.end_marker.to_string(),"loopStartFrame":p.descriptor.loop_start.to_string(),"loopEndFrame":p.descriptor.loop_end.to_string(),"loopEnabled":p.descriptor.loop_enabled!=0}})).collect::<Vec<_>>() })))
+        "placements":w.placements.iter().map(|p|serde_json::json!({"trackId":tracks[p.descriptor.track as usize].id(),"placementId":p.id,"sourceId":w.sources[p.descriptor.source as usize].id,"startFrame":p.descriptor.start_frame.to_string(),"durationFrames":p.descriptor.duration_frames.to_string(),"region":{"startFrame":p.descriptor.start_marker.to_string(),"endFrame":p.descriptor.end_marker.to_string(),"loopStartFrame":p.descriptor.loop_start.to_string(),"loopEndFrame":p.descriptor.loop_end.to_string(),"loopEnabled":p.descriptor.loop_enabled!=0}})).collect::<Vec<_>>() }))
 }
 
 #[cfg(test)]
@@ -118,8 +120,8 @@ mod tests {
     fn prepared()->PreparedSession {
         let path=std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/two-instruments.alive");
         let old=super::super::read(&path).unwrap();
-        let project=super::super::workspaces::prospective_from_document(&old.saved.score).unwrap();
-        super::super::prepare(&old.saved.with_score(super::super::Document::WorkspacesV4(project)),&path).unwrap()
+        let project=old.saved.score.clone();
+        super::super::prepare(&old.saved.with_score(project),&path).unwrap()
     }
     #[test]
     fn gaps_and_session_silence_keep_null_sources_and_pending_return_is_not_predicted(){
@@ -133,11 +135,11 @@ mod tests {
         let tracks=observations(&p,w,&raw).unwrap();assert_eq!(tracks[0].active_source_id.as_deref(),Some(w.sources[0].id.as_str()));assert_eq!(tracks[0].active_slot_id.as_deref(),Some(w.slots[0].id.as_str()));assert_ne!(tracks[0].active_source_id,tracks[0].active_slot_id);assert_eq!(tracks[0].phase.as_deref(),Some("7"));
     }
     #[test]
-    fn return_and_launch_use_prepared_identities_and_reject_draft_or_foreign_slots(){
+    fn return_and_launch_use_prepared_identities_and_reject_missing_or_foreign_slots(){
         let p=prepared();let w=workspace(&p).unwrap();let tracks=p.saved.score.tracks();
         let (raw,result)=request(&p,Action::Return{track_ids:tracks.iter().map(|t|t.id().into()).collect()}).unwrap();assert_eq!(raw.track_mask,3);assert_eq!(result.kind,"return");assert!(result.track_id.is_none());assert!(result.members.iter().all(|m|m.authority=="arrangement"));
         assert!(request(&p,Action::Return{track_ids:vec![tracks[0].id().into();2]}).is_err());
-        assert!(request(&p,Action::Launch{track_id:tracks[0].id().into(),slot_id:"draft-only".into()}).is_err());
+        assert!(request(&p,Action::Launch{track_id:tracks[0].id().into(),slot_id:"missing-slot".into()}).is_err());
         assert!(request(&p,Action::Launch{track_id:tracks[1].id().into(),slot_id:w.slots[0].id.clone()}).is_err());
         let (_,launch)=request(&p,Action::Launch{track_id:tracks[0].id().into(),slot_id:w.slots[0].id.clone()}).unwrap();assert_eq!(launch.source_id.as_deref(),Some(w.sources[w.slots[0].descriptor.source as usize].id.as_str()));
     }

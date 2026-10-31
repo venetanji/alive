@@ -25,7 +25,7 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
         if runtime:
             expand(runtime.group(1) + ' runtime details', activate_disclosure)
             return
-        scene = re.fullmatch(r'(?:Scene (\d+) request|Prepared scene (\d+))', name)
+        scene = re.fullmatch(r'Scene (\d+) (?:request|clips)', name)
         if scene:
             expand('Scene receipts')
             expand(f'Scene {next(value for value in scene.groups() if value)} receipt details')
@@ -39,13 +39,17 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
         notes = re.match(r'Note \d+ ', name)
         automation = ('automation enabled' in name or ' point' in name or
                       name in ('Automation target', 'Add automation lane'))
-        clip = notes or automation or name in (
-            'Enable clip bank', 'Create clip', 'Clip name', 'Selected clip length',
-            'Duplicate destination', 'Duplicate clip', 'Delete clip',
-            'Set Saved Default', 'Clear Saved Default',
+        source_actions = name in (
+            'Create MIDI source', 'MIDI source', 'MIDI source name', 'MIDI source length',
+            'Place source in range', 'Assign source to Session', 'Assign source to Session slot',
+            'Create clip', 'Clip name', 'Duplicate destination', 'Duplicate clip',
+            'Delete clip', 'Make source independent')
+        clip = notes or automation or source_actions or name in (
+            'Clip Start', 'Clip End',
+            'Loop Position', 'Loop Length', 'Clip Loop',
             'Selected clip piano roll', 'Selected note velocity', 'Add note')
         track_action = re.fullmatch(r'(?:Open (.+) editor|Replace (.+) device|Remove (.+) track)', name)
-        surface = (name in ('Alive audio settings', 'Prepare / Apply') or device or clip or track_action or
+        surface = (name in ('Alive audio settings', 'Add effect', 'Add instrument track') or device or clip or track_action or
                    re.fullmatch(r'(?:Pulse|Harmony|Track \d+) (?:gain|mute|solo)', name))
         if not surface:
             return
@@ -60,6 +64,8 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
                 expand('Note inspector')
             if automation:
                 expand('Automation inspector')
+            if source_actions:
+                expand('Source / Clip')
         if track_action:
             track = next(value for value in track_action.groups() if value)
             column = ui.wait_for(track + ' track')

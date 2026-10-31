@@ -1,11 +1,17 @@
-# MIDI Workspaces v4 Measurement Policy
+# Workspace Runtime And Retained v4 Measurements
 
-V4 remains disabled for shipping. These measurements exercise the completed
-native MIDI implementation through `ULTRA_ALIVE_SESSION_V4_PROVISIONAL` only.
-They neither enable desktop commands nor qualify audio/PCM sources. Subsequent
-Task 2D desktop integration must validate the complete candidate, preserve
-transactional Apply/rollback and history, and pass its own contract gates before
-any explicit production feature activation. V3 measurements do not qualify v4.
+The current production workspace runtime enables profile 1 with up to eight
+logical tracks, six DSP roots, 32 sources/slots and 64 placements, subject to
+complete candidate work admission. Profile 2 remains unavailable. Immediate
+musical publication and WAV/Re-Pitch playback are documented in
+`../../../alive/SESSION_CONTRACT.md`; the current implementation and evidence
+supersede the original integration status below.
+
+## Historical Measurement Scope
+
+The following record describes the original MIDI-only measurement build. That
+build used `ULTRA_ALIVE_SESSION_V4_PROVISIONAL`; its counts, timings and pending
+integration gates describe those retained fixtures, not the current app.
 
 ## Fixed Admission Contract
 
@@ -208,4 +214,4 @@ Finite software measurements establish neither universal callback deadlines
 nor physical-output/underrun behavior. Logical 1/31-frame tests are correctness
 and diagnostic observations. Desktop integration must still validate the whole
 candidate and pass preparation/history/snapshot/rollback and actual driver
-gates. Both shipping v4 feature sets remain disabled in current source.
+gates. Both shipping v4 feature sets were disabled in the measured source.

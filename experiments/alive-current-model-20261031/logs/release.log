@@ -1,0 +1,25 @@
+test_alive_package_reuses_source_devices_and_notices (test_release.ReleaseTests.test_alive_package_reuses_source_devices_and_notices) ... ok
+test_all_current_alive_examples_resolve_their_external_devices (test_release.ReleaseTests.test_all_current_alive_examples_resolve_their_external_devices) ... ok
+test_artifact_validation (test_release.ReleaseTests.test_artifact_validation) ... ok
+test_bundle_paths (test_release.ReleaseTests.test_bundle_paths) ... ok
+test_complete_browser_catalog_is_bundled_for_both_products (test_release.ReleaseTests.test_complete_browser_catalog_is_bundled_for_both_products) ... ok
+test_deb_extracts_real_payload_without_installing_it (test_release.ReleaseTests.test_deb_extracts_real_payload_without_installing_it) ... ok
+test_deb_rejects_malformed_and_duplicate_data_before_extraction (test_release.ReleaseTests.test_deb_rejects_malformed_and_duplicate_data_before_extraction) ... ok
+test_default_workspace_is_bundled_for_both_products_on_every_target (test_release.ReleaseTests.test_default_workspace_is_bundled_for_both_products_on_every_target) ... ok
+test_faust_notice_bundled_on_every_target (test_release.ReleaseTests.test_faust_notice_bundled_on_every_target) ... ok
+test_linux_loader_accepts_package_resources_and_appimage_relocation (test_release.ReleaseTests.test_linux_loader_accepts_package_resources_and_appimage_relocation) ... ok
+test_loader_matches_product_directory (test_release.ReleaseTests.test_loader_matches_product_directory) ... ok
+test_native_replacement_preserves_a_running_apps_mapping (test_release.ReleaseTests.test_native_replacement_preserves_a_running_apps_mapping) ... ok
+test_packaged_faust_notice_must_match_source_bytes (test_release.ReleaseTests.test_packaged_faust_notice_must_match_source_bytes) ... ok
+test_packaged_notices_must_match_sources (test_release.ReleaseTests.test_packaged_notices_must_match_sources) ... ok
+test_platforms (test_release.ReleaseTests.test_platforms) ... ok
+test_release_does_not_grant_pr_writes (test_release.ReleaseTests.test_release_does_not_grant_pr_writes) ... ok
+test_release_stages_current_libraries_before_cargo_tests (test_release.ReleaseTests.test_release_stages_current_libraries_before_cargo_tests) ... ok
+test_separate_artifacts_keep_both_apps_when_collected_together (test_release.ReleaseTests.test_separate_artifacts_keep_both_apps_when_collected_together) ... ok
+test_shared_notice_inventory_covers_alive_dependencies (test_release.ReleaseTests.test_shared_notice_inventory_covers_alive_dependencies) ... ok
+test_version_guard (test_release.ReleaseTests.test_version_guard) ... ok
+
+----------------------------------------------------------------------
+Ran 20 tests in 0.314s
+
+OK

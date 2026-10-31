@@ -34,34 +34,26 @@ interoperability remain product goals.
 
 ## Capabilities and Constraints
 
-- A patch-authored four-voice subtractive instrument combines Faust saw/filter/
-  ADSR primitives, explicit voice-lane mixdown and stereo output. Its Perform
-  panel, saved parameter/preset interface, independent instances and headless
-  host harness form the reusable-device slice. Alive now loads that same saved
-  device independently on up to eight instrument tracks through its versioned
-  interface (the original legacy profile retains its two-track limit).
-  A native shared transport plays editable chord clips with note velocity and
-  duration, metadata-selected instance/parameter automation, gain/mute/solo and
-  stereo peak meters. Each selected-track chain exposes an instrument and up to
-  two ordered stereo effects, live bases/effect bypass and optional instance editors.
-  A saved stereo Master follows the track sum, with live gain, interval L/R
-  peaks and explicit digital-overload reset. Session's fixed-right Master strip
-  and MIDI Arrangement's bottom output lane share that owner; compact headers,
-  four aligned slot/scene rows, original icons and a shared detail area retain
-  the current admitted musical profiles. The final local build, save/restart
-  and endurance checkpoint remains separate from the focused UI qualification.
-  Canonical session-v3 files preserve four clip slots per track, stable score IDs,
-  stopped saved defaults, independent instance IDs, original-source fingerprints,
-  order, bases, bypass, musical data and mixer values. Existing v1/v2 sessions
-  upgrade in memory when admitted; stricter clip-bank refusals retain playable v2.
-  Original cutoff/level lanes remain;
-  prepared automation owns effective values while musical edits remain drafts.
-  Optional hosted Ultra graph editors make supported bound parameter edits
-  without owning DSP lifetime. Clip/automation drafts support a fixed-grid piano
-  roll and Rust-owned focused
-  pending-edit history. Prepare / Apply and device structure changes require
-  stopped transport; the first hosted graph view is read-only for
-  structure. See `apps/alive/README.md` and `apps/alive/SESSION_CONTRACT.md`.
+- Alive shares one transport between Session and Arrangement, with up to eight
+  logical MIDI/audio tracks and six hosted DSP roots. MIDI tracks can be empty
+  or load a saved Ultra instrument; either track type can use up to two ordered
+  stereo effects. The patch-authored subtractive instrument uses four voices,
+  native Faust oscillators/filter/ADSR and explicit stereo mixdown.
+  Session has four slots per track and atomic scene launching. Arrangement
+  placements reference the same sources. Clip Start, End and loop markers are
+  independent of source contents and Arrangement placement spans.
+  MIDI notes, automation, regions, empty tracks and bounded WAV/Re-Pitch audio
+  edits publish during playback. The native callback acknowledges a complete
+  candidate before the document and Undo history change. Undo/Redo uses the same
+  path, preserving live mixer, bases, bypass and warm device state. Preview
+  auditions MIDI through the selected chain. Graph installation requires stopped
+  transport. The shared bottom Clip/Devices area resizes and maximizes; browser,
+  track area and editors scroll at compact window sizes.
+  The sole saved session format is a v6 envelope containing the v4 workspace
+  score, Master gain and launch quantization. Stable track/source/note/device
+  identities, external source hashes, slots, placements, effects and automation
+  persist together. See `apps/alive/README.md` and
+  `apps/alive/SESSION_CONTRACT.md` for current behavior and limits.
 
 - Up to 16 native patch, help and example windows each run an independent
   `ultra-canvas-v1` graph with 68 native object kinds, 32 nodes and 64 edges. Ports
@@ -100,43 +92,23 @@ interoperability remain product goals.
   only. Numeric creation/control values are bounded to -100000..100000; signal
   samples are not subject to that control bound. Exact Max noise sequences and
   periodic snapshot scheduling are not established.
-- Version 2 reusable manifests describe instruments or stereo audio effects;
-  version 1 instrument files remain valid. Stereo Utility and Stereo Lowpass
-  are authored saved graphs with live controls and presets. `audio.in~` reads
-  explicit host audio (silence in ordinary Ultra roots); `lowpass.stereo~` reuses
-  the existing Faust filter kernel. Alive hosts their saved graphs in its
-  legacy two-track/six-instance and admitted eight-track/sixteen-instance
-  profiles. Add/remove/reorder/replacement require
-  stopped preparation; live bypass preserves warm state without restarting I/O.
-  Selection does not launch playback. Individual Launch cues while stopped or
-  switches at the next strict four-beat bar; track Stop leaves other tracks
-  running. Create/duplicate/delete, names, independent clip lengths and saved
-  defaults share focused pending history. Draft-only clips cannot launch.
-  The selected-clip piano roll supports
-  add/select/move/resize/delete, velocity and
-  precise numeric/keyboard edits. Pending musical history is bounded to 64
-  entries / 8 MiB and preserves accepted live controls. Shared changed sources
-  require preserving the changed copy, restoring a matching original backup,
-  then explicitly replacing intended instances. Four prepared scene rows launch
-  or stop their member tracks atomically, with observed per-track receipts;
-  selection and saved defaults remain independent from these runtime actions.
-  The active product direction adds a horizontal Arrangement and a Session
-  workspace of track columns, aligned slots/scenes and per-column mixers,
-  sharing one transport, device owner and bottom Clip/Devices detail area.
-  Tab is view navigation only. The MIDI v4 integration at `4b9a88b` adds explicit
-  stopped conversion, Arrangement scheduling, Session override/Return and
-  strict persistence through the current Session interface. Only measured
-  profile 1 is admitted; complete candidate refusal preserves old music and
-  v3's existing capacity. Local native conversion/editor/save/Quit/restart
-  checks pass. Independent review approves the integration after queued slot
-  field preservation fix `ee83d30` (85 UI and two focused browser checks pass).
-  MIDI timeline source creation, placement move/trim/resize, source offsets,
-  suffix looping, duplication/independence and shared Clip detail are implemented
-  at `91cb9d1`. The native author/play/override/Return/save/Quit/restart journey
-  passes; independent task review approves. The admitted starting project is
-  `apps/alive/examples/midi-arrangement.alive`. Genuine audio-file tracks remain
-  the next staged work. Alternate DSP paths
-  remain outside the supported Alive profile.
+- Reusable manifests describe instruments and stereo audio effects. Stereo
+  Utility and Stereo Lowpass are saved graphs with live controls and presets.
+  `audio.in~` receives explicit host audio; `lowpass.stereo~` uses the native
+  Faust filter kernel. Enabled automation owns effective parameter values while
+  playback runs; device panels and hosted Ultra editors share saved bases.
+  Source hashes identify the exact saved graph; replacing an externally changed
+  shared source requires restoring other instances' expected dependencies.
+  Master gain follows the track sum, with stereo peaks and an explicit digital
+  overload reset. Launch quantization supports None, note grids and 1/2/4/8 Bars,
+  with per-clip overrides. Queued requests retain their captured targets.
+  Session launch overrides a track's Arrangement; Stop retains silence until
+  Return. Return follows the current Arrangement position. Selection does not
+  launch, and changing views does not change playback. The piano roll supports
+  gestures, keyboard/numeric editing and velocity, with 64 entries / 8 MiB of
+  musical history. Input routing, monitoring, arm and recording are next; a
+  shared silent-video engine follows. Native Live device/preset integration is
+  progressing in a separate session and is not part of this installed build.
 - Supported object names and arguments must be explicit. Unsupported objects
   must be rejected visibly. Familiar appearance does not imply Max compatibility.
 - Linux desktop is the shipped target. A smaller browser preview supports

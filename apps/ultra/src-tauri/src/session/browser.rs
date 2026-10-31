@@ -11,7 +11,6 @@ pub struct BundledDevice {
 
 pub fn catalog(
     resources: &Path,
-    executable_dir: &Path,
     source: &Path,
 ) -> Result<Vec<BundledDevice>, String> {
     [
@@ -34,7 +33,6 @@ pub fn catalog(
         let relative = Path::new("alive-session/ultra/examples").join(filename);
         let path = [
             resources.join(&relative),
-            executable_dir.join("../lib/Ultra Research").join(&relative),
             source.join("../examples").join(filename),
         ]
         .into_iter()
@@ -99,14 +97,13 @@ mod tests {
     }
 
     #[test]
-    fn installed_companion_catalog_works_without_a_source_tree() {
+    fn installed_catalog_works_without_a_source_tree() {
         let fixture = Fixture::new();
-        fixture.bundled("usr/lib/Ultra Research/alive-session/ultra/examples");
-        fixture.file("usr/lib/Ultra Research/alive-session/ultra/examples/unlisted.ultra");
+        fixture.bundled("usr/lib/Alive/alive-session/ultra/examples");
+        fixture.file("usr/lib/Alive/alive-session/ultra/examples/unlisted.ultra");
 
         let devices = catalog(
             &fixture.0.join("usr/lib/Alive"),
-            &fixture.0.join("usr/bin"),
             &fixture.0.join("missing-source"),
         )
         .unwrap();
@@ -131,23 +128,21 @@ mod tests {
                 device.path.canonicalize().unwrap(),
                 fixture
                     .0
-                    .join("usr/lib/Ultra Research/alive-session/ultra/examples")
+                    .join("usr/lib/Alive/alive-session/ultra/examples")
                     .join(filename)
             );
         }
     }
 
     #[test]
-    fn resource_catalog_takes_priority_over_companion_and_source() {
+    fn resource_catalog_takes_priority_over_source() {
         let fixture = Fixture::new();
         fixture.bundled("resources/alive-session/ultra/examples");
-        fixture.bundled("usr/lib/Ultra Research/alive-session/ultra/examples");
         fixture.bundled("source/examples");
         fs::create_dir_all(fixture.0.join("source/src-tauri")).unwrap();
 
         let devices = catalog(
             &fixture.0.join("resources"),
-            &fixture.0.join("usr/bin"),
             &fixture.0.join("source/src-tauri"),
         )
         .unwrap();
@@ -171,7 +166,6 @@ mod tests {
 
         let devices = catalog(
             &fixture.0.join("missing-resources"),
-            &fixture.0.join("usr/bin"),
             &fixture.0.join("source/src-tauri"),
         )
         .unwrap();
@@ -199,7 +193,6 @@ mod tests {
 
         let error = catalog(
             &fixture.0.join("missing-resources"),
-            &fixture.0.join("usr/bin"),
             &fixture.0.join("source/src-tauri"),
         )
         .unwrap_err();
@@ -220,7 +213,6 @@ mod tests {
 
         let error = catalog(
             &fixture.0.join("resources"),
-            &fixture.0.join("usr/bin"),
             &fixture.0.join("missing-source"),
         )
         .unwrap_err();

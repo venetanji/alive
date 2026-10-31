@@ -36,11 +36,7 @@ pub enum Edit { Global { quantization: Quantization }, Clip { occurrence_id: Str
 
 impl LaunchSettings {
     pub fn occurrences(score:&Document)->HashSet<&str> {
-        match score {
-            Document::ClipsV3(s)=>s.banks.iter().flat_map(|b|b.slots.iter().flatten().map(|c|c.id.as_str())).collect(),
-            Document::WorkspacesV4(s)=>s.tracks.iter().flat_map(|t|t.slots.iter().flatten().map(|c|c.id.as_str())).collect(),
-            Document::LegacyV2(_)=>HashSet::new(),
-        }
+        score.tracks.iter().flat_map(|t|t.slots.iter().flatten().map(|c|c.id.as_str())).collect()
     }
     pub fn validate(&self,score:&Document)->Result<(),String> {
         if self.clip_quantization.len()>32 {return Err("Launch settings exceed 32 Session occurrences".into());}

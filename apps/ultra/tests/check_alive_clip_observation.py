@@ -108,7 +108,9 @@ def run():
     assert receipts[0]['owner'] in receipts[0]['samples'][-1]['hit_path']
 
     ui.click('Duplicate clip')
-    ui.click('Prepare / Apply')
+    ui.click('Select Pulse slot 2')
+    ui.text('Clip name', 'Clip 1 copy'); ui.keys('Tab')
+    alive.wait_value('Musical edit status', lambda text: 'Updating' not in text)
     settings = alive.check_audio_settings()
     alive.value('Pulse clip runtime')
     position = ui.wait_for('Transport position beats')

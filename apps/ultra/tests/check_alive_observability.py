@@ -132,20 +132,21 @@ def clicked(name, *args, **kwargs):
 
 
 def qualify_and_finish():
-    # The accepted clip journey ends stopped; repeat editor/Apply/configure on it.
+    # The accepted clip journey ends stopped; repeat immediate music/editor/configure on it.
     for cycle in range(3):
         alive.transport('start')
         time.sleep(2.2)
         alive.transport('stop')
         original_click('Select Pulse slot 1')
         alive.numeric('Note 1 velocity', 85+cycle)
-        original_click('Prepare / Apply')
+        alive.wait_value('Musical edit status', lambda text: 'Updating' not in text)
         time.sleep(1.1)
         original_click('Select Pulse Subtractive instrument')
         original_click('Open Pulse editor')
         windows.focus('Pulse - Ultra Hosted Editor')
         alive.numeric('Hosted Cutoff base', 900+cycle*50)
-        alive.wait_value('Hosted Cutoff effective ownership', lambda text: 'Base:' in text)
+        alive.wait_value('Hosted Cutoff base', lambda text: float(text) == 900+cycle*50)
+        alive.wait_value('Hosted Cutoff effective ownership', lambda text: 'Automation:' in text)
         original_click('Close hosted editor')
         windows.focus(alive.MAIN)
         original_click('Audio details')

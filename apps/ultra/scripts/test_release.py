@@ -44,7 +44,7 @@ class ReleaseTests(unittest.TestCase):
                 resources = release.bundle_config(target)['bundle']['resources']
                 self.assertEqual(resources.get('../core/VOICE.txt'), 'licenses/Faust-VOICE.txt')
 
-    def test_bundled_alive_example_resolves_its_external_device(self):
+    def test_all_current_alive_examples_resolve_their_external_devices(self):
         for target in release.TARGETS:
             with self.subTest(target=target), tempfile.TemporaryDirectory() as d:
                 package = Path(d).resolve()
@@ -54,15 +54,31 @@ class ReleaseTests(unittest.TestCase):
                         dest = package / destination
                         dest.parent.mkdir(parents=True, exist_ok=True)
                         shutil.copy2(release.APP / 'src-tauri' / source, dest)
-                session_path = package / 'alive-session/alive/examples/two-instruments.alive'
-                session = json.loads(session_path.read_text())
-                self.assertEqual(len(session['tracks']), 2)
-                for track in session['tracks']:
-                    device_path = (session_path.parent / track['device']['path']).resolve(strict=True)
-                    self.assertTrue(device_path.is_relative_to(package))
-                    device = json.loads(device_path.read_text())['device']
-                    self.assertEqual((device['id'], device['version']),
-                                     (track['device']['id'], track['device']['version']))
+                for name in ('empty-workspaces', 'two-instruments', 'midi-arrangement', 'quantized-midi'):
+                    session_path = package / 'alive-session/alive/examples' / (name + '.alive')
+                    session = json.loads(session_path.read_text())
+                    self.assertEqual(session['format'], 'alive-session-v6')
+                    score = session['score']
+                    self.assertEqual(score['format'], 'alive-session-v4')
+                    for track in score['tracks']:
+                        instrument = track['chain'].get('instrument')
+                        for instance in ([instrument] if instrument else []) + track.get('effects', []):
+                            device_path = (session_path.parent / instance['path']).resolve(strict=True)
+                            self.assertTrue(device_path.is_relative_to(package))
+                            device = json.loads(device_path.read_text())['device']
+                            self.assertEqual((device['id'], device['version']),
+                                             (instance['id'], instance['version']))
+
+    def test_complete_browser_catalog_is_bundled_for_both_products(self):
+        for target in release.TARGETS:
+            for product in release.PRODUCTS:
+                with self.subTest(target=target, product=product):
+                    resources = release.bundle_config(target, product=product)['bundle']['resources']
+                    for name in ('subtractive', 'utility', 'stereo-lowpass'):
+                        destination = f'alive-session/ultra/examples/{name}.ultra'
+                        sources = [source for source, dest in resources.items() if dest == destination]
+                        self.assertEqual(len(sources), 1)
+                        self.assertTrue((release.APP / 'src-tauri' / sources[0]).is_file())
 
     def test_default_workspace_is_bundled_for_both_products_on_every_target(self):
         for target in release.TARGETS:
@@ -77,14 +93,14 @@ class ReleaseTests(unittest.TestCase):
                             shutil.copy2(release.APP / 'src-tauri' / source, dest)
                     path = package / 'alive-session/alive/examples/empty-workspaces.alive'
                     self.assertTrue(path.is_file(), 'The default project must work outside the source checkout')
-                    project = json.loads(path.read_text())
+                    document = json.loads(path.read_text())
+                    self.assertEqual(document['format'], 'alive-session-v6')
+                    project = document['score']
                     self.assertEqual(project['format'], 'alive-session-v4')
                     self.assertEqual(project['sources'], [])
                     self.assertEqual(project['placements'], [])
-                    instrument = project['tracks'][0]['chain']['instrument']
-                    device_path = (path.parent / instrument['path']).resolve(strict=True)
-                    self.assertTrue(device_path.is_relative_to(package))
-                    self.assertEqual(json.loads(device_path.read_text())['device']['id'], instrument['id'])
+                    self.assertEqual(project['tracks'][0]['chain'], {'kind': 'midi', 'instrument': None})
+                    self.assertEqual(project['tracks'][0]['slots'], [None] * 4)
 
     def test_alive_package_reuses_source_devices_and_notices(self):
         for target in release.TARGETS:
@@ -100,8 +116,10 @@ class ReleaseTests(unittest.TestCase):
                 release.verify_notice_resources(package)
                 session_path = package/'alive-session/alive/examples/two-instruments.alive'
                 session = json.loads(session_path.read_text())
-                for track in session['tracks']:
-                    device_path = (session_path.parent/track['device']['path']).resolve(strict=True)
+                self.assertEqual(session['format'], 'alive-session-v6')
+                self.assertEqual(session['score']['format'], 'alive-session-v4')
+                for track in session['score']['tracks']:
+                    device_path = (session_path.parent/track['chain']['instrument']['path']).resolve(strict=True)
                     self.assertTrue(device_path.is_relative_to(package))
                     self.assertEqual(device_path.read_bytes(),
                                      (release.APP/'examples/subtractive.ultra').read_bytes())

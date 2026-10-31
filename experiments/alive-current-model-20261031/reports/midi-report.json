@@ -1,0 +1,38 @@
+{
+  "standard_fixture": true,
+  "preview_control": true,
+  "preview_pcm": {
+    "frames": 38400,
+    "seconds": 0.8,
+    "peak": 0.054162632673978806,
+    "one_second_peaks": [
+      0.054162632673978806
+    ],
+    "unequal_stereo_samples_after_setup": 0,
+    "sha256": "60b66d2a47f84ccbec3a23decd23ce8c54653d80f7d3498f1692fb3e15f29fa5",
+    "path": "preview.f32",
+    "physical_audio": false,
+    "supervision": {
+      "complete": true,
+      "reason": "requested_stop",
+      "group_id": 632406,
+      "recorder_pid": 632409,
+      "returncode": 1,
+      "wall_seconds": 0.9969926310004666,
+      "audio_bytes": 307200,
+      "stderr_bytes": 0,
+      "limits": {
+        "wall_seconds": 2700.0,
+        "audio_bytes": 1073741824,
+        "metadata_bytes": 67108864,
+        "stderr_bytes": 1048576,
+        "disk_reserve_bytes": 268435456
+      }
+    }
+  },
+  "playing_edit": true,
+  "undo_redo": true,
+  "save_reopen": true,
+  "stream_errors": 0,
+  "stopped": true
+}

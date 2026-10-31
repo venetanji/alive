@@ -4,11 +4,8 @@ use super::Document;
 #[serde(deny_unknown_fields)]
 pub struct MasterSettings { pub gain: f64 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum SaveWire { LegacyScore, V5, V6 }
-
 #[derive(Clone, Debug, PartialEq)]
-pub struct SavedSession { pub score: Document, pub master: MasterSettings, pub launch: super::launch::LaunchSettings, pub wire: SaveWire }
+pub struct SavedSession { pub score: Document, pub master: MasterSettings, pub launch: super::launch::LaunchSettings }
 
 impl SavedSession {
     pub fn with_score(&self, score: Document) -> Self {

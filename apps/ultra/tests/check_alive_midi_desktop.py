@@ -35,18 +35,18 @@ def run():
     before=alive.value('Note 1 pitch');changed=int(before)+1
     alive.numeric('Note 1 pitch',changed)
     alive.wait_value('Note 1 pitch',lambda s:s==str(changed))
-    assert not ui.wait_for('Prepare / Apply').get_state_set().contains(Atspi.StateType.ENABLED)
+    alive.wait_value('Musical edit status', lambda s: 'Updating' not in s)
     alive.wait_value('Transport playing',lambda s:s=='true');ui.click('Audio details')
-    ui.click('Undo pending edit');alive.wait_value('Note 1 pitch',lambda s:s==before)
-    ui.click('Redo pending edit');alive.wait_value('Note 1 pitch',lambda s:s==str(changed))
+    ui.click('Undo');alive.wait_value('Note 1 pitch',lambda s:s==before)
+    ui.click('Redo');alive.wait_value('Note 1 pitch',lambda s:s==str(changed))
     alive.numeric('Note 1 velocity',83)
     alive.wait_value('Note 1 velocity',lambda s:s=='83')
-    assert not ui.wait_for('Prepare / Apply').get_state_set().contains(Atspi.StateType.ENABLED)
+    alive.wait_value('Musical edit status', lambda s: 'Updating' not in s)
     alive.wait_value('Track 1 active voices',lambda s:s.isdecimal() and int(s)>0)
     alive.screenshot('live-edit.png')
     alive.transport('stop');alive.wait_value('Audio stream errors',lambda s:s=='0')
     saved=ui.output/'live-edit-saved.alive';alive.choose_file('Save session as','Save Alive Session',saved)
-    document=json.loads(saved.read_text());notes=document['score']['sources'][0]['notes'];assert notes[0]['pitch']==changed and notes[0]['velocity']==83
+    document=json.loads(saved.read_text());assert document['format']=='alive-session-v6';notes=document['score']['sources'][0]['notes'];assert notes[0]['pitch']==changed and notes[0]['velocity']==83
     alive.choose_file('Open session','Open Alive Session',saved)
     ui.click('Session workspace');ui.click('Select Pulse slot 1')
     alive.wait_value('Note 1 pitch',lambda s:s==str(changed))

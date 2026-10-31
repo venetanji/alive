@@ -65,27 +65,57 @@ def screenshot(name):
 def value(name):
     prepare_workspace_control(name)
     control = ui.wait_for(name)
+    if 'Value' in control.get_interfaces():
+        return format(float(Atspi.Value.get_current_value(control)), '.15g')
+
+    def text(item):
+        return Atspi.Text.get_text(item, 0, Atspi.Text.get_character_count(item))
+
     if 'Text' in control.get_interfaces():
-        return Atspi.Text.get_text(control, 0, -1)
-    return ' '.join(Atspi.Text.get_text(a, 0, -1) for a in ui.walk(control)
-                    if 'Text' in a.get_interfaces())
+        contents = text(control)
+        if contents:
+            return contents
+    contents = ' '.join(contents for item in ui.walk(control)
+                        if 'Text' in item.get_interfaces() and (contents := text(item)))
+    diagnostic = name in (
+        'Audio backend', 'Audio device', 'Audio sample rate', 'Audio buffer frames',
+        'Audio callbacks', 'Audio stream errors', 'Audio failed', 'Audio status',
+        'Transport playing', 'Absolute frame', 'Rejected commands', 'Native generation') or (
+            name.startswith('Track ') and name.endswith((' active voices', ' authority', ' active source', ' active placement')))
+    # Diagnostic outputs mirror their current text into title for accessibility.
+    return contents or (control.get_description() if diagnostic else '')
 
 
 def select_clip(track):
-    name = f'Select {track} slot 1'
-    try:
-        ui.find(name)
-    except StopIteration:
-        name = f'{track} clip'
-    ui.click(name)
+    ui.click(f'Select {track} slot 1')
 
 
 def file_score(session):
-    return session['score'] if session.get('format') in ('alive-session-v5', 'alive-session-v6') else session
+    assert session.get('format') == 'alive-session-v6', session.get('format')
+    assert session['score']['format'] == 'alive-session-v4', session['score'].get('format')
+    return session['score']
 
 
-def score(track):
-    return track['slots'][0] if 'slots' in track else track
+def source_score(document, track, slot=0):
+    source_id = track['slots'][slot]['sourceId']
+    return next(source for source in document['sources'] if source['id'] == source_id)
+
+
+def bounded_core_fixture(session):
+    result = json.loads(json.dumps(session))
+    document = file_score(result)
+    # Leave room for chain and automation edits within the complete MIDI envelope.
+    for source in document['sources']:
+        if source['kind'] == 'midi':
+            source['notes'] = [{**source['notes'][0], 'beat': 0, 'duration': source['lengthBeats']}]
+            source['automation'] = []
+    return result
+
+
+def settled():
+    wait_value('Musical edit status', lambda text: bool(text) and 'Updating' not in text)
+    status = value('Session status')
+    assert not any(word in status.lower() for word in ('error:', 'refused', 'stale', 'changed during')), status
 
 
 def numeric(name, number):
@@ -98,8 +128,13 @@ def wait_value(name, predicate, seconds=8):
     deadline = time.monotonic() + seconds
     while time.monotonic() < deadline:
         current = value(name)
-        if predicate(current):
-            return current
+        try:
+            if predicate(current):
+                return current
+        except ValueError:
+            # WebKit briefly exposes empty diagnostic text while it refreshes.
+            if current:
+                raise
         time.sleep(.12)
     screenshot('failed-value.png')
     raise AssertionError(f'{name}: unexpected value {current!r}')
@@ -729,18 +764,15 @@ def prepare_chain():
     select_clip('Pulse')
     choose_file('Add effect', 'Load Ultra Device', utility)
     choose_file('Add effect', 'Load Ultra Device', lowpass)
+    before = ui.output / 'chain-before-reorder.alive'
+    choose_file('Save session as', 'Save Alive Session', before)
+    identities = [device['instanceId'] for device in file_score(json.loads(before.read_text()))['tracks'][0]['effects']]
     # Reordering twice must preserve identities and restore the saved signal order.
     reorder_click('Move Pulse Stereo Utility effect 1 later')
     ui.wait_for('Select Pulse Stereo Utility effect 2')
     force_covering_tooltip('Move Pulse Stereo Utility effect 2 earlier', 'Move Pulse Stereo Lowpass effect 1 later')
     reorder_click('Move Pulse Stereo Utility effect 2 earlier')
     ui.wait_for('Select Pulse Stereo Lowpass effect 2')
-    # Another Utility with the same reusable ID/key belongs to Harmony alone.
-    select_clip('Harmony')
-    choose_file('Add effect', 'Load Ultra Device', utility)
-    ui.click('Select Harmony Stereo Utility effect 1')
-    numeric('Gain base', .85)
-    select_clip('Pulse')
     ui.click('Select Pulse Stereo Utility effect 1')
     numeric('Gain base', .6)
     ui.click('Select Pulse Stereo Lowpass effect 2')
@@ -754,7 +786,14 @@ def prepare_chain():
     ui.click('Add Stereo Lowpass effect 2 / Cutoff point')
     numeric('Stereo Lowpass effect 2 / Cutoff point 1 value', 1200)
     screenshot('automation-audit.png')
-    return {'utility_source': str(utility), 'lowpass_source': str(lowpass)}
+    after = ui.output / 'chain-after-reorder.alive'
+    choose_file('Save session as', 'Save Alive Session', after)
+    devices = file_score(json.loads(after.read_text()))['tracks'][0]['effects']
+    assert [device['instanceId'] for device in devices] == identities
+    ui.click('Bypass Pulse Stereo Lowpass effect 2')
+    ui.click('Bypass Pulse Stereo Lowpass effect 2')
+    return {'utility_source': str(utility), 'lowpass_source': str(lowpass),
+            'audit_saved': str(after), 'audited_instances': identities, 'utility': devices[0]}
 
 
 def close_effect_editor():
@@ -768,171 +807,6 @@ def close_effect_editor():
             return
         time.sleep(.1)
     raise AssertionError('Effect editor Close did not destroy its native window')
-
-
-def apply_input_geometry():
-    control = ui.wait_for('Prepare / Apply')
-    rect = Atspi.Component.get_extents(control, Atspi.CoordType.SCREEN)
-    point = (rect.x + rect.width // 2, rect.y + rect.height // 2)
-    frame = next(f for f in windows.app_frames() if f.get_name().removeprefix('* ') == MAIN)
-    node = frame
-    path = []
-    for _ in range(32):
-        path.append({'name': node.get_name(), 'role': node.get_role_name()})
-        child = Atspi.Component.get_accessible_at_point(node, *point, Atspi.CoordType.SCREEN)
-        if child is None or child == node: break
-        node = child
-    web = next(item for item in ui.walk(frame) if item.get_role_name() == 'document web')
-    web_path = []
-    for _ in range(32):
-        web_path.append({'name': web.get_name(), 'role': web.get_role_name()})
-        child = Atspi.Component.get_accessible_at_point(web, *point, Atspi.CoordType.SCREEN)
-        if child is None or child == web: break
-        web = child
-    panel = ui.wait_for('Audio details')
-    panel_rect = Atspi.Component.get_extents(panel, Atspi.CoordType.SCREEN)
-    expanded = panel.get_state_set().contains(Atspi.StateType.EXPANDED)
-    root = ui.Gdk.get_default_root_window()
-    overlap = [max(rect.x, panel_rect.x), max(rect.y, panel_rect.y),
-               min(rect.x + rect.width, panel_rect.x + panel_rect.width),
-               min(rect.y + rect.height, panel_rect.y + panel_rect.height)]
-    summary_covers_point = (expanded and overlap[0] <= point[0] < overlap[2] and
-                            overlap[1] <= point[1] < overlap[3])
-    return {'rect': [rect.x, rect.y, rect.width, rect.height], 'point': point,
-            'screen': [root.get_width(), root.get_height()],
-            'showing': control.get_state_set().contains(Atspi.StateType.SHOWING),
-            'enabled': control.get_state_set().contains(Atspi.StateType.ENABLED),
-            'audio_details_expanded': expanded,
-            'audio_details_rect': [panel_rect.x, panel_rect.y, panel_rect.width, panel_rect.height],
-            'audio_summary_overlap_edges': overlap if expanded else None,
-            'audio_summary_covers_point': summary_covers_point,
-            'accessible_hit_path': path,
-            'web_hit_path': web_path,
-            'native_hit_path': native_hit_path(*point),
-            'frames': [{'name': f.get_name(), 'showing': f.get_state_set().contains(Atspi.StateType.SHOWING)} for f in windows.app_frames()]}
-
-
-def piano_history_with_effect_editor():
-    # The effect editor stays alive while the main window edits pending music.
-    windows.focus(MAIN)
-    ui.click('Audio details')  # Close the overlay before focusing the roll.
-    ui.click('Selected clip piano roll')
-    px, py = ui.control_point('Selected clip piano roll', (32 + 2 / 8 * 608) / 640,
-                              (21 + 5.5 * 191 / 39) / 218)
-    def double_click_note():
-        for _ in range(2):
-            ui.t.XTestFakeMotionEvent(ui.display, 0, px, py, 0)
-            ui.t.XTestFakeButtonEvent(ui.display, 1, 1, 0)
-            ui.t.XTestFakeButtonEvent(ui.display, 1, 0, 0)
-            ui.x.XFlush(ui.display)
-            time.sleep(.07)
-    if sustained_driver is not None:
-        sustained_driver.observer.action('piano note double click', double_click_note)
-    else:
-        double_click_note()
-    time.sleep(.3)
-    assert value('Note 13 pitch') == '80'
-    Atspi.Component.grab_focus(ui.wait_for('Selected clip piano roll'))
-    ui.keys('Right'); time.sleep(.2)
-    ui.keys('Up'); time.sleep(.2)
-    assert value('Note 13 beat') == '2.25' and value('Note 13 pitch') == '81'
-    ui.click('Undo pending edit'); assert value('Note 13 pitch') == '80'
-    ui.click('Redo pending edit'); assert value('Note 13 pitch') == '81'
-    ui.click('Prepare / Apply')
-    wait_value('Session status', lambda s: 'Stop transport' in s)
-    assert value('Note 13 pitch') == '81'
-    assert ui.wait_for('Undo pending edit').get_state_set().contains(Atspi.StateType.ENABLED)
-    # Same-generation pending edits/undo do not destroy or borrow the editor's DSP.
-    windows.focus('Pulse - Ultra Hosted Editor')
-    wait_value('Hosted Cutoff base', lambda s: float(s) == 2000)
-    windows.focus(MAIN)
-    ui.click('Audio details')  # Expose transport diagnostics before asserting Stop.
-    transport('stop')
-    receipt = {'before_navigation': apply_input_geometry()}
-    screenshot('before-apply.png')
-    trace_path = ui.output / 'app.log'
-    trace_offset = trace_path.stat().st_size
-    if os.environ.get('ULTRA_TEST_APPLY_OCCLUDED') == '1':
-        px, py = receipt['before_navigation']['point']
-        assert ui.t.XTestFakeMotionEvent(ui.display, 0, px, py, 0)
-        assert ui.t.XTestFakeButtonEvent(ui.display, 1, 1, 0)
-        assert ui.t.XTestFakeButtonEvent(ui.display, 1, 0, 0)
-        ui.x.XFlush(ui.display)
-        receipt['queued'] = True
-    else:
-        prepare_workspace_control('Prepare / Apply')
-        receipt['after_navigation'] = apply_input_geometry()
-        ui.click('Prepare / Apply')
-        receipt['queued'] = True
-    deadline = time.monotonic() + (0.7 if os.environ.get('ULTRA_TEST_APPLY_OCCLUDED') == '1' else 5)
-    while True:
-        receipt['trace'] = trace_path.read_bytes()[trace_offset:].decode(errors='replace').splitlines()
-        if (any('ALIVE_TRACE editor_destroyed' in line for line in receipt['trace']) and
-                any('ALIVE_TRACE apply_end' in line for line in receipt['trace'])) or time.monotonic() >= deadline:
-            break
-        time.sleep(.1)
-    receipt['after_frames'] = [{'name': f.get_name(), 'showing': f.get_state_set().contains(Atspi.StateType.SHOWING)} for f in windows.app_frames()]
-    receipt['audio_details_after_click_expanded'] = ui.wait_for('Audio details').get_state_set().contains(Atspi.StateType.EXPANDED)
-    (ui.output / 'apply-receipt.json').write_text(json.dumps(receipt, indent=2))
-    assert not any(frame.get_name() == 'Pulse - Ultra Hosted Editor' and
-                   frame.get_state_set().contains(Atspi.StateType.SHOWING)
-                   for frame in windows.app_frames()), 'Apply must close the old editor generation'
-    assert any('ALIVE_TRACE apply_begin' in line for line in receipt['trace']), 'Apply IPC must begin'
-    assert any('ALIVE_TRACE apply_end result=ok' in line for line in receipt['trace']), 'Apply IPC must complete'
-    assert any('ALIVE_TRACE editor_close' in line for line in receipt['trace']), 'Apply must request stale editor close'
-    assert any('ALIVE_TRACE editor_destroyed' in line for line in receipt['trace']), 'Apply must destroy stale editor'
-    assert not ui.wait_for('Undo pending edit').get_state_set().contains(Atspi.StateType.ENABLED)
-    assert value('Note 13 pitch') == '81'
-    ui.click('Edit selected device in Ultra')
-    windows.focus('Pulse - Ultra Hosted Editor')
-    wait_value('Hosted Cutoff base', lambda s: float(s) == 2000)
-    close_effect_editor()
-    transport('start')
-    ui.click('Audio details')
-    ui.click('Selected clip piano roll')
-    screenshot('piano-history-playing.png')
-    ui.click('Audio details')
-    log('piano add/keyboard/undo/redo with independent effect editor; Stop/Apply/play')
-
-
-def live_chain():
-    before = int(value('Audio callbacks'))
-    # Native generation counts musical discontinuities, including each loop.
-    ui.click('Select Pulse Stereo Utility effect 1')
-    numeric('Gain base', .65)
-    ui.click('Bypass Pulse Stereo Utility effect 1')
-    ui.click('Bypass Pulse Stereo Utility effect 1')
-    ui.click('Select Pulse Stereo Lowpass effect 2')
-    numeric('Cutoff base', 1900)
-    wait_value('Cutoff effective ownership', lambda s: 'Automation: 1200' in s)
-    ui.click('Audio details')
-    numeric('Stereo Lowpass effect 2 / Cutoff point 1 value', 1500)
-    wait_value('Cutoff effective ownership', lambda s: 'Automation: 1200' in s)
-    assert value('Stereo Lowpass effect 2 / Cutoff point 1 value') == '1500'
-    screenshot('automation-draft-audit.png')
-    ui.click('Discard edits')
-    ui.click('Audio details')
-    ui.click('Edit selected device in Ultra')
-    windows.focus('Pulse - Ultra Hosted Editor')
-    numeric('Hosted Cutoff base', 2000)
-    wait_value('Hosted Cutoff effective ownership', lambda s: 'Automation: 1200' in s)
-    screenshot('effect-editor-audit.png')
-    close_effect_editor()
-    ui.click('Edit selected device in Ultra')
-    windows.focus('Pulse - Ultra Hosted Editor')
-    wait_value('Hosted Cutoff base', lambda s: float(s) == 2000)
-    piano_history_with_effect_editor()
-    wait_value('Transport playing', lambda s: s == 'true')
-    assert int(value('Audio callbacks')) > before
-    select_clip('Harmony')
-    ui.click('Select Harmony Stereo Utility effect 1')
-    assert float(value('Gain base')) == .85
-    select_clip('Pulse')
-    ui.click('Select Pulse Stereo Utility effect 1')
-    assert float(value('Gain base')) == .65
-    ui.click('Bypass Pulse Stereo Utility effect 1')
-    ui.click('Select Pulse Subtractive instrument')
-    screenshot('chain-playing-audit.png')
 
 
 def request_native_close():
@@ -992,7 +866,6 @@ def check_separate_apps():
 
 def check_audio_settings():
     ui.click('Alive audio settings')
-    ui.click('Audio details')
 
     def buffer(index):
         Atspi.Component.grab_focus(ui.wait_for('Alive buffer frames'))
@@ -1016,24 +889,25 @@ def check_audio_settings():
     assert settings.read_bytes() == saved, 'Rejected settings replaced the saved output'
     buffer(5)
     ui.click('Save and start Alive audio')
-    wait_value('Audio callbacks', lambda s: int(s) > 0)
-    assert value('Transport playing') == 'false'
     assert not ui.wait_for('Save Alive audio settings').get_state_set().contains(Atspi.StateType.ENABLED)
     screenshot('alive-audio-settings.png')
+    # Read diagnostics after closing settings so its overlay cannot cover controls.
     ui.click('Close audio settings')
+    wait_value('Audio callbacks', lambda s: int(s) > 0)
+    assert value('Transport playing') == 'false'
     transport('start')
-    ui.click('Audio details')  # Close diagnostics so the settings button is reachable.
-    ui.click('Alive audio settings')
-    ui.click('Audio details')
     wait_value('Track 1 active voices', lambda s: int(s) > 0)
+    ui.click('Alive audio settings')
     ui.click('Stop Alive audio to edit settings')
+    ui.click('Close audio settings')
     wait_value('Transport playing', lambda s: s == 'false')
     wait_value('Track 1 active voices', lambda s: s == '0')
     wait_value('Track 2 active voices', lambda s: s == '0')
+    ui.click('Alive audio settings')
     ui.click('Save and start Alive audio')
+    ui.click('Close audio settings')
     wait_value('Audio callbacks', lambda s: int(s) > 0)
     assert value('Transport playing') == 'false'
-    ui.click('Close audio settings')
     return {'saved': json.loads(saved), 'unsupported_buffer_preserved_settings': True,
             'stop_audio_terminated_notes': True, 'restart_kept_transport_stopped': True}
 
@@ -1042,6 +916,9 @@ def _run():
     windows.focus(MAIN)
     ui.wait_for('Start transport')
     entrypoints = check_separate_apps()
+    fixture = ui.output / 'bounded-core.alive'
+    fixture.write_text(json.dumps(bounded_core_fixture(json.loads((ui.output / 'initial.alive').read_text())), indent=2))
+    choose_file('Open session', 'Open Alive Session', fixture)
     audio_settings = check_audio_settings()
     screenshot('session-ready.png')
     assert value('Transport playing') == 'false'
@@ -1051,21 +928,28 @@ def _run():
         transport('stop')
         (ui.output / 'smoke.json').write_text(json.dumps(report, indent=2))
         return
-    try:
-        ui.find('Select Pulse slot 1')
-        upgraded = True
-    except StopIteration:
-        upgraded = False
-    ui.click('New session')
-    if upgraded:
-        windows.focus('Unsaved Alive Session'); ui.click('Discard'); windows.focus(MAIN)
-    time.sleep(.5)
-    # Exercise native device loading twice; each track keeps an independent root.
+    # Audit the two-effect chain separately; the live phase stays within three roots.
+    seed = bounded_core_fixture(json.loads((ui.output / 'initial.alive').read_text()))
+    chain_session = json.loads(json.dumps(seed))
+    chain_score = file_score(chain_session)
+    chain_score['tracks'] = chain_score['tracks'][:1]
+    track_id = chain_score['tracks'][0]['id']
+    chain_score['sources'] = [source for source in chain_score['sources'] if source['trackId'] == track_id]
+    chain_score['placements'] = [placement for placement in chain_score['placements'] if placement['trackId'] == track_id]
+    chain_session['launch']['clipQuantization'] = []
+    chain_path = ui.output / 'chain-audit.alive'
+    chain_path.write_text(json.dumps(chain_session, indent=2))
+    choose_file('Open session', 'Open Alive Session', chain_path)
+    chain = prepare_chain()
+    core_score = file_score(seed)
+    core_score['tracks'][0]['effects'] = [chain['utility']]
+    core_path = ui.output / 'core-live.alive'
+    core_path.write_text(json.dumps(seed, indent=2))
+    # Save the stopped bypass audit before opening the separate live fixture.
+    ui.click('Save session')
+    choose_file('Open session', 'Open Alive Session', core_path)
     choose_file('Replace Pulse device', 'Load Ultra Device', DEVICE)
     choose_file('Replace Harmony device', 'Load Ultra Device', DEVICE)
-    ui.click('Audio details')  # Keep the lower automation controls unobscured.
-    chain = prepare_chain()
-    # Replacement intentionally clears lanes, so explicitly author both enabled lanes.
     select_clip('Pulse')
     numeric('Tempo', 116)
     numeric('Note 1 duration', .75)
@@ -1077,21 +961,34 @@ def _run():
         ui.click(f'Add {label} point')
         numeric(f'{label} point 2 beat', 4)
         numeric(f'{label} point 2 value', second)
-    ui.click('Prepare / Apply')
-    time.sleep(.5)
+    settled()
     before_reorder = ui.output / 'before-reorder.alive'
     choose_file('Save session as', 'Save Alive Session', before_reorder)
-    chain['prepared_instances'] = [d['instanceId'] for d in file_score(json.loads(before_reorder.read_text()))['tracks'][0]['effects']]
-    reorder_click('Move Pulse Stereo Utility effect 1 later')
-    ui.wait_for('Select Pulse Stereo Utility effect 2')
-    reorder_click('Move Pulse Stereo Utility effect 2 earlier')
-    ui.wait_for('Select Pulse Stereo Lowpass effect 2')
-    ui.click('Audio details')
+    chain['initial_instances'] = [d['instanceId'] for d in file_score(json.loads(before_reorder.read_text()))['tracks'][0]['effects']]
+    ui.click('Select Pulse Stereo Utility effect 1')
+    numeric('Gain base', .65)
+    ui.click('Bypass Pulse Stereo Utility effect 1')
+    ui.click('Alive audio settings')
+    ui.click('Save and start Alive audio')
+    ui.click('Close audio settings')
+    wait_value('Audio callbacks', lambda s: int(s) > 0)
     transport('start')
     capture = start_capture('native-walkthrough')
-    live_chain()
-    numeric('Cutoff base', 1777)
-    wait_value('Cutoff effective ownership', lambda s: 'Automation' in s and '1777' not in s)
+    numeric('Gain base', .7)
+    wait_value('Gain effective ownership', lambda s: 'Base:' in s)
+    numeric('Gain base', .65)
+    assert float(value('Gain base')) == .65
+    ui.click('Edit selected device in Ultra')
+    windows.focus('Pulse - Ultra Hosted Editor')
+    wait_value('Hosted Gain base', lambda s: float(s) == .65)
+    windows.focus(MAIN)
+    numeric('Note 1 pitch', 61)
+    ui.click('Undo'); wait_value('Note 1 pitch', lambda s: s == '60')
+    ui.click('Redo'); wait_value('Note 1 pitch', lambda s: s == '61')
+    windows.focus('Pulse - Ultra Hosted Editor')
+    wait_value('Hosted Gain base', lambda s: float(s) == .65)
+    close_effect_editor()
+    ui.click('Select Pulse Subtractive instrument')
     numeric('Pulse gain', .55)
     ui.click('Harmony mute'); time.sleep(.3); ui.click('Harmony mute')
     ui.click('Pulse solo'); time.sleep(.3); ui.click('Pulse solo')
@@ -1099,70 +996,58 @@ def _run():
     editor_edit(1333)
     wait_value('Cutoff base', lambda s: float(s) == 1333)
     screenshot('session-playing.png')
-    log('two loaded devices, notes/automation prepared, live base/mixer, editor closed/reopened')
-    ui.click('Audio details')
-    numeric('Note 1 pitch', 61)
-    ui.click('Undo pending edit')
-    assert value('Note 1 pitch') == '60'
-    assert ui.wait_for('Redo pending edit').get_state_set().contains(Atspi.StateType.ENABLED)
-    ui.click('Audio details')
+    log('two independent device chains; immediate music, history, mixer and hosted editors')
+    numeric('Note 1 pitch', 62)
+    ui.click('Undo')
+    wait_value('Note 1 pitch', lambda s: s == '61')
+    assert ui.wait_for('Redo').get_state_set().contains(Atspi.StateType.ENABLED)
     source = ui.output / 'journey.alive'
     choose_file('Save session as', 'Save Alive Session', source)
-    assert ui.wait_for('Redo pending edit').get_state_set().contains(Atspi.StateType.ENABLED)
-    deadline = time.monotonic() + 5
-    while time.monotonic() < deadline:
-        saved = file_score(json.loads(source.read_text()))
-        if saved['tempo'] == 116 and saved['tracks'][0]['device']['parameters'].get('cutoff') == 1333:
-            break
-        time.sleep(.1)
+    assert ui.wait_for('Redo').get_state_set().contains(Atspi.StateType.ENABLED)
+    saved = file_score(json.loads(source.read_text()))
     assert saved['tempo'] == 116 and saved['tracks'][0]['gain'] == .55
+    assert saved['tracks'][0]['chain']['instrument']['parameters']['cutoff'] == 1333
     effects = saved['tracks'][0]['effects']
-    assert [d['id'] for d in effects] == ['org.alive.utility', 'org.alive.stereo-lowpass']
-    assert effects[0]['parameters']['gain'] == .65 and effects[1]['parameters']['cutoff'] == 2000
-    assert effects[0]['bypassed'] is True and effects[1]['bypassed'] is False
-    assert saved['tracks'][1]['effects'][0]['parameters']['gain'] == .85
-    assert any(l['instanceId'] == effects[1]['instanceId'] and l['key'] == 'cutoff' and l['points'][0]['value'] == 1200 for l in score(saved['tracks'][0])['automation'])
+    assert [d['id'] for d in effects] == ['org.alive.utility']
+    assert effects[0]['parameters']['gain'] == .65 and effects[0]['bypassed'] is True
+    assert saved['tracks'][1]['effects'] == []
+    music = source_score(saved, saved['tracks'][0])
+    instrument_id = saved['tracks'][0]['chain']['instrument']['instanceId']
+    assert any(l['instanceId'] == instrument_id and l['key'] == 'cutoff' and l['points'][0]['value'] == 900 for l in music['automation'])
     chain['saved_instances'] = [d['instanceId'] for d in effects]
-    assert chain['saved_instances'] == chain['prepared_instances']
-    assert score(saved['tracks'][0])['notes'][0]['duration'] == .75
-    assert score(saved['tracks'][0])['notes'][0]['velocity'] == 83
-    added = score(saved['tracks'][0])['notes'][12]
-    assert {key: added[key] for key in ('beat', 'pitch', 'duration', 'velocity')} == {'beat': 2.25, 'pitch': 81, 'duration': .25, 'velocity': 100}
-    if saved['format'] == 'alive-session-v3':
-        assert added['id'].startswith('note-')
-        assert len({note['id'] for note in score(saved['tracks'][0])['notes']}) == len(score(saved['tracks'][0])['notes'])
+    assert chain['saved_instances'] == chain['initial_instances']
+    assert music['notes'][0]['duration'] == .75 and music['notes'][0]['velocity'] == 83
+    assert music['notes'][0]['pitch'] == 61
+    assert len({note['id'] for note in music['notes']}) == len(music['notes'])
     transport('stop')
     wait_value('Track 1 active voices', lambda s: s == '0')
     wait_value('Track 2 active voices', lambda s: s == '0')
     choose_file('Open session', 'Open Alive Session', source)
-    assert value('Note 13 pitch') == '81' and value('Note 13 beat') == '2.25'
-    assert not ui.wait_for('Redo pending edit').get_state_set().contains(Atspi.StateType.ENABLED)
+    select_clip('Pulse')
+    wait_value('Note 1 pitch', lambda s: s == '61')
+    assert not ui.wait_for('Redo').get_state_set().contains(Atspi.StateType.ENABLED)
+    ui.click('Alive audio settings')
+    ui.click('Save and start Alive audio')
+    ui.click('Close audio settings')
+    wait_value('Audio callbacks', lambda s: int(s) > 0)
     transport('start')
-    assert float(value('Cutoff base')) == 1333
     assert float(value('Pulse gain')) == .55
-    force_covering_tooltip('Select Pulse Stereo Lowpass effect 2', 'Devices detail', kind='device selection')
-    ui.click('Select Pulse Stereo Lowpass effect 2')
-    assert float(value('Cutoff base')) == 2000
-    wait_value('Cutoff effective ownership', lambda s: 'Automation: 1200' in s)
+    ui.click('Select Pulse Stereo Utility effect 1')
+    assert float(value('Gain base')) == .65
+    wait_value('Gain effective ownership', lambda s: 'Base:' in s)
     ui.click('Select Pulse Subtractive instrument')
-    # Prospective dependency failure must keep the active session and clock running.
+    assert float(value('Cutoff base')) == 1333
+    # Candidate input failure preserves the active document and advancing clock.
     bad = ui.output / 'missing-device.alive'
     broken = json.loads(source.read_text())
-    file_score(broken)['tracks'][0]['device']['path'] = 'missing-device.ultra'
+    file_score(broken)['tracks'][0]['chain']['instrument']['path'] = 'missing-device.ultra'
     bad.write_text(json.dumps(broken))
     before = int(value('Absolute frame'))
-    ui.click('Audio details')
-    numeric('Note 1 pitch', 61)
-    ui.click('Audio details')
     choose_file('Open session', 'Open Alive Session', bad)
-    time.sleep(.4)
+    wait_value('Session status', lambda s: 'missing-device' in s)
     assert value('Transport playing') == 'true'
     assert int(value('Absolute frame')) > before
     assert float(value('Cutoff base')) == 1333
-    wait_value('Session status', lambda s: 'missing-device' in s)
-    assert value('Note 1 pitch') == '61'
-    assert ui.wait_for('Undo pending edit').get_state_set().contains(Atspi.StateType.ENABLED)
-    ui.click('Discard edits')
     changed = json.loads(Path(chain['utility_source']).read_text())
     changed['nodes'][0]['x'] += 1
     Path(chain['utility_source']).write_text(json.dumps(changed))
@@ -1170,9 +1055,8 @@ def _run():
     wait_value('Session status', lambda s: 'Replace' in s and 'journey-utility' in s)
     assert value('Transport playing') == 'true'
     assert int(value('Absolute frame')) > before
-    # Restore the admitted source so later Save can validate its fingerprint.
     Path(chain['utility_source']).write_bytes(Path('apps/ultra/examples/utility.ultra').read_bytes())
-    log('saved/reopened/playing; missing and changed effect source rejected preserving session')
+    log('saved/reopened; invalid external inputs preserve active playback')
     walkthrough = finish_capture(capture)
     assert walkthrough['peak'] > 1e-4
     # Keep a bounded, repeating native workload alive for at least the requested
@@ -1212,14 +1096,14 @@ def _run():
             wait_value('Transport playing', lambda s: s == 'true')
             assert int(value('Absolute frame')) > frame_before, 'Audio frame clock stopped advancing'
             played = sustained_driver.playing.seconds - playing_baseline if sustained_driver is not None else playing.seconds
-            # Retained stream epochs survive Apply; capture each boundary as well.
-            log(f'endurance cycle {cycles + 1} before Stop/possible Apply')
+            # Capture retained stream epochs across stopped edits and transport boundaries.
+            log(f'endurance cycle {cycles + 1} before stopped musical edit')
             transport('stop')
             wait_value('Track 1 active voices', lambda s: s == '0')
             wait_value('Track 2 active voices', lambda s: s == '0')
             if cycles % 5 == 0:
                 numeric('Cutoff point 2 value', 2600 + cycles % 4 * 200)
-                ui.click('Prepare / Apply'); time.sleep(.3)
+                settled()
             transport('start')
             cycles += 1
             if cycles % 3 == 0:
@@ -1243,9 +1127,10 @@ def _run():
     transport('stop')
     ui.click('Save session')
     # Device removal runs while stopped, after every voice has terminated.
-    select_clip('Harmony')
-    ui.click('Remove Harmony Stereo Utility effect 1'); time.sleep(.3)
+    select_clip('Pulse')
+    ui.click('Remove Pulse Stereo Utility effect 1'); time.sleep(.3)
     assert value('Track 1 active voices') == '0'
+    select_clip('Harmony')
     choose_file('Replace Harmony device', 'Load Ultra Device', DEVICE)
     ui.click('Remove Harmony track'); time.sleep(.4)
     assert value('Track 2 active voices') == '0'
@@ -1260,43 +1145,36 @@ def _run():
     (ui.output / 'native-session-report.json').write_text(json.dumps(report, indent=2))
     checkpoint('report-write', 'before close/cancel/quit assertions')
     screenshot('session-device-removed.png')
-    # An explicitly accepted musical boundary survives cancellation of a later dialog.
-    ui.click('Audio details')
+    select_clip('Pulse')
     numeric('Note 1 velocity', 82)
     ui.click('Quit Alive')
-    windows.focus('Pending Schedule Edits'); ui.click('Apply edits')
     windows.focus('Unsaved Alive Session'); ui.click('Cancel')
     windows.focus(MAIN)
-    assert value('Note 1 velocity') == '82'
-    assert not ui.wait_for('Undo pending edit').get_state_set().contains(Atspi.StateType.ENABLED)
-    numeric('Note 1 velocity', 81)
+    wait_value('Note 1 velocity', lambda s: s == '82')
+    assert ui.wait_for('Undo').get_state_set().contains(Atspi.StateType.ENABLED)
     ui.click('Save session as')
-    windows.focus('Pending Schedule Edits'); ui.click('Discard edits')
     focus_chooser('Save Alive Session'); ui.click('Cancel')
     windows.focus(MAIN)
-    assert value('Note 1 velocity') == '82'
-    assert not ui.wait_for('Undo pending edit').get_state_set().contains(Atspi.StateType.ENABLED)
-    report['accepted_apply_outer_quit_cancel_cleared_history'] = True
-    report['accepted_discard_canceled_save_picker_cleared_history'] = True
-    ui.click('Audio details')
+    wait_value('Note 1 velocity', lambda s: s == '82')
+    assert ui.wait_for('Undo').get_state_set().contains(Atspi.StateType.ENABLED)
+    report['quit_cancel_preserved_immediate_edit_and_history'] = True
+    report['save_picker_cancel_preserved_immediate_edit_and_history'] = True
     request_native_close()
-    windows.focus('Unsaved Alive Session')
-    ui.click('Cancel')
+    windows.focus('Unsaved Alive Session'); ui.click('Cancel')
     windows.focus(MAIN)
+    ui.click('Alive audio settings')
+    ui.click('Save and start Alive audio')
+    ui.click('Close audio settings')
+    wait_value('Audio callbacks', lambda s: int(s) > 0)
     transport('start')
-    report['quit_cancel_preserved_session'] = True
     report['native_window_close_reached_dirty_guard'] = True
-    ui.click('Audio details')
     numeric('Note 1 pitch', 63)
     ui.click('Quit Alive')
-    windows.focus('Pending Schedule Edits')
-    ui.click('Cancel')
+    windows.focus('Unsaved Alive Session'); ui.click('Cancel')
     windows.focus(MAIN)
-    assert value('Note 1 pitch') == '63'
-    ui.click('Discard edits')
-    ui.click('Audio details')
+    wait_value('Note 1 pitch', lambda s: s == '63')
     wait_value('Transport playing', lambda s: s == 'true')
-    report['pending_draft_quit_cancel_retained_edits_and_playback'] = True
+    report['quit_cancel_retained_edits_and_playback'] = True
     if sustained_driver is not None:
         transport('stop')
         ui.click('Audio details')

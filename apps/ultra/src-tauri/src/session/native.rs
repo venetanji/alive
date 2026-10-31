@@ -174,7 +174,7 @@ extern "C" {
     pub fn alive_session_state_v2(state: *mut StateV2) -> i32;
 }
 
-// Fixed v3 ABI. Desktop activation and saved-format migration are separate.
+// Shared native launch receipt layouts used by the workspace engine.
 pub const V3_VERSION: u32 = 3;
 pub const V3_TRACKS: u32 = 8;
 pub const V3_DEVICES: u32 = 16;

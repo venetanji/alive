@@ -155,8 +155,8 @@ fn native_saved_clip_release_overhead() {
     let fixture = PathBuf::from(std::env::var("ALIVE_MEASUREMENT_SESSION").unwrap());
     let fixture_sha = format!("{:x}", Sha256::digest(std::fs::read(&fixture).unwrap()));
     let mut host = Host::default();
-    let prepared = host.enable_clips(read(&fixture).unwrap()).unwrap();
-    assert!(prepared.saved.score.is_clips() && prepared.saved.score.loop_enabled());
+    let prepared = read(&fixture).unwrap();
+    assert!(prepared.saved.score.loop_enabled());
     let count:usize=std::env::var("ALIVE_MEASUREMENT_SAMPLES").map(|value|value.parse().unwrap()).unwrap_or(5000);
     assert!((1000..=20000).contains(&count));
     let raw_output=std::env::var_os("ALIVE_MEASUREMENT_OUTPUT").map(PathBuf::from);
@@ -166,15 +166,15 @@ fn native_saved_clip_release_overhead() {
             host.install(prepared.clone()).unwrap();
             assert_eq!(unsafe { ultra_external_start() }, 1);
             request_serial += 1;
-            let request = native::RequestV3 {
-                kind: native::V3_START,
+            let request = native::RequestV4 {
+                kind: native::V4_START,
                 preparation_revision: host.preparation_revision,
                 request_serial,
                 ..Default::default()
             };
-            let mut receipt = native::ReceiptV3::default();
+            let mut receipt = native::ReceiptV4::default();
             assert_eq!(
-                unsafe { native::alive_session_request_v3(&request, &mut receipt) },
+                unsafe { native::alive_session_request_v4(&request, &mut receipt) },
                 1,
                 "request error {}: {}", receipt.error, native::error()
             );

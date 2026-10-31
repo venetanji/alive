@@ -18,10 +18,6 @@ test('bundled and loaded copies share one result and search is case insensitive'
   assert.deepEqual(filterEntries(entries,'stereo','instrument'),[]);
   assert.deepEqual(filterEntries(entries,'no-matching-result','all'),[]);
 });
-test('clip-bank source entries retain their owning track and slot',()=>{
-  const entries=browserEntries([],{format:'alive-session-v3',tracks:[{id:'track-2',name:'Harmony',device:{instanceId:'inst-1',path:'/synth.ultra'},effects:[],slots:[null,{id:'clip-2',name:'Verse',notes:[],lengthBeats:8},null,null]}]},instances);
-  assert.deepEqual(entries.find(e=>e.kind==='source'),{id:'clip:track-2:clip-2',kind:'source',name:'Verse',description:'Harmony / 8 beats',trackId:'track-2',slot:1,clipId:'clip-2'});
-});
 test('project devices use the native resolved path rather than the saved relative reference',()=>{
   const project=structuredClone(document);project.tracks[0].chain.instrument.path='../../devices/synth.ultra';
   const views={...instances,'inst-1':{...instances['inst-1'],path:'/resolved/devices/synth.ultra'}};

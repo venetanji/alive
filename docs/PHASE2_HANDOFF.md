@@ -1,5 +1,18 @@
 # Phase 2 Implementation Handoff
 
+## Current Development
+
+Use the active roadmap at the top of `PLAN.md` and the current application
+contract in `apps/alive/SESSION_CONTRACT.md`. The dated checkpoints below are
+historical evidence, not instructions to restore old workflows or formats.
+The phase-2 UI worktree is `/home/venetanji/.codex/worktrees/phase2-ui/alive`;
+the main checkout belongs to concurrent native Live device/DLL work.
+Current development supports immediate MIDI/audio musical edits, explicit track
+creation, clip/Arrangement loops, launch quantization and resizable detail.
+The sole file format is a v6 envelope with a v4 workspace score. Old conversion
+and draft Apply workflows are removed. Input routing/arm/recording and the
+shared silent-video engine remain on the roadmap. CI is manually dispatched.
+
 ## Accepted UI Pass And Resumed Authoring, 2026-10-31
 
 The user resumed work, accepted the launched UI preview, and authorized pushing

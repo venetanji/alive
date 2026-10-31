@@ -19,10 +19,11 @@ def run():
     ui.click('Create MIDI source')
     ui.click('Place source in range')
     ui.click('Add note')
-    ui.click('Prepare / Apply')
+    alive.wait_value('Musical edit status', lambda s: 'Updating' not in s)
     path = ui.output / 'arrangement-saved.alive'
     alive.choose_file('Save session as', 'Save Alive Session', path)
     saved = json.loads(path.read_text())
+    assert saved['format'] == 'alive-session-v6'
     score = saved['score']
     assert score['format'] == 'alive-session-v4'
     assert len(score['tracks']) == 1

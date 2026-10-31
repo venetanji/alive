@@ -1,5 +1,11 @@
 # Alive Master v1 contract
 
+Historical implementation design from 2026-10-28. The native Master ABI and
+measurement details below retain their original context. The current app's
+saved owner, persistence and immediate-edit behavior are specified by
+`apps/alive/SESSION_CONTRACT.md`; its v6/v4-only contract supersedes this
+record's save-format, migration and draft-workflow sections.
+
 Status: frozen by the controller on 2026-10-28 after G0 foundation acceptance. Reviewed packet: `6638858d1ffb65d48b9952e64b7e3c768f3379d1`, based on `c6df81f2d4fd6164930bca6847faf783b1949624`; earlier draft: `5d45a432577086925d3d8b50a4356b076abeb36f`. G0 combines the passed c272c4a native job with passed 3b3df87 UI/reference/browser jobs and verified application/native-harness source equality; complete newer CI/packages remain separate final gates. Receipt: `experiments/phase2-20261028/reliability/cloud-3b3df87-g0/qualification.json`. Consumers implement only under their explicit task lease, in order: saved owner (Task 6), native proof (Task 7), UI (Task 8). The measured profiles, explicit mono/stereo device bundles, existing stereo output adapter and all capacities remain unchanged. Spec sections 6/11 and plan Tasks 6-8 control. References below are workspace-relative. This freeze specifies behavior; it does not claim implementation or passing acceptance witnesses.
 
 ## Saved owner, history, migration

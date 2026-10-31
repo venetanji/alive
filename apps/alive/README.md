@@ -4,7 +4,7 @@ Alive is a separate `alive` executable with a compact Rust/Tauri session UI.
 Ultra remains the `ultra` patch-editor executable. Both share the native engine
 and Rust library; Alive hosts saved Ultra instruments and ordered stereo effect
 chains through versioned device manifests and the native Faust evaluator.
-The current MIDI workspace shares sources between four Session slots per track
+The current MIDI/audio workspace shares sources between four Session slots per track
 and Arrangement placements. Saved sessions retain stable note/source/device
 identities, effects, parameter bases, bypass, automation, Master gain and launch
 quantization. Session has a fixed-right Master strip; Arrangement has right-hand
@@ -31,12 +31,12 @@ on Windows). Alive has its own Cargo/Tauri package under `apps/alive/src-tauri`;
 the developer build shares Ultra's target directory and adjacent native library.
 The launcher runs the Alive executable directly. Both apps can open at once.
 Alive uses application identifier `org.alive.session`, separate from Ultra's
-`org.alive.ultra.research`. The old `ultra --alive` entry remains compatible.
+`org.alive.ultra.research`.
 
 Starting without a file, or choosing **New session**, opens the bundled
 `empty-workspaces.alive`: one empty MIDI track with empty slots and a
 working Arrangement timeline. The populated examples remain available through
-Open. New sessions do not need an explicit format conversion.
+Open. Both workspaces are available immediately.
 
 On the local test machine, open **Alive (Test)** from the desktop app launcher.
 Its desktop entry selects a versioned, locally verified build; it does not
@@ -44,8 +44,8 @@ rebuild on launch. Existing windows keep their original executable and project.
 
 ## Clips, Tracks And Detail Size
 
-Completed note gestures update admitted MIDI sources in native playback without
-Prepare / Apply or a transport restart. Undo/Redo uses the same publication path.
+Completed note gestures update admitted MIDI sources during native playback.
+Undo/Redo uses the same publication path.
 The piano toolbar's **Preview** toggle starts off; enable it to hear keys and
 note selection, creation or pitch movement through the selected instrument and
 effects. Preview can sound while transport is stopped. It starts Audio when
@@ -53,7 +53,7 @@ needed, while ordinary note editing does not.
 
 Workspace clips, regions, tempo, automation and empty tracks use the same
 immediate publication workflow. The document and Undo history change only when
-playback acknowledges the edit. No edit confirmation or stopped Apply is needed.
+playback acknowledges the edit. Creating and editing clips requires no confirmation.
 Dense schedules can refuse an edit within the current native work limits; a
 refusal retains the installed music and history. Device graph installation still
 requires stopped transport. Preview has its own workload admission.
@@ -181,8 +181,8 @@ allowance. Unsupported requests refuse without changing the music.
 Session launch overrides that track's Arrangement. Track Stop retains a silent
 override; **Return** or **Return all** resumes Arrangement at its current
 position. Scenes launch their occupied slots atomically and stop tracks whose
-scene slot is empty. Selection and saved defaults do not launch clips. Reopen
-starts stopped with saved defaults cued.
+scene slot is empty. Selection does not launch clips. Reopen starts stopped at
+the beginning with Arrangement authority.
 
 Drag a blank Arrangement lane to select time, create a MIDI clip with
 Ctrl+Shift+M, or use **Place source in range** to reuse the selected source.
@@ -223,6 +223,7 @@ sibling fingerprints nor rewrites sources to make a replacement pass.
 ## Verify
 
 ```sh
+node --test apps/ultra/ui/alive*.test.mjs
 bash apps/ultra/tests/ci/check-native.sh
 env PATH="$PWD/experiments/clockwork-faust/.deps/rust/bin:$PATH" \
   CARGO_HOME="$PWD/experiments/clockwork-faust/.deps/cargo" \
@@ -241,7 +242,10 @@ ULTRA_TEST_ALIVE=1 \
 ULTRA_TEST_ALIVE=1 \
   ULTRA_TEST_SCRIPT="$PWD/apps/ultra/tests/check_alive_editor_resources.py" \
   bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-editor-resources
-python3 experiments/alive-session-20261024/verify.py
+ULTRA_TEST_ALIVE=1 \
+  ULTRA_TEST_ALIVE_SESSION="$PWD/apps/alive/examples/quantized-midi.alive" \
+  ULTRA_TEST_SCRIPT="$PWD/apps/ultra/tests/check_alive_regions_desktop.py" \
+  bash apps/ultra/tests/check_canvas_desktop.sh /tmp/alive-clip-regions
 ```
 
 The desktop harness creates its own display, bus, runtime directory and software

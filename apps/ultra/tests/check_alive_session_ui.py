@@ -68,7 +68,7 @@ def run():
     original_point = alive.value('Cutoff point 1 value')
     alive.numeric('Cutoff point 1 value', 1781)
     assert alive.value('Cutoff point 1 value') == '1781'
-    ui.click('Undo pending edit')
+    ui.click('Undo')
     assert alive.value('Cutoff point 1 value') == original_point
     (ui.output / 'native-preflight.json').write_text(json.dumps(
         {'editor_open_close': True, 'automation_edit_undo': True,

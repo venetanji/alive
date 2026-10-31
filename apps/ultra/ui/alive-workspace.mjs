@@ -7,15 +7,16 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
   const parked=new Map();
   const detailRoot=()=>$(detail==='clip'?'clip-detail':detail==='master'?'master-detail':'device-detail');
   const maxBrowserWidth=()=>Math.max(180,Math.min(420,(shell.clientWidth||900)-480));
-  const detailBudget=()=>shell.clientHeight-$('schedule-controls').getBoundingClientRect().height-($('detail-panel').getBoundingClientRect().height-$('detail-content').getBoundingClientRect().height);
-  const maxHeight=()=>Math.max(160,detailBudget()-(maximized?0:96));
+  const detailBudget=()=>shell.clientHeight-$('edit-controls').getBoundingClientRect().height-($('detail-panel').getBoundingClientRect().height-$('detail-content').getBoundingClientRect().height);
+  const workspaceMinimum=()=>view==='arrangement'?$('timeline').querySelector('.timeline-tools').getBoundingClientRect().height+$('master-arrangement-lane').getBoundingClientRect().height+96:96;
+  const maxHeight=()=>Math.max(160,detailBudget()-(maximized?0:workspaceMinimum()));
   const fitHeight=()=>{const limit=!maximized&&!customHeight&&win?.innerHeight?Math.max(160,detailBudget()-(win.innerHeight<700?272:364)):maxHeight();height=Math.round(Math.max(160,Math.min(limit,maximized?Infinity:requestedHeight)));};
   function park(root){const element=doc.activeElement;if(root.contains?.(element)&&element.matches?.('input,select,textarea'))parked.set(element,{root,value:element.value,visible:false,changed:parked.get(element)?.changed??false});}
   function restore(root){for(const [element,state]of parked){if(element.isConnected===false){parked.delete(element);continue;}if(state.root!==root||state.visible||element.closest?.('[hidden]'))continue;element.value=state.value;state.visible=true;if(!doc.activeElement?.closest?.('input,select,textarea,button,[contenteditable]'))element.focus();}}
   function preserveFocused(){
     const element=doc.activeElement;if(!element?.matches?.('input,select,textarea')||element.id==='seek')return;
     park(element.parentElement);const state=parked.get(element);
-    // Browser navigation moves focus without accepting the previous field's draft.
+    // Browser navigation moves focus without accepting the previous field's unfinished value.
     if(state)state.resumeOnFocus=true;
   }
   // display:none blurs inputs and emits change. Keep that navigation local,
@@ -44,7 +45,7 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
   function setHeight(value){maximized=false;customHeight=true;requestedHeight=value;fitHeight();paint();}
   function cancelResize(){if(!resize)return;const old=resize;resize=null;maximized=old.maximized;customHeight=old.customHeight;requestedHeight=old.requestedHeight;fitHeight();paint();if(handle.hasPointerCapture?.(old.id))handle.releasePointerCapture(old.id);}
   function toggleMaximize(){cancelResize();if(!maximized)park($(view+'-workspace'));maximized=!maximized;expanded=true;paint();fitHeight();paint();}
-  function navigate(name){cancelResize();if(maximized){maximized=false;fitHeight();}const changed=name!==view;if(changed){park($(view+'-workspace'));if(view==='arrangement')park($('timeline-inspector'));}view=name;paint();if(changed)onNavigate(name);}
+  function navigate(name){cancelResize();if(maximized){maximized=false;fitHeight();}const changed=name!==view;if(changed){park($(view+'-workspace'));if(view==='arrangement')park($('timeline-inspector'));}view=name;paint();fitHeight();paint();if(changed)onNavigate(name);}
   for(const name of ['session','arrangement'])$('view-'+name).addEventListener('click',()=>navigate(name));
   // A pointer navigation must not blur an unfinished field and publish its change.
   for(const id of ['view-session','view-arrangement','toggle-browser','toggle-detail','maximize-detail','detail-clip','detail-devices'])$(id).addEventListener('pointerdown',event=>event.preventDefault());

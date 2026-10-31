@@ -71,8 +71,7 @@ def run():
         ui.click(f'Add {label} point')
         alive.numeric(f'{label} point 2 beat', 4)
         alive.numeric(f'{label} point 2 value', second)
-    ui.click('Prepare / Apply')
-    time.sleep(.5)
+    alive.wait_value('Musical edit status', lambda s: 'Updating' not in s)
     arrangement.expanded('Audio details')
     capture = alive.start_capture('master-before-restart')
     alive.transport('start')
@@ -86,10 +85,10 @@ def run():
     assert float(alive.value('Cutoff base')) == 1333
     arrangement.expanded('Audio details', False)
     alive.numeric('Note 1 pitch', 61)
-    ui.click('Undo pending edit')
+    ui.click('Undo')
     assert alive.value('Note 1 pitch') == '60'
     assert float(alive.value('Master gain')) == .5
-    ui.click('Redo pending edit')
+    ui.click('Redo')
     assert alive.value('Note 1 pitch') == '61'
     assert float(alive.value('Master gain')) == .5
     for width, height in ((1440, 900), (1280, 800)):
@@ -100,15 +99,14 @@ def run():
     assert float(alive.value('Master gain')) == .5
     arrangement.session()
     alive.transport('stop')
-    ui.click('Prepare / Apply')
-    alive.wait_value('Session status', lambda s: 'prepared and applied' in s)
+    alive.wait_value('Musical edit status', lambda s: 'Updating' not in s)
     report['first_audio'] = alive.finish_capture(capture)
     capture = None
     assert report['first_audio']['peak'] > .0001
     path = ui.output / 'master-roundtrip.alive'
     alive.choose_file('Save session as', 'Save Alive Session', path)
     saved = json.loads(path.read_text())
-    assert saved['format'] == 'alive-session-v5' and saved['master']['gain'] == .5
+    assert saved['format'] == 'alive-session-v6' and saved['master']['gain'] == .5
     score = alive.file_score(saved)
     assert score['format'] == 'alive-session-v4'
     pulse = score['tracks'][0]['chain']['instrument']
@@ -122,7 +120,7 @@ def run():
     assert pulse['instanceId'] != harmony['instanceId']
     ui.click('Quit Alive')
     arrangement.exited(ui.pid)
-    record('saved v5 and actual quit', identity=initial)
+    record('saved v6 and actual quit', identity=initial)
     env = os.environ.copy(); env.pop('LD_LIBRARY_PATH', None)
     restart_log = (ui.output / 'master-restarted-app.log').open('w')
     restart = subprocess.Popen([os.environ['ULTRA_TEST_ALIVE_BINARY'], str(path)], env=env, stdout=restart_log, stderr=subprocess.STDOUT)
@@ -137,8 +135,8 @@ def run():
     assert float(alive.value('Pulse gain')) == .55
     alive.select_clip('Pulse')
     assert alive.value('Note 1 pitch') == '61'
-    assert not ui.wait_for('Undo pending edit').get_state_set().contains(Atspi.StateType.ENABLED)
-    assert not ui.wait_for('Redo pending edit').get_state_set().contains(Atspi.StateType.ENABLED)
+    assert not ui.wait_for('Undo').get_state_set().contains(Atspi.StateType.ENABLED)
+    assert not ui.wait_for('Redo').get_state_set().contains(Atspi.StateType.ENABLED)
     reopened_path = ui.output / 'master-reopened.alive'
     alive.choose_file('Save session as', 'Save Alive Session', reopened_path)
     assert json.loads(reopened_path.read_text()) == saved

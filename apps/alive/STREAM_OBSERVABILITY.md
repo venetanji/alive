@@ -1,10 +1,10 @@
 # Stream epochs and finite-run measurements
 
-The accepted 2-track / 6-device / 8-clip native policy is unchanged. A separately
-measured policy admits 8 tracks / 16 devices / 32 clips; its limits, practical
-buffer scope and source-specific distributions are in
-`../ultra/src-tauri/native/alive_session_v3_policy.md`. Stream telemetry alone
-does not admit a profile or establish a hardware deadline.
+The current workspace profile admits up to eight logical MIDI/audio tracks and
+six hosted DSP roots, subject to complete candidate work admission. Profile 2
+is unavailable. Historical source-specific timing distributions are retained in
+the native measurement policies; stream telemetry alone does not admit a
+profile or establish a hardware deadline.
 `alive_audio_diagnostics` (main window only) and Ultra's
 `audio_diagnostics` accept a canonical decimal `after` cursor. Alive's optional
 Stream measurements disclosure fetches the bounded records once per second only
@@ -22,7 +22,7 @@ Neither `stream=None`, a backend error, timeout, nor a reference-count estimate
 proves quiescence. Late error actions can still use the retained native state.
 
 One unresolved attempt occupies the only slot. Start, settings and replacement
-return `retirement_pending` without consuming an epoch ID or discarding drafts,
+return `retirement_pending` without consuming an epoch ID or discarding edits,
 history, generation or prepared roots. Scoped transport Stop remains available.
 Diagnostics and normal snapshot polling recheck without waiting. Normal stream
 retirement uses the same witness even on backends whose Drop joins.
@@ -43,7 +43,7 @@ All u64 counters, epoch IDs and monotonic nanoseconds cross JSON as canonical
 decimal strings. Requested frames are distinct from actual last/min/max frames.
 A process run identity prevents accidental cursor reuse. The active/retiring
 record is provisional; the last 64 completed records and lifetime totals survive
-Stop, Apply and settings changes. Eviction and cursor gaps are explicit. The
+Stop, musical publications and settings changes. Eviction and cursor gaps are explicit. The
 finite harness must capture every completed ID contiguously, and an unresolved
 final epoch invalidates completeness.
 
@@ -92,7 +92,7 @@ and lifecycle metadata are bounded; no per-callback trace or perpetual audit
 file is created by the app.
 
 `cpal_xrun_reports`, `cpal_non_xrun_reports`, malformed shapes, native render
-failures and processing budget exceedances remain distinct. Legacy
+failures and processing budget exceedances remain distinct. The aggregate
 `stream_errors` is CPAL error reports plus malformed shapes only. Zero reported
 xruns does not establish zero physical underruns. Software monitor capture is
 always marked `physical_audio=false`.

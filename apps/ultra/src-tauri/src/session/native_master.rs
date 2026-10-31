@@ -19,7 +19,7 @@ pub type Reset = unsafe extern "C" fn(u32,u64)->c_int;
 pub type Snapshot = unsafe extern "C" fn(*mut c_void,*mut State)->c_int;
 type GetLimits = unsafe extern "C" fn(*mut Limits)->c_int;
 
-pub struct Capability { _module: platform::Module, pub set:Set, pub reset:Reset, pub snapshot_v2:Snapshot, pub snapshot_v3:Snapshot, pub snapshot_v4:Snapshot }
+pub struct Capability { _module: platform::Module, pub set:Set, pub reset:Reset, pub snapshot_v4:Snapshot }
 #[derive(Default)]
 pub struct Serials(pub u64);
 impl Serials {
@@ -38,7 +38,9 @@ pub fn fresh_process(test_name:&str)->bool {
     if std::env::var_os("ALIVE_MASTER_TEST_CHILD").is_some(){return false;}
     let output=std::process::Command::new(std::env::current_exe().unwrap()).args(["--exact",test_name,"--nocapture"])
         .env("ALIVE_MASTER_TEST_CHILD","1").output().unwrap();
-    assert!(output.status.success(),"native fixture failed:\n{}\n{}",String::from_utf8_lossy(&output.stdout),String::from_utf8_lossy(&output.stderr));
+    let stdout=String::from_utf8_lossy(&output.stdout);
+    let stderr=String::from_utf8_lossy(&output.stderr);
+    assert!(output.status.success()&&stdout.contains("running 1 test")&&stdout.contains("1 passed;"),"native fixture did not run and pass its exact test {test_name}:\n{stdout}\n{stderr}");
     true
 }
 
@@ -56,13 +58,13 @@ macro_rules! diagnostic {
 pub fn resolve(anchor: *const c_void) -> Option<Capability> {
     unsafe {
         let module=platform::Module::from_anchor(anchor)?;
-        let mut symbols=[std::ptr::null_mut();6];
-        let names:[&[u8];6]=[b"alive_session_master_limits\0",b"alive_session_master_set\0",b"alive_session_master_reset_clip\0",b"alive_session_master_snapshot_v2\0",b"alive_session_master_snapshot_v3\0",b"alive_session_master_snapshot_v4\0"];
+        let mut symbols=[std::ptr::null_mut();4];
+        let names:[&[u8];4]=[b"alive_session_master_limits\0",b"alive_session_master_set\0",b"alive_session_master_reset_clip\0",b"alive_session_master_snapshot_v4\0"];
         for (slot,name) in symbols.iter_mut().zip(names) { *slot=module.symbol(name)?; }
         let limits:GetLimits=std::mem::transmute(symbols[0]);
         let mut info=Limits {version:1,struct_bytes:std::mem::size_of::<Limits>() as u32,..Limits::default()};
         if limits(&mut info)!=1 || info.version!=1 || info.struct_bytes!=std::mem::size_of::<Limits>() as u32 || info.features!=7 || info.ramp_frames!=64 || info.max_gain!=4. { return None; }
-        Some(Capability {_module:module,set:std::mem::transmute(symbols[1]),reset:std::mem::transmute(symbols[2]),snapshot_v2:std::mem::transmute(symbols[3]),snapshot_v3:std::mem::transmute(symbols[4]),snapshot_v4:std::mem::transmute(symbols[5])})
+        Some(Capability {_module:module,set:std::mem::transmute(symbols[1]),reset:std::mem::transmute(symbols[2]),snapshot_v4:std::mem::transmute(symbols[3])})
     }
 }
 
@@ -71,8 +73,8 @@ pub fn resolve(anchor: *const c_void) -> Option<Capability> {
     unsafe {
         diagnostic!("resolve: enter anchor={anchor:p} thread={:?}",std::thread::current().id());
         let module=match platform::Module::from_anchor(anchor) { Some(module)=>module, None=>{diagnostic!("resolve: stage=anchor_module_or_export result=false");return None;} };
-        let mut symbols=[std::ptr::null_mut();6];
-        let names:[&[u8];6]=[b"alive_session_master_limits\0",b"alive_session_master_set\0",b"alive_session_master_reset_clip\0",b"alive_session_master_snapshot_v2\0",b"alive_session_master_snapshot_v3\0",b"alive_session_master_snapshot_v4\0"];
+        let mut symbols=[std::ptr::null_mut();4];
+        let names:[&[u8];4]=[b"alive_session_master_limits\0",b"alive_session_master_set\0",b"alive_session_master_reset_clip\0",b"alive_session_master_snapshot_v4\0"];
         for (slot,name) in symbols.iter_mut().zip(names) {
             *slot=match module.symbol(name) { Some(value)=>value, None=>{diagnostic!("resolve: stage=symbol name={} result=false",String::from_utf8_lossy(&name[..name.len()-1]));return None;} };
         }
@@ -82,7 +84,7 @@ pub fn resolve(anchor: *const c_void) -> Option<Capability> {
         diagnostic!("resolve: limits result={status} version={} bytes={} features={} ramp={} max_gain={}",info.version,info.struct_bytes,info.features,info.ramp_frames,info.max_gain);
         if status!=1 || info.version!=1 || info.struct_bytes!=std::mem::size_of::<Limits>() as u32 || info.features!=7 || info.ramp_frames!=64 || info.max_gain!=4. { diagnostic!("resolve: stage=limits result=false");return None; }
         diagnostic!("resolve: stage=ok result=true");
-        Some(Capability {_module:module,set:std::mem::transmute(symbols[1]),reset:std::mem::transmute(symbols[2]),snapshot_v2:std::mem::transmute(symbols[3]),snapshot_v3:std::mem::transmute(symbols[4]),snapshot_v4:std::mem::transmute(symbols[5])})
+        Some(Capability {_module:module,set:std::mem::transmute(symbols[1]),reset:std::mem::transmute(symbols[2]),snapshot_v4:std::mem::transmute(symbols[3])})
     }
 }
 
@@ -237,7 +239,7 @@ mod tests {
             else {if owner!=module {stage="anchor_export_other_module";} FreeLibrary(owner);}
             if stage=="ok" && anchor_export!=anchor.cast_mut(){stage="anchor_mismatch";}
         }
-        let names:[&[u8];6]=[b"alive_session_master_limits\0",b"alive_session_master_set\0",b"alive_session_master_reset_clip\0",b"alive_session_master_snapshot_v2\0",b"alive_session_master_snapshot_v3\0",b"alive_session_master_snapshot_v4\0"];
+        let names:[&[u8];4]=[b"alive_session_master_limits\0",b"alive_session_master_set\0",b"alive_session_master_reset_clip\0",b"alive_session_master_snapshot_v4\0"];
         let mut limits_address=std::ptr::null_mut();
         if stage=="ok" {
             for (i,name) in names.iter().enumerate() {

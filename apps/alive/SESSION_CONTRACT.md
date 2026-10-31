@@ -1,401 +1,152 @@
 # Alive Session And Ultra Device Contract
 
-Implementation target, session version 3 with explicit legacy v2 compatibility.
-Acceptance evidence is tracked in `PLAN.md`.
+Alive uses one current document model: a v4 workspace score inside a v6 saved
+session envelope. Open and Save use this format directly. Previous Alive file
+formats and conversion workflows are outside the application contract.
+`PLAN.md` lists current product priorities; dated experiments retain the evidence
+for their particular builds.
 
-Alive owns one session, up to eight instrument tracks, four nullable clip slots per track, one
-shared transport and a stereo master. Each track loads a saved `.ultra` instrument followed by zero, one or two
-ordered saved effects through Ultra's versioned manifest and graph validator. Track identity and DSP
-state are independent even when their device paths are identical. No DSP source
-or patch copy is embedded in the Alive example or host.
-Sessions span at most 256 beats and 512 seconds (30..240 BPM).
+## Document And Devices
 
-## Prospective Workspace Model
+One session owns a shared transport, up to eight logical MIDI/audio tracks and
+one stereo Master. Each track has four nullable Session slots. Slots and
+Arrangement placements reference stable source identities; editing a source
+updates its references until Make source independent is used. Track, slot,
+placement, source, note and device identities are explicit.
 
-The separate `session::workspaces` module implements a strict v4 candidate
-model for MIDI/audio sources, distinct Session slots and Arrangement placements,
-transactional edits and deterministic legacy conversion. It is not part of
-the active `Document` or app Open/Save/Apply paths. Candidate validation checks
-pure bounds, identities, references and exact frame arithmetic without native
-admission; resolved graph/manifest/PCM checks still precede future installation.
-The staged wire/runtime target is documented in
-`docs/superpowers/specs/2026-10-26-alive-workspaces-runtime-contract.md`.
-No v4 playback capability is enabled by this model-only checkpoint.
+A MIDI chain has an optional saved `.ultra` instrument. An empty MIDI track is
+valid and silent. An audio chain plays prepared WAV sources. Either chain can
+contain up to two ordered saved stereo effects. The admitted workspace profile
+has at most six hosted DSP roots and four voices per instrument. Only profile 1
+is available; logical track capacity does not increase the DSP work allowance.
 
-The additive native v4 ABI and a native-only one-track MIDI Arrangement subset
-are implemented at `db4a934` / `d7f8490`, with approved fixes at `db39ab0`.
-The subset renders saved graphs with source offsets, held-note/automation
-chase and finite nonlooping placements through the shared clock, queue,
-receipts and evaluator. It has separate C/Rust layout, guarded render,
-partition and shipping-refusal tests. Separate RED/GREEN regressions and scoped
-re-review cover rejected START preserving transport/prior mixer reductions,
-and same-frame termination/automation/chased-note/ordinary-note ordering.
-Both builds still publish zero feature bits: only a dedicated native test
-target may configure this provisional
-subset. The shipping app, launcher and active Document remain v3. Multi-track
-authority, seek, source/song loops, desktop integration, PCM and measured v4
-admission are subsequent gates; this subset does not certify them.
+Devices retain their source path, canonical graph fingerprint, manifest identity,
+parameter bases and bypass. The host validates the saved graph, manifest,
+parameter bindings and explicit stereo bundles. Instrument and effect instances
+remain independent even when they reference the same source file. No patch copy
+is embedded in a session. Missing or changed dependencies refuse Open without
+replacing the working project. A replacement does not rewrite sibling hashes.
 
-## Clock And Execution
+Graph loading, removal, replacement and reordering require stopped transport.
+Device-panel controls and hosted Ultra editors share manifest-bound bases.
+Unbound graph structure is read-only in a hosted editor. The editor does not own
+DSP lifetime. Bypass keeps the wet effect processing while selecting dry output.
 
-The native audio callback is the sole audio-frame clock owner at 48 kHz.
-Absolute frames advance monotonically while audio is running, even if musical
-transport is stopped. Musical position loops/seeks independently. Each
-discontinuity clears notes and advances a generation; past-generation work
-cannot rearm voices. Intervals are half-open and events at the right endpoint
-belong to the next interval. At a shared frame, termination precedes automation,
-which precedes note-on. Preparation converts beat positions to integer frames
-using the independent expression `round(beat * 48000 * 60 / tempo)` for starts,
-ends, points and lengths; native events carry exact frame offsets thereafter.
-Authored beat values are never rewritten from frame positions.
-Panel/editor, mixer and transport commands enter a bounded control queue and
-take effect at the next callback boundary. They do not claim a UI wall-clock
-timestamp or sample-accurate physical controller ingress. Clip/automation
-events within that callback retain their exact scheduled sample positions.
+## Clock And Playback
 
-Ultra's AOT Faust kernels execute in its native signal evaluator, alongside the
-existing Clockwork guest, not inside it. The guest's causal adapter adds 64
-frames; the native evaluator has no intrinsic block delay. The first Alive
-device profile accepts native signal instruments and rejects legacy Voice
-nodes and cross-root named messages. Measure both paths and explicitly report
-any chosen host alignment delay; never label startup muting as latency.
+The native callback owns the 48 kHz frame clock. Absolute frames advance while
+Audio runs; musical position can stop, seek and loop independently. Beat-to-frame
+conversion uses `round(beat * 48000 * 60 / tempo)` for each boundary. Intervals
+are half-open. At a shared frame, termination precedes automation, then note-on.
+Tempo is bounded to 30..240 BPM; song and MIDI source lengths are bounded to
+256 beats and 512 seconds.
 
-## Bounds And Ownership
+Session launch overrides that track's Arrangement authority. Track Stop retains
+a silent Session override; Return resumes Arrangement at the current song
+position. View navigation and selection do not change authority or start sound.
+Global Stop releases notes and cancels outstanding musical publications. Seek,
+loop and source boundaries use the native chase/reset rules and invalidate stale
+work. Mute/solo suppress output while musical time continues; mute takes
+precedence over solo.
 
-The original policy admits two tracks and six devices; the separate larger
-policy admits eight tracks and sixteen devices. Both retain four voices per instrument, 128 notes,
-16 automation lanes and 256 automation points per track across all stored clips
-and its entire chain, including disabled lanes,
-16 manifest parameters per device and 1024 compiled events total. The native
-root pool remains sixteen. Admission requires the native profile's explicit
-ADMITTED feature and matching policy; wider ABI storage alone enables nothing.
-Atomic multi-track actions remain disabled. Host callbacks
-accept 1..1024 frames. Admission checks event density as well as total storage.
-At most 32 events may share a frame and at most 64 may fall in any 1024-frame
-window, counting repeated loop seams. One serialized control producer submits
-at most 64 queued commands; the callback consumes a bounded snapshot.
-Stop has out-of-band capacity; overload rejects edits without replacing the
-working schedule. DSP compilation, allocation, initialization and destruction
-are outside the callback. Callback command work has a fixed capacity/budget.
-V3 additionally applies the native policy-1 graph family and conservative
-per-track clip envelopes with queried work ceilings. The saved subtractive,
-Utility and stereo-lowpass devices are supported. Arbitrary graphs accepted by
-v2 may be refused by v3; Alive does not remove nodes or bindings to fit them.
-Density/work errors identify available track/clip contributors, saturated counts
-and conservative-envelope refusals. Reduce dense events or chain work and retry;
-admission never silently trims the score or increases limits.
+Clip occurrences carry independent `start`, `end`, `loopStart`, `loopEnd` and
+`loopEnabled` values in source beats. Start may precede the loop for an intro.
+Selecting time and using Ctrl+L sets the clip loop and Start while retaining
+source contents and End. An Arrangement selection sets the song loop instead.
+Placement span, source content, occurrence markers and song loop are separate.
 
-Parameters have saved base and runtime effective values. Enabled automation
-owns its parameter during playback (step/hold interpolation). Panel/editor
-changes update base state without overriding the automated effective value.
-Disabling a lane or stopping restores base. V3 restart/seek/switch chase the most
-recent point strictly before the landing phase; a point exactly at landing
-dispatches once through its normal event range. V2 retains inclusive at/before
-chase. Before the first point use base; enabled empty lanes still own the
-parameter while playing. Notes already in progress are not chased. This applies
-identically to device-panel and Ultra-editor bound parameter edits.
+Enabled step/hold automation owns effective parameter values during playback.
+Panel changes update the saved base without overriding an owning lane. Stop or
+an unowned interval restores the base. Native playback handles landing-point
+and held-note chase; renderer timers do not schedule musical events.
 
-Stop, seek, loop wrap, transport end, removal and replacement hard-clear voices,
-sustain, pending old events and every effect kernel, including bypassed effects. Mixer mute/solo suppress output but keep the timeline
-advancing; mute takes precedence over solo. Track gain is separate from the
-device level binding (Alive UI range 0..2; native ABI admits 0..4). Meters are
-per-callback peaks of post-mixer signal and stereo master, not RMS or loudness.
+## Immediate Musical Editing
 
-Selection, saved default, prepared clip, active clip/phase and pending action are
-separate states. Stopped Launch cues a prepared clip at phase zero. Playing Launch
-targets the next strict four-beat bar; single-track Stop silences only that track.
-Global Stop has reserved capacity, invalidates pending actions and remains usable
-with stale view identities. Global transport wrap resets active phases. Reopen
-and Apply install saved defaults stopped at phase zero; Start resumes the current
-cues rather than reselecting defaults.
+Completed note, automation, region, placement, tempo and empty-track edits use
+one complete candidate publication. Pure model validation, graph/PCM preparation
+and bounded native schedule admission precede installation. Admission never
+trims content or increases work limits to make a candidate fit.
 
-Atomic scene launching uses one of the four prepared slot positions across all
-configured tracks. Occupied members launch; empty members issue quantized track
-Stop. An all-empty row is valid and preserves global transport. One scene has
-one native request, queue entry, serial, receipt and target. Both the configured
-profile's ADMITTED and ATOMIC_TRACK_ACTIONS capabilities must be enabled. Native
-callers may address a nonempty subset; the desktop always includes every prepared
-track. Invalid members, a busy receipt cell or a full queue reject the whole new
-request before changing musical state. Global Stop retains its reserved mailbox.
+The native callback accepts a publication at a playback boundary. Rust commits
+the document and Undo history only after observing the matching APPLIED receipt
+and retired publication serial. Rejection or Stop cancellation retains installed
+music and history. Both old and candidate PCM owners survive until native
+retirement proves they are no longer referenced. Metadata-only saves retain the
+installed schedule and PCM owners.
 
-`alive_launch_scene` accepts only generation, canonical decimal-string
-preparationRevision and slot (0..3), from the main session window with audio
-running. It maps the immutable prepared bank, independent of draft edits and
-local selection. Scene gestures retain their preparation identity through the
-UI command queue. Audio-off refusal is `Start Audio to launch a scene`.
-Scene actions change neither saved defaults nor document, history, dirty state,
-device/editor ownership or settings. No scene object is added to the saved schema.
+Undo/Redo uses the same publication path, with up to 64 entries and 8 MiB of
+musical history. Projections preserve current mixer values, device bases and
+bypass by stable identity. No-op edits do not consume history. Fresh IDs are
+checked against current and retained history identities. UI commands carry their
+session generation and edit revision; stale edits cannot modify a replacement
+project. Numeric native revisions cross JSON as canonical decimal strings.
 
-After callback observation, the pending/applied/superseded/canceled/rejected
-masks partition a track-action receipt's track mask. Status remains PENDING
-while any member is pending, then becomes its sole terminal kind or MIXED.
-Later actions supersede only overlapping unresolved members; the others retain
-the common target. Candidate admission is all-or-none: old pending choices
-survive optional refusal, while new surviving members become rejected and
-already reduced superseded/canceled members retain their outcomes. Published
-applied members are immutable. Stopped cues remain distinct from playback.
+Ctrl+T inserts an empty audio track; Ctrl+Shift+T inserts an empty MIDI track after
+the selection. Double-click or Ctrl+Shift+M on an empty MIDI slot creates a
+one-bar clip in one Undo step during playback. In Arrangement, Ctrl+Shift+M
+creates a MIDI clip over the selected span. Musical editing has no confirmation
+or separate Apply step. File actions retain ordinary unsaved-project decisions.
 
-The scalar error is a request summary with priority RuntimeInvariant >
-StopCanceled > WorkLimit > EndCanceled > ReplacedRequest. It does not assign that
-reason to every member. Desktop projection retains all masks and each member's
-track/clip identity, action and observed outcome. Missing terminal observations
-remain unavailable; known terminal members remain known. Serial and preparation
-must both match. A partially pending scene keeps its one receipt reservation;
-a coherently observed terminal MIXED receipt permits reuse. No timer estimates
-native targets and no automatic retry is performed.
+Preview starts disabled and auditions MIDI keys and note gestures through the
+selected instrument/effects. It has separate workload admission and can start
+Audio while transport is stopped. Ordinary editing does not start Audio.
 
-## Channels And Lifecycle
+## Quantized Requests
 
-Ports carry explicit bundle descriptors; mono and stereo are the supported
-speaker layouts. Four discrete voice lanes are internal instrument data, not
-speakers. Any mono-to-stereo route is explicit, never inferred from device IDs.
-The PR #4 manifest declares a stereo output; authored mono primitives and their
-explicit join remain real graph edges. Wider layouts are rejected.
-This first device profile requires a declared stereo output; it does not
-implicitly duplicate an arbitrary mono device at the track boundary.
-Reusable manifests version 1 and 2 normalize to the same host descriptor.
-Version 2 declares `kind`, nullable MIDI input, nullable bound audio input and
-explicit input/output bundles. The current session profile accepts
-instruments and declared stereo `audioEffect` devices. Old session-v1 files
-strictly migrate into instrument-only v2 chains.
-An absent note entry is represented as `noteNode:null`, never an invented node.
-The shared `audio.in~` and `lowpass.stereo~` primitives and saved stereo effects
-feed the ordered session evaluator. Each hosted root runs once per sample; only
-track endpoints enter the master after gain/mute/solo. Live bypass selects the
-exact dry sample while wet processing continues, so unbypass resumes warm state
-without adding a frame or block delay. Bypass has no automation lane or crossfade.
+Global quantization supports None, 1/32, 1/16, 1/8, 1/4, 1/2 and 1/2/4/8 Bars
+in fixed 4/4. Each occupied Session slot can inherit Global or use its own grid.
+Settings affect future requests; a queued request retains its captured grid and
+target. Scene launch, track Stop and Return use Global. Global Stop is immediate
+and retains reserved command capacity.
 
-Device loading/removal and graph structure changes require stopped transport
-and stopped callback ownership during preparation/application. A supported live
-bound-parameter edit preserves DSP state. An Ultra editor is optional and opens
-only on request. Closing it releases UI resources while the hosted device lives
-until track removal/session replacement. Saving records base parameters, never
-an accidental automation sample or raw runtime memory.
-After device I/O stops, `alive_session_reset` releases hosted graph ownership;
-only then may the host close or replace document slots. Revisions increase per
-slot even across removal and rollback. Prospective native admission runs before
-replacement. An unexpected apply failure attempts restoration of the prior
-prepared state with fresh revisions and reports any restoration failure.
+A scene uses one slot position across all tracks. Occupied members launch and
+empty members stop their tracks atomically. An all-empty row is valid. Requests
+capture generation/preparation identity and refer to the installed bank, not
+renderer selection. Scene actions do not change the saved document or history.
 
-The desktop exposes `alive [session.alive]` as a separate executable and app
-identity (`org.alive.session`). Its shared Rust library/native engine also serve
-the `ultra` patch editor; the optional hosted editors remain in Alive's process.
-Each binary generates exactly one Tauri context/embedded macOS plist. The legacy
-`ultra --alive [session.alive]` entry remains compatible. Both applications can
-run at once, with separate native runtime state and application data directories.
-Alive's audio settings use the same Rust/CPAL driver and save to its own
-`org.alive.session/audio-settings.json`, independently of session files and Ultra
-preferences. Host, output and requested buffer are explicit; rate is fixed at
-48 kHz/stereo. Automatic and 32..8192-frame requests are admitted only when the
-selected device advertises support. Driver callbacks larger than 1024 frames
-are partitioned into bounded native calls without losing scheduled offsets;
-the observed driver buffer is reported separately from the request.
-An observed buffer of at least 256 frames remains practical guidance for the
-original 2/6 policy. The larger 8/16 policy uses at least 512 observed frames,
-preferring 1024 near its work bounds. These are guidance, not automatic settings
-changes or guarantees against physical underruns. Smaller buffers are diagnostic
-choices. Stream epochs survive Stop and merge exactly once after witnessed
-callback retirement; see `STREAM_OBSERVABILITY.md` for the bounded retention,
-typed-error and timing boundaries. Polled zero errors do not prove zero physical
-underruns.
-Audio configuration requires both stopped musical transport and stopped device
-I/O. Stop audio terminates transport and notes before reclaiming callback
-ownership; starting audio does not start transport. Failed configuration leaves
-the saved configuration/session unchanged. Unavailable saved outputs retain
-their identifiers and require an explicit recovery selection after refresh.
-New opens the packaged two-track template using the unchanged smaller policy.
-Strict v3 permits one to eight tracks within the admitted profile; legacy v2
-retains its two-track bound. Removing the last track is explicitly rejected. Musical changes
-are retained separately from the prepared schedule until stopped Apply; latest
-accepted live bases, bypass and mixer values are merged by stable instance ID
-before preparation. Generic musical drafts cannot alter chain identity, source
-hashes, bindings, order or reusable references. File and
-Quit actions resolve draft Apply/Discard/Cancel before Save/Discard/Cancel.
-Editor commands authenticate the actual native window binding to generation and
-instance ID; stale editors cannot edit a replacement or another chain member.
-Snapshots expose all manifests and native state indices by instance ID, plus
-an instrument compatibility view. Capacity, add/remove controls, selection,
-clip controls and per-track diagnostics use the admitted bounds. UI polling never blocks the
-main thread behind a native file/message dialog. Neither editor lifetime nor
-polling owns the callback. The JACK diagnostic retains its legacy 64-frame
-latency declaration; Alive desktop uses CPAL and the tested native host profile.
+Receipts preserve pending/applied/superseded/canceled/rejected member masks and
+track/source/slot identities. Serial and preparation revision must both match.
+A terminal MIXED result retains each member's actual outcome. Missing native
+observations remain unavailable; the renderer does not estimate targets or
+silently retry. Fine launch grids have an independent conservative work proof
+and may refuse even when a coarser grid is admitted.
 
-## Persistence And Errors
+## Audio Sources And Ownership
 
-New sessions save an `alive-session-v5` envelope containing a strict v2, v3,
-or v4 score and `master: { "gain": 1.0 }`. Older files retain their bare score
-wire until an admitted Master change requires v5. The saved gain is bounded
-from 0 through 4. A capable Linux native host initializes the saved gain before
-the first output sample; a missing or partial capability permits unity sessions
-and refuses non-unity before retiring the current audio owner. Score
-snapshots remain the existing v2/v3/v4 shapes. See
-`docs/contracts/alive-master-v1.md` for the complete wire and ownership rules.
+WAV import supports mono/stereo PCM 8/16/24/32-bit and float 32/64-bit files,
+8..192 kHz, at most 24 MiB and 60 seconds per file. Import canonicalizes the path
+before inspecting it. Preparation owns stereo 48 kHz PCM, bounded to 60 seconds
+per source and 64 MiB across the session. Re-Pitch follows set tempo by changing
+sample playback speed and pitch together. Source bytes remain external.
 
-Master is one output owner outside the musical track/solo/voice arrays. Its
-gain follows the track/effect/mixer stereo sum and precedes output conversion.
-Live commands enter the existing bounded FIFO, preserve the reserved Stop
-route, apply at an observed callback boundary and ramp from the current
-coefficient over exactly 64 output frames. Quiescent I/O-off initialization
-sets the saved coefficient directly without advancing the frame clock; stopped
-transport with running I/O uses the live path. Master adds no pipeline buffer
-or limiter and does not move the native Faust kernels into Clockwork.
+Save As rebases resolved audio and device paths and prevents a session save from
+overwriting a dependency, including symlink aliases. Retained history audio paths
+rebase with the document. Input routing, monitoring, arm and recording remain
+upcoming work. The separate native Live DLL experiment has not yet been integrated
+into the installed session host.
 
-Gain/reset IPC authenticates the project generation. Saved gain changes only
-after admission; accepted serial and applied serial/frame remain distinct.
-Failed admission preserves saved gain, wire, dirty state, score draft and
-history. Score Apply/Undo/Redo/Discard preserve accepted live Master state.
-Post-gain L/R interval peaks, absolute interval boundaries and sticky digital
-overload bits share the score's native publication. Stop, seek and loop do not
-clear the latch; explicit reset or project installation does. An unavailable
-observation stays null/stale rather than becoming invented silence. This
-contract does not imply Master effects, mute/solo, automation or physical clip
-and underrun detection. Session's fixed-right Master strip and Arrangement's
-bottom output lane share one bounded gain/reset command producer, with pending
-intent, admission and observed application displayed separately. Selecting
-Master is local view state and preserves musical drafts and device bindings.
-Final root builds, complete desktop/save/Quit/restart, endurance and cloud
-qualification are tracked separately in `PLAN.md`.
+## Master, I/O And Lifecycle
 
-Admitted clip-bank scores use strict camelCase `alive-session-v3` JSON; legacy
-fallback saves remain v2. `Track.device` is the
-instrument and `Track.effects` is its ordered effect list. Each instance has a
-persisted UUID-shaped `instanceId`, independent of reusable manifest `id`, source
-path, chain position and transient root handle. Automation addresses that
-instance ID and a stable parameter key. Reordering retains IDs, bases, bypass
-and lanes; effect removal/replacement removes only the affected instance lanes
-across all stored clips.
-The compatibility instrument Remove action removes its entire track, chain and
-lanes, preserving every other track; an instrument-less track is never retained.
+Master gain is saved in the v6 envelope and bounded to 0..4. It follows the
+track/effect/mixer sum. Session and Arrangement display the same stereo peaks and
+digital-overload latch; reset affects the latch, not playback. Peaks above full
+scale indicate digital overload, not a physical clipping measurement.
 
-The original session-v1 shape remains a separate strict migration input. Each
-instrument gets `legacy-` plus the first 32 hexadecimal SHA-256 characters of
-its track ID, with empty effects, bypass false and retargeted lanes. Migration
-validates unique IDs and fingerprints dependencies before returning v2. Missing
-v2 fields are errors and never trigger legacy inference.
+Alive and Ultra are separate executables and application identities. Alive opens
+one session and optional hosted editors; Ultra remains the patch editor. Audio
+uses the shared CPAL driver at 48 kHz with separate per-app settings. Stop Audio
+also stops transport and releases notes. Configuration changes require stopped
+Audio and retain rejected saved values.
 
-V2-to-v3 migration moves each track's unchanged score into slot 0, names it
-`Clip 1`, copies the global length into its independent clip length, sets it as
-the saved default and leaves three null slots. Track/device IDs, source hashes,
-bases, mixer and authored values stay unchanged. Clip IDs are `clip-` plus the
-first 32 lowercase SHA-256 hex characters of the length-prefixed UTF-8 parts
-`["alive-v2-v3-clip", track.id]`; note IDs use `note-` and
-`["alive-v2-v3-note", track.id, canonical_zero_based_note_index]`. Each part is
-prefixed by its unsigned 32-bit big-endian byte length. Collisions reject.
+DSP compilation, allocation, initialization and destruction occur outside the
+callback. Schedule limits include 32 events/frame and 64 events/1024-frame
+window. Work admission remains independent of structural storage bounds. The
+stream retirement witness, finite metrics ring and shutdown rules are documented
+in `STREAM_OBSERVABILITY.md`. Observed errors, budget exceedances and physical
+underruns remain distinct. Historical native measurement policies apply only to
+the recorded fixtures/builds; they do not expand current admission.
 
-Open first prepares a playable legacy candidate. Conversion uses the same
-captured dependencies without refingerprinting. Stricter v3 graph, frame,
-density or work refusal retains the runnable v2 candidate and the exact reason.
-Missing/changed sources, invalid v2 and invalid explicit v3 fail normally and
-preserve the working session. Successful conversion is dirty in memory; Open
-does not rewrite disk. An explicit stopped Enable clip bank action retries after
-resolving drafts; Save and ordinary Apply do not implicitly retry fallback.
-
-V3 tracks have exactly four required nullable `slots` and required nullable
-`defaultClipId`. Each clip contains `id`, `name`, `lengthBeats`, `notes` and
-`automation`; each note has a required globally unique ID. Track/device/clip/note
-IDs are unique within their own namespaces. Defaults name a clip on their own
-track or null. Empty banks are valid. Unknown fields, duplicate JSON members
-(including parameter-map keys), missing fields, invalid values and unsupported
-formats reject. The duplicate-member pass reads original v3 text, preserving
-legacy decoder semantics. Notes and points fit their own clip, including disabled
-lanes; duplicate `(instanceId,key)` lanes within one clip reject.
-
-Every reference requires `sourceSha256`, 64 lowercase hexadecimal bytes over
-recursively key-sorted canonical JSON of the complete original source, before
-saved instance bases are applied. Arrays and numeric values are preserved;
-formatting and paths do not affect the hash. Graph, manifest, preset or appearance
-changes require explicit Load/Replace to capture a new fingerprint. Ordinary
-Open/prepare/Save compare it and identify track, instance and path on missing,
-changed or incompatible dependencies. Shared paths are resolved canonically,
-including symlink aliases. Selected Replace cannot install while another
-reference still expects the original hash of a changed shared file. Preserve
-the changed source at a new path, restore a matching original backup at the
-shared path, then explicitly Replace each intended instance. Recovery requires
-that matching original backup; siblings are never silently refingerprinted.
-
-Paths resolve relative to the session file. Save As relocates every instrument
-and effect dependency and preserves IDs, hashes and saved values. A session
-cannot overwrite any dependency. Session files remain bounded to 1 MiB and saves
-use a same-directory temporary file with atomic rename. Only bases are saved,
-never an automation sample or raw runtime memory. All candidate graphs, values
-and aggregate density receive prospective native validation before device I/O
-stops. Failed admission leaves the working model and playback intact. Root
-revisions increase per slot even through failed application and rollback; live
-base/bypass update the saved model only after native queue admission.
-Save returns the exact atomically written/rebased document instead of reopening
-and potentially changing its mode. Saved defaults are persisted; selection,
-active/pending clips, phase, receipts and runtime counters are not.
-
-## Pending Musical Edits And Piano Roll
-
-The selected-clip editor supports v3 and the retained single-score v2 mode. Its fixed 1/16-note grid
-is 0.25 quarter-note beat. Double-click adds a selected note with duration 0.25
-and velocity 100; body movement snaps displacement and pitch in semitones,
-right-edge resizing snaps duration displacement. Imported fractional offsets and
-durations remain exact. Numeric fields retain precise editing. Note pitch is
-0..127, velocity 1..127, duration at least one rounded audio frame. Same-pitch
-half-open frame intervals cannot overlap. Length changes cannot truncate notes
-or automation, including disabled lanes. Gesture geometry is captured on pointer
-down; cancellation, Escape or version changes discard an unfinished gesture.
-Selection alone changes no score, history or transport. One completed pointer or
-velocity gesture is one transaction. Keyboard editing/undo is scoped to the roll.
-
-Rust Control owns focused musical projections (title, tempo, length, looping,
-track IDs/names, clip slots/IDs/names/lengths/defaults, notes/IDs and automation),
-bounded to 64 entries and 8 MiB combined
-serialized before/after payload plus labels across undo/redo. Oldest entries are
-evicted; an individually oversized entry rejects atomically. Live parameter
-bases, bypass and mixer, device identity/graphs, paths, runtime and UI selection
-are excluded. Restoring a projection uses current chain structure and accepted
-live fields by instance ID, with mixer fields by track ID. Undo to prepared music
-removes the draft and retains redo; accepted live-control dirty state survives.
-
-Main-window `alive_edit(document, label, generation, draftRevision)` and
-`alive_history(direction, generation, draftRevision)` authenticate both versions
-under the desktop mutex. Labels are plain text, 1..64 UTF-8 bytes without control
-characters. Direction is strictly `undo` or `redo`. Musical ranges, targets and
-rounded frames validate before retention using current manifests; final source,
-graph and native-density admission remains at Apply. An identical projection is
-a no-op. Rejected or stale requests preserve the draft, history and revision.
-There is no writable `alive_draft` bypass. Snapshot exposes monotonic
-`draftRevision` and `history` availability/labels. Renderer edits serialize and
-use returned revisions, and failed/ambiguous outcomes require authoritative
-refresh. File and structural requests also authenticate the current revision.
-
-Apply takes only generation/revision and prepares the retained authoritative
-draft. Successful Apply/Discard/New/Open/structural installation clears history;
-failed direct Apply or prospective Open preserves it. A successful explicitly
-accepted Apply/Discard is an immediate scope boundary even if a later file/Quit
-prompt cancels or fails. Canceled dialogs before a boundary preserve history.
-Save/Save As without a boundary preserves history; reference/path relocation
-advances revision to reject pre-relocation documents while retaining redo and
-editor bindings. Live controls, transport, audio and editor lifecycle do not
-advance musical revision or history. Undo/redo do not reinstall DSP, stop audio,
-advance desktop generation or close editors. Ultra patch undo remains separate.
-
-Focused authenticated clip operations create, duplicate, delete, rename, change
-length/default or create a note through that same history gate. Rust allocates
-fresh IDs checked against prepared, draft and retained history identities.
-Duplication deep-copies score data with new clip/note IDs and keeps the existing
-track devices. Deletion leaves a null slot and clears a deleted saved default;
-it never compacts slots. Whole-document edits may only retain current clip
-membership and existing note identities. They cannot invent, reassign or
-resurrect IDs. Delayed renderer intents capture originating track/clip/note IDs
-and scope; selection changes cancel unfinished gestures.
-
-Draft-only clips cannot launch. Modified prepared clips can explicitly launch
-their prepared version. A draft deletion does not silence an active prepared
-clip; its runtime identity remains visible and track Stop remains available.
-Draft/history/selection/launch/Stop/Save As preserve editor bindings; successful
-Apply and structural installation retain the existing editor-close boundary.
-
-Native preparation revisions advance for every install attempt and rollback;
-desktop generation still denotes successful installation. Canonical decimal
-strings carry native 64-bit frames, epochs, serials and preparation identities
-to JavaScript. Snapshots carry an ordering sequence, mode, bounded capabilities,
-prepared ID maps and coherent runtime state. The renderer rejects late snapshots.
-Single-track launch/Stop requests name prepared persistent IDs and current
-preparation. Bounded observations match both native request keys and distinguish
-queued, pending, applied, rejected, superseded, canceled and unavailable states.
-A queued return does not imply application; receipt eviction never implies
-success. Poll failure marks state unavailable while retaining observations.
+Persistence is atomic and bounded to 1 MiB of UTF-8 JSON. Decoding rejects
+unknown fields, duplicate members, invalid IDs, foreign references and unsupported
+formats. Successful Save preserves exact current identities, Master and launch
+settings. Failed Open or save validation leaves the working session available.

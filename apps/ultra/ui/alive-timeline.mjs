@@ -79,9 +79,8 @@ export function mountTimeline({doc,win,state,choose,edit,placementEdit,transport
     $('return-receipts').textContent=receipts.slice(-4).map(r=>`Return ${r.requestSerial}: ${r.status}. ${(r.members??[]).map(m=>`${s.snapshot.document.tracks.find(t=>t.id===m.trackId)?.name??m.trackId}: ${m.status}`).join(' / ')}. Applied ${r.appliedMask}, pending ${r.pendingMask}, superseded ${r.supersededMask}, rejected ${r.rejectedMask}.`).join('\n')||'No Return requests in this preparation.';
   }
   function render(){
-    const s=state();if(!s?.snapshot)return;last=s;const {snapshot,document}=s,enabled=snapshot.mode==='workspacesV4'&&snapshot.capabilities?.arrangement;
-    root.hidden=!enabled;$('arrangement-placeholder').hidden=!!enabled;if(!enabled)return;
-    if(gesture&&(gesture.generation!==snapshot.generation||gesture.revision!==snapshot.draftRevision||gesture.token!==s.token)){cancel();return;}
+    const s=state();if(!s?.snapshot)return;last=s;const {snapshot,document}=s;
+    if(gesture&&(gesture.generation!==snapshot.generation||gesture.revision!==snapshot.editRevision||gesture.token!==s.token)){cancel();return;}
     inspector(s);$('timeline-loop-selection').disabled=!range;const r=getRange();$('timeline-range').textContent=`Range ${r.start} - ${r.start+r.duration} beats`;
     const width=document.lengthBeats*scale,laneWidth=Math.max(width,(scroll.clientWidth||1000)-176),visibleLeft=(scroll.scrollLeft??0)/scale,visibleRight=visibleLeft+(scroll.clientWidth||1000)/scale;
     const next=JSON.stringify([snapshot.generation,document.tracks.map(t=>[t.id,t.name,t.color]),document.sources,document.placements,document.lengthBeats,document.loopEnabled,document.loopStartBeats,document.loopEndBeats,scale,range,preview,s.selection,visibleLeft,visibleRight]);
@@ -100,16 +99,9 @@ export function mountTimeline({doc,win,state,choose,edit,placementEdit,transport
         header.append(mute,solo,authority,back);
         const lane=make('div','timeline-lane');lane.setAttribute('role','group');lane.setAttribute('aria-label',`${t.name} timeline lane`);lane.dataset.trackId=t.id;lane.style.width=`${laneWidth}px`;lane.style.backgroundSize=`${4*scale}px 100%`;
         if(r.trackId===t.id){const selected=make('div','timeline-range');selected.style.left=`${r.start*scale}px`;selected.style.width=`${r.duration*scale}px`;lane.append(selected);}
-        for(const installed of snapshot.document.placements.filter(p=>p.trackId===t.id)){
-          const draft=document.placements.find(p=>p.id===installed.id);if(JSON.stringify(draft)===JSON.stringify(installed))continue;
-          const label=snapshot.preparedWorkspaces?.sources.find(s=>s.sourceId===installed.sourceId)?.name??'Prepared source',outline=make('div','timeline-prepared',`Prepared: ${label}`);
-          outline.dataset.preparedId=installed.id;outline.style.left=`${installed.start*scale}px`;outline.style.width=`${installed.duration*scale}px`;outline.title=`Prepared ${label}: ${installed.start} - ${installed.start+installed.duration}. Updating at the next playback boundary.`;lane.append(outline);
-        }
         for(const original of document.placements.filter(p=>p.trackId===t.id)){
           const p=preview?.id===original.id?preview:original,source=document.sources.find(s=>s.id===p.sourceId),occurrence=button(source?.name??'Missing source',()=>select(t.id,p.sourceId,p.id),'timeline-placement');
           occurrence.dataset.placementId=p.id;occurrence.setAttribute('aria-label',`Select placement ${p.id}`);occurrence.title=`${source?.name}: ${p.start} - ${p.start+p.duration} beats`;occurrence.style.left=`${p.start*scale}px`;occurrence.style.width=`${p.duration*scale}px`;
-          const installed=snapshot.document.placements.find(q=>q.id===p.id),prepared=snapshot.preparedWorkspaces?.placements.find(q=>q.placementId===p.id);
-          occurrence.classList.toggle('draft-only',!prepared||JSON.stringify(installed)!==JSON.stringify(original)||JSON.stringify(snapshot.document.sources.find(q=>q.id===p.sourceId))!==JSON.stringify(source));
           occurrence.classList.toggle('selected',s.selection?.occurrence?.placementId===p.id);occurrence.classList.toggle('invalid',!!preview&&preview.id===p.id&&!!placementError(p,source,document.placements,document.lengthBeats));
           const marks=doc.createElementNS('http://www.w3.org/2000/svg','svg');marks.setAttribute('viewBox',`0 0 ${p.duration*scale} 30`);marks.setAttribute('preserveAspectRatio','none');
           if(source?.kind==='midi')for(const m of midiMarks(source,p,visibleLeft,visibleRight,scale)){const line=doc.createElementNS('http://www.w3.org/2000/svg','rect');for(const [k,v]of Object.entries({x:(m.start-p.start)*scale,y:26-Math.max(0,Math.min(1,(m.pitch-36)/60))*24,width:Math.max(1,(m.end-m.start)*scale),height:2}))line.setAttribute(k,String(v));marks.append(line);}
@@ -121,17 +113,17 @@ export function mountTimeline({doc,win,state,choose,edit,placementEdit,transport
     for(const row of canvas.children){if(!row.dataset.trackId)continue;const observation=snapshot.runtime?.tracks.find(t=>t.trackId===row.dataset.trackId),authority=observation?.authority;
       const track=document.tracks.find(t=>t.id===row.dataset.trackId);row.querySelector('.timeline-mute').setAttribute('aria-pressed',String(track.mute));row.querySelector('.timeline-solo').setAttribute('aria-pressed',String(track.solo));
       row.classList.toggle('session-override',authority==='session');const output=row.querySelector('.timeline-authority');output.textContent=authority==='session'?(observation.activeSourceId?'Session override':'Session silence'):authority==='arrangement'?(observation.activeSourceId?'Arrangement':'Arrangement gap'):'Unavailable';if(observation?.pendingAction)output.textContent+=` / pending ${observation.pendingAction}`;output.title=output.textContent;
-      const lane=row.querySelector('.timeline-lane');for(const item of lane.children){if(item.dataset.placementId)item.classList.toggle('playing',!!snapshot.state.playing&&observation?.activePlacementId===item.dataset.placementId&&observation.activeSourceId===document.placements.find(p=>p.id===item.dataset.placementId)?.sourceId);if(item.dataset.preparedId)item.classList.toggle('playing',!!snapshot.state.playing&&observation?.activePlacementId===item.dataset.preparedId);}
+      const lane=row.querySelector('.timeline-lane');for(const item of lane.children){if(item.dataset.placementId)item.classList.toggle('playing',!!snapshot.state.playing&&observation?.activePlacementId===item.dataset.placementId&&observation.activeSourceId===document.placements.find(p=>p.id===item.dataset.placementId)?.sourceId);}
     }
     const playhead=canvas.querySelector('.timeline-playhead');if(playhead){const value=snapshot.state.position,frames=BigInt(value??0),beat=Number(frames*1000000n/48000n)/1000000*snapshot.document.tempo/60;playhead.style.left=`${beat*scale}px`;}
   }
   canvas.addEventListener('pointerdown',guard(event=>{
     if(event.button!==0||event.target.closest?.('.timeline-header,.timeline-ruler'))return;
     canvas.focus();
-    const brace=event.target.closest?.('.timeline-brace');if(brace){const s=state(),side=event.target.dataset.braceEdge;gesture={id:event.pointerId,x:event.clientX,scale,generation:s.snapshot.generation,revision:s.snapshot.draftRevision,token:s.token,kind:side==='left'?'loopLeft':side==='right'?'loopRight':'loopMove',start:s.document.loopStartBeats,end:s.document.loopEndBeats};canvas.setPointerCapture?.(event.pointerId);event.preventDefault();return;}
+    const brace=event.target.closest?.('.timeline-brace');if(brace){const s=state(),side=event.target.dataset.braceEdge;gesture={id:event.pointerId,x:event.clientX,scale,generation:s.snapshot.generation,revision:s.snapshot.editRevision,token:s.token,kind:side==='left'?'loopLeft':side==='right'?'loopRight':'loopMove',start:s.document.loopStartBeats,end:s.document.loopEndBeats};canvas.setPointerCapture?.(event.pointerId);event.preventDefault();return;}
     const hit=event.target.closest?.('[data-placement-id]'),lane=event.target.closest?.('.timeline-lane');if(!lane)return;
     const bounds=lane.getBoundingClientRect(),s=state(),p=s.document.placements.find(p=>p.id===hit?.dataset.placementId);if(p)select(p.trackId,p.sourceId,p.id);else select(lane.dataset.trackId,s.trackId===lane.dataset.trackId?s.selection?.sourceId:null);
-    const now=state();gesture={id:event.pointerId,x:event.clientX,scale,rect:bounds,generation:now.snapshot.generation,revision:now.snapshot.draftRevision,token:now.token,trackId:lane.dataset.trackId,placement:p?structuredClone(p):null,range:range?{...range}:null,kind:event.target.dataset.edge==='left'?'trim':event.target.dataset.edge==='right'?'resize':'move'};
+    const now=state();gesture={id:event.pointerId,x:event.clientX,scale,rect:bounds,generation:now.snapshot.generation,revision:now.snapshot.editRevision,token:now.token,trackId:lane.dataset.trackId,placement:p?structuredClone(p):null,range:range?{...range}:null,kind:event.target.dataset.edge==='left'?'trim':event.target.dataset.edge==='right'?'resize':'move'};
     canvas.setPointerCapture?.(event.pointerId);event.preventDefault();
   }));
   canvas.addEventListener('pointermove',guard(event=>{if(gesture?.id!==event.pointerId)return;const g=gesture;
@@ -140,8 +132,8 @@ export function mountTimeline({doc,win,state,choose,edit,placementEdit,transport
     else{const length=state().document.lengthBeats,a=Math.min(length-.25,Math.max(0,snap((g.x-g.rect.left)/g.scale))),b=Math.min(length,Math.max(0,snap((event.clientX-g.rect.left)/g.scale)));range={trackId:g.trackId,start:Math.min(a,b),duration:Math.max(.25,Math.abs(b-a))};}render();
   }));
   canvas.addEventListener('pointerup',guard(event=>{if(gesture?.id!==event.pointerId)return;const g=gesture,p=preview;gesture=null;preview=null;if(canvas.hasPointerCapture?.(g.id))canvas.releasePointerCapture(g.id);key='';render();
-    if(!p)return;const s=state();if(s.snapshot.generation!==g.generation||s.snapshot.draftRevision!==g.revision||s.token!==g.token)return;
-    const validate=()=>{const current=state();if(current.snapshot.generation!==g.generation||current.snapshot.draftRevision!==g.revision||current.token!==g.token)throw Error('The Arrangement changed during this gesture. Try again.');};
+    if(!p)return;const s=state();if(s.snapshot.generation!==g.generation||s.snapshot.editRevision!==g.revision||s.token!==g.token)return;
+    const validate=()=>{const current=state();if(current.snapshot.generation!==g.generation||current.snapshot.editRevision!==g.revision||current.token!==g.token)throw Error('The Arrangement changed during this gesture. Try again.');};
     if(g.kind.startsWith('loop')){if(p.loopStartBeats===g.start&&p.loopEndBeats===g.end)return;if(p.loopStartBeats<0||p.loopEndBeats>state().document.lengthBeats||p.loopEndBeats-p.loopStartBeats<1/64)throw Error('Song loop must fit inside the transport range.');return edit(()=>{validate();const d=state().document;return{kind:'transportRange',tempo:d.tempo,lengthBeats:d.lengthBeats,loopEnabled:d.loopEnabled,...p};});}
     if(JSON.stringify(p)===JSON.stringify(g.placement))return;
     const error=placementError(p,s.document.sources.find(s=>s.id===p.sourceId),s.document.placements,s.document.lengthBeats);if(error)throw Error(error);

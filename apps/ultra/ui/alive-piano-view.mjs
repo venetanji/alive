@@ -107,7 +107,7 @@ export function mountPianoView({doc,win,svg,onNavigate=()=>{},onGeometry=()=>{},
     svg.append(make('line',{x1:pad,x2:width,y1:top,y2:top,stroke:'#666'}));
     const notes=clip(svg,'piano-note-bodies',pad,top,width-pad,height-top);
     last.notes.forEach((note,index)=>{
-      const x=beatX(note.beat,g)+1,y=top+(g.max-note.pitch)*pitchHeight+1,w=Math.max(2,note.duration*g.pixelsPerBeat-2),h=Math.max(1,pitchHeight-2),chosen=last.selectedNote===(note.id??index);
+      const x=beatX(note.beat,g)+1,y=top+(g.max-note.pitch)*pitchHeight+1,w=Math.max(2,note.duration*g.pixelsPerBeat-2),h=Math.max(1,pitchHeight-2),chosen=last.selectedNote===note.id;
       const body=make('rect',{x,y,width:w,height:h,rx:1,fill:chosen?'#f1c77d':'#c8ae74',stroke:chosen?'#91b9ed':'#2b2924','stroke-width':chosen?2:.5,'data-note':index,'data-part':'body','aria-selected':chosen,'aria-label':`${pitchName(note.pitch)}, beat ${note.beat+1}, velocity ${note.velocity}`});
       notes.append(body,make('rect',{x:x+Math.max(0,w-6),y,width:Math.min(6,w),height:h,fill:chosen?'#91b9ed':'#ab9461',stroke:'none','data-note':index,'data-part':'resize'}));
       if(w>33&&h>=10)text(notes,x+4,y+Math.min(h-1,10),pitchName(note.pitch),{fill:'#302a1f','pointer-events':'none'});
@@ -125,9 +125,9 @@ export function mountPianoView({doc,win,svg,onNavigate=()=>{},onGeometry=()=>{},
     stems.append(make('line',{x1:g.pad,x2:g.width,y1:bottom,y2:bottom,stroke:'#555'}));
     const ordered=last.notes.map((note,index)=>({note,index}));
     // Chords share a velocity marker position. Keep the selected note reachable.
-    ordered.sort((a,b)=>Number(last.selectedNote===(a.note.id??a.index))-Number(last.selectedNote===(b.note.id??b.index)));
+    ordered.sort((a,b)=>Number(last.selectedNote===a.note.id)-Number(last.selectedNote===b.note.id));
     ordered.forEach(({note,index})=>{
-      const x=beatX(note.beat,g),chosen=last.selectedNote===(note.id??index),y=bottom-(note.velocity/127)*(bottom-top);
+      const x=beatX(note.beat,g),chosen=last.selectedNote===note.id,y=bottom-(note.velocity/127)*(bottom-top);
       stems.append(make('line',{x1:x,x2:x,y1:y,y2:bottom,stroke:chosen?'#91b9ed':'#c8ae74','stroke-width':chosen?2:1,'pointer-events':'none'}));
       stems.append(make('rect',{x:x-3,y:y-3,width:7,height:7,fill:chosen?'#91b9ed':'#c8ae74',stroke:'#272727','data-note':index,'data-part':'velocity','aria-label':`Note ${index+1} velocity ${note.velocity}`}));
     });

@@ -2,14 +2,14 @@ import {test,expect} from '@playwright/test';
 import {readFileSync} from 'node:fs';
 
 async function openRangeStudy(page){
-  const document=JSON.parse(readFileSync(new URL('../../../alive/examples/midi-arrangement.alive',import.meta.url)));
+  const document=JSON.parse(readFileSync(new URL('../../../alive/examples/midi-arrangement.alive',import.meta.url))).score;
   document.title='Range Study';
   for(const track of document.tracks){track.chain={kind:'midi',instrument:null};track.effects=[];}
   for(const source of document.sources)source.automation=[];
   const audio={kind:'audio',id:'owned-audio',trackId:'audio-track',name:'Owned WAV',file:{path:'owned.wav',sourceSha256:'a'.repeat(64),encoding:'pcm',channels:2,sampleRate:48000,bitsPerSample:16,frames:'192000'},sourceTempo:120,warpMode:'repitch',automation:[]};
   const region={start:0,end:8,loopStart:0,loopEnd:8,loopEnabled:true};
   document.sources.push(audio);document.tracks.push({id:'audio-track',name:'Audio',color:'#91b9ed',chain:{kind:'audio'},effects:[],gain:.7,mute:false,solo:false,slots:[{id:'audio-slot',name:'Owned WAV',sourceId:audio.id,region},null,null,null]});
-  const snapshot={generation:1,draftRevision:0,snapshotSequence:'1',preparationRevision:'1',mode:'workspacesV4',document,draft:null,dirty:false,deviceInstances:{},history:{canUndo:false,canRedo:false},capabilities:{maxTracks:8,maxDevices:6,arrangement:true,workspaces:true,atomicTrackActions:true,audioSources:true,launchQuantization:true},launch:{globalQuantization:'bar1',clipQuantization:[]},midi:{pending:false,publication:{status:3,serial:'0',error:0}},state:{playing:1,position:'0',absoluteFrame:'0',rejected:0,generation:1,tracks:[],devices:[]},runtime:{tracks:[],requests:[],requestedStopEpoch:'0',appliedStopEpoch:'0'},preparedWorkspaces:{sources:[],slots:[],placements:[]},audio:{running:true,config:{host:'default',device:'default',sample_rate:48000},observed_buffer_frames:256,callbacks:4,stream_errors:0,failed:false,message:'Browser bridge fixture'}};
+  const snapshot={master:{gain:1,acceptedSerial:'0',available:true,unavailableReason:null,observation:null,observationStale:false},generation:1,editRevision:0,snapshotSequence:'1',preparationRevision:'1',document,dirty:false,deviceInstances:{},history:{canUndo:false,canRedo:false},capabilities:{maxTracks:8,maxDevices:6,atomicTrackActions:true,launchQuantization:true},launch:{globalQuantization:'bar1',clipQuantization:[]},midi:{pending:false,publication:{status:3,serial:'0',error:0}},state:{playing:1,position:'0',absoluteFrame:'0',rejected:'0',generation:'1',tracks:[],devices:[]},runtime:{tracks:[],requests:[],requestedStopEpoch:'0',appliedStopEpoch:'0'},preparedWorkspaces:{sources:[],slots:[],placements:[]},audio:{running:true,config:{host:'default',device:'default',sample_rate:48000},observed_buffer_frames:256,callbacks:4,stream_errors:0,failed:false,message:'Browser bridge fixture'}};
   await page.addInitScript(snapshot=>{
     window.sessionSnapshot=snapshot;window.calls=[];let pending=null,serial=0;const history=[];
     function prepare(){
@@ -22,7 +22,7 @@ async function openRangeStudy(page){
     function snapshotNow(){
       if(pending&&Date.now()>=pending.ready){
         if(window.rejectNext){window.rejectNext=false;snapshot.midi.publication={status:4,serial:String(serial),error:9};snapshot.notice='The clip region was refused. Shorten the loop and try again.';}
-        else{history.push(snapshot.document);snapshot.document=pending.document;snapshot.draftRevision++;snapshot.history={canUndo:true,canRedo:false};snapshot.midi.publication={status:3,serial:String(serial),error:0};snapshot.notice=null;prepare();}
+        else{history.push(snapshot.document);snapshot.document=pending.document;snapshot.editRevision++;snapshot.history={canUndo:true,canRedo:false};snapshot.midi.publication={status:3,serial:String(serial),error:0};snapshot.notice=null;prepare();}
         pending=null;snapshot.midi.pending=false;
       }
       snapshot.snapshotSequence=String(BigInt(snapshot.snapshotSequence)+1n);snapshot.state.absoluteFrame=String(BigInt(snapshot.state.absoluteFrame)+256n);return structuredClone(snapshot);
@@ -31,7 +31,7 @@ async function openRangeStudy(page){
       window.calls.push({name,args});if(name==='alive_current')return snapshotNow();
       if(name==='alive_browser_catalog')return{entries:[],notice:''};
       if(name==='alive_workspace_edit'||name==='alive_workspace_track'){
-        if(pending)throw Error('A musical edit is still pending.');if(args.draftRevision!==snapshot.draftRevision)throw Error('Stale musical edit.');
+        if(pending)throw Error('A musical edit is still pending.');if(args.editRevision!==snapshot.editRevision)throw Error('Stale musical edit.');
         const document=structuredClone(snapshot.document),op=args.operation,affected={trackId:op.trackId??null,sourceId:null,slotId:null,placementId:null,noteId:null};
         if(op.kind==='regionSet'){const o=op.occurrence,p=o.kind==='slot'?document.tracks.find(t=>t.id===o.trackId).slots.find(s=>s?.id===o.slotId):document.placements.find(p=>p.id===o.placementId);p.region=op.region;affected.trackId=o.trackId??p.trackId;affected.sourceId=p.sourceId;}
         else if(op.kind==='midiClipCreate'||op.kind==='midiPlacementCreate'){
@@ -45,7 +45,7 @@ async function openRangeStudy(page){
         else throw Error('Unsupported fixture operation '+op.kind);
         serial++;pending={document,ready:Date.now()+45};snapshot.midi.pending=true;snapshot.midi.publication={status:1,serial:String(serial),error:0};return{snapshot:snapshotNow(),affected};
       }
-      if(name==='alive_history'){snapshot.document=history.pop();snapshot.draftRevision++;prepare();return snapshotNow();}
+      if(name==='alive_history'){snapshot.document=history.pop();snapshot.editRevision++;prepare();return snapshotNow();}
       if(name==='alive_audio_import')return null;
       throw Error('Unsupported fixture command '+name);
     }}};
@@ -81,7 +81,7 @@ test('rolling clip and typed tracks are immediate and keep the inserted track se
   await page.getByRole('button',{name:'Select Pulse slot 2',exact:true}).dblclick();await expect(page.locator('#clip-title')).toContainText('Clip 2');expect((await mutations(page)).map(c=>c.args.operation.kind)).toEqual(['midiClipCreate']);
   await page.locator('#session-workspace').focus();await page.keyboard.press('Control+t');await expect(page.getByRole('button',{name:'Select New Audio track',exact:true})).toHaveAttribute('aria-pressed','true');
   await page.locator('#session-workspace').focus();await page.keyboard.press('Control+Shift+t');await expect(page.getByRole('button',{name:'Select New MIDI track',exact:true})).toHaveAttribute('aria-pressed','true');
-  const tracks=await page.evaluate(()=>window.sessionSnapshot.document.tracks);expect(tracks.map(t=>t.name)).toEqual(['Pulse','New Audio','New MIDI','Harmony','Audio']);expect(tracks[2].chain.instrument).toBeNull();expect(await page.evaluate(()=>window.sessionSnapshot.state.playing)).toBe(1);await expect(page.locator('#apply')).toBeHidden();
+  const tracks=await page.evaluate(()=>window.sessionSnapshot.document.tracks);expect(tracks.map(t=>t.name)).toEqual(['Pulse','New Audio','New MIDI','Harmony','Audio']);expect(tracks[2].chain.instrument).toBeNull();expect(await page.evaluate(()=>window.sessionSnapshot.state.playing)).toBe(1);await expect(page.locator('#apply')).toHaveCount(0);
 });
 
 test('Arrangement focused time selection drives global loop and atomic MIDI insertion',async({page})=>{

@@ -75,7 +75,11 @@ def bundle_config(target, runtime_names=(), product='ultra'):
     bundle = {'active': True, 'resources': {'../../../LICENSE': 'licenses/Alive-LICENSE', '../THIRD-PARTY.txt': 'licenses/THIRD-PARTY.txt', '../core/VOICE.txt': 'licenses/Faust-VOICE.txt', '../THIRD-PARTY-CRATES.json': 'licenses/THIRD-PARTY-CRATES.json', 'native/vendor/fast_float/LICENSE-MIT': 'licenses/fast_float-MIT'}, 'icon': ['icons/release/icon.ico', 'icons/release/icon.icns', 'icons/release/128x128.png']}
     bundle['resources'].update({'../../alive/examples/empty-workspaces.alive': 'alive-session/alive/examples/empty-workspaces.alive',
                                 '../../alive/examples/two-instruments.alive': 'alive-session/alive/examples/two-instruments.alive',
-                                '../examples/subtractive.ultra': 'alive-session/ultra/examples/subtractive.ultra'})
+                                '../../alive/examples/midi-arrangement.alive': 'alive-session/alive/examples/midi-arrangement.alive',
+                                '../../alive/examples/quantized-midi.alive': 'alive-session/alive/examples/quantized-midi.alive',
+                                '../examples/subtractive.ultra': 'alive-session/ultra/examples/subtractive.ultra',
+                                '../examples/utility.ultra': 'alive-session/ultra/examples/utility.ultra',
+                                '../examples/stereo-lowpass.ultra': 'alive-session/ultra/examples/stereo-lowpass.ultra'})
     if system == 'Darwin':
         # Tauri copies/signs this nested library in Contents/Frameworks.
         bundle['macOS'] = {'frameworks': ['../build/' + library], 'minimumSystemVersion': '14.0'}
