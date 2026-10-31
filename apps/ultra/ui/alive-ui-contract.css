@@ -1,0 +1,110 @@
+/* Alive shell ownership: transport top, browser left, workspace center,
+   contextual Clip/Device editor below, Info fixed at bottom-left.
+   Keep action menus secondary; never add independent chrome action rows. */
+.document-bar .document-actions{
+  display:flex;
+  align-items:center;
+  position:relative;
+  gap:6px;
+  min-width:0;
+}
+#file-menu{position:relative;flex:none;margin:0;}
+#file-menu>summary{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  min-height:23px;
+  padding:2px 9px;
+  color:var(--text);
+  list-style:none;
+  border-radius:2px;
+}
+#file-menu>summary::-webkit-details-marker{display:none}
+#file-menu>summary::after{content:"▾";font-size:10px;color:var(--muted)}
+#file-menu[open]>summary,#file-menu>summary:hover{background:var(--raised)}
+.file-menu-items{
+  position:absolute;
+  top:calc(100% + 2px);
+  right:0;
+  z-index:25;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  padding:5px;
+  min-width:154px;
+  background:var(--chrome);
+  border:1px solid #777;
+  box-shadow:0 8px 18px #0008;
+}
+.document-bar .file-menu-items button{
+  display:block;
+  width:100%;
+  min-height:26px;
+  padding:4px 8px;
+  border:0;
+  border-radius:1px;
+  text-align:left;
+  background:transparent;
+}
+.document-bar .file-menu-items button:hover{background:var(--raised)}
+.document-bar #save{min-height:23px;padding:2px 9px;background:var(--raised);border:1px solid var(--line)}
+.document-bar #save:hover{border-color:var(--muted)}
+
+/* Browser commands are discoverable but do not permanently displace results. */
+#workspace-browser .browser-files{padding:5px 7px;background:var(--chrome)}
+#workspace-browser #browser-add-menu{margin:0;line-height:1.35}
+#browser-add-menu>summary{
+  min-height:25px;
+  padding:5px 7px;
+  border:1px solid var(--line);
+  border-radius:2px;
+  color:var(--text);
+  font-size:11px;
+  background:var(--raised);
+}
+#browser-add-menu>summary:hover{background:#414141}
+#browser-add-menu[open]>summary{border-color:var(--selection)}
+.browser-add-actions{
+  padding-top:6px;
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+#workspace-browser .browser-add-actions button{margin:0;min-height:25px;width:100%}
+#workspace-browser .insert-track-actions{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+#workspace-browser .insert-track-actions button{min-width:0;padding:3px;font-size:10px;text-align:center;justify-content:center}
+
+/* Info is a semantic, dedicated corner, not a spare status/action region. */
+footer #info-view{
+  display:flex;
+  flex:0 1 var(--browser-width,220px);
+  min-width:150px;
+  max-width:300px;
+  height:100%;
+  align-items:center;
+  gap:7px;
+  padding:0 8px 0 2px;
+  border-right:1px solid var(--line);
+  overflow:hidden;
+  color:var(--muted);
+}
+#info-view .info-label{flex:none;font-size:10px;color:var(--amber);font-weight:600}
+#info-text{
+  display:block;
+  flex:1;
+  min-width:0;
+  font-size:11px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  line-height:20px;
+}
+footer #notice{flex:1;min-width:40px}
+@media(max-width:850px){
+  footer #info-view{flex-basis:170px;min-width:125px;padding-right:5px;gap:4px}
+}
+@media(max-width:620px){
+  footer #info-view{flex-basis:125px;min-width:100px}
+  #info-view .info-label{font-size:9px}
+  #info-text{font-size:10px}
+}
