@@ -63,7 +63,7 @@
 .clip-properties .clip-launch-settings output{white-space:normal;overflow-wrap:anywhere;line-height:1.3}
 @media(max-width:850px){.clip-area.has-source{grid-template-columns:150px minmax(0,1fr)}}
 #clip-detail{container:clip-detail / size}
-@container clip-detail (max-height:300px){
+@container clip-detail (max-height:360px){
   .clip-area.has-source{grid-template-columns:minmax(260px,38%) minmax(0,1fr)}
   .clip-properties{display:flex;align-items:flex-start}
   .clip-properties>details{flex:1 0 130px;min-width:0}

@@ -1,7 +1,7 @@
 import {test,expect} from '@playwright/test';
 
 // Production browser preview: document gestures only, without native IPC/audio substitutes.
-const patch={version:1,profile:'ultra-canvas-v1',nodes:[
+const patch={version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[
   {id:1,type:'bang',x:80,y:60,params:{}},
   {id:2,type:'toggle',x:160,y:60,params:{}},
   {id:3,type:'number',x:80,y:140,params:{value:20}},

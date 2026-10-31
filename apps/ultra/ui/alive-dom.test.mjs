@@ -29,6 +29,7 @@ class Element{
   closest(selector){return this.matches(selector)?this:this.parentElement?.closest(selector);}
   getBoundingClientRect(){return{left:0,top:0,width:100,height:30};}
   focus(){this.doc.activeElement=this;}blur(){if(this.doc.activeElement===this)this.doc.activeElement=null;}
+  click(){return this.fire('click');}
   async fire(type,extra={}){if(type==='change'&&this.tagName==='INPUT')for(const fn of this.listeners.input??[])fn({type:'input',target:this});const event={target:this,button:0,preventDefault(){},stopPropagation(){},...extra};for(const fn of this.listeners[type]??[])await fn(event);await settle();}
 }
 const descendants=element=>element.children.flatMap(child=>[child,...descendants(child)]);

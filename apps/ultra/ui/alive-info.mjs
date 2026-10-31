@@ -25,10 +25,6 @@ export function mountAliveInfo(doc=globalThis.document){
     if(browserAdd?.open && !browserAdd.contains(event.target))browserAdd.open=false;
   }
   function keydown(event){
-    if(!event.defaultPrevented&&event.key==='?'&&!event.repeat&&!event.ctrlKey&&!event.altKey&&!event.metaKey&&
-      !event.target?.isContentEditable&&!event.target?.closest?.('input,textarea,select,[contenteditable]:not([contenteditable="false"])')){
-      event.preventDefault();toggleHelp();return;
-    }
     if(event.key!=='Escape')return;
     if(fileMenu?.open){fileMenu.open=false;event.stopPropagation();}
     if(browserAdd?.open){browserAdd.open=false;event.stopPropagation();}

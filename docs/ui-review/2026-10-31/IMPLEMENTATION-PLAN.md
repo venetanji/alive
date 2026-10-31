@@ -56,9 +56,10 @@ instance-owned expansion capability; no Wavetable-style control is implied.
 - [ ] Preserve MIDI/audio distinction, source/region identities, drafts, device ownership and native accepted edits.
 
 ## M5 — Menu and shortcuts
-- [ ] Shared command registry maps real commands to menus, shortcuts and contextual Help; distinguish focus from visibility actions.
-- [ ] Snapshot disabled states are not permanent capability facts; unsupported functions never execute simulated production success.
-- [ ] Verify text-field shortcuts, Escape/outside dismissal, keyboard navigation, state updates and disposal.
+- [x] Add the application menu bar and compact existing global toolbar. A command inventory supplies menu labels, shortcuts and contextual Help while existing controls own execution. Navigate actions focus a workspace; View actions toggle visibility.
+- [x] Classify all 140 reference rows in Live-reference-actions.json: 20 supported equivalents (with scope/format caveats), five unavailable, and 115 proposed or unverified. The embedded copy in the original mockup remains a historical capture. No unverified command is presented as working; snapshot-disabled state is not a permanent capability statement.
+- [x] Guard shortcuts in editable and modal contexts, leave browser command chords to the browser in preview, and cover menu dismissal, keyboard navigation, dynamic state and draft preservation. Phase nudge remains absent because the native contract does not expose it.
+- [ ] Parent visual review of menu/toolbar density, keyboard operation and the Clip inspector at 800, 1280 and 1440 remains the gate. Full CI, including native desktop journeys and the complete Ultra browser suite, must be reported separately from selected Alive regressions.
 
 ## M6 — Final acceptance
 - [ ] Full current Node UI/controller/component suite; applicable browser regressions; supported native UI smoke without altering frozen audio libraries.

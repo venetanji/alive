@@ -7,7 +7,23 @@
   position:relative;
   gap:6px;
   min-width:0;
+  margin-left:0;
+  gap:0;
 }
+.document-bar{position:relative;z-index:10}
+.document-bar #session-title{margin-left:auto}
+.document-bar .app-menu{position:relative;flex:none;margin:0}
+.document-bar .app-menu>summary{display:flex;align-items:center;min-height:23px;padding:2px 6px;list-style:none;cursor:pointer}
+.document-bar .app-menu>summary::-webkit-details-marker{display:none}
+.document-bar .app-menu[open]>summary,.document-bar .app-menu>summary:hover{background:var(--raised)}
+.document-bar .app-menu-items{position:absolute;top:calc(100% + 2px);left:0;right:auto;z-index:25;display:flex;flex-direction:column;min-width:190px;max-height:min(70vh,500px);overflow:auto;gap:2px;padding:5px;background:var(--chrome);border:1px solid #777;box-shadow:0 8px 18px #0008}
+.document-bar .app-menu-items button{display:block;width:100%;min-height:26px;padding:4px 8px;border:0;border-radius:1px;text-align:left;background:transparent;white-space:nowrap}
+.document-bar .app-menu-items button:hover:not(:disabled){background:var(--raised)}
+.document-bar .app-menu-items button:disabled{opacity:.5}
+.document-bar .app-menu-items button[aria-pressed=true]::before{content:"✓ ";color:var(--amber)}
+.document-bar .app-menu-items kbd{float:right;margin-left:24px;color:var(--muted);font:inherit}
+.document-bar #save{margin-left:7px}
+@media(max-width:850px){.document-bar .app-menu>summary{padding:2px 4px}.document-bar .app-menu-items{min-width:175px}}
 #file-menu{position:relative;flex:none;margin:0;}
 #file-menu>summary{
   display:flex;
@@ -103,7 +119,7 @@ main#workspace-shell{flex-direction:column;position:relative}
 #clip-detail .clip-area.has-source{grid-template-columns:min(var(--clip-properties-width,clamp(150px,22%,210px)),calc(100% - 160px)) minmax(0,1fr);grid-template-rows:auto minmax(156px,1fr) auto auto}
 #clip-detail .clip-properties-resizer{grid-column:1;grid-row:1 / -1;justify-self:end;width:7px;z-index:2;cursor:ew-resize;touch-action:none}
 #clip-detail .clip-properties-resizer:focus-visible{outline:2px solid var(--selection);outline-offset:-2px}
-@container clip-detail (max-height:300px){#clip-detail .clip-area.has-source{grid-template-columns:min(var(--clip-properties-width,clamp(260px,38%,450px)),calc(100% - 160px)) minmax(0,1fr)}}
+@container clip-detail (max-height:360px){#clip-detail .clip-area.has-source{grid-template-columns:min(var(--clip-properties-width,clamp(260px,38%,450px)),calc(100% - 160px)) minmax(0,1fr)}}
 #device-detail:not([hidden]),#master-detail:not([hidden]){grid-column:2;grid-row:2;min-height:0;overflow:auto}
 #info-view:not([hidden]){display:flex;flex-direction:column;align-items:stretch;grid-column:1;grid-row:2;min-height:0;overflow:auto;padding:8px;gap:8px;background:#303030;border-top:1px solid var(--line);border-right:1px solid var(--line);color:var(--text)}
 #info-view[hidden]{display:none}

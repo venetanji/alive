@@ -7,7 +7,7 @@ const html=readFileSync(new URL('./alive.html',import.meta.url),'utf8');
 test('Alive chrome keeps project file actions inside their owning menu',()=>{
   const header=html.match(/<header class="document-bar">([\s\S]*?)<\/header>/)?.[1];
   assert.ok(header,'document header exists');
-  const nav=header.match(/<nav class="document-actions"[^>]*>([\s\S]*?)<\/nav>/)?.[1];
+  const nav=header.match(/<nav id="application-menus" class="document-actions"[^>]*>([\s\S]*?)<\/nav>/)?.[1];
   assert.ok(nav,'project actions are grouped');
   assert.match(nav,/<details id="file-menu">[\s\S]*?id="new"[\s\S]*?id="open"[\s\S]*?id="save-as"[\s\S]*?id="quit"[\s\S]*?<\/details><button id="save"/);
   assert.equal((nav.match(/<button\b/g)??[]).length,5,'additional file actions need a region review');

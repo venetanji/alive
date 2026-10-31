@@ -48,7 +48,7 @@ test('Print bubbles render safe independent values, flip at the edge and expire 
     }}};
   });
   await page.goto('/canvas.html');await page.locator('.file-menu summary').click();await page.locator('#open-patch').click();
-  await page.locator('#patch-json').fill(JSON.stringify({version:1,profile:'ultra-canvas-v1',nodes:[
+  await page.locator('#patch-json').fill(JSON.stringify({version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[
     {id:1,type:'print',x:80,y:100,params:{popup:1}},
     {id:2,type:'print',x:1080,y:160,params:{popup:1}},
   ],edges:[]}));

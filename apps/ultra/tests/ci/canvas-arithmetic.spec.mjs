@@ -1,7 +1,7 @@
 import {test,expect} from '@playwright/test';
 
 test.use({screenshot:'off',trace:'off'});
-const initial={version:1,profile:'ultra-canvas-v1',nodes:[
+const initial={version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[
   {id:1,type:'add',x:80,y:80,params:{rhs:2,numericmode:1}},
   {id:2,type:'multiply',x:320,y:80,params:{rhs:.5}},
 ],edges:[]};

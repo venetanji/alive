@@ -14,14 +14,15 @@ async function exportPatch(page) {
   return patch;
 }
 
-async function importPatch(page, patch) {
+async function importPatch(page, patch, {expectSuccess=true}={}) {
   await page.locator('.file-menu summary').click();
   await page.locator('#open-patch').click();
   await page.locator('#patch-json').fill(JSON.stringify(patch));
   await page.locator('#import-patch').click();
+  if(expectSuccess)await expect(page.locator('#patch-dialog')).not.toBeVisible();
 }
 
-const wiringPatch={version:1,profile:'ultra-canvas-v1',nodes:[
+const wiringPatch={version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[
   {id:1,type:'add',x:80,y:80,params:{}},
   {id:2,type:'number',x:300,y:240,params:{}},
   {id:3,type:'gain',x:420,y:240,params:{}},
@@ -54,7 +55,7 @@ test('Help library searches names and aliases and opens runnable help in a separ
 
 test('list objects author through standard and legacy names and open original runnable help',async({page})=>{
   await page.goto('/canvas.html');
-  await importPatch(page,{version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]});
+  await importPatch(page,{version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[],edges:[]});
   const cases=[['iter','iter'],['prepend','prepend'],['append tail','append'],['zl reg violet 2.','zl_reg'],
     ['zl.join 8.','zl_join'],['zl.len','zl_len'],['zl.iter 2','zl_iter'],['zl.slice 2','zl_slice'],
     ['zl.rev','zl_rev'],['zl rot -1','zl_rot']];
@@ -76,7 +77,7 @@ test('list objects author through standard and legacy names and open original ru
 
 test('MSP objects author with Max names and open original signal help',async({page})=>{
   await page.goto('/canvas.html');
-  await importPatch(page,{version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]});
+  await importPatch(page,{version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[],edges:[]});
   const cases=[['sig~ .25 -.5','sig',1,2],['+~','signal_add',2,1],['-~','signal_subtract',2,1],
     ['*~ .1','signal_multiply',2,1],['/~','signal_divide',2,1],['cycle~ 440','cycle',2,1],
     ['phasor~ -1','phasor',2,1],['noise~','noise',1,1],['clip~ -1 1','signal_clip',3,1],
@@ -101,7 +102,7 @@ test('MSP objects author with Max names and open original signal help',async({pa
 
 test('mixed MSP inputs accept messages and summed signals, and dac channel edits rebuild the inlet rail',async({page})=>{
   await page.goto('/canvas.html');
-  await importPatch(page,{version:1,profile:'ultra-canvas-v1',nodes:[
+  await importPatch(page,{version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[
     {id:1,type:'sig',x:80,y:80,params:{args:'.25 .5'}},
     {id:2,type:'message',x:80,y:220,params:{text:'2'}},
     {id:3,type:'signal_add',x:300,y:300,params:{}},
@@ -388,7 +389,7 @@ test('new control objects expose dynamic ports, typed text and parameter guidanc
   await page.goto('/canvas.html');
   const kinds=['int','float','flonum','slider','pack','unpack','select','route','trigger','line'];
   const args={pack:'0 f s',unpack:'i f s',select:'red blue',route:'red blue',trigger:'b i f s'};
-  await importPatch(page,{version:1,profile:'ultra-canvas-v1',nodes:kinds.map((type,i)=>({id:i+1,type,x:60+(i%3)*230,y:60+Math.floor(i/3)*100,params:args[type]?{args:args[type]}:{}})),edges:[]});
+  await importPatch(page,{version:1,profile:'ultra-canvas-v1',presentation:null,nodes:kinds.map((type,i)=>({id:i+1,type,x:60+(i%3)*230,y:60+Math.floor(i/3)*100,params:args[type]?{args:args[type]}:{}})),edges:[]});
   const expected=[[2,1],[2,1],[1,2],[1,1],[3,1],[1,3],[1,3],[3,3],[1,4],[3,2]];
   for(let i=0;i<kinds.length;i++){
     const node=page.locator(`#objects [data-node="${i+1}"]`);
@@ -423,7 +424,7 @@ test('new control objects expose dynamic ports, typed text and parameter guidanc
 
 test('plain unlocked numeric controls select objects and locked controls edit authored values in preview',async({page})=>{
   await page.goto('/canvas.html');
-  await importPatch(page,{version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'flonum',x:60,y:60,params:{value:1.25,minimum:-2,maximum:4,numdecimalplaces:3}},{id:2,type:'slider',x:60,y:140,params:{size:11,min:-5,mult:1,floatoutput:1}},{id:3,type:'gain',x:60,y:220,params:{}}],edges:[]});
+  await importPatch(page,{version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[{id:1,type:'flonum',x:60,y:60,params:{value:1.25,minimum:-2,maximum:4,numdecimalplaces:3}},{id:2,type:'slider',x:60,y:140,params:{size:11,min:-5,mult:1,floatoutput:1}},{id:3,type:'gain',x:60,y:220,params:{}}],edges:[]});
   const flonum=page.locator('[data-node="1"] .number-input'),slider=page.locator('[data-node="2"] .slider-input');
   expect(await slider.evaluate(e=>({min:e.min,max:e.max,step:e.step}))).toEqual({min:'0',max:'10',step:'any'});
   await expect(flonum).toHaveJSProperty('readOnly',true);
@@ -448,7 +449,7 @@ test('add and wire objects, delete and undo, export, and reject invalid import',
   page.on('pageerror', error => errors.push(error.message));
   await page.goto('/canvas.html');
   await expect(page.locator('#palette [data-add]')).toHaveCount(Object.keys(OBJECTS).length);
-  await importPatch(page, {version: 1, profile: 'ultra-canvas-v1', nodes: [], edges: []});
+  await importPatch(page, {version: 1, profile: 'ultra-canvas-v1', presentation: null, nodes: [], edges: []});
   await expect(page.locator('#patch-dialog')).not.toBeVisible();
   await expect(page.locator('#objects [data-node]')).toHaveCount(0);
 
@@ -499,7 +500,7 @@ test('add and wire objects, delete and undo, export, and reject invalid import',
   await expect(page.locator('#cables path[data-edge]')).toHaveCount(1);
 
   const valid = await exportPatch(page);
-  await importPatch(page, {...valid, edges: [{from: source.id, outlet: 99, to: target.id, inlet: 0}]});
+  await importPatch(page, {...valid, edges: [{from: source.id, outlet: 99, to: target.id, inlet: 0}]}, {expectSuccess:false});
   await expect(page.locator('#notice')).toContainText(/outlet|port|invalid/i);
   await page.keyboard.press('Escape');
   expect(await exportPatch(page)).toEqual(valid);
@@ -515,7 +516,7 @@ test('add and wire objects, delete and undo, export, and reject invalid import',
 
 test('inline creation, rejected classes, connected text edits, lock, help and directional port menus', async ({page}) => {
   await page.goto('/canvas.html');
-  await importPatch(page,{version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]});
+  await importPatch(page,{version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[],edges:[]});
   await expect(page.locator('#file-menu')).not.toHaveAttribute('open');
   await page.keyboard.press('n');
   const text=page.locator('#object-text');
@@ -548,7 +549,7 @@ test('inline creation, rejected classes, connected text edits, lock, help and di
 
 test('group drag and undo retain selection; zoom keeps patch cord endpoints on ports', async ({page}) => {
   await page.goto('/canvas.html');
-  await importPatch(page,{version:1,profile:'ultra-canvas-v1',nodes:[
+  await importPatch(page,{version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[
     {id:1,type:'add',x:80,y:80,params:{rhs:1}},
     {id:2,type:'number',x:300,y:220,params:{value:0}},
   ],edges:[{from:1,outlet:0,to:2,inlet:0}]});
@@ -623,7 +624,7 @@ test('space and middle drag pan without editing, cursor zoom anchors and reset r
 
 test('panned zoomed canvas keeps drag, marquee, creation and cables in world coordinates', async ({page},testInfo) => {
   await page.goto('/canvas.html');
-  await importPatch(page,{version:1,profile:'ultra-canvas-v1',nodes:[
+  await importPatch(page,{version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[
     {id:1,type:'add',x:80,y:80,params:{rhs:1}},
     {id:2,type:'number',x:300,y:220,params:{value:0}},
   ],edges:[{from:1,outlet:0,to:2,inlet:0}]});
@@ -705,7 +706,7 @@ test('Max zoom shortcuts leave typing and Ctrl Z undo available',async({page})=>
 
 test('wheel, Shift wheel and two-axis trackpad scrolling move the view without changing the patch',async({page})=>{
   await page.goto('/canvas.html');
-  await importPatch(page,{version:1,profile:'ultra-canvas-v1',nodes:[
+  await importPatch(page,{version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[
     {id:1,type:'add',x:400,y:400,params:{rhs:1}},
     {id:2,type:'number',x:2600,y:2200,params:{value:0}},
   ],edges:[{from:1,outlet:0,to:2,inlet:0}]});

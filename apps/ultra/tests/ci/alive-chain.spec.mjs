@@ -2,6 +2,65 @@ import {test,expect} from '@playwright/test';
 import {projectFixturePresentation} from '../presentation-dom.mjs';
 import {readFileSync,mkdirSync} from 'node:fs';
 
+test('unselected track menu opens its own editor without selecting the track',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);
+  const harmony=page.locator('.track[data-track-id="track-2"]');
+  await harmony.locator('.track-inspector summary').click();
+  await page.getByRole('button',{name:'Open Harmony editor',exact:true}).click();
+  await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_editor').length)).toBe(1);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([{name:'alive_editor',args:{instanceId:'instrument-1',generation:1}}]);
+  await expect(page.getByRole('button',{name:'Select Pulse track',exact:true})).toHaveAttribute('aria-pressed','true');
+});
+
+test('End resize exposes the full Clip Launch Quantization control at 1440',async({page},testInfo)=>{
+  await page.setViewportSize({width:1440,height:900});await openSession(page);await page.locator('#detail-devices').click();
+  const resize=page.getByRole('separator',{name:'Resize detail area',exact:true});await resize.focus();await resize.press('End');
+  const rects=await page.evaluate(()=>{const a=document.querySelector('[aria-label="Clip Launch Quantization"]').getBoundingClientRect(),b=document.querySelector('#clip-detail').getBoundingClientRect(),c=document.querySelector('.clip-properties').getBoundingClientRect();return {a:{top:a.top,bottom:a.bottom},b:{top:b.top,bottom:b.bottom},c:{top:c.top,bottom:c.bottom}};});
+  expect(rects.a.top).toBeGreaterThanOrEqual(Math.max(rects.b.top,rects.c.top));expect(rects.a.bottom).toBeLessThanOrEqual(Math.min(rects.b.bottom,rects.c.bottom));
+  await page.screenshot({path:testInfo.outputPath('inspector-end-1440.png')});
+});
+
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`application menus provide passive, reachable commands at ${size.width}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);const gain=page.getByRole('spinbutton',{name:'Pulse gain',exact:true});await gain.fill('0.713');
+  for(const label of ['File','Edit','Create','Playback','View','Navigate','Options','Help']){
+    const summary=page.getByRole('button',{name:`${label} menu`,exact:true});await summary.click();const menu=summary.locator('..');
+    await expect(menu).toHaveAttribute('open','');const box=await menu.locator('.app-menu-items').boundingBox();expect(box.x).toBeGreaterThanOrEqual(0);expect(box.x+box.width).toBeLessThanOrEqual(size.width);
+    await summary.press('Escape');await expect(menu).not.toHaveAttribute('open','');await expect(summary).toBeFocused();
+  }
+  await expect(gain).toHaveValue('0.713');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  await page.getByRole('button',{name:'View menu',exact:true}).click();await expect(page.getByRole('button',{name:'Toggle Browser',exact:true})).toBeEnabled();
+  await expect(page.getByRole('button',{name:'Toggle Browser',exact:true})).toHaveAttribute('aria-pressed','true');
+  await page.screenshot({path:testInfo.outputPath(`application-menu-${size.width}.png`)});
+  await page.getByRole('button',{name:'Toggle Browser',exact:true}).click();await expect(page.locator('#workspace-browser')).toBeHidden();
+  await page.getByRole('button',{name:'View menu',exact:true}).click();await expect(page.getByRole('button',{name:'Toggle Browser',exact:true})).toHaveAttribute('aria-pressed','false');await page.keyboard.press('Escape');
+  await page.getByRole('button',{name:'Edit menu',exact:true}).click();await expect(page.getByRole('button',{name:'Undo',exact:true}).last()).toBeDisabled();await page.keyboard.press('Escape');
+  await expect(gain).toHaveValue('0.713');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('menu keyboard navigation and shortcuts respect drafts, editable fields and dialogs',async({page},testInfo)=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);
+  const gain=page.getByRole('spinbutton',{name:'Pulse gain',exact:true});await gain.fill('0.713');
+  const summary=page.getByRole('button',{name:'Create menu',exact:true});await summary.click();await summary.press('ArrowDown');
+  await expect(page.getByRole('button',{name:'Insert Audio Track',exact:true}).last()).toBeFocused();
+  await page.keyboard.press('ArrowDown');await expect(page.getByRole('button',{name:'Insert MIDI Track',exact:true}).last()).toBeFocused();
+  await page.keyboard.press('Escape');await expect(summary).toBeFocused();await expect(gain).toHaveValue('0.713');
+  await summary.click();await page.locator('#session-title').click();await expect(summary.locator('..')).not.toHaveAttribute('open','');
+  await page.evaluate(()=>{const field=document.createElement('div');field.id='menu-editable';field.contentEditable='true';document.body.append(field);});
+  const field=page.locator('#menu-editable'),help=page.locator('#info-view');await field.focus();await field.press('?');await field.press('Control+s');await expect(field).toHaveText('?');await expect(help).toBeVisible();
+  await page.evaluate(()=>{const dialog=document.createElement('dialog');dialog.id='menu-modal';dialog.innerHTML='<button>Modal button</button>';document.body.append(dialog);dialog.showModal();});
+  await page.locator('#menu-modal button').focus();await page.keyboard.press('?');await expect(help).toBeVisible();await page.keyboard.press('Space');await expect(help).toBeVisible();
+  await page.evaluate(()=>document.querySelector('#menu-modal').close());await summary.focus();await page.keyboard.press('?');await expect(help).toBeHidden();await page.keyboard.press('?');await expect(help).toBeVisible();
+  await page.screenshot({path:testInfo.outputPath('menu-help-keyboard.png')});await expect(gain).toHaveValue('0.713');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('an open Playback menu follows the actual transport enabled state',async({page})=>{
+  await openSession(page);await page.getByRole('button',{name:'Playback menu',exact:true}).click();
+  const start=page.getByRole('button',{name:'Start',exact:true}),stop=page.getByRole('button',{name:'Stop',exact:true});
+  await expect(start).toBeEnabled();await expect(stop).toBeEnabled();await expect(page.getByRole('button',{name:'Loop',exact:true})).toHaveAttribute('aria-pressed','true');
+  await page.evaluate(()=>{window.sessionSnapshot.state.playing=1;});await expect(start).toBeDisabled();await expect(stop).toBeEnabled();
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
 for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`detail maximum resize preserves useful pinned Session controls at ${size.width}`,async({page},testInfo)=>{
   await page.setViewportSize(size);await openSession(page,{trackCount:8});await page.locator('#detail-devices').click();const separator=page.getByRole('separator',{name:'Resize detail area',exact:true}),session=page.locator('#session-workspace');
   const check=async()=>{const bounds=await session.boundingBox();for(const locator of [page.getByRole('button',{name:'Select Pulse slot 1',exact:true}),page.getByRole('button',{name:'Pulse mute',exact:true}),page.getByRole('button',{name:'Pulse solo',exact:true}),page.locator('#master-session').getByRole('spinbutton',{name:'Master gain',exact:true})]){const r=await locator.boundingBox();expect(r.y,await locator.getAttribute('aria-label')).toBeGreaterThanOrEqual(bounds.y-1);expect(r.y+r.height,await locator.getAttribute('aria-label')).toBeLessThanOrEqual(bounds.y+bounds.height+1);}};
@@ -309,13 +368,13 @@ for(const size of [{width:800,height:600},{width:1280,height:800}])test(`Alive c
   await expect(page.locator('#new')).toBeHidden();
   await file.locator('summary').click();
   await expect(page.locator('#new')).toBeVisible();
-  await page.locator('#workspace-browser > h2').click();
+  await page.locator('#session-title').click();
   await expect(page.locator('#new')).toBeHidden();
   const add=page.locator('#browser-add-menu');
   await expect(page.locator('#insert-audio-track')).toBeHidden();
   await add.locator('summary').click();
   await expect(page.locator('#insert-audio-track')).toBeVisible();
-  await page.locator('#workspace-browser > h2').click();
+  await page.locator('#session-title').click();
   await expect(page.locator('#insert-audio-track')).toBeHidden();
   await page.locator('#view-arrangement').click();
   await expect(info).toBeVisible();
@@ -340,8 +399,10 @@ for(const size of [{width:1440,height:900},{width:1280,height:800},{width:800,he
   await page.setViewportSize(size);await openSession(page);
   const resize=page.getByRole('separator',{name:'Resize detail area',exact:true}),panel=page.locator('#detail-panel');
   const visiblePiano=()=>page.evaluate(()=>{const piano=document.querySelector('#piano-roll').getBoundingClientRect(),clip=document.querySelector('#clip-detail').getBoundingClientRect();return Math.max(0,Math.min(piano.bottom,clip.bottom)-Math.max(piano.top,clip.top));});
-  const originalPiano=await page.locator('#piano-roll').boundingBox(),originalVisible=await visiblePiano(),originalHeight=Number(await resize.getAttribute('aria-valuenow'));await resize.focus();await resize.press('End');
+  const originalPiano=await page.locator('#piano-roll').boundingBox(),originalVisible=await visiblePiano(),originalPanel=await panel.boundingBox(),originalHeight=Number(await resize.getAttribute('aria-valuenow'));await resize.focus();await resize.press('End');
   expect(Number(await resize.getAttribute('aria-valuenow'))).toBeGreaterThan(originalHeight);
+  expect((await panel.boundingBox()).height).toBeGreaterThan(originalPanel.height+30);
+  expect(await visiblePiano()).toBeGreaterThan(originalVisible+30);
   const previous=await resize.getAttribute('aria-valuenow');await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
   await expect(page.locator('#session-workspace')).toBeHidden();await expect(page.locator('#arrangement-workspace')).toBeHidden();
   expect((await panel.boundingBox()).height).toBeGreaterThan(size.height*.75);

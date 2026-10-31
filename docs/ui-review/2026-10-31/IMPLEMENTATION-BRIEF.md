@@ -124,7 +124,7 @@ The user explicitly retracted “no scrollbars ever.” Current requirement: **s
 | Clip/editor/preview | Illustrative editor | Real selected clip/source, audio waveform vs MIDI editor and zero-note/no-clip distinction |
 | Expanded device area | Visual study | Existing supported device capability only; shared surface consumers regressions tested |
 | Transport/automation/scale/mixer options | Mix of illustrative controls and existing app capabilities | Per-command supported/planned/disabled classification and genuine state wiring |
-| Menus/140 inventory actions | All `not_assessed` for Alive | Command-by-command mapping; no claim all are implemented |
+| Menus/140 inventory actions | Session 5 assessment: 20 supported equivalents, five unavailable, 115 proposed/unverified | See Live-reference-actions.json for evidence and scope caveats; no claim all are implemented |
 | Native audio/DSP | Not exercised; out of scope | Preserve existing contract; do not infer audio proof from screenshots/UI tests |
 | Multichannel tracks | Unresolved user intent | Clarification/explicit later scope before engine work |
 
