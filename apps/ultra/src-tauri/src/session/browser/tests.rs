@@ -136,6 +136,47 @@ fn valid_user_documents_have_stable_path_identities_and_invalid_neighbors_do_not
 
 #[cfg(unix)]
 #[test]
+fn bundled_and_user_aliases_emit_one_descriptor_per_actual_saved_device() {
+    use std::os::unix::fs::symlink;
+    let f = Fixture::new();
+    let original = f.device("resources/alive-session/ultra/examples/subtractive.ultra");
+    symlink(
+        &original,
+        f.0.join("resources/alive-session/ultra/examples/utility.ultra"),
+    )
+    .unwrap();
+    let distinct = f.device("resources/alive-session/ultra/examples/stereo-lowpass.ultra");
+    fs::create_dir_all(f.0.join("user")).unwrap();
+    symlink(&original, f.0.join("user/alias.ultra")).unwrap();
+
+    let d = f.discover();
+
+    assert_eq!(
+        d.entries
+            .iter()
+            .filter(|entry| entry.path.as_ref() == Some(&original))
+            .count(),
+        1,
+        "bundled filenames and user aliases must share one canonical descriptor"
+    );
+    assert_eq!(d.entries.len(), 2);
+    assert!(d
+        .entries
+        .iter()
+        .any(|entry| entry.id == "bundled:subtractive"
+            && entry.path.as_ref() == Some(&original)
+            && entry.availability == Availability::Ready));
+    assert!(d
+        .entries
+        .iter()
+        .any(|entry| entry.id == "bundled:stereo-lowpass"
+            && entry.path.as_ref() == Some(&distinct)
+            && entry.availability == Availability::Ready));
+    assert!(users(&d).is_empty());
+}
+
+#[cfg(unix)]
+#[test]
 fn file_aliases_are_deduplicated_and_directory_symlinks_are_never_walked() {
     use std::os::unix::fs::symlink;
     let f = Fixture::new();

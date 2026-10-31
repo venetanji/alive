@@ -152,7 +152,9 @@ impl Builder {
                 ),
             };
             if let Some(path) = &path {
-                self.paths.insert(path.clone());
+                if !self.paths.insert(path.clone()) {
+                    continue;
+                }
             }
             self.saved(
                 Entry {
