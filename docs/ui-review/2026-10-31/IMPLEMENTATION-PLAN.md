@@ -66,3 +66,10 @@ instance-owned expansion capability; no Wavetable-style control is implied.
 - [ ] Compare populated Session/Arrangement and panel-state matrix against latest design; verify narrow widths, horizontal tracks, return-bank alignment, draft preservation and no accidental audio changes.
 - [ ] Independent final review and exact-head remote/CI inspection. Report passed, failed and unrun stages separately.
 - [ ] Notify user branch/PR ready to pull with evidence and any unsupported features. Do not merge.
+
+### Session 6 acceptance checklist
+- Implemented UI: compact toolbar and menus, contextual Help, independently visible Clip and Devices, real source and rack controls, pinned Session mixer and clip scrolling, Browser search and qualified device loading. Selection and visibility are distinct from playback.
+- Reference-only or unavailable: the mockup's complete Live toolbar and 140-action inventory are not a claim of parity. Browser presets, tags and preview, returns/sends, routing/monitor/arm/recording, phase nudge, multichannel and unsupported expanded device surfaces require their own native contracts.
+- Native gate: baseline CI run 41233289513 passed UI and Chromium but failed the real desktop, Arrangement and Master journeys. Its native evidence showed an unavailable reorder target, a Source / Clip disclosure closed after source rename, and a Help output whose accessible name collided with a device button. A browser reproduction also showed the moved reorder action outside the rack viewport. Session 6 adds focused regressions and UI fixes; only an exact-head native run can establish whether all journeys now pass.
+- Local native limit: the private software-only desktop startup could not launch WebKit's network helper at its compiled system path in this managed sysroot. No host security setting or WebKit sandbox was changed. The exact error and CI evidence are retained in the session report.
+- Hardware: no physical audio hardware, recording or routing qualification was run. Software PipeWire and browser fixtures are not hardware evidence.

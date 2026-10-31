@@ -64,7 +64,70 @@ test('menu keyboard navigation and shortcuts respect drafts, editable fields and
   await page.evaluate(()=>{const dialog=document.createElement('dialog');dialog.id='menu-modal';dialog.innerHTML='<button>Modal button</button>';document.body.append(dialog);dialog.showModal();});
   await page.locator('#menu-modal button').focus();await page.keyboard.press('?');await expect(help).toBeVisible();await page.keyboard.press('Space');await expect(help).toBeVisible();
   await page.evaluate(()=>document.querySelector('#menu-modal').close());await summary.focus();await page.keyboard.press('?');await expect(help).toBeHidden();await page.keyboard.press('?');await expect(help).toBeVisible();
+  await page.evaluate(()=>{document.querySelector('#menu-editable').remove();document.querySelector('#menu-modal').remove();});
   await page.screenshot({path:testInfo.outputPath('menu-help-keyboard.png')});await expect(gain).toHaveValue('0.713');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('Tab leaving a menu dismisses it without stealing focus, and Escape stays local',async({page})=>{
+  await openSession(page);const summary=page.getByRole('button',{name:'Create menu',exact:true}),menu=summary.locator('..');
+  await summary.click();const last=menu.locator('button:not(:disabled)').last();await last.focus();await expect(last).toBeFocused();await page.keyboard.press('Tab');
+  await expect(menu).not.toHaveAttribute('open','');const focused=await page.evaluate(()=>document.activeElement?.getAttribute('aria-label'));expect(focused).not.toBe('Create menu');
+  await page.keyboard.press('Escape');expect(await page.evaluate(()=>document.activeElement?.getAttribute('aria-label'))).toBe(focused);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('contextual Help keeps a stable accessible name while describing a device control',async({page})=>{
+  await openSession(page);await page.locator('#detail-devices').click();
+  const target=page.getByRole('button',{name:'Select Pulse Subtractive instrument',exact:true});await target.focus();
+  await expect(page.locator('#info-text')).toHaveText('Select Pulse Subtractive instrument');
+  await expect(page.locator('#info-text')).toHaveAccessibleName('Contextual help text');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('Create menu keeps shortcut text aligned with its command',async({page})=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page);await page.getByRole('button',{name:'Create menu',exact:true}).click();
+  const item=page.getByRole('button',{name:'Insert MIDI Track',exact:true}).last(),bounds=await item.boundingBox(),key=await item.locator('kbd').boundingBox();
+  expect(Math.abs((bounds.y+bounds.height/2)-(key.y+key.height/2))).toBeLessThanOrEqual(2);
+});
+
+test('device reorder keeps the rack scrolled to its visible actions',async({page})=>{
+  await page.setViewportSize({width:1200,height:800});await openSession(page);await page.locator('#detail-devices').click();
+  const rack=page.locator('#chain'),later=page.getByRole('button',{name:'Move Pulse Stereo Utility effect 1 later',exact:true});
+  await later.scrollIntoViewIfNeeded();const before=await rack.evaluate(e=>({top:e.scrollTop,left:e.scrollLeft}));expect(before.top).toBeGreaterThan(0);
+  await later.click();
+  const earlier=page.getByRole('button',{name:'Move Pulse Stereo Utility effect 2 earlier',exact:true});await expect(earlier).toBeEnabled();
+  await expect.poll(()=>rack.evaluate(e=>e.scrollTop)).toBeGreaterThanOrEqual(before.top-1);
+  await expect(earlier).toBeFocused();
+  const hit=await earlier.evaluate(el=>{const r=el.getBoundingClientRect(),e=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return !!e&&el.contains(e);});expect(hit).toBe(true);
+  const hover=page.getByRole('button',{name:'Move Pulse Stereo Lowpass effect 1 later',exact:true});
+  expect(await hover.evaluate(el=>{const r=el.getBoundingClientRect(),e=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return !!e&&el.contains(e);})).toBe(true);
+  const calls=await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'));expect(calls).toHaveLength(1);expect(calls[0]).toMatchObject({name:'alive_device',args:{action:'reorder',instanceId:'utility'}});
+});
+
+for(const mode of ['focused','parked'])test(`late device reorder preserves a newer ${mode} mixer draft`,async({page})=>{
+  await page.setViewportSize({width:1200,height:800});await openSession(page);await page.locator('#detail-devices').click();
+  await page.evaluate(()=>{window.reorderGate=new Promise(resolve=>{window.releaseReorder=resolve;});});
+  await page.getByRole('button',{name:'Move Pulse Stereo Utility effect 1 later',exact:true}).click();
+  const harmony=page.getByRole('button',{name:'Select Harmony track',exact:true});await harmony.click();
+  const gain=page.getByRole('spinbutton',{name:'Harmony gain',exact:true});await gain.fill('0.713');await expect(gain).toBeFocused();
+  if(mode==='parked')await page.getByRole('button',{name:'Arrangement workspace',exact:true}).click();
+  await page.evaluate(()=>window.releaseReorder());await expect.poll(()=>page.evaluate(()=>window.sessionSnapshot.document.tracks[0].effects[1].instanceId)).toBe('utility');
+  if(mode==='parked')await page.getByRole('button',{name:'Session workspace',exact:true}).click();
+  await expect(harmony).toHaveAttribute('aria-pressed','true');await expect(gain).toHaveValue('0.713');if(mode==='focused')await expect(gain).toBeFocused();else await gain.focus();
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_mixer'))).toEqual([]);
+  await gain.press('Tab');await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_mixer').length)).toBe(1);
+  expect(await page.evaluate(()=>window.calls.find(c=>c.name==='alive_mixer').args)).toMatchObject({trackId:'track-2',gain:.713,generation:2});
+});
+
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`clean review captures of the workspace and application menus at ${size.width}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();
+  await page.screenshot({path:testInfo.outputPath(`workspace-default-${size.width}.png`)});
+  for(const label of ['File','Create','Playback','Navigate']){
+    const summary=page.getByRole('button',{name:`${label} menu`,exact:true});await summary.click();
+    await page.screenshot({path:testInfo.outputPath(`menu-${label.toLowerCase()}-${size.width}.png`)});
+    await summary.press('Escape');
+  }
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
 
 test('an open Playback menu follows the actual transport enabled state',async({page})=>{
@@ -780,6 +843,11 @@ async function openSession(page,{longNames=false,trackCount=2,launchQuantization
         if(window.browserLoadError)throw Error(window.browserLoadError);
         if(args.generation!==snapshot.generation||args.editRevision!==snapshot.editRevision)throw Error('Stale device edit');
         let track=snapshot.document.tracks.find(t=>t.id===args.trackId);const instrument=['load','replace','loadNewTrack'].includes(args.action);
+        if(args.action==='reorder'){
+          if(window.reorderGate)await window.reorderGate;
+          const from=track.effects.findIndex(effect=>effect.instanceId===args.instanceId),[effect]=track.effects.splice(from,1),before=track.effects.findIndex(item=>item.instanceId===args.beforeInstanceId);
+          track.effects.splice(before<0?track.effects.length:before,0,effect);snapshot.generation++;return accepted();
+        }
         if(args.action==='loadNewTrack'){
           undo.push(structuredClone(snapshot.document));redo.length=0;
           const at=snapshot.document.tracks.indexOf(track)+1;
@@ -1310,6 +1378,17 @@ test('Master numeric validation and double-click unity use the same admission pa
   await number.fill('5');await number.press('Tab');await expect(page.getByRole('status',{name:'Session status'})).toContainText('between 0 and 4');expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_master'))).toHaveLength(0);
   await number.fill('0.25');await number.press('Tab');await expect(root.getByLabel('Master gain decibels')).toHaveText('-12.0 dB');
   await fader.dblclick();await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_master').at(-1)?.args.gain)).toBe(1);await expect(root.getByLabel('Master gain decibels')).toHaveText('0.0 dB');
+});
+
+test('renaming an Arrangement source keeps its source controls open after the accepted edit',async({page})=>{
+  await openArrangement(page,{width:1440,height:900});await page.getByRole('button',{name:'Select placement p-0',exact:true}).click();
+  const disclosure=page.locator('.clip-source-actions');await disclosure.locator('summary').click();
+  const name=page.getByLabel('MIDI source name',{exact:true});await name.fill('Renamed source');await name.press('Tab');
+  await expect.poll(async()=>(await workspaceEdits(page)).filter(c=>c.args.operation.kind==='sourceRename').length).toBe(1);
+  await expect(disclosure).toHaveAttribute('open','');await expect(page.getByLabel('MIDI source length',{exact:true})).toBeVisible();
+  await page.getByLabel('MIDI source length',{exact:true}).fill('12');await page.getByLabel('MIDI source length',{exact:true}).press('Tab');
+  await expect.poll(async()=>(await workspaceEdits(page)).map(c=>c.args.operation.kind)).toEqual(['sourceRename','sourceLength']);
+  await expect(disclosure).toHaveAttribute('open','');await page.getByRole('button',{name:'Select placement p-1',exact:true}).click();await expect(disclosure).not.toHaveAttribute('open','');
 });
 
 test('Arrangement Master aligns with right track controls and source fields have visible context',async({page})=>{

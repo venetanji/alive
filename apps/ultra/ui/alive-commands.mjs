@@ -90,6 +90,7 @@ export function mountCommandMenus({doc,park=()=>{},native=true}){
     event.preventDefault();const index=buttons.indexOf(doc.activeElement),next=event.key==='Home'?0:event.key==='End'?buttons.length-1:event.key==='ArrowDown'?(index+1)%buttons.length:(index<=0?buttons.length-1:index-1);buttons[next].focus();
   }
   function pointerdown(event){for(const menu of menus)if(menu.open&&!menu.contains(event.target))menu.open=false;}
-  doc.addEventListener('keydown',keydown,true);doc.addEventListener('pointerdown',pointerdown,true);
-  return{update,dispose(){doc.removeEventListener('keydown',keydown,true);doc.removeEventListener('pointerdown',pointerdown,true);}};
+  function focusin(event){for(const menu of menus)if(menu.open&&!menu.contains(event.target))menu.open=false;}
+  doc.addEventListener('keydown',keydown,true);doc.addEventListener('pointerdown',pointerdown,true);doc.addEventListener('focusin',focusin,true);
+  return{update,dispose(){doc.removeEventListener('keydown',keydown,true);doc.removeEventListener('pointerdown',pointerdown,true);doc.removeEventListener('focusin',focusin,true);}};
 }
