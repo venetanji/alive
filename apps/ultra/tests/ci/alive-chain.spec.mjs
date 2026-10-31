@@ -4,6 +4,7 @@ import {readFileSync,mkdirSync} from 'node:fs';
 
 test('browser preview disables native-only menu commands and retains local Help',async({page})=>{
   await page.goto('/alive.html');
+  await expect(page.locator('#start')).toBeDisabled();await expect(page.locator('#start')).toHaveCSS('opacity','0.5');
   await page.getByRole('button',{name:'File menu',exact:true}).click();await expect(page.getByRole('button',{name:'New session',exact:true})).toBeDisabled();
   await page.getByRole('button',{name:'Playback menu',exact:true}).click();await expect(page.getByRole('button',{name:'Start',exact:true})).toBeDisabled();
   await page.getByRole('button',{name:'Help menu',exact:true}).click();await expect(page.getByRole('button',{name:'Toggle contextual Help',exact:true})).toBeEnabled();

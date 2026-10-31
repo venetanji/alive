@@ -43,7 +43,7 @@ export function mountCommandMenus({doc,park=()=>{},native=true}){
   const file=doc.getElementById('file-menu'),menus=[file].filter(Boolean),rows=[];
   const save=doc.getElementById('save');
   const fileSurface=file?.querySelector?.('.file-menu-items');
-  if(!native)for(const id of NATIVE_TARGETS){const target=doc.getElementById(id);if(target){target.disabled=true;target.setAttribute('data-help','Available in the native Alive app.');target.title='Available in the native Alive app.';}}
+  if(!native)for(const id of NATIVE_TARGETS){const target=doc.getElementById(id);if(target){target.disabled=true;target.setAttribute('data-native-unavailable','');target.setAttribute('data-help','Available in the native Alive app.');target.title='Available in the native Alive app.';}}
   for(const command of COMMANDS.filter(c=>c.menu==='File')){
     const target=doc.getElementById(command.target);if(native)target?.setAttribute('data-help',command.help+(command.shortcut?' ('+command.shortcut+').':''));
   }

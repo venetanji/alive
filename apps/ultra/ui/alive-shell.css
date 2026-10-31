@@ -15,6 +15,7 @@ body{min-width:0;min-height:0;height:100dvh}
 .transport #start,.transport #stop{width:29px;height:28px;padding:5px;border-color:transparent;background:transparent;color:var(--text)}
 .transport #start:not(:disabled){color:var(--amber)}
 .transport #start:disabled{opacity:1;color:var(--stereo)}
+.transport #start[data-native-unavailable]:disabled{opacity:.5;color:var(--muted)}
 .transport #start:disabled svg{fill:currentColor}
 .transport #stop:hover{background:var(--raised)}
 .loop-control{position:relative;display:grid!important;place-items:center;width:30px;height:28px;cursor:pointer}
