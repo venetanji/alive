@@ -169,6 +169,39 @@ for(const size of [{width:800,height:600},{width:1280,height:800}])test(`catalog
   mkdirSync('/tmp/alive-device-catalog-ui-20261031',{recursive:true});await page.screenshot({path:`/tmp/alive-device-catalog-ui-20261031/catalog-${size.width}x${size.height}.png`});
 });
 
+for(const size of [{width:800,height:600},{width:1280,height:800}])test(`unfiltered catalog clips long results and keeps footer hit targets at ${size.width}x${size.height}`,async({page})=>{
+  await page.setViewportSize(size);await openSession(page);
+  await page.evaluate(()=>{
+    const entries=Array.from({length:96},(_,index)=>({id:`live:long-${index}`,provider:'live',name:`Catalog candidate ${String(index).padStart(2,'0')}`,kind:'instrument',path:null,profile:null,qualification:'candidate',availability:'unavailable',reason:'Save a qualified device before loading this installed candidate.',description:'Installed device candidate',dependencies:[]}));
+    window.catalogRequest=({cursor})=>({revision:'long-list',entries:entries.slice(cursor?.offset??0,(cursor?.offset??0)+64),nextCursor:cursor?null:{revision:'long-list',offset:64},notices:['Candidate discovery requires saved devices.']});
+  });
+  await page.getByRole('button',{name:'Refresh Library',exact:true}).click();
+  const first=page.getByRole('option',{name:'Catalog candidate 00',exact:true}),last=page.getByRole('option',{name:'Catalog candidate 95',exact:true});
+  await expect(last).toHaveCount(1);await first.click();
+  const geometry=()=>page.evaluate(()=>{
+    const box=selector=>{const r=document.querySelector(selector).getBoundingClientRect();return{x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom};},list=document.querySelector('.browser-list');
+    const footers=['.browser-description','.browser-load','.browser-status'].map(selector=>{
+      const element=document.querySelector(selector),r=element.getBoundingClientRect(),samples=[.2,.5,.8].map(fraction=>{
+        const stack=document.elementsFromPoint(r.x+r.width*fraction,r.y+r.height/2);
+        return{owned:element.contains(stack[0]),rows:stack.filter(hit=>hit.closest('.browser-result')).length};
+      });return{selector,samples};
+    });return{body:box('.browser-body'),results:box('.browser-results'),list:box('.browser-list'),selection:box('.browser-selection'),scrollHeight:list.scrollHeight,clientHeight:list.clientHeight,scrollTop:list.scrollTop,footers};
+  });
+  mkdirSync('/tmp/alive-device-catalog-ui-20261031',{recursive:true});
+  const initial=await geometry();await page.screenshot({path:`/tmp/alive-device-catalog-ui-20261031/unfiltered-initial-${size.width}x${size.height}.png`});
+  expect(initial.results.bottom,JSON.stringify(initial)).toBeLessThanOrEqual(initial.body.bottom+1);expect(initial.list.bottom).toBeLessThanOrEqual(initial.selection.y+1);
+  expect(initial.scrollHeight).toBeGreaterThan(initial.clientHeight*2);
+  for(const footer of initial.footers)for(const sample of footer.samples){expect(sample.owned,footer.selector).toBe(true);expect(sample.rows,footer.selector).toBe(0);}
+  await last.scrollIntoViewIfNeeded();await last.click();await expect(last).toHaveAttribute('aria-selected','true');await expect(last).toBeInViewport({ratio:1});
+  const scrolled=await geometry();expect(scrolled.scrollTop).toBeGreaterThan(0);
+  for(const footer of scrolled.footers)for(const sample of footer.samples){expect(sample.owned,footer.selector).toBe(true);expect(sample.rows,footer.selector).toBe(0);}
+  await page.locator('.browser-description').click();await page.locator('.browser-status').click();await expect(last).toHaveAttribute('aria-selected','true');
+  await expect(page.locator('.browser-description')).toContainText('Save a qualified device');await expect(page.locator('.browser-load')).toBeDisabled();
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.documentElement.scrollHeight<=innerHeight)).toBe(true);
+  await page.screenshot({path:`/tmp/alive-device-catalog-ui-20261031/unfiltered-scrolled-${size.width}x${size.height}.png`});
+});
+
 test('browser device double-click requests one validated load and reports native refusal',async({page})=>{
   await openSession(page);
   await page.evaluate(()=>{window.sessionSnapshot.document.tracks[0].chain.instrument=null;window.sessionSnapshot.document.sources[0].automation=[];});

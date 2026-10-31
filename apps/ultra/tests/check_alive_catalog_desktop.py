@@ -12,6 +12,7 @@ import runpy
 import time
 
 import check_alive_desktop as alive
+from chooser_observation import find_web_ancestor, planned_hit_path
 from gi.repository import Atspi
 
 ui = alive.ui
@@ -74,6 +75,117 @@ def refusal_gestures():
                 double_click_interval_seconds=.06, synthetic_ipc=False)
 
 
+def bounds(control):
+    rect = Atspi.Component.get_extents(control, Atspi.CoordType.SCREEN)
+    return [rect.x, rect.y, rect.width, rect.height]
+
+
+def selected_names():
+    return [item.get_name() for item in ui.walk(ui.wait_for('Browser results'))
+            if item.get_role_name() in ('list item', 'option')
+            and item.get_state_set().contains(Atspi.StateType.SELECTED)]
+
+
+def descends_from(control, ancestor):
+    for _ in range(32):
+        if control is None:
+            return False
+        if control == ancestor:
+            return True
+        control = control.get_parent()
+    return False
+
+
+def unfiltered_layout(width, height):
+    search('')
+    results = ui.wait_for('Browser results')
+    assert len(options()) >= 26, options()
+    Atspi.Component.grab_focus(results)
+    ui.keys('Home')
+    time.sleep(.2)
+    first_name, last_name = options()[0], options()[-1]
+    assert selected_names() == [first_name], selected_names()
+    list_bounds = bounds(results)
+    first_initial = bounds(ui.wait_for(first_name))
+    last_initial = bounds(ui.wait_for(last_name))
+    assert not (list_bounds[1] <= last_initial[1] and last_initial[1] + last_initial[3] <= list_bounds[1] + list_bounds[3]), (list_bounds, last_initial)
+    ui.keys('End')
+    time.sleep(.2)
+    assert selected_names() == [last_name], selected_names()
+    last_scrolled = bounds(ui.wait_for(last_name))
+    list_bounds = bounds(results)
+    assert list_bounds[1] <= last_scrolled[1] and last_scrolled[1] + last_scrolled[3] <= list_bounds[1] + list_bounds[3], (list_bounds, last_scrolled)
+    assert last_scrolled != last_initial, (last_initial, last_scrolled)
+
+    load = ui.wait_for('Add Effect')  # The last installed candidate is Utility.
+    assert last_name == 'Utility', last_name
+    load_bounds = bounds(load)
+    browser = results.get_parent().get_parent().get_parent()
+    footer_text = []
+    for item in ui.walk(browser):
+        if descends_from(item, results) or 'Text' not in item.get_interfaces() or not Atspi.Text.get_text(item, 0, -1).strip():
+            continue
+        rect = bounds(item)
+        if rect[2] > 0 and rect[3] > 0 and rect[1] >= list_bounds[1] + list_bounds[3]:
+            footer_text.append((item, rect))
+    descriptions = [(item, rect) for item, rect in footer_text if rect[1] + rect[3] <= load_bounds[1]]
+    statuses = [(item, rect) for item, rect in footer_text if rect[1] >= load_bounds[1] + load_bounds[3]]
+    assert descriptions and statuses, (list_bounds, load_bounds, [(item.get_name(), rect) for item, rect in footer_text])
+    controls = [('description', *descriptions[0]), ('load', load, load_bounds), ('status', *statuses[0])]
+    web, _ = find_web_ancestor(load)
+    assert web is not None
+    hits = []
+    for label, control, rect in controls:
+        assert rect[0] >= 0 and rect[1] >= 0 and rect[0] + rect[2] <= width and rect[1] + rect[3] <= height, (label, rect)
+        assert list_bounds[1] + list_bounds[3] <= rect[1], (label, list_bounds, rect)
+        for fraction in [.2, .5, .8]:
+            px, py = round(rect[0] + rect[2] * fraction), rect[1] + rect[3] // 2
+            hit_nodes = [web]
+            def child_at_point(node):
+                child = Atspi.Component.get_accessible_at_point(node, px, py, Atspi.CoordType.SCREEN)
+                if child is not None:
+                    hit_nodes.append(child)
+                return child
+            hit = planned_hit_path(web, child_at_point)
+            assert hit['status'] == 'complete', hit
+            assert not any(node['role'] in ('list item', 'option', 'list box') for node in hit['path']), hit
+            assert descends_from(hit_nodes[-1], control), (label, hit)
+            hits.append(dict(control=label, point=[px, py], hit=hit))
+
+    def capture(name):
+        image = ui.Gdk.pixbuf_get_from_window(ui.Gdk.get_default_root_window(), 0, 0, width, height)
+        image.savev(str(ui.output / name), 'png', [], [])
+
+    capture(f'native-catalog-unfiltered-scrolled-{width}x{height}.png')
+    # Scroll without changing selection: any row painted over the footer changes
+    # these pixels, even when the footer remains the top accessibility hit target.
+    band_top = list_bounds[1] + list_bounds[3] + 1
+    band_bottom = max(rect[1] + rect[3] for _, _, rect in controls)
+    def footer_pixels():
+        image = ui.Gdk.pixbuf_get_from_window(ui.Gdk.get_default_root_window(), list_bounds[0], band_top, list_bounds[2], band_bottom - band_top)
+        return bytes(image.get_pixels())
+    before_pixels = footer_pixels()
+    assert ui.t.XTestFakeMotionEvent(ui.display, 0, list_bounds[0] + list_bounds[2] // 2, list_bounds[1] + list_bounds[3] // 2, 0)
+    for _ in range(40):
+        assert ui.t.XTestFakeButtonEvent(ui.display, 4, 1, 0)
+        assert ui.t.XTestFakeButtonEvent(ui.display, 4, 0, 0)
+    ui.x.XFlush(ui.display)
+    time.sleep(.3)
+    first_scrolled = bounds(ui.wait_for(first_name))
+    assert list_bounds[1] <= first_scrolled[1] and first_scrolled[1] + first_scrolled[3] <= list_bounds[1] + list_bounds[3], (list_bounds, first_scrolled)
+    assert selected_names() == [last_name], selected_names()
+    after_pixels = footer_pixels()
+    assert before_pixels == after_pixels, 'Scrolling list rows changed the selected-device footer pixels'
+    capture(f'native-catalog-unfiltered-top-{width}x{height}.png')
+    return dict(viewport=[width, height], entries=len(options()), list_bounds=list_bounds,
+                first=first_name, last=last_name, first_initial=first_initial,
+                last_initial=last_initial, last_scrolled=last_scrolled, first_scrolled=first_scrolled,
+                footer_controls={label: rect for label, _, rect in controls}, footer_hits=hits,
+                scroll_input=dict(keys=['Home', 'End'], pointer_wheel_up=40, synthetic_ipc=False),
+                footer_paint_unchanged_on_scroll=True,
+                footer_sha256=hashlib.sha256(before_pixels).hexdigest())
+
+
 try:
     alive.windows.focus('Alive')
     ui.wait_for('Select MIDI 1 track')
@@ -99,6 +211,7 @@ try:
     helper = Path(__file__).with_name('check_alive_device_drop.py')
 
     captures = []
+    unfiltered_captures = []
     window = alive.owned_frame_window()
     ui.x.XResizeWindow.argtypes = [C.c_void_p, C.c_ulong, C.c_uint, C.c_uint]
     ui.x.XGetWindowAttributes.argtypes = [C.c_void_p, C.c_ulong, C.POINTER(alive.WindowAttributes)]
@@ -110,6 +223,9 @@ try:
         attributes = alive.WindowAttributes()
         assert ui.x.XGetWindowAttributes(ui.display, window, C.byref(attributes))
         assert [attributes.width, attributes.height] == [width, height]
+        unfiltered_captures.append(unfiltered_layout(width, height))
+        search('Analog')
+        ui.click('Analog')
         controls = {}
         for name in ['Refresh Library', 'Search browser', 'Analog', 'Load Instrument']:
             control = ui.wait_for(name)
@@ -163,7 +279,7 @@ try:
         accepted_score_unchanged=True, native_generation=generation_before,
         rejected_commands=0, native_library=str(native), binary=str(binary),
         source_commit=manifest['source_commit'], artifact_hashes=manifest['artifacts'],
-        captures=captures, physical_audio=False,
+        captures=captures, unfiltered_captures=unfiltered_captures, physical_audio=False,
     ), indent=2) + '\n')
     search('')
     runpy.run_path(str(helper), run_name='__main__')
