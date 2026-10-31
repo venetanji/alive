@@ -1,0 +1,134 @@
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/phase2-ui/alive/apps/ultra/src-tauri)
+warning: unused import: `SaveSnapshot`
+  --> src/documents.rs:14:28
+   |
+14 | pub use save::{SaveNotice, SaveSnapshot};
+   |                            ^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: suspicious definition of the runtime `write` symbol used by the standard library
+   --> src/audio.rs:420:13
+    |
+420 |             fn write(fd: i32, buf: *const u8, len: usize) -> isize;
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: expected `unsafe extern "C" fn(i32, *const std::ffi::c_void, usize) -> isize` (for the current target)
+            found    `unsafe extern "C" fn(i32, *const u8, usize) -> isize`
+    = help: either fix the signature or remove any attributes like `#[unsafe(no_mangle)]`, `#[unsafe(export_name = "write")]`, or `#[link_name = "write"]`
+    = help: allow this lint if the signature is compatible
+    = note: `#[warn(suspicious_runtime_symbol_definitions)]` on by default
+
+warning: `ultra` (lib test) generated 2 warnings (run `cargo fix --lib -p ultra --tests` to apply 1 suggestion)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 4.21s
+     Running unittests src/lib.rs (/tmp/alive-live-regions-rust-target/debug/deps/ultra_desktop-6951be0eecdd253e)
+
+running 106 tests
+test session::desktop::publication::tests::publication_maps_use_stable_ids_and_removed_entries_are_none ... ok
+test session::desktop::tests::actual_registered_window_binding_authenticates_instance_and_generation ... ok
+test session::browser::tests::a_directory_with_a_device_name_is_not_a_catalog_file ... ok
+test session::browser::tests::a_missing_device_returns_an_explicit_error_instead_of_a_partial_catalog ... ok
+test session::browser::tests::source_catalog_is_available_when_installed_locations_are_missing ... ok
+test session::browser::tests::resource_catalog_takes_priority_over_source ... ok
+test session::browser::tests::installed_catalog_works_without_a_source_tree ... ok
+test session::desktop::tests::polling_or_close_during_native_dialog_never_blocks_the_ui ... ok
+test session::desktop::tests::alive_loads_its_installed_example_without_source_tree ... ok
+test session::desktop::tests::stale_generation_and_unrelated_main_actions_reject ... ok
+test session::desktop::tests::fresh_session_has_both_workspaces_without_converting_a_demo ... ok
+test session::desktop::tests::master_stale_generation_refuses_without_owner_mutation ... ok
+test session::desktop::tests::workspace_commands_authenticate_origin_generation_revision_and_preparation ... ok
+test session::desktop::tests::workspace_effect_roles_never_use_the_first_effect_as_an_instrument ... ok
+test session::history::tests::launch_history_tracks_metadata_without_replacing_live_mix ... ok
+test session::desktop::tests::shared_changed_source_blocks_either_selected_replace_until_original_is_restored ... ok
+test session::desktop::tests::launch_settings_and_history_preserve_preparation_and_live_fields ... ok
+test session::history::tests::projection_restores_music_onto_current_chain_without_live_fields ... ok
+test session::native::native_v4::tests::defaults_initialize_headers_and_active_record_sentinels ... ok
+test session::native::native_v4::tests::exact_v4_layout ... ok
+test session::native_launch::tests::unavailable_native_preserves_nondefault_saved_intent ... ok
+test session::native_master::tests::reserves_a_pair_without_wrap_or_reuse ... ok
+test session::native_master::tests::resolves_the_loaded_native_image ... ok
+test session::native_midi::tests::midi_serials_are_distinct_and_missing_capability_is_explicit ... ok
+test session::persistence::audio_tests::save_as_preserves_relative_audio_and_never_overwrites_its_source ... ok
+test session::desktop::tests::save_owner_commits_only_after_atomic_rename ... ok
+test session::prepare_workspaces::tests::audio_preparation_retains_pcm_owners_across_region_publication ... ok
+test session::prepare_workspaces::tests::first_effect_on_an_instrumentless_track_keeps_its_effect_role ... ok
+test session::prepare_workspaces::tests::rootless_midi_retains_notes_without_compiling_note_events ... ok
+test session::prepare_workspaces::tests::sparse_eight_tracks_prepare_without_imaginary_device_roots ... ok
+test session::history::tests::workspace_track_history_preserves_live_values_by_identity ... ok
+test session::desktop::tests::workspace_source_edits_preserve_occurrence_identity_and_reject_invalid_bindings_transactionally ... ok
+test session::prepare_workspaces::tests::recompilation_preserves_existing_root_indices_after_track_reordering ... ok
+test session::desktop::tests::master_gain_admission_promotes_only_on_change ... ok
+test session::runtime_workspaces::tests::return_and_launch_use_prepared_identities_and_reject_missing_or_foreign_slots ... ok
+test session::runtime_workspaces::tests::receipt_reconciliation_matches_revision_and_preserves_terminal_members ... ok
+test session::desktop::tests::unavailable_launch_settings_allow_explicit_supported_recovery ... ok
+test session::runtime_workspaces::tests::gaps_and_session_silence_keep_null_sources_and_pending_return_is_not_predicted ... ok
+test session::tests::active_v4_preparation_accepts_empty_audio_tracks_without_dependencies ... ok
+test session::desktop::tests::snapshot_keeps_publication_and_preview_admission_independent ... ok
+test session::tests::invalid_master_preflight_preserves_the_current_owner ... ok
+test session::desktop::tests::master_install_refuses_serial_exhaustion_before_retirement ... ok
+test session::desktop::tests::master_failed_rollback_does_not_claim_receipt ... ok
+test session::tests::master_read_checks_byte_limit_before_utf8_decoding ... ok
+test session::tests::native_v3_layout_matches_fixed_c_interface ... ok
+test session::tests::native_wire_layouts_have_matching_sizes_headers_and_offsets ... ok
+test session::desktop::tests::master_queue_full_preserves_owner_and_allows_retry ... ok
+test session::tests::current_envelope_roundtrips_master_launch_and_complete_workspace ... ok
+test session::tests::master_preflight_accepts_nonunity_with_native_capability ... ok
+test session::tests::active_v4_preparation_compiles_shared_sources_once ... ok
+test session::desktop::publication::tests::metadata_after_save_as_retains_the_native_pcm_owner ... ok
+test session::tests::missing_and_incompatible_devices_identify_track_and_preserve_input ... ok
+test session::tests::save_cannot_replace_source_device_or_accept_oversized_file ... ok
+test session::tests::saved_effect_order_and_automation_resolve_by_instance_not_chain_index ... ok
+test session::tests::hashes_cover_original_json_before_instance_bases_and_formatting_is_irrelevant ... ok
+test session::tests::current_envelope_rejects_missing_unknown_duplicate_and_invalid_members ... ok
+test session::tests::save_as_rebases_references_and_failed_save_retains_file ... ok
+test session::wav::tests::chunk_padding_and_descriptor_limits_are_checked_before_pcm_allocation ... ok
+test session::wav::tests::malformed_chunks_counts_encodings_and_float_samples_are_rejected ... ok
+test session::wav::tests::pcm_mono_is_normalized_and_duplicated_to_stereo ... ok
+test session::wav::tests::preparation_checks_actual_metadata_and_fingerprint ... ok
+test session::wav::tests::repitch_capacity_is_rejected_before_opening_the_audio_file ... ok
+test session::wav::tests::repitch_resampling_changes_duration_and_preserves_stereo_channels ... ok
+test session::wav::tests::supported_integer_widths_and_float64_decode_signed_endpoints ... ok
+test session::tests::saved_session_resolves_two_real_independent_device_references ... ok
+test session::workspaces::tests::arrangement_clip_creation_uses_the_selected_span_atomically ... ok
+test session::tests::stable_parameter_keys_survive_explicit_source_manifest_reordering ... ok
+test session::workspaces::tests::audio_import_creates_source_and_occurrence_with_independent_beat_markers ... ok
+test session::workspaces::tests::audio_source_stretch_preserves_sample_offsets_across_every_reference ... ok
+test session::workspaces::tests::endpoint_difference_controls_duration_and_beats_still_detect_subframe_overlap ... ok
+test session::workspaces::tests::audio_suffix_descriptors_and_automation_retain_exact_frames ... ok
+test session::workspaces::tests::finite_bounds_and_loop_brace_apply_even_when_disabled ... ok
+test session::workspaces::tests::byte_limits_unicode_controls_and_document_size_are_enforced ... ok
+test session::workspaces::tests::full_audio_region_stretch_does_not_round_past_the_sample_end ... ok
+test session::workspaces::tests::fresh_ids_check_current_and_reserved_history_and_undo_keeps_originals ... ok
+test session::workspaces::tests::independent_region_markers_and_empty_midi_instrument_decode ... ok
+test session::workspaces::tests::invalid_id_generators_and_occupied_targets_leave_input_unchanged ... ok
+test session::workspaces::tests::independent_starts_and_touching_occurrences_use_endpoint_frames ... ok
+test session::workspaces::tests::midi_clip_creation_is_atomic_and_region_edit_preserves_content ... ok
+test session::workspaces::tests::notes_reject_overlap_and_five_held_voices_but_allow_touching_ends ... ok
+test session::tests::v4_nested_duplicates_and_invalid_prepared_dependencies_are_transactional ... ok
+test session::workspaces::tests::occupied_slot_names_identity_and_delete_assign_mints_a_new_occurrence ... ok
+test session::desktop::tests::master_pending_retirement_burns_pair_without_replacement ... ok
+test session::workspaces::tests::real_cross_track_references_and_duplicate_lane_targets_reject ... ok
+test session::workspaces::tests::repitch_tempo_changes_preserve_audio_beats_and_source_shrink_is_transactional ... ok
+test session::workspace_edits::tests::command_primary_ids_follow_the_operation_not_sorted_invalidation ... ok
+test session::workspaces::tests::region_validation_rejects_nonfinite_and_collapsed_loop_markers ... ok
+test session::workspaces::tests::strict_edits_reject_duplicate_unknown_and_missing_fields ... ok
+test session::workspaces::tests::strict_roundtrip_keeps_explicit_empty_slots_and_no_audio_instrument ... ok
+test session::workspaces::tests::shared_source_edits_and_independent_copy_preserve_occurrence_identity ... ok
+test session::workspaces::tests::every_nested_wire_record_rejects_missing_or_unknown_fields ... ok
+test session::workspaces::tests::source_slot_note_placement_lifecycle_returns_stable_affected_ids ... ok
+test session::workspaces::tests::validation_rejects_identity_kind_ownership_and_device_targets ... ok
+test session::workspaces::tests::wire_rejects_unknown_missing_duplicate_and_noncanonical_decimal_members ... ok
+test session::tests::saving_through_a_session_symlink_keeps_dependency_paths_relative_to_target ... ok
+test session::workspaces::tests::per_track_and_global_bounds_include_disabled_automation ... ok
+test session::tests::master_host_install_publishes_saved_gain_before_audio ... ok
+test session::tests::v4_source_compiler_checks_disabled_bindings_and_placement_endpoint_arithmetic ... ok
+test session::desktop::tests::master_failed_install_rolls_back_gain_and_receipt ... ok
+test session::workspaces::tests::source_event_pool_counts_rounded_note_ends_and_enabled_points_once ... ok
+test session::tests::save_as_relocates_every_effect_and_cannot_overwrite_any_dependency ... ok
+test session::tests::v4_native_host_admits_complete_candidate_and_preserves_old_on_refusal ... ok
+test session::desktop::publication::tests::rolling_clip_regions_tracks_and_history_commit_only_after_applied ... ok
+test session::history::tests::musical_history_is_bounded_and_redo_is_transactional ... ok
+test session::history::tests::byte_eviction_and_strict_directions_are_bounded ... ok
+test session::tests::rust_host_installs_the_saved_session_without_editor_windows ... ok
+
+test result: ok. 106 passed; 0 failed; 0 ignored; 0 measured; 168 filtered out; finished in 4.79s

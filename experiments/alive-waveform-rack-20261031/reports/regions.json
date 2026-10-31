@@ -1,0 +1,86 @@
+{
+  "fixture": "quantized-midi.alive",
+  "synthetic_ipc": false,
+  "rolling_typed_tracks": true,
+  "atomic_one_bar_creation": {
+    "double_click": true,
+    "shortcut": true,
+    "undo_redo": true
+  },
+  "midi_selection_and_independent_start": true,
+  "audio_repitch_stretch_undo": true,
+  "audio_pcm": {
+    "frames": 65536,
+    "seconds": 1.3653333333333333,
+    "peak": 0.274658203125,
+    "one_second_peaks": [
+      0.274658203125,
+      0.274658203125
+    ],
+    "unequal_stereo_samples_after_setup": 17529,
+    "sha256": "047aed464014df4e538632fa156fabdf5181928a8a0c7d2576061531f9a1f338",
+    "path": "regions-audio.f32",
+    "physical_audio": false,
+    "supervision": {
+      "complete": true,
+      "reason": "requested_stop",
+      "group_id": 844950,
+      "recorder_pid": 844953,
+      "returncode": 1,
+      "wall_seconds": 1.5236131549972924,
+      "audio_bytes": 524288,
+      "stderr_bytes": 0,
+      "limits": {
+        "wall_seconds": 2700.0,
+        "audio_bytes": 1073741824,
+        "metadata_bytes": 67108864,
+        "stderr_bytes": 1048576,
+        "disk_reserve_bytes": 268435456
+      }
+    },
+    "left_frequency": 330,
+    "right_frequency": 550,
+    "left_tone_fraction": 0.9999999980531181,
+    "right_tone_fraction": 0.9999999970202
+  },
+  "stretched_audio_pcm": {
+    "frames": 65536,
+    "seconds": 1.3653333333333333,
+    "peak": 0.274658203125,
+    "one_second_peaks": [
+      0.274658203125,
+      0.274658203125
+    ],
+    "unequal_stereo_samples_after_setup": 17531,
+    "sha256": "91416071bd4bfa06435ae55ec748c928f718819f70050ec20b21bc7c325439b8",
+    "path": "regions-stretched-audio.f32",
+    "physical_audio": false,
+    "supervision": {
+      "complete": true,
+      "reason": "requested_stop",
+      "group_id": 845006,
+      "recorder_pid": 845009,
+      "returncode": 1,
+      "wall_seconds": 1.5256956089942832,
+      "audio_bytes": 524288,
+      "stderr_bytes": 0,
+      "limits": {
+        "wall_seconds": 2700.0,
+        "audio_bytes": 1073741824,
+        "metadata_bytes": 67108864,
+        "stderr_bytes": 1048576,
+        "disk_reserve_bytes": 268435456
+      }
+    },
+    "left_frequency": 220,
+    "right_frequency": 366.6666666666667,
+    "left_tone_fraction": 0.9999999890648524,
+    "right_tone_fraction": 1.000047520747977
+  },
+  "arrangement_selection_loop_and_clip": true,
+  "save_reopen": true,
+  "source_notes_preserved": true,
+  "stream_errors": 0,
+  "rejected_commands": 0,
+  "stopped": true
+}

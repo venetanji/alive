@@ -1,0 +1,85 @@
+{
+  "binary": "/home/venetanji/.local/share/alive/builds/3ca2cef/bin/alive",
+  "native_library": "/home/venetanji/.local/share/alive/builds/3ca2cef/bin/libultra_native.so",
+  "gestures": [
+    {
+      "source": "Subtractive",
+      "target": "Select MIDI 1 track",
+      "start": [
+        151,
+        168
+      ],
+      "end": [
+        288,
+        79
+      ],
+      "synthetic_ipc": false
+    },
+    {
+      "source": "Stereo Utility",
+      "target": "Device chain drop area",
+      "start": [
+        151,
+        195
+      ],
+      "end": [
+        953,
+        602
+      ],
+      "synthetic_ipc": false
+    },
+    {
+      "source": "Stereo Lowpass",
+      "target": "Select MIDI 1 Stereo Utility effect 1",
+      "start": [
+        151,
+        222
+      ],
+      "end": [
+        897,
+        484
+      ],
+      "synthetic_ipc": false
+    }
+  ],
+  "effects": [
+    "org.alive.stereo-lowpass",
+    "org.alive.utility"
+  ],
+  "audio": {
+    "frames": 172544,
+    "seconds": 3.5946666666666665,
+    "peak": 0.09684687107801437,
+    "one_second_peaks": [
+      0.0,
+      0.0,
+      0.09684687107801437,
+      0.06331368535757065
+    ],
+    "unequal_stereo_samples_after_setup": 0,
+    "sha256": "9b941dd27fc119773ce251c2d852e52e3b2e2f224b8cb2c0aaac0dcd675242b7",
+    "path": "dragged-chain.f32",
+    "physical_audio": false,
+    "supervision": {
+      "complete": true,
+      "reason": "requested_stop",
+      "group_id": 841200,
+      "recorder_pid": 841203,
+      "returncode": 1,
+      "wall_seconds": 3.7461268460028805,
+      "audio_bytes": 1380352,
+      "stderr_bytes": 0,
+      "limits": {
+        "wall_seconds": 2700.0,
+        "audio_bytes": 1073741824,
+        "metadata_bytes": 67108864,
+        "stderr_bytes": 1048576,
+        "disk_reserve_bytes": 268435456
+      }
+    }
+  },
+  "stream_errors": 0,
+  "rejected_commands": 0,
+  "saved_format": "alive-session-v6",
+  "physical_audio": false
+}

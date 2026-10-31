@@ -1,0 +1,28 @@
+HTTP request lines omitted; test results retained.
+(node:833720) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+Running 11 tests using 1 worker
+
+(node:833821) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:833821) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(node:833821) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 alive-chain.spec.mjs:3002:5 › device rack exposes independent controls and internal horizontal scrolling at 1440 (869ms)
+  ✓   2 alive-chain.spec.mjs:3002:5 › device rack exposes independent controls and internal horizontal scrolling at 800 (656ms)
+  ✓   3 alive-chain.spec.mjs:3049:1 › rack drop insertion follows horizontal card midpoint even at its top edge (567ms)
+  ✓   4 alive-chain.spec.mjs:3074:1 › rack retains another track draft and opens the editor owned by an unselected card (626ms)
+  ✓   5 alive-chain.spec.mjs:3108:111 › rack draft survives Session slot selection and commits once after returning (1.0s)
+  ✓   6 alive-chain.spec.mjs:3108:111 › rack draft survives Arrangement track selection and commits once after returning (1.2s)
+  ✓   7 alive-chain.spec.mjs:3108:111 › rack draft survives Arrangement placement selection and commits once after returning (1.3s)
+  ✓   8 alive-chain.spec.mjs:3108:111 › rack draft survives Arrangement lane selection and commits once after returning (1.2s)
+  ✓   9 alive-chain.spec.mjs:3165:1 › detached rack draft blocks Save until its cached field is deliberately committed (748ms)
+  ✓  10 alive-chain.spec.mjs:3194:1 › removing the selected empty MIDI track rebuilds the rack for the audio track at the same index (387ms)
+  ✓  11 alive-chain.spec.mjs:3220:1 › removing a track releases its detached cached rack and parked draft (609ms)
+
+  11 passed (10.1s)
+
+To open last HTML report run:
+
+  npx playwright show-report
