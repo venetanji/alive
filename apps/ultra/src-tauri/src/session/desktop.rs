@@ -457,20 +457,14 @@ fn example_path(resources: &Path, source: &Path) -> PathBuf {
     if bundled.is_file() { return bundled; }
     source.join("../../alive/examples/empty-workspaces.alive")
 }
-#[derive(Serialize)]
-pub struct BrowserDevice {
-    id: &'static str,
-    name: &'static str,
-    kind: &'static str,
-    path: PathBuf,
-}
 #[tauri::command]
-pub async fn alive_browser_catalog(window: WebviewWindow) -> Result<Vec<BrowserDevice>, String> {
+pub async fn alive_browser_catalog(window: WebviewWindow, request: browser::Request) -> Result<browser::Page, String> {
     main_only(window.label())?;
+    let app = window.app_handle().clone();
     tauri::async_runtime::spawn_blocking(move || {
-        let resources = window.app_handle().path().resource_dir().map_err(|e| e.to_string())?;
-        let devices = browser::catalog(&resources, Path::new(env!("CARGO_MANIFEST_DIR")))?;
-        Ok(devices.into_iter().map(|device| BrowserDevice { id: device.id, name: device.name, kind: device.kind, path: device.path }).collect())
+        let resources = app.path().resource_dir().map_err(|e| e.to_string())?;
+        let config = browser::Config::environment(resources, PathBuf::from(env!("CARGO_MANIFEST_DIR")));
+        app.state::<browser::CatalogCache>().page(request, &config)
     }).await.map_err(|e| e.to_string())?
 }
 fn example(app: &tauri::AppHandle) -> Result<PreparedSession, String> {
@@ -703,6 +697,7 @@ pub fn run(mut context: tauri::Context<tauri::Wry>, path: Option<PathBuf>) {
     context.config_mut().app.windows.clear();
     tauri::Builder::default().plugin(tauri_plugin_dialog::init())
         .setup(move |app| {
+            app.manage(browser::CatalogCache::default());
             let prepared = match path.as_ref() { Some(path) => read(path), None => example(app.handle()) }
                 .map_err(std::io::Error::other)?;
             let saved_path = path.as_ref().map(|_| prepared.origin.clone());
