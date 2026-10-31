@@ -2,6 +2,36 @@ import {test,expect} from '@playwright/test';
 import {projectFixturePresentation} from '../presentation-dom.mjs';
 import {readFileSync,mkdirSync} from 'node:fs';
 
+for(const size of [{width:800,height:600},{width:1280,height:800}])test(`Alive chrome preserves Live-inspired regions and contextual Info at ${size.width}x${size.height}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);
+  const baseline=await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document));
+  const info=page.getByRole('complementary',{name:'Contextual help',exact:true});
+  const box=await info.boundingBox(),footer=await page.locator('footer').boundingBox();
+  expect(box.x).toBeLessThanOrEqual(12);
+  expect(Math.abs(box.y+box.height-(footer.y+footer.height))).toBeLessThanOrEqual(2);
+  await page.locator('#stop').hover();
+  await expect(page.locator('#info-text')).toContainText('Stop transport');
+  const file=page.locator('#file-menu');
+  await expect(page.locator('#new')).toBeHidden();
+  await file.locator('summary').click();
+  await expect(page.locator('#new')).toBeVisible();
+  await page.locator('#workspace-browser > h2').click();
+  await expect(page.locator('#new')).toBeHidden();
+  const add=page.locator('#browser-add-menu');
+  await expect(page.locator('#insert-audio-track')).toBeHidden();
+  await add.locator('summary').click();
+  await expect(page.locator('#insert-audio-track')).toBeVisible();
+  await page.locator('#workspace-browser > h2').click();
+  await expect(page.locator('#insert-audio-track')).toBeHidden();
+  await page.locator('#view-arrangement').click();
+  await expect(info).toBeVisible();
+  await page.locator('#toggle-browser').click();
+  await expect(info).toBeVisible();
+  expect(await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document))).toBe(baseline);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  await page.screenshot({path:testInfo.outputPath(`alive-chrome-${size.width}x${size.height}.png`)});
+});
+
 for(const size of [{width:800,height:600},{width:1280,height:800}])test(`saved Alive surface retains focused draft and natural scroll at ${size.width}x${size.height}`,async({page},info)=>{
   await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();
   const card=page.locator('.chain-device').first(),surface=card.locator('.presentation-surface'),field=card.getByRole('spinbutton',{name:'Attack base',exact:true});
@@ -520,7 +550,7 @@ test('selected instance controls, keyboard automation target and immediate edits
   await page.getByLabel('Automation target',{exact:true}).selectOption(JSON.stringify(['stereo-lowpass','cutoff']));await page.getByRole('button',{name:'Add automation lane',exact:true}).click();
   await page.getByRole('button',{name:'Add Stereo Lowpass effect 2 / Cutoff point',exact:true}).click();
   await expect(page.getByLabel('Stereo Lowpass effect 2 / Cutoff point 1 value',{exact:true})).toHaveValue('1000');
-  await expect(page.locator('#chain-status')).toContainText('while stopped');await expect(page.getByRole('button',{name:'Add effect',exact:true})).toBeDisabled();
+  await expect(page.locator('#chain-status')).toContainText('while stopped');expect(await page.locator('#add-effect').isDisabled()).toBe(true);
   await expect(page.getByLabel('Cutoff point 1 value',{exact:true})).toBeVisible();
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.querySelector('main').scrollWidth<=document.querySelector('main').clientWidth)).toBe(true);
   await page.screenshot({path:testInfo.outputPath('alive-minimum-desktop.png')});expect(errors).toEqual([]);
