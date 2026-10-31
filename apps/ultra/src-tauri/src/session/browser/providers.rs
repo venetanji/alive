@@ -36,6 +36,13 @@ impl Builder {
             self.push(entry);
             return;
         };
+        if path.to_str().is_none() {
+            entry.path = None;
+            entry.reason =
+                Some("Saved device path must be UTF-8; this path cannot be loaded".into());
+            self.push(entry);
+            return;
+        }
         let result = self.read_saved(path, user);
         match result {
             Ok((name, kind, profile)) => {

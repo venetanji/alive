@@ -56,6 +56,78 @@ fn users(discovery: &Discovery) -> Vec<&Entry> {
         .collect()
 }
 
+#[cfg(unix)]
+#[test]
+fn non_utf8_saved_paths_are_isolated_in_serializable_pages() {
+    use std::{
+        ffi::OsString,
+        os::unix::{ffi::OsStringExt, fs::symlink},
+    };
+    let f = Fixture::new();
+    let valid = f.device("user/valid.ultra");
+    let bad_file =
+        f.0.join("user")
+            .join(OsString::from_vec(b"device-\xff.ultra".to_vec()));
+    let bad_directory = f.0.join(OsString::from_vec(b"root-\xfe".to_vec()));
+    fs::create_dir_all(&bad_directory).unwrap();
+    let bad_ancestor = bad_directory.join("nested.ultra");
+    let bundled_target = bad_directory.join("bundled.ultra");
+    for path in [&bad_file, &bad_ancestor, &bundled_target] {
+        fs::write(
+            path,
+            include_bytes!("../../../../examples/subtractive.ultra"),
+        )
+        .unwrap();
+    }
+    let bundled =
+        f.0.join("resources/alive-session/ultra/examples/subtractive.ultra");
+    fs::create_dir_all(bundled.parent().unwrap()).unwrap();
+    symlink(&bundled_target, &bundled).unwrap();
+    let mut config = f.config();
+    config.user_roots.push(bad_directory);
+    let cache = CatalogCache::default();
+    let page = cache
+        .request(Request::default(), || discover(&config, Limits::default()))
+        .unwrap();
+    let json = serde_json::to_value(&page).expect("one unsupported path must not poison its page");
+    let entries = json["entries"].as_array().unwrap();
+    assert!(entries
+        .iter()
+        .any(|entry| entry["path"] == valid.to_str().unwrap() && entry["availability"] == "ready"));
+    use sha2::{Digest, Sha256};
+    let user_id = |path: &Path| {
+        format!(
+            "user:{:x}",
+            Sha256::digest(path.as_os_str().as_encoded_bytes())
+        )
+    };
+    let unsupported_ids = [
+        user_id(&bad_file),
+        user_id(&bad_ancestor),
+        "bundled:subtractive".into(),
+    ];
+    for id in &unsupported_ids {
+        let entry = entries.iter().find(|entry| entry["id"] == *id).unwrap();
+        assert!(entry["path"].is_null());
+        assert_eq!(entry["availability"], "unavailable");
+        assert_eq!(entry["qualification"], "unsupported");
+        assert!(entry["reason"].as_str().unwrap().contains("UTF-8"));
+    }
+    let refreshed = cache
+        .request(
+            Request {
+                refresh: true,
+                cursor: None,
+            },
+            || discover(&config, Limits::default()),
+        )
+        .unwrap();
+    serde_json::to_value(&refreshed).unwrap();
+    for id in unsupported_ids {
+        assert!(refreshed.entries.iter().any(|entry| entry.id == id));
+    }
+}
+
 #[test]
 fn installed_resources_win_and_missing_siblings_stay_visible() {
     let f = Fixture::new();
