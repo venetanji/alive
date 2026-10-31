@@ -46,7 +46,7 @@ body{min-width:0;min-height:0;height:100dvh}
 #detail-content{flex:0 1 auto;min-height:0;overscroll-behavior:contain}
 #clip-detail{display:flex;flex-direction:column;height:100%;min-height:min-content}
 #clip-detail>.clip-section,#clip-detail .clip-editors{display:flex;flex-direction:column;flex:1 0 auto}
-#clip-detail .piano-area{height:auto;flex:1 0 247px}
+#clip-detail .clip-area{height:auto;flex:1 0 247px}
 #clip-detail>.timeline-inspector,#clip-detail>.clip-controls,#clip-detail>.automation-section,#clip-detail .section-heading,#clip-detail .note-table{flex:none}
 #edit-status{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .edit-bar button{flex-shrink:0}
@@ -155,4 +155,4 @@ footer button{flex:none;min-height:23px;padding:2px 6px;font-size:11px}
 .detail-maximized .clip-source-actions:not([open])>.clip-source-actions-body{display:flex}
 .detail-maximized #clip-controls .clip-control-heading{overflow:visible;white-space:normal;margin:0}
 
-@media(max-width:850px){.detail-maximized .piano-view-range{display:none}}
+@media(max-width:850px){.detail-maximized .clip-view-range{display:none}}

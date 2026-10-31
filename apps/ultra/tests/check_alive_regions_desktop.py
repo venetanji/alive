@@ -135,17 +135,18 @@ def drag(sx, sy, ex, ey):
     time.sleep(.2)
 
 
-def clip_geometry():
-    node = ui.wait_for('Selected clip piano roll')
+def clip_geometry(audio=False):
+    node = ui.wait_for('Selected audio clip waveform' if audio else 'Selected clip piano roll')
     rect = Atspi.Component.get_extents(node, Atspi.CoordType.SCREEN)
     assert rect.width > 200 and rect.height >= 150, (rect.width, rect.height)
     return rect
 
 
-def select_clip_loop(start, end, length=8):
+def select_clip_loop(start, end, length=8, audio=False):
     maximize()
-    rect = clip_geometry()
-    x = lambda beat: rect.x + 48 + (rect.width - 48) * beat / length
+    rect = clip_geometry(audio)
+    pad, extent = (16, math.ceil(length / 4) * 4 + 4) if audio else (48, length)
+    x = lambda beat: rect.x + pad + (rect.width - pad) * beat / extent
     drag(x(start), rect.y + rect.height - 14, x(end), rect.y + rect.height - 14)
     ui.keys('Control_L', 'l')
     wait_number('Clip Start', start)
@@ -292,8 +293,16 @@ def run():
     wav = make_wav()
     choose_slot('Audio 2', 1)
     import_wav(wav)
-    select_clip_loop(2, 6)
+    select_clip_loop(2, 6, audio=True)
     wait_number('Clip End', 8)
+    ui.text('Audio length in beats', '12')
+    wait_number('Audio source BPM', 180)
+    wait_number('Clip End', 12)
+    settled()
+    ui.click('Undo')
+    wait_number('Audio length in beats', 8)
+    settled()
+    report['audio_repitch_stretch_undo'] = True
     alive.screenshot('regions-audio.png')
     restore()
     ui.click('Audio 2 solo')

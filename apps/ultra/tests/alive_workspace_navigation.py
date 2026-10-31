@@ -47,7 +47,8 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
         clip = notes or automation or source_actions or name in (
             'Clip Start', 'Clip End',
             'Loop Position', 'Loop Length', 'Clip Loop',
-            'Selected clip piano roll', 'Selected note velocity', 'Add note')
+            'Selected clip piano roll', 'Selected audio clip waveform',
+            'Audio source BPM', 'Audio length in beats', 'Selected note velocity', 'Add note')
         track_action = re.fullmatch(r'(?:Open (.+) editor|Replace (.+) device|Remove (.+) track)', name)
         surface = (name in ('Alive audio settings', 'Add effect', 'Add instrument track') or device or clip or track_action or
                    re.fullmatch(r'(?:Pulse|Harmony|Track \d+) (?:gain|mute|solo)', name))

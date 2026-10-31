@@ -609,6 +609,16 @@ mod tests {
         assert_eq!(descriptors[0].samples, retained.as_ptr());
         assert_eq!(updated.sources[0].descriptor.kind, 2);
         assert_eq!(updated.slots[0].descriptor.start_marker, 1);
+        let stretched = super::super::workspaces::apply_edit(&project,
+            super::super::workspaces::WorkspaceEditV4::AudioSourceTempo { source_id: "source".into(), source_tempo: 240. },
+            &Default::default()).unwrap().project;
+        compile(&stretched, &mut prepared).unwrap();
+        let slower = &prepared.schedule.audio[0].samples;
+        assert_eq!(slower.len(), retained.len()*2);
+        assert!(!Arc::ptr_eq(&retained, slower));
+        assert_eq!(&slower[4..6], &retained[2..4]);
+        assert_eq!(prepared.schedule.slots[0].descriptor.start_marker, 2);
+        assert_eq!(retained.len(), 8);
         std::fs::remove_dir_all(folder).unwrap();
     }
 }

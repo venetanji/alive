@@ -34,6 +34,10 @@ async function openRangeStudy(page){
         if(pending)throw Error('A musical edit is still pending.');if(args.editRevision!==snapshot.editRevision)throw Error('Stale musical edit.');
         const document=structuredClone(snapshot.document),op=args.operation,affected={trackId:op.trackId??null,sourceId:null,slotId:null,placementId:null,noteId:null};
         if(op.kind==='regionSet'){const o=op.occurrence,p=o.kind==='slot'?document.tracks.find(t=>t.id===o.trackId).slots.find(s=>s?.id===o.slotId):document.placements.find(p=>p.id===o.placementId);p.region=op.region;affected.trackId=o.trackId??p.trackId;affected.sourceId=p.sourceId;}
+        else if(op.kind==='audioSourceTempo'){
+          const source=document.sources.find(s=>s.id===op.sourceId),ratio=op.sourceTempo/source.sourceTempo;source.sourceTempo=op.sourceTempo;affected.sourceId=source.id;affected.trackId=source.trackId;
+          for(const o of [...document.tracks.flatMap(t=>t.slots.filter(Boolean)),...document.placements].filter(o=>o.sourceId===source.id))for(const k of ['start','end','loopStart','loopEnd'])o.region[k]*=ratio;
+        }
         else if(op.kind==='midiClipCreate'||op.kind==='midiPlacementCreate'){
           const t=document.tracks.find(t=>t.id===op.trackId),length=op.duration??4;affected.sourceId=`source-${serial}`;const region={start:0,end:length,loopStart:0,loopEnd:length,loopEnabled:true};document.sources.push({kind:'midi',id:affected.sourceId,trackId:t.id,name:op.name,lengthBeats:length,notes:[],automation:[]});
           if(op.kind==='midiClipCreate'){affected.slotId=`slot-${serial}`;t.slots[op.slot]={id:affected.slotId,name:op.name,sourceId:affected.sourceId,region};}
@@ -54,7 +58,7 @@ async function openRangeStudy(page){
 }
 const mutations=page=>page.evaluate(()=>window.calls.filter(c=>['alive_workspace_edit','alive_workspace_track'].includes(c.name)));
 async function selectClipTime(page,start,end){
-  const svg=page.locator('#piano-roll');await svg.scrollIntoViewIfNeeded();
+  const svg=page.locator('#piano-roll:visible, #audio-waveform:visible');await svg.scrollIntoViewIfNeeded();
   const g=await svg.evaluate(e=>{const r=e.getBoundingClientRect();return{x:r.x,y:r.y,width:r.width,height:r.height,pad:Number(e.dataset.keyboardWidth),start:Number(e.dataset.beatStart),span:Number(e.dataset.beatSpan)};});
   const x=beat=>g.x+g.pad+(beat-g.start)/g.span*(g.width-g.pad),y=g.y+g.height-14;
   await page.mouse.move(x(start),y);await page.mouse.down();await page.mouse.move(x(end),y,{steps:8});await page.mouse.up();await page.keyboard.press('Control+l');
@@ -70,10 +74,52 @@ for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,he
   await expect(page.getByLabel('Clip Start',{exact:true})).toHaveValue('0');await expect(page.getByLabel('Loop Position',{exact:true})).toHaveValue('2');expect(await page.evaluate(()=>window.sessionSnapshot.document.sources[0].notes)).toEqual(notes);
   await page.screenshot({path:testInfo.outputPath(`midi-region-${size.width}x${size.height}.png`)});
   await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await page.getByRole('button',{name:'Select Audio slot 1',exact:true}).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
-  await expect(page.locator('.audio-waveform')).toBeVisible();await expect(page.getByRole('group',{name:'Note velocity lane',exact:true})).toBeHidden();await selectClipTime(page,2,6);
-  await expect(page.getByLabel('Clip Start',{exact:true})).toHaveValue('2');await expect(page.getByLabel('Clip End',{exact:true})).toHaveValue('8');await expect(page.locator('.piano-view-range')).toContainText('Re-Pitch');
+  await expect(page.getByRole('group',{name:'Selected audio clip waveform',exact:true})).toBeVisible();await expect(page.locator('#piano-roll')).toBeHidden();
+  await expect(page.getByRole('button',{name:'Add note',exact:true})).toBeHidden();await expect(page.getByRole('button',{name:'Fit notes',exact:true})).toHaveCount(0);
+  await expect(page.getByRole('group',{name:'Note velocity lane',exact:true})).toBeHidden();await selectClipTime(page,2,6);
+  await expect(page.getByLabel('Clip Start',{exact:true})).toHaveValue('2');await expect(page.getByLabel('Clip End',{exact:true})).toHaveValue('8');await expect(page.getByRole('button',{name:'Fit sample',exact:true})).toBeVisible();
   await expect(page.locator('#stop')).toBeInViewport();await expect(page.locator('#show-audio')).toBeInViewport();expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);expect(errors).toEqual([]);
   await page.screenshot({path:testInfo.outputPath(`audio-region-${size.width}x${size.height}.png`)});
+});
+
+test('an empty audio track has an audio import surface and no piano or MIDI editing controls',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openRangeStudy(page);
+  await page.getByRole('button',{name:'Select Audio slot 2',exact:true}).click();
+  await expect(page.getByRole('button',{name:'Import audio into selected slot',exact:true})).toBeVisible();
+  await expect(page.locator('#piano-roll')).toBeHidden();await expect(page.getByRole('button',{name:'Add note',exact:true})).toBeHidden();
+  await expect(page.getByRole('button',{name:'MIDI note Preview',exact:true})).toBeHidden();await expect(page.getByRole('button',{name:'Zoom in pitch',exact:true})).toBeHidden();
+  await page.getByRole('button',{name:'Import audio into selected slot',exact:true}).click();
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_audio_import').map(c=>c.args))).toEqual([{trackId:'audio-track',slot:1,generation:1,editRevision:0}]);
+  expect(await mutations(page)).toEqual([]);
+  await page.getByRole('button',{name:'Select Pulse slot 1',exact:true}).click();await expect(page.locator('#piano-roll')).toBeVisible();await expect(page.getByRole('button',{name:'Add note',exact:true})).toBeVisible();
+});
+
+test('waveform zoom and navigation change only the view while marker drags edit the audio loop',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openRangeStudy(page);await page.getByRole('button',{name:'Select Audio slot 1',exact:true}).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
+  const svg=page.locator('#audio-waveform'),source=await page.evaluate(()=>structuredClone(window.sessionSnapshot.document.sources.at(-1)));
+  const initial=await svg.getAttribute('data-beat-span'),path=await svg.locator('.audio-waveform').getAttribute('d');
+  await page.getByRole('button',{name:'Zoom in waveform',exact:true}).click();expect(await svg.locator('.audio-waveform').getAttribute('d')).not.toBe(path);
+  await page.getByRole('button',{name:'Zoom in time',exact:true}).click();expect(Number(await svg.getAttribute('data-beat-span'))).toBeLessThan(Number(initial));
+  await svg.hover();await page.mouse.wheel(0,100);expect(Number(await svg.getAttribute('data-beat-start'))).toBeGreaterThan(0);
+  expect(await mutations(page)).toEqual([]);await page.getByRole('button',{name:'Fit sample',exact:true}).click();
+  await selectClipTime(page,2,6);await expect(page.getByLabel('Loop Length',{exact:true})).toHaveValue('4');
+  const handle=svg.locator('[data-region=loopRight]'),box=await handle.boundingBox(),scale=await svg.evaluate(e=>Number(e.dataset.pixelsPerBeat));
+  await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2+scale,box.y+box.height/2,{steps:8});await page.mouse.up();
+  await expect(page.getByLabel('Loop Length',{exact:true})).toHaveValue('5');expect(await page.evaluate(()=>window.sessionSnapshot.document.sources.at(-1))).toEqual(source);
+});
+
+test('Re-Pitch stretches the shared sample with numeric and drag controls; Escape cancels preview',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openRangeStudy(page);await page.getByRole('button',{name:'Select Audio slot 1',exact:true}).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
+  const bpm=page.getByRole('spinbutton',{name:'Audio source BPM',exact:true}),length=page.getByRole('spinbutton',{name:'Audio length in beats',exact:true});
+  await expect(bpm).toHaveValue('120');await expect(length).toHaveValue('8');
+  await length.fill('12');await length.press('Tab');await expect(bpm).toHaveValue('180');await expect(page.getByLabel('Clip End',{exact:true})).toHaveValue('12');
+  await page.getByRole('button',{name:'Fit sample',exact:true}).click();
+  const svg=page.locator('#audio-waveform'),handle=svg.getByLabel('Stretch sample end',{exact:true}),box=await handle.boundingBox(),scale=Number(await svg.getAttribute('data-pixels-per-beat'));
+  await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2-4*scale,box.y+box.height/2,{steps:8});await page.keyboard.press('Escape');await page.mouse.up();
+  expect((await mutations(page)).filter(c=>c.args.operation.kind==='audioSourceTempo')).toHaveLength(1);await expect(length).toHaveValue('12');
+  const next=await handle.boundingBox();await page.mouse.move(next.x+next.width/2,next.y+next.height/2);await page.mouse.down();await page.mouse.move(next.x+next.width/2-4*scale,next.y+next.height/2,{steps:8});await page.mouse.up();
+  await expect(length).toHaveValue('8');await expect(bpm).toHaveValue('120');await expect(page.getByLabel('Clip End',{exact:true})).toHaveValue('8');
+  expect(await page.evaluate(()=>window.sessionSnapshot.document.sources.at(-1).file.frames)).toBe('192000');
 });
 
 test('rolling clip and typed tracks are immediate and keep the inserted track selected',async({page})=>{

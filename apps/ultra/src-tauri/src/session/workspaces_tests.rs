@@ -115,6 +115,25 @@ fn audio_wire() -> Value {
 }
 
 #[test]
+fn audio_source_stretch_preserves_sample_offsets_across_every_reference() {
+    let p = decode(&audio_wire().to_string()).unwrap();
+    let stretched = edit(&p, json!({"kind":"audioSourceTempo","sourceId":"source","sourceTempo":180.})).unwrap().project;
+    assert_eq!(stretched.sources[0].length_beats(), p.sources[0].length_beats()*1.5);
+    let (SourceV4::Audio{file:before,..}, SourceV4::Audio{file:after,..}) = (&p.sources[0],&stretched.sources[0]) else {panic!("audio")};
+    assert_eq!(before,after);
+    let old=&p.tracks[0].slots[0].as_ref().unwrap().region;
+    let new=&stretched.tracks[0].slots[0].as_ref().unwrap().region;
+    assert_eq!(new.start,old.start*1.5);assert_eq!(new.end,old.end*1.5);
+    assert_eq!(new.loop_start,old.loop_start*1.5);assert_eq!(new.loop_end,old.loop_end*1.5);
+    assert_eq!(stretched.placements[0].region.end,p.placements[0].region.end*1.5);
+    assert_eq!(stretched.placements[0].duration,p.placements[0].duration);
+    for value in [0.,29.,241.,f64::INFINITY] {
+        assert!(edit(&p,json!({"kind":"audioSourceTempo","sourceId":"source","sourceTempo":value})).is_err());
+    }
+    assert!(edit(&project(),json!({"kind":"audioSourceTempo","sourceId":"source","sourceTempo":180.})).is_err());
+}
+
+#[test]
 fn audio_import_creates_source_and_occurrence_with_independent_beat_markers() {
     let p = decode(&audio_wire().to_string()).unwrap();
     let created = edit(

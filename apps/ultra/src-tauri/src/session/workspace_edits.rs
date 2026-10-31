@@ -13,7 +13,7 @@ pub fn primary(before:&ProjectV4,after:&ProjectV4,operation:&WorkspaceEditV4)->R
     let placement=|id:&str|before.placements.iter().find(|p|p.id==id).ok_or("Missing primary placement");
     match operation {
         SourceCreateMidi{track_id,..}=>{result.track_id=Some(track_id.clone());result.source_id=Some(new_source()?.id().into());},
-        SourceRename{source_id,..}|SourceLength{source_id,..}|SourceDelete{source_id}|AutomationSet{source_id,..}|NoteUpdate{source_id,..}|NoteDelete{source_id,..}|NoteCreate{source_id,..}=>{
+        SourceRename{source_id,..}|SourceLength{source_id,..}|AudioSourceTempo{source_id,..}|SourceDelete{source_id}|AutomationSet{source_id,..}|NoteUpdate{source_id,..}|NoteDelete{source_id,..}|NoteCreate{source_id,..}=>{
             result.track_id=Some(source(source_id)?.track_id().into());result.source_id=Some(source_id.clone());
             match operation {
                 NoteUpdate{note_id,..}|NoteDelete{note_id,..}=>result.note_id=Some(note_id.clone()),

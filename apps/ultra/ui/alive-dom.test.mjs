@@ -787,8 +787,8 @@ test('MIDI source preservation also holds when an audio waveform time range beco
   const initial=workspaceState(),t=initial.document.tracks[0],id=t.slots[0].sourceId;
   t.chain={kind:'audio'};initial.document.sources[0]={kind:'audio',id,trackId:t.id,name:'Owned WAV',file:{frames:'192000',sampleRate:48000,channels:2},sourceTempo:120,warpMode:'repitch',automation:[]};
   initial.preparedWorkspaces.sources[0]={sourceId:id,kind:'audio',waveformPeaks:[[-.8,.5],[-.3,.7]]};
-  const original=structuredClone(initial.document.sources[0]),page=dom('./alive.html'),native=timelineBackend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();const piano=page.ids.get('piano-roll');piano.getBoundingClientRect=()=>({left:0,top:0,width:640,height:218});await piano.fire('wheel',{deltaX:0,deltaY:0,clientX:100,clientY:150});
-  const x=beat=>48+beat/8*(640-48);await piano.fire('pointerdown',{pointerId:90,clientX:x(2),clientY:180});await piano.fire('pointermove',{pointerId:90,clientX:x(6),clientY:180});await piano.fire('pointerup',{pointerId:90});await piano.fire('keydown',{key:'l',ctrlKey:true});
+  const original=structuredClone(initial.document.sources[0]),page=dom('./alive.html'),native=timelineBackend(initial),view=mountAlive({...page,invoke:native.invoke});await settle();const piano=page.ids.get('audio-waveform');piano.getBoundingClientRect=()=>({left:0,top:0,width:640,height:218});await piano.fire('wheel',{deltaX:0,deltaY:0,clientX:100,clientY:150});
+  const x=beat=>16+beat/12*(640-16);await piano.fire('pointerdown',{pointerId:90,clientX:x(2),clientY:180});await piano.fire('pointermove',{pointerId:90,clientX:x(6),clientY:180});await piano.fire('pointerup',{pointerId:90});await piano.fire('keydown',{key:'l',ctrlKey:true});
   assert.deepEqual(view.model.document().tracks[0].slots[0].region,{start:2,end:8,loopStart:2,loopEnd:6,loopEnabled:true});assert.deepEqual(view.model.document().sources[0],original);assert.ok(descendants(piano).some(e=>e.attrs.class==='audio-waveform'));view.dispose();
 });
 

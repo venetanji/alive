@@ -332,7 +332,7 @@ for(const size of [{width:1440,height:900},{width:1280,height:800},{width:1024,h
   await preview.scrollIntoViewIfNeeded();await expect(preview).toBeInViewport();
   if(size.width===800){
     await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
-    const bounds=await page.locator('.piano-tools').evaluate(e=>Array.from(e.children).map(child=>{const r=child.getBoundingClientRect();return{x:r.x,y:r.y,right:r.right,bottom:r.bottom};}));
+    const bounds=await page.locator('.clip-view-tools').evaluate(e=>Array.from(e.children).map(child=>{const r=child.getBoundingClientRect();return{x:r.x,y:r.y,right:r.right,bottom:r.bottom};}));
     for(let i=0;i<bounds.length;i++)for(let j=i+1;j<bounds.length;j++){const a=bounds[i],b=bounds[j];expect(a.right<=b.x||b.right<=a.x||a.bottom<=b.y||b.bottom<=a.y).toBe(true);}
   }
   await page.screenshot({path:testInfo.outputPath(`preview-${size.width}x${size.height}.png`)});

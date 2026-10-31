@@ -24,7 +24,7 @@ export function initialViewport(notes,length){
   return {beatStart:0,beatSpan:length,pitchTop:Math.round(center)+6,pitchHeight:12};
 }
 export function geometry(notes,length,viewport={},size={}){
-  const v={...initialViewport(notes,length),...viewport},width=Math.max(64,size.width??640),height=Math.max(34,size.height??218),pad=48,top=size.top??22;
+  const v={...initialViewport(notes,length),...viewport},width=Math.max(64,size.width??640),height=Math.max(34,size.height??218),pad=size.pad??48,top=size.top??22;
   const pitchHeight=clamp(v.pitchHeight,1,36),rows=Math.min(128,Math.ceil((height-top)/pitchHeight));
   const max=clamp(Math.round(v.pitchTop),rows-1,127),min=Math.max(0,max-rows+1);
   const beatSpan=clamp(v.beatSpan,Math.min(GRID,length),length),beatStart=clamp(v.beatStart,0,length-beatSpan);

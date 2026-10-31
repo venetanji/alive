@@ -214,6 +214,10 @@ pub enum WorkspaceEditV4 {
         source_id: String,
         length_beats: f64,
     },
+    AudioSourceTempo {
+        source_id: String,
+        source_tempo: f64,
+    },
     SourceIndependent {
         occurrence: OccurrenceV4,
     },
@@ -1132,6 +1136,31 @@ impl ProjectV4 {
                     ))
                 }
             },
+            AudioSourceTempo { source_id, source_tempo } => {
+                super::prepare::bounded(source_tempo, 30., 240., "Audio source tempo")?;
+                let ratio = match self.source_mut(&source_id)? {
+                    SourceV4::Audio { source_tempo: old, automation, .. } => {
+                        let ratio = source_tempo / *old;
+                        *old = source_tempo;
+                        for lane in automation {
+                            for point in &mut lane.points { point.beat *= ratio; }
+                        }
+                        ratio
+                    }
+                    _ => return Err("Re-Pitch stretching requires an audio source".into()),
+                };
+                // Keep every marker on the same sample while its musical duration changes.
+                let scale = |region: &mut ClipRegionV4| {
+                    region.start *= ratio; region.end *= ratio;
+                    region.loop_start *= ratio; region.loop_end *= ratio;
+                };
+                for slot in self.tracks.iter_mut().flat_map(|t| t.slots.iter_mut().flatten()) {
+                    if slot.source_id == source_id { scale(&mut slot.region); }
+                }
+                for placement in &mut self.placements {
+                    if placement.source_id == source_id { scale(&mut placement.region); }
+                }
+            }
             SourceIndependent { occurrence } => {
                 let source_id = match &occurrence {
                     OccurrenceV4::Slot { track_id, slot_id } => {
