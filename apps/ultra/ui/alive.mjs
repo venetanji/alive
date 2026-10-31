@@ -309,6 +309,8 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     return{kind:'placementUpdate',placementId,start:next.start,duration:next.duration,region:next.region};
   });}
   function transportRange(changes){return workspaceEdit(()=>{const d=model.document();return{kind:'transportRange',tempo:d.tempo,lengthBeats:d.lengthBeats,loopEnabled:d.loopEnabled,loopStartBeats:d.loopStartBeats,loopEndBeats:d.loopEndBeats,...changes};});}
+  // Park before timeline gestures focus the canvas or select another track.
+  $('timeline-canvas').addEventListener('pointerdown',event=>{if(event.button===0&&event.target.closest?.('.timeline-track-name,.timeline-lane'))workspace.preserveFocused();},true);
   timeline=mountTimeline({doc,win,guard,notice,choose:chooseSource,edit:operation=>workspaceEdit(operation,true),placementEdit,transportRange,action:clipAction,preserves:element=>workspace.preserves(element),mix:(trackId,changes)=>mix(model.document().tracks.findIndex(t=>t.id===trackId),changes),
     state:()=>({snapshot:model.snapshot(),document:model.document(),trackId:model.document()?.tracks[selected]?.id,selection:sourceSelection,token:selectionToken})});
   function clipEdit(operation){
@@ -330,7 +332,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   function buildSlots(bank,track,index){
     for(let slot=0;slot<4;slot++){
       const c=track.slots[slot],cell=make('div','clip-slot'),choose=make('button','clip-select',c?.name??''),launch=make('button','clip-launch'),status=make('small','sr-only');
-      choose.setAttribute('aria-label',`Select ${track.name} slot ${slot+1}`);choose.addEventListener('click',()=>{workspace.returnMusic();if(selected===index&&!sourceSelection&&slotOf(track)===slot){render();return;}cancelGesture();selected=index;sourceSelection=null;selectedSlots.set(track.id,slot);selectionToken++;selectedNote=null;musicKey=clipControlsKey='';render();});
+      choose.setAttribute('aria-label',`Select ${track.name} slot ${slot+1}`);choose.addEventListener('pointerdown',()=>workspace.preserveFocused());choose.addEventListener('click',()=>{workspace.returnMusic();if(selected===index&&!sourceSelection&&slotOf(track)===slot){render();return;}cancelGesture();selected=index;sourceSelection=null;selectedSlots.set(track.id,slot);selectionToken++;selectedNote=null;musicKey=clipControlsKey='';render();});
       choose.title=c?.name??`Empty slot ${slot+1}. ${track.chain?.kind==='audio'?'Double-click to import a WAV file.':'Double-click to create a one-bar MIDI clip (Ctrl+Shift+M).'}`;
       choose.addEventListener('dblclick',guard(async()=>{
         const current=model.document().tracks[selected],key=`${track.id}:${slot}`;
@@ -454,12 +456,13 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     sourceSelection={trackId:entry.trackId,sourceId:entry.sourceId,occurrence:null};
     musicKey=clipControlsKey='';workspace.openClip();render();
   }
+  function discardRack(key,cached){workspace.discardPreserved([...cached.parameters.values()].flatMap(({number,range})=>[number,range]));rackCache.delete(key);}
   function buildChain(){
     const track=model.document().tracks[selected],devices=chainDevices(track);
     rootlessInstrumentButton=null;$('chain-title').textContent=`${track.name} chain`;
     const cacheKey=JSON.stringify([generation(),track.id,track.name,devices.map(d=>[d.instanceId,d.path])]);
     // Keep mounted control nodes per track so navigation preserves unfinished fields.
-    for(const [key,cached]of rackCache)if(cached.generation!==generation()||(cached.trackId===track.id&&key!==cacheKey))rackCache.delete(key);
+    for(const [key,cached]of rackCache)if(cached.generation!==generation()||(cached.trackId===track.id&&key!==cacheKey))discardRack(key,cached);
     const cached=rackCache.get(cacheKey);$('chain').replaceChildren();chainViews.length=0;parameterViews.clear();
     if(cached){$('chain').append(...cached.nodes);chainViews.push(...cached.views);for(const [key,view]of cached.parameters)parameterViews.set(key,view);rootlessInstrumentButton=cached.load;$('chain').dataset.trackId=track.id;return;}
     $('chain').dataset.trackId=track.id;
@@ -694,6 +697,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     for(const id of ['insert-audio-track','insert-midi-track'])$(id).disabled=document.tracks.length>=maxTracks||snapshot.midi.pending;
     $('start').disabled=!!snapshot.state.playing;$('stop').disabled=false;$('add-track').disabled=(instrumentNeedsTrack&&document.tracks.length>=maxTracks)||deviceCount>=maxDevices||!!snapshot.state.playing||snapshot.midi.pending;
     const nextTracks=JSON.stringify([snapshot.generation,document.tracks.map(t=>[t.id,t.name,t.color,t.chain?.kind,t.slots?.map(c=>c?[c.id,c.name,c.sourceId]:null)])]);if(nextTracks!==trackKey){trackKey=nextTracks;buildTracks(document);}
+    for(const [key,cached]of rackCache)if(cached.generation!==generation()||!model.document().tracks.some(track=>track.id===cached.trackId))discardRack(key,cached);
     const nextChain=JSON.stringify([snapshot.generation,selected,chainDevices().map(d=>[d.instanceId,d.path])]);if(nextChain!==chainKey){chainKey=nextChain;buildChain();}
     const structuralBlocked=!!snapshot.state.playing||snapshot.midi.pending;if(rootlessInstrumentButton)rootlessInstrumentButton.disabled=structuralBlocked;
     $('chain-status').textContent=snapshot.midi.pending?'Wait for the musical edit to finish before changing devices.':snapshot.state.playing?'Stop transport to add, remove, replace or reorder devices. Bypass and base values work live.':'Add, remove, replace and reorder devices while stopped. Bypass and base values work live.';

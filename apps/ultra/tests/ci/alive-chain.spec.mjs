@@ -881,3 +881,51 @@ test('rack retains another track draft and opens the editor owned by an unselect
   await page.getByRole('button',{name:'Edit Pulse Stereo Lowpass effect 2 in Ultra',exact:true}).click();
   await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_editor').at(-1)?.args.instanceId)).toBe('stereo-lowpass');
 });
+
+for(const destination of ['Session slot','Arrangement track','Arrangement placement','Arrangement lane'])test(`rack draft survives ${destination} selection and commits once after returning`,async({page})=>{
+  await openArrangement(page,{width:1280,height:800});
+  if(destination==='Session slot')await page.locator('#view-session').click();
+  await page.locator('#detail-devices').click();
+  const cutoff=page.locator('.chain-device[data-instance-id="instrument-0"]').getByLabel('Cutoff base',{exact:true});
+  await cutoff.evaluate(e=>window.retainedRackCutoff=e);await cutoff.fill('1828');
+  if(destination==='Session slot'){
+    await page.getByRole('button',{name:'Select Harmony slot 1',exact:true}).click();
+    await page.getByRole('button',{name:'Select Pulse slot 1',exact:true}).click();
+  }else{
+    if(destination==='Arrangement track')await page.getByRole('button',{name:'Select Harmony Arrangement track',exact:true}).click();
+    else if(destination==='Arrangement placement')await page.getByRole('button',{name:'Select placement p-1',exact:true}).click();
+    else await page.locator('.timeline-row[data-track-id="track-2"] .timeline-lane').click({position:{x:300,y:40}});
+    await page.getByRole('button',{name:'Select Pulse Arrangement track',exact:true}).click();
+  }
+  await page.locator('#detail-devices').click();
+  await expect(cutoff).toHaveValue('1828');expect(await cutoff.evaluate(e=>e===window.retainedRackCutoff)).toBe(true);
+  const polls=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length);
+  await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length)).toBeGreaterThan(polls+1);
+  await expect(cutoff).toHaveValue('1828');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  await cutoff.focus();await cutoff.press('Tab');
+  await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_base').map(c=>c.args))).toEqual([{instanceId:'instrument-0',key:'cutoff',value:1828,generation:1}]);
+});
+
+test('detached rack draft blocks Save until its cached field is deliberately committed',async({page})=>{
+  await openSession(page);await page.locator('#detail-devices').click();
+  const cutoff=page.locator('.chain-device[data-instance-id="instrument-0"]').getByLabel('Cutoff base',{exact:true});
+  await cutoff.evaluate(e=>window.retainedRackCutoff=e);await cutoff.fill('1828');
+  await page.getByRole('button',{name:'Select Harmony track',exact:true}).click();await page.locator('#save').click();
+  await expect(page.locator('#notice')).toContainText('Finish Cutoff base before using file actions');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_base'||c.name==='alive_file'))).toEqual([]);
+  await page.getByRole('button',{name:'Select Pulse track',exact:true}).click();
+  expect(await cutoff.evaluate(e=>e===window.retainedRackCutoff)).toBe(true);await expect(cutoff).toHaveValue('1828');
+  await cutoff.focus();await cutoff.press('Tab');
+  await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_base').length)).toBe(1);
+  await page.locator('#save').click();await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_file').map(c=>c.args.action))).toEqual(['save']);
+});
+
+test('removing a track releases its detached cached rack and parked draft',async({page})=>{
+  await openSession(page);await page.locator('#detail-devices').click();
+  await page.locator('.chain-device[data-instance-id="instrument-0"]').getByLabel('Cutoff base',{exact:true}).fill('1828');
+  await page.getByRole('button',{name:'Select Harmony track',exact:true}).click();
+  await page.evaluate(()=>{const s=window.sessionSnapshot;s.document.tracks.splice(0,1);s.deviceInstances['instrument-1'].track=0;s.state.tracks.splice(0,1);s.editRevision++;});
+  await expect(page.locator('#chain-title')).toHaveText('Harmony chain');await expect(page.locator('.track')).toHaveCount(1);
+  await page.locator('#save').click();await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_file').map(c=>c.args.action))).toEqual(['save']);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_base'))).toEqual([]);
+});
