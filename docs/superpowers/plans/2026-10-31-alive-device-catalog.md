@@ -112,14 +112,24 @@ assert!(index.page(stale_cursor).is_err());
   `~/.local/share/alive/devices`, plus explicit path-list
   `ALIVE_DEVICE_LIBRARY_PATHS`. Live roots: explicit path-list
   `ALIVE_LIVE_ROOTS`, then installed Ableton Live directories under the default
-  Wine prefix and `WINEPREFIX`, deduplicated. The read-only native audit provides
-  the known relative candidate paths; do not read a private cache as a required
+  Wine prefix, `~/.wine-ableton` and `WINEPREFIX`, deduplicated. Also honor
+  `ULTRA_LIVE_RESOURCES`, the native session's explicit Resources-directory
+  override. The read-only native audit provides the known relative candidate
+  paths; do not read a private cache as a required
   production dependency. No fake candidate when its artifact is absent.
 - [ ] Make cache construction/refresh injectable for isolated tests. Bundled
   entries that fail validation expose their reason. A user device's ready status
   means current saved-graph admission metadata validates; final load still
   revalidates it. Analog and other installed DLL/Max candidates are unavailable
   until their profile/Alive integration gates pass.
+- [ ] Installed candidate facts, relative to `Resources`: standalone
+  `Devices/Pc/{Amp,Analog,Cabinet,Collision,Corpus,Electric,Tension}_64.dll`;
+  Analog/Collision/Electric/Tension are instruments, the other three audio
+  effects. Max prefix is `Max/resources/packages/ableton-dsp/externals/` with
+  `abl.device.{autofilter,channeleq,compressor,delay,drift,drumbuss,drumsampler,echo,limiter,redux,reverb,roar,spectralresonator,spectraltime,utility}~.mxe64`.
+  Drift and Drum Sampler are instruments; the other thirteen are audio effects.
+  These paths prove discovery only; distinguish missing artifacts from present
+  candidates without implying a qualified full host or preset importer.
 - [ ] Wire the asynchronous command, run provider tests and `cargo check`, and
   commit only this task's files. Report exact changed APIs, tests and limitations.
 
