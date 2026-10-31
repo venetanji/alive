@@ -248,6 +248,10 @@ pub(super) fn validate_with_profiles(
                     }
                     Some("event") => {
                         fields(target, &["kind", "node", "inlet", "action"])?;
+                        // Authored inlets have no inputs; their lowered relays do.
+                        if node["type"] == "inlet" {
+                            return Err("Presentation: unsupported bang event target".into());
+                        }
                         let port = integer(&target["inlet"], 0, u32::MAX as u64)? as u32;
                         let mut native = NativeNode {
                             kind: kind(node["type"].as_str().unwrap_or(""))

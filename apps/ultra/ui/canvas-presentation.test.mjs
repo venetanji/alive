@@ -16,6 +16,7 @@ test('shared presentation corpus validates closed records, scope, identity, geom
     const registry=entry.profiles?{...REGISTRY,live_device:{profiles:Object.values(entry.profiles)}}:REGISTRY;
     const check=()=>validatePresentation(entry.document,registry,structuralParameter);
     if(entry.valid)assert.doesNotThrow(check,entry.name);else assert.throws(check,undefined,entry.name);
+    if(!entry.profiles){const publicCheck=()=>validatePatch(entry.document);if(entry.valid)assert.doesNotThrow(publicCheck,entry.name);else assert.throws(publicCheck,undefined,entry.name);}
   }
 });
 test('presentation history changes no execution revision or native apply count',async()=>{
@@ -88,4 +89,33 @@ test('hierarchy lowering omits surface metadata from the executable graph',async
   const document=new CanvasDocument(valid()),before=JSON.stringify(graph);
   document.updatePresentationItem('level',{label:'Renamed'});
   assert.equal(JSON.stringify(lowerHierarchy(document.document)),before);
+});
+function admissionFixture(){
+  const patch=valid(),child=structuredClone(patch.presentation);
+  child.items[0].id='nested_level';child.items[0].target.node=4;
+  patch.nodes.push({...makeNode('patcher',5),patcher:{presentation:child,nodes:[makeNode('toggle',4)],edges:[]}});
+  return patch;
+}
+for(const admission of ['constructor','replacement'])test(`hierarchical ${admission} detaches root and nested presentations from inputs and sibling documents`,()=>{
+  const input=admissionFixture();
+  const documents=Array.from({length:2},()=>{
+    if(admission==='constructor')return new CanvasDocument(input);
+    const document=new CanvasDocument(valid());document.replace(input);return document;
+  });
+  const expected=structuredClone(documents[0].document),histories=documents.map(document=>document.past.length);
+  for(const presentation of [input.presentation,input.nodes.at(-1).patcher.presentation]){
+    presentation.size.width=0;presentation.items[0].rect.x=8192;
+    presentation.items[0].target.node=999;presentation.items[0].style.accent='invalid';
+    presentation.items[0].label='Mutated input';
+  }
+  documents.forEach((document,index)=>{assert.deepEqual(document.document,expected);assert.equal(document.past.length,histories[index]);});
+  documents[0].updatePresentationItem('level',{label:'First document'});
+  assert.deepEqual(documents[1].document,expected);
+});
+test('generic packaging turns an explicit null root into a deliberate empty surface',async()=>{
+  const {subtractivePatch,packageInstrument}=await import('./canvas-instrument.mjs');
+  const patch=subtractivePatch();delete patch.device;patch.presentation=null;
+  assert.deepEqual(packageInstrument(patch).presentation.items,[]);
+  assert.equal(patch.presentation,null);
+  assert.deepEqual(subtractivePatch().presentation.items.map(item=>item.id),['attack','decay','sustain','release','cutoff','resonance','level']);
 });

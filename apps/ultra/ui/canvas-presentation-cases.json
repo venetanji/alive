@@ -5301,7 +5301,7 @@
               },
               "items": [
                 {
-                  "id": "level",
+                  "id": "outside_subtree_item",
                   "kind": "control",
                   "target": {
                     "kind": "parameter",
@@ -10399,6 +10399,160 @@
         {
           "id": 7,
           "type": "pack",
+          "x": 0,
+          "y": 0,
+          "params": {}
+        }
+      ],
+      "edges": []
+    }
+  },
+  {
+    "name": "authored inlet has no event inlet",
+    "valid": false,
+    "document": {
+      "version": 2,
+      "profile": "ultra-patcher-v2",
+      "presentation": {
+        "version": 1,
+        "openOnLoad": false,
+        "size": {
+          "width": 640,
+          "height": 220
+        },
+        "items": [
+          {
+            "id": "level",
+            "kind": "control",
+            "target": {
+              "kind": "event",
+              "node": 7,
+              "inlet": 0,
+              "action": "bang"
+            },
+            "widget": "button",
+            "label": "Level",
+            "rect": {
+              "x": 8,
+              "y": 8,
+              "width": 72,
+              "height": 88
+            },
+            "included": true,
+            "visible": true,
+            "style": {
+              "accent": "default",
+              "labelPosition": "above"
+            }
+          }
+        ]
+      },
+      "nodes": [
+        {
+          "id": 1,
+          "type": "toggle",
+          "x": 0,
+          "y": 0,
+          "params": {
+            "value": 0
+          }
+        },
+        {
+          "id": 2,
+          "type": "bang",
+          "x": 0,
+          "y": 0,
+          "params": {}
+        },
+        {
+          "id": 3,
+          "type": "comment",
+          "x": 0,
+          "y": 0,
+          "params": {
+            "text": "Hello"
+          }
+        },
+        {
+          "id": 7,
+          "type": "inlet",
+          "x": 0,
+          "y": 0,
+          "params": {}
+        }
+      ],
+      "edges": []
+    }
+  },
+  {
+    "name": "authored outlet accepts bang at inlet zero",
+    "valid": true,
+    "document": {
+      "version": 2,
+      "profile": "ultra-patcher-v2",
+      "presentation": {
+        "version": 1,
+        "openOnLoad": false,
+        "size": {
+          "width": 640,
+          "height": 220
+        },
+        "items": [
+          {
+            "id": "level",
+            "kind": "control",
+            "target": {
+              "kind": "event",
+              "node": 7,
+              "inlet": 0,
+              "action": "bang"
+            },
+            "widget": "button",
+            "label": "Level",
+            "rect": {
+              "x": 8,
+              "y": 8,
+              "width": 72,
+              "height": 88
+            },
+            "included": true,
+            "visible": true,
+            "style": {
+              "accent": "default",
+              "labelPosition": "above"
+            }
+          }
+        ]
+      },
+      "nodes": [
+        {
+          "id": 1,
+          "type": "toggle",
+          "x": 0,
+          "y": 0,
+          "params": {
+            "value": 0
+          }
+        },
+        {
+          "id": 2,
+          "type": "bang",
+          "x": 0,
+          "y": 0,
+          "params": {}
+        },
+        {
+          "id": 3,
+          "type": "comment",
+          "x": 0,
+          "y": 0,
+          "params": {
+            "text": "Hello"
+          }
+        },
+        {
+          "id": 7,
+          "type": "outlet",
           "x": 0,
           "y": 0,
           "params": {}

@@ -72,7 +72,7 @@ export function validateHierarchy(input,{validateLeaf,validateExecution,nodeSpec
       const key=`${edge.from}:${edge.outlet}>${edge.to}:${edge.inlet}`;if(duplicates.has(key))fail('Duplicate cable.');duplicates.add(key);
       return{...edge,...(Object.hasOwn(edge,'midpoints')?{midpoints:validateMidpoints(edge.midpoints)}:{})};
     });
-    return{...(root?{version:2,profile:'ultra-patcher-v2',presentation:null,...(Object.hasOwn(patcher,'helpShell')?{helpShell:patcher.helpShell}:{}),...(Object.hasOwn(patcher,'device')?{device:patcher.device}:{})}:{}),presentation:patcher.presentation,nodes,edges};
+    return{...(root?{version:2,profile:'ultra-patcher-v2',...(Object.hasOwn(patcher,'helpShell')?{helpShell:patcher.helpShell}:{}),...(Object.hasOwn(patcher,'device')?{device:patcher.device}:{})}:{}),presentation:structuredClone(patcher.presentation),nodes,edges};
   }
   const validated=scope(input,0,true);
   validateHelpShell(validated);
