@@ -232,5 +232,5 @@ and runtime. The new immutable install is
 Cached-file refusals, automatic track/instrument insertion and compound
 Undo/Redo/restoration pass before bundled drag/save/scheduled audio. Exact
 commands, two observed helper-only corrections and full provenance/results are
-in `final-installed-report.md`; Task 3 and the authored catalog packet are
+in `installed-verification.md`; Task 3 and the authored catalog packet are
 refreshed. Controller's combined final review/integration remains pending.

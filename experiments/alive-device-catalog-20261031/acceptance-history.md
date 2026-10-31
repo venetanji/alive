@@ -181,7 +181,7 @@ suites, cloud CI, push or launcher change was performed.
 
 Exact production source `a8b5f67f2e1cc3052dce76ff704b102ffbfac457` now passes
 the complete extended native journey. Exact archive/build/install commands,
-attempt diagnoses and results are in `final-installed-report.md` beside this
+attempt diagnoses and results are in `installed-verification.md` beside this
 report; current authored evidence is under
 `experiments/alive-device-catalog-20261031/`.
 
