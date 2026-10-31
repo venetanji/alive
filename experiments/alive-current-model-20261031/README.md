@@ -37,7 +37,7 @@ untouched. The concurrent native Live DLL experiment is not bundled here.
 ```sh
 node --test apps/ultra/ui/alive*.test.mjs
 python3 -m unittest discover -s apps/ultra/scripts -p test_release.py
-python3 -m unittest discover -s apps/ultra/tests -p test_stage_alive_session.py
+python3 -m unittest discover -s apps/ultra/tests -p 'test_*.py'
 cd apps/ultra/tests/ci
 ALIVE_TEST_PORT=4287 ./node_modules/.bin/playwright test \
   --config playwright.config.mjs alive-chain.spec.mjs alive-clip-regions.spec.mjs
@@ -73,6 +73,8 @@ manual; no cloud run is dispatched for this cleanup.
 | Standalone default session and bundled instrument | Passed through actual controls and native chooser | `reports/installed-report.json` |
 | Actual MIDI Preview, rolling edits, Undo/Redo, save/reopen | Passed; nonzero Preview PCM, zero stream errors | `reports/midi-report.json` |
 | Actual MIDI/audio regions, rolling track/clip creation, Arrangement loop, save/reopen | Passed; independent 330/550 Hz stereo PCM, zero stream errors or rejected commands | `reports/regions-report.json` |
+| Core desktop checks in three scoped phases | Audio settings, reorder/bypass, hosted editors, history/save, dependency failures, removal, dirty guards and terminal Quit passed | `reports/native-session-report.json` |
+| Installed build and launcher | Final-path smoke and mapped desktop window passed | `reports/installed-report.json`, `reports/launcher-verification.json` |
 
 The responsive captures cover Session, Arrangement and expanded Detail at
 800x600 and 1440x900. Resizing Detail in Arrangement retains a 96px timeline
@@ -92,6 +94,16 @@ capabilities. Final review has no remaining correctness findings. Current
 regressions retain native queue ownership, retirement, changed-source recovery,
 failed-edit transactionality, atomic save and queued UI identity protection.
 
+The broad core checks use three explicit evidence phases: stopped chain and
+audio preflight (`core-desktop-r6`), live editor/history/save/reopen
+(`core-desktop-resume3`), and the saved-file/dependency/removal/dirty-guard/Quit
+tail (`core-desktop-tail2`). The final tail exits 0, captures 52.373 seconds of
+nonzero software PCM and reports zero stream errors or rejected commands.
+This is scoped coverage; no uninterrupted broad-core or endurance pass is
+claimed. Test fixes await the exact acknowledged Undo/Redo values, navigate
+current disclosures and read diagnostic output titles only where the UI
+explicitly mirrors its current value into that accessibility description.
+
 ## Candidate Identity
 
 The source-build manifest records 238 source files. A final rebuild after a
@@ -103,6 +115,27 @@ standalone MIDI/regions journeys:
 | `bin/alive` | `b3869e5375c8c985f7f4d01682739d0275225042ae403f79c9852bb822a71a75` |
 | `bin/ultra` | `1ca7a7879b2bf90406924ec1978807f5c62e386dff6a04b3779bf36e3beabe64` |
 | `bin/libultra_native.so` | `69ba16fe7af0e969a86f89f8ae94d33b767f7f47ea02ce74da7365a1dc770a90` |
+
+## Installed Launcher
+
+Production source commit: `da5901f89076fd50c5f6a6cba1782e851a37d7c8`.
+Installed build: `/home/venetanji/.local/share/alive/builds/da5901f`.
+The manifest in that directory records the source commit, all 238 source hashes
+and all three artifact hashes. The subsequent receipt commit changes only this
+evidence packet and the task checklist.
+
+`Alive (Test)` uses the validated desktop entry
+`~/.local/share/applications/org.alive.session.test.desktop`. Its Exec selects
+the installed Alive binary with `LD_LIBRARY_PATH` removed, and its icon and
+working directory select the same versioned build. The previous entry is backed
+up inside the installed directory. The Ultra launcher is untouched.
+
+Final activation used `gtk-launch org.alive.session.test` in a transient user
+service with `ExitType=cgroup`, retaining the application after the command
+session ends. The running executable and mapped native library match this build;
+its mapped window occupies workspace 7 at 1176x629. Other user windows, including
+the native Analog experiment, remain open. No persistent desktop configuration
+or shared developer-library link changed.
 
 This packet validates Linux with software audio capture. It does not qualify
 physical microphone/output devices, macOS/Windows packaging, or the separate

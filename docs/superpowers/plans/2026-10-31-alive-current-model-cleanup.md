@@ -13,8 +13,12 @@ Live-style workspace and immediate musical editing behavior.
   and adapt staging/release/desktop tests to the current workflow.
 - [x] Review the combined changes and run Node, Rust, browser and packaged
   desktop verification appropriate to the cleanup.
-- [ ] Commit and push draft PR #6, install a versioned verified local build and
+- [x] Commit and push draft PR #6, install a versioned verified local build and
   verify the Omarchy launcher resolves that executable.
+
+Production is committed as `da5901f`; the installed source/artifact manifest and
+launcher receipt pin that build. Final scoped desktop evidence and completion
+receipts are recorded separately without changing production binaries.
 
 ## Ownership And Boundaries
 
