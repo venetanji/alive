@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Ultra - patcher</title><link rel="stylesheet" href="canvas.css"><link rel="stylesheet" href="canvas-console.css"><link rel="stylesheet" href="canvas-help.css"><link rel="stylesheet" href="canvas-device.css"><link rel="stylesheet" href="canvas-presentation-view.css">
+  <title>Ultra - patcher</title><link rel="stylesheet" href="canvas.css"><link rel="stylesheet" href="canvas-console.css"><link rel="stylesheet" href="canvas-help.css"><link rel="stylesheet" href="canvas-device.css"><link rel="stylesheet" href="canvas-presentation-view.css"><link rel="stylesheet" href="creative-shell.css"><link rel="stylesheet" href="canvas-ui-contract.css">
 </head>
-<body>
+<body class="creative-app ultra-app">
 <svg class="icon-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
   <symbol id="i-plus" viewBox="0 0 20 20"><path d="M10 4v12M4 10h12"/></symbol>
   <symbol id="i-lock" viewBox="0 0 20 20"><rect x="4.5" y="9" width="11" height="8" rx="1"/><path d="M7 9V6a3 3 0 0 1 6 0v3"/></symbol>
@@ -27,7 +27,7 @@
 <header class="app-chrome">
   <div class="document-bar">
     <span class="wordmark">ultra</span>
-    <details id="file-menu" class="file-menu"><summary aria-label="Patch file actions">File</summary><div class="menu-surface">
+    <details id="file-menu" class="file-menu"><summary aria-label="Patch file actions">File</summary><div class="menu-surface ui-menu-surface">
       <button id="new-patch">New patch <kbd>Ctrl N</kbd></button>
       <button id="document-open-menu">Open... <kbd>Ctrl O</kbd></button>
       <button id="document-save-menu">Save <kbd>Ctrl S</kbd></button>
@@ -41,7 +41,7 @@
       <a id="legacy-link" href="index.html">Legacy patcher</a>
       <a id="lab-link" href="chord-lab.html">Fixed chord lab</a>
     </div></details>
-    <div class="document-tools" role="toolbar" aria-label="Documents"><button id="document-new" class="icon-button" aria-label="New patch window" title="New patch window (Ctrl N)"><svg><use href="#i-new"/></svg></button><button id="document-open" class="icon-button" aria-label="Open patch file" title="Open patch file (Ctrl O)"><svg><use href="#i-open"/></svg></button><button id="document-save" class="icon-button" aria-label="Save patch" title="Save patch (Ctrl S)"><svg><use href="#i-save"/></svg></button><button id="open-help-library" class="icon-button" aria-label="Help and examples library" title="Help &amp; Examples"><svg><use href="#i-library"/></svg></button></div>
+    <div class="document-tools" role="toolbar" aria-label="Documents"><button id="document-new" class="icon-button" aria-label="New patch window" title="New patch window (Ctrl N)"><svg><use href="#i-new"/></svg></button><button id="document-open" class="icon-button" aria-label="Open patch file" title="Open patch file (Ctrl O)"><svg><use href="#i-open"/></svg></button><button id="document-save" class="icon-button" aria-label="Save patch" title="Save patch (Ctrl S)"><svg><use href="#i-save"/></svg></button></div>
     <span class="document-name"><span id="document-title">Untitled patch</span><span id="document-dirty" aria-label="Unsaved changes" hidden>*</span></span>
     <span id="patch-summary" class="document-summary"></span>
     <span id="runtime-label" class="runtime-label">Native editor</span>
@@ -62,7 +62,6 @@
       <button id="show-instrument" aria-label="Perform instrument" aria-controls="instrument-panel" aria-pressed="false">Perform</button>
       <button id="show-console" class="icon-button" aria-label="Console" aria-controls="patch-console" title="Console (Ctrl M)" aria-pressed="false"><svg><use href="#i-console"/></svg><span id="console-count" hidden></span></button>
       <button id="show-inspector" class="icon-button" aria-label="Inspector" title="Inspector (Ctrl I)" aria-pressed="false"><svg><use href="#i-inspect"/></svg></button>
-      <button id="show-help" class="icon-button" aria-label="Patcher help" title="Patcher help (F1)"><svg><use href="#i-help"/></svg></button>
     </div>
   </div>
   <nav id="patcher-path" class="patcher-path" aria-label="Patcher path" hidden></nav>
@@ -87,7 +86,7 @@
     <section id="library-content" hidden><label for="object-search" class="sr-only">Find an object</label><input id="object-search" type="search" placeholder="Find an object..." autocomplete="off"><div id="palette"></div><p id="object-profile-note" class="panel-note">Supported objects in Ultra's bounded profile.</p></section>
     <section id="inspector-content"><div id="inspector"></div><button id="edit-object" class="panel-action">Edit object text</button><button id="delete-selection" class="panel-action">Delete selection</button><details class="diagnostics"><summary>Native observations</summary><p id="revision-state"></p><p id="observation-state"></p><button id="reapply" class="panel-action">Reapply graph</button></details></section>
     <section id="help-content" hidden></section>
-    <section id="audio-content" hidden>
+    <section id="audio-content" class="ui-settings-surface" hidden>
       <p class="audio-intro">Choose where your patch plays. Settings apply to Ultra and are remembered on this device.</p>
       <label class="audio-field" for="audio-host">Audio system<select id="audio-host"></select></label>
       <p id="audio-host-detail" class="audio-hint"></p>
@@ -123,7 +122,7 @@
   <div class="console-toolbar"><h2>Console</h2><label class="sr-only" for="console-level">Console level</label><select id="console-level"><option value="all">All messages</option><option value="2">Errors</option><option value="1">Warnings</option><option value="0">Messages</option><option value="3">Debug</option></select><label class="sr-only" for="console-search">Filter console</label><input id="console-search" type="search" placeholder="Filter messages..."><button id="clear-console">Clear</button><button id="close-console" class="icon-button" aria-label="Close console"><svg><use href="#i-close"/></svg></button></div>
   <div id="console-rows" role="log" aria-label="Printed messages" aria-live="off" tabindex="0"></div><p id="console-status"></p>
 </section>
-<div class="assist-bar"><span id="assist" aria-live="polite">Drag between ports to connect. N: new object. Ctrl E: lock to perform.</span><span id="selection-hint">Editing</span></div>
+<div class="assist-bar"><aside id="ultra-info-view" class="ui-info-rail" aria-label="Contextual help" data-help="Contextual Info. Hover or focus a control for a description. The two buttons open patcher help and runnable examples."><span class="ui-info-label">Info</span><output id="ultra-info-text" class="ui-info-text">Point to a control for help</output><div class="ui-info-actions"><button id="show-help" class="icon-button" aria-label="Patcher help" title="Patcher help (F1)"><svg><use href="#i-help"/></svg></button><button id="open-help-library" class="icon-button" aria-label="Help and examples library" title="Help &amp; Examples"><svg><use href="#i-library"/></svg></button></div></aside><span id="assist" aria-live="polite">Drag between ports to connect. N: new object. Ctrl E: lock to perform.</span><span id="selection-hint">Editing</span></div>
 <footer class="audio-bar">
   <div class="audio-controls"><button id="start-audio" title="Start the native audio engine"><svg><use href="#i-power"/></svg><span>Start audio</span></button><button id="stop-audio" class="icon-button" aria-label="Stop audio" title="Stop audio"><svg><use href="#i-stop"/></svg></button><span id="engine-state" role="status">Audio off</span><button id="show-audio" aria-pressed="false" title="Configure audio output and buffer size">Audio settings</button><span id="audio-format">48 kHz / stereo</span></div>
   <span id="notice" role="status">Preparing patch...</span>
@@ -152,5 +151,5 @@
 <input id="patch-file" type="file" accept=".json,.ultra,.maxpat,.maxhelp,application/json" hidden>
 <input id="document-file" type="file" accept=".json,.ultra,.maxpat,.maxhelp,application/json" hidden>
 <dialog id="help-library" aria-labelledby="help-library-title"><header class="library-header"><div><h2 id="help-library-title">Help &amp; Examples</h2><p>Original, runnable patches. Each opens in its own window.</p></div><button id="help-library-close" class="icon-button" aria-label="Close help library"><svg><use href="#i-close"/></svg></button></header><div class="library-search"><label class="sr-only" for="help-library-search">Search help and examples</label><input id="help-library-search" type="search" placeholder="Search objects, aliases, or topics..." autocomplete="off"><label class="sr-only" for="help-library-kind">Entry type</label><select id="help-library-kind"><option value="all">All entries</option><option value="help">Help patches</option><option value="example">Examples</option></select></div><p id="help-library-count" class="library-count" role="status"></p><div id="help-library-results" aria-label="Help and example entries"></div><section id="document-windows-section" hidden><h3>Open Windows</h3><div id="document-windows"></div></section></dialog>
-<script type="module" src="canvas.mjs"></script>
+<script type="module" src="canvas.mjs"></script><script type="module" src="canvas-info.mjs"></script>
 </body></html>
