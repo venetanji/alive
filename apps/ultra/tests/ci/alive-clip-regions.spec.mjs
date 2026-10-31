@@ -76,6 +76,13 @@ test('parked audio tempo stays with its sample through clip selection',async({pa
   await expect(field).toHaveValue('121');expect(await mutations(page)).toEqual([]);await field.focus();await field.press('Tab');await expect.poll(async()=>(await mutations(page)).length).toBe(1);
   expect((await mutations(page))[0].args.operation).toMatchObject({kind:'audioSourceTempo',sourceId:'owned-audio',sourceTempo:121});
 });
+test('audio tempo draft belongs to the shared source across two Arrangement placements',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openRangeStudy(page);
+  await page.evaluate(()=>{const s=window.sessionSnapshot,t=s.document.tracks.find(t=>t.id==='audio-track'),region=structuredClone(t.slots[0].region);for(const [id,start]of [['audio-a',0],['audio-b',4]]){s.document.placements.push({id,trackId:t.id,sourceId:'owned-audio',start,duration:4,region:structuredClone(region)});s.preparedWorkspaces.placements.push({trackId:t.id,placementId:id,sourceId:'owned-audio'});}s.editRevision++;});
+  await page.locator('#view-arrangement').click();await page.getByRole('button',{name:'Select placement audio-a',exact:true}).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
+  const field=page.getByRole('spinbutton',{name:'Audio source BPM',exact:true}),summary=page.locator('.clip-properties > details').filter({has:page.locator('.audio-stretch-tools')}).locator('summary');await field.fill('121');await summary.click();await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await page.getByRole('button',{name:'Select placement audio-b',exact:true}).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await summary.click();
+  await expect(field).toHaveValue('121');expect(await mutations(page)).toEqual([]);await field.focus();await field.press('Tab');await expect.poll(async()=>(await mutations(page)).length).toBe(1);expect((await mutations(page))[0].args.operation).toMatchObject({kind:'audioSourceTempo',sourceId:'owned-audio',sourceTempo:121});
+});
 async function selectClipTime(page,start,end){
   const svg=page.locator('#piano-roll:visible, #audio-waveform:visible');await svg.scrollIntoViewIfNeeded();
   const g=await svg.evaluate(e=>{const r=e.getBoundingClientRect();return{x:r.x,y:r.y,width:r.width,height:r.height,pad:Number(e.dataset.keyboardWidth),start:Number(e.dataset.beatStart),span:Number(e.dataset.beatSpan)};});

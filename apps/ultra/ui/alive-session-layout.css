@@ -1,0 +1,73 @@
+/* Session owns horizontal track navigation. Only the aligned slot regions
+   scroll vertically; the supported mixer and scene controls stay pinned. */
+#session-workspace{min-height:0;overflow-x:auto;overflow-y:hidden;overscroll-behavior:contain}
+.session-board{min-height:0;height:100%;min-width:min-content}
+#tracks{min-height:0}
+.track{position:relative;flex-basis:var(--individual-track-width,var(--track-width));width:var(--individual-track-width,var(--track-width));min-width:var(--individual-track-width,var(--track-width));container-type:inline-size}
+.track-name{padding-right:31px}
+.track-width-handle{position:absolute;right:0;top:0;width:9px;height:var(--track-head);z-index:6;cursor:ew-resize;touch-action:none}
+.track-width-handle::before{content:'';position:absolute;right:2px;top:8px;width:4px;height:11px;border-left:1px solid #202020;border-top:1px solid #202020;border-bottom:1px solid #202020;opacity:0}
+.track-width-handle:hover::before{opacity:1}
+.track-width-handle:focus-visible{outline:2px solid var(--selection);outline-offset:-2px}
+.clip-bank{flex:1 1 0;min-height:calc(var(--slot-height) + 22px);overflow:visible}
+.clip-slots{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain}
+.clip-slots,#scene-controls,#session-workspace{scrollbar-width:thin;scrollbar-color:transparent transparent}
+.clip-slots.is-scrolling,#scene-controls.is-scrolling,#session-workspace.is-scrolling{scrollbar-color:#888 transparent}
+.clip-slots::-webkit-scrollbar,#scene-controls::-webkit-scrollbar,#session-workspace::-webkit-scrollbar{width:4px;height:4px}
+.clip-slots::-webkit-scrollbar-thumb,#scene-controls::-webkit-scrollbar-thumb,#session-workspace::-webkit-scrollbar-thumb{background:transparent}
+.clip-slots.is-scrolling::-webkit-scrollbar-thumb,#scene-controls.is-scrolling::-webkit-scrollbar-thumb,#session-workspace.is-scrolling::-webkit-scrollbar-thumb{background:#888}
+.clip-bank-actions{display:flex;flex:none;height:22px;min-height:22px;align-items:stretch;border-bottom:1px solid var(--line)}
+.clip-bank-actions .track-stop,.clip-bank-actions .track-return{flex:0 0 auto;min-height:0;height:21px;margin:0;padding:1px 4px;border:0;border-radius:0;font-size:10px}
+.clip-bank-actions .track-stop{width:22px}
+.clip-bank-actions .track-stop svg{margin:0}
+.clip-bank-actions .runtime-receipt{flex:1;min-width:0;min-height:0;height:21px;overflow:visible}
+.clip-bank-actions .runtime-receipt>summary{padding:3px 2px;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.clip-bank-actions .runtime-receipt[open] .clip-runtime{top:21px}
+.track-mixer{flex:0 0 clamp(104px,30%,200px);min-width:0;min-height:104px;grid-template-columns:minmax(0,1fr);grid-template-rows:23px minmax(30px,1fr) 23px;gap:2px;padding:3px 5px}
+.track-gain{min-width:0}.track-gain input{min-width:0;max-width:100%}
+.mixer-strip{gap:8px}.track-meter{gap:0}.track-meter output{height:24px;line-height:12px}
+#session-workspace .track input.gain-fader{min-height:0}
+.mixer-toggle{min-height:23px;padding:1px}
+.track-mixer.midi-only{grid-template-rows:minmax(0,1fr) 23px}
+.midi-only-status{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:11px}
+.track-inspector{position:absolute;top:0;right:9px;width:20px;height:var(--track-head);padding:0;border:0;background:transparent;z-index:5}
+.track-inspector>summary{height:100%;font-size:0;list-style:none;cursor:pointer}
+.track-inspector>summary::-webkit-details-marker{display:none}
+.track-inspector>summary::after{content:'';display:block;position:absolute;top:12px;left:4px;width:3px;height:3px;border-radius:50%;background:#242424;box-shadow:5px 0 #242424,10px 0 #242424}
+.track-inspector[open] .track-actions{bottom:auto;top:100%;left:auto;right:0;width:140px}
+.scene-column{min-height:0;z-index:10}
+#scene-controls{flex:1 1 0;min-height:var(--slot-height);overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain}
+.scene-column .scene-history{position:relative;top:auto;left:auto;right:auto;flex:0 0 22px;height:22px;min-height:22px;padding:2px 5px;overflow:visible}
+.scene-history[open] #scene-receipts{position:absolute;right:0;top:100%;width:240px;max-height:180px;overflow:auto;padding:6px;background:var(--chrome);border:1px solid var(--line);z-index:8}
+#master-session,.session-board:has(.track-return) #master-session{flex:0 0 clamp(104px,30%,200px);min-height:104px;padding:0}
+#master-session .master-controls{min-height:104px;grid-template-rows:23px minmax(30px,1fr) 23px;gap:2px;padding:3px 5px}
+#master-session .master-state{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+@container(max-width:95px){
+  .track-gain{gap:2px;font-size:0}.track-gain input{width:100%;font-size:11px}
+  .mixer-strip{gap:2px}.track-meter output{font-size:9px}
+  .clip-bank-actions .track-return{font-size:0;width:20px}.clip-bank-actions .track-return::after{content:'R';font-size:10px}
+  .clip-bank-actions .runtime-receipt>summary{font-size:0}.clip-bank-actions .runtime-receipt>summary::after{content:'i';font-size:11px}
+}
+/* Short browsers keep results and actual actions available, with ancillary
+   description condensed until more vertical space is available. */
+#workspace-browser{container-type:size}
+#browser-library{min-height:0}
+@container(max-height:330px){
+  #workspace-browser>h2{padding:2px 5px}
+  #browser-library{min-height:0}
+  .browser-toolbar{flex-direction:row;align-items:center;padding:4px;gap:3px}
+  .browser-search{flex:1;min-height:25px;height:25px;padding:3px 5px}
+  #workspace-browser .browser-refresh{width:25px;min-width:25px;height:25px;padding:4px;justify-content:center}
+  .browser-refresh span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+  .browser-results-heading{padding:2px 5px}
+  .browser-selection{padding:2px 5px}
+  .browser-description{min-height:0;height:15px;max-height:15px;line-height:15px;margin:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  .browser-status{min-height:0;height:16px;max-height:16px;padding:1px 5px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  #workspace-browser .browser-files{padding:2px 5px}
+  #browser-add-menu>summary{min-height:21px;padding:2px 5px}
+}
+@container clip-detail (max-height:350px){
+  #clip-detail .clip-area.has-source{grid-template-columns:min(var(--clip-properties-width,clamp(260px,38%,450px)),calc(100% - 160px)) minmax(0,1fr)}
+  .clip-properties{display:flex;align-items:flex-start}
+  .clip-properties>details{flex:1 0 130px;min-width:0}
+}

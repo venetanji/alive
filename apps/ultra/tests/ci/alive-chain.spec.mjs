@@ -42,6 +42,7 @@ for(const size of [{width:1280,height:800},{width:1440,height:900}])test(`defaul
   await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();
   const fullyVisible=locator=>locator.evaluate(el=>{const r=el.getBoundingClientRect();for(let p=el.parentElement;p;p=p.parentElement){const s=getComputedStyle(p),b=p.getBoundingClientRect();if(/auto|scroll|hidden|clip/.test(s.overflow+s.overflowY+s.overflowX)&&(r.top<b.top-1||r.bottom>b.bottom+1||r.left<b.left-1||r.right>b.right+1))return false;}return r.top>=0&&r.left>=0&&r.bottom<=innerHeight&&r.right<=innerWidth;});
   for(const label of ['Clip Start','Clip End','Loop Position','Loop Length'])expect(await fullyVisible(page.getByRole('spinbutton',{name:label,exact:true})),label).toBe(true);
+  expect(await fullyVisible(page.getByRole('combobox',{name:'Clip Launch Quantization',exact:true}))).toBe(true);
   expect(await fullyVisible(page.getByRole('group',{name:'Note velocity lane',exact:true}))).toBe(true);
   const card=page.locator('.chain-device').first();for(const label of ['Attack base','Attack effective ownership'])expect(await fullyVisible(card.getByLabel(label,{exact:true})),label).toBe(true);
   expect((await page.locator('#session-workspace').boundingBox()).height).toBeGreaterThanOrEqual(190);
@@ -54,6 +55,53 @@ test('compact desktop default shows complete device controls and a useful Sessio
   for(const label of ['Attack base','Attack effective ownership'])expect(await card.getByLabel(label,{exact:true}).evaluate(el=>{const r=el.getBoundingClientRect();for(let p=el.parentElement;p;p=p.parentElement){const s=getComputedStyle(p),b=p.getBoundingClientRect();if(/auto|scroll|hidden|clip/.test(s.overflow+s.overflowY+s.overflowX)&&(r.top<b.top-1||r.bottom>b.bottom+1||r.left<b.left-1||r.right>b.right+1))return false;}return r.top>=0&&r.left>=0&&r.bottom<=innerHeight&&r.right<=innerWidth;}),label).toBe(true);
   expect((await page.locator('#session-workspace').boundingBox()).height).toBeGreaterThanOrEqual(180);
   await page.screenshot({path:testInfo.outputPath('default-both-800.png')});
+});
+
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`both-open Session keeps Browser results, clip slots and mixer controls visible at ${size.width}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();
+  const visible=locator=>locator.evaluate(el=>{const r=el.getBoundingClientRect();for(let p=el.parentElement;p;p=p.parentElement){const s=getComputedStyle(p),b=p.getBoundingClientRect();if(/auto|scroll|hidden|clip/.test(s.overflow+s.overflowY+s.overflowX)&&(r.top<b.top-1||r.bottom>b.bottom+1||r.left<b.left-1||r.right>b.right+1))return false;}return r.width>0&&r.height>0&&r.top>=0&&r.left>=0&&r.bottom<=innerHeight&&r.right<=innerWidth;});
+  for(const locator of [page.getByRole('option',{name:'Subtractive',exact:true}),page.getByRole('button',{name:'Select Pulse slot 1',exact:true}),page.getByRole('button',{name:'Pulse mute',exact:true}),page.getByRole('button',{name:'Pulse solo',exact:true}),page.locator('#master-session').getByRole('spinbutton',{name:'Master gain',exact:true})])expect(await visible(locator),await locator.getAttribute('aria-label')).toBe(true);
+  await page.screenshot({path:testInfo.outputPath(`session-both-${size.width}x${size.height}.png`)});
+});
+
+test('Session slot scrolling is synchronized while mixer controls stay pinned',async({page})=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page,{trackCount:8});await page.locator('#detail-devices').click();
+  const slots=page.locator('.clip-slots'),scene=page.locator('#scene-controls'),mixer=page.getByRole('button',{name:'Pulse mute',exact:true}),before=await mixer.boundingBox();
+  expect(await slots.first().evaluate(e=>e.scrollHeight>e.clientHeight)).toBe(true);await slots.first().hover();await page.mouse.wheel(0,70);await expect.poll(()=>slots.first().evaluate(e=>e.scrollTop)).toBeGreaterThan(0);await expect(slots.first()).toHaveClass(/is-scrolling/);await expect(slots.first()).not.toHaveClass(/is-scrolling/,{timeout:3000});
+  const positions=await slots.evaluateAll(es=>es.map(e=>e.scrollTop));expect(new Set(positions).size).toBe(1);expect(await scene.evaluate(e=>e.scrollTop)).toBe(positions[0]);expect(Math.abs((await mixer.boundingBox()).y-before.y)).toBeLessThanOrEqual(1);
+  await page.evaluate(()=>{window.sessionSnapshot.document.tracks[1].name='Renamed';window.sessionSnapshot.editRevision++;});await expect(page.getByRole('button',{name:'Select Renamed track',exact:true})).toBeVisible();await expect.poll(()=>slots.nth(1).evaluate(e=>e.scrollTop)).toBe(positions[0]);
+  const workspace=page.locator('#session-workspace');expect(await workspace.evaluate(e=>e.scrollHeight<=e.clientHeight)).toBe(true);expect(await workspace.evaluate(e=>e.scrollWidth>e.clientWidth)).toBe(true);await workspace.hover();await page.mouse.wheel(0,0);await page.keyboard.down('Shift');await page.mouse.wheel(0,250);await page.keyboard.up('Shift');await expect.poll(()=>workspace.evaluate(e=>e.scrollLeft)).toBeGreaterThan(0);
+  const master=await page.locator('.scene-column').boundingBox(),outer=await workspace.boundingBox();expect(Math.abs(master.x+master.width-(outer.x+outer.width))).toBeLessThanOrEqual(2);expect(await page.evaluate(({x,y})=>!!document.elementFromPoint(x,y)?.closest('.scene-column'),{x:master.x+master.width-5,y:master.y+14})).toBe(true);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('track width boundary supports keyboard resizing and narrow controls reflow',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);await page.locator('#detail-devices').click();
+  const handle=page.getByRole('separator',{name:'Resize Pulse track',exact:true}),track=page.locator('.track').first();await handle.focus();await handle.press('Home');await expect(handle).toHaveAttribute('aria-valuenow','72');expect((await track.boundingBox()).width).toBe(72);
+  const mute=await track.getByRole('button',{name:'Pulse mute'}).boundingBox(),solo=await track.getByRole('button',{name:'Pulse solo'}).boundingBox(),gain=await track.getByRole('spinbutton',{name:'Pulse gain',exact:true}).boundingBox();expect(mute.x+mute.width).toBeLessThanOrEqual(solo.x+1);expect(gain.x+gain.width).toBeLessThanOrEqual((await track.boundingBox()).x+72);
+  await handle.press('End');await expect(handle).toHaveAttribute('aria-valuenow','280');await handle.press('Home');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('track width handle is hover-only and pointer resize is independent',async({page},testInfo)=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page,{trackCount:8});await page.locator('#detail-devices').click();
+  const handle=page.getByRole('separator',{name:'Resize Pulse track',exact:true}),track=page.locator('.track').first(),other=page.locator('.track').nth(1);await page.mouse.move(700,45);await handle.focus();expect(await handle.evaluate(e=>getComputedStyle(e,'::before').opacity)).toBe('0');
+  const box=await handle.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);expect(await handle.evaluate(e=>getComputedStyle(e,'::before').opacity)).toBe('1');await page.mouse.down();await page.mouse.move(box.x-48,box.y+box.height/2,{steps:5});await page.mouse.up();expect((await track.boundingBox()).width).toBeLessThan(90);expect((await other.boundingBox()).width).toBe(128);
+  await page.mouse.move(700,45);await page.screenshot({path:testInfo.outputPath('narrow-overflow-800x600.png')});expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+test('global track width reports inherited values without overwriting individually resized tracks',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);const first=page.getByRole('separator',{name:'Resize Pulse track',exact:true}),second=page.getByRole('separator',{name:'Resize Harmony track',exact:true});
+  await first.focus();await first.press('Home');await page.locator('#transport-options-toggle').click();await page.getByRole('slider',{name:'Track column width',exact:true}).fill('160');await expect(first).toHaveAttribute('aria-valuenow','72');await expect(second).toHaveAttribute('aria-valuenow','160');expect((await page.locator('.track').nth(1).boundingBox()).width).toBe(160);
+});
+
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`Session capture with lower panels hidden at ${size.width}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page,{trackCount:8});await page.locator('#detail-clip').click();await page.locator('#toggle-help').click();await page.screenshot({path:testInfo.outputPath(`session-lower-hidden-${size.width}x${size.height}.png`)});
+});
+
+test('MIDI tracks without an instrument do not present invented audio metering or faders',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page,{emptyDevices:true});const track=page.locator('.track').first();
+  await expect(track.getByLabel('Pulse stereo peak',{exact:true})).toBeHidden();await expect(track.getByRole('slider',{name:'Pulse gain fader',exact:true})).toBeHidden();await expect(track.getByRole('spinbutton',{name:'Pulse gain',exact:true})).toBeHidden();
+  await expect(track.getByText('MIDI only',{exact:true})).toBeVisible();await expect(track.getByRole('button',{name:'Pulse mute',exact:true})).toBeVisible();
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
 
 for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`corrected panel capture matrix at ${size.width}x${size.height}`,async({page},testInfo)=>{
@@ -980,6 +1028,16 @@ async function openArrangement(page,size){
   await page.locator('#view-arrangement').click();await expect(page.getByRole('button',{name:'Select placement p-0',exact:true})).toBeVisible();
 }
 const workspaceEdits=page=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_edit'));
+test('a parked Clip region draft follows its Arrangement occurrence when placements share a source',async({page})=>{
+  await openArrangement(page,{width:1280,height:800});
+  await page.evaluate(()=>{const s=window.sessionSnapshot,p=s.document.placements[0];s.document.placements.push({...structuredClone(p),id:'p-shared',start:4,region:{...p.region,start:.5}});s.preparedWorkspaces.placements.push({placementId:'p-shared',trackId:p.trackId,sourceId:p.sourceId,startFrame:'102857',durationFrames:'102857'});s.editRevision++;});
+  const a=page.getByRole('button',{name:'Select placement p-0',exact:true}),b=page.getByRole('button',{name:'Select placement p-shared',exact:true});await expect(b).toBeVisible();await a.click();
+  const field=page.getByRole('spinbutton',{name:'Clip Start',exact:true}),summary=page.locator('.clip-properties > details').first().locator('summary');
+  await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await field.fill('1');await summary.click();await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await b.click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await summary.click();
+  await expect(field).toHaveValue('0.5');expect(await workspaceEdits(page)).toEqual([]);
+  await summary.click();await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await a.click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await summary.click();await expect(field).toHaveValue('1');expect(await workspaceEdits(page)).toEqual([]);
+  await field.focus();await field.press('Tab');await expect.poll(async()=>(await workspaceEdits(page)).length).toBe(1);expect((await workspaceEdits(page))[0].args.operation).toMatchObject({kind:'regionSet',occurrence:{kind:'placement',placementId:'p-0'},region:{start:1}});
+});
 async function dragTimeline(page,locator,from,to,{cancel=false,hide=false,box=null}={}){
   box??=await locator.boundingBox();await page.mouse.move(box.x+from[0],box.y+from[1]);await page.mouse.down();await page.mouse.move(box.x+to[0],box.y+to[1],{steps:6});
   if(cancel)await page.keyboard.press('Escape');if(hide)await page.locator('#view-session').click();await page.mouse.up();

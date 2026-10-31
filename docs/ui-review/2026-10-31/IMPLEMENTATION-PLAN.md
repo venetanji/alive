@@ -38,10 +38,12 @@ the rack. Keep that region deferred until a device supplies an explicit,
 instance-owned expansion capability; no Wavetable-style control is implied.
 
 ## M2 — Track layout
-- [ ] Fixed controls and synchronized clip-only vertical scrolling; horizontal regular-track bank, right-docked returns/Master.
-- [ ] Compact mixer/send geometry and transient thin scrollbars; responsive per-track width with hover-only bracket handle and narrow-track reflow.
-- [ ] MIDI-only dots versus mono/stereo meters driven by real capabilities. Recording/arm/routing examples stay disabled if backend absent.
-- [ ] Test min/intermediate/wide widths, many tracks, hide/show sections and preserved alignment. Group related work into coherent reviewable batches.
+- [x] Keep supported mixer controls pinned while the real four clip slots and scene rows scroll together; regular tracks scroll horizontally and Master remains docked. The present engine has no return-track objects to dock.
+- [x] Compact supported mixer controls, thin transient scrollbars, per-track pointer/keyboard width control with hover-only bracket, and narrow-track reflow. Keep Browser results visible when upper space is short.
+- [x] Correct same-source Arrangement occurrence draft identity separately from shared Audio source identity; keep the Launch selector visible in a short Clip inspector.
+- [ ] Add actual return tracks, sends, routing/monitor/arm and recording only when the native contract supplies those capabilities. The approved staggered send geometry remains the design for that later capability work.
+- [ ] MIDI event activity and mono output observations are not exposed by this build. An instrument-free MIDI track says MIDI only instead of showing simulated activity or an audio fader; tracks with actual audio output retain stereo observations.
+- [ ] Parent review of min/intermediate/wide widths, many tracks, resize and preserved alignment remains the next gate; subsequent catalog and menu batches are separate.
 
 ## M3 — Browser
 - [ ] Real catalog-backed categories/device/preset hierarchy, filter/tag/preview layout with honest capability flags.
