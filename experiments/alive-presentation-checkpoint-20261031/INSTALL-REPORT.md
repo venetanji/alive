@@ -132,7 +132,7 @@ and adjacent mapped-library hashes, accepted source values, closing/reopening
 Perform, and full first/last reachability with fixed chrome. The helper uses a
 fixed point in the authored eight-pixel top gutter, then bounded repeated native
 Shift+wheel batches. It verifies first/last values do not change during scroll.
-Two batches reveal Level at each size. Normal-size reset reaches the actual
+Right-scroll uses two batches at 800x600 and one at 1280x800. Normal-size reset reaches the actual
 panel's left boundary so the first value/ownership is fully readable too.
 No script injects IPC/UI snapshots, alters DOM scroll state, bypasses native
 minimum hints, or relaxes containment assertions.
@@ -202,3 +202,25 @@ evidence review, Alive launcher switch and publication of the existing draft PR.
 The source commit is `9ced05eb38e0620865e4c9401646657669c1f6ae`; the later
 acceptance-only commit is recorded after commit in this local report and the
 worker's return message. Its packet/helper/docs are not claimed as built source.
+
+## Publication Evidence And Review Corrections
+
+The installed evidence review is approved with no Critical/Important findings;
+its full report is archived as `reviews/task-2-install-review.md`. The minor
+right-scroll wording now matches the accepted receipt: two batches at 800x600,
+one at 1280x800. Existing build/private-harness warning noise remains disclosed
+and deferred.
+
+The immutable raw manifest's inherited `runtime_native_dir` field records the
+frozen build-library input, `/tmp/alive-live-publish-native-20261031`. It is not
+the observed process mapping. The accepted Alive and Ultra runtime receipts
+prove the adjacent installed `bin/libultra_native.so` and its frozen hash. Raw
+manifests and logs remain unchanged.
+
+After the evidence gate, the controller successfully switched Alive (Test) to
+the tested source `9ced05e`. `publication/launcher-verification.json` and the
+archived controller `publication/switch_launcher.py` record that action: the
+desktop file validates, the desktop database updates, and previous install
+artifacts, the research launcher and existing user windows remain preserved.
+This documentation worker did not rerun the switch. PR push remains
+controller-owned; no additional builds, tests or desktop journeys were run.

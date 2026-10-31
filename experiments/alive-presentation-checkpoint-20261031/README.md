@@ -47,6 +47,11 @@ directories `Alive` and `Ultra Research`, executable/native hashes, icon and
 installed manifest verify. Both binaries actually map their adjacent native
 library. No frozen native compilation occurs.
 
+The raw manifest's inherited `runtime_native_dir` records the frozen build-library
+input `/tmp/alive-live-publish-native-20261031`. The accepted runtime receipts,
+rather than that field, prove each process maps the adjacent installed
+`bin/libultra_native.so` with the frozen hash. The raw manifests remain unchanged.
+
 | Artifact | SHA-256 |
 | --- | --- |
 | `bin/alive` | `fef9b441bfa142d8492fd4425dd55b1699db1a355909f8413da76a34610e569c` |
@@ -133,6 +138,15 @@ unavailable. This checkpoint does not qualify real Analog hosting, proprietary
 editor/resource acquisition or physical audio. No proprietary DLL, graphics,
 editor or preset bytes are added. Four existing Rust warning categories remain
 in both build logs; private Xvfb/portal/DRI3 warning noise is retained too.
-Launcher switching and existing draft PR publication belong to the controller
-after evidence review. No launcher, user configuration/window, other source
-tree, earlier install, release/tag/merge or cloud CI dispatch is changed here.
+The acceptance worker changes no launcher, user configuration/window, other
+source tree, earlier install, release/tag/merge or cloud CI dispatch.
+
+## Publication Status
+
+The evidence gate is approved with no Critical/Important findings; its full review
+is archived in `reviews/task-2-install-review.md`. The controller subsequently
+switched Alive (Test) to the tested source `9ced05e`; the previous installation,
+research launcher and existing user windows remain preserved. The successful
+controller script and verification are archived in `publication/`. This worker
+does not execute that script again. PR push remains controller-owned. Existing
+build/private-harness warning noise remains disclosed and deferred.
