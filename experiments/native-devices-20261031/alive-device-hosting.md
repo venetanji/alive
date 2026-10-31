@@ -15,6 +15,14 @@ worktree. Its native runtime is not integrated into that Alive build. Proposed
 presentation authoring and native Alive hosting remain to implement. Catalog
 descriptors do not qualify any installed native candidate for loading.
 
+Transport direction clarified on 2026-10-31: match Live's continuous device
+lifecycle across ordinary playback, clip editing, launching, seeking and looping.
+The current reset-on-transition implementation is a gap to remove, not a host
+requirement to impose on every imported device. Extend one multipurpose
+`live.device~` object through qualified device profiles and backend adapters.
+See the [transport and shared-host findings](../alive-live-transport-20261031/README.md)
+for official Live documentation, current source anchors and evidence limits.
+
 User requirements are fixed: three musical device classes, composite
 presets/racks, one shared Live-style control family, Ultra authoring, and the
 saved presentation displayed in Alive. The audition keyboard is test scaffolding
@@ -45,7 +53,9 @@ capability, not a requirement to preserve earlier Alive formats.
   audio. Clip creation and completed musical edits publish while transport runs,
   without edit confirmation. Launch quantization is shared by Session launches.
   Adding, replacing, removing or reordering devices still requires stopped
-  transport; native graph changes during playback need separate qualification.
+  transport. This is a current implementation limitation, not the target Live
+  workflow. Prepare structural changes off the audio thread and publish them
+  without stopping transport or restarting unrelated devices.
 - The Clip detail shows MIDI notes or an audio waveform with independent Start,
   End and loop markers. A time selection can become a loop. Audio has Re-Pitch
   stretching; Arrangement retains its own loop and placement span. An empty MIDI
@@ -71,6 +81,58 @@ presentation. `live.device~` is one node type in that graph; a profile selects i
 native backend and installed editor resources. A composite preset can contain
 several such nodes and authored Ultra processing. One renderer serves Ultra's
 presentation preview and Alive's device area.
+
+Keep one user-facing object family for all supported Live devices, selected by
+device/profile identity. The existing native-worktree `live.device~` object is
+the starting point; Analog is its first admitted profile, not a separate host
+architecture. Profiles declare instrument/audio-effect/MIDI-effect signatures,
+actual ports, native parameter mappings, full state, resources, processing bounds
+and lifecycle capabilities. Standalone DLL and Max external adapters implement
+their respective ABIs behind that contract. A shared object does not imply every
+device has the same ABI, stereo ports or parameter layout.
+
+### Ultra library setup pass
+
+After installing Ultra, offer a Live installation folder picker and a Build
+Library action. The same action is available later as Rescan. Keep installation
+selection and local dependency resolution in a shared library service consumed
+by Ultra and Alive; do not require separate folder configuration in each app.
+
+Run bounded background discovery of the selected installation's devices,
+resources, defaults and supported presets. Match installed identities to the
+host's qualified profiles/adapters, then generate ordinary saved `.ultra`
+devices containing the typed graph, complete mapped state, manifest and saved
+presentation. Generated native devices use the same multipurpose `live.device~`
+object and installed-panel presentation item as authored devices. No per-device
+application, manual wiring or manual control-panel recreation is required.
+
+Publish generated devices and their index into the shared library, using the
+existing `$XDG_DATA_HOME/alive/devices` root (normally
+`~/.local/share/alive/devices`) as the current integration point. Alive discovers
+the new library generation automatically and shows its entries in the browser.
+Automatic availability does not instantiate every device or add tracks: actual
+native construction follows explicit drag/load and the normal captured-target
+admission path. Search and startup read bounded index pages, not the entire
+generated graph/preset corpus. Generation runs off the audio/UI callback.
+
+Use stable catalog identities and atomic library publication. A rescan updates
+only changed inputs/profile mappings, retains user-authored copies and never
+overwrites a source file referenced by an accepted or running session. Generated
+source revisions can be immutable, with the catalog pointing at the current
+revision; session references retain their accepted source identity/fingerprint.
+This is ordinary live-edit ownership, not an old-format compatibility layer.
+Installed DLLs and artwork stay at the selected local installation and resolve
+through the profile; generated files do not embed or redistribute them.
+
+Report separate counts for generated/loadable devices, unsupported device
+families and unresolved dependencies/presets. A discovered implementation without
+a supported mapping remains an explained catalog entry; do not generate a
+pretend-playable device or infer parameter meanings from its name. A generated
+file is loadable in Alive only after its profile's I/O, state and continuous
+transport behavior pass the shared host contract. Additional profiles make the
+next rescan produce more devices without changing the user workflow. Composite
+presets wait for the required rack/child-device contracts, with unresolved
+components visible instead of silently dropped.
 
 Three approaches were considered:
 
@@ -178,9 +240,13 @@ tails, bypass, gain, sample rates, partitioning, latency and reset separately.
 
 Retain the whole prepared graph plus native-source sidecars in Alive. The current
 preparation drops `Prepared.live_devices`, and the generic native install rejects
-external instruments. Install fully validated owned banks under the destroyed
-audio-callback fence, retain complete state for rollback, and resolve local files
-from exact profiles rather than serializing machine installation paths.
+external instruments. Prepare fully validated owned banks off the audio thread,
+publish ownership and routing atomically at a processing boundary, retain complete
+state for rollback, and reclaim replaced instances off the audio thread. Resolve
+local files from exact profiles rather than serializing machine installation
+paths. The native worktree's destroyed-callback installation fence describes its
+current implementation; ordinary device insertion/replacement must ultimately
+work during playback without restarting the global audio driver.
 
 Add session-authorized resource/state commands using generation, instance and
 source-node identity. Persist accepted native-state edits as per-instance Alive
@@ -189,18 +255,48 @@ device must remain independent. Whole compound parameter writes remain atomic,
 state-only edits preserve DSP identity, and stale views cannot write a new root.
 Commanded/applied values remain distinct from arbitrary internal DSP readback.
 
-The current lifecycle blocker needs explicit qualification: Alive configuration,
-Start, seek, loop wrap and clip changes reset graph runtimes. That reset disarms
-Analog because its bank has no qualified realtime clear callback. Existing
-`ResetA` evidence does not establish a hard tail clear. Full construction,
-destruction or state reconstruction must stay outside the audio callback.
+Separate the musical timeline, note/event ownership and device lifetime. Alive's
+current `discontinuity` and `clear_track` paths reset graph runtimes, including
+effects. The native bank has no realtime-clear callback, so that reset also
+disarms Analog. This is an Alive lifecycle mismatch to correct. Do not make hard
+tail clearing or instance replacement a prerequisite for ordinary loops and clip
+changes. Existing `ResetA` evidence does not establish that Live uses that export
+for those operations, or that it provides a hard tail clear.
 
-The intended Analog acceptance includes ordinary scheduled playback and looping.
-Before that admission, qualify bounded native clear/release behavior or a prepared
-replacement protocol with bounded ownership transfer and off-thread reclamation.
-Test stop/restart, seek, loop seams, clip changes, failure silence and full-state
-rollback. A restricted single-shot diagnostic can precede this, but must reject
-unsupported operations at admission/native boundaries and remain labeled as such.
+Keep unaffected device instances and their accepted state across Start/Stop,
+seek, loop wrap, clip launch and completed musical edits. At the exact scheduled
+sample boundary, reconcile outgoing note ownership and sustain, apply the new
+event cursor and automation ownership, chase notes when enabled, and notify
+devices of supported transport/tempo changes. A note-off must reach its original
+destination. Per-device retrigger, phase-sync and reset policies need explicit
+evidence; they are not a blanket reset of the whole track chain.
+
+Ordinary Stop stops clip/event production and releases the appropriate voices;
+it leaves the audio engine available to render releases, reverb and delay tails
+and monitored/preview input. Preserve effect state across timeline jumps. Silent
+devices may become idle once their work/tails finish. Device removal, replacement,
+explicit panic/hard clear and audio-driver reconfiguration are separate lifecycle
+operations with their own tested behavior. Full construction, destruction and
+state reconstruction stay outside the audio callback.
+
+Separate audible mixer output from the transport/active-clip flags as well:
+the current `mix_track` gate suppresses a stopped or clipless track unless MIDI
+preview is active. Removing runtime resets alone would still mute its tails.
+Track audibility must include retained release/tail and monitored-input work,
+subject to the intended mixer mute/solo and device lifecycle semantics.
+
+For live structural edits, prepare the changed graph/bank off-thread, recheck
+captured instance/revision ownership, publish the accepted route at a processing
+boundary, release notes to their original destinations and retire replaced state
+off-thread. Preserve unaffected roots and accepted music on preparation failure.
+Retirement and optional tail handling must remain bounded. Never rebuild an
+entire bank simply because the musical playhead moved.
+
+This shared lifecycle applies to authored Ultra DSP and every supported Live
+profile. First verify Analog, then a second instrument through the same object
+and host path. Test Stop/Start, seek, loop seams, clip switches, tails, live edits,
+failure silence and full-state rollback. A single-shot diagnostic may help
+investigation, but it does not satisfy the product workflow.
 
 ## Racks and composite preset import
 
@@ -264,16 +360,25 @@ before implementation; they do not describe the installed UI build:
 1. Saved presentation in Ultra: panel/control items, canonical persistence/history,
    a shared renderer in Ultra preview and Alive cards, no automatic keyboard,
    current-schema examples/fixtures and deliberate Max presentation import.
-2. Analog in Alive: typed note entry, full prepared sidecars, transactional bank
-   ownership, authorized resource/state APIs, per-instance saved overrides and
-   qualified scheduled playback/discontinuities. Mount the exact saved panel.
+2. Shared native-device hosting in Alive: extend the existing multipurpose
+   `live.device~` object and profile/adapter contract, typed note entry, full
+   prepared sidecars, transactional bank ownership, authorized resource/state
+   APIs and per-instance saved overrides. Replace blanket transport resets with
+   continuous device lifetime and bounded note/chase/transport reconciliation.
+   Verify Analog first and a second instrument through the same path; mount each
+   device's saved panel and qualify structural edits during playback.
 3. Parallel profile mapping from existing Electric/Collision/Tension packets,
    with one coordinator acquiring new REA evidence serially. Profile workers do
    not change loader admission or shared host contracts.
-4. Qualify native audio input and Corpus; investigate Amp/Cabinet constructors.
+4. Ultra library setup: choose the Live folder, build generated saved devices and
+   publish the shared index; Alive refreshes it automatically. Include defaults,
+   supported presets, incremental rescan, stable source identities and explicit
+   unavailable reasons. Folder discovery/UI work can proceed independently, but
+   loadable generation depends on the shared host and admitted profiles.
+5. Qualify native audio input and Corpus; investigate Amp/Cabinet constructors.
    In parallel, acquire a narrow Utility Max-boundary packet, then prove Utility
    audio before expanding to Drift and the other Max device candidates.
-5. Add MIDI-effect routing/output, rack semantics, dependency resolution and
+6. Add MIDI-effect routing/output, rack semantics, dependency resolution and
    composite preset import, then publish qualified results through the catalog.
    First import a small fully supported instrument-plus-
    effects preset, then a parallel rack with macros/zones and deterministic mixing.
@@ -287,11 +392,26 @@ need their own I/O acceptance instead of inheriting the instrument result.
 
 Use new private native build/output paths; never rebuild a library mapped by a
 running app. Check scheduled notes and release, normal Stop/Start/seek/loop/clip
-behavior, full state save/reopen, two instances of the same source, independent
-edits, stale view rejection, failed preparation rollback and missing/changed
+behavior without blanket device resets, full state save/reopen, two instances of
+the same source, independent edits, stale view rejection, failed preparation
+rollback and missing/changed
 artifact rejection. Verify editor closure does not affect playback and Alive
 shows the saved panel without keyboard or wiring. Normal builds without the
 adapter must fail explicitly before changing an accepted session.
+
+Assert stable instance identity across ordinary transport/clip operations and
+retained effect tails after clip/transport Stop. Cover note chase on/off, sustain,
+held-note ownership at loop/clip/seek boundaries, preview/monitoring while stopped,
+live device insertion/removal/reordering and unchanged audio on unrelated tracks.
+Any device-specific phase/retrigger behavior must match its observed Live policy.
+Prove reuse with a second profile instead of introducing a second device host.
+
+Verify the setup pass from a chosen installation through generated current-schema
+devices to automatic Alive browser refresh and explicit loading. Repeat an
+unchanged rescan without duplicate entries or rewritten sources. Test a changed
+profile/default, moved or missing installation, unresolved preset dependencies,
+interrupted generation, user-authored copies and rescan while a session plays.
+Failed generation must leave the previous accepted library/session usable.
 
 Exercise the real browser path as well: discovery/search without DSP construction;
 missing or unqualified profiles; duplicate saved-device references; compatible and
@@ -303,8 +423,11 @@ and resizing/scrolling at 800x600 and larger windows. Empty MIDI tracks/slots st
 blank until a clip/source exists, including after Undo; a real empty clip restores
 its editor while track devices remain available independently.
 
-Measure and budget foreign DSP rendering, native-state application and qualified
-clear/replacement work before realtime admission. The current bank calls the DLL
+Measure and budget foreign DSP rendering, native-state application, note/chase
+reconciliation and structural publication/retirement before realtime admission.
+Update the existing reset-based admission costs to match the actual operations;
+do not simply remove reset calls without replacing their note-cleanup contract.
+The current bank calls the DLL
 per sample and can apply many state writes; existing graph/event operation counts
 do not cover that cost. Test maximum admitted workload and supported audio block
 sizes against callback deadlines. Two-instance functional playback alone does
