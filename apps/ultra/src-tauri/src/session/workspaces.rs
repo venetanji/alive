@@ -1150,9 +1150,12 @@ impl ProjectV4 {
                     _ => return Err("Re-Pitch stretching requires an audio source".into()),
                 };
                 // Keep every marker on the same sample while its musical duration changes.
+                let length = self.source(&source_id)?.length_beats();
                 let scale = |region: &mut ClipRegionV4| {
-                    region.start *= ratio; region.end *= ratio;
-                    region.loop_start *= ratio; region.loop_end *= ratio;
+                    region.start = (region.start * ratio).min(length);
+                    region.end = (region.end * ratio).min(length);
+                    region.loop_start = (region.loop_start * ratio).min(length);
+                    region.loop_end = (region.loop_end * ratio).min(length);
                 };
                 for slot in self.tracks.iter_mut().flat_map(|t| t.slots.iter_mut().flatten()) {
                     if slot.source_id == source_id { scale(&mut slot.region); }

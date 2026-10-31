@@ -95,7 +95,6 @@ footer button{flex:none;min-height:23px;padding:2px 6px;font-size:11px}
   .edit-bar{gap:3px;padding:3px 6px;flex-wrap:nowrap}
   .edit-bar button{font-size:11px;padding:3px 4px}
   #edit-status{font-size:11px}
-  #parameters{grid-template-columns:repeat(3,minmax(85px,1fr));gap:10px}
   .timeline-tools>.muted{display:none}
 }
 @media(max-width:620px){
@@ -111,7 +110,6 @@ footer button{flex:none;min-height:23px;padding:2px 6px;font-size:11px}
   .workspace-tools button{width:26px;padding:3px}
   #workspace-browser:not([hidden]){position:absolute;inset:65px auto 31px 0;width:min(280px,75vw);z-index:7;border-right:1px solid #737373}
   #browser-resizer{display:none}
-  #parameters{grid-template-columns:repeat(2,minmax(85px,1fr))}
   #edit-status{display:none}
   .edit-bar #undo,.edit-bar #redo{font-size:0;min-width:26px}
   .edit-bar #undo svg,.edit-bar #redo svg{display:block;width:14px;height:14px;margin:0}

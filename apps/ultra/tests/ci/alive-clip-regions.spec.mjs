@@ -122,6 +122,14 @@ test('Re-Pitch stretches the shared sample with numeric and drag controls; Escap
   expect(await page.evaluate(()=>window.sessionSnapshot.document.sources.at(-1).file.frames)).toBe('192000');
 });
 
+test('an audio length draft cannot target a clip removed by an accepted refresh',async({page})=>{
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));await openRangeStudy(page);await page.getByRole('button',{name:'Select Audio slot 1',exact:true}).click();
+  const length=page.getByRole('spinbutton',{name:'Audio length in beats',exact:true});await length.fill('10');
+  await page.evaluate(()=>{window.sessionSnapshot.document.tracks.at(-1).slots[0]=null;window.sessionSnapshot.editRevision++;});
+  await expect(page.getByRole('button',{name:'Import audio into selected slot',exact:true})).toBeVisible();await page.locator('#tempo').click();
+  expect(await mutations(page)).toEqual([]);expect(errors).toEqual([]);
+});
+
 test('rolling clip and typed tracks are immediate and keep the inserted track selected',async({page})=>{
   await page.setViewportSize({width:1280,height:800});await openRangeStudy(page);
   await page.getByRole('button',{name:'Select Pulse slot 2',exact:true}).dblclick();await expect(page.locator('#clip-title')).toContainText('Clip 2');expect((await mutations(page)).map(c=>c.args.operation.kind)).toEqual(['midiClipCreate']);

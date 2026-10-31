@@ -16,7 +16,7 @@ def drag(source, target, fraction=.5):
     end = Atspi.Component.get_extents(ui.wait_for(target), Atspi.CoordType.SCREEN)
     assert min(start.width, start.height, end.width, end.height) > 0
     sx, sy = start.x + start.width // 2, start.y + start.height // 2
-    ex, ey = end.x + end.width // 2, round(end.y + end.height * fraction)
+    ex, ey = round(end.x + end.width * fraction), end.y + end.height // 2
     gestures.append(dict(source=source, target=target, start=[sx, sy], end=[ex, ey], synthetic_ipc=False))
     (ui.output / 'drag-gestures.json').write_text(json.dumps(gestures, indent=2)+'\n')
     ui.t.XTestFakeMotionEvent(ui.display, 0, sx, sy, 0)

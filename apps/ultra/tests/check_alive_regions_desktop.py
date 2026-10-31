@@ -213,18 +213,20 @@ def tone_energy(samples, frequency):
     return 2 * (real * real + imag * imag) / (len(samples) * energy)
 
 
-def capture_audio():
-    capture = alive.start_capture('regions-audio')
+def capture_audio(name='regions-audio', left_frequency=330, right_frequency=550):
+    capture = alive.start_capture(name)
     time.sleep(1.3)
     measured = alive.finish_capture(capture)
     assert measured['peak'] > .03 and measured['frames'] > 48000, measured
     samples = array.array('f')
     samples.frombytes(capture[1].read_bytes())
     tail = samples[-48000 * 2:]
-    measured['left_330hz_fraction'] = tone_energy(tail[::2], 330)
-    measured['right_550hz_fraction'] = tone_energy(tail[1::2], 550)
-    assert measured['left_330hz_fraction'] > .8, measured
-    assert measured['right_550hz_fraction'] > .8, measured
+    measured['left_frequency'] = left_frequency
+    measured['right_frequency'] = right_frequency
+    measured['left_tone_fraction'] = tone_energy(tail[::2], left_frequency)
+    measured['right_tone_fraction'] = tone_energy(tail[1::2], right_frequency)
+    assert measured['left_tone_fraction'] > .8, measured
+    assert measured['right_tone_fraction'] > .8, measured
     return measured
 
 
@@ -296,6 +298,7 @@ def run():
     select_clip_loop(2, 6, audio=True)
     wait_number('Clip End', 8)
     ui.text('Audio length in beats', '12')
+    ui.keys('Tab')
     wait_number('Audio source BPM', 180)
     wait_number('Clip End', 12)
     settled()
@@ -317,6 +320,20 @@ def run():
     wait_value('Track 2 authority', lambda value: value == 'session')
     wait_value('Track 2 active source', lambda value: value not in ('', '-', 'none', 'None'))
     report['audio_pcm'] = capture_audio()
+    close_diagnostics()
+    maximize()
+    ui.text('Audio length in beats', '12')
+    ui.keys('Tab')
+    wait_number('Audio source BPM', 180)
+    settled()
+    restore()
+    ui.click('Launch Audio 2 RangeTone')
+    time.sleep(2.2)
+    report['stretched_audio_pcm'] = capture_audio('regions-stretched-audio', 220, 550 * 2 / 3)
+    close_diagnostics()
+    ui.click('Undo')
+    wait_number('Audio length in beats', 8)
+    settled()
     wait_value('Transport playing', lambda value: value == 'true')
     close_diagnostics()
 

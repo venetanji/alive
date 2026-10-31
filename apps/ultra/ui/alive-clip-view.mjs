@@ -55,7 +55,13 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
   stretchTools.append(make('strong',{},'Re-Pitch'));
   for(const [key,label,aria]of [['tempo','Source BPM','Audio source BPM'],['length','Length','Audio length in beats']]){
     const holder=make('label',{},label),input=make('input',{type:'number',step:'any','aria-label':aria});
-    input.addEventListener('change',()=>{const value=Number(input.value),tempo=key==='tempo'?value:last.source.sourceTempo*value/last.length;if(input.value===''||!Number.isFinite(tempo)||tempo<30||tempo>240){onError('Re-Pitch requires a source tempo from 30 to 240 BPM.');return;}onStretch(tempo);});
+    const identity=()=>JSON.stringify([last?.scope,last?.revision,last?.source?.id]);let intent=null;
+    input.addEventListener('focus',()=>{intent=identity();});
+    input.addEventListener('change',()=>{
+      if(last?.kind!=='audio'||!last.source||intent!==identity()){onError('The audio source changed. Select it and enter the stretch value again.');return;}
+      const value=Number(input.value),tempo=key==='tempo'?value:last.source.sourceTempo*value/last.length;
+      if(input.value===''||!Number.isFinite(tempo)||tempo<30||tempo>240){onError('Re-Pitch requires a source tempo from 30 to 240 BPM.');return;}onStretch(tempo,last.source.id);
+    });
     stretchInputs[key]=input;holder.append(input);if(key==='length')holder.append(make('span',{},'beats'));stretchTools.append(holder);
   }
   const stretchActions=[];

@@ -116,7 +116,14 @@ fn audio_wire() -> Value {
 
 #[test]
 fn audio_source_stretch_preserves_sample_offsets_across_every_reference() {
-    let p = decode(&audio_wire().to_string()).unwrap();
+    let effect = wire()["tracks"][0]["chain"]["instrument"].clone();
+    let mut wire = audio_wire();
+    wire["tracks"][0]["effects"] = json!([effect]);
+    wire["sources"][0]["automation"] = json!([{"instanceId":"instrument","key":"cutoff","enabled":true,"points":[{"beat":1.,"value":500.}]}]);
+    wire["tracks"][0]["slots"][0]["region"] = json!({"start":0.5,"end":4.,"loopStart":1.,"loopEnd":3.,"loopEnabled":true});
+    wire["tracks"][0]["slots"][1] = wire["tracks"][0]["slots"][0].clone();
+    wire["tracks"][0]["slots"][1]["id"] = json!("shared-slot");
+    let p = decode(&wire.to_string()).unwrap();
     let stretched = edit(&p, json!({"kind":"audioSourceTempo","sourceId":"source","sourceTempo":180.})).unwrap().project;
     assert_eq!(stretched.sources[0].length_beats(), p.sources[0].length_beats()*1.5);
     let (SourceV4::Audio{file:before,..}, SourceV4::Audio{file:after,..}) = (&p.sources[0],&stretched.sources[0]) else {panic!("audio")};
@@ -125,12 +132,28 @@ fn audio_source_stretch_preserves_sample_offsets_across_every_reference() {
     let new=&stretched.tracks[0].slots[0].as_ref().unwrap().region;
     assert_eq!(new.start,old.start*1.5);assert_eq!(new.end,old.end*1.5);
     assert_eq!(new.loop_start,old.loop_start*1.5);assert_eq!(new.loop_end,old.loop_end*1.5);
+    assert_eq!(stretched.tracks[0].slots[1].as_ref().unwrap().region,*new);
+    assert_eq!(stretched.sources[0].automation()[0].points[0].beat,1.5);
     assert_eq!(stretched.placements[0].region.end,p.placements[0].region.end*1.5);
     assert_eq!(stretched.placements[0].duration,p.placements[0].duration);
     for value in [0.,29.,241.,f64::INFINITY] {
         assert!(edit(&p,json!({"kind":"audioSourceTempo","sourceId":"source","sourceTempo":value})).is_err());
     }
     assert!(edit(&project(),json!({"kind":"audioSourceTempo","sourceId":"source","sourceTempo":180.})).is_err());
+}
+
+#[test]
+fn full_audio_region_stretch_does_not_round_past_the_sample_end() {
+    let mut wire = audio_wire();
+    wire["sources"][0]["file"]["frames"] = json!("120000");
+    for region in [&mut wire["tracks"][0]["slots"][0]["region"]] {
+        region["end"] = json!(5.); region["loopEnd"] = json!(5.);
+    }
+    wire["placements"][0]["region"]["end"] = json!(5.);
+    wire["placements"][0]["region"]["loopEnd"] = json!(5.);
+    let p = decode(&wire.to_string()).unwrap();
+    let stretched = edit(&p,json!({"kind":"audioSourceTempo","sourceId":"source","sourceTempo":140.})).unwrap().project;
+    assert_eq!(stretched.tracks[0].slots[0].as_ref().unwrap().region.end,stretched.sources[0].length_beats());
 }
 
 #[test]
