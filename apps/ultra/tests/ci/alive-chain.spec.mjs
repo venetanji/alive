@@ -2,6 +2,13 @@ import {test,expect} from '@playwright/test';
 import {projectFixturePresentation} from '../presentation-dom.mjs';
 import {readFileSync,mkdirSync} from 'node:fs';
 
+test('browser preview disables native-only menu commands and retains local Help',async({page})=>{
+  await page.goto('/alive.html');
+  await page.getByRole('button',{name:'File menu',exact:true}).click();await expect(page.getByRole('button',{name:'New session',exact:true})).toBeDisabled();
+  await page.getByRole('button',{name:'Playback menu',exact:true}).click();await expect(page.getByRole('button',{name:'Start',exact:true})).toBeDisabled();
+  await page.getByRole('button',{name:'Help menu',exact:true}).click();await expect(page.getByRole('button',{name:'Toggle contextual Help',exact:true})).toBeEnabled();
+});
+
 test('source disclosure remains available when switching workspaces',async({page})=>{
   await openSession(page);const source=page.getByText('Source / Clip',{exact:true});
   await expect(source).toBeVisible();await page.getByRole('button',{name:'Arrangement workspace',exact:true}).click();await expect(source).toBeVisible();

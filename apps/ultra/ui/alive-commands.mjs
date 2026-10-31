@@ -25,6 +25,7 @@ export const COMMANDS=[
   {menu:'File',label:'Quit',target:'quit',help:'Quit Alive.'},
   {label:'Create MIDI clip',target:'create-midi-clip',shortcut:'Ctrl+Shift+M',help:'Create a MIDI clip in the current supported context.'},
 ];
+const NATIVE_TARGETS=new Set(['new','open','save','save-as','quit','undo','redo','insert-audio-track','insert-midi-track','add-track','add-effect','start','stop','loop','return-all','show-audio']);
 
 export function shortcutCommand(event,{native=true}={}){
   if(event.defaultPrevented||event.repeat||event.altKey||event.target?.isContentEditable||event.target?.closest?.('input,textarea,select,[contenteditable]:not([contenteditable="false"])'))return null;
@@ -42,8 +43,9 @@ export function mountCommandMenus({doc,park=()=>{},native=true}){
   const file=doc.getElementById('file-menu'),menus=[file].filter(Boolean),rows=[];
   const save=doc.getElementById('save');
   const fileSurface=file?.querySelector?.('.file-menu-items');
+  if(!native)for(const id of NATIVE_TARGETS){const target=doc.getElementById(id);if(target){target.disabled=true;target.setAttribute('data-help','Available in the native Alive app.');target.title='Available in the native Alive app.';}}
   for(const command of COMMANDS.filter(c=>c.menu==='File')){
-    const target=doc.getElementById(command.target);target?.setAttribute('data-help',command.help+(command.shortcut&&native?' ('+command.shortcut+').':''));
+    const target=doc.getElementById(command.target);if(native)target?.setAttribute('data-help',command.help+(command.shortcut?' ('+command.shortcut+').':''));
   }
   if(fileSurface){
     const command=COMMANDS.find(c=>c.target==='save'),button=doc.createElement('button');
@@ -70,6 +72,7 @@ export function mountCommandMenus({doc,park=()=>{},native=true}){
   function update(){
     for(const {button,command}of rows){
       const target=doc.getElementById(command.target);button.disabled=!target||!!target.disabled;
+      if(!native&&NATIVE_TARGETS.has(command.target)){button.setAttribute('data-help','Available in the native Alive app.');button.title='Available in the native Alive app.';}
       const state=target?.type==='checkbox'?String(target.checked):target?.getAttribute('aria-pressed')??target?.getAttribute('aria-expanded');
       if(state!==null&&state!==undefined)button.setAttribute('aria-pressed',state);
     }
