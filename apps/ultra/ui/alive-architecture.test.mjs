@@ -21,6 +21,6 @@ test('browser keeps track creation in a single disclosure',()=>{
 test('contextual Info remains footer-left and never substitutes for status',()=>{
   assert.match(html,/<footer><aside id="info-view"[^>]*>[\s\S]*?<output id="info-text"[\s\S]*?<\/aside><p id="notice"/);
   assert.equal((html.match(/id="info-view"/g)??[]).length,1);
-  assert.match(html,/<link rel="stylesheet" href="alive-browser.css"><link rel="stylesheet" href="alive-ui-contract.css">/);
+  assert.match(html,/<link rel="stylesheet" href="alive-browser.css"><link rel="stylesheet" href="creative-shell.css"><link rel="stylesheet" href="alive-ui-contract.css">/);
   assert.match(html,/<script type="module" src="alive-info.mjs"><\/script>/);
 });
