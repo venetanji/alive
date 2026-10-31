@@ -15,6 +15,17 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
         if not control.get_state_set().contains(Atspi.StateType.EXPANDED):
             activate(name)
 
+    def ensure_detail(tab, sentinel):
+        # If an accessibility snapshot omits PRESSED, do not toggle a
+        # visibly open panel shut while preparing a control.
+        try:
+            if ui.find(sentinel).get_state_set().contains(Atspi.StateType.VISIBLE):
+                return
+        except (AttributeError, StopIteration):
+            pass
+        if not ui.wait_for(tab).get_state_set().contains(Atspi.StateType.PRESSED):
+            click(tab)
+
     def prepare(name):
         if windows.scope != 'Alive':
             return
@@ -60,10 +71,11 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
         details = ui.wait_for('Audio details')
         if details.get_state_set().contains(Atspi.StateType.EXPANDED):
             click('Audio details')
+        if name in ('Add effect', 'Add instrument track'):
+            expand('Add track or device')
         if device or clip:
             tab = 'Toggle Device view' if device else 'Toggle Clip view'
-            if not ui.wait_for(tab).get_state_set().contains(Atspi.StateType.PRESSED):
-                click(tab)
+            ensure_detail(tab, 'Edit selected device in Ultra' if device else 'Source / Clip')
             if notes:
                 expand('Note inspector')
             if automation:
@@ -81,8 +93,7 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
     def visible_click(name):
         if windows.scope == 'Alive' and name in ('Clip detail', 'Devices detail'):
             tab = 'Toggle Clip view' if name == 'Clip detail' else 'Toggle Device view'
-            if not ui.wait_for(tab).get_state_set().contains(Atspi.StateType.PRESSED):
-                click(tab)
+            ensure_detail(tab, 'Source / Clip' if name == 'Clip detail' else 'Edit selected device in Ultra')
             return
         if re.fullmatch(r'Select .+ (?:instrument|effect \d+)', name):
             return select_device(name)

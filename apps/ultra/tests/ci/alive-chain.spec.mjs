@@ -2,6 +2,12 @@ import {test,expect} from '@playwright/test';
 import {projectFixturePresentation} from '../presentation-dom.mjs';
 import {readFileSync,mkdirSync} from 'node:fs';
 
+test('source disclosure remains available when switching workspaces',async({page})=>{
+  await openSession(page);const source=page.getByText('Source / Clip',{exact:true});
+  await expect(source).toBeVisible();await page.getByRole('button',{name:'Arrangement workspace',exact:true}).click();await expect(source).toBeVisible();
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
 test('unselected track menu opens its own editor without selecting the track',async({page})=>{
   await page.setViewportSize({width:1280,height:800});await openSession(page);
   const harmony=page.locator('.track[data-track-id="track-2"]');
@@ -1345,8 +1351,9 @@ for(const size of [{width:1440,height:900},{width:1280,height:800},{width:1024,h
   for(const view of ['session','arrangement']) {
     await page.locator(`#view-${view}`).click();await expect(global).toBeInViewport();await expect(page.locator('#stop')).toBeInViewport();
     await expect(page.locator(`#master-select-${view}`)).toBeInViewport();
-    const bounds=await page.evaluate(()=>({width:document.documentElement.scrollWidth,height:document.documentElement.scrollHeight,selector:document.querySelector('#launch-quantization').getBoundingClientRect().toJSON(),stop:document.querySelector('#stop').getBoundingClientRect().toJSON()}));
-    expect(bounds.width).toBeLessThanOrEqual(size.width);expect(bounds.height).toBeLessThanOrEqual(size.height);expect(bounds.selector.width).toBeGreaterThanOrEqual(64);expect(bounds.selector.left).toBeGreaterThan(bounds.stop.right);
+    const bounds=await page.evaluate(()=>({width:document.documentElement.scrollWidth,height:document.documentElement.scrollHeight,selector:document.querySelector('#launch-quantization').getBoundingClientRect().toJSON(),position:document.querySelector('#position').getBoundingClientRect().toJSON(),stop:document.querySelector('#stop').getBoundingClientRect().toJSON()}));
+    expect(bounds.width).toBeLessThanOrEqual(size.width);expect(bounds.height).toBeLessThanOrEqual(size.height);expect(bounds.selector.width).toBeGreaterThanOrEqual(64);expect(bounds.selector.right).toBeLessThanOrEqual(bounds.position.left);expect(bounds.position.right).toBeLessThan(bounds.stop.left);
+    expect(await global.evaluate(el=>{const r=el.getBoundingClientRect();return el.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));})).toBe(true);
     await page.screenshot({path:testInfo.outputPath(`launch-${view}-${size.width}x${size.height}.png`)});
   }
   expect(await page.evaluate(()=>window.calls.some(c=>['alive_transport','alive_workspace_action'].includes(c.name)))).toBe(false);

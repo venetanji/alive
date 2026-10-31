@@ -5,7 +5,7 @@ from unittest.mock import patch
 
 sys.modules.setdefault('gi', types.ModuleType('gi'))
 repository = types.ModuleType('gi.repository')
-repository.Atspi = types.SimpleNamespace(StateType=types.SimpleNamespace(EXPANDED='expanded', PRESSED='pressed'))
+repository.Atspi = types.SimpleNamespace(StateType=types.SimpleNamespace(EXPANDED='expanded', PRESSED='pressed', VISIBLE='visible'))
 sys.modules.setdefault('gi.repository', repository)
 import alive_workspace_navigation as navigation
 
@@ -57,6 +57,19 @@ class NavigationTest(unittest.TestCase):
         ui.click('Make source independent')
         self.assertEqual(calls, ['Toggle Clip view', 'Source / Clip', 'Make source independent'])
 
+    def test_visible_panels_are_not_toggled_closed_when_pressed_state_is_absent(self):
+        calls = []
+        class Control:
+            def __init__(self, name): self.name = name
+            def get_state_set(self): return self
+            def contains(self, state): return state == 'visible' and self.name in ('Source / Clip', 'Edit selected device in Ultra')
+        ui = types.SimpleNamespace(click=lambda name: calls.append(name), text=lambda *args: None,
+                                   wait_for=lambda name: Control(name), find=lambda name: Control(name))
+        prepare = navigation.install(ui, types.SimpleNamespace(scope='Alive'), None, None)
+        prepare('MIDI source'); prepare('Cutoff base')
+        self.assertNotIn('Toggle Clip view', calls)
+        self.assertNotIn('Toggle Device view', calls)
+
     def test_file_actions_open_file_menu_before_invocation(self):
         calls = []
         class Control:
@@ -84,13 +97,14 @@ class NavigationTest(unittest.TestCase):
     def test_adding_an_effect_closes_diagnostics_before_opening_the_native_chooser(self):
         calls = []
         class Control:
+            def __init__(self, name): self.name = name
             def get_state_set(self): return self
-            def contains(self, state): return state == 'expanded'
+            def contains(self, state): return state == 'expanded' and self.name == 'Audio details'
         ui = types.SimpleNamespace(click=lambda name: calls.append(name), text=lambda *args: None,
-                                   wait_for=lambda name: Control())
+                                   wait_for=lambda name: Control(name))
         navigation.install(ui, types.SimpleNamespace(scope='Alive'), None, None)
         ui.click('Add effect')
-        self.assertEqual(calls, ['Audio details', 'Add effect'])
+        self.assertEqual(calls, ['Audio details', 'Add track or device', 'Add effect'])
 
 if __name__ == '__main__':
     unittest.main()
