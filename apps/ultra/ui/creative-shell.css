@@ -1,0 +1,77 @@
+/* Shared product-family chrome. Regions belong to the app; affordances do not.
+   Alive keeps Session/Arrangement, Ultra keeps its Max-style patching hierarchy. */
+.creative-app {
+  --ui-control-height: 27px;
+  --ui-radius: 2px;
+  --ui-gap: 6px;
+  --ui-inset: 9px;
+  --ui-menu-bg: #292929;
+  --ui-menu-border: #696969;
+  --ui-menu-shadow: 0 7px 18px #0007;
+  --ui-focus: var(--selection);
+  --ui-primary: var(--amber, var(--object-name));
+  --ui-muted: var(--muted);
+  font-family: "Liberation Sans", "Helvetica Neue", sans-serif;
+  font-size: 12px;
+}
+.creative-app .ui-menu-surface {
+  background: var(--ui-menu-bg);
+  border: 1px solid var(--ui-menu-border);
+  border-radius: var(--ui-radius);
+  box-shadow: var(--ui-menu-shadow);
+}
+.creative-app .ui-menu-surface button {
+  font-size: 11px;
+  border-radius: var(--ui-radius);
+}
+.creative-app .ui-file-menu > summary {
+  color: var(--text);
+  cursor: pointer;
+  border-radius: var(--ui-radius);
+}
+.creative-app .ui-file-menu > summary:hover,
+.creative-app .ui-file-menu[open] > summary { background: var(--raised, var(--chrome-raised)); }
+.creative-app .ui-info-rail {
+  display: flex;
+  align-items: center;
+  gap: var(--ui-gap);
+  overflow: hidden;
+  color: var(--ui-muted);
+}
+.creative-app .ui-info-label {
+  flex: none;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--ui-primary);
+}
+.creative-app .ui-info-text {
+  display: block;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.creative-app .ui-info-actions { display: flex; flex: none; align-items: center; gap: 2px; }
+.creative-app .ui-info-actions .icon-button { min-width: 23px; width: 23px; height: 23px; padding: 3px; }
+.creative-app .ui-info-actions .icon-button svg { width: 15px; height: 15px; }
+
+/* Share the visual grammar of output/settings, not backend device ownership. */
+.creative-app .ui-settings-surface { color: var(--text); font-size: 11px; }
+.creative-app .ui-settings-surface .audio-field { gap: var(--ui-gap); }
+.creative-app .ui-settings-surface .audio-field select,
+.creative-app .ui-settings-surface .audio-field input {
+  border: 1px solid var(--line);
+  background: #202020;
+  border-radius: var(--ui-radius);
+  min-height: var(--ui-control-height);
+}
+.creative-app .ui-settings-surface .audio-settings-actions { gap: var(--ui-gap); }
+.creative-app .ui-settings-surface .audio-settings-notice,
+.creative-app .ui-settings-surface .audio-hint,
+.creative-app .ui-settings-surface .muted { color: var(--ui-muted); }
+.creative-app .ui-settings-surface .audio-live { font-variant-numeric: tabular-nums; }
+.creative-app .ui-settings-surface button { border-radius: var(--ui-radius); }
+.creative-app :is(button,summary,select,input,textarea):focus-visible { outline-color: var(--ui-focus); }
