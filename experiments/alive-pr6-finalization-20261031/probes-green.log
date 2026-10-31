@@ -1,0 +1,14 @@
+✔ probe: numeric input rejected by history remains retryable (70.201615ms)
+✔ probe: drag during history fails without uncaught error and restores preview (11.641836ms)
+✔ probe: object entry retains typed work across history rejection (13.593654ms)
+✔ probe: history barrier rejects every authoring method atomically then admits after Undo and Redo (17.247947ms)
+✔ probe: admitted event survives later deletion but Stop and Panic invalidate it (10.417963ms)
+✔ probe: stopped status cache invalidates for hierarchy document switching and reuses thereafter (18.688018ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 231.857839

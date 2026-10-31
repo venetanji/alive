@@ -1,5 +1,14 @@
 # Alive / Ultra Plan
 
+## Integration Scope: PR #6, 2026-10-31
+
+The current task is to finalize and merge the implemented checkpoint into `main`,
+then stop. The product priorities below are backlog, not authorization to resume
+the paused broad goal or start more work in this session. The next dedicated
+UI/UX PR starts from integrated `main` and follows `docs/ALIVE_UI_HANDOFF.md`.
+Merge validation and known limitations are recorded in
+`experiments/alive-pr6-finalization-20261031/README.md`.
+
 ## Active Product Roadmap: 2026-10-31
 
 The owner has resumed development. This section gives the current product

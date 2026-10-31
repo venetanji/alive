@@ -1,5 +1,24 @@
 # Phase 2 Implementation Handoff
 
+## PR #6 Integration Checkpoint, 2026-10-31
+
+The user explicitly authorized finalizing PR #6, integrating its prerequisite
+branch and merging into `main`. This supersedes historical draft/base-branch,
+no-merge and restart-work instructions below. Do not resume the paused broad
+goal or begin features/UI work as part of this checkpoint.
+
+Use `docs/ALIVE_UI_HANDOFF.md` for the next dedicated UI PR and
+`experiments/alive-pr6-finalization-20261031/README.md` for fresh validation,
+known failures and build identity. The next branch starts from the integrated
+`main`, not the old release base. Existing evidence remains intact; local
+native-device work in other worktrees is not included.
+
+The UI must follow Live's spatial organization and control hierarchy: global
+transport at top, browser at left, Session/Arrangement in the main workspace,
+Clip/Device detail below, and contextual Help/Info reserved at bottom-left.
+Do not add arbitrary controls outside these regions. Implement the redesign
+in its own PR after integration, preserving the documented runtime invariants.
+
 ## Current Development
 
 Use the active roadmap at the top of `PLAN.md` and the current application
