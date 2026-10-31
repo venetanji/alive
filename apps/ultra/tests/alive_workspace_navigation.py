@@ -15,8 +15,22 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
         if not control.get_state_set().contains(Atspi.StateType.EXPANDED):
             activate(name)
 
+    def ensure_detail(tab, sentinel):
+        # If an accessibility snapshot omits PRESSED, do not toggle a
+        # visibly open panel shut while preparing a control.
+        try:
+            if ui.find(sentinel).get_state_set().contains(Atspi.StateType.VISIBLE):
+                return
+        except (AttributeError, StopIteration):
+            pass
+        if not ui.wait_for(tab).get_state_set().contains(Atspi.StateType.PRESSED):
+            click(tab)
+
     def prepare(name):
         if windows.scope != 'Alive':
+            return
+        if name in ('New session', 'Open session', 'Save session as', 'Quit Alive'):
+            expand('File menu')
             return
         if name in ('Seek beat', 'Seek transport', 'Transport length beats', 'Track column width'):
             expand('Transport and view options')
@@ -57,16 +71,23 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
         details = ui.wait_for('Audio details')
         if details.get_state_set().contains(Atspi.StateType.EXPANDED):
             click('Audio details')
+        if name in ('Add effect', 'Add instrument track'):
+            expand('Add track or device')
         if device or clip:
-            tab = 'Devices detail' if device else 'Clip detail'
-            if not ui.wait_for(tab).get_state_set().contains(Atspi.StateType.PRESSED):
-                click(tab)
+            tab = 'Toggle Device view' if device else 'Toggle Clip view'
+            ensure_detail(tab, 'Edit selected device in Ultra' if device else 'Source / Clip')
             if notes:
                 expand('Note inspector')
             if automation:
                 expand('Automation inspector')
             if source_actions:
                 expand('Source / Clip')
+            elif name == 'Add note':
+                # Its popup can cover the following Clip header in Arrangement.
+                # Close it through the same disclosure a user would operate.
+                source = ui.wait_for('Source / Clip')
+                if source.get_state_set().contains(Atspi.StateType.EXPANDED):
+                    click('Source / Clip')
         if track_action:
             track = next(value for value in track_action.groups() if value)
             column = ui.wait_for(track + ' track')
@@ -76,6 +97,10 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
                 ui.keys('Return')
 
     def visible_click(name):
+        if windows.scope == 'Alive' and name in ('Clip detail', 'Devices detail'):
+            tab = 'Toggle Clip view' if name == 'Clip detail' else 'Toggle Device view'
+            ensure_detail(tab, 'Source / Clip' if name == 'Clip detail' else 'Edit selected device in Ultra')
+            return
         if re.fullmatch(r'Select .+ (?:instrument|effect \d+)', name):
             return select_device(name)
         prepare(name)

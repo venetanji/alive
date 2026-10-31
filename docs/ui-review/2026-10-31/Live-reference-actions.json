@@ -1,0 +1,2331 @@
+{
+  "title": "Live reference functionality and keybinding inventory",
+  "source_scope": {
+    "capture_date": "2026-10-31",
+    "platform_notation": "Ctrl-based Windows/Linux notation as captured; actual operating system and Live version are not independently established.",
+    "purpose": "Screenshot reference only. Not an Alive implementation specification or claim of implemented functionality.",
+    "state_semantics": "Enabled, disabled, highlighted and visible checkmarks describe only this captured context. Disabled does not mean permanently unavailable. A false visible_checkmark means no checkmark is visible, not necessarily a toggle command.",
+    "shortcut_semantics": "Null means no shortcut displayed in the captured row, not that no shortcut exists. Labels and modifier ordering are transcribed as shown.",
+    "limitations": [
+      "Eight user-provided screenshot crops only. No hidden submenu commands inferred.",
+      "View appears in the menu bar but its expanded menu is not captured. No View show/hide shortcuts are established by this inventory.",
+      "Most menu headings are cropped; those menu paths are categorized from visible command groups and explicitly identified in source metadata.",
+      "Edit menu is scrollable and incomplete."
+    ],
+    "alive_assessment": "Session 5 maps all captured rows conservatively. Supported equivalents may differ in format, scope or shortcut; proposed_unverified is not an implementation or a proof of permanent unavailability."
+  },
+  "sources": [
+    {
+      "file": "references/image(20261031-150503).png",
+      "menu": "File",
+      "heading_visible": true,
+      "coverage": "Visible menu body; submenu contents are not captured.",
+      "menu_identification": "Visible heading"
+    },
+    {
+      "file": "references/image(20261031-150504).png",
+      "menu": "Create",
+      "heading_visible": false,
+      "coverage": "Visible menu body; submenu contents are not captured.",
+      "menu_identification": "Categorized from visible command group; heading is outside crop"
+    },
+    {
+      "file": "references/image(20261031-150505).png",
+      "menu": "Edit",
+      "heading_visible": false,
+      "coverage": "Scroll arrows visible at both top and bottom. This is an incomplete menu capture. Final Fit to Time Range row is partially clipped; no unseen rows inferred.",
+      "menu_identification": "Categorized from visible command group; heading is outside crop"
+    },
+    {
+      "file": "references/image(20261031-150507).png",
+      "menu": "Help",
+      "heading_visible": false,
+      "coverage": "Visible menu body; submenu contents are not captured.",
+      "menu_identification": "Categorized from visible command group; heading is outside crop"
+    },
+    {
+      "file": "references/image(20261031-150508).png",
+      "menu": "Options",
+      "heading_visible": false,
+      "coverage": "Visible menu body; submenu contents are not captured.",
+      "menu_identification": "Categorized from visible command group; heading is outside crop"
+    },
+    {
+      "file": "references/image(20261031-150509).png",
+      "menu": "Navigate",
+      "heading_visible": false,
+      "coverage": "Visible menu body; submenu contents are not captured.",
+      "menu_identification": "Categorized from visible command group; heading is outside crop"
+    },
+    {
+      "file": "references/image(20261031-150510).png",
+      "menu": "Playback",
+      "heading_visible": false,
+      "coverage": "Visible menu body; submenu contents are not captured.",
+      "menu_identification": "Categorized from visible command group; heading is outside crop"
+    },
+    {
+      "file": "references/image(20261031-150511).png",
+      "menu": "Help",
+      "heading_visible": true,
+      "coverage": "Menu bar and only upper fragment of Help menu. Learn View is fully visible; Pack Overview is clipped on the right; Load Demo Set is clipped at bottom. These duplicate the complete Help capture 150507; no extra actions added.",
+      "menu_identification": "Visible Help heading",
+      "visible_menu_bar_labels": [
+        "File",
+        "Edit",
+        "Create",
+        "Playback",
+        "View",
+        "Navigate",
+        "Options",
+        "Help"
+      ]
+    }
+  ],
+  "action_count": 140,
+  "actions": [
+    {
+      "menu_path": [
+        "File",
+        "New Live Set"
+      ],
+      "label": "New Live Set",
+      "shortcut": "Ctrl+N",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150503).png",
+      "alive_status": "supported_equivalent",
+      "notes": null,
+      "alive_evidence": "Alive native session New; not a Live Set format operation (#new, alive.mjs file())."
+    },
+    {
+      "menu_path": [
+        "File",
+        "Open Live Set..."
+      ],
+      "label": "Open Live Set...",
+      "shortcut": "Ctrl+O",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150503).png",
+      "alive_status": "supported_equivalent",
+      "notes": null,
+      "alive_evidence": "Alive native session Open; Live Set import is not claimed (#open, alive.mjs file())."
+    },
+    {
+      "menu_path": [
+        "File",
+        "Open Recent Set"
+      ],
+      "label": "Open Recent Set",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": true,
+      "highlighted": false,
+      "source": "references/image(20261031-150503).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "File",
+        "Close Window"
+      ],
+      "label": "Close Window",
+      "shortcut": "Ctrl+W",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150503).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "File",
+        "Install Pack..."
+      ],
+      "label": "Install Pack...",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150503).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "File",
+        "Add Folder to Browser..."
+      ],
+      "label": "Add Folder to Browser...",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150503).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "File",
+        "Manage Files"
+      ],
+      "label": "Manage Files",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150503).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "File",
+        "Open Live Set Backups"
+      ],
+      "label": "Open Live Set Backups",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": true,
+      "highlighted": false,
+      "source": "references/image(20261031-150503).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "File",
+        "Save Live Set"
+      ],
+      "label": "Save Live Set",
+      "shortcut": "Ctrl+S",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150503).png",
+      "alive_status": "supported_equivalent",
+      "notes": null,
+      "alive_evidence": "Alive native session Save; does not export Live format (#save, alive.mjs file())."
+    },
+    {
+      "menu_path": [
+        "File",
+        "Save Live Set As..."
+      ],
+      "label": "Save Live Set As...",
+      "shortcut": "Ctrl+Shift+S",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150503).png",
+      "alive_status": "supported_equivalent",
+      "notes": null,
+      "alive_evidence": "Alive native session Save As; does not export Live format (#save-as, alive.mjs file())."
+    },
+    {
+      "menu_path": [
+        "File",
+        "Save a Copy..."
+      ],
+      "label": "Save a Copy...",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150503).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "File",
+        "Collect All and Save"
+      ],
+      "label": "Collect All and Save",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150503).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "File",
+        "Save Live Set As Template..."
+      ],
+      "label": "Save Live Set As Template...",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150503).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "File",
+        "Save Live Set As Default Set..."
+      ],
+      "label": "Save Live Set As Default Set...",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150503).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "File",
+        "Export Audio/Video..."
+      ],
+      "label": "Export Audio/Video...",
+      "shortcut": "Ctrl+Shift+R",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150503).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "File",
+        "Export MIDI Clip..."
+      ],
+      "label": "Export MIDI Clip...",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150503).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "File",
+        "Quit"
+      ],
+      "label": "Quit",
+      "shortcut": "Ctrl+Q",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150503).png",
+      "alive_status": "supported_equivalent",
+      "notes": null,
+      "alive_evidence": "Alive native quit with unsaved-session handling (#quit, alive.mjs file())."
+    },
+    {
+      "menu_path": [
+        "Create",
+        "Insert Audio Track"
+      ],
+      "label": "Insert Audio Track",
+      "shortcut": "Ctrl+T",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150504).png",
+      "alive_status": "supported_equivalent",
+      "notes": null,
+      "alive_evidence": "Alive track insertion (#insert-audio-track, alive.mjs insertTrack())."
+    },
+    {
+      "menu_path": [
+        "Create",
+        "Insert MIDI Track"
+      ],
+      "label": "Insert MIDI Track",
+      "shortcut": "Ctrl+Shift+T",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150504).png",
+      "alive_status": "supported_equivalent",
+      "notes": null,
+      "alive_evidence": "Alive track insertion (#insert-midi-track, alive.mjs insertTrack())."
+    },
+    {
+      "menu_path": [
+        "Create",
+        "Insert Return Track"
+      ],
+      "label": "Insert Return Track",
+      "shortcut": "Ctrl+Alt+T",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": true,
+      "source": "references/image(20261031-150504).png",
+      "alive_status": "unavailable",
+      "notes": null,
+      "alive_evidence": "Return tracks and native send routing are deferred in IMPLEMENTATION-PLAN M2."
+    },
+    {
+      "menu_path": [
+        "Create",
+        "Insert Take Lane"
+      ],
+      "label": "Insert Take Lane",
+      "shortcut": "Shift+Alt+T",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150504).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Create",
+        "Insert Time..."
+      ],
+      "label": "Insert Time...",
+      "shortcut": "Ctrl+I",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150504).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Create",
+        "Capture and Insert Scene"
+      ],
+      "label": "Capture and Insert Scene",
+      "shortcut": "Ctrl+Shift+I",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150504).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Create",
+        "Consolidate Time to New Scene"
+      ],
+      "label": "Consolidate Time to New Scene",
+      "shortcut": null,
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150504).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Create",
+        "Insert Empty MIDI Clip"
+      ],
+      "label": "Insert Empty MIDI Clip",
+      "shortcut": "Ctrl+Shift+M",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150504).png",
+      "alive_status": "supported_equivalent",
+      "notes": null,
+      "alive_evidence": "Alive empty MIDI clip creation uses context and Ctrl+Shift+M (alive.mjs keydown)."
+    },
+    {
+      "menu_path": [
+        "Create",
+        "Capture MIDI"
+      ],
+      "label": "Capture MIDI",
+      "shortcut": null,
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150504).png",
+      "alive_status": "unavailable",
+      "notes": null,
+      "alive_evidence": "MIDI capture is not provided by the current native contract (IMPLEMENTATION-BRIEF capability gaps)."
+    },
+    {
+      "menu_path": [
+        "Create",
+        "Create Fade"
+      ],
+      "label": "Create Fade",
+      "shortcut": "Ctrl+Alt+F",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150504).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Create",
+        "Slice to New MIDI Track"
+      ],
+      "label": "Slice to New MIDI Track",
+      "shortcut": null,
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150504).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Create",
+        "Convert Harmony to New MIDI Track"
+      ],
+      "label": "Convert Harmony to New MIDI Track",
+      "shortcut": null,
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150504).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Create",
+        "Convert Melody to New MIDI Track"
+      ],
+      "label": "Convert Melody to New MIDI Track",
+      "shortcut": null,
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150504).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Create",
+        "Convert Drums to New MIDI Track"
+      ],
+      "label": "Convert Drums to New MIDI Track",
+      "shortcut": null,
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150504).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Create",
+        "Separate Stems to New Audio Tracks"
+      ],
+      "label": "Separate Stems to New Audio Tracks",
+      "shortcut": null,
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150504).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Create",
+        "Add Locator"
+      ],
+      "label": "Add Locator",
+      "shortcut": null,
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150504).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Create",
+        "Add Time Signature Change"
+      ],
+      "label": "Add Time Signature Change",
+      "shortcut": null,
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150504).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Create",
+        "Import Audio/MIDI File..."
+      ],
+      "label": "Import Audio/MIDI File...",
+      "shortcut": null,
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150504).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Undo Insert Clip"
+      ],
+      "label": "Undo Insert Clip",
+      "shortcut": "Ctrl+Z",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": true,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "supported_equivalent",
+      "notes": null,
+      "alive_evidence": "Alive Undo of supported edits (#undo, alive.mjs); label and history differ by context."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Nothing to Redo"
+      ],
+      "label": "Nothing to Redo",
+      "shortcut": "Ctrl+Y",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "supported_equivalent",
+      "notes": null,
+      "alive_evidence": "Alive Redo of supported edits (#redo, alive.mjs); enabled state reflects history."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Cut"
+      ],
+      "label": "Cut",
+      "shortcut": "Ctrl+X",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Copy"
+      ],
+      "label": "Copy",
+      "shortcut": "Ctrl+C",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Paste"
+      ],
+      "label": "Paste",
+      "shortcut": "Ctrl+V",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Duplicate"
+      ],
+      "label": "Duplicate",
+      "shortcut": "Ctrl+D",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Delete"
+      ],
+      "label": "Delete",
+      "shortcut": "Del",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Activate/Deactivate Note(s)"
+      ],
+      "label": "Activate/Deactivate Note(s)",
+      "shortcut": "0",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Select All"
+      ],
+      "label": "Select All",
+      "shortcut": "Ctrl+A",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Invert Selection"
+      ],
+      "label": "Invert Selection",
+      "shortcut": "Ctrl+Shift+A",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Select Loop"
+      ],
+      "label": "Select Loop",
+      "shortcut": "Ctrl+Shift+L",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Deactivate Loop"
+      ],
+      "label": "Deactivate Loop",
+      "shortcut": "Ctrl+L",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Clip Markers"
+      ],
+      "label": "Clip Markers",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": true,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Group Notes (Play All)"
+      ],
+      "label": "Group Notes (Play All)",
+      "shortcut": "Ctrl+G",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Ungroup Notes"
+      ],
+      "label": "Ungroup Notes",
+      "shortcut": "Ctrl+Shift+G",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Compare: Switch to B"
+      ],
+      "label": "Compare: Switch to B",
+      "shortcut": "P",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Compare: Copy A to B"
+      ],
+      "label": "Compare: Copy A to B",
+      "shortcut": null,
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Cut Time"
+      ],
+      "label": "Cut Time",
+      "shortcut": "Ctrl+Shift+X",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Copy Time"
+      ],
+      "label": "Copy Time",
+      "shortcut": "Ctrl+Shift+C",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Paste Time"
+      ],
+      "label": "Paste Time",
+      "shortcut": "Ctrl+Shift+V",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Duplicate Time"
+      ],
+      "label": "Duplicate Time",
+      "shortcut": "Ctrl+Shift+D",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Delete Time"
+      ],
+      "label": "Delete Time",
+      "shortcut": "Ctrl+Shift+Del",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Apply Transformation/Generator"
+      ],
+      "label": "Apply Transformation/Generator",
+      "shortcut": "Ctrl+Enter",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Rename"
+      ],
+      "label": "Rename",
+      "shortcut": "Ctrl+R",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Edit Info Text"
+      ],
+      "label": "Edit Info Text",
+      "shortcut": null,
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Solo Track"
+      ],
+      "label": "Solo Track",
+      "shortcut": "S",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "supported_equivalent",
+      "notes": null,
+      "alive_evidence": "Alive track solo on existing mixer control (alive.mjs buildTracks)."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Arm Track"
+      ],
+      "label": "Arm Track",
+      "shortcut": "C",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Freeze Track"
+      ],
+      "label": "Freeze Track",
+      "shortcut": "Ctrl+Shift+Alt+F",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Bounce Track in Place"
+      ],
+      "label": "Bounce Track in Place",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Bounce to New Track"
+      ],
+      "label": "Bounce to New Track",
+      "shortcut": "Ctrl+B",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Paste Bounced Audio"
+      ],
+      "label": "Paste Bounced Audio",
+      "shortcut": "Ctrl+Alt+V",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Split Note(s)"
+      ],
+      "label": "Split Note(s)",
+      "shortcut": "Ctrl+E",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Join Notes"
+      ],
+      "label": "Join Notes",
+      "shortcut": "Ctrl+J",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Edit",
+        "Fit to Time Range"
+      ],
+      "label": "Fit to Time Range",
+      "shortcut": "Ctrl+Alt+L",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150505).png",
+      "alive_status": "proposed_unverified",
+      "notes": "Bottom of label and shortcut are clipped; transcribed visible text.",
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Help",
+        "Learn View"
+      ],
+      "label": "Learn View",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150507).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "additional_sources": [
+        "references/image(20261031-150511).png"
+      ],
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Help",
+        "Pack Overview"
+      ],
+      "label": "Pack Overview",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150507).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Help",
+        "Load Demo Set"
+      ],
+      "label": "Load Demo Set",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150507).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Help",
+        "Read the Live Manual..."
+      ],
+      "label": "Read the Live Manual...",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150507).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Help",
+        "Learn Live at ableton.com..."
+      ],
+      "label": "Learn Live at ableton.com...",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150507).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Help",
+        "Join the User Forum..."
+      ],
+      "label": "Join the User Forum...",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150507).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Help",
+        "Get Support"
+      ],
+      "label": "Get Support",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150507).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Help",
+        "User Account and Licenses..."
+      ],
+      "label": "User Account and Licenses...",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150507).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Help",
+        "Check for Updates..."
+      ],
+      "label": "Check for Updates...",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150507).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Help",
+        "About Live..."
+      ],
+      "label": "About Live...",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150507).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Accessibility"
+      ],
+      "label": "Accessibility",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": true,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Edit MIDI Map"
+      ],
+      "label": "Edit MIDI Map",
+      "shortcut": "Ctrl+M",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Edit Key Map"
+      ],
+      "label": "Edit Key Map",
+      "shortcut": "Ctrl+K",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Computer MIDI Keyboard"
+      ],
+      "label": "Computer MIDI Keyboard",
+      "shortcut": "M",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "MIDI Note Editor Preview"
+      ],
+      "label": "MIDI Note Editor Preview",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "supported_equivalent",
+      "notes": null,
+      "alive_evidence": "Alive MIDI note Preview (alive-clip-view.mjs); native instrument capability is required."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Browser File Preview"
+      ],
+      "label": "Browser File Preview",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": true,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "External Sync"
+      ],
+      "label": "External Sync",
+      "shortcut": null,
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Delay Compensation"
+      ],
+      "label": "Delay Compensation",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": true,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Reduced Latency When Monitoring"
+      ],
+      "label": "Reduced Latency When Monitoring",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Time Ruler Format"
+      ],
+      "label": "Time Ruler Format",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": true,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Narrow Grid"
+      ],
+      "label": "Narrow Grid",
+      "shortcut": "Ctrl+1",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Widen Grid"
+      ],
+      "label": "Widen Grid",
+      "shortcut": "Ctrl+2",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Triplet Grid"
+      ],
+      "label": "Triplet Grid",
+      "shortcut": "Ctrl+3",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Snap to Grid"
+      ],
+      "label": "Snap to Grid",
+      "shortcut": "Ctrl+4",
+      "visible_state": "enabled",
+      "visible_checkmark": true,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Snap Automation to Grid"
+      ],
+      "label": "Snap Automation to Grid",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": true,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Fixed Grid"
+      ],
+      "label": "Fixed Grid",
+      "shortcut": "Ctrl+5",
+      "visible_state": "enabled",
+      "visible_checkmark": true,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Draw Mode (Pitch Lock Off)"
+      ],
+      "label": "Draw Mode (Pitch Lock Off)",
+      "shortcut": "B",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Step Input Mode"
+      ],
+      "label": "Step Input Mode",
+      "shortcut": "Ctrl+Shift+B",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Highlight Scales"
+      ],
+      "label": "Highlight Scales",
+      "shortcut": "K",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Chase MIDI Notes"
+      ],
+      "label": "Chase MIDI Notes",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": true,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "MIDI Envelope Auto-Reset"
+      ],
+      "label": "MIDI Envelope Auto-Reset",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": true,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Retune Set On Loading Tuning Systems"
+      ],
+      "label": "Retune Set On Loading Tuning Systems",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Solo Switches"
+      ],
+      "label": "Solo Switches",
+      "shortcut": null,
+      "visible_state": "disabled",
+      "visible_checkmark": true,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Cue Switches"
+      ],
+      "label": "Cue Switches",
+      "shortcut": null,
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Solo in Place"
+      ],
+      "label": "Solo in Place",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": true,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Lock Envelopes"
+      ],
+      "label": "Lock Envelopes",
+      "shortcut": null,
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "MIDI Arrangement Overdub"
+      ],
+      "label": "MIDI Arrangement Overdub",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Max for Live Developer Mode"
+      ],
+      "label": "Max for Live Developer Mode",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Audio Engine On"
+      ],
+      "label": "Audio Engine On",
+      "shortcut": "Ctrl+Shift+Alt+E",
+      "visible_state": "enabled",
+      "visible_checkmark": true,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Options",
+        "Settings..."
+      ],
+      "label": "Settings...",
+      "shortcut": "Ctrl+,",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150508).png",
+      "alive_status": "supported_equivalent",
+      "notes": null,
+      "alive_evidence": "Alive audio settings (#show-audio); other Live preferences are not implied."
+    },
+    {
+      "menu_path": [
+        "Navigate",
+        "Control Bar"
+      ],
+      "label": "Control Bar",
+      "shortcut": "Alt+0",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150509).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Navigate",
+        "Session View"
+      ],
+      "label": "Session View",
+      "shortcut": "Alt+1",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150509).png",
+      "alive_status": "supported_equivalent",
+      "notes": null,
+      "alive_evidence": "Alive Session workspace switch (#view-session); menu focus action is explicitly separate."
+    },
+    {
+      "menu_path": [
+        "Navigate",
+        "Arrangement View"
+      ],
+      "label": "Arrangement View",
+      "shortcut": "Alt+2",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150509).png",
+      "alive_status": "supported_equivalent",
+      "notes": null,
+      "alive_evidence": "Alive Arrangement workspace switch (#view-arrangement); menu focus action is explicitly separate."
+    },
+    {
+      "menu_path": [
+        "Navigate",
+        "Clip View"
+      ],
+      "label": "Clip View",
+      "shortcut": "Alt+3",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150509).png",
+      "alive_status": "supported_equivalent",
+      "notes": null,
+      "alive_evidence": "Alive Clip visibility toggle (#detail-clip); no claim of matching captured shortcut."
+    },
+    {
+      "menu_path": [
+        "Navigate",
+        "Device View"
+      ],
+      "label": "Device View",
+      "shortcut": "Alt+4",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150509).png",
+      "alive_status": "supported_equivalent",
+      "notes": null,
+      "alive_evidence": "Alive Device visibility toggle (#detail-devices); no claim of matching captured shortcut."
+    },
+    {
+      "menu_path": [
+        "Navigate",
+        "Browser"
+      ],
+      "label": "Browser",
+      "shortcut": "Alt+5",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150509).png",
+      "alive_status": "supported_equivalent",
+      "notes": null,
+      "alive_evidence": "Alive Browser visibility toggle (#toggle-browser); no claim of matching captured shortcut."
+    },
+    {
+      "menu_path": [
+        "Navigate",
+        "Groove Pool"
+      ],
+      "label": "Groove Pool",
+      "shortcut": "Alt+6",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150509).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Navigate",
+        "Learn View"
+      ],
+      "label": "Learn View",
+      "shortcut": "Alt+7",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150509).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Navigate",
+        "Tuning"
+      ],
+      "label": "Tuning",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150509).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Navigate",
+        "Mixer"
+      ],
+      "label": "Mixer",
+      "shortcut": "Shift+Alt+M",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150509).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Navigate",
+        "Clip Panels"
+      ],
+      "label": "Clip Panels",
+      "shortcut": "Shift+Alt+P",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150509).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Navigate",
+        "Previous"
+      ],
+      "label": "Previous",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150509).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Navigate",
+        "Next"
+      ],
+      "label": "Next",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150509).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Navigate",
+        "Switch To Expression Editor"
+      ],
+      "label": "Switch To Expression Editor",
+      "shortcut": "Ctrl+Shift+Tab",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150509).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Navigate",
+        "Switch To Envelopes Editor"
+      ],
+      "label": "Switch To Envelopes Editor",
+      "shortcut": "Ctrl+Tab",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150509).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Navigate",
+        "Browser History Back"
+      ],
+      "label": "Browser History Back",
+      "shortcut": "Ctrl+[",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150509).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Navigate",
+        "Browser History Forward"
+      ],
+      "label": "Browser History Forward",
+      "shortcut": "Ctrl+]",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150509).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Navigate",
+        "Use Tab Key to Move Focus"
+      ],
+      "label": "Use Tab Key to Move Focus",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150509).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Navigate",
+        "Wrap Keyboard Navigation"
+      ],
+      "label": "Wrap Keyboard Navigation",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": true,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150509).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Playback",
+        "Play"
+      ],
+      "label": "Play",
+      "shortcut": "Space",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150510).png",
+      "alive_status": "supported_equivalent",
+      "notes": null,
+      "alive_evidence": "Alive transport Start (#start, alive.mjs transport())."
+    },
+    {
+      "menu_path": [
+        "Playback",
+        "Continue Playback"
+      ],
+      "label": "Continue Playback",
+      "shortcut": "Shift+Space",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150510).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Playback",
+        "Play From Insert Marker"
+      ],
+      "label": "Play From Insert Marker",
+      "shortcut": "Ctrl+Space",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150510).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Playback",
+        "Return Play Position to 1.1.1"
+      ],
+      "label": "Return Play Position to 1.1.1",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150510).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Playback",
+        "Move Insert Marker To Playhead"
+      ],
+      "label": "Move Insert Marker To Playhead",
+      "shortcut": "Ctrl+Shift+Space",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150510).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Playback",
+        "Options"
+      ],
+      "label": "Options",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": true,
+      "highlighted": false,
+      "source": "references/image(20261031-150510).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Playback",
+        "Record to Arrangement"
+      ],
+      "label": "Record to Arrangement",
+      "shortcut": "F9",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150510).png",
+      "alive_status": "unavailable",
+      "notes": null,
+      "alive_evidence": "Native recording is deferred (IMPLEMENTATION-PLAN M2)."
+    },
+    {
+      "menu_path": [
+        "Playback",
+        "Arm Recording to Arrangement"
+      ],
+      "label": "Arm Recording to Arrangement",
+      "shortcut": "Shift+F9",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150510).png",
+      "alive_status": "unavailable",
+      "notes": null,
+      "alive_evidence": "Native recording is deferred (IMPLEMENTATION-PLAN M2)."
+    },
+    {
+      "menu_path": [
+        "Playback",
+        "Record to Session"
+      ],
+      "label": "Record to Session",
+      "shortcut": "Ctrl+Shift+F9",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150510).png",
+      "alive_status": "unavailable",
+      "notes": null,
+      "alive_evidence": "Native recording is deferred (IMPLEMENTATION-PLAN M2)."
+    },
+    {
+      "menu_path": [
+        "Playback",
+        "Metronome"
+      ],
+      "label": "Metronome",
+      "shortcut": "O",
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150510).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Playback",
+        "Hear Metronome Only While Recording"
+      ],
+      "label": "Hear Metronome Only While Recording",
+      "shortcut": null,
+      "visible_state": "enabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150510).png",
+      "alive_status": "proposed_unverified",
+      "notes": null,
+      "alive_evidence": "No equivalent owner verified in this batch; reference capture alone does not establish an Alive capability."
+    },
+    {
+      "menu_path": [
+        "Playback",
+        "Back to Arrangement"
+      ],
+      "label": "Back to Arrangement",
+      "shortcut": "F10",
+      "visible_state": "disabled",
+      "visible_checkmark": false,
+      "has_submenu": false,
+      "highlighted": false,
+      "source": "references/image(20261031-150510).png",
+      "alive_status": "supported_equivalent",
+      "notes": null,
+      "alive_evidence": "Alive Return all tracks (#return-all); native capability can disable it."
+    }
+  ]
+}

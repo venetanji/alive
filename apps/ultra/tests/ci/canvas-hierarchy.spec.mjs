@@ -2,9 +2,9 @@ import {test,expect} from '@playwright/test';
 import {readFile} from 'node:fs/promises';
 
 const wire=(from,to)=>({from,outlet:0,to,inlet:0});
-const patch={version:2,profile:'ultra-patcher-v2',nodes:[
+const patch={version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[
   {id:1,type:'message',x:60,y:50,params:{text:'7'}},
-  {id:2,type:'patcher',x:60,y:130,params:{name:'basic'},patcher:{nodes:[
+  {id:2,type:'patcher',x:60,y:130,params:{name:'basic'},patcher:{presentation:null,nodes:[
     {id:3,type:'inlet',x:60,y:50,params:{}},{id:4,type:'add',x:60,y:130,params:{rhs:10}},
     {id:5,type:'outlet',x:60,y:210,params:{}},{id:7,type:'comment',x:200,y:50,params:{text:'An embedded patcher.'}},
   ],edges:[wire(3,4),wire(4,5)]}},

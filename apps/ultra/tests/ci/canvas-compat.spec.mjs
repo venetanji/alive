@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test';
 
-const empty={version:1,profile:'ultra-canvas-v1',nodes:[],edges:[]};
+const empty={version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[],edges:[]};
 async function open(page){await page.locator('.file-menu summary').click();await page.locator('#open-patch').click();}
 async function load(page,patch){await open(page);await page.locator('#patch-json').fill(JSON.stringify(patch));await page.locator('#import-patch').click();}
 async function exported(page){
@@ -142,7 +142,7 @@ test('saved comment rectangles show wrapped and explicit lines at their saved fo
     {id:3,type:'comment',x:50,y:180,params:{text:'<img src=x onerror=alert(1)>\nLiteral text'},style:{width:260,height:50,fontsize:12}},
     {id:4,type:'comment',x:350,y:180,params:{text:'An unsized note\nkeeps its second line\nand its third line.'},style:{width:160,fontsize:13}},
   ];
-  await page.goto('/canvas.html');await load(page,{version:2,profile:'ultra-patcher-v2',nodes:comments,edges:[]});
+  await page.goto('/canvas.html');await load(page,{version:2,profile:'ultra-patcher-v2',presentation:null,nodes:comments,edges:[]});
   for(const comment of comments){
     const node=page.locator(`[data-node="${comment.id}"]`),label=node.locator('.comment-label');
     await expect(node).toHaveCSS('width',`${comment.style.width}px`);
@@ -165,7 +165,7 @@ test('saved comment rectangles show wrapped and explicit lines at their saved fo
 
 test('comment text keeps keyboard focus, direct editing and drag history',async({page})=>{
   const node={id:1,type:'comment',x:70,y:60,params:{text:'An editable note.'},style:{width:180,height:46,fontsize:13}};
-  await page.goto('/canvas.html');await load(page,{version:2,profile:'ultra-patcher-v2',nodes:[node],edges:[]});
+  await page.goto('/canvas.html');await load(page,{version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[node],edges:[]});
   const comment=page.locator('[data-node="1"]'),label=comment.locator('.comment-label');
   await label.focus();await page.keyboard.press('Enter');
   await expect(page.locator('#object-entry')).toBeVisible();
@@ -186,7 +186,7 @@ test('comment callouts reserve their arrow side and stay within saved bounds',as
     params:{text:'A callout note.\nA second line.'},style:{width:220,height:80,fontsize:13,bubble:1,bubbleside:side,bubblepoint:.5}}));
   comments.push(...[0,1].map((point,index)=>({id:index+5,type:'comment',x:50+index*40,y:200,params:{text:''},
     style:{width:12,height:12,fontsize:48,bubble:1,bubbleside:index?3:0,bubblepoint:point}})));
-  await page.goto('/canvas.html');await load(page,{version:2,profile:'ultra-patcher-v2',nodes:comments,edges:[]});
+  await page.goto('/canvas.html');await load(page,{version:2,profile:'ultra-patcher-v2',presentation:null,nodes:comments,edges:[]});
   for(const comment of comments){
     const node=page.locator(`[data-node="${comment.id}"]`),outline=node.locator('.comment-outline');
     await expect(outline).toBeVisible();await expect(outline).toHaveAttribute('aria-hidden','true');
@@ -211,7 +211,7 @@ test('comment callouts reserve their arrow side and stay within saved bounds',as
 test('comment callout typography and colors update and reset with saved appearance',async({page})=>{
   const node={id:1,type:'comment',x:60,y:60,params:{text:'First line\nSecond line\nThird line'},
     style:{width:220,height:54,fontsize:13,bubble:1,bgcolor:[.2,.4,.6,.4],color:[.2,.2,.2,.7],textcolor:[1,.8,.6,1]}};
-  await page.goto('/canvas.html');await load(page,{version:2,profile:'ultra-patcher-v2',nodes:[node],edges:[]});
+  await page.goto('/canvas.html');await load(page,{version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[node],edges:[]});
   const comment=page.locator('[data-node="1"]'),label=comment.locator('.comment-label'),outline=comment.locator('.comment-outline');
   const textGeometry=await label.evaluate(element=>{
     const range=document.createRange();range.selectNodeContents(element);

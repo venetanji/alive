@@ -116,7 +116,7 @@ def exited(pid):
 def run():
     global restart, capture
     windows.focus('Alive')
-    ui.wait_for('MIDI source')
+    alive.prepare_workspace_control('MIDI source'); ui.wait_for('MIDI source'); ui.click('Source / Clip')
     assert alive.value('Transport position beats') == '0.000 beats'
     initial = alive.file_score(json.loads((ui.output / 'initial.alive').read_text()))
     initial_identity = process_identity(ui.pid)
@@ -246,7 +246,7 @@ def run():
     restart = subprocess.Popen([os.environ['ULTRA_TEST_ALIVE_BINARY'], str(path)], env=env, stdout=restart_log, stderr=subprocess.STDOUT)
     restart_log.close()
     ui.pid = restart.pid; windows.scope = 'Alive'; windows.focus('Alive')
-    ui.wait_for('MIDI source')
+    alive.prepare_workspace_control('MIDI source'); ui.wait_for('MIDI source'); ui.click('Source / Clip')
     reopened_identity = process_identity(ui.pid)
     assert_same_identity(initial_identity, reopened_identity)
     assert alive.value('Transport playing') == 'false'

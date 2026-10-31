@@ -2,27 +2,456 @@ import {test,expect} from '@playwright/test';
 import {projectFixturePresentation} from '../presentation-dom.mjs';
 import {readFileSync,mkdirSync} from 'node:fs';
 
+test('browser preview disables native-only menu commands and retains local Help',async({page})=>{
+  await page.goto('/alive.html');
+  await expect(page.locator('#start')).toBeDisabled();await expect(page.locator('#start')).toHaveCSS('opacity','0.5');
+  await page.getByRole('button',{name:'File menu',exact:true}).click();await expect(page.getByRole('button',{name:'New session',exact:true})).toBeDisabled();
+  await page.getByRole('button',{name:'Playback menu',exact:true}).click();await expect(page.getByRole('button',{name:'Start',exact:true})).toBeDisabled();
+  await page.getByRole('button',{name:'Help menu',exact:true}).click();await expect(page.getByRole('button',{name:'Toggle contextual Help',exact:true})).toBeEnabled();
+});
+
+test('source disclosure remains available when switching workspaces',async({page})=>{
+  await openSession(page);const source=page.getByText('Source / Clip',{exact:true});
+  await expect(source).toBeVisible();await page.getByRole('button',{name:'Arrangement workspace',exact:true}).click();await expect(source).toBeVisible();
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('unselected track menu opens its own editor without selecting the track',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);
+  const harmony=page.locator('.track[data-track-id="track-2"]');
+  await harmony.locator('.track-inspector summary').click();
+  await page.getByRole('button',{name:'Open Harmony editor',exact:true}).click();
+  await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_editor').length)).toBe(1);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([{name:'alive_editor',args:{instanceId:'instrument-1',generation:1}}]);
+  await expect(page.getByRole('button',{name:'Select Pulse track',exact:true})).toHaveAttribute('aria-pressed','true');
+});
+
+test('End resize exposes the full Clip Launch Quantization control at 1440',async({page},testInfo)=>{
+  await page.setViewportSize({width:1440,height:900});await openSession(page);await page.locator('#detail-devices').click();
+  const resize=page.getByRole('separator',{name:'Resize detail area',exact:true});await resize.focus();await resize.press('End');
+  const rects=await page.evaluate(()=>{const a=document.querySelector('[aria-label="Clip Launch Quantization"]').getBoundingClientRect(),b=document.querySelector('#clip-detail').getBoundingClientRect(),c=document.querySelector('.clip-properties').getBoundingClientRect();return {a:{top:a.top,bottom:a.bottom},b:{top:b.top,bottom:b.bottom},c:{top:c.top,bottom:c.bottom}};});
+  expect(rects.a.top).toBeGreaterThanOrEqual(Math.max(rects.b.top,rects.c.top));expect(rects.a.bottom).toBeLessThanOrEqual(Math.min(rects.b.bottom,rects.c.bottom));
+  await page.screenshot({path:testInfo.outputPath('inspector-end-1440.png')});
+});
+
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`application menus provide passive, reachable commands at ${size.width}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);const gain=page.getByRole('spinbutton',{name:'Pulse gain',exact:true});await gain.fill('0.713');
+  for(const label of ['File','Edit','Create','Playback','View','Navigate','Options','Help']){
+    const summary=page.getByRole('button',{name:`${label} menu`,exact:true});await summary.click();const menu=summary.locator('..');
+    await expect(menu).toHaveAttribute('open','');const box=await menu.locator('.app-menu-items').boundingBox();expect(box.x).toBeGreaterThanOrEqual(0);expect(box.x+box.width).toBeLessThanOrEqual(size.width);
+    await summary.press('Escape');await expect(menu).not.toHaveAttribute('open','');await expect(summary).toBeFocused();
+  }
+  await expect(gain).toHaveValue('0.713');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  await page.getByRole('button',{name:'View menu',exact:true}).click();await expect(page.getByRole('button',{name:'Toggle Browser',exact:true})).toBeEnabled();
+  await expect(page.getByRole('button',{name:'Toggle Browser',exact:true})).toHaveAttribute('aria-pressed','true');
+  await page.screenshot({path:testInfo.outputPath(`application-menu-${size.width}.png`)});
+  await page.getByRole('button',{name:'Toggle Browser',exact:true}).click();await expect(page.locator('#workspace-browser')).toBeHidden();
+  await page.getByRole('button',{name:'View menu',exact:true}).click();await expect(page.getByRole('button',{name:'Toggle Browser',exact:true})).toHaveAttribute('aria-pressed','false');await page.keyboard.press('Escape');
+  await page.getByRole('button',{name:'Edit menu',exact:true}).click();await expect(page.getByRole('button',{name:'Undo',exact:true}).last()).toBeDisabled();await page.keyboard.press('Escape');
+  await expect(gain).toHaveValue('0.713');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('menu keyboard navigation and shortcuts respect drafts, editable fields and dialogs',async({page},testInfo)=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);
+  const gain=page.getByRole('spinbutton',{name:'Pulse gain',exact:true});await gain.fill('0.713');
+  const summary=page.getByRole('button',{name:'Create menu',exact:true});await summary.click();await summary.press('ArrowDown');
+  await expect(page.getByRole('button',{name:'Insert Audio Track',exact:true}).last()).toBeFocused();
+  await page.keyboard.press('ArrowDown');await expect(page.getByRole('button',{name:'Insert MIDI Track',exact:true}).last()).toBeFocused();
+  await page.keyboard.press('Escape');await expect(summary).toBeFocused();await expect(gain).toHaveValue('0.713');
+  await summary.click();await page.locator('#session-title').click();await expect(summary.locator('..')).not.toHaveAttribute('open','');
+  await page.evaluate(()=>{const field=document.createElement('div');field.id='menu-editable';field.contentEditable='true';document.body.append(field);});
+  const field=page.locator('#menu-editable'),help=page.locator('#info-view');await field.focus();await field.press('?');await field.press('Control+s');await expect(field).toHaveText('?');await expect(help).toBeVisible();
+  await page.evaluate(()=>{const dialog=document.createElement('dialog');dialog.id='menu-modal';dialog.innerHTML='<button>Modal button</button>';document.body.append(dialog);dialog.showModal();});
+  await page.locator('#menu-modal button').focus();await page.keyboard.press('?');await expect(help).toBeVisible();await page.keyboard.press('Space');await expect(help).toBeVisible();
+  await page.evaluate(()=>document.querySelector('#menu-modal').close());await summary.focus();await page.keyboard.press('?');await expect(help).toBeHidden();await page.keyboard.press('?');await expect(help).toBeVisible();
+  await page.evaluate(()=>{document.querySelector('#menu-editable').remove();document.querySelector('#menu-modal').remove();});
+  await page.screenshot({path:testInfo.outputPath('menu-help-keyboard.png')});await expect(gain).toHaveValue('0.713');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('Tab leaving a menu dismisses it without stealing focus, and Escape stays local',async({page})=>{
+  await openSession(page);const summary=page.getByRole('button',{name:'Create menu',exact:true}),menu=summary.locator('..');
+  await summary.click();const last=menu.locator('button:not(:disabled)').last();await last.focus();await expect(last).toBeFocused();await page.keyboard.press('Tab');
+  await expect(menu).not.toHaveAttribute('open','');const focused=await page.evaluate(()=>document.activeElement?.getAttribute('aria-label'));expect(focused).not.toBe('Create menu');
+  await page.keyboard.press('Escape');expect(await page.evaluate(()=>document.activeElement?.getAttribute('aria-label'))).toBe(focused);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('contextual Help keeps a stable accessible name while describing a device control',async({page})=>{
+  await openSession(page);await page.locator('#detail-devices').click();
+  const target=page.getByRole('button',{name:'Select Pulse Subtractive instrument',exact:true});await target.focus();
+  await expect(page.locator('#info-text')).toHaveText('Select Pulse Subtractive instrument');
+  await expect(page.locator('#info-text')).toHaveAccessibleName('Contextual help text');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('Create menu keeps shortcut text aligned with its command',async({page})=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page);await page.getByRole('button',{name:'Create menu',exact:true}).click();
+  const item=page.getByRole('button',{name:'Insert MIDI Track',exact:true}).last(),bounds=await item.boundingBox(),key=await item.locator('kbd').boundingBox();
+  expect(Math.abs((bounds.y+bounds.height/2)-(key.y+key.height/2))).toBeLessThanOrEqual(2);
+});
+
+test('device reorder keeps the rack scrolled to its visible actions',async({page})=>{
+  await page.setViewportSize({width:1200,height:800});await openSession(page);await page.locator('#detail-devices').click();
+  const rack=page.locator('#chain'),later=page.getByRole('button',{name:'Move Pulse Stereo Utility effect 1 later',exact:true});
+  await later.scrollIntoViewIfNeeded();const before=await rack.evaluate(e=>({top:e.scrollTop,left:e.scrollLeft}));expect(before.top).toBeGreaterThan(0);
+  await later.click();
+  const earlier=page.getByRole('button',{name:'Move Pulse Stereo Utility effect 2 earlier',exact:true});await expect(earlier).toBeEnabled();
+  await expect.poll(()=>rack.evaluate(e=>e.scrollTop)).toBeGreaterThanOrEqual(before.top-1);
+  await expect(earlier).toBeFocused();
+  const hit=await earlier.evaluate(el=>{const r=el.getBoundingClientRect(),e=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return !!e&&el.contains(e);});expect(hit).toBe(true);
+  const hover=page.getByRole('button',{name:'Move Pulse Stereo Lowpass effect 1 later',exact:true});
+  expect(await hover.evaluate(el=>{const r=el.getBoundingClientRect(),e=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return !!e&&el.contains(e);})).toBe(true);
+  const calls=await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'));expect(calls).toHaveLength(1);expect(calls[0]).toMatchObject({name:'alive_device',args:{action:'reorder',instanceId:'utility'}});
+});
+
+for(const mode of ['focused','parked'])test(`late device reorder preserves a newer ${mode} mixer draft`,async({page})=>{
+  await page.setViewportSize({width:1200,height:800});await openSession(page);await page.locator('#detail-devices').click();
+  await page.evaluate(()=>{window.reorderGate=new Promise(resolve=>{window.releaseReorder=resolve;});});
+  await page.getByRole('button',{name:'Move Pulse Stereo Utility effect 1 later',exact:true}).click();
+  const harmony=page.getByRole('button',{name:'Select Harmony track',exact:true});await harmony.click();
+  const gain=page.getByRole('spinbutton',{name:'Harmony gain',exact:true});await gain.fill('0.713');await expect(gain).toBeFocused();
+  if(mode==='parked')await page.getByRole('button',{name:'Arrangement workspace',exact:true}).click();
+  await page.evaluate(()=>window.releaseReorder());await expect.poll(()=>page.evaluate(()=>window.sessionSnapshot.document.tracks[0].effects[1].instanceId)).toBe('utility');
+  if(mode==='parked')await page.getByRole('button',{name:'Session workspace',exact:true}).click();
+  await expect(harmony).toHaveAttribute('aria-pressed','true');await expect(gain).toHaveValue('0.713');if(mode==='focused')await expect(gain).toBeFocused();else await gain.focus();
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_mixer'))).toEqual([]);
+  await gain.press('Tab');await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_mixer').length)).toBe(1);
+  expect(await page.evaluate(()=>window.calls.find(c=>c.name==='alive_mixer').args)).toMatchObject({trackId:'track-2',gain:.713,generation:2});
+});
+
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`clean review captures of the workspace and application menus at ${size.width}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();
+  await page.screenshot({path:testInfo.outputPath(`workspace-default-${size.width}.png`)});
+  for(const label of ['File','Create','Playback','Navigate']){
+    const summary=page.getByRole('button',{name:`${label} menu`,exact:true});await summary.click();
+    await page.screenshot({path:testInfo.outputPath(`menu-${label.toLowerCase()}-${size.width}.png`)});
+    await summary.press('Escape');
+  }
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('an open Playback menu follows the actual transport enabled state',async({page})=>{
+  await openSession(page);await page.getByRole('button',{name:'Playback menu',exact:true}).click();
+  const start=page.getByRole('button',{name:'Start',exact:true}),stop=page.getByRole('button',{name:'Stop',exact:true});
+  await expect(start).toBeEnabled();await expect(stop).toBeEnabled();await expect(page.getByRole('button',{name:'Loop',exact:true})).toHaveAttribute('aria-pressed','true');
+  await page.evaluate(()=>{window.sessionSnapshot.state.playing=1;});await expect(start).toBeDisabled();await expect(stop).toBeEnabled();
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`detail maximum resize preserves useful pinned Session controls at ${size.width}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page,{trackCount:8});await page.locator('#detail-devices').click();const separator=page.getByRole('separator',{name:'Resize detail area',exact:true}),session=page.locator('#session-workspace');
+  const check=async()=>{const bounds=await session.boundingBox();for(const locator of [page.getByRole('button',{name:'Select Pulse slot 1',exact:true}),page.getByRole('button',{name:'Pulse mute',exact:true}),page.getByRole('button',{name:'Pulse solo',exact:true}),page.locator('#master-session').getByRole('spinbutton',{name:'Master gain',exact:true})]){const r=await locator.boundingBox();expect(r.y,await locator.getAttribute('aria-label')).toBeGreaterThanOrEqual(bounds.y-1);expect(r.y+r.height,await locator.getAttribute('aria-label')).toBeLessThanOrEqual(bounds.y+bounds.height+1);}};
+  await separator.focus();await separator.press('End');await check();await page.screenshot({path:testInfo.outputPath(`end-resize-${size.width}.png`)});
+  await separator.press('Home');const box=await separator.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2,65,{steps:5});await page.mouse.up();await check();
+  await page.setViewportSize({width:800,height:600});await check();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await expect(session).toBeHidden();await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await check();expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+for(const width of [128,72])test(`track action menus stay reachable at ${width}px including horizontal scroll`,async({page},testInfo)=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page,{trackCount:8});await page.locator('#detail-devices').click();const workspace=page.locator('#session-workspace');
+  for(const [id,name]of [['track-1','Pulse'],['track-8','Track 8']]){
+    const track=page.locator(`.track[data-track-id="${id}"]`),handle=track.getByRole('separator',{name:`Resize ${name} track`,exact:true});if(id==='track-8')await workspace.evaluate(e=>e.scrollLeft=e.scrollWidth);await handle.focus();if(width===72)await handle.press('Home');
+    const inspector=track.locator('.track-inspector'),summary=inspector.locator('summary');await summary.click();
+    for(const label of [`Open ${name} editor`,`Replace ${name} device`,`Remove ${name} track`]){const action=page.getByRole('button',{name:label,exact:true}),rect=await action.boundingBox(),view=await workspace.boundingBox();expect(rect.x,label).toBeGreaterThanOrEqual(view.x-1);expect(rect.x+rect.width,label).toBeLessThanOrEqual(view.x+view.width+1);expect(await action.evaluate(el=>{const r=el.getBoundingClientRect();return el.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));}),label).toBe(true);}
+    await page.screenshot({path:testInfo.outputPath(`track-menu-${id}-${width}.png`)});await summary.focus();await summary.press('Escape');await expect(inspector).not.toHaveAttribute('open','');await expect(summary).toBeFocused();
+  }expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('track menu navigation preserves draft and the chosen track owns the editor action',async({page})=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page);await page.locator('#detail-devices').click();const track=page.locator('.track').first(),menu=track.locator('.track-inspector'),summary=menu.locator('summary'),gain=page.getByRole('spinbutton',{name:'Pulse gain',exact:true});
+  await gain.fill('0.713');await summary.click();await expect(gain).toHaveValue('0.713');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  await page.getByRole('button',{name:'Select Harmony track',exact:true}).click();await expect(menu).not.toHaveAttribute('open','');await page.getByRole('button',{name:'Select Pulse track',exact:true}).click();await expect(gain).toHaveValue('0.713');
+  await summary.click();await page.getByRole('button',{name:'Open Pulse editor',exact:true}).click();await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_editor').length)).toBe(1);expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([{name:'alive_editor',args:{instanceId:'instrument-0',generation:1}}]);
+});
+
+test('scrolling the track bank dismisses an open track menu and keeps focus in Session',async({page})=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page,{trackCount:8});const workspace=page.locator('#session-workspace'),menu=page.locator('.track-inspector').first();await menu.locator('summary').click();await menu.getByRole('button',{name:'Open Pulse editor',exact:true}).focus();await workspace.evaluate(e=>e.scrollLeft=300);await expect(menu).not.toHaveAttribute('open','');await expect(workspace).toBeFocused();expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('resizing the window dismisses an open track menu without losing focus',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);const workspace=page.locator('#session-workspace'),menu=page.locator('.track-inspector').first();await menu.locator('summary').click();await menu.getByRole('button',{name:'Open Pulse editor',exact:true}).focus();await page.setViewportSize({width:800,height:600});await expect(menu).not.toHaveAttribute('open','');await expect(workspace).toBeFocused();expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('narrow track keeps secondary stereo readout accessible without visual overlap',async({page})=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page);const track=page.locator('.track').first(),resize=track.getByRole('separator',{name:'Resize Pulse track'});await resize.focus();await resize.press('Home');const readout=track.locator('output[aria-label="Pulse peak"]');await expect(readout).toHaveText('0.000 / 0.000');expect((await readout.boundingBox()).width).toBeLessThanOrEqual(1);
+});
+
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`Browser device hierarchy remains passive and honest at ${size.width}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();const gain=page.getByRole('spinbutton',{name:'Pulse gain',exact:true});await gain.fill('0.713');
+  const tree=page.getByRole('tree',{name:'Browser results'}),device=tree.getByRole('treeitem',{name:'Subtractive',exact:true}),search=page.getByRole('searchbox',{name:'Search browser'});await device.click();await expect(gain).toHaveValue('0.713');
+  await tree.press('Space');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  for(let i=0;i<2;i++){await tree.press('ArrowRight');await expect(device).toHaveAttribute('aria-expanded','true');await expect(tree.getByRole('treeitem',{name:'Preset browsing unavailable',exact:true})).toHaveAttribute('aria-disabled','true');await tree.press('ArrowLeft');await expect(device).toHaveAttribute('aria-expanded','false');}
+  await device.locator('.browser-disclosure').click();await expect(device).toHaveAttribute('aria-expanded','true');await device.locator('.browser-disclosure').click();await expect(device).toHaveAttribute('aria-expanded','false');
+  await tree.press('ArrowRight');await page.screenshot({path:testInfo.outputPath(`browser-expanded-${size.width}.png`)});await page.getByRole('button',{name:'Browse Audio Effects',exact:true}).click();await page.getByRole('button',{name:'Browse Instruments',exact:true}).click();await expect(device).toHaveAttribute('aria-selected','true');await expect(device).toHaveAttribute('aria-expanded','true');await page.getByRole('button',{name:'Browse All',exact:true}).click();await search.fill('Stereo Utility');await expect(tree.getByRole('treeitem',{name:'Stereo Utility',exact:true})).toBeVisible();await page.screenshot({path:testInfo.outputPath(`browser-search-${size.width}.png`)});await search.fill('');await expect(device).toHaveAttribute('aria-selected','true');await expect(device).toHaveAttribute('aria-expanded','true');
+  const browserResize=page.getByRole('separator',{name:'Resize browser'});await browserResize.focus();await browserResize.press('End');await browserResize.press('Home');await expect(device).toHaveAttribute('aria-expanded','true');
+  await page.locator('#toggle-browser').click();await page.locator('#toggle-browser').click();await expect(device).toHaveAttribute('aria-expanded','true');await expect(gain).toHaveValue('0.713');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+for(const size of [{width:800,height:600},{width:1440,height:900}])test(`Browser ends at actual lower chrome with all panels hidden at ${size.width}`,async({page})=>{
+  await page.setViewportSize(size);await openSession(page);
+  for(let i=0;i<2;i++){
+    await page.locator('#detail-clip').click();await page.locator('#toggle-help').click();
+    const bounds=await page.evaluate(()=>{const b=document.querySelector('#workspace-browser').getBoundingClientRect(),r=document.querySelector('#detail-panel').getBoundingClientRect(),s=document.querySelector('#browser-resizer').getBoundingClientRect();return {browser:b.bottom,resizer:s.bottom,lower:r.top};});
+    expect(Math.abs(bounds.browser-bounds.lower)).toBeLessThanOrEqual(1);expect(Math.abs(bounds.resizer-bounds.lower)).toBeLessThanOrEqual(1);
+    await page.locator('#toggle-help').click();await page.locator('#detail-clip').click();
+  }
+});
+
+for(const method of ['mouse','keyboard'])test(`Clip disclosure preserves an unfinished Start through ${method} navigation`,async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
+  const field=page.getByRole('spinbutton',{name:'Clip Start',exact:true}),summary=page.locator('.clip-properties > details').first().locator('summary');
+  await field.fill('1');
+  if(method==='mouse')await summary.click();else{await field.press('Shift+Tab');await expect(summary).toBeFocused();await summary.press('Enter');}
+  await expect(field).toBeHidden();
+  const before=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length);await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length)).toBeGreaterThan(before+2);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  if(method==='mouse')await summary.click();else await summary.press('Enter');
+  await expect(field).toHaveValue('1');await field.focus();await field.press('Tab');
+  await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_edit').length)).toBe(1);
+  expect(await page.evaluate(()=>window.calls.find(c=>c.name==='alive_workspace_edit').args.operation)).toMatchObject({kind:'regionSet',occurrence:{kind:'slot',trackId:'track-1',slotId:'clip-track-1'},region:{start:1}});
+});
+
+test('a parked Clip Start stays with its source through selection changes',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
+  const field=page.getByRole('spinbutton',{name:'Clip Start',exact:true}),summary=page.locator('.clip-properties > details').first().locator('summary');
+  await field.fill('1');await summary.click();await page.getByRole('button',{name:'Restore detail size',exact:true}).click();
+  await page.getByRole('button',{name:'Select Harmony slot 1',exact:true}).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await summary.click();await expect(field).toHaveValue('0');
+  await page.locator('#save').click();await expect(page.locator('#notice')).toContainText('Finish Clip Start');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  await summary.click();await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await page.getByRole('button',{name:'Select Pulse slot 1',exact:true}).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await summary.click();
+  await expect(field).toHaveValue('1');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  await field.focus();await field.press('Tab');await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_edit').length)).toBe(1);
+  expect(await page.evaluate(()=>window.calls.find(c=>c.name==='alive_workspace_edit').args.operation)).toMatchObject({kind:'regionSet',occurrence:{kind:'slot',trackId:'track-1',slotId:'clip-track-1'},region:{start:1}});
+});
+
+for(const size of [{width:1280,height:800},{width:1440,height:900}])test(`default simultaneous detail shows complete controls and useful Session workspace at ${size.width}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();
+  const fullyVisible=locator=>locator.evaluate(el=>{const r=el.getBoundingClientRect();for(let p=el.parentElement;p;p=p.parentElement){const s=getComputedStyle(p),b=p.getBoundingClientRect();if(/auto|scroll|hidden|clip/.test(s.overflow+s.overflowY+s.overflowX)&&(r.top<b.top-1||r.bottom>b.bottom+1||r.left<b.left-1||r.right>b.right+1))return false;}return r.top>=0&&r.left>=0&&r.bottom<=innerHeight&&r.right<=innerWidth;});
+  for(const label of ['Clip Start','Clip End','Loop Position','Loop Length'])expect(await fullyVisible(page.getByRole('spinbutton',{name:label,exact:true})),label).toBe(true);
+  expect(await fullyVisible(page.getByRole('combobox',{name:'Clip Launch Quantization',exact:true}))).toBe(true);
+  expect(await fullyVisible(page.getByRole('group',{name:'Note velocity lane',exact:true}))).toBe(true);
+  const card=page.locator('.chain-device').first();for(const label of ['Attack base','Attack effective ownership'])expect(await fullyVisible(card.getByLabel(label,{exact:true})),label).toBe(true);
+  expect((await page.locator('#session-workspace').boundingBox()).height).toBeGreaterThanOrEqual(190);
+  await page.screenshot({path:testInfo.outputPath(`default-both-${size.width}.png`)});
+});
+
+test('compact desktop default shows complete device controls and a useful Session workspace',async({page},testInfo)=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page);await page.locator('#detail-devices').click();
+  const card=page.locator('.chain-device').first();
+  for(const label of ['Attack base','Attack effective ownership'])expect(await card.getByLabel(label,{exact:true}).evaluate(el=>{const r=el.getBoundingClientRect();for(let p=el.parentElement;p;p=p.parentElement){const s=getComputedStyle(p),b=p.getBoundingClientRect();if(/auto|scroll|hidden|clip/.test(s.overflow+s.overflowY+s.overflowX)&&(r.top<b.top-1||r.bottom>b.bottom+1||r.left<b.left-1||r.right>b.right+1))return false;}return r.top>=0&&r.left>=0&&r.bottom<=innerHeight&&r.right<=innerWidth;}),label).toBe(true);
+  expect((await page.locator('#session-workspace').boundingBox()).height).toBeGreaterThanOrEqual(180);
+  await page.screenshot({path:testInfo.outputPath('default-both-800.png')});
+});
+
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`both-open Session keeps Browser results, clip slots and mixer controls visible at ${size.width}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();
+  const visible=locator=>locator.evaluate(el=>{const r=el.getBoundingClientRect();for(let p=el.parentElement;p;p=p.parentElement){const s=getComputedStyle(p),b=p.getBoundingClientRect();if(/auto|scroll|hidden|clip/.test(s.overflow+s.overflowY+s.overflowX)&&(r.top<b.top-1||r.bottom>b.bottom+1||r.left<b.left-1||r.right>b.right+1))return false;}return r.width>0&&r.height>0&&r.top>=0&&r.left>=0&&r.bottom<=innerHeight&&r.right<=innerWidth;});
+  for(const locator of [page.getByRole('treeitem',{name:'Subtractive',exact:true}),page.getByRole('button',{name:'Select Pulse slot 1',exact:true}),page.getByRole('button',{name:'Pulse mute',exact:true}),page.getByRole('button',{name:'Pulse solo',exact:true}),page.locator('#master-session').getByRole('spinbutton',{name:'Master gain',exact:true})])expect(await visible(locator),await locator.getAttribute('aria-label')).toBe(true);
+  await page.screenshot({path:testInfo.outputPath(`session-both-${size.width}x${size.height}.png`)});
+});
+
+test('Session slot scrolling is synchronized while mixer controls stay pinned',async({page})=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page,{trackCount:8});await page.locator('#detail-devices').click();
+  const slots=page.locator('.clip-slots'),scene=page.locator('#scene-controls'),mixer=page.getByRole('button',{name:'Pulse mute',exact:true}),before=await mixer.boundingBox();
+  expect(await slots.first().evaluate(e=>e.scrollHeight>e.clientHeight)).toBe(true);await slots.first().hover();await page.mouse.wheel(0,70);await expect.poll(()=>slots.first().evaluate(e=>e.scrollTop)).toBeGreaterThan(0);await expect(slots.first()).toHaveClass(/is-scrolling/);await expect(slots.first()).not.toHaveClass(/is-scrolling/,{timeout:3000});
+  const positions=await slots.evaluateAll(es=>es.map(e=>e.scrollTop));expect(new Set(positions).size).toBe(1);expect(await scene.evaluate(e=>e.scrollTop)).toBe(positions[0]);expect(Math.abs((await mixer.boundingBox()).y-before.y)).toBeLessThanOrEqual(1);
+  await page.evaluate(()=>{window.sessionSnapshot.document.tracks[1].name='Renamed';window.sessionSnapshot.editRevision++;});await expect(page.getByRole('button',{name:'Select Renamed track',exact:true})).toBeVisible();await expect.poll(()=>slots.nth(1).evaluate(e=>e.scrollTop)).toBe(positions[0]);
+  const workspace=page.locator('#session-workspace');expect(await workspace.evaluate(e=>e.scrollHeight<=e.clientHeight)).toBe(true);expect(await workspace.evaluate(e=>e.scrollWidth>e.clientWidth)).toBe(true);await workspace.hover();await page.mouse.wheel(0,0);await page.keyboard.down('Shift');await page.mouse.wheel(0,250);await page.keyboard.up('Shift');await expect.poll(()=>workspace.evaluate(e=>e.scrollLeft)).toBeGreaterThan(0);
+  const master=await page.locator('.scene-column').boundingBox(),outer=await workspace.boundingBox();expect(Math.abs(master.x+master.width-(outer.x+outer.width))).toBeLessThanOrEqual(2);expect(await page.evaluate(({x,y})=>!!document.elementFromPoint(x,y)?.closest('.scene-column'),{x:master.x+master.width-5,y:master.y+14})).toBe(true);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('track width boundary supports keyboard resizing and narrow controls reflow',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);await page.locator('#detail-devices').click();
+  const handle=page.getByRole('separator',{name:'Resize Pulse track',exact:true}),track=page.locator('.track').first();await handle.focus();await handle.press('Home');await expect(handle).toHaveAttribute('aria-valuenow','72');expect((await track.boundingBox()).width).toBe(72);
+  const mute=await track.getByRole('button',{name:'Pulse mute'}).boundingBox(),solo=await track.getByRole('button',{name:'Pulse solo'}).boundingBox(),gain=await track.getByRole('spinbutton',{name:'Pulse gain',exact:true}).boundingBox();expect(mute.x+mute.width).toBeLessThanOrEqual(solo.x+1);expect(gain.x+gain.width).toBeLessThanOrEqual((await track.boundingBox()).x+72);
+  await handle.press('End');await expect(handle).toHaveAttribute('aria-valuenow','280');await handle.press('Home');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('track width handle is hover-only and pointer resize is independent',async({page},testInfo)=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page,{trackCount:8});await page.locator('#detail-devices').click();
+  const handle=page.getByRole('separator',{name:'Resize Pulse track',exact:true}),track=page.locator('.track').first(),other=page.locator('.track').nth(1);await page.mouse.move(700,45);await handle.focus();expect(await handle.evaluate(e=>getComputedStyle(e,'::before').opacity)).toBe('0');
+  const box=await handle.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);expect(await handle.evaluate(e=>getComputedStyle(e,'::before').opacity)).toBe('1');await page.mouse.down();await page.mouse.move(box.x-48,box.y+box.height/2,{steps:5});await page.mouse.up();expect((await track.boundingBox()).width).toBeLessThan(90);expect((await other.boundingBox()).width).toBe(128);
+  await page.mouse.move(700,45);await page.screenshot({path:testInfo.outputPath('narrow-overflow-800x600.png')});expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+test('global track width reports inherited values without overwriting individually resized tracks',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);const first=page.getByRole('separator',{name:'Resize Pulse track',exact:true}),second=page.getByRole('separator',{name:'Resize Harmony track',exact:true});
+  await first.focus();await first.press('Home');await page.locator('#transport-options-toggle').click();await page.getByRole('slider',{name:'Track column width',exact:true}).fill('160');await expect(first).toHaveAttribute('aria-valuenow','72');await expect(second).toHaveAttribute('aria-valuenow','160');expect((await page.locator('.track').nth(1).boundingBox()).width).toBe(160);
+});
+
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`Session capture with lower panels hidden at ${size.width}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page,{trackCount:8});await page.locator('#detail-clip').click();await page.locator('#toggle-help').click();await page.screenshot({path:testInfo.outputPath(`session-lower-hidden-${size.width}x${size.height}.png`)});
+});
+
+test('MIDI tracks without an instrument do not present invented audio metering or faders',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page,{emptyDevices:true});const track=page.locator('.track').first();
+  await expect(track.getByLabel('Pulse stereo peak',{exact:true})).toBeHidden();await expect(track.getByRole('slider',{name:'Pulse gain fader',exact:true})).toBeHidden();await expect(track.getByRole('spinbutton',{name:'Pulse gain',exact:true})).toBeHidden();
+  await expect(track.getByText('MIDI only',{exact:true})).toBeVisible();await expect(track.getByRole('button',{name:'Pulse mute',exact:true})).toBeVisible();
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`corrected panel capture matrix at ${size.width}x${size.height}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();
+  const shot=name=>page.screenshot({path:testInfo.outputPath(`${name}-${size.width}x${size.height}.png`)});
+  expect((await page.locator('#session-workspace').boundingBox()).height).toBeGreaterThanOrEqual(180);await shot('both-default');
+  await page.locator('#toggle-help').click();await shot('help-hidden');
+  await page.locator('#detail-clip').click();await page.locator('#detail-devices').click();await shot('all-lower-hidden');
+  await page.locator('#detail-clip').click();await page.locator('#toggle-help').click();const resize=page.getByRole('separator',{name:'Resize detail area',exact:true});await resize.focus();await resize.press('Home');for(let i=0;i<3;i++)await resize.press('Shift+ArrowUp');await shot('clip-short');
+  const previous=await resize.getAttribute('aria-valuenow');await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await shot('clip-maximized');
+  await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await expect(resize).toHaveAttribute('aria-valuenow',previous);await shot('clip-restored');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('narrow Browser stays above contextual Help when reopened',async({page},testInfo)=>{
+  await page.setViewportSize({width:600,height:600});await openSession(page);
+  const browser=page.locator('#workspace-browser'),help=page.locator('#info-view');
+  const shell=await page.locator('#workspace-shell').boundingBox(),b=await browser.boundingBox(),h=await help.boundingBox();
+  expect(Math.abs(b.y-shell.y)).toBeLessThanOrEqual(1);expect(b.y+b.height).toBeLessThanOrEqual(h.y+1);
+  expect(await help.evaluate(el=>{const r=el.getBoundingClientRect();return el.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));})).toBe(true);
+  await page.screenshot({path:testInfo.outputPath('after-narrow-browser.png')});
+  await page.locator('#toggle-browser').click();await expect(browser).toBeHidden();await page.locator('#toggle-browser').click();await expect(browser).toBeVisible();
+  await page.locator('#toggle-help').click();await expect(help).toBeHidden();await page.locator('#toggle-help').click();await expect(help).toBeVisible();
+  expect(await help.evaluate(el=>{const r=el.getBoundingClientRect();return el.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));})).toBe(true);
+});
+
+test('Clip and Device footer toggles independently own the lower rows',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);
+  const clip=page.locator('#clip-detail'),device=page.locator('#device-detail'),help=page.locator('#info-view');
+  const clipToggle=page.getByRole('button',{name:'Toggle Clip view',exact:true}),deviceToggle=page.getByRole('button',{name:'Toggle Device view',exact:true});
+  expect(await page.locator('#clip-overview svg rect').count()).toBeGreaterThan(0);
+  await expect(clip).toBeVisible();await deviceToggle.click();await expect(clip).toBeVisible();await expect(device).toBeVisible();
+  const c=await clip.boundingBox(),d=await device.boundingBox(),h=await help.boundingBox();
+  expect(c.x).toBeLessThanOrEqual(1);expect(c.y+c.height).toBeLessThanOrEqual(Math.min(d.y,h.y)+1);expect(h.x+h.width).toBeLessThanOrEqual(d.x+1);
+  await clipToggle.click();await expect(clip).toBeHidden();await expect(device).toBeVisible();
+  await deviceToggle.click();await expect(device).toBeHidden();await clipToggle.click();await expect(clip).toBeVisible();
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('Clip properties arrange horizontally when short and as vertical disclosures when tall',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);
+  const resize=page.getByRole('separator',{name:'Resize detail area',exact:true}),properties=page.locator('.clip-properties');
+  await resize.focus();await resize.press('Home');
+  await expect(properties).toBeVisible();expect(await properties.evaluate(el=>getComputedStyle(el).display)).toBe('flex');
+  await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
+  expect(await properties.evaluate(el=>getComputedStyle(el).display)).toBe('block');
+  await expect(properties.locator('details > summary').first()).toBeVisible();
+});
+
+test('Clip property divider resizes without issuing musical commands',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);
+  const divider=page.getByRole('separator',{name:'Resize Clip properties',exact:true}),properties=page.locator('.clip-properties');
+  const before=(await properties.boundingBox()).width;await divider.focus();await divider.press('End');
+  expect((await properties.boundingBox()).width).toBeGreaterThan(before);await divider.press('Home');
+  expect((await properties.boundingBox()).width).toBeLessThan(before);
+  const original=(await properties.boundingBox()).width,box=await divider.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+80,box.y+box.height/2);await page.keyboard.press('Escape');await page.mouse.up();
+  expect(Math.abs((await properties.boundingBox()).width-original)).toBeLessThanOrEqual(1);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('returning from Master restores an entirely hidden detail state',async({page})=>{
+  await openSession(page);await page.locator('#detail-clip').click();
+  await page.locator('#master-select-session').click();await expect(page.locator('#master-detail')).toBeVisible();
+  await page.getByRole('button',{name:'Select Pulse track',exact:true}).click();
+  await expect(page.locator('#clip-detail')).toBeHidden();await expect(page.locator('#device-detail')).toBeHidden();
+  await expect(page.locator('#workspace-shell')).toHaveClass(/detail-collapsed/);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('footer reopening after collapsing both panels opens only the requested panel',async({page})=>{
+  await openSession(page);await page.locator('#detail-devices').click();await page.locator('#toggle-detail').click();
+  await expect(page.locator('#clip-detail')).toBeHidden();await expect(page.locator('#device-detail')).toBeHidden();
+  await page.locator('#detail-clip').click();await expect(page.locator('#clip-detail')).toBeVisible();await expect(page.locator('#device-detail')).toBeHidden();
+  await page.locator('#master-select-session').click();await page.locator('#detail-clip').click();await expect(page.locator('#clip-detail')).toBeVisible();await expect(page.locator('#master-detail')).toBeHidden();
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('footer actions remain reachable at the minimum native size',async({page})=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page);
+  for(const selector of ['#toggle-help','#detail-clip','#detail-devices','#return-all','#show-audio','#audio-details > summary'])await expect(page.locator(selector)).toBeInViewport({ratio:1});
+});
+
+test('both detail panels resize and maximize while a device draft survives hiding',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);await page.locator('#detail-devices').click();
+  const clip=page.locator('#clip-detail'),device=page.locator('#device-detail'),resize=page.getByRole('separator',{name:'Resize detail area',exact:true});
+  const field=page.locator('.chain-device[data-instance-id="instrument-0"]').getByRole('spinbutton',{name:'Cutoff base',exact:true});
+  await field.fill('1717');await page.locator('#detail-devices').click();await expect(device).toBeHidden();await page.locator('#detail-devices').click();await expect(field).toHaveValue('1717');
+  const box=await resize.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2,box.y-50,{steps:4});await page.mouse.up();const height=await resize.getAttribute('aria-valuenow');
+  await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await expect(clip).toBeVisible();await expect(device).toBeVisible();
+  await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await expect(resize).toHaveAttribute('aria-valuenow',height);await expect(field).toHaveValue('1717');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`all lower panel combinations preserve selection at ${size.width}x${size.height}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);
+  const clip=page.locator('#clip-detail'),device=page.locator('#device-detail'),help=page.locator('#info-view');
+  const buttons=[page.locator('#detail-clip'),page.locator('#detail-devices'),page.locator('#toggle-help')];
+  const initial=await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document));
+  let state=[true,false,true];
+  for(const index of [1,2,0,2,1,2,0,1,2,0,1]){
+    await buttons[index].click();state[index]=!state[index];
+    for(const [element,on] of [[clip,state[0]],[device,state[1]],[help,state[2]]])if(on)await expect(element).toBeVisible();else await expect(element).toBeHidden();
+    if(state[0]&&state[1]&&state[2]){const c=await clip.boundingBox(),d=await device.boundingBox(),h=await help.boundingBox();expect(c.height).toBeGreaterThan(100);expect(d.height).toBeGreaterThanOrEqual(100);expect(c.y+c.height).toBeLessThanOrEqual(Math.min(d.y,h.y)+1);expect(h.x+h.width).toBeLessThanOrEqual(d.x+1);await page.screenshot({path:testInfo.outputPath(`both-panels-${size.width}x${size.height}.png`)});}
+  }
+  expect(await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document))).toBe(initial);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('contextual Help is a separate passive panel with independent visibility',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);
+  const help=page.getByRole('complementary',{name:'Contextual help',exact:true});
+  const toggle=page.getByRole('button',{name:'Toggle contextual help',exact:true});
+  const initial=await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document));
+  const box=await help.boundingBox(),footer=await page.locator('footer').boundingBox();
+  expect(box.x).toBeLessThanOrEqual(12);expect(box.height).toBeGreaterThan(80);expect(box.y+box.height).toBeLessThanOrEqual(footer.y+1);
+  await page.locator('#stop').hover();await expect(page.locator('#info-text')).toContainText('Stop transport');
+  await page.locator('#start').focus();await expect(page.locator('#info-text')).toContainText('Start transport');
+  await toggle.click();await expect(help).toBeHidden();await expect(toggle).toHaveAttribute('aria-expanded','false');
+  await page.keyboard.press('?');await expect(help).toBeVisible();await page.keyboard.press('?');await expect(help).toBeHidden();
+  const field=page.getByRole('searchbox',{name:'Search browser'});await field.fill('draft');await field.press('?');
+  await expect(field).toHaveValue('draft?');await expect(help).toBeHidden();
+  await page.evaluate(()=>{const el=document.createElement('div');el.contentEditable='true';el.id='test-editable';document.body.append(el);el.focus();});
+  await page.keyboard.press('?');await expect(help).toBeHidden();await expect(page.locator('#test-editable')).toHaveText('?');
+  await page.locator('#start').focus();await page.keyboard.press('?');await expect(help).toBeVisible();await expect(page.locator('#start')).toBeFocused();
+  const tempo=page.locator('#tempo');await tempo.fill('133');await toggle.click();await expect(tempo).toBeFocused();await expect(tempo).toHaveValue('133');await expect(help).toBeHidden();
+  await toggle.click();await expect(tempo).toBeFocused();await expect(tempo).toHaveValue('133');await expect(help).toBeVisible();
+  expect(await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document))).toBe(initial);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`Help panel visibility and layout at ${size.width}x${size.height}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);
+  const help=page.getByRole('complementary',{name:'Contextual help',exact:true}),detail=page.locator('#detail-panel');
+  const toggle=page.getByRole('button',{name:'Toggle contextual help',exact:true});
+  const before=await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document));
+  const a=await help.boundingBox(),b=await page.locator('#clip-detail').boundingBox();expect(a.x).toBeLessThanOrEqual(1);expect(b.y+b.height).toBeLessThanOrEqual(a.y+1);
+  await page.screenshot({path:testInfo.outputPath(`help-shown-${size.width}x${size.height}.png`)});
+  await toggle.click();await expect(help).toBeHidden();
+  await page.screenshot({path:testInfo.outputPath(`help-hidden-${size.width}x${size.height}.png`)});
+  await page.locator('#toggle-browser').click();expect((await detail.boundingBox()).x).toBeLessThanOrEqual(1);await page.locator('#toggle-detail').click();await toggle.click();
+  await expect(help).toBeVisible();await expect(page.locator('#workspace-browser')).toBeHidden();await expect(page.locator('#clip-detail')).toBeHidden();await expect(page.locator('#device-detail')).toBeHidden();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.documentElement.scrollHeight<=innerHeight)).toBe(true);
+  expect(await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document))).toBe(before);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
 for(const size of [{width:800,height:600},{width:1280,height:800}])test(`Alive chrome preserves Live-inspired regions and contextual Info at ${size.width}x${size.height}`,async({page},testInfo)=>{
   await page.setViewportSize(size);await openSession(page);
   const baseline=await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document));
   const info=page.getByRole('complementary',{name:'Contextual help',exact:true});
   const box=await info.boundingBox(),footer=await page.locator('footer').boundingBox();
-  const footerInset=await page.locator('footer').evaluate(element=>{const style=getComputedStyle(element);return parseFloat(style.paddingBottom)+parseFloat(style.borderBottomWidth);});
   expect(box.x).toBeLessThanOrEqual(12);
-  expect(Math.abs(box.y+box.height-(footer.y+footer.height-footerInset))).toBeLessThanOrEqual(2);
+  expect(Math.abs(box.y+box.height-footer.y)).toBeLessThanOrEqual(2);
   await page.locator('#stop').hover();
   await expect(page.locator('#info-text')).toContainText('Stop transport');
   const file=page.locator('#file-menu');
   await expect(page.locator('#new')).toBeHidden();
   await file.locator('summary').click();
   await expect(page.locator('#new')).toBeVisible();
-  await page.locator('#workspace-browser > h2').click();
+  await page.locator('#session-title').click();
   await expect(page.locator('#new')).toBeHidden();
   const add=page.locator('#browser-add-menu');
   await expect(page.locator('#insert-audio-track')).toBeHidden();
   await add.locator('summary').click();
   await expect(page.locator('#insert-audio-track')).toBeVisible();
-  await page.locator('#workspace-browser > h2').click();
+  await page.locator('#session-title').click();
   await expect(page.locator('#insert-audio-track')).toBeHidden();
   await page.locator('#view-arrangement').click();
   await expect(info).toBeVisible();
@@ -36,23 +465,26 @@ for(const size of [{width:800,height:600},{width:1280,height:800}])test(`Alive c
 for(const size of [{width:800,height:600},{width:1280,height:800}])test(`saved Alive surface retains focused draft and natural scroll at ${size.width}x${size.height}`,async({page},info)=>{
   await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();
   const card=page.locator('.chain-device').first(),surface=card.locator('.presentation-surface'),field=card.getByRole('spinbutton',{name:'Attack base',exact:true});
-  await field.fill('123');await expect(field).toBeFocused();await expect(card.getByLabel('Attack effective ownership',{exact:true})).toBeInViewport({ratio:1});expect(await surface.evaluate(e=>e.offsetWidth)).toBe(640);
+  await field.fill('123');await expect(field).toBeFocused();await card.getByLabel('Attack effective ownership',{exact:true}).scrollIntoViewIfNeeded();await expect(card.getByLabel('Attack effective ownership',{exact:true})).toBeInViewport({ratio:1});expect(await surface.evaluate(e=>e.offsetWidth)).toBe(640);
   await page.screenshot({path:info.outputPath(`saved-alive-${size.width}x${size.height}.png`)});
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.documentElement.scrollHeight<=innerHeight)).toBe(true);
   const chain=page.locator('#chain');expect(await chain.evaluate(e=>e.scrollWidth>e.clientWidth)).toBe(true);
-  await page.locator('#detail-clip').click();await page.locator('#detail-devices').click();await expect(field).toHaveValue('123');
+  await page.locator('#detail-devices').click();await page.locator('#detail-devices').click();await expect(field).toHaveValue('123');
 });
 
 for(const size of [{width:1440,height:900},{width:1280,height:800},{width:800,height:600}])test(`detail expands and maximizes the piano editor at ${size.width}x${size.height}`,async({page},testInfo)=>{
   await page.setViewportSize(size);await openSession(page);
   const resize=page.getByRole('separator',{name:'Resize detail area',exact:true}),panel=page.locator('#detail-panel');
-  const originalPiano=await page.locator('#piano-roll').boundingBox();await resize.focus();await resize.press('End');
-  expect((await panel.boundingBox()).height).toBeGreaterThan(size.height*.6);
-  if(size.height>=800)expect((await page.locator('#piano-roll').boundingBox()).height).toBeGreaterThan(originalPiano.height+60);
+  const visiblePiano=()=>page.evaluate(()=>{const piano=document.querySelector('#piano-roll').getBoundingClientRect(),clip=document.querySelector('#clip-detail').getBoundingClientRect();return Math.max(0,Math.min(piano.bottom,clip.bottom)-Math.max(piano.top,clip.top));});
+  const originalPiano=await page.locator('#piano-roll').boundingBox(),originalVisible=await visiblePiano(),originalPanel=await panel.boundingBox(),originalHeight=Number(await resize.getAttribute('aria-valuenow'));await resize.focus();await resize.press('End');
+  expect(Number(await resize.getAttribute('aria-valuenow'))).toBeGreaterThan(originalHeight);
+  expect((await panel.boundingBox()).height).toBeGreaterThan(originalPanel.height+30);
+  expect(await visiblePiano()).toBeGreaterThan(originalVisible+30);
   const previous=await resize.getAttribute('aria-valuenow');await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
   await expect(page.locator('#session-workspace')).toBeHidden();await expect(page.locator('#arrangement-workspace')).toBeHidden();
   expect((await panel.boundingBox()).height).toBeGreaterThan(size.height*.75);
-  expect((await page.locator('#piano-roll').boundingBox()).height).toBeGreaterThan(originalPiano.height+30);
+  if(size.height>=800)expect((await page.locator('#piano-roll').boundingBox()).height).toBeGreaterThan(originalPiano.height+30);
+  else expect(await visiblePiano()).toBeGreaterThan(originalVisible+30);
   await expect(page.locator('#stop')).toBeInViewport();await expect(page.locator('#show-audio')).toBeInViewport();
   await expect(page.getByRole('button',{name:'Restore detail size',exact:true})).toBeInViewport();
   const velocity=page.getByRole('group',{name:'Note velocity lane',exact:true});
@@ -169,8 +601,8 @@ test('browser search and keyboard selection never launch or change the score',as
   await page.setViewportSize({width:1280,height:800});await openSession(page);
   const before=await page.evaluate(()=>JSON.stringify(window.sessionSnapshot));
   await page.getByRole('button',{name:'Browse Project Clips',exact:true}).click();
-  const option=page.getByRole('option',{name:'Clip 1',exact:true}).first();await option.click();
-  await page.getByRole('listbox',{name:'Browser results'}).press('ArrowDown');
+  const option=page.getByRole('treeitem',{name:'Clip 1',exact:true}).first();await option.click();
+  await page.getByRole('tree',{name:'Browser results'}).press('ArrowDown');
   expect(await page.evaluate(()=>JSON.stringify(window.sessionSnapshot))).toBe(before);
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
   await page.getByRole('button',{name:'Open Clip',exact:true}).click();
@@ -196,14 +628,14 @@ for(const size of [{width:800,height:600},{width:1280,height:800}])test(`catalog
   });
   const tempo=page.locator('#tempo');await tempo.fill('133');
   const refresh=page.getByRole('button',{name:'Refresh Library',exact:true});await refresh.click();await expect(tempo).toHaveValue('133');
-  await expect(page.getByRole('option',{name:'Analog',exact:true})).toBeVisible();
+  await expect(page.getByRole('treeitem',{name:'Analog',exact:true})).toBeVisible();
   expect(await page.evaluate(()=>window.catalogRequests)).toEqual([{refresh:true,cursor:null},{refresh:false,cursor:{revision:'2',offset:64}}]);
-  await page.getByRole('button',{name:'Browse MIDI Effects',exact:true}).click();await expect(page.getByRole('option',{name:'Chord',exact:true})).toBeVisible();
+  await page.getByRole('button',{name:'Browse MIDI Effects',exact:true}).click();await expect(page.getByRole('treeitem',{name:'Chord',exact:true})).toBeVisible();
   await page.getByRole('button',{name:'Browse Instruments',exact:true}).click();
   const search=page.getByRole('searchbox',{name:'Search browser'});await search.fill('Analog');
-  const analog=page.getByRole('option',{name:'Analog',exact:true});await analog.click();
+  const analog=page.getByRole('treeitem',{name:'Analog',exact:true});await analog.click();
   await expect(analog).toHaveAttribute('draggable','false');await expect(page.locator('.browser-description')).toContainText('Save a qualified Analog');await expect(page.locator('.browser-load')).toBeDisabled();
-  await page.getByRole('listbox',{name:'Browser results'}).press('Enter');await analog.dblclick();
+  await page.getByRole('tree',{name:'Browser results'}).press('Enter');await analog.dblclick();
   const dataTransfer=await page.evaluateHandle(()=>new DataTransfer());await analog.dispatchEvent('dragstart',{dataTransfer});await page.locator('.track').first().dispatchEvent('drop',{dataTransfer});
   expect(await dataTransfer.evaluate(data=>data.types.length)).toBe(0);await dataTransfer.dispose();
   await refresh.click();await expect(analog).toHaveAttribute('aria-selected','true');await expect(page.locator('.browser-status')).toContainText('depth bound');await expect(tempo).toHaveValue('133');
@@ -220,7 +652,7 @@ for(const size of [{width:800,height:600},{width:1280,height:800}])test(`unfilte
     window.catalogRequest=({cursor})=>({revision:'long-list',entries:entries.slice(cursor?.offset??0,(cursor?.offset??0)+64),nextCursor:cursor?null:{revision:'long-list',offset:64},notices:['Candidate discovery requires saved devices.']});
   });
   await page.getByRole('button',{name:'Refresh Library',exact:true}).click();
-  const first=page.getByRole('option',{name:'Catalog candidate 00',exact:true}),last=page.getByRole('option',{name:'Catalog candidate 95',exact:true});
+  const first=page.getByRole('treeitem',{name:'Catalog candidate 00',exact:true}),last=page.getByRole('treeitem',{name:'Catalog candidate 95',exact:true});
   await expect(last).toHaveCount(1);await first.click();
   const geometry=()=>page.evaluate(()=>{
     const box=selector=>{const r=document.querySelector(selector).getBoundingClientRect();return{x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom};},list=document.querySelector('.browser-list');
@@ -251,10 +683,10 @@ test('browser device double-click requests one validated load and reports native
   await page.evaluate(()=>{window.sessionSnapshot.document.tracks[0].chain.instrument=null;window.sessionSnapshot.document.sources[0].automation=[];});
   await page.locator('#detail-devices').click();
   await expect(page.getByRole('button',{name:'Load instrument',exact:true})).toHaveCount(1);
-  await page.getByRole('option',{name:'Subtractive',exact:true}).click();
+  await page.getByRole('treeitem',{name:'Subtractive',exact:true}).click();
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
   await page.evaluate(()=>{window.browserLoadError='Device capacity reached';});
-  await page.getByRole('option',{name:'Subtractive',exact:true}).dblclick();
+  await page.getByRole('treeitem',{name:'Subtractive',exact:true}).dblclick();
   await expect(page.locator('.browser-status')).toContainText('Device capacity reached');
   const calls=await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'));
   expect(calls).toHaveLength(1);expect(calls[0]).toMatchObject({name:'alive_device',args:{action:'load',path:'../../ultra/examples/subtractive.ultra',generation:1,editRevision:0}});
@@ -268,7 +700,7 @@ for(const selected of ['audio','occupied MIDI'])for(const refusal of ['Open devi
     window.catalogRequest=()=>({revision:'cached-user',entries:[{id:'user:cached',provider:'user',name:'Cached User Synth',kind:'instrument',path:'/owned/library/cached.ultra',profile:null,qualification:'qualified',availability:'ready',reason:null,description:'Saved user instrument',dependencies:[]}],nextCursor:null,notices:[]});
   });
   await page.getByRole('button',{name:'Refresh Library',exact:true}).click();
-  const device=page.getByRole('option',{name:'Cached User Synth',exact:true});await device.click();
+  const device=page.getByRole('treeitem',{name:'Cached User Synth',exact:true});await device.click();
   await page.locator('#detail-devices').click();
   const before=await page.evaluate(()=>({document:window.sessionSnapshot.document,generation:window.sessionSnapshot.generation,editRevision:window.sessionSnapshot.editRevision,dirty:window.sessionSnapshot.dirty,history:window.sessionSnapshot.history}));
   const chain=await page.locator('#chain-title').textContent(),card=await page.locator('.chain-select[aria-pressed="true"]').evaluateAll(elements=>elements[0]?.getAttribute('aria-label')??null);
@@ -285,7 +717,7 @@ for(const selected of ['audio','occupied MIDI'])test(`automatic instrument activ
   await openSession(page,{audioTrack:selected==='audio'});
   if(selected==='audio')await page.getByRole('button',{name:'Select Harmony track',exact:true}).click();
   const before=await page.evaluate(()=>structuredClone(window.sessionSnapshot.document));
-  await page.getByRole('option',{name:'Subtractive',exact:true}).dblclick();
+  await page.getByRole('treeitem',{name:'Subtractive',exact:true}).dblclick();
   await expect(page.locator('.track')).toHaveCount(3);
   expect(await page.evaluate(()=>window.calls.filter(c=>['alive_device','alive_workspace_track'].includes(c.name)).map(c=>({name:c.name,action:c.args.action,trackId:c.args.trackId})))).toEqual([{name:'alive_device',action:'loadNewTrack',trackId:selected==='audio'?'track-2':'track-1'}]);
   const loaded=await page.evaluate(()=>structuredClone(window.sessionSnapshot.document));
@@ -299,7 +731,7 @@ for(const selected of ['audio','occupied MIDI'])test(`automatic instrument activ
 
 test('fresh MIDI tracks expose the library immediately and accept a browser instrument on the dropped-on track',async({page})=>{
   await openSession(page,{emptyDevices:true});
-  const device=page.getByRole('option',{name:'Subtractive',exact:true});await expect(device).toBeVisible();
+  const device=page.getByRole('treeitem',{name:'Subtractive',exact:true});await expect(device).toBeVisible();
   await device.click();await expect(page.getByRole('button',{name:'Load Instrument',exact:true})).toBeEnabled();
   await device.dragTo(page.locator('.track[data-track-id="track-2"] .track-name'));
   await expect(page.locator('#chain-title')).toHaveText('Harmony chain');await expect(page.locator('#device-detail')).toBeVisible();
@@ -310,7 +742,7 @@ test('fresh MIDI tracks expose the library immediately and accept a browser inst
 });
 
 test('instrument drop replaces the MIDI instrument in place and retains its effects',async({page})=>{
-  await openSession(page);await page.getByRole('option',{name:'Subtractive',exact:true}).dragTo(page.locator('.track[data-track-id="track-1"]'));
+  await openSession(page);await page.getByRole('treeitem',{name:'Subtractive',exact:true}).dragTo(page.locator('.track[data-track-id="track-1"]'));
   await expect(page.locator('#device-detail')).toBeVisible();
   expect(await page.evaluate(()=>window.calls.find(c=>c.name==='alive_device').args)).toMatchObject({trackId:'track-1',instanceId:'instrument-0',action:'replace'});
   expect(await page.evaluate(()=>window.sessionSnapshot.document.tracks[0].effects.map(e=>e.instanceId))).toEqual(['utility','stereo-lowpass']);
@@ -319,10 +751,10 @@ test('instrument drop replaces the MIDI instrument in place and retains its effe
 
 test('effects drop onto another track then insert before its first effect in serial order',async({page})=>{
   await openSession(page,{audioTrack:true});
-  await page.getByRole('option',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.track[data-track-id="track-2"]'));
+  await page.getByRole('treeitem',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.track[data-track-id="track-2"]'));
   await expect(page.locator('#chain-title')).toHaveText('Harmony chain');await expect(page.locator('.chain-device')).toHaveCount(1);
   const first=page.locator('.chain-device .chain-select').first();
-  await page.getByRole('option',{name:'Stereo Lowpass',exact:true}).dragTo(first,{targetPosition:{x:30,y:2}});
+  await page.getByRole('treeitem',{name:'Stereo Lowpass',exact:true}).dragTo(first,{targetPosition:{x:30,y:2}});
   await expect(page.locator('.chain-device')).toHaveCount(2);
   const calls=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_device').map(c=>c.args));
   expect(calls).toHaveLength(2);expect(calls[0]).toMatchObject({trackId:'track-2',action:'add',path:'utility.ultra'});
@@ -332,30 +764,30 @@ test('effects drop onto another track then insert before its first effect in ser
 
 test('empty device chain accepts an instrument and successive effects at its tail',async({page})=>{
   await openSession(page,{emptyDevices:true});await page.locator('#detail-devices').click();
-  await page.getByRole('option',{name:'Subtractive',exact:true}).dragTo(page.locator('.chain-drop-tail'));
+  await page.getByRole('treeitem',{name:'Subtractive',exact:true}).dragTo(page.locator('.chain-drop-tail'));
   await expect(page.locator('.chain-device')).toHaveCount(1);
-  for(const name of ['Stereo Utility','Stereo Lowpass'])await page.getByRole('option',{name,exact:true}).dragTo(page.locator('.chain-drop-tail'));
+  for(const name of ['Stereo Utility','Stereo Lowpass'])await page.getByRole('treeitem',{name,exact:true}).dragTo(page.locator('.chain-drop-tail'));
   await expect(page.locator('.chain-device')).toHaveCount(3);
   expect(await page.evaluate(()=>window.sessionSnapshot.document.tracks[0].effects.map(e=>e.path))).toEqual(['utility.ultra','stereo-lowpass.ultra']);
 });
 
 test('device drops remain reachable at the minimum window size',async({page})=>{
   await page.setViewportSize({width:800,height:600});await openSession(page,{emptyDevices:true});
-  await page.getByRole('option',{name:'Subtractive',exact:true}).dragTo(page.locator('.track[data-track-id="track-1"] .track-name'));
+  await page.getByRole('treeitem',{name:'Subtractive',exact:true}).dragTo(page.locator('.track[data-track-id="track-1"] .track-name'));
   await expect(page.locator('#device-detail')).toBeVisible();
-  await page.getByRole('option',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.chain-drop-tail'));
+  await page.getByRole('treeitem',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.chain-drop-tail'));
   await expect(page.locator('.chain-device')).toHaveCount(2);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.documentElement.scrollHeight<=innerHeight)).toBe(true);
 });
 
 test('device drops reject audio instruments, full chains and playing transport visibly',async({page})=>{
   await openSession(page,{audioTrack:true});
-  await page.getByRole('option',{name:'Subtractive',exact:true}).dragTo(page.locator('.track[data-track-id="track-2"]'));
+  await page.getByRole('treeitem',{name:'Subtractive',exact:true}).dragTo(page.locator('.track[data-track-id="track-2"]'));
   await expect(page.locator('#notice')).toContainText('MIDI track');
-  await page.getByRole('option',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.track[data-track-id="track-1"]'));
+  await page.getByRole('treeitem',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.track[data-track-id="track-1"]'));
   await expect(page.locator('#notice')).toContainText('two effects');
   await page.evaluate(()=>{window.sessionSnapshot.state.playing=1;});await expect(page.locator('#start')).toBeDisabled();
-  await page.getByRole('option',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.track[data-track-id="track-2"]'));
+  await page.getByRole('treeitem',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.track[data-track-id="track-2"]'));
   await expect(page.locator('#notice')).toContainText('Stop transport');
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_device'))).toEqual([]);
 });
@@ -363,7 +795,7 @@ test('device drops reject audio instruments, full chains and playing transport v
 test('Arrangement track drops use the actual destination and report native refusals without changing the chain',async({page})=>{
   await openSession(page,{emptyDevices:true});await page.locator('#view-arrangement').click();
   await page.evaluate(()=>{window.browserLoadError='Native device admission refused';});
-  await page.getByRole('option',{name:'Subtractive',exact:true}).dragTo(page.locator('.timeline-row[data-track-id="track-2"] .timeline-header'));
+  await page.getByRole('treeitem',{name:'Subtractive',exact:true}).dragTo(page.locator('.timeline-row[data-track-id="track-2"] .timeline-header'));
   await expect(page.locator('#notice')).toContainText('Native device admission refused');
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_device').map(c=>c.args.trackId))).toEqual(['track-2']);
   expect(await page.evaluate(()=>window.sessionSnapshot.document.tracks.every(t=>!t.chain.instrument))).toBe(true);
@@ -411,6 +843,11 @@ async function openSession(page,{longNames=false,trackCount=2,launchQuantization
         if(window.browserLoadError)throw Error(window.browserLoadError);
         if(args.generation!==snapshot.generation||args.editRevision!==snapshot.editRevision)throw Error('Stale device edit');
         let track=snapshot.document.tracks.find(t=>t.id===args.trackId);const instrument=['load','replace','loadNewTrack'].includes(args.action);
+        if(args.action==='reorder'){
+          if(window.reorderGate)await window.reorderGate;
+          const from=track.effects.findIndex(effect=>effect.instanceId===args.instanceId),[effect]=track.effects.splice(from,1),before=track.effects.findIndex(item=>item.instanceId===args.beforeInstanceId);
+          track.effects.splice(before<0?track.effects.length:before,0,effect);snapshot.generation++;return accepted();
+        }
         if(args.action==='loadNewTrack'){
           undo.push(structuredClone(snapshot.document));redo.length=0;
           const at=snapshot.document.tracks.indexOf(track)+1;
@@ -549,7 +986,7 @@ test('selected instance controls, keyboard automation target and immediate edits
   await page.getByRole('button',{name:'Select Pulse Stereo Lowpass effect 2',exact:true}).click();
   await expect(page.locator('#device-title')).toHaveText('Stereo Lowpass');await expect(page.locator('.chain-device[data-instance-id="stereo-lowpass"]').getByRole('spinbutton',{name:'Cutoff base',exact:true})).toHaveValue('1000');
   expect(await page.evaluate(()=>window.calls.some(c=>c.name==='alive_editor'||c.name==='alive_transport'))).toBe(false);
-  await page.locator('#detail-clip').click();await page.locator('.automation-section>summary').click();
+  await expect(page.locator('#clip-detail')).toBeVisible();await page.locator('.automation-section>summary').click();
   await page.getByLabel('Automation target',{exact:true}).selectOption(JSON.stringify(['stereo-lowpass','cutoff']));await page.getByRole('button',{name:'Add automation lane',exact:true}).click();
   await page.getByRole('button',{name:'Add Stereo Lowpass effect 2 / Cutoff point',exact:true}).click();
   await expect(page.getByLabel('Stereo Lowpass effect 2 / Cutoff point 1 value',{exact:true})).toHaveValue('1000');
@@ -568,6 +1005,7 @@ test('long saved device names fit the minimum desktop window',async({page})=>{
 
 test('piano body, resize, velocity, cancellation and keyboard gestures are bounded transactions',async({page},testInfo)=>{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:1100,height:800});await openSession(page);
+  await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
   const piano=page.locator('#piano-roll'),edits=()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_edit'));
   await piano.scrollIntoViewIfNeeded();
   for(let i=0;i<6;i++)await page.getByRole('button',{name:'Scroll pitch up',exact:true}).click();
@@ -632,7 +1070,7 @@ test('a chord velocity drag edits the selected note when markers overlap',async(
 test('browser selection and transport dismissal preserve unfinished musical fields',async({page})=>{
   await page.setViewportSize({width:1280,height:800});await openSession(page);
   const tempo=page.locator('#tempo');await tempo.fill('130');
-  await page.getByRole('option',{name:'Subtractive',exact:true}).click();
+  await page.getByRole('treeitem',{name:'Subtractive',exact:true}).click();
   await expect(tempo).toHaveValue('130');
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
   await page.locator('#save').click();await expect(page.locator('#notice')).toContainText('Finish Tempo');
@@ -646,12 +1084,12 @@ test('browser selection and transport dismissal preserve unfinished musical fiel
   await page.locator('#transport-options-toggle').click();await expect(length).toHaveValue('32');
   await length.focus();await length.press('Tab');
   await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_edit').length)).toBe(1);
-  await tempo.fill('133');await page.getByRole('option',{name:'Subtractive',exact:true}).click();
+  await tempo.fill('133');await page.getByRole('treeitem',{name:'Subtractive',exact:true}).click();
   await page.evaluate(()=>{const s=window.sessionSnapshot;s.generation++;s.editRevision=0;s.document.tempo=90;window.calls=[];});
   await expect(tempo).toHaveValue('90');
   await tempo.focus();await tempo.press('Tab');
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
-  const search=page.getByRole('searchbox',{name:'Search browser'});await search.fill('sub');await page.getByRole('option',{name:'Subtractive',exact:true}).click();
+  const search=page.getByRole('searchbox',{name:'Search browser'});await search.fill('sub');await page.getByRole('treeitem',{name:'Subtractive',exact:true}).click();
   await page.locator('#save').click();await expect(page.locator('#notice')).not.toContainText('Finish Search');
 });
 
@@ -715,15 +1153,13 @@ for(const kind of ['device','note'])test(`detail navigation preserves an unfinis
   };
   await input.fill(typed);
   for(let i=0;i<3;i++){
+    await page.locator('#detail-'+own).click();await acrossPolls();
+    expect(await input.evaluate(e=>document.activeElement===e)).toBe(false);
+    await page.locator('#detail-'+own).click();await acrossPolls();
+    await page.locator('#detail-'+other).click();await acrossPolls();
     await page.locator('#detail-'+other).click();await acrossPolls();
     await page.locator('#toggle-detail').click();await acrossPolls();
     await page.locator('#toggle-detail').click();await acrossPolls();
-    expect(await input.evaluate(e=>document.activeElement===e)).toBe(false);
-    await page.locator('#detail-'+own).click();await acrossPolls();
-    await page.locator('#toggle-detail').click();await acrossPolls();
-    await page.locator('#detail-'+other).click();await acrossPolls();
-    expect(await input.evaluate(e=>document.activeElement===e)).toBe(false);
-    await page.locator('#detail-'+own).click();await acrossPolls();
   }
   await input.focus();await input.press('Tab');
   await expect.poll(async()=>(await mutations()).length).toBe(1);
@@ -782,6 +1218,16 @@ async function openArrangement(page,size){
   await page.locator('#view-arrangement').click();await expect(page.getByRole('button',{name:'Select placement p-0',exact:true})).toBeVisible();
 }
 const workspaceEdits=page=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_edit'));
+test('a parked Clip region draft follows its Arrangement occurrence when placements share a source',async({page})=>{
+  await openArrangement(page,{width:1280,height:800});
+  await page.evaluate(()=>{const s=window.sessionSnapshot,p=s.document.placements[0];s.document.placements.push({...structuredClone(p),id:'p-shared',start:4,region:{...p.region,start:.5}});s.preparedWorkspaces.placements.push({placementId:'p-shared',trackId:p.trackId,sourceId:p.sourceId,startFrame:'102857',durationFrames:'102857'});s.editRevision++;});
+  const a=page.getByRole('button',{name:'Select placement p-0',exact:true}),b=page.getByRole('button',{name:'Select placement p-shared',exact:true});await expect(b).toBeVisible();await a.click();
+  const field=page.getByRole('spinbutton',{name:'Clip Start',exact:true}),summary=page.locator('.clip-properties > details').first().locator('summary');
+  await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await field.fill('1');await summary.click();await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await b.click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await summary.click();
+  await expect(field).toHaveValue('0.5');expect(await workspaceEdits(page)).toEqual([]);
+  await summary.click();await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await a.click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await summary.click();await expect(field).toHaveValue('1');expect(await workspaceEdits(page)).toEqual([]);
+  await field.focus();await field.press('Tab');await expect.poll(async()=>(await workspaceEdits(page)).length).toBe(1);expect((await workspaceEdits(page))[0].args.operation).toMatchObject({kind:'regionSet',occurrence:{kind:'placement',placementId:'p-0'},region:{start:1}});
+});
 async function dragTimeline(page,locator,from,to,{cancel=false,hide=false,box=null}={}){
   box??=await locator.boundingBox();await page.mouse.move(box.x+from[0],box.y+from[1]);await page.mouse.down();await page.mouse.move(box.x+to[0],box.y+to[1],{steps:6});
   if(cancel)await page.keyboard.press('Escape');if(hide)await page.locator('#view-session').click();await page.mouse.up();
@@ -934,6 +1380,31 @@ test('Master numeric validation and double-click unity use the same admission pa
   await fader.dblclick();await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_master').at(-1)?.args.gain)).toBe(1);await expect(root.getByLabel('Master gain decibels')).toHaveText('0.0 dB');
 });
 
+test('renaming an Arrangement source keeps its source controls open after the accepted edit',async({page})=>{
+  await openArrangement(page,{width:1440,height:900});await page.getByRole('button',{name:'Select placement p-0',exact:true}).click();
+  const disclosure=page.locator('.clip-source-actions');await disclosure.locator('summary').click();
+  const name=page.getByLabel('MIDI source name',{exact:true});await name.fill('Renamed source');await name.press('Tab');
+  await expect.poll(async()=>(await workspaceEdits(page)).filter(c=>c.args.operation.kind==='sourceRename').length).toBe(1);
+  await expect(disclosure).toHaveAttribute('open','');await expect(page.getByLabel('MIDI source length',{exact:true})).toBeVisible();
+  await page.getByLabel('MIDI source length',{exact:true}).fill('12');await page.getByLabel('MIDI source length',{exact:true}).press('Tab');
+  await expect.poll(async()=>(await workspaceEdits(page)).map(c=>c.args.operation.kind)).toEqual(['sourceRename','sourceLength']);
+  await expect(disclosure).toHaveAttribute('open','');await page.getByRole('button',{name:'Select placement p-1',exact:true}).click();await expect(disclosure).not.toHaveAttribute('open','');
+});
+
+test('closing the source disclosure makes the Arrangement Add note target reachable',async({page},testInfo)=>{
+  await openArrangement(page,{width:1440,height:900});await dragBlankLaneRange(page,page.locator('.timeline-lane').first());
+  const disclosure=page.locator('.clip-source-actions'),summary=disclosure.locator('summary');await summary.click();
+  await page.getByRole('button',{name:'Create MIDI source',exact:true}).click();await expect(page.getByLabel('MIDI source',{exact:true})).toHaveValue('new-source-1');
+  await summary.click();await expect(disclosure).toHaveAttribute('open','');const name=page.getByLabel('MIDI source name',{exact:true});await name.fill('MIDI journey');await name.press('Tab');
+  await expect.poll(async()=>(await workspaceEdits(page)).map(c=>c.args.operation.kind)).toEqual(['sourceCreateMidi','sourceRename']);
+  const add=page.getByRole('button',{name:'Add note',exact:true});await add.scrollIntoViewIfNeeded();
+  const hit=()=>add.evaluate(el=>{const r=el.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {target:hit===el||el.contains(hit),cover:!!hit?.closest('.clip-source-actions-body')};});
+  expect(await hit()).toEqual({target:false,cover:true});await page.screenshot({path:testInfo.outputPath('source-disclosure-covers-add-note.png')});
+  await summary.click();await expect(disclosure).not.toHaveAttribute('open','');expect((await hit()).target).toBe(true);await add.click();
+  await expect.poll(async()=>(await workspaceEdits(page)).map(c=>c.args.operation.kind)).toEqual(['sourceCreateMidi','sourceRename','noteCreate']);
+  expect((await workspaceEdits(page)).at(-1).args.operation.sourceId).toBe('new-source-1');
+});
+
 test('Arrangement Master aligns with right track controls and source fields have visible context',async({page})=>{
   await openArrangement(page,{width:1440,height:900});await page.getByRole('button',{name:'Select placement p-0',exact:true}).click();await page.locator('.clip-source-actions>summary').click();
   const boxes=await page.evaluate(()=>{const rect=e=>e.getBoundingClientRect();const header=rect(document.querySelector('.timeline-header')),master=rect(document.querySelector('#master-arrangement-lane .master-heading')),controls=rect(document.querySelector('#master-arrangement'));return {headerLeft:header.left,masterLeft:master.left,controlsRight:controls.right,workspaceRight:rect(document.querySelector('#arrangement-workspace')).right};});
@@ -981,8 +1452,9 @@ for(const size of [{width:1440,height:900},{width:1280,height:800},{width:1024,h
   for(const view of ['session','arrangement']) {
     await page.locator(`#view-${view}`).click();await expect(global).toBeInViewport();await expect(page.locator('#stop')).toBeInViewport();
     await expect(page.locator(`#master-select-${view}`)).toBeInViewport();
-    const bounds=await page.evaluate(()=>({width:document.documentElement.scrollWidth,height:document.documentElement.scrollHeight,selector:document.querySelector('#launch-quantization').getBoundingClientRect().toJSON(),stop:document.querySelector('#stop').getBoundingClientRect().toJSON()}));
-    expect(bounds.width).toBeLessThanOrEqual(size.width);expect(bounds.height).toBeLessThanOrEqual(size.height);expect(bounds.selector.width).toBeGreaterThanOrEqual(64);expect(bounds.selector.left).toBeGreaterThan(bounds.stop.right);
+    const bounds=await page.evaluate(()=>({width:document.documentElement.scrollWidth,height:document.documentElement.scrollHeight,selector:document.querySelector('#launch-quantization').getBoundingClientRect().toJSON(),position:document.querySelector('#position').getBoundingClientRect().toJSON(),stop:document.querySelector('#stop').getBoundingClientRect().toJSON()}));
+    expect(bounds.width).toBeLessThanOrEqual(size.width);expect(bounds.height).toBeLessThanOrEqual(size.height);expect(bounds.selector.width).toBeGreaterThanOrEqual(64);expect(bounds.selector.right).toBeLessThanOrEqual(bounds.position.left);expect(bounds.position.right).toBeLessThan(bounds.stop.left);
+    expect(await global.evaluate(el=>{const r=el.getBoundingClientRect();return el.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));})).toBe(true);
     await page.screenshot({path:testInfo.outputPath(`launch-${view}-${size.width}x${size.height}.png`)});
   }
   expect(await page.evaluate(()=>window.calls.some(c=>['alive_transport','alive_workspace_action'].includes(c.name)))).toBe(false);
@@ -1010,9 +1482,9 @@ for(const size of [{width:1440,height:900},{width:800,height:600}])test(`device 
 
 test('rack drop insertion follows horizontal card midpoint even at its top edge',async({page})=>{
   await openSession(page,{audioTrack:true});
-  await page.getByRole('option',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.track[data-track-id="track-2"]'));
+  await page.getByRole('treeitem',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.track[data-track-id="track-2"]'));
   const first=page.locator('.chain-device').first(),box=await first.boundingBox();
-  await page.getByRole('option',{name:'Stereo Lowpass',exact:true}).dragTo(first,{targetPosition:{x:box.width-4,y:2}});
+  await page.getByRole('treeitem',{name:'Stereo Lowpass',exact:true}).dragTo(first,{targetPosition:{x:box.width-4,y:2}});
   await expect(first).toBeVisible();
   await expect.poll(()=>page.evaluate(()=>window.sessionSnapshot.document.tracks[1].effects.map(e=>e.path))).toEqual(['utility.ultra','stereo-lowpass.ultra']);
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_device').at(-1).args.beforeInstanceId)).toBe(null);
@@ -1047,7 +1519,7 @@ for(const destination of ['Session slot','Arrangement track','Arrangement placem
     else await page.locator('.timeline-row[data-track-id="track-2"] .timeline-lane').click({position:{x:300,y:40}});
     await page.getByRole('button',{name:'Select Pulse Arrangement track',exact:true}).click();
   }
-  await page.locator('#detail-devices').click();
+  if(await page.locator('#device-detail').isHidden())await page.locator('#detail-devices').click();
   await expect(cutoff).toHaveValue('1828');expect(await cutoff.evaluate(e=>e===window.retainedRackCutoff)).toBe(true);
   const polls=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length);
   await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length)).toBeGreaterThan(polls+1);

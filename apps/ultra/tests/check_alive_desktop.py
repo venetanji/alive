@@ -516,20 +516,33 @@ def select_device_click(name):
     return result
 
 
-def force_covering_tooltip(name, hover, kind='reorder'):
+def force_covering_tooltip(name, hover, kind='reorder', fallback_hover=None):
     prepare_workspace_control(name)
-    owner = owned_frame_window(); _, point = reorder_point(ui.wait_for(hover))
-    ui.t.XTestFakeMotionEvent(ui.display, 0, *point, 0); ui.x.XFlush(ui.display)
+    owner = owned_frame_window(); attempts = []
     tooltip = ui.x.XInternAtom(ui.display, b'_NET_WM_WINDOW_TYPE_TOOLTIP', 0)
-    deadline = time.monotonic() + 3
-    while time.monotonic() < deadline:
-        rect, target = reorder_point(ui.find(name)); path = native_hit_path(*target)
-        if owner not in path and any(tooltip in window_property(window, '_NET_WM_WINDOW_TYPE', 4) for window in path):
-            screenshot(kind.replace(' ', '-') + '-covering-tooltip.png')
-            return input_record('covering ' + kind + ' tooltip', name=name, owner=owner,
-                                rect=rect, hit_path=path, tooltip_atom=tooltip)
-        time.sleep(.02)
-    input_record('missing covering tooltip', name=name, owner=owner, rect=rect, hit_path=path)
+    for candidate in filter(None, (hover, fallback_hover)):
+        try:
+            hover_rect, _ = reorder_point(ui.wait_for(candidate) if candidate == hover else ui.find(candidate))
+        except (StopIteration, LookupError, GLib.GError) as error:
+            attempts.append({'hover': candidate, 'unavailable': str(error)})
+            continue
+        # The lower edge of a real, titled control above the target gives GTK's
+        # native tooltip a chance to overlap the action row on compact racks.
+        point = (hover_rect[0] + hover_rect[2] // 2,
+                 hover_rect[1] + (hover_rect[3] // 2 if candidate == hover else hover_rect[3] - 2))
+        ui.t.XTestFakeMotionEvent(ui.display, 0, *point, 0); ui.x.XFlush(ui.display)
+        deadline = time.monotonic() + 3
+        while time.monotonic() < deadline:
+            rect, target = reorder_point(ui.find(name)); path = native_hit_path(*target)
+            if owner not in path and any(tooltip in window_property(window, '_NET_WM_WINDOW_TYPE', 4) for window in path):
+                screenshot(kind.replace(' ', '-') + '-covering-tooltip.png')
+                return input_record('covering ' + kind + ' tooltip', name=name, owner=owner,
+                                    rect=rect, hit_path=path, tooltip_atom=tooltip, hover=candidate,
+                                    hover_rect=hover_rect, hover_point=point)
+            time.sleep(.02)
+        attempts.append({'hover': candidate, 'hover_rect': hover_rect, 'hover_point': point,
+                         'target_rect': rect, 'hit_path': path})
+    input_record('missing covering tooltip', name=name, owner=owner, attempts=attempts)
     screenshot(kind.replace(' ', '-') + '-tooltip-missing.png')
     raise AssertionError('Regression precondition: no native tooltip covering ' + name)
 
@@ -770,7 +783,8 @@ def prepare_chain():
     # Reordering twice must preserve identities and restore the saved signal order.
     reorder_click('Move Pulse Stereo Utility effect 1 later')
     ui.wait_for('Select Pulse Stereo Utility effect 2')
-    force_covering_tooltip('Move Pulse Stereo Utility effect 2 earlier', 'Move Pulse Stereo Lowpass effect 1 later')
+    force_covering_tooltip('Move Pulse Stereo Utility effect 2 earlier', 'Move Pulse Stereo Lowpass effect 1 later',
+                           fallback_hover='Gain base slider')
     reorder_click('Move Pulse Stereo Utility effect 2 earlier')
     ui.wait_for('Select Pulse Stereo Lowpass effect 2')
     ui.click('Select Pulse Stereo Utility effect 1')

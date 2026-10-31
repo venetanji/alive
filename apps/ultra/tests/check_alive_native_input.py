@@ -40,7 +40,8 @@ def run():
     moved = save_chain('input-moved.alive')
     assert [effect['instanceId'] for effect in moved] == [effect['instanceId'] for effect in reversed(before)]
     covering = alive.force_covering_tooltip('Move Pulse Stereo Utility effect 2 earlier',
-                                          'Move Pulse Stereo Lowpass effect 1 later')
+                                          'Move Pulse Stereo Lowpass effect 1 later',
+                                          fallback_hover='Gain base slider')
     restored = alive.reorder_click('Move Pulse Stereo Utility effect 2 earlier')
     ui.wait_for('Select Pulse Stereo Lowpass effect 2')
     after = save_chain('input-after.alive')
