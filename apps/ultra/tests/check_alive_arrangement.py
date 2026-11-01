@@ -15,6 +15,7 @@ import time
 from desktop_process_helpers import process_identity, assert_same_identity, stop_recorder, cleanup_independently
 
 import check_alive_desktop as alive
+from desktop_snapshot_retry import retry_snapshot, SnapshotIncomplete
 import check_alive_session_ui as presentation
 from gi.repository import Atspi
 
@@ -89,9 +90,26 @@ def save(name):
 
 
 def placement_ids():
-    return {node.get_name().removeprefix('Select placement ') for root in ui.desktop_apps()
-            if root.get_process_id() == ui.pid for node in ui.walk(root)
-            if node.get_name().startswith('Select placement ')}
+    def complete_walk(node):
+        if node is None:
+            return
+        yield node
+        children = [node.get_child_at_index(i) for i in range(node.get_child_count())]
+        for child in children:
+            if child is None:
+                raise SnapshotIncomplete('Accessibility child disappeared during snapshot')
+            yield from complete_walk(child)
+
+    def snapshot():
+        result = set()
+        for root in ui.desktop_apps():
+            if root is not None and root.get_process_id() == ui.pid:
+                for node in complete_walk(root):
+                    name = node.get_name() or ''
+                    if name.startswith('Select placement '):
+                        result.add(name.removeprefix('Select placement '))
+        return result
+    return retry_snapshot(snapshot, (alive.GLib.GError, SnapshotIncomplete))
 
 
 def wait_placement(placement_id, present, seconds=8):
