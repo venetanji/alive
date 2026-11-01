@@ -20,7 +20,7 @@ def bounds(name, width, height):
 
 def run():
     alive.windows.focus('Alive')
-    ui.wait_for('MIDI source')
+    alive.prepare_workspace_control('MIDI source'); ui.wait_for('MIDI source'); ui.click('Source / Clip')
     assert alive.value('Transport position beats') == '0.000 beats'
     ui.click('Browse Audio Effects')
     ui.wait_for('Stereo Lowpass')

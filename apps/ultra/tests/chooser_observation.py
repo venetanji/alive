@@ -5,6 +5,11 @@ An individual external accessibility call can still block beyond the time budget
 import time
 
 
+def hit_path_owns(result, name):
+    """Require a complete observed path containing the intended accessible."""
+    return result.get('status') == 'complete' and any(item.get('name') == name for item in result.get('path', ()))
+
+
 def find_web_ancestor(node, max_nodes=32, seconds=.15, clock=time.monotonic):
     deadline = clock() + seconds
     count = 0

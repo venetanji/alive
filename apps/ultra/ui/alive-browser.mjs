@@ -37,10 +37,10 @@ export function mountBrowser({doc,root,onLoad,onSource,onCatalog,onNavigate=()=>
   const refreshIcon=doc.createElementNS('http://www.w3.org/2000/svg','svg'),refreshPath=doc.createElementNS('http://www.w3.org/2000/svg','path');
   refreshIcon.setAttribute('viewBox','0 0 18 18');refreshIcon.setAttribute('aria-hidden','true');refreshPath.setAttribute('d','M14 7A5 5 0 1 0 14 11M14 3V7H10');refreshIcon.append(refreshPath);refresh.append(refreshIcon,make('span','','Refresh Library'));
   const body=make('div','browser-body'),nav=make('nav','browser-categories'),results=make('div','browser-results'),heading=make('div','browser-results-heading','Name'),list=make('div','browser-list'),empty=make('p','browser-empty'),footer=make('div','browser-selection'),description=make('p','browser-description'),activate=make('button','browser-load','Load'),status=make('p','browser-status');
-  nav.setAttribute('aria-label','Browser categories');list.setAttribute('role','listbox');list.setAttribute('aria-label','Browser results');list.tabIndex=0;
+  nav.setAttribute('aria-label','Browser categories');list.setAttribute('role','tree');list.setAttribute('aria-label','Browser results');list.tabIndex=0;
   status.setAttribute('role','status');description.textContent='Select a device or clip';
   toolbar.append(search,refresh);results.append(heading,list,empty);body.append(nav,results);footer.append(description,activate);root.append(toolbar,body,footer,status);
-  let category='all',selected=null,entries=[],state={},bundled=[],catalogState='idle',catalogError='',catalogNotices=[],requestOwner=0,key='',resultsKey='',disposed=false;
+  let category='all',selected=null,entries=[],state={},bundled=[],catalogState='idle',catalogError='',catalogNotices=[],requestOwner=0,key='',resultsKey='',disposed=false;const expanded=new Set();
   const categoryButtons=[];
   for(const [id,label]of categories){
     const button=make('button','browser-category',label);button.setAttribute('aria-label',`Browse ${label}`);button.addEventListener('click',()=>{category=id;paint();if(id!=='source')ensureCatalog();});nav.append(button);categoryButtons.push([id,button]);
@@ -69,6 +69,7 @@ export function mountBrowser({doc,root,onLoad,onSource,onCatalog,onNavigate=()=>
     }catch(error){if(disposed||owner!==requestOwner)return;catalogState='failed';catalogError=`Library unavailable: ${String(error)}. Refresh Library to retry.`;paint();}
   }
   function choose(id){selected=id;paint();}
+  function expand(id,open){if(open)expanded.add(id);else expanded.delete(id);paint();}
   function move(keyName){
     const visible=filterEntries(entries,search.value,category);if(!visible.length)return;
     const index=visible.findIndex(entry=>entry.id===selected),next=keyName==='Home'?0:keyName==='End'?visible.length-1:Math.max(0,Math.min(visible.length-1,index+(keyName==='ArrowUp'?-1:1)));
@@ -81,21 +82,25 @@ export function mountBrowser({doc,root,onLoad,onSource,onCatalog,onNavigate=()=>
   }
   function paint(){
     const visible=filterEntries(entries,search.value,category);
-    if(selected&&!visible.some(entry=>entry.id===selected))selected=null;
+    if(selected&&!entries.some(entry=>entry.id===selected))selected=null;
+    const selectedVisible=visible.some(entry=>entry.id===selected);
     for(const [id,button]of categoryButtons)button.setAttribute('aria-pressed',String(category===id));
-    const nextResultsKey=JSON.stringify(visible);
+    const nextResultsKey=JSON.stringify([visible,visible.filter(entry=>expanded.has(entry.id)).map(entry=>entry.id)]);
     if(nextResultsKey!==resultsKey){
-      resultsKey=nextResultsKey;list.replaceChildren();
+      resultsKey=nextResultsKey;const scrollTop=list.scrollTop;list.replaceChildren();
       for(const entry of visible){
-      const row=make('button','browser-result'),glyph=make('span',`browser-glyph ${entry.kind}`),name=make('span','browser-result-name',entry.name);
-      row.id=`browser-entry-${entries.indexOf(entry)}`;row.type='button';row.tabIndex=-1;row.setAttribute('role','option');row.setAttribute('data-entry',entry.id);row.setAttribute('aria-label',entry.name);row.title=[entry.name,entry.description,entry.reason].filter(Boolean).join(' / ');
+      const row=make('button','browser-result'),disclosure=make('span','browser-disclosure'),glyph=make('span',`browser-glyph ${entry.kind}`),name=make('span','browser-result-name',entry.name),device=entry.kind!=='source',open=device&&expanded.has(entry.id),childId=`browser-preset-${entries.indexOf(entry)}`;
+      row.id=`browser-entry-${entries.indexOf(entry)}`;row.type='button';row.tabIndex=-1;row.setAttribute('role','treeitem');row.setAttribute('aria-level','1');row.setAttribute('data-entry',entry.id);row.setAttribute('aria-label',entry.name);row.title=[entry.name,entry.description,entry.reason].filter(Boolean).join(' / ');
+      disclosure.setAttribute('aria-hidden','true');if(device){row.setAttribute('aria-expanded',String(open));if(open)row.setAttribute('aria-describedby',childId);}else disclosure.classList.add('leaf');
       if(entry.kind!=='source'){const blocked=deviceAdmissionReason(entry);row.draggable=!blocked;row.classList.toggle('unavailable',!!blocked);row.addEventListener('dragstart',event=>{if(disposed||deviceAdmissionReason(entry)){event.preventDefault();return;}choose(entry.id);onDeviceDrag(entry,event);});row.addEventListener('dragend',onDragEnd);}
-      glyph.setAttribute('aria-hidden','true');row.append(glyph,name);row.addEventListener('click',()=>{choose(entry.id);list.focus();});row.addEventListener('dblclick',()=>{choose(entry.id);load();});list.append(row);
+      glyph.setAttribute('aria-hidden','true');row.append(disclosure,glyph,name);row.addEventListener('click',event=>{choose(entry.id);if(device&&event.target===disclosure)expand(entry.id,!expanded.has(entry.id));list.focus();});row.addEventListener('dblclick',event=>{if(event.target===disclosure)return;choose(entry.id);load();});list.append(row);
+      if(open){const child=make('div','browser-preset-unavailable','Presets unavailable');child.id=childId;child.setAttribute('role','treeitem');child.setAttribute('aria-label','Preset browsing unavailable');child.setAttribute('aria-level','2');child.setAttribute('aria-disabled','true');child.title='The Browser catalog does not expose preset names or an apply-preset operation.';list.append(child);}
       }
+      list.scrollTop=scrollTop;
     }
-    for(const row of list.children)row.setAttribute('aria-selected',String(row.getAttribute('data-entry')===selected));
-    const chosen=selectedEntry(),blocked=chosen&&chosen.kind!=='source'?(deviceAdmissionReason(chosen)||(chosen.kind==='instrument'?state.instrumentBlocked:state.effectBlocked)):'';
-    const active=list.children?.[visible.findIndex(entry=>entry.id===selected)];
+    for(const row of list.children)if(row.getAttribute('data-entry'))row.setAttribute('aria-selected',String(row.getAttribute('data-entry')===selected));
+    const chosen=selectedVisible?selectedEntry():null,blocked=chosen&&chosen.kind!=='source'?(deviceAdmissionReason(chosen)||(chosen.kind==='instrument'?state.instrumentBlocked:state.effectBlocked)):'';
+    const active=[...list.children].find(row=>row.getAttribute('data-entry')===selected&&selectedVisible);
     if(active)list.setAttribute('aria-activedescendant',active.id);else list.removeAttribute('aria-activedescendant');
     empty.hidden=visible.length>0;empty.textContent=search.value.trim()?'No results. Try another search.':category==='source'?'No clips in this project.':'No devices found.';
     description.textContent=chosen?[chosen.description??'Saved Ultra device',chosen.reason].filter(Boolean).join(' / '):'Drag an instrument or effect onto a track';activate.disabled=!chosen||!!blocked;activate.textContent=chosen?.kind==='source'?'Open Clip':chosen?.kind==='instrument'?(state.instrumentNeedsTrack?'Add Track':'Load Instrument'):'Add Effect';activate.title=blocked??'';
@@ -105,7 +110,7 @@ export function mountBrowser({doc,root,onLoad,onSource,onCatalog,onNavigate=()=>
   function update(next){state=next;const nextEntries=browserEntries(bundled,next.document,next.instances);const nextKey=JSON.stringify([nextEntries,next.instrumentBlocked,next.effectBlocked,next.instrumentNeedsTrack]);if(nextKey===key)return;key=nextKey;entries=nextEntries;paint();}
   search.addEventListener('input',()=>{paint();ensureCatalog();});
   search.addEventListener('keydown',event=>{if(['ArrowDown','ArrowUp'].includes(event.key)){event.preventDefault();move(event.key);list.focus();}else if(event.key==='Escape'){event.preventDefault();search.value='';paint();}});
-  list.addEventListener('keydown',event=>{if(['ArrowDown','ArrowUp','Home','End'].includes(event.key)){event.preventDefault();move(event.key);}else if(event.key==='Enter'){event.preventDefault();load();}});
+  list.addEventListener('keydown',event=>{if(['ArrowDown','ArrowUp','Home','End'].includes(event.key)){event.preventDefault();move(event.key);}else if(['ArrowLeft','ArrowRight'].includes(event.key)){const visible=filterEntries(entries,search.value,category),entry=visible.find(item=>item.id===selected)??visible[0];if(entry&&entry.kind!=='source'){event.preventDefault();selected=entry.id;expand(entry.id,event.key==='ArrowRight');}}else if(event.key===' '){event.preventDefault();const visible=filterEntries(entries,search.value,category);if(!visible.some(entry=>entry.id===selected)&&visible.length)choose(visible[0].id);}else if(event.key==='Enter'){event.preventDefault();load();}});
   const preserve=event=>{if(!root.contains(doc.activeElement)&&!activate.contains(event.target))onNavigate();};
   root.addEventListener('pointerdown',preserve,true);
   refresh.addEventListener('click',()=>{ensureCatalog(true);});activate.addEventListener('click',load);paint();ensureCatalog();

@@ -3,7 +3,7 @@ import {test,expect} from '@playwright/test';
 // Rendered UI checks with a native document bridge fixture; no native execution or audio claim.
 async function mountNativeDocuments(page){
   await page.addInitScript(()=>{
-    const patch={version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'add',x:40,y:40,params:{rhs:12}}],edges:[]};
+    const patch={version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[{id:1,type:'add',x:40,y:40,params:{rhs:12}}],edges:[]};
     const current={id:1,label:'patch-1',title:'First.ultra',kind:'patch',patch};let revision=0,applied=patch;
     window.documentCalls=[];
     window.__TAURI__={
@@ -63,7 +63,7 @@ test('Enter opens File and activates Save As while F2 still edits a selected can
 
 test('Ctrl+S commits a focused number before saving its owner',async({page})=>{
   await page.addInitScript(()=>{
-    let patch={version:1,profile:'ultra-canvas-v1',nodes:[{id:1,type:'number',x:40,y:40,params:{value:10}}],edges:[]},revision=1;
+    let patch={version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[{id:1,type:'number',x:40,y:40,params:{value:10}}],edges:[]},revision=1;
     const descriptor=()=>({shared:true,id:1,label:'owner',ownerLabel:'owner',title:'Number.ultra',kind:'patch',viewPath:[],patch:structuredClone(patch),authoringRevision:revision,runtimeRevision:1,dirty:false});
     window.documentCalls=[];
     window.__TAURI__={core:{invoke:async(name,args={})=>{

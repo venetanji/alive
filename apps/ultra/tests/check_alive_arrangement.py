@@ -15,6 +15,7 @@ import time
 from desktop_process_helpers import process_identity, assert_same_identity, stop_recorder, cleanup_independently
 
 import check_alive_desktop as alive
+from desktop_snapshot_retry import retry_snapshot, SnapshotIncomplete
 import check_alive_session_ui as presentation
 from gi.repository import Atspi
 
@@ -26,6 +27,10 @@ restart = video = capture = None
 def record(action, **data):
     report['actions'].append({'action': action, 'monotonic': time.monotonic(), **data})
     (ui.output / 'arrangement-report.json').write_text(json.dumps(report, indent=2))
+
+
+def observe_arrangement_click(phase, name, rect, control):
+    alive.observe_replace_input(phase, name, rect, control, action_prefix='arrangement input')
 
 
 def expanded(name, wanted=True):
@@ -85,9 +90,38 @@ def save(name):
 
 
 def placement_ids():
-    return {node.get_name().removeprefix('Select placement ') for root in ui.desktop_apps()
-            if root.get_process_id() == ui.pid for node in ui.walk(root)
-            if node.get_name().startswith('Select placement ')}
+    def complete_walk(node):
+        if node is None:
+            return
+        yield node
+        children = [node.get_child_at_index(i) for i in range(node.get_child_count())]
+        for child in children:
+            if child is None:
+                raise SnapshotIncomplete('Accessibility child disappeared during snapshot')
+            yield from complete_walk(child)
+
+    def snapshot():
+        result = set()
+        for root in ui.desktop_apps():
+            if root is not None and root.get_process_id() == ui.pid:
+                for node in complete_walk(root):
+                    name = node.get_name() or ''
+                    if name.startswith('Select placement '):
+                        result.add(name.removeprefix('Select placement '))
+        return result
+    return retry_snapshot(snapshot, (alive.GLib.GError, SnapshotIncomplete))
+
+
+def wait_placement(placement_id, present, seconds=8):
+    """Wait for two native accessibility snapshots of the requested history state."""
+    deadline = time.monotonic() + seconds
+    matches = 0
+    while time.monotonic() < deadline:
+        matches = matches + 1 if (placement_id in placement_ids()) == present else 0
+        if matches >= 2:
+            return
+        time.sleep(.1)
+    raise AssertionError(f'Placement {placement_id} did not become {"present" if present else "absent"}')
 
 
 def observed(track, field, predicate, seconds=8):
@@ -116,7 +150,7 @@ def exited(pid):
 def run():
     global restart, capture
     windows.focus('Alive')
-    ui.wait_for('MIDI source')
+    alive.prepare_workspace_control('MIDI source'); ui.wait_for('MIDI source'); ui.click('Source / Clip')
     assert alive.value('Transport position beats') == '0.000 beats'
     initial = alive.file_score(json.loads((ui.output / 'initial.alive').read_text()))
     initial_identity = process_identity(ui.pid)
@@ -153,15 +187,15 @@ def run():
     ui.click('Select placement ' + first)
     ui.click('Assign source to Session')
     arrangement()
-    ui.click('Select placement ' + duplicate)
-    ui.click('Make placement independent')
+    ui.click('Select placement ' + duplicate, observer=observe_arrangement_click)
+    ui.click('Make placement independent', observer=observe_arrangement_click)
     alive.numeric('Note 1 velocity', 71)
     arrangement()
-    ui.click('Delete placement')
-    assert duplicate not in placement_ids()
-    ui.click('Undo'); assert duplicate in placement_ids()
-    ui.click('Redo'); assert duplicate not in placement_ids()
-    ui.click('Undo')
+    alive.native_control_click('Delete placement', 'arrangement delete', require_accessible_hit=True)
+    wait_placement(duplicate, False)
+    alive.native_control_click('Undo', 'arrangement undo', require_accessible_hit=True); wait_placement(duplicate, True)
+    alive.native_control_click('Redo', 'arrangement redo', require_accessible_hit=True); wait_placement(duplicate, False)
+    alive.native_control_click('Undo', 'arrangement undo', require_accessible_hit=True); wait_placement(duplicate, True)
     alive.numeric('Song loop start', 2)
     alive.numeric('Song loop end', 16)
     path, authored = save('authored.alive')
@@ -191,7 +225,16 @@ def run():
     for _ in range(3):
         arrangement(); session()
     assert observed(1, 'authority', lambda s: s == 'session') == 'session'
-    session(); ui.click('Stop Pulse track')
+    session(); alive.native_control_click('Stop Pulse track', 'track stop', require_accessible_hit=True)
+    # Observe the real click and its native receipt; keep the authority
+    # assertion below unchanged, even when this diagnostic is unavailable.
+    try:
+        runtime = alive.value('Pulse clip runtime')
+        record('track Stop receipt', runtime=runtime, status=alive.value('Session status'),
+               position=alive.value('Transport position beats'))
+        expanded('Pulse runtime details', False)
+    except Exception as error:
+        record('track Stop receipt unavailable', error=repr(error))
     observed(1, 'active source', lambda s: s == '-')
     assert observed(1, 'authority', lambda s: s == 'session') == 'session'
     session(); ui.click('Launch Harmony Clip 1')
@@ -246,7 +289,7 @@ def run():
     restart = subprocess.Popen([os.environ['ULTRA_TEST_ALIVE_BINARY'], str(path)], env=env, stdout=restart_log, stderr=subprocess.STDOUT)
     restart_log.close()
     ui.pid = restart.pid; windows.scope = 'Alive'; windows.focus('Alive')
-    ui.wait_for('MIDI source')
+    alive.prepare_workspace_control('MIDI source'); ui.wait_for('MIDI source'); ui.click('Source / Clip')
     reopened_identity = process_identity(ui.pid)
     assert_same_identity(initial_identity, reopened_identity)
     assert alive.value('Transport playing') == 'false'

@@ -17,6 +17,9 @@ export function mountAliveInfo(doc=globalThis.document){
   const info=mountContextInfo({doc,regions:REGIONS,outputId:'info-text',fallback:DEFAULT_INFO});
   const fileMenu=doc?.getElementById?.('file-menu');
   const browserAdd=doc?.getElementById?.('browser-add-menu');
+  const panel=doc?.getElementById?.('info-view'),toggle=doc?.getElementById?.('toggle-help');
+  function toggleHelp(){if(!panel||!toggle)return;panel.hidden=!panel.hidden;toggle.setAttribute('aria-expanded',String(!panel.hidden));}
+  const preserveFocus=event=>event.preventDefault();
   function click(event){
     if(fileMenu?.open && (!fileMenu.contains(event.target) || event.target.closest?.('button')))fileMenu.open=false;
     if(browserAdd?.open && !browserAdd.contains(event.target))browserAdd.open=false;
@@ -28,10 +31,14 @@ export function mountAliveInfo(doc=globalThis.document){
   }
   doc?.addEventListener?.('click',click);
   doc?.addEventListener?.('keydown',keydown);
+  toggle?.addEventListener('pointerdown',preserveFocus);
+  toggle?.addEventListener('click',toggleHelp);
   return{dispose(){
     info.dispose();
     doc?.removeEventListener?.('click',click);
     doc?.removeEventListener?.('keydown',keydown);
+    toggle?.removeEventListener('pointerdown',preserveFocus);
+    toggle?.removeEventListener('click',toggleHelp);
   }};
 }
 if(typeof document!=='undefined')mountAliveInfo(document);

@@ -39,9 +39,8 @@ def run():
     ui.wait_for('Select Pulse Stereo Utility effect 2')
     moved = save_chain('input-moved.alive')
     assert [effect['instanceId'] for effect in moved] == [effect['instanceId'] for effect in reversed(before)]
-    covering = alive.force_covering_tooltip('Move Pulse Stereo Utility effect 2 earlier',
-                                          'Move Pulse Stereo Lowpass effect 1 later')
-    restored = alive.reorder_click('Move Pulse Stereo Utility effect 2 earlier')
+    with alive.covering_reorder_tooltip('Move Pulse Stereo Utility effect 2 earlier', 'utility.ultra') as covering:
+        restored = alive.reorder_click('Move Pulse Stereo Utility effect 2 earlier')
     ui.wait_for('Select Pulse Stereo Lowpass effect 2')
     after = save_chain('input-after.alive')
     assert after == before, 'One Earlier click must restore order and every saved effect field'

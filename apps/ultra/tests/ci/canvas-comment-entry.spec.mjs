@@ -4,7 +4,7 @@ const text='  First line\nSecond <literal> line\nThird line  ';
 async function load(page,value=text,style={width:250,height:90,fontsize:13}){
   await page.goto('/canvas.html?new=1');
   await page.locator('#file-menu summary').click();await page.locator('#open-patch').click();
-  await page.locator('#patch-json').fill(JSON.stringify({version:2,profile:'ultra-patcher-v2',nodes:[
+  await page.locator('#patch-json').fill(JSON.stringify({version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[
     {id:1,type:'comment',x:60,y:60,params:{text:value},style},
   ],edges:[]}));
   await page.locator('#import-patch').click();

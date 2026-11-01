@@ -24,14 +24,15 @@ cc -shared -fPIC "$TMP/anchor.c" "$TMP/partial.c" -o "$TMP/partial/libultra_nati
 cc -shared -fPIC "$TMP/dependency.c" -o "$TMP/collision/libcollision.so"
 cc -shared -fPIC "$TMP/anchor.c" -L"$TMP/collision" -Wl,--no-as-needed -lcollision \
   -Wl,-rpath,'$ORIGIN' -o "$TMP/collision/libultra_native.so"
-rustc --edition=2021 --test "$ROOT/apps/ultra/src-tauri/src/session/native_master.rs" \
+printf '#[path = "%s"]\nmod native_master;\n' "$ROOT/apps/ultra/src-tauri/src/session/native_master.rs" > "$TMP/resolver.rs"
+rustc --edition=2021 --test "$TMP/resolver.rs" \
   -L "native=$TMP/old" -C "link-arg=-Wl,-rpath,$BUILD" -o "$TMP/resolver"
 # Linking to the full library can satisfy Rust runtime symbols from that image,
 # making the test executable fail before it can inspect an older library.
 readelf --dyn-syms --wide "$TMP/resolver" > "$TMP/symbols"
 awk '$7 == "UND" && $8 ~ /^(_ZN|_R)/ { print "Unexpected Rust symbol dependency: " $8 > "/dev/stderr"; bad=1 } END { exit bad }' "$TMP/symbols"
-LD_LIBRARY_PATH="$BUILD" "$TMP/resolver" --exact tests::resolves_the_loaded_native_image
+LD_LIBRARY_PATH="$BUILD" "$TMP/resolver" --exact native_master::tests::resolves_the_loaded_native_image
 for fixture in old partial collision; do
   ALIVE_MASTER_EXPECT_UNAVAILABLE=1 LD_LIBRARY_PATH="$TMP/$fixture" \
-    "$TMP/resolver" --exact tests::resolves_the_loaded_native_image
+    "$TMP/resolver" --exact native_master::tests::resolves_the_loaded_native_image
 done

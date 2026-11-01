@@ -1,6 +1,6 @@
 import unittest
 
-from chooser_observation import find_web_ancestor, planned_hit_path
+from chooser_observation import find_web_ancestor, planned_hit_path, hit_path_owns
 
 
 class Node:
@@ -49,6 +49,12 @@ class ChooserObservationTest(unittest.TestCase):
         result = planned_hit_path(web, lambda node: node.child)
         self.assertEqual(result['status'], 'complete')
         self.assertEqual(result['path'][-1]['name'], 'Replace Harmony device')
+
+    def test_only_complete_hit_paths_with_the_target_admit_input(self):
+        path = [{'name': 'document', 'role': 'document web'}, {'name': 'Stop Pulse track', 'role': 'push button'}]
+        self.assertTrue(hit_path_owns({'status': 'complete', 'path': path}, 'Stop Pulse track'))
+        self.assertFalse(hit_path_owns({'status': 'truncated', 'path': path}, 'Stop Pulse track'))
+        self.assertFalse(hit_path_owns({'status': 'complete', 'path': path}, 'Return Pulse to Arrangement'))
 
 if __name__ == '__main__':
     unittest.main()
