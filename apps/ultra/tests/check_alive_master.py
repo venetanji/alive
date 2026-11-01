@@ -134,6 +134,8 @@ def run():
     assert float(alive.value('Master gain')) == .5
     assert float(alive.value('Pulse gain')) == .55
     alive.select_clip('Pulse')
+    if not ui.wait_for('Note inspector').get_state_set().contains(Atspi.StateType.EXPANDED):
+        alive.native_control_click('Note inspector', 'reopened note inspector', require_accessible_hit=True)
     assert alive.value('Note 1 pitch') == '61'
     assert not ui.wait_for('Undo').get_state_set().contains(Atspi.StateType.ENABLED)
     assert not ui.wait_for('Redo').get_state_set().contains(Atspi.StateType.ENABLED)
