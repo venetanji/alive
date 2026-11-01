@@ -574,7 +574,7 @@ def covering_reorder_tooltip(name, path_label):
         time.sleep(.2)
         target_rect, target = reorder_point(ui.wait_for(name))
         rect = Atspi.Component.get_extents(ui.wait_for(path_label, text_content=True), Atspi.CoordType.SCREEN)
-        point = (max(rect.x + 1, min(target[0], rect.x + rect.width - 2)), rect.y + rect.height - 2)
+        point = (max(rect.x + 1, min(target[0], rect.x + rect.width - 2)), rect.y + 2)
         assert 0 <= point[0] < root.get_width() and 0 <= point[1] < root.get_height(), point
         assert 0 <= target[0] < root.get_width() and 0 <= target[1] < root.get_height(), target
         tooltip = ui.x.XInternAtom(ui.display, b'_NET_WM_WINDOW_TYPE_TOOLTIP', 0)

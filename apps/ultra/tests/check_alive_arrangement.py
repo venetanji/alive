@@ -28,6 +28,10 @@ def record(action, **data):
     (ui.output / 'arrangement-report.json').write_text(json.dumps(report, indent=2))
 
 
+def observe_arrangement_click(phase, name, rect, control):
+    alive.observe_replace_input(phase, name, rect, control, action_prefix='arrangement input')
+
+
 def expanded(name, wanted=True):
     control = ui.wait_for(name)
     if control.get_state_set().contains(Atspi.StateType.EXPANDED) != wanted:
@@ -153,11 +157,11 @@ def run():
     ui.click('Select placement ' + first)
     ui.click('Assign source to Session')
     arrangement()
-    ui.click('Select placement ' + duplicate)
-    ui.click('Make placement independent')
+    ui.click('Select placement ' + duplicate, observer=observe_arrangement_click)
+    ui.click('Make placement independent', observer=observe_arrangement_click)
     alive.numeric('Note 1 velocity', 71)
     arrangement()
-    ui.click('Delete placement')
+    ui.click('Delete placement', observer=observe_arrangement_click)
     assert duplicate not in placement_ids()
     ui.click('Undo'); assert duplicate in placement_ids()
     ui.click('Redo'); assert duplicate not in placement_ids()

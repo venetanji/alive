@@ -8,7 +8,7 @@ class CoveringHoverPlanTest(unittest.TestCase):
         target = [888, 689, 45, 23]
         anchor = [742, 718, 290, 14]
         plan = covering_hover_plan(target, anchor, 1600, 1000)
-        self.assertEqual(plan, {'shift_y': 266, 'point': (910, 996), 'target': (910, 966)})
+        self.assertEqual(plan, {'shift_y': 276, 'point': (910, 996), 'target': (910, 976)})
 
     def test_refuses_unusable_or_offscreen_targets(self):
         with self.assertRaises(ValueError):

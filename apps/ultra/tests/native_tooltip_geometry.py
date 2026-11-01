@@ -8,7 +8,8 @@ def covering_hover_plan(target_rect, anchor_rect, screen_width, screen_height):
         raise ValueError('The target and tooltip anchor need visible rectangles')
     target_x, target_y = tx + tw // 2, ty + th // 2
     hover_x = max(ax + 1, min(target_x, ax + aw - 2))
-    hover_y = ay + ah - 2
+    # The bottom edge can belong to the rack's horizontal scrollbar.
+    hover_y = ay + 2
     shift_y = screen_height - 4 - hover_y
     shifted_target = (target_x, target_y + shift_y)
     if (hover_y <= target_y + 15 or not 0 <= hover_x < screen_width or
