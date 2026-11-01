@@ -94,6 +94,18 @@ def placement_ids():
             if node.get_name().startswith('Select placement ')}
 
 
+def wait_placement(placement_id, present, seconds=8):
+    """Wait for two native accessibility snapshots of the requested history state."""
+    deadline = time.monotonic() + seconds
+    matches = 0
+    while time.monotonic() < deadline:
+        matches = matches + 1 if (placement_id in placement_ids()) == present else 0
+        if matches >= 2:
+            return
+        time.sleep(.1)
+    raise AssertionError(f'Placement {placement_id} did not become {"present" if present else "absent"}')
+
+
 def observed(track, field, predicate, seconds=8):
     expanded('Audio details')
     return alive.wait_value(f'Track {track} {field}', predicate, seconds)
@@ -161,11 +173,11 @@ def run():
     ui.click('Make placement independent', observer=observe_arrangement_click)
     alive.numeric('Note 1 velocity', 71)
     arrangement()
-    ui.click('Delete placement', observer=observe_arrangement_click)
-    assert duplicate not in placement_ids()
-    ui.click('Undo'); assert duplicate in placement_ids()
-    ui.click('Redo'); assert duplicate not in placement_ids()
-    ui.click('Undo')
+    alive.native_control_click('Delete placement', 'arrangement delete', require_accessible_hit=True)
+    wait_placement(duplicate, False)
+    alive.native_control_click('Undo', 'arrangement undo', require_accessible_hit=True); wait_placement(duplicate, True)
+    alive.native_control_click('Redo', 'arrangement redo', require_accessible_hit=True); wait_placement(duplicate, False)
+    alive.native_control_click('Undo', 'arrangement undo', require_accessible_hit=True); wait_placement(duplicate, True)
     alive.numeric('Song loop start', 2)
     alive.numeric('Song loop end', 16)
     path, authored = save('authored.alive')
@@ -195,7 +207,7 @@ def run():
     for _ in range(3):
         arrangement(); session()
     assert observed(1, 'authority', lambda s: s == 'session') == 'session'
-    session(); ui.click('Stop Pulse track', observer=lambda *args: alive.observe_replace_input(*args, action_prefix='track stop input'))
+    session(); alive.native_control_click('Stop Pulse track', 'track stop', require_accessible_hit=True)
     # Observe the real click and its native receipt; keep the authority
     # assertion below unchanged, even when this diagnostic is unavailable.
     try:

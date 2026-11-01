@@ -27,7 +27,7 @@ import check_canvas_desktop as ui
 import check_documents_desktop as windows
 from gi.repository import Atspi, GLib
 from alive_workspace_navigation import install as install_workspace_navigation
-from chooser_observation import find_web_ancestor, planned_hit_path
+from chooser_observation import find_web_ancestor, planned_hit_path, hit_path_owns
 from native_tooltip_geometry import covering_hover_plan
 
 prepare_workspace_control = install_workspace_navigation(
@@ -462,7 +462,7 @@ def reorder_point(control):
     return [rect.x, rect.y, rect.width, rect.height], (rect.x + rect.width // 2, rect.y + rect.height // 2)
 
 
-def native_control_click(name, kind, record=None):
+def native_control_click(name, kind, record=None, require_accessible_hit=False):
     """Dismiss native tooltip occlusion before one owned Alive pointer click."""
     if record is None:
         record = input_record
@@ -478,13 +478,22 @@ def native_control_click(name, kind, record=None):
             control = ui.find(name); rect, current = reorder_point(control)
             path = native_hit_path(*current)
             sample = {'rect': rect, 'hit_path': path}
+            admitted = owner in path
+            if require_accessible_hit:
+                web, ancestry = find_web_ancestor(control)
+                accessible = (planned_hit_path(web, lambda node: Atspi.Component.get_accessible_at_point(
+                    node, *current, Atspi.CoordType.SCREEN)) if web is not None else
+                    {'status': 'unavailable', 'path': []})
+                sample['accessible_hit'] = accessible
+                sample['web_ancestor'] = ancestry
+                admitted = admitted and hit_path_owns(accessible, name)
             if not samples or sample != samples[-1]:
                 samples.append(sample)
             if current != point:
                 point = current
                 assert ui.t.XTestFakeMotionEvent(ui.display, 0, *point, 0)
                 ui.x.XFlush(ui.display)
-            elif owner in path:
+            elif admitted:
                 try:
                     assert ui.t.XTestFakeButtonEvent(ui.display, 1, 1, 0)
                 finally:

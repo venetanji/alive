@@ -66,9 +66,9 @@ def run():
     alive.numeric('Note 1 velocity', 83)
     for label, initial_value, second in [('Cutoff', 900, 3400), ('Level', 62, 78)]:
         ui.click(f'{label} automation enabled')
-        ui.click(f'Add {label} point')
+        alive.native_control_click(f'Add {label} point', 'automation point', require_accessible_hit=True)
         alive.numeric(f'{label} point 1 value', initial_value)
-        ui.click(f'Add {label} point')
+        alive.native_control_click(f'Add {label} point', 'automation point', require_accessible_hit=True)
         alive.numeric(f'{label} point 2 beat', 4)
         alive.numeric(f'{label} point 2 value', second)
     alive.wait_value('Musical edit status', lambda s: 'Updating' not in s)
