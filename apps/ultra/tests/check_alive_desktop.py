@@ -28,6 +28,7 @@ import check_documents_desktop as windows
 from gi.repository import Atspi, GLib
 from alive_workspace_navigation import install as install_workspace_navigation
 from chooser_observation import find_web_ancestor, planned_hit_path
+from native_tooltip_geometry import covering_hover_plan
 
 prepare_workspace_control = install_workspace_navigation(
     ui, windows, select_device=lambda name: select_device_click(name),
@@ -323,10 +324,10 @@ def native_window_record(window):
     return row
 
 
-def observe_replace_input(phase, name, rect, control):
+def observe_replace_input(phase, name, rect, control, action_prefix='chooser input'):
     """Observe the original input batch; never retry, refocus or move its target."""
     started = time.monotonic()
-    row = {'action': 'chooser input ' + phase, 'monotonic': started, 'name': name,
+    row = {'action': action_prefix + ' ' + phase, 'monotonic': started, 'name': name,
            'scope': windows.scope}
     if phase == 'queued':
         row.update(motions=1, presses=1, releases=1)
@@ -545,6 +546,60 @@ def force_covering_tooltip(name, hover, kind='reorder', fallback_hover=None):
     input_record('missing covering tooltip', name=name, owner=owner, attempts=attempts)
     screenshot(kind.replace(' ', '-') + '-tooltip-missing.png')
     raise AssertionError('Regression precondition: no native tooltip covering ' + name)
+
+
+@contextmanager
+def covering_reorder_tooltip(name, path_label):
+    """Hover a real device path near the X screen edge, forcing tooltip placement above it.
+
+    The precondition is still the native hit path through an actual tooltip. The
+    owned window is restored even if setup or the following activation fails.
+    """
+    prepare_workspace_control(name)
+    owner = owned_frame_window()
+    frame = next(frame for frame in windows.app_frames()
+                 if frame.get_name().removeprefix('* ') == windows.scope
+                 and frame.get_state_set().contains(Atspi.StateType.SHOWING))
+    original = Atspi.Component.get_extents(frame, Atspi.CoordType.SCREEN)
+    target_rect, _ = reorder_point(ui.wait_for(name))
+    anchor = ui.wait_for(path_label, text_content=True)
+    rect = Atspi.Component.get_extents(anchor, Atspi.CoordType.SCREEN)
+    root = ui.Gdk.get_default_root_window()
+    plan = covering_hover_plan(target_rect, [rect.x, rect.y, rect.width, rect.height],
+                               root.get_width(), root.get_height())
+    try:
+        ui.x.XMoveWindow(ui.display, owner, original.x, original.y + plan['shift_y'])
+        ui.x.XSync.argtypes = [C.c_void_p, C.c_int]
+        ui.x.XSync(ui.display, 0)
+        time.sleep(.2)
+        target_rect, target = reorder_point(ui.wait_for(name))
+        rect = Atspi.Component.get_extents(ui.wait_for(path_label, text_content=True), Atspi.CoordType.SCREEN)
+        point = (max(rect.x + 1, min(target[0], rect.x + rect.width - 2)), rect.y + rect.height - 2)
+        assert 0 <= point[0] < root.get_width() and 0 <= point[1] < root.get_height(), point
+        assert 0 <= target[0] < root.get_width() and 0 <= target[1] < root.get_height(), target
+        tooltip = ui.x.XInternAtom(ui.display, b'_NET_WM_WINDOW_TYPE_TOOLTIP', 0)
+        assert ui.t.XTestFakeMotionEvent(ui.display, 0, *point, 0)
+        ui.x.XFlush(ui.display)
+        deadline = time.monotonic() + 3
+        while time.monotonic() < deadline:
+            target_rect, target = reorder_point(ui.find(name))
+            path = native_hit_path(*target)
+            if owner not in path and any(tooltip in window_property(window, '_NET_WM_WINDOW_TYPE', 4) for window in path):
+                screenshot('reorder-covering-tooltip.png')
+                yield input_record('covering reorder tooltip', name=name, owner=owner, rect=target_rect,
+                                   hit_path=path, tooltip_atom=tooltip, hover=path_label,
+                                   hover_rect=[rect.x, rect.y, rect.width, rect.height], hover_point=point,
+                                   window_shift_y=plan['shift_y'])
+                return
+            time.sleep(.02)
+        input_record('missing covering tooltip', name=name, owner=owner, rect=target_rect,
+                     hit_path=path, hover=path_label, hover_point=point, window_shift_y=plan['shift_y'])
+        screenshot('reorder-tooltip-missing.png')
+        raise AssertionError('Regression precondition: no native tooltip covering ' + name)
+    finally:
+        ui.x.XMoveWindow(ui.display, owner, original.x, original.y)
+        ui.x.XFlush(ui.display)
+        time.sleep(.2)
 
 
 def location_entry():
@@ -783,9 +838,8 @@ def prepare_chain():
     # Reordering twice must preserve identities and restore the saved signal order.
     reorder_click('Move Pulse Stereo Utility effect 1 later')
     ui.wait_for('Select Pulse Stereo Utility effect 2')
-    force_covering_tooltip('Move Pulse Stereo Utility effect 2 earlier', 'Move Pulse Stereo Lowpass effect 1 later',
-                           fallback_hover='Gain base slider')
-    reorder_click('Move Pulse Stereo Utility effect 2 earlier')
+    with covering_reorder_tooltip('Move Pulse Stereo Utility effect 2 earlier', 'journey-utility.ultra'):
+        reorder_click('Move Pulse Stereo Utility effect 2 earlier')
     ui.wait_for('Select Pulse Stereo Lowpass effect 2')
     ui.click('Select Pulse Stereo Utility effect 1')
     numeric('Gain base', .6)

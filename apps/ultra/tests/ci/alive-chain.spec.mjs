@@ -1405,6 +1405,14 @@ test('closing the source disclosure makes the Arrangement Add note target reacha
   expect((await workspaceEdits(page)).at(-1).args.operation.sourceId).toBe('new-source-1');
 });
 
+test('compact Pulse Stop receives the pointer and sends a Stop action',async({page})=>{
+  await page.setViewportSize({width:1440,height:900});await openSession(page);
+  const stop=page.getByRole('button',{name:'Stop Pulse track',exact:true}),box=await stop.boundingBox();
+  const hit=await stop.evaluate(el=>{const r=el.getBoundingClientRect(),node=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {owned:el.contains(node),label:node?.closest('button')?.getAttribute('aria-label')};});
+  expect(hit).toEqual({owned:true,label:'Stop Pulse track'});await page.mouse.click(box.x+box.width/2,box.y+box.height/2);
+  await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_action').map(c=>c.args.action))).toEqual([{kind:'stop',trackId:'track-1'}]);
+});
+
 test('Arrangement Master aligns with right track controls and source fields have visible context',async({page})=>{
   await openArrangement(page,{width:1440,height:900});await page.getByRole('button',{name:'Select placement p-0',exact:true}).click();await page.locator('.clip-source-actions>summary').click();
   const boxes=await page.evaluate(()=>{const rect=e=>e.getBoundingClientRect();const header=rect(document.querySelector('.timeline-header')),master=rect(document.querySelector('#master-arrangement-lane .master-heading')),controls=rect(document.querySelector('#master-arrangement'));return {headerLeft:header.left,masterLeft:master.left,controlsRight:controls.right,workspaceRight:rect(document.querySelector('#arrangement-workspace')).right};});

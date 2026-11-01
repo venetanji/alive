@@ -57,6 +57,14 @@ class NavigationTest(unittest.TestCase):
         ui.click('Make source independent')
         self.assertEqual(calls, ['Toggle Clip view', 'Source / Clip', 'Make source independent'])
 
+    def test_original_stop_click_can_record_its_native_input(self):
+        calls = []
+        observer = object()
+        ui = types.SimpleNamespace(click=lambda name, **kwargs: calls.append((name, kwargs)), text=lambda *args: None)
+        navigation.install(ui, types.SimpleNamespace(scope='Alive'), None, None)
+        ui.click('Stop Pulse track', observer=observer)
+        self.assertEqual(calls, [('Stop Pulse track', {'observer': observer})])
+
     def test_add_note_closes_open_source_disclosure_before_real_click(self):
         calls = []
         class Control:

@@ -191,7 +191,16 @@ def run():
     for _ in range(3):
         arrangement(); session()
     assert observed(1, 'authority', lambda s: s == 'session') == 'session'
-    session(); ui.click('Stop Pulse track')
+    session(); ui.click('Stop Pulse track', observer=lambda *args: alive.observe_replace_input(*args, action_prefix='track stop input'))
+    # Observe the real click and its native receipt; keep the authority
+    # assertion below unchanged, even when this diagnostic is unavailable.
+    try:
+        runtime = alive.value('Pulse clip runtime')
+        record('track Stop receipt', runtime=runtime, status=alive.value('Session status'),
+               position=alive.value('Transport position beats'))
+        expanded('Pulse runtime details', False)
+    except Exception as error:
+        record('track Stop receipt unavailable', error=repr(error))
     observed(1, 'active source', lambda s: s == '-')
     assert observed(1, 'authority', lambda s: s == 'session') == 'session'
     session(); ui.click('Launch Harmony Clip 1')

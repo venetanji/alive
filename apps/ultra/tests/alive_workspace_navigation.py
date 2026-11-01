@@ -96,7 +96,7 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
                 Atspi.Component.grab_focus(summary)
                 ui.keys('Return')
 
-    def visible_click(name):
+    def visible_click(name, observer=None):
         if windows.scope == 'Alive' and name in ('Clip detail', 'Devices detail'):
             tab = 'Toggle Clip view' if name == 'Clip detail' else 'Toggle Device view'
             ensure_detail(tab, 'Source / Clip' if name == 'Clip detail' else 'Edit selected device in Ultra')
@@ -108,6 +108,8 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
             click(name, observer=observe_replace)
         elif observe_editor is not None and name == 'Open Pulse editor':
             click(name, observer=observe_editor)
+        elif observer is not None:
+            click(name, observer=observer)
         else:
             click(name)
 
