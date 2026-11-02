@@ -23,7 +23,9 @@ export function mountDisplayOptions(doc=globalThis.document,{park=()=>{}}={}){
   const forwards=entries.map(([id,target])=>{const button=doc.getElementById(id),click=()=>{doc.getElementById(target).click();update();};button.addEventListener('click',click);return{button,click};});
   const pointerdown=event=>{if(menu.contains?.(event.target)){park();event.preventDefault();}else if(menu.open)close();};
   const focusin=event=>{if(menu.open&&!menu.contains?.(event.target))close();};
-  const focusout=event=>{if(menu.open&&!menu.contains?.(event.relatedTarget))close();};
+  let focusTimer;
+  // WebKit can omit relatedTarget while moving between controls in this menu.
+  const focusout=()=>{clearTimeout(focusTimer);focusTimer=setTimeout(()=>{if(menu.open&&!menu.contains?.(doc.activeElement))close();},0);};
   const keydown=event=>{
     if(!menu.open||!menu.contains?.(event.target))return;
     if(event.key==='Escape'){event.preventDefault();event.stopPropagation();close(true);return;}
@@ -35,5 +37,5 @@ export function mountDisplayOptions(doc=globalThis.document,{park=()=>{}}={}){
   for(const[,target]of entries)observer?.observe(doc.getElementById(target),{attributes:true,attributeFilter:['aria-expanded']});
   menu.addEventListener('toggle',update);menu.addEventListener('focusout',focusout);doc.addEventListener('pointerdown',pointerdown);doc.addEventListener('keydown',keydown,true);doc.addEventListener('focusin',focusin,true);
   update();
-  return{dispose(){observer?.disconnect();for(const{button,click}of forwards)button.removeEventListener('click',click);menu.removeEventListener('toggle',update);menu.removeEventListener('focusout',focusout);doc.removeEventListener('pointerdown',pointerdown);doc.removeEventListener('keydown',keydown,true);doc.removeEventListener('focusin',focusin,true);}};
+  return{dispose(){clearTimeout(focusTimer);observer?.disconnect();for(const{button,click}of forwards)button.removeEventListener('click',click);menu.removeEventListener('toggle',update);menu.removeEventListener('focusout',focusout);doc.removeEventListener('pointerdown',pointerdown);doc.removeEventListener('keydown',keydown,true);doc.removeEventListener('focusin',focusin,true);}};
 }

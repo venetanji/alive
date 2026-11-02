@@ -103,7 +103,7 @@ main#workspace-shell{flex-direction:column;position:relative}
 #clip-detail #add-note{margin:0 8px 0 0}
 #clip-detail .clip-editors{flex:1 1 0;min-height:0}
 #clip-detail .clip-area{flex:1 0 247px;min-height:247px}
-#clip-detail .clip-area.has-source{grid-template-columns:min(var(--clip-properties-width,clamp(150px,22%,210px)),calc(100% - 160px)) minmax(0,1fr);grid-template-rows:auto minmax(156px,1fr) auto auto}
+#clip-detail .clip-area.has-source{grid-template-columns:min(var(--clip-properties-width,clamp(150px,22%,210px)),calc(100% - 160px)) minmax(0,1fr);grid-template-rows:minmax(min-content,auto) minmax(156px,1fr) auto auto}
 #clip-detail .clip-properties-resizer{grid-column:1;grid-row:1 / -1;justify-self:end;width:7px;z-index:2;cursor:ew-resize;touch-action:none}
 #clip-detail .clip-properties-resizer:focus-visible{outline:2px solid var(--selection);outline-offset:-2px}
 @container clip-detail (max-height:360px){#clip-detail .clip-area.has-source{grid-template-columns:min(var(--clip-properties-width,clamp(260px,38%,450px)),calc(100% - 160px)) minmax(0,1fr)}}

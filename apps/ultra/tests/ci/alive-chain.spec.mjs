@@ -90,6 +90,8 @@ test('Display options keyboard navigation preserves drafts and follows actual pa
   const gain=page.getByRole('spinbutton',{name:'Pulse gain',exact:true});await gain.fill('0.713');
   const toggle=page.locator('#display-menu-toggle'),menu=page.locator('#display-menu');await toggle.click();await toggle.press('ArrowDown');
   await expect(page.locator('#display-browser')).toBeFocused();await page.keyboard.press('ArrowDown');await expect(page.locator('#display-help')).toBeFocused();
+  await page.locator('#display-help').dispatchEvent('focusout',{relatedTarget:null});
+  await expect(menu).toHaveAttribute('open','');
   await page.keyboard.press('Space');await expect(page.locator('#info-view')).toBeHidden();await expect(page.locator('#display-help')).toHaveAttribute('aria-pressed','false');
   await toggle.focus();await page.keyboard.press('?');await expect(page.locator('#info-view')).toBeVisible();await expect(page.locator('#display-help')).toHaveAttribute('aria-pressed','true');
   await toggle.press('End');await expect(page.locator('#toggle-mixer')).toBeFocused();await page.keyboard.press('Tab');await expect(menu).not.toHaveAttribute('open','');
@@ -1494,7 +1496,7 @@ test('renaming an Arrangement source keeps its source controls open after the ac
   await expect(disclosure).toHaveAttribute('open','');await page.getByRole('button',{name:'Select placement p-1',exact:true}).click();await expect(disclosure).not.toHaveAttribute('open','');
 });
 
-test('closing the source disclosure makes the Arrangement Add note target reachable',async({page},testInfo)=>{
+test('source disclosure keeps the Arrangement Add note target reachable before and after closing',async({page},testInfo)=>{
   await openArrangement(page,{width:1440,height:900});await dragBlankLaneRange(page,page.locator('.timeline-lane').first());
   const disclosure=page.locator('.clip-source-actions'),summary=disclosure.locator('summary');await summary.click();
   await page.getByRole('button',{name:'Create MIDI source',exact:true}).click();await expect(page.getByLabel('MIDI source',{exact:true})).toHaveValue('new-source-1');
@@ -1502,7 +1504,7 @@ test('closing the source disclosure makes the Arrangement Add note target reacha
   await expect.poll(async()=>(await workspaceEdits(page)).map(c=>c.args.operation.kind)).toEqual(['sourceCreateMidi','sourceRename']);
   const add=page.getByRole('button',{name:'Add note',exact:true});await add.scrollIntoViewIfNeeded();
   const hit=()=>add.evaluate(el=>{const r=el.getBoundingClientRect(),hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {target:hit===el||el.contains(hit),cover:!!hit?.closest('.clip-source-actions-body')};});
-  expect(await hit()).toEqual({target:false,cover:true});await page.screenshot({path:testInfo.outputPath('source-disclosure-covers-add-note.png')});
+  expect(await hit()).toEqual({target:true,cover:false});await page.screenshot({path:testInfo.outputPath('source-disclosure-beside-add-note.png')});
   await summary.click();await expect(disclosure).not.toHaveAttribute('open','');expect((await hit()).target).toBe(true);await add.click();
   await expect.poll(async()=>(await workspaceEdits(page)).map(c=>c.args.operation.kind)).toEqual(['sourceCreateMidi','sourceRename','noteCreate']);
   expect((await workspaceEdits(page)).at(-1).args.operation.sourceId).toBe('new-source-1');
