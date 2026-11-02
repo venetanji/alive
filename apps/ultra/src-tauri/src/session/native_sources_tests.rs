@@ -2,15 +2,19 @@ use super::*;
 use serde_json::{json, Value};
 use std::path::{Path, PathBuf};
 
+fn source_state() -> Value {
+    json!({"version":1,"profile":"live12-analog-v1",
+        "dllSha256":"4528afb1fbc78d49ed92161ed13ae1df50606e2e2b2c4f28caeca0cbc1476133",
+        "guiSha256":"75940fa314699a5fe0f37a6b0ee904bd7cc2ee87fc42acce2c8cea61df55563f",
+        "graphicsSha256":"ec6ed560b42b1497fd976beff38d86424aa0c2ef59e4995e3d10ba9b68535c9d",
+        "values":crate::canvas::live_device::ANALOG_DESCRIPTORS.iter().map(|&(_,_,_,min,_)|min).collect::<Vec<_>>()})
+}
+
 fn fixture() -> (PathBuf, Value, Value) {
     let origin = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/two-instruments.alive");
     let prepared = read(&origin).unwrap();
     let mut patch = prepared.devices[0].patch.clone();
-    let state = json!({"version":1,"profile":"live12-analog-v1",
-        "dllSha256":"4528afb1fbc78d49ed92161ed13ae1df50606e2e2b2c4f28caeca0cbc1476133",
-        "guiSha256":"75940fa314699a5fe0f37a6b0ee904bd7cc2ee87fc42acce2c8cea61df55563f",
-        "graphicsSha256":"ec6ed560b42b1497fd976beff38d86424aa0c2ef59e4995e3d10ba9b68535c9d",
-        "values":crate::canvas::live_device::ANALOG_DESCRIPTORS.iter().map(|&(_,_,_,min,_)|min).collect::<Vec<_>>()});
+    let state = source_state();
     patch["nodes"].as_array_mut().unwrap().push(json!({"id":90000,"type":"live_device","x":0,"y":0,
         "params":{"device":"Analog","state":state}}));
     let folder = std::env::temp_dir().join(format!("alive-native-instance-state-{}", std::process::id()));
@@ -89,6 +93,17 @@ fn absent_native_sources_preserve_the_ordinary_saved_format() {
     assert!(super::native_sources::validate(&device.native_sources).unwrap().is_empty());
     value["nativeSources"] = json!(null);
     assert!(serde_json::from_value::<DeviceInstance>(value).is_err());
+}
+
+#[test]
+fn musical_publication_cannot_change_instance_native_state_without_preparing_it() {
+    let origin = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/two-instruments.alive");
+    let prepared = read(&origin).unwrap();
+    let mut candidate = prepared.saved.score.clone();
+    let ChainV4::Midi{instrument:Some(device)} = &mut candidate.tracks[0].chain else {unreachable!()};
+    device.native_sources.push(super::native_sources::PersistedSource{node:90000,state:source_state()});
+    let mut owner = host::Host::default();owner.prepared = Some(prepared);
+    assert!(owner.workspace_candidate(candidate,Default::default()).unwrap_err().contains("stopped device controls"));
 }
 
 use super::workspaces::ChainV4;

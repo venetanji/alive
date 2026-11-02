@@ -32,7 +32,7 @@ impl Host {
         for (track_index,track) in project.tracks.iter().enumerate(){for reference in track.devices(){
             let device=candidate.devices.iter_mut().find(|d|d.instance_id==reference.instance_id).ok_or("Load devices using the stopped device controls")?;
             let original=current.saved.score.tracks().into_iter().flat_map(|t|t.devices().collect::<Vec<_>>()).find(|d|d.instance_id==reference.instance_id).ok_or("Prepared device identity changed")?;
-            if reference.id!=original.id||reference.version!=original.version||reference.path!=original.path||reference.source_sha256!=original.source_sha256{return Err("Replace devices using the stopped device controls".into())}
+            if reference.id!=original.id||reference.version!=original.version||reference.path!=original.path||reference.source_sha256!=original.source_sha256||reference.native_sources!=original.native_sources{return Err("Replace devices using the stopped device controls".into())}
             device.track=track_index;expected.insert(reference.instance_id.as_str());
         }}
         if candidate.devices.iter().any(|d|!expected.contains(d.instance_id.as_str())){return Err("Remove device-bearing tracks using the stopped device controls".into())}
