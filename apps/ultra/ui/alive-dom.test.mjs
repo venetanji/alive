@@ -163,7 +163,7 @@ test('detail can grow beyond the upper mixer minimum and maximize without musica
   assert.ok(Number(handle.attrs['aria-valuenow'])>=560,'The detail editor should be able to use most of the workspace');
   await handle.fire('keydown',{key:'ArrowDown'});const normal=handle.attrs['aria-valuenow'],snapshot=structuredClone(view.model.snapshot());
   const maximize=page.find('Maximize detail');assert.ok(maximize);await maximize.fire('click');
-  assert.equal(page.ids.get('session-workspace').hidden,true);assert.equal(page.ids.get('arrangement-workspace').hidden,true);
+  assert.equal(page.ids.get('session-workspace').hidden,false);assert.equal(page.ids.get('arrangement-workspace').hidden,true);
   assert.equal(maximize.attrs['aria-label'],'Restore detail size');assert.equal(maximize.attrs['aria-pressed'],'true');
   assert.ok(Number(handle.attrs['aria-valuenow'])>Number(normal));
   await maximize.fire('click');assert.equal(handle.attrs['aria-valuenow'],normal);assert.equal(page.ids.get('session-workspace').hidden,false);
@@ -172,9 +172,9 @@ test('detail can grow beyond the upper mixer minimum and maximize without musica
 test('maximized detail restores after canceled resize and view navigation exposes the selected workspace',async()=>{
   const page=dom('./alive.html'),native=backend(workspaceState()),view=mountAlive({...page,invoke:native.invoke});await settle();
   const handle=page.ids.get('detail-resizer');await handle.fire('dblclick');
-  assert.equal(page.ids.get('session-workspace').hidden,true);const full=handle.attrs['aria-valuenow'];
+  assert.equal(page.ids.get('session-workspace').hidden,false);const full=handle.attrs['aria-valuenow'];
   await handle.fire('pointerdown',{pointerId:1,clientY:100});await handle.fire('pointermove',{pointerId:1,clientY:230});
-  await handle.fire('pointercancel');assert.equal(handle.attrs['aria-valuenow'],full);assert.equal(page.ids.get('session-workspace').hidden,true);
+  await handle.fire('pointercancel');assert.equal(handle.attrs['aria-valuenow'],full);assert.equal(page.ids.get('session-workspace').hidden,false);
   await page.ids.get('view-arrangement').fire('click');assert.equal(page.ids.get('arrangement-workspace').hidden,false);
   assert.equal(page.find('Maximize detail').attrs['aria-pressed'],'false');view.dispose();
 });
@@ -194,7 +194,7 @@ test('gain fader commits once, synchronizes numeric and snapshots, and preserves
   await slider.fire('change');assert.equal(native.calls.filter(c=>c.name==='alive_mixer').length,1);assert.equal(Number(number.value),.7);
   number.focus();number.value='';native.snapshot.document.tracks[0].gain=.4;native.snapshot.snapshotSequence='2';await view.refresh();assert.equal(number.value,'');assert.equal(Number(slider.value),.4);
   number.value='.85';await number.fire('change');assert.equal(Number(slider.value),.85);number.blur();await view.refresh();assert.equal(native.calls.filter(c=>c.name==='alive_mixer').length,2);
-  const meter=page.find('Pulse stereo peak');assert.equal(meter.children[0].style.height,'10%');assert.equal(meter.children[1].style.height,'20%');assert.equal(page.find('Pulse peak').textContent,'0.100 / 0.200');view.dispose();
+  const meter=page.find('Pulse stereo peak');assert.ok(Math.abs(parseFloat(meter.children[0].style.height)-200/3)<1e-6);assert.ok(parseFloat(meter.children[1].style.height)>parseFloat(meter.children[0].style.height));assert.equal(page.find('Pulse peak').textContent,'0.100 / 0.200');view.dispose();
 });
 
 function dom(file){
@@ -952,7 +952,7 @@ test('fresh project fetches its device catalog once without category interaction
   const page=dom('./alive.html'),native=backend(initial);let fetches=0;
   const view=mountAlive({...page,invoke:(name,args)=>{if(name==='alive_browser_catalog'){fetches++;assert.deepEqual(args,{request:{refresh:false,cursor:null}});return Promise.resolve(catalogPage([catalogEntry()]));}return native.invoke(name,args);}});await settle();
   assert.equal(page.find('Fresh Synth').draggable,true);await view.refresh();assert.equal(fetches,1);
-  await page.find('Fresh Synth').fire('click');assert.equal(descendants(page.ids.get('browser-library')).find(e=>e.className==='browser-load').textContent,'Load Instrument');view.dispose();
+  await page.find('Fresh Synth').fire('click');assert.equal(descendants(page.ids.get('browser-library')).find(e=>e.className==='browser-load').attrs['aria-label'],'Load Instrument');view.dispose();
 });
 function workspaceState(editor=false){
   const document=JSON.parse(readFileSync(new URL('../../alive/examples/two-instruments.alive',import.meta.url),'utf8')).score,patch=JSON.parse(readFileSync(new URL('../examples/subtractive.ultra',import.meta.url),'utf8'));

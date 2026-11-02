@@ -27,7 +27,7 @@ export function describeContextTarget(target,regions=[],fallback=DEFAULT_CONTEXT
   return fallback;
 }
 
-export function mountContextInfo({doc=globalThis.document,outputId='info-text',regions=[],fallback=DEFAULT_CONTEXT_INFO}={}){
+export function mountContextInfo({doc=globalThis.document,outputId='info-text',regions=[],fallback=DEFAULT_CONTEXT_INFO,tooltip=true}={}){
   const output=doc?.getElementById?.(outputId);
   if(!output)return{dispose(){}};
   let previous=output.textContent??fallback;
@@ -35,7 +35,7 @@ export function mountContextInfo({doc=globalThis.document,outputId='info-text',r
     const next=describeContextTarget(target,regions,fallback);
     if(previous===next)return;
     output.textContent=next;
-    output.title=next; // full hint when the dedicated rail is narrow
+    if(tooltip)output.title=next;
     previous=next;
   }
   const pointerover=event=>show(event.target);

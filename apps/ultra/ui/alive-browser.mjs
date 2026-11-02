@@ -37,9 +37,11 @@ export function mountBrowser({doc,root,onLoad,onSource,onCatalog,onNavigate=()=>
   const refreshIcon=doc.createElementNS('http://www.w3.org/2000/svg','svg'),refreshPath=doc.createElementNS('http://www.w3.org/2000/svg','path');
   refreshIcon.setAttribute('viewBox','0 0 18 18');refreshIcon.setAttribute('aria-hidden','true');refreshPath.setAttribute('d','M14 7A5 5 0 1 0 14 11M14 3V7H10');refreshIcon.append(refreshPath);refresh.append(refreshIcon,make('span','','Refresh Library'));
   const body=make('div','browser-body'),nav=make('nav','browser-categories'),results=make('div','browser-results'),heading=make('div','browser-results-heading','Name'),list=make('div','browser-list'),empty=make('p','browser-empty'),footer=make('div','browser-selection'),description=make('p','browser-description'),activate=make('button','browser-load','Load'),status=make('p','browser-status');
+  function actionIcon(control,path){const svg=doc.createElementNS('http://www.w3.org/2000/svg','svg'),shape=doc.createElementNS('http://www.w3.org/2000/svg','path');svg.setAttribute('viewBox','0 0 18 18');svg.setAttribute('aria-hidden','true');shape.setAttribute('d',path);svg.append(shape);control.replaceChildren(svg);}
   nav.setAttribute('aria-label','Browser categories');list.setAttribute('role','tree');list.setAttribute('aria-label','Browser results');list.tabIndex=0;
   status.setAttribute('role','status');description.textContent='Select a device or clip';
   const filters=make('div','browser-filters'),preview=make('div','browser-preview'),previewButton=make('button','','Preview');
+  actionIcon(previewButton,'M5 3l9 6-9 6z');
   for(const label of ['Sounds','Character','Devices']){const filter=make('button','browser-filter',label);filter.disabled=true;filter.title='Unavailable: the catalog does not expose tags or filter groups.';filters.append(filter);}
   previewButton.disabled=true;previewButton.setAttribute('aria-label','Browser audio preview unavailable');previewButton.title='Unavailable: Browser audio preview has no provider or native contract.';preview.append(previewButton,make('span','','Audio preview unavailable'));
   toolbar.append(search,refresh);results.append(filters,heading,list,empty);body.append(nav,results);footer.append(description,activate);results.append(footer,preview);root.append(toolbar,body,status);
@@ -107,7 +109,7 @@ export function mountBrowser({doc,root,onLoad,onSource,onCatalog,onNavigate=()=>
     const active=[...list.children].find(row=>row.getAttribute('data-entry')===selected&&selectedVisible);
     if(active)list.setAttribute('aria-activedescendant',active.id);else list.removeAttribute('aria-activedescendant');
     empty.hidden=visible.length>0;empty.textContent=search.value.trim()?'No results. Try another search.':category==='source'?'No clips in this project.':'No devices found.';
-    description.textContent=chosen?[chosen.description??'Saved Ultra device',chosen.reason].filter(Boolean).join(' / '):'Drag an instrument or effect onto a track';activate.disabled=!chosen||!!blocked;activate.textContent=chosen?.kind==='source'?'Open Clip':chosen?.kind==='instrument'?(state.instrumentNeedsTrack?'Add Track':'Load Instrument'):'Add Effect';activate.title=blocked??'';
+    description.textContent=chosen?[chosen.description??'Saved Ultra device',chosen.reason].filter(Boolean).join(' / '):'Drag an instrument or effect onto a track';activate.disabled=!chosen||!!blocked;activate.setAttribute('aria-label',chosen?.kind==='source'?'Open Clip':chosen?.kind==='instrument'?(state.instrumentNeedsTrack?'Add Track':'Load Instrument'):'Add Effect');actionIcon(activate,'M3 9h12 M9 3v12');activate.title=blocked??activate.getAttribute('aria-label');
     list.setAttribute('aria-busy',String(catalogState==='loading'));
     status.textContent=[blocked,catalogError,catalogState==='loading'?'Loading library...':`${visible.length} ${visible.length===1?'item':'items'}`,...catalogNotices].filter(Boolean).join(' / ');status.classList.toggle('error',!!catalogError);
   }

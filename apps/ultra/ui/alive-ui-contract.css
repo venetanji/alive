@@ -89,19 +89,19 @@
 
 /* Help owns its visibility even when both editors are closed. Clip spans the
    full width only when stacked above the fixed Help / Devices row. */
-#detail-content{display:grid;grid-template-columns:calc(var(--browser-width) + 5px) minmax(0,1fr);grid-template-rows:minmax(0,1fr);overflow:hidden}
-.detail-both #detail-content{grid-template-rows:minmax(0,1fr) var(--device-row-height,180px)}
+#detail-content{display:grid;grid-template-columns:var(--help-width,231px) minmax(0,1fr);grid-template-rows:minmax(0,1fr);overflow:hidden}
+.detail-both #detail-content{grid-template-rows:minmax(0,1fr) var(--device-row-height,190px)}
 #clip-detail:not([hidden]){display:flex;flex-direction:column;grid-column:2;grid-row:1;min-height:0;height:100%;overflow:auto;container:clip-detail / size}
 .detail-both #clip-detail:not([hidden]){grid-column:1 / -1}
-#clip-detail>.clip-section{display:flex;flex-direction:column;flex:1 0 310px;min-height:min-content}
-#clip-detail>.clip-section:has(.note-table[open]){flex-basis:508px}
+#clip-detail>.clip-section{display:flex;flex-direction:column;flex:1 0 260px;min-height:0;border:0}
 #clip-detail>.clip-section>.section-heading{flex:none;padding:0;gap:0;min-height:22px;height:22px;background:#434343;border-bottom:2px solid #292929}
 #clip-detail #clip-controls{flex:1;min-width:0;min-height:20px;height:20px;padding:0 5px;gap:5px;font-size:11px}
 #clip-detail #add-note{margin:0 5px 0 0;height:18px;min-height:18px;padding:0 5px;font-size:10px}
-#clip-detail .clip-editors{display:flex;flex-direction:column;flex:1 0 auto;min-height:min-content}
+#clip-detail .clip-editors{display:flex;flex-direction:column;flex:1;min-height:0}
 #clip-detail .note-table{flex:none}
-#clip-detail .clip-area{height:auto;flex:1 0 auto;min-height:min-content}
-#clip-detail .clip-area.has-source{grid-template-columns:min(var(--clip-properties-width,clamp(170px,30%,330px)),calc(100% - 160px)) minmax(0,1fr);grid-template-rows:minmax(min-content,auto) minmax(156px,1fr) auto auto}
+#clip-detail .clip-area{height:auto;flex:1;min-height:0}
+#clip-detail .clip-area.has-source{grid-template-columns:min(var(--clip-properties-width,210px),calc(100% - 160px)) minmax(0,1fr);grid-template-rows:minmax(min-content,auto) minmax(100px,1fr) auto auto}
+#clip-detail :is(#piano-roll,#audio-waveform){min-height:100px}
 #clip-detail .clip-properties-resizer{grid-column:1;grid-row:1 / -1;justify-self:end;width:5px;z-index:2;cursor:ew-resize;touch-action:none;background:#292929}
 #clip-detail .clip-properties-resizer:focus-visible{outline:2px solid var(--selection);outline-offset:-2px}
 #device-detail:not([hidden]),#master-detail:not([hidden]){grid-column:2;grid-row:1;min-height:0;overflow:auto}
@@ -110,13 +110,19 @@
 #device-detail .section-heading button{height:18px;min-height:18px;padding:0 5px;font-size:10px}
 #device-detail .section-heading>.muted,#chain-status{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 #device-detail #chain{padding:5px;gap:5px;background:#3b3b3b}
+#device-detail .chain-device{position:relative;min-height:0;height:100%}
+#device-detail .device-controls{min-height:0;overflow:auto;padding:5px 9px}
+#device-detail .presentation-item>.live-control{gap:1px}
+#device-detail .presentation-item>.live-control .live-dial{width:32px;height:32px}
+#device-detail .device-card-actions{padding:2px 4px;gap:3px;min-height:24px}
+#device-detail .device-card-path{position:absolute;left:0;top:0;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 #info-view:not([hidden]){display:flex;flex-direction:column;align-items:stretch;grid-column:1;grid-row:1;min-height:0;overflow:auto;padding:9px 10px;gap:7px;background:#393939;border-right:5px solid #292929;color:var(--text)}
 .detail-both #device-detail:not([hidden]),.detail-both #info-view:not([hidden]){grid-row:2}
 #info-view[hidden]{display:none}
 #info-view .info-label{font-size:12px;font-weight:bold;color:#e2e2db;line-height:16px;border-bottom:1px solid #575753;padding-bottom:5px}
 #info-view #info-text{display:block;flex:none;overflow:visible;font-size:12px;line-height:1.6;color:#c7c7c0;white-space:normal;overflow-wrap:anywhere}
 #detail-content:not(:has(#info-view:not([hidden]))){grid-template-columns:0 minmax(0,1fr)}
-.detail-collapsed #detail-content{height:var(--device-row-height,180px)}
+.detail-collapsed #detail-content{height:var(--device-row-height,190px)}
 .detail-collapsed #detail-content:not(:has(#info-view:not([hidden]))){height:0}
 #toggle-help{width:20px;height:18px;min-height:18px;padding:0;border:0;border-radius:50%;background:var(--amber);color:#292929;font-size:13px;font-weight:bold}
 #footer-display-controls{display:flex;align-items:center;gap:4px;flex:none;margin-left:auto}
@@ -141,5 +147,38 @@
 #display-menu-items button[aria-pressed=true]::before{content:'\2713 ';color:var(--amber)}
 #display-menu-items button:hover:not(:disabled){background:var(--raised)}
 .mixer-hidden .track-mixer,.mixer-hidden #master-session{display:none}
-@container clip-detail (max-height:360px){#clip-detail .clip-area.has-source{grid-template-columns:min(var(--clip-properties-width,clamp(260px,30%,330px)),calc(100% - 160px)) minmax(0,1fr)}}
+/* Auxiliary editors remain real disclosures, docked into the heading instead
+   of reserving empty bands below the piano. */
+.clip-inspectors{display:flex;align-items:center;gap:3px;flex:none;height:20px}
+#clip-detail .clip-inspectors>details{position:relative;max-height:none;border:0;overflow:visible}
+#clip-detail .clip-inspectors>details>summary{display:grid;place-items:center;list-style:none;padding:1px 4px;min-width:20px;height:18px;border:0;background:#393939;font-size:0;cursor:pointer}
+#clip-detail .clip-inspectors>details>summary::-webkit-details-marker{display:none}
+.clip-inspectors svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.4}
+#clip-detail .clip-inspectors>details[open]{position:static}
+#clip-detail .clip-inspectors>details[open]>:not(summary){position:absolute;right:0;top:22px;width:min(560px,95%);max-height:calc(100% - 24px);overflow:auto;background:var(--chrome);border:1px solid #777;z-index:12}
+.clip-note-inspector-content{padding-bottom:2px}
+#clip-detail .clip-inspectors>.automation-section[open]{position:absolute;right:0;top:0;width:min(600px,95%);max-height:100%;overflow:auto;background:var(--chrome);z-index:12}
+#clip-detail .clip-inspectors>.automation-section[open]>:not(summary){position:static;width:auto;max-height:none;border:0}
+#clip-detail>.clip-section{position:relative}
+#clip-detail>.clip-section>.section-heading{position:static;overflow:visible;z-index:4}
+.detail-maximized .track-mixer,.detail-maximized #master-session{display:none}
+.detail-maximized #master-arrangement-lane{display:none}
+.clip-layout-controls{display:flex;gap:2px;flex:none}
+.clip-layout-controls button{display:grid;place-items:center;width:20px;height:18px;min-height:18px;padding:1px;border:0;background:#393939}
+.clip-layout-controls button[aria-pressed=true]{color:#222;background:var(--amber)}
+.clip-layout-controls svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.4}
+.clip-view-tools button svg,.clip-region-tools button svg,.audio-clip-empty button svg{display:block;width:14px;height:14px;margin:auto;fill:none;stroke:currentColor;stroke-width:1.4}
+.track-return svg{display:block;width:12px;height:12px;margin:auto;fill:none;stroke:currentColor;stroke-width:1.4}
+.device-card-header>button:not(.chain-select),.device-card-actions button{display:grid;place-items:center;width:23px;min-width:23px;min-height:19px;padding:1px}
+.device-card-header>button:not(.chain-select) svg,.device-card-actions button svg{width:13px;height:13px;margin:0;fill:none;stroke:currentColor;stroke-width:1.4}
+.browser-load svg,.browser-preview button svg,.timeline-return svg{display:block;width:14px;height:14px;margin:auto;fill:none;stroke:currentColor;stroke-width:1.4}
+#clip-detail .clip-area[data-layout=horizontal]{grid-template-columns:min(var(--clip-properties-width,clamp(320px,44%,500px)),calc(100% - 160px)) minmax(0,1fr)}
+#clip-detail .clip-area[data-layout=horizontal] .clip-properties{display:flex;align-items:stretch}
+#clip-detail .clip-area[data-layout=horizontal] .clip-properties>details{flex:1;min-width:0}
+#clip-detail .clip-area[data-layout=vertical] .clip-properties{display:block}
+@container clip-detail (max-height:360px){
+  #clip-detail .clip-area[data-layout=auto]{grid-template-columns:min(var(--clip-properties-width,clamp(320px,44%,500px)),calc(100% - 160px)) minmax(0,1fr)}
+  #clip-detail .clip-area[data-layout=auto] .clip-properties{display:flex;align-items:stretch}
+  #clip-detail .clip-area[data-layout=auto] .clip-properties>details{flex:1;min-width:0}
+}
 @media(max-width:850px){footer{gap:4px;padding:3px 7px}#footer-display-controls{gap:3px}#clip-overview{width:110px}}

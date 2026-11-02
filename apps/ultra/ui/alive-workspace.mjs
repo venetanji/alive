@@ -1,7 +1,7 @@
 // Workspace navigation owns only presentation. Native state and editor nodes stay mounted.
 export function mountWorkspace({doc,win,onNavigate=()=>{}}){
   const $=id=>doc.getElementById(id);
-  const deviceHeight=180;
+  const deviceHeight=190;
   let view='session',detail='clip',previousDetail='clip',expanded=true,browser=true,height=310,resize=null,browserWidth=334,browserResize=null,mixer=true;
   let clipOpen=true,deviceOpen=false,masterOpen=false,previousPanels=null;
   let requestedHeight=height,maximized=false;
@@ -22,8 +22,8 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
     return Math.max(minimum,Math.ceil(header.getBoundingClientRect().height+minHeight(bank)+minHeight(mixer)+Math.max(0,session.offsetHeight-session.clientHeight)));
   };
   const clipVisible=()=>expanded&&clipOpen&&!masterOpen;
-  const minHeight=()=>deviceOpen?96:160;
-  const maxHeight=()=>Math.max(minHeight(),detailBudget()-(maximized?0:workspaceMinimum())-(deviceOpen?deviceHeight:0));
+  const minHeight=()=>deviceOpen&&detailBudget()-workspaceMinimum()-deviceHeight<224?96:224;
+  const maxHeight=()=>Math.max(minHeight(),detailBudget()-(maximized?96:workspaceMinimum())-(deviceOpen?deviceHeight:0));
   const fitHeight=()=>{
     if(!clipVisible()){height=deviceHeight;maximized=false;return;}
     height=Math.round(Math.max(minHeight(),Math.min(maxHeight(),maximized?Infinity:requestedHeight)));
@@ -50,7 +50,7 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
   doc.addEventListener('change',change,true);doc.addEventListener('blur',blur,true);doc.addEventListener('focus',focus,true);
   function paint(){
     const full=maximized&&clipVisible();
-    $('session-workspace').hidden=full||view!=='session';$('arrangement-workspace').hidden=full||view!=='arrangement';
+    $('session-workspace').hidden=view!=='session';$('arrangement-workspace').hidden=view!=='arrangement';
     shell.classList.toggle('detail-maximized',full);
     shell.classList.toggle('detail-both',expanded&&!masterOpen&&clipOpen&&deviceOpen);
     shell.classList.toggle('mixer-hidden',!mixer);
@@ -58,7 +58,7 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
     maximize.setAttribute('aria-label',label);maximize.setAttribute('aria-pressed',String(full));maximize.title=label;
     maximize.disabled=!clipVisible();
     for(const name of ['session','arrangement'])$('view-'+name).setAttribute('aria-pressed',String(view===name));
-    $('workspace-browser').hidden=!browser;$('browser-resizer').hidden=!browser;$('toggle-browser').setAttribute('aria-expanded',String(browser));$('timeline-inspector').hidden=view!=='arrangement';
+    $('workspace-browser').hidden=!browser;$('browser-resizer').hidden=!browser&&!browserResize;shell.classList.toggle('browser-drag-collapsed',!browser&&!!browserResize);$('toggle-browser').setAttribute('aria-expanded',String(browser));$('timeline-inspector').hidden=view!=='arrangement';
     shell.style.setProperty('--browser-width',`${browserWidth}px`);$('browser-resizer').setAttribute('aria-valuenow',browserWidth);$('browser-resizer').setAttribute('aria-valuemax',maxBrowserWidth());
     shell.classList.toggle('detail-collapsed',!expanded);handle.hidden=!clipVisible();
     $('toggle-detail').setAttribute('aria-expanded',String(expanded));
@@ -70,7 +70,7 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
     shell.style.setProperty('--device-row-height',`${deviceHeight}px`);
     shell.style.setProperty('--detail-height',`${total}px`);handle.setAttribute('aria-valuenow',height);handle.setAttribute('aria-valuemin',minHeight());handle.setAttribute('aria-valuemax',maxHeight());
     $('toggle-mixer').setAttribute('aria-pressed',String(mixer));
-    restore($(view+'-workspace'));
+    if(!full)restore($(view+'-workspace'));
     if(expanded){if(clipOpen&&!masterOpen)restore($('clip-detail'));if(deviceOpen&&!masterOpen)restore($('device-detail'));if(masterOpen)restore($('master-detail'));if(view==='arrangement'&&clipOpen&&!masterOpen)restore($('timeline-inspector'));}
   }
   function setHeight(value){if(!clipVisible())return;maximized=false;requestedHeight=value;fitHeight();paint();}
@@ -99,10 +99,14 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
   handle.addEventListener('keydown',event=>{if(clipVisible()&&['ArrowUp','ArrowDown','Home','End'].includes(event.key)){event.preventDefault();setHeight(event.key==='Home'?minHeight():event.key==='End'?maxHeight():height+(event.key==='ArrowUp'?1:-1)*(event.shiftKey?50:20));}});
   const browserHandle=$('browser-resizer');
   function setBrowserWidth(value){requestedBrowserWidth=browserWidth=Math.round(Math.max(180,Math.min(maxBrowserWidth(),value)));paint();}
-  function cancelBrowserResize(){if(!browserResize)return;const old=browserResize;browserResize=null;requestedBrowserWidth=old.requestedWidth;browserWidth=Math.min(requestedBrowserWidth,maxBrowserWidth());paint();if(browserHandle.hasPointerCapture?.(old.id))browserHandle.releasePointerCapture(old.id);}
-  browserHandle.addEventListener('pointerdown',event=>{if(event.button!==0)return;browserResize={id:event.pointerId,x:event.clientX,width:browserWidth,requestedWidth:requestedBrowserWidth};browserHandle.setPointerCapture?.(event.pointerId);event.preventDefault();});
-  browserHandle.addEventListener('pointermove',event=>{if(browserResize?.id===event.pointerId)setBrowserWidth(browserResize.width+event.clientX-browserResize.x);});
-  browserHandle.addEventListener('pointerup',event=>{if(browserResize?.id!==event.pointerId)return;browserResize=null;browserHandle.releasePointerCapture?.(event.pointerId);});
+  function cancelBrowserResize(){if(!browserResize)return;const old=browserResize;browserResize=null;browser=old.open;requestedBrowserWidth=old.requestedWidth;browserWidth=Math.min(requestedBrowserWidth,maxBrowserWidth());paint();if(browserHandle.hasPointerCapture?.(old.id))browserHandle.releasePointerCapture(old.id);}
+  browserHandle.addEventListener('pointerdown',event=>{if(event.button!==0)return;browserResize={id:event.pointerId,x:event.clientX,width:browserWidth,requestedWidth:requestedBrowserWidth,open:browser};browserHandle.setPointerCapture?.(event.pointerId);event.preventDefault();});
+  browserHandle.addEventListener('pointermove',event=>{if(browserResize?.id!==event.pointerId)return;const width=browserResize.width+event.clientX-browserResize.x;
+    // Collapse on drag only; reopening keeps the useful width from before the drag.
+    if(width<180){browser=false;requestedBrowserWidth=browserResize.requestedWidth;browserWidth=Math.min(requestedBrowserWidth,maxBrowserWidth());paint();}
+    else{browser=true;setBrowserWidth(width);}
+  });
+  browserHandle.addEventListener('pointerup',event=>{if(browserResize?.id!==event.pointerId)return;browserResize=null;browserHandle.releasePointerCapture?.(event.pointerId);paint();});
   browserHandle.addEventListener('pointercancel',cancelBrowserResize);browserHandle.addEventListener('lostpointercapture',cancelBrowserResize);
   browserHandle.addEventListener('keydown',event=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(event.key)){event.preventDefault();setBrowserWidth(event.key==='Home'?180:event.key==='End'?420:browserWidth+(event.key==='ArrowRight'?1:-1)*(event.shiftKey?20:5));}});
   $('track-width').addEventListener('input',event=>shell.style.setProperty('--track-width',`${event.target.value}px`));

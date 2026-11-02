@@ -94,7 +94,8 @@ export function mountTimeline({doc,win,state,choose,edit,placementEdit,transport
         const row=make('div','timeline-row');row.dataset.trackId=t.id;row.style.setProperty('--track-color',t.color);row.style.width=`${laneWidth+176}px`;
         const header=make('div','timeline-header'),name=button(t.name,()=>select(t.id,null),'timeline-track-name');name.setAttribute('aria-label',`Select ${t.name} Arrangement track`);name.title=t.name;header.append(name);
         const authority=make('output','timeline-authority');authority.setAttribute('aria-label',`${t.name} Arrangement authority`);
-        const back=button(`Return ${t.name}`,()=>action({kind:'return',trackIds:[t.id]}),'timeline-return');back.textContent='Return';back.title=`Return ${t.name} to Arrangement`;
+        const back=button(`Return ${t.name}`,()=>action({kind:'return',trackIds:[t.id]}),'timeline-return');back.textContent='';back.title=`Return ${t.name} to Arrangement`;
+        const backIcon=doc.createElementNS('http://www.w3.org/2000/svg','svg'),backPath=doc.createElementNS('http://www.w3.org/2000/svg','path');backIcon.setAttribute('viewBox','0 0 18 18');backIcon.setAttribute('aria-hidden','true');backPath.setAttribute('d','M11 3l4 4-4 4 M15 7H7Q2 7 3 14');backIcon.append(backPath);back.append(backIcon);
         const mute=button(`${t.name} Arrangement mute`,()=>mix(t.id,{mute:!state().document.tracks.find(q=>q.id===t.id).mute}),'timeline-mute'),solo=button(`${t.name} Arrangement solo`,()=>mix(t.id,{solo:!state().document.tracks.find(q=>q.id===t.id).solo}),'timeline-solo');mute.textContent='M';solo.textContent='S';
         header.append(mute,solo,authority,back);
         const lane=make('div','timeline-lane');lane.setAttribute('role','group');lane.setAttribute('aria-label',`${t.name} timeline lane`);lane.dataset.trackId=t.id;lane.style.width=`${laneWidth}px`;lane.style.backgroundSize=`${4*scale}px 100%`;

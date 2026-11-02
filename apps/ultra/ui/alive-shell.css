@@ -47,7 +47,7 @@ body{min-height:0;height:100dvh}
 .workspace-upper{position:relative;display:flex;flex:1;min-height:0;min-width:0;overflow:hidden}
 .workspace-column{display:flex;flex-direction:column;flex:1;min-width:0;min-height:0;overflow:hidden}
 .workspace{flex:1;min-height:0;overflow:auto;outline-offset:-2px;background:var(--canvas)}
-#workspace-browser{min-width:0;flex-shrink:0}
+#workspace-browser{min-width:0;flex:0 0 var(--browser-width);width:var(--browser-width)}
 #browser-resizer{width:5px;background:#292929;cursor:ew-resize;touch-action:none}
 #browser-resizer:focus-visible{outline:2px solid var(--selection);outline-offset:-2px}
 #browser-resizer:hover,#detail-resizer:hover{background:#7b9197}
@@ -91,9 +91,8 @@ footer button{flex:none;height:20px;min-height:20px;padding:0 5px;font-size:10px
 .clip-source-actions[open]>.clip-source-actions-body{position:absolute;right:0;top:calc(100% + 5px);z-index:10;width:min(420px,75vw);max-height:280px;overflow:auto;padding:10px;background:var(--chrome);border:1px solid #737373;box-shadow:0 5px 16px #0005}
 .clip-source-actions .source-scope{width:100%;line-height:1.45}
 @media(min-width:621px){
-  #workspace-browser:not([hidden]){position:absolute;top:0;left:0;bottom:0;width:var(--browser-width);z-index:1}
-  #browser-resizer:not([hidden]){position:absolute;top:0;left:var(--browser-width);bottom:0;z-index:2}
-  .workspace-upper:has(#workspace-browser:not([hidden])){padding-left:calc(var(--browser-width) + 5px)}
+  #browser-resizer:not([hidden]){flex:0 0 5px;z-index:2}
+  .browser-drag-collapsed #browser-resizer{position:absolute;left:0;top:0;bottom:0}
 }
 @media(max-width:1200px){.transport-optional{display:none}.workspace-authority{max-width:95px}}
 @media(max-width:850px){.document-bar{gap:7px}.transport{gap:3px}.transport-secondary{display:none}#diagnostics{grid-template-columns:repeat(2,minmax(0,1fr))}.timeline-tools>.muted{display:none}.workspace-authority{display:none}}

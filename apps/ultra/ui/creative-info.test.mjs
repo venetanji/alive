@@ -44,3 +44,10 @@ test('shared Info observes pointer and focus without changing controls',()=>{
   assert.equal(output.textContent,DEFAULT_CONTEXT_INFO);
   mounted.dispose();assert.equal(handlers.size,0);
 });
+test('Info can keep descriptions in its output without recreating a tooltip',()=>{
+  const handlers=new Map(),output={textContent:'',title:''};
+  const doc={getElementById:()=>output,addEventListener:(type,fn)=>handlers.set(type,fn),removeEventListener:()=>{}};
+  mountContextInfo({doc,tooltip:false});
+  handlers.get('pointerover')({target:element({'data-help':'Stop transport'})});
+  assert.equal(output.textContent,'Stop transport');assert.equal(output.title,'');
+});

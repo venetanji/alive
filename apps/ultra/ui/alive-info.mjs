@@ -14,7 +14,25 @@ export function describeAliveTarget(target){
   return describeContextTarget(target,REGIONS,DEFAULT_INFO);
 }
 export function mountAliveInfo(doc=globalThis.document){
-  const info=mountContextInfo({doc,regions:REGIONS,outputId:'info-text',fallback:DEFAULT_INFO});
+  // Legacy renderers still set titles on every snapshot. Move those descriptions
+  // to Help before the browser can present a second, floating help surface.
+  const migrated=new WeakMap();
+  function moveTitle(element){
+    const title=element.getAttribute?.('title');if(!title)return;
+    const help=element.getAttribute('data-help');
+    if(!help||help===migrated.get(element)){element.setAttribute('data-help',title);migrated.set(element,title);}
+    element.removeAttribute('title');
+  }
+  function scan(root){
+    moveTitle(root);
+    for(const element of root.querySelectorAll?.('[title]')??[])moveTitle(element);
+    for(const title of root.querySelectorAll?.('svg title')??[]){const parent=title.parentElement;if(!parent.hasAttribute('data-help'))parent.setAttribute('data-help',title.textContent);title.remove();}
+  }
+  scan(doc);
+  const Observer=doc.defaultView?.MutationObserver;
+  const observer=Observer?new Observer(records=>{for(const record of records){if(record.type==='attributes')moveTitle(record.target);else for(const node of record.addedNodes)if(node.nodeType===1)scan(node);}}):null;
+  observer?.observe(doc.documentElement,{subtree:true,childList:true,attributes:true,attributeFilter:['title']});
+  const info=mountContextInfo({doc,regions:REGIONS,outputId:'info-text',fallback:DEFAULT_INFO,tooltip:false});
   const fileMenu=doc?.getElementById?.('file-menu');
   const browserAdd=doc?.getElementById?.('browser-add-menu');
   const panel=doc?.getElementById?.('info-view'),toggle=doc?.getElementById?.('toggle-help');
@@ -34,6 +52,7 @@ export function mountAliveInfo(doc=globalThis.document){
   toggle?.addEventListener('pointerdown',preserveFocus);
   toggle?.addEventListener('click',toggleHelp);
   return{dispose(){
+    observer?.disconnect();
     info.dispose();
     doc?.removeEventListener?.('click',click);
     doc?.removeEventListener?.('keydown',keydown);

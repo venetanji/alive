@@ -13,8 +13,29 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
   };
   let svg=midiSvg;
   const area=midiSvg.parentElement,toolbar=make('div',{class:'clip-view-tools',role:'toolbar','aria-label':'Clip viewport'});
+  const heading=doc.querySelector?.('#clip-detail > .clip-section > .section-heading');
+  const layouts=make('div',{class:'clip-layout-controls',role:'group','aria-label':'Clip layout'}),layoutButtons=[];
+  area.setAttribute('data-layout','auto');
+  for(const [mode,label,path]of [['auto','Automatic Clip layout','M2 2h14v14H2z M7 2v14 M7 7h9'],['horizontal','Horizontal Clip layout','M2 2h14v14H2z M6 2v14 M10 2v14'],['vertical','Vertical Clip layout','M2 2h14v14H2z M7 2v14 M2 7h5 M2 12h5']]){
+    const control=make('button',{type:'button','aria-label':label,'aria-pressed':String(mode==='auto'),'data-help':label}),icon=make('svg',{viewBox:'0 0 18 18','aria-hidden':true});icon.append(make('path',{d:path}));control.append(icon);
+    control.addEventListener('pointerdown',event=>event.preventDefault());
+    control.addEventListener('click',()=>{area.setAttribute('data-layout',mode);for(const item of layoutButtons)item.control.setAttribute('aria-pressed',String(item.mode===mode));draw();});
+    layoutButtons.push({mode,control});layouts.append(control);
+  }
+  heading?.append(layouts);
+  const inspectors=make('div',{class:'clip-inspectors'});
+  for(const [selector,label,path]of [['.note-table','Note inspector','M3 3h12v12H3z M3 7h12 M3 11h12 M7 3v12'],['.automation-section','Automation inspector','M2 13h3l4-8 3 5h4']]){
+    const panel=doc.querySelector?.('#clip-detail '+selector);if(!panel)continue;
+    const summary=panel.querySelector('summary');summary.setAttribute('aria-label',label);summary.setAttribute('data-help',label);
+    const icon=make('svg',{viewBox:'0 0 18 18','aria-hidden':true});icon.append(make('path',{d:path}));summary.replaceChildren(icon);
+    if(selector==='.note-table'){const scroller=make('div',{class:'clip-note-inspector-content'});scroller.append(...[...panel.children].filter(child=>child!==summary));panel.append(scroller);}
+    inspectors.append(panel);
+  }
+  heading?.append(inspectors);
   const range=make('output',{class:'clip-view-range','aria-label':'Visible clip range'});
+  function actionIcon(control,path){const icon=make('svg',{viewBox:'0 0 18 18','aria-hidden':true});icon.append(make('path',{d:path}));control.replaceChildren(icon);}
   const previewButton=make('button',{type:'button',class:'piano-preview','aria-label':'MIDI note Preview','aria-pressed':'false',title:'Preview notes through the selected instrument'},'Preview');
+  actionIcon(previewButton,'M2 7h3l4-4v12l-4-4H2z M12 5q5 4 0 8');
   let previewEnabled=false;
   previewButton.addEventListener('pointerdown',event=>event.preventDefault());
   previewButton.addEventListener('click',()=>onPreview(!previewEnabled));
@@ -31,6 +52,8 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
   }
   function button(label,symbol,action){
     const element=make('button',{type:'button','aria-label':label,title:label},symbol);
+    const paths={'<':'M11 3 5 9l6 6','>':'M7 3l6 6-6 6',v:'M3 6l6 6 6-6','^':'M3 12l6-6 6 6','-':'M4 9h10','+':'M4 9h10 M9 4v10',Fit:'M2 7V2h5 M11 2h5v5 M16 11v5h-5 M7 16H2v-5'};
+    actionIcon(element,paths[symbol]??paths.Fit);
     // Navigating the viewport must not blur an unfinished numeric edit.
     element.addEventListener('pointerdown',event=>event.preventDefault());
     element.addEventListener('click',()=>navigate(typeof action==='function'?action():action));
@@ -43,6 +66,7 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
   const fit=button('Fit notes','Fit',{type:'fit'});
   toolbar.append(previewButton,time,pitch,waveform,fit,range);
   const empty=make('div',{class:'audio-clip-empty'}),importButton=make('button',{type:'button','aria-label':'Import audio into selected slot'},'Import WAV...');
+  actionIcon(importButton,'M3 12v4h12v-4 M9 2v10 M5 8l4 4 4-4');
   importButton.addEventListener('click',onImport);empty.append(make('strong',{},'Audio clip'),make('p',{},'Import a sample to edit its waveform, start point and loop.'),importButton);
   const properties=make('aside',{class:'clip-properties','aria-label':'Clip properties'});
   const divider=make('div',{class:'clip-properties-resizer',role:'separator',tabindex:0,'aria-label':'Resize Clip properties','aria-orientation':'vertical','aria-valuemin':140,'aria-valuemax':600});
@@ -65,7 +89,7 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
     regionInputs[key]=input;holder.append(input);regionTools.append(holder);
   }
   const loopLabel=make('label',{class:'clip-loop-toggle'}),loopToggle=make('input',{type:'checkbox','aria-label':'Clip Loop'});loopToggle.addEventListener('change',()=>onRegion('loopEnabled',loopToggle.checked));loopLabel.append(loopToggle,make('span',{},'Loop'));regionTools.append(loopLabel);
-  const loopSelection=make('button',{type:'button','aria-label':'Loop Selection',title:'Set loop and Start from the time selection (Ctrl+L)'},'Loop Selection');loopSelection.addEventListener('click',onLoopSelection);regionTools.append(loopSelection,make('span',{class:'muted'},'beats'));
+  const loopSelection=make('button',{type:'button','aria-label':'Loop Selection',title:'Set loop and Start from the time selection (Ctrl+L)'},'Loop Selection');actionIcon(loopSelection,'M4 5h10v8H4z M2 3v4 M16 11v4');loopSelection.addEventListener('click',onLoopSelection);regionTools.append(loopSelection,make('span',{class:'muted'},'beats'));
   const stretchTools=make('div',{class:'audio-stretch-tools',role:'toolbar','aria-label':'Audio Re-Pitch stretching'}),stretchInputs={};
   async function stretch(tempo,sourceId=last?.source?.id){try{return await onStretch(tempo,sourceId);}catch(error){onError(String(error));return null;}}
   stretchTools.append(make('strong',{},'Audio'),make('span',{class:'clip-audio-mode'},'Re-Pitch'));

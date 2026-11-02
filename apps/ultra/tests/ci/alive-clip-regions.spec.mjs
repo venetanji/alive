@@ -58,6 +58,14 @@ async function openRangeStudy(page){
 }
 const mutations=page=>page.evaluate(()=>window.calls.filter(c=>['alive_workspace_edit','alive_workspace_track'].includes(c.name)));
 
+test('audio and empty clips do not expose the MIDI Note inspector',async({page})=>{
+  await openRangeStudy(page);await page.getByRole('button',{name:'Select Audio slot 1',exact:true}).click();
+  await expect(page.locator('.note-table')).toBeHidden();
+  await page.getByRole('button',{name:'Select Pulse slot 1',exact:true}).click();await expect(page.locator('.note-table')).toBeVisible();
+  await page.getByRole('button',{name:'Select Pulse slot 2',exact:true}).click();await expect(page.locator('.note-table')).toBeHidden();
+  expect(await mutations(page)).toEqual([]);
+});
+
 for(const {method,label,value,tempo} of [{method:'mouse',label:'Audio source BPM',value:'121',tempo:121},{method:'keyboard',label:'Audio source BPM',value:'121',tempo:121},{method:'mouse',label:'Audio length in beats',value:'7',tempo:105}])test(`Audio disclosure preserves unfinished ${label} through ${method} navigation`,async({page})=>{
   await page.setViewportSize({width:1280,height:800});await openRangeStudy(page);await page.getByRole('button',{name:'Select Audio slot 1',exact:true}).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
   const field=page.getByRole('spinbutton',{name:label,exact:true}),summary=page.locator('.clip-properties > details').filter({has:page.locator('.audio-stretch-tools')}).locator('summary');
