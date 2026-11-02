@@ -60,6 +60,134 @@ position, authority, source/slot/placement, and placement/gap boundaries from
 the same native snapshot. Record sampling intervals and missing observations.
 An engine change requires a separate explanation and bounded regression first.
 
+### Instrumented local findings
+
+Diagnostic commit `6e277a92728816d010ec5577663a2471df7972c5` is on the
+separate audit branch. Manual CI:
+https://github.com/venetanji/alive/actions/runs/41367960025.
+PR 12 remains at the audited head. UI/protocol, Chromium, native adapter/release
+Rust, headless rendering, desktop/hosted editor and Master passed. Arrangement
+failed later at the Cutoff inspector. Downstream clip/resource/loopback steps
+were skipped again, not passed. Release Rust: 298 passes, four ignored.
+
+An exact local rebuild passed startup and produced coherent native observations.
+The original sequential authored-placement/source check failed before Return,
+although native snapshots consistently paired the authored placement and source
+inside its range. An initial test-only coherent observer passed that boundary.
+The subsequent run retained the original Return sequence and exposed a more
+serious false-pass path:
+
+- The intended `seek(4.1)` dispatched **Scene slot index 2** instead of Seek.
+  No native Seek(4.1) request exists in that trace. The native Scene request is
+  serial 6 and can change both tracks; an unverified UI coordinate is insufficient.
+- Actual Return is the correct action for `track-1`, generation 1, preparation
+  revision 1, serial 7, with captured `bar1` quantization.
+- Pending snapshot 1978: absolute frame 4302848, position 362953 (14.114839
+  beats), pending target 4351324. Pulse remains Session silence; Harmony is also
+  Session silence after the unintended empty Scene.
+- Target 4351324 maps to song-loop end 411429, then wraps to loop start 51429
+  (beat 2), **outside every Pulse gap**.
+- First applied snapshot 1988: absolute 4353536, position 53641 (2.086039
+  beats), applied mask 1, Arrangement authority and the original [0,8) source
+  and placement. That source is correct at this position.
+- Only later, at snapshot 2016 (absolute 4510208, position 210313, beat
+  8.178839), does the source become null in [205714,244286), the [8,9.5) gap.
+  The old journey reported a Return-in-gap pass from late UI observations.
+  This does not qualify Return applying inside a gap.
+
+Full request, queued receipt, pending/applied snapshots, compiled placements,
+gap bounds and a later gap observation are retained in
+[`evidence/local-return-outside-gap.json`](evidence/local-return-outside-gap.json),
+including actual executable/library identities. The run later failed at missing
+`Cutoff point 1 value`; it is not a complete Arrangement pass.
+
+The bounded correction is in the acceptance driver: require the actual Seek
+payload/receipt, use owned accessible-hit verification for Seek and Return,
+close transport options, prepare navigation before an early native bar, and
+correlate the pending/applied Return with its **own** compiled gap occurrence.
+Wrong dispatch, an out-of-gap target, missed sampling and a non-null source
+inside a proved gap are distinct failures. A later loop cannot rescue the test.
+The null-source/placement/slot expectation and sibling Session source remain
+strict. No native engine behavior or production UI command is changed.
+
+Ten observer regressions pass after their red/green checks; full helper
+discovery now passes **141 tests**. The retained real false-pass trace is also
+rejected by the new observer as an out-of-gap target. The corrected native
+journey now passes locally; downstream acceptance is being rerun separately.
+
+The instrumented CI independently reproduced Scene slot index 2 instead of
+Seek(4.1). Its Return serial 7 targeted absolute frame **2959058**, song position
+**308571** (beat 12), inside the compiled gap **[308571,321429)** ([12,12.5)).
+Pending snapshot 1328 and first applied snapshot 1348 establish the native
+result together: applied absolute 2961920, position 311433 (12.111283 beats),
+Arrangement authority and null active source/placement/slot. The native engine
+behaves correctly in that sampled gap. Harmony had already been silenced by
+the unintended Scene, so the intended sibling-playing case still needs rerun.
+See [`evidence/ci-return-short-gap.json`](evidence/ci-return-short-gap.json).
+The original uninstrumented CI remains insufficient to reconstruct its exact
+Return target; do not retroactively assign it a target from another run.
+
+The corrected local input guard then blocked Seek before pressing anything:
+its accessible rectangle was [1387,136,32,22], but accessible hit testing found
+`Launch scene 3`. The screenshot shows **Master painting over the open
+Transport & View popup** in Session. Session's sticky `.scene-column` has
+z-index 10 while the transport's enclosing stacking context has z-index 8;
+the popup's own z-index cannot escape that parent.
+
+The production correction adds `isolation:isolate` to the existing
+`#workspace-shell` rule in `alive-shell.css`. Workspace children keep their
+internal ordering, including pinned Master above tracks, within the workspace
+stacking context. Shell popups paint above them. No dimensions, approved control
+layout, command handlers or native scheduling change.
+
+Three browser regressions failed first with actual `Launch scene 3` hits at
+800x600, 1280x800 and 1440x900. All three pass after the single property change;
+six focused browser checks pass together, including Stop, drafts and Arrangement
+Master geometry. The new tests repeat workspace/popup toggles, verify exact Seek
+dispatch, resize/restore, unfinished fields and keyboard focus. Captures were
+inspected at all three sizes. Full Chromium passes **316 tests** (9.1 minutes),
+including shared Ultra. Fresh Node tests pass **668**, with zero failures/skips.
+Full Python helper discovery passes **141**. Logs:
+`/tmp/alive-pr12-browser-return.log`, `/tmp/alive-pr12-node-return.log` and
+`/tmp/alive-pr12-helpers-return.log`.
+
+### Corrected local Arrangement acceptance
+
+The full native MIDI Arrangement journey passed using rebuilt Alive/Ultra and
+the unchanged native library. Seek(4.1) dispatched correctly, with no unintended
+Scene request. Return serial 7 targeted absolute frame **3364349**, song frame
+**205714** (beat 8), inside the original compiled gap **[205714,244286)**.
+Applied snapshot **1591** has absolute frame **3366400**, position **207765**
+(about 8.080 beats), Arrangement authority and null source/placement/slot.
+Harmony retains its original playing Session source. The pending/applied
+records, exact binary identities and source hashes are retained in
+[`evidence/local-return-first-gap.json`](evidence/local-return-first-gap.json).
+
+Loop wrap, track gain, automation value 1781, hosted editor value 1777,
+close/reopen, exact saved-document equality and process restart replay passed.
+The private software-only PipeWire graph used 48 kHz / 512 frames. Playback and
+reopened captures contain 6,636,032 and 705,536 frames, respectively, both with
+peak 0.16578409. Rejected commands and stream errors are zero; Audio failed is
+false. This is software qualification, not physical hardware qualification.
+
+Native captures were inspected at
+[800x600](captures/native-arrangement-800x600.png),
+[1280x800](captures/native-arrangement-1280x800.png) and
+[1440x900](captures/native-arrangement-1440x900.png).
+Full local logs/artifacts: `/tmp/alive-pr12-arrangement-popup-fixed.log` and
+`/tmp/alive-pr12-arrangement-popup-fixed/`.
+
+Reviewed popup captures (browser fixture dispatch/geometry, no native success
+simulation): [800x600](captures/transport-popup-800x600.png),
+[1280x800](captures/transport-popup-1280x800.png),
+[1440x900](captures/transport-popup-1440x900.png).
+The native defect capture is
+[Seek blocked before the fix](captures/native-seek-blocked-before-fix.png).
+
+Impeccable's mechanical check reports only pre-existing type/color advisories
+in this stylesheet; the changed property adds none. Its design sidecar is stale
+relative to `DESIGN.md`. Optional metadata refresh remains outside this batch.
+
 ## Capability map
 
 Classes: W = already wired; E = existing capability needing another UI entry;
@@ -119,6 +247,8 @@ Fresh checks at the audited head before diagnostics:
   `audio::instrumentation::cpal_owned_error_destruction_is_separate_from_the_typed_action`
   expects one deallocation but observes zero. A focused rerun also fails. This
   is not the release-profile check used by CI; no audio change was made.
+  The same focused failure was reproduced on untouched `11da097` source in a
+  detached baseline worktree with local Rust 1.99.1.
 - Local native journey: **failed prerequisite** in `check_document_startup.py`
   (`Both startup documents must retain healthy native graphs`). The actual
   Arrangement driver did not run, so no Return trace exists from this attempt.

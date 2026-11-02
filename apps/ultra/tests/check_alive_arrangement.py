@@ -2,7 +2,8 @@
 """Actual admitted MIDI Arrangement journey on a private native desktop.
 
 Run with ULTRA_TEST_ALIVE=1, ULTRA_TEST_ALIVE_SESSION pointing to the shipped
-midi-arrangement.alive, and this file as ULTRA_TEST_SCRIPT. A 1600x1000 private
+midi-arrangement.alive, ALIVE_TRACE_ARRANGEMENT=1, and this file as
+ULTRA_TEST_SCRIPT. A 1600x1000 private
 X display permits both target window captures. Never inject native commands.
 """
 import ctypes as C
@@ -16,6 +17,7 @@ from desktop_process_helpers import process_identity, assert_same_identity, stop
 
 import check_alive_desktop as alive
 from desktop_snapshot_retry import retry_snapshot, SnapshotIncomplete
+from arrangement_observation import ArrangementTrace
 import check_alive_session_ui as presentation
 from gi.repository import Atspi
 
@@ -129,10 +131,15 @@ def observed(track, field, predicate, seconds=8):
     return alive.wait_value(f'Track {track} {field}', predicate, seconds)
 
 
-def seek(beat):
+def seek(beat, trace):
+    trace.checkpoint()
     expanded('Audio details', False)
     alive.numeric('Seek beat', beat)
-    ui.click('Seek transport')
+    assert float(alive.value('Seek beat')) == beat
+    alive.native_control_click('Seek transport', 'arrangement seek', require_accessible_hit=True)
+    action = trace.wait_action('seek', expected={'kind': 'seek', 'beat': beat})
+    expanded('Transport and view options', False)
+    return action
 
 
 def exited(pid):
@@ -149,6 +156,7 @@ def exited(pid):
 
 def run():
     global restart, capture
+    assert os.environ.get('ALIVE_TRACE_ARRANGEMENT') == '1', 'Native Arrangement evidence requires tracing'
     windows.focus('Alive')
     alive.prepare_workspace_control('MIDI source'); ui.wait_for('MIDI source'); ui.click('Source / Clip')
     assert alive.value('Transport position beats') == '0.000 beats'
@@ -215,10 +223,12 @@ def run():
     capture = alive.start_capture('midi-arrangement-playback')
     alive.transport('start')
     report['playing_started'] = time.monotonic()
-    seek(9.6)
-    observed(1, 'active placement', lambda s: s == first)
-    observed(1, 'active source', lambda s: s == p['sourceId'])
-    record('authored MIDI native-active inside the extended brace', placement=first, source=p['sourceId'])
+    trace = ArrangementTrace(ui.output / 'app.log')
+    seek_action = seek(9.6, trace)
+    authored_observation = trace.wait_track(seek_action, p['trackId'], {
+        'authority': 'arrangement', 'activePlacementId': first, 'activeSourceId': p['sourceId']})
+    record('authored MIDI native-active inside the extended brace', placement=first,
+           source=p['sourceId'], request=seek_action, native_observation=authored_observation)
     session()
     ui.click('Launch Pulse Clip 1')
     observed(1, 'authority', lambda s: s == 'session')
@@ -239,22 +249,44 @@ def run():
     assert observed(1, 'authority', lambda s: s == 'session') == 'session'
     session(); ui.click('Launch Harmony Clip 1')
     observed(2, 'authority', lambda s: s == 'session')
-    seek(4.1)
-    arrangement(); alive.reorder_click('Return Pulse')
-    pending = alive.wait_value('Pulse Arrangement authority', lambda s: 'pending return' in s)
+    seek_action = seek(4.1, trace)
+    trace.wait_track(seek_action, p['trackId'], {'authority': 'session', 'activeSourceId': None})
+    arrangement(); alive.prepare_workspace_control('Return Pulse')
+    trace.checkpoint()
+    # Prepare all accessibility navigation before waiting for the early native bar.
+    phase = trace.wait(lambda r: r['kind'] == 'snapshot' and
+                       r['generation'] == seek_action['request']['generation'] and
+                       r['preparationRevision'] == seek_action['request']['preparationRevision'] and
+                       r['state']['playing'] and
+                       4.15 <= int(r['state']['position']) * r['tempo'] / (48000 * 60) <= 5,
+                       'early native bar before the original [8,9.5) gap', seconds=12)
+    alive.native_control_click('Return Pulse', 'arrangement return', require_accessible_hit=True)
+    return_action = trace.wait_action('return', expected={'kind': 'return', 'trackIds': [p['trackId']]})
+    gap_evidence = trace.wait_return_gap(return_action, p['trackId'], authored['tracks'][1]['id'],
+                                         authored['tracks'][1]['slots'][0]['sourceId'])
+    record('Return applied inside its compiled gap', phase=phase, evidence=gap_evidence)
     session(); arrangement()
     observed(1, 'authority', lambda s: s == 'arrangement')
-    observed(1, 'active source', lambda s: s == '-', seconds=3)
     assert observed(2, 'authority', lambda s: s == 'session') == 'session'
-    record('Return into Arrangement gap preserves sibling Session authority', receipt=pending)
-    seek(15.5); time.sleep(.8)
-    assert float(alive.value('Transport position beats').split()[0]) < 5
+    record('Return into Arrangement gap preserves sibling Session authority')
+    loop_seek = seek(15.5, trace)
+    before_wrap = trace.wait_track(loop_seek, p['trackId'], {})
+    wrapped = trace.wait(lambda r: r['kind'] == 'snapshot' and
+                         r['generation'] == before_wrap['generation'] and
+                         r['preparationRevision'] == before_wrap['preparationRevision'] and
+                         int(before_wrap['state']['absoluteFrame']) < int(r['state']['absoluteFrame']) <
+                         int(before_wrap['state']['absoluteFrame']) + 96000 and
+                         2 <= int(r['state']['position']) * r['tempo'] / (48000 * 60) < 5,
+                         'native song-loop wrap into [2,5)')
+    record('song-loop wrap after applied seek', request=loop_seek, before=before_wrap, wrapped=wrapped)
     arrangement(); alive.reorder_click('Return all tracks to Arrangement')
     observed(2, 'authority', lambda s: s == 'arrangement')
     arrangement(); ui.click('Select Pulse Arrangement track')
     alive.numeric('Pulse Arrangement gain', .713)
     session(); assert float(alive.value('Pulse gain')) == .713
     ui.click('Select Pulse slot 1')
+    expanded('Note inspector', False)
+    expanded('Automation inspector')
     alive.numeric('Cutoff point 1 value', 1781)
     ui.click('Select Pulse Subtractive instrument')
     ui.click('Edit selected device in Ultra')
@@ -280,6 +312,7 @@ def run():
     assert saved['tracks'][0]['chain']['instrument']['parameters']['cutoff'] == 1777
     assert saved['loopStartBeats'] == 2 and saved['loopEndBeats'] == 16
     arrangement(); ui.click('Select placement ' + first); ui.click('Clip detail')
+    capture_window(800, 600, 'native-arrangement-800x600.png')
     capture_window(1440, 900, 'native-arrangement-1440x900.png')
     capture_window(1280, 800, 'native-arrangement-1280x800.png')
     session(); capture_window(1280, 800, 'native-session-1280x800.png')
@@ -297,8 +330,13 @@ def run():
     observed(1, 'authority', lambda s: s == 'arrangement')
     _, reopened = save('reopened.alive'); assert reopened == saved
     capture = alive.start_capture('reopened-playback')
-    alive.transport('start'); seek(9.6)
-    observed(1, 'active placement', lambda s: s == first)
+    alive.transport('start')
+    restarted_trace = ArrangementTrace(ui.output / 'restarted-app.log')
+    reopened_seek = seek(9.6, restarted_trace)
+    reopened_observation = restarted_trace.wait_track(reopened_seek, p['trackId'], {
+        'authority': 'arrangement', 'activePlacementId': first, 'activeSourceId': p['sourceId']})
+    record('reopened authored source and placement observed together', request=reopened_seek,
+           native_observation=reopened_observation)
     time.sleep(.4); alive.transport('stop')
     report['reopened_audio'] = alive.finish_capture(capture); capture = None
     assert report['reopened_audio']['peak'] > .0001

@@ -1415,6 +1415,23 @@ test('compact Pulse Stop receives the pointer and sends a Stop action',async({pa
   await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_action').map(c=>c.args.action))).toEqual([{kind:'stop',trackId:'track-1'}]);
 });
 
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`transport popup Seek owns its hit target above Session Master at ${size.width}x${size.height}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page,{trackCount:8});
+  const toggle=page.getByRole('button',{name:'Transport and view options',exact:true}),seek=page.getByRole('button',{name:'Seek transport',exact:true});
+  for(const workspace of ['Session','Arrangement','Session']){
+    await page.getByRole('button',{name:`${workspace} workspace`,exact:true}).click();await toggle.click();
+    await page.getByRole('spinbutton',{name:'Seek beat',exact:true}).fill('4.1');
+    const hit=await seek.evaluate(el=>{const r=el.getBoundingClientRect(),node=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {owned:el.contains(node),label:node?.closest('button')?.getAttribute('aria-label')};});
+    expect(hit).toEqual({owned:true,label:'Seek transport'});
+    await seek.click();await page.keyboard.press('Escape');await expect(page.locator('#transport-options')).toBeHidden();
+  }
+  await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_action').map(c=>c.args.action))).toEqual(Array.from({length:3},()=>({kind:'seek',beat:4.1})));
+  await toggle.click();const length=page.getByRole('spinbutton',{name:'Transport length beats',exact:true});await length.fill('32');await length.press('Escape');
+  await page.setViewportSize({width:800,height:600});await page.setViewportSize(size);await toggle.click();await expect(length).toHaveValue('32');
+  await seek.focus();await expect(seek).toBeFocused();await page.screenshot({path:testInfo.outputPath(`transport-popup-${size.width}x${size.height}.png`)});
+  expect(await page.evaluate(()=>window.calls.some(c=>c.name==='alive_workspace_edit'))).toBe(false);
+});
+
 test('Arrangement Master aligns with right track controls and source fields have visible context',async({page})=>{
   await openArrangement(page,{width:1440,height:900});await page.getByRole('button',{name:'Select placement p-0',exact:true}).click();await page.locator('.clip-source-actions>summary').click();
   const boxes=await page.evaluate(()=>{const rect=e=>e.getBoundingClientRect();const header=rect(document.querySelector('.timeline-header')),master=rect(document.querySelector('#master-arrangement-lane .master-heading')),controls=rect(document.querySelector('#master-arrangement'));return {headerLeft:header.left,masterLeft:master.left,controlsRight:controls.right,workspaceRight:rect(document.querySelector('#arrangement-workspace')).right};});

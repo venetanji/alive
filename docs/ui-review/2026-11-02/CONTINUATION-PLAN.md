@@ -9,28 +9,36 @@ later native/provider features require their own contracts and approval.
 
 - [x] Verify PR/head, preserve dirty work, read required design/contracts, fetch
   recorded CI artifacts and establish actual frontend/helper baseline.
-- [ ] Add opt-in diagnostic records at the existing Rust control boundary,
+- [x] Add opt-in diagnostic records at the existing Rust control boundary,
   outside the callback. Capture actual Return input/result and one native poll's
   state/receipts with generation, preparation, tempo/loop and placement bounds.
   Keep runtime behavior and the null-source-in-gap assertion unchanged.
   Files: `apps/ultra/src-tauri/src/session/desktop.rs`,
   `apps/ultra/src-tauri/src/session/runtime_workspaces.rs`, native journey helper.
-- [ ] Build exact checkout binaries with matching unchanged native sources in an
+- [x] Build exact checkout binaries with matching unchanged native sources in an
   isolated build directory; record source diff and binary/library identities.
   Run the existing private X/DBus/PipeWire Arrangement journey with tracing.
-- [ ] Classify each Return: wrong UI target/action; quantized target outside gap;
+- [x] Classify each Return: wrong UI target/action; quantized target outside gap;
   target inside gap but sampling missed it; native mismatch inside a proved gap;
   or insufficient evidence. Match both serial and preparation revision; use
   native absolute frame and musical position, half-open intervals, and song-loop
   mapping. Do not substitute a late source read for an apply-boundary observation.
-- [ ] If the harness misses the gap, first add a failing regression for its
+  Local evidence proves an unintended Scene instead of Seek(4.1), a correct
+  Return at loop end outside the gap, and a misleading late-gap UI pass.
+  Instrumented CI confirms correct native Return inside the short second gap;
+  the original uninstrumented CI cannot establish its exact target.
+- [x] If the harness misses the gap, first add a failing regression for its
   timing/precondition logic. Make the native journey establish a usable window
   and observe the actual target and applied state together. Retain an explicit
   failure/inconclusive result for a missed or out-of-gap target, and retain the
   original short-gap case as diagnostic evidence. Do not widen expected musical
   semantics or edit the engine to compensate for test navigation.
-- [ ] If an inside-gap native mismatch is proved, report the concrete native
+  Ten observer regressions now pass; the corrected owned-input journey passes
+  locally through save/restart. Full helper discovery: 141 passes. Three red/green
+  browser regressions prove the popup stacking fix at all required sizes.
+- [x] If an inside-gap native mismatch is proved, report the concrete native
   contract violation and proposed engine change before implementation/expansion.
+  No mismatch is proved; no engine change is indicated or made.
 - [ ] Re-run Arrangement to its end, then native clip observation boundaries and
   failure isolation, saved clips/stream epochs/bounded measurements, eight-cycle
   editor resources and private CPAL software loopback. Repeat desktop/Master
