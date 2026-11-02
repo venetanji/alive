@@ -1,8 +1,15 @@
-// Original reader for the two resource packs qualified against the local Live 12 installation.
+// Exact retained/current identities only; decoding keys and parser bounds remain shared.
 const profiles=Object.freeze({
-  GUI:{size:18944474,sha256:'5ec872d673fd5f4f5f05787e4245c56e172ff2663c2d4493e94d598b883114e6',key:'f2b22ea4efb7ead5e2301fc41f3cda84f888da2a834f96b7f3c0cf8919fbdc72'},
-  Graphics:{size:3477777,sha256:'a0b8aa480aa3d21f093b416ea59b3f200d2e2466936f95d886a554bffe875cb7',key:'ac9a09a4dba4efdcf37237bf3a1ad8afe78a9d0bba76b0e9f3cddce044d1e05d'},
+  GUI:{key:'f2b22ea4efb7ead5e2301fc41f3cda84f888da2a834f96b7f3c0cf8919fbdc72',releases:[
+    {resourceRelease:'retained-20261031',size:18944474,sha256:'5ec872d673fd5f4f5f05787e4245c56e172ff2663c2d4493e94d598b883114e6'},
+    {resourceRelease:'current-20261102',size:18970500,sha256:'75940fa314699a5fe0f37a6b0ee904bd7cc2ee87fc42acce2c8cea61df55563f'},
+  ]},
+  Graphics:{key:'ac9a09a4dba4efdcf37237bf3a1ad8afe78a9d0bba76b0e9f3cddce044d1e05d',releases:[
+    {resourceRelease:'retained-20261031',size:3477777,sha256:'a0b8aa480aa3d21f093b416ea59b3f200d2e2466936f95d886a554bffe875cb7'},
+    {resourceRelease:'current-20261102',size:3479772,sha256:'ec6ed560b42b1497fd976beff38d86424aa0c2ef59e4995e3d10ba9b68535c9d'},
+  ]},
 });
+const verifiedPacks=new WeakSet();
 const LIMIT=64*1024*1024,MAX_ENTRIES=10000,MAX_DEPTH=32;
 const encoder=new TextEncoder(),utf8=new TextDecoder('utf-8',{fatal:true}),utf16=new TextDecoder('utf-16le',{fatal:true});
 const prefix=Uint8Array.from([0,11,...encoder.encode('PackageItem')]),marker=Uint8Array.of(0xe0,0x8b,0xf2,0x37);
@@ -84,12 +91,21 @@ export function parseResourcePack(source,rootName){
 }
 
 export async function openLiveResourcePack(source,kind){
-  const profile=profiles[kind];if(!profile)fail('unsupported pack kind.');bytes(source);
-  if(source.length!==profile.size)fail('unsupported installed pack identity (size).');
+  const profile=Object.hasOwn(profiles,kind)?profiles[kind]:null;if(!profile)fail('unsupported pack kind.');bytes(source);
+  const candidates=profile.releases.filter(release=>release.size===source.length);
+  if(!candidates.length)fail('unsupported installed pack identity (size).');
   // Snapshot before the asynchronous digest to prevent a hash/decode race.
   const snapshot=new Uint8Array(source),hash=await crypto.subtle.digest('SHA-256',snapshot);
   const sha256=Array.from(new Uint8Array(hash),b=>b.toString(16).padStart(2,'0')).join('');
-  if(sha256!==profile.sha256)fail('unsupported installed pack identity (SHA-256).');
+  const release=candidates.find(release=>release.sha256===sha256);
+  if(!release)fail('unsupported installed pack identity (SHA-256).');
   const key=Uint8Array.from(profile.key.match(/../g),b=>parseInt(b,16));
-  return Object.freeze({...parseResourcePack(decodeResourcePack(snapshot,key),kind),sha256});
+  const pack=Object.freeze({...parseResourcePack(decodeResourcePack(snapshot,key),kind),sha256,resourceRelease:release.resourceRelease});
+  verifiedPacks.add(pack);return pack;
+}
+
+export function assertLiveResourcePair(gui,graphics){
+  if(!verifiedPacks.has(gui)||!verifiedPacks.has(graphics)||gui.kind!=='GUI'||graphics.kind!=='Graphics')fail('expected verified resource pack pair.');
+  if(gui.resourceRelease!==graphics.resourceRelease)fail('resource pack pair must belong to the same qualified release.');
+  return gui.resourceRelease;
 }

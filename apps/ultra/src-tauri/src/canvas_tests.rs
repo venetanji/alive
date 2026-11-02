@@ -1674,6 +1674,22 @@ fn live_device_state_identity_and_full_values_are_required() {
 }
 
 #[test]
+fn live_device_accepts_exact_resource_pairs_and_rejects_mixed_releases() {
+    let pairs = [
+        ("5ec872d673fd5f4f5f05787e4245c56e172ff2663c2d4493e94d598b883114e6", "a0b8aa480aa3d21f093b416ea59b3f200d2e2466936f95d886a554bffe875cb7"),
+        ("75940fa314699a5fe0f37a6b0ee904bd7cc2ee87fc42acce2c8cea61df55563f", "ec6ed560b42b1497fd976beff38d86424aa0c2ef59e4995e3d10ba9b68535c9d"),
+    ];
+    for (i, (gui, graphics)) in pairs.iter().enumerate() {
+        let mut params = live_device_params();
+        params["state"]["guiSha256"] = json!(gui);
+        params["state"]["graphicsSha256"] = json!(graphics);
+        assert!(prepare(patch(vec![node(1, "live_device", params.clone())], vec![])).is_ok());
+        params["state"]["graphicsSha256"] = json!(pairs[1-i].1);
+        assert!(prepare(patch(vec![node(1, "live_device", params)], vec![])).is_err());
+    }
+}
+
+#[test]
 fn live_device_rejects_invalid_raw_numbers_before_float_narrowing() {
     for (index,value) in [(0,4.00000001),(0,8.00000001),(0,-0.00000001),(2,1.00000001)] {
         let mut params=live_device_params();params["state"]["values"][index]=json!(value);

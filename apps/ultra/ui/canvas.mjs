@@ -392,7 +392,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
         const edge=state.patch.edges[selection.index];if(edge)area.append(make('h2','','Patch cord'),make('p','',`Object ${edge.from} outlet ${edge.outlet} to object ${edge.to} inlet ${edge.inlet}. Fan-out follows saved cable order.`));
       } else area.append(make('p','','Select an object to inspect its parameters. Right-click a port for accepted messages or emitted data.'));
     }
-    if(n)for(const [key,input] of fields){input.disabled=locked&&structuralParameter(n.type,key);if(doc.activeElement!==input&&!input.hasDraft?.())input.value=String(n.params[key]);}
+    if(n)for(const [key,input] of fields){input.disabled=locked&&structuralParameter(n.type,key);if(doc.activeElement!==input&&!input.hasDraft?.())input.value=input.formatValue?input.formatValue(n.params[key]):String(n.params[key]);}
     if(n)appearanceInspector?.update(n,locked);
     $('edit-object').disabled=!n||locked||n.type==='help_helper';$('delete-selection').disabled=!selection||locked;
     const observation=n?state.observations[n.id]:null;

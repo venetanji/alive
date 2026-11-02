@@ -8,6 +8,10 @@ pub(crate) const PROFILE: &str = "live12-analog-v1";
 const DLL_SHA256: &str = "4528afb1fbc78d49ed92161ed13ae1df50606e2e2b2c4f28caeca0cbc1476133";
 const GUI_SHA256: &str = "5ec872d673fd5f4f5f05787e4245c56e172ff2663c2d4493e94d598b883114e6";
 const GRAPHICS_SHA256: &str = "a0b8aa480aa3d21f093b416ea59b3f200d2e2466936f95d886a554bffe875cb7";
+const RESOURCE_PAIRS: [(&str, &str); 2] = [
+    (GUI_SHA256, GRAPHICS_SHA256),
+    ("75940fa314699a5fe0f37a6b0ee904bd7cc2ee87fc42acce2c8cea61df55563f", "ec6ed560b42b1497fd976beff38d86424aa0c2ef59e4995e3d10ba9b68535c9d"),
+];
 
 #[derive(Clone, Debug, PartialEq, Deserialize)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
@@ -44,7 +48,7 @@ impl Source {
         let state: SourceState = serde_json::from_value(raw_state.clone())
             .map_err(|e| format!("Invalid live.device~ source state: {e}"))?;
         if state.version != 1 || state.profile != PROFILE || state.dll_sha256 != DLL_SHA256
-            || state.gui_sha256 != GUI_SHA256 || state.graphics_sha256 != GRAPHICS_SHA256 {
+            || !RESOURCE_PAIRS.iter().any(|&(gui, graphics)| state.gui_sha256 == gui && state.graphics_sha256 == graphics) {
             return Err("Unsupported live.device~ source identity or profile revision".into());
         }
         Ok(Self { node, state })

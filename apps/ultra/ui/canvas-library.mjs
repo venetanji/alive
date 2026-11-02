@@ -10,8 +10,11 @@ const summaries={dac:'Send a stereo bundle to the shared native audio output.',m
 groups.number_int='UI Controls';
 groups.message_box='Messages & Numbers';
 groups.audio_in=groups.filter_stereo='Audio';
+groups.live_device='Instruments';
+summaries.live_device='Native instrument source ownership example. Requires the optional adapter and exact installed artifacts; complete original-preset/editor/Alive qualification is unfinished.';
 
 function demo(type){
+  if(type==='live_device')return{version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[makeNode(type,1,65,65)],edges:[]};
   if(type==='audio_in')return utilityPatch();
   if(type==='filter_stereo')return stereoLowpassPatch();
   if(['poly_note','saw_voice','filter_voice','adsr_voice','multiply_voice','mix_voice'].includes(type))return subtractivePatch();

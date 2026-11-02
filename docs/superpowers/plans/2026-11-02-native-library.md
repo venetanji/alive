@@ -159,3 +159,18 @@ has not been connected to these bindings and the publication registry remains
 empty. Original initial Analog and Electric panels are now captured privately
 from the installed Live application in a stopped root-created Untitled session;
 Analog r2 and Electric r6 packets pin those references.
+
+Ordinary frontend ownership and validation now have an independent review with
+both identified missing-state/Inspector defects corrected. The latest top-level
+Node run has 699 passes and one private-artifact test skipped; the strict combined
+resource loader has a separate passing installed-pack browser regression after
+its missing-module failure. It requires matching verified GUI/Graphics packs and
+checks a supplied saved source identity before loading the panel. Current and
+retained source identities are accepted only as exact pairs in JavaScript/Rust.
+The standalone canvas Rust suite has 80 passes. These are state/resource checks,
+not original initialization or playable profile qualification.
+
+Preparation now retains complete native sidecars after scalar overrides; its
+new regression and all 24 adjacent session tests pass with native admission
+still closed. Persisted per-instance state and transactional native ownership
+remain outstanding. Host/lifecycle checkpoint `d47e601` is remote-verified.

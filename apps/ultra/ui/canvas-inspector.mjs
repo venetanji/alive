@@ -39,6 +39,12 @@ export function createParameterField({doc,node,key,definition,change,drafts}){
   const multiline=['text','args','channels'].includes(key),textual=multiline||['label','name'].includes(definition.kind);
   const input=doc.createElement(choices?'select':multiline?'textarea':'input');
   input.dataset.parameter=key;input.setAttribute('aria-label',`${OBJECTS[node.type].name} ${key}, selected object ${node.id}`);
+  if(['live-device','live-state'].includes(definition.kind)){
+    input.type='text';input.readOnly=true;
+    input.formatValue=value=>definition.kind==='live-state'?`${value.values.length} native parameters`:value;
+    input.value=input.formatValue(node.params[key]);
+    label.append(name,input);return{label,input};
+  }
   if(key==='channels')input.maxLength=127;
   if(choices){
     choices.forEach((choice,index)=>{const [value,text]=Array.isArray(choice)?choice:[index,choice];const option=doc.createElement('option');option.value=String(value);option.textContent=text;input.append(option);});

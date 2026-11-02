@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
-import {mountAppearanceFields} from './canvas-inspector.mjs';
+import {mountAppearanceFields,createParameterField} from './canvas-inspector.mjs';
+import {makeNode,REGISTRY} from './canvas-model.mjs';
 
 class Element {
   constructor(){this.children=[];this.dataset={};this.listeners={};}
@@ -9,6 +10,19 @@ class Element {
   addEventListener(name,callback){this.listeners[name]=callback;}
 }
 const descendants=element=>element.children.flatMap(child=>[child,...descendants(child)]);
+
+test('native Inspector identity and complete state are readable without numeric drafts',()=>{
+  const doc={createElement:()=>new Element()},node=makeNode('live_device',1),changes=[],watched=[];
+  for(const key of ['device','state']){
+    const {input}=createParameterField({doc,node,key,definition:REGISTRY.live_device.params[key],change:value=>changes.push(value),drafts:{watch:input=>watched.push(input)}});
+    assert.equal(input.type,'text');
+    assert.equal(input.readOnly,true);
+    assert.equal(input.value,key==='device'?'Analog':'203 native parameters');
+    assert.equal(input.hasDraft?.()??false,false);
+    assert.equal(input.listeners.input,undefined);
+  }
+  assert.deepEqual(changes,[]);assert.deepEqual(watched,[]);
+});
 
 test('comment Inspector swatches and opacity edits use the visible inherited callout colors',()=>{
   const area=new Element(),changes=[],doc={createElement:()=>new Element()};

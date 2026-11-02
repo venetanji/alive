@@ -14,6 +14,7 @@ pub struct PreparedDevice {
     pub path: PathBuf,
     pub patch: serde_json::Value,
     pub graph: canvas::NativeGraph,
+    pub(crate) live_devices: Vec<canvas::live_device::Source>,
     pub manifest: canvas::device::HostManifest,
 }
 #[derive(Clone, Debug)]
@@ -93,12 +94,13 @@ pub(super) fn prepare_device(reference: &DeviceInstance, session_path: &Path, tr
         binding_value(binding, value)?;
         if !edit_parameter(&mut patch, binding.node, &binding.param, value) { return Err(format!("Device binding {key} has no authored node")); }
     }
-    let graph = canvas::prepare(patch.clone())?.native;
+    let compiled = canvas::prepare(patch.clone())?;
+    let graph = compiled.native;
     if graph.nodes[..graph.node_count as usize].iter().any(|n| matches!(n.kind, 11 | 26 | 27)) {
         return Err("Alive's native instrument profile does not support legacy Voice or cross-document send/receive nodes".into());
     }
     let manifest = canvas::device::host_manifest(&patch, &graph)?;
-    Ok(PreparedDevice { instance_id: reference.instance_id.clone(), track, path: loaded.path, patch, graph, manifest })
+    Ok(PreparedDevice { instance_id: reference.instance_id.clone(), track, path: loaded.path, patch, graph, live_devices: compiled.live_devices, manifest })
 }
 
 pub fn edit_parameter(patch: &mut serde_json::Value, id: u32, key: &str, value: f64) -> bool {

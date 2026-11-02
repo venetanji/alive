@@ -121,6 +121,44 @@ fn saved_session_resolves_two_real_independent_device_references() {
 }
 
 #[test]
+fn preparation_retains_complete_native_sidecars_after_scalar_overrides() {
+    use serde_json::json;
+    let prepared = prepare_score_fixture(&example(), &example_path()).unwrap();
+    let original = &prepared.devices[prepared.tracks[0].midi_instrument().unwrap()];
+    let mut patch = original.patch.clone();
+    let values: Vec<_> = crate::canvas::live_device::ANALOG_DESCRIPTORS.iter()
+        .map(|&(_, _, _, min, _)| min).collect();
+    patch["nodes"].as_array_mut().unwrap().push(json!({
+        "id":90000,"type":"live_device","x":10,"y":10,"params":{"device":"Analog","state":{
+            "version":1,"profile":"live12-analog-v1",
+            "dllSha256":"4528afb1fbc78d49ed92161ed13ae1df50606e2e2b2c4f28caeca0cbc1476133",
+            "guiSha256":"75940fa314699a5fe0f37a6b0ee904bd7cc2ee87fc42acce2c8cea61df55563f",
+            "graphicsSha256":"ec6ed560b42b1497fd976beff38d86424aa0c2ef59e4995e3d10ba9b68535c9d",
+            "values":values
+        }}
+    }));
+    let folder = std::env::temp_dir().join(format!("alive-sidecar-retention-{}", std::process::id()));
+    std::fs::create_dir_all(&folder).unwrap();
+    let path = folder.join("source.ultra");
+    std::fs::write(&path, serde_json::to_vec(&patch).unwrap()).unwrap();
+    let mut reference = example().tracks[0].instrument().unwrap().clone();
+    reference.path = path.to_string_lossy().into();
+    reference.source_sha256 = prepare::fingerprint(&patch).unwrap();
+    reference.parameters.insert("cutoff".into(), 1999.);
+    let device = prepare::prepare_device(&reference, &folder.join("session.alive"), 0).unwrap();
+    assert_eq!(device.live_devices.len(), 1);
+    assert_eq!(device.live_devices[0].node, 90000);
+    assert_eq!(device.live_devices[0].state.values.len(), 203);
+    let recompilation = crate::canvas::prepare(device.patch.clone()).unwrap();
+    assert_eq!(device.live_devices, recompilation.live_devices);
+    assert_eq!(device.manifest.parameters.iter().find(|p|p.key=="cutoff").unwrap().base, 1999.);
+    let mut sibling = prepare::prepare_device(&reference, &folder.join("session.alive"), 1).unwrap();
+    sibling.live_devices[0].state.values[2] = 0.75;
+    assert_eq!(device.live_devices[0].state.values[2], 0.);
+    std::fs::remove_dir_all(folder).unwrap();
+}
+
+#[test]
 fn missing_and_incompatible_devices_identify_track_and_preserve_input() {
     let mut missing = example();
     instrument_mut(&mut missing,1).path = "missing.ultra".into();
