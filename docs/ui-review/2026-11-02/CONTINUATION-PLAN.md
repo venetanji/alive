@@ -43,6 +43,10 @@ later native/provider features require their own contracts and approval.
   failure isolation, saved clips/stream epochs/bounded measurements, eight-cycle
   editor resources and private CPAL software loopback. Repeat desktop/Master
   against the same binary identity. Preserve failed and skipped stages honestly.
+  Latest local complete Arrangement and desktop pass. All four clip observation
+  modes, saved clips/measurement extension, eight-cycle editor resource gate and
+  CPAL software loopback pass. Final exact-commit manual CI is still required;
+  retain the earlier intermittent history/input failures and diagnostic traces.
 - [ ] Run required native adapter/Rust checks for any changed boundary. Inspect
   current UI at 800x600, 1280x800 and 1440x900. Dispatch only the existing manual
   CI workflow against a reviewable exact commit; do not add automatic triggers.

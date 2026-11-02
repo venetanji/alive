@@ -349,7 +349,13 @@ pub fn alive_workspace_edit(window:WebviewWindow,state:tauri::State<Desktop>,ope
 #[tauri::command]
 pub fn alive_history(window:WebviewWindow,state:tauri::State<Desktop>,direction:Direction,generation:u64,edit_revision:u64)->Result<Snapshot,String> {
     main_only(window.label())?;let mut control=ui_lock(&state.0)?;
-    control.history(direction,generation,edit_revision)?;close_stale_editors(window.app_handle(),control.generation);control.snapshot(window.label())
+    if trace_commands(){eprintln!("ALIVE_HISTORY {}",serde_json::json!({"kind":"request","direction":match direction{Direction::Undo=>"undo",Direction::Redo=>"redo"},"generation":generation,"editRevision":edit_revision}));}
+    let result=control.history(direction,generation,edit_revision);
+    if trace_commands(){eprintln!("ALIVE_HISTORY {}",serde_json::json!({"kind":"result","result":result}));}
+    result?;close_stale_editors(window.app_handle(),control.generation);
+    let snapshot=control.snapshot(window.label());
+    if trace_commands(){eprintln!("ALIVE_HISTORY {}",serde_json::json!({"kind":"snapshot","snapshot":snapshot}));}
+    snapshot
 }
 
 

@@ -11,6 +11,18 @@ import alive_workspace_navigation as navigation
 
 
 class NavigationTest(unittest.TestCase):
+    def test_diagnostic_disclosure_uses_owned_input_before_reading_voices(self):
+        calls = []
+        class Control:
+            def get_state_set(self): return self
+            def contains(self, state): return False
+        ui = types.SimpleNamespace(click=lambda name: calls.append(('blind', name)),
+                                   text=lambda *args: None, wait_for=lambda name: Control())
+        prepare = navigation.install(ui, types.SimpleNamespace(scope='Alive'), None,
+                                     lambda name: calls.append(('owned', name)))
+        prepare('Track 1 active voices')
+        self.assertEqual(calls, [('owned', 'Audio details')])
+
     def test_seek_opens_transport_options_before_the_existing_action(self):
         calls = []
         class Control:

@@ -7,13 +7,15 @@ import time
 
 import check_alive_clips as clips
 import check_alive_desktop as alive
+import check_alive_session_ui as presentation
 
 ui, windows = alive.ui, alive.windows
 
 
-def quit_alive():
+def quit_alive(*, unsaved=True):
     ui.click('Quit Alive')
-    windows.focus('Unsaved Alive Session'); ui.click('Discard')
+    if unsaved:
+        windows.focus('Unsaved Alive Session'); ui.click('Discard')
     deadline = time.monotonic() + 8
     while time.monotonic() < deadline:
         try:
@@ -27,6 +29,9 @@ def quit_alive():
 
 def run():
     windows.focus(alive.MAIN)
+    # The pinned mixer leaves the runtime row too far below slot 4 in tall windows.
+    # Use the real compact layout to establish the covering-tooltip precondition.
+    presentation.capture(800, 600)
     ui.wait_for('Select Pulse slot 4')
     summary = ui.wait_for('Pulse runtime details')
     assert not summary.get_state_set().contains(alive.Atspi.StateType.EXPANDED)
@@ -92,12 +97,13 @@ def run():
             assert releases == [True]
             assert not alive.disclosure_observation_failures
             receipt = None
-        quit_alive()
+        # These paths reject input before making any document edit.
+        quit_alive(unsaved=False)
         (ui.output / 'clip-observation-report.json').write_text(json.dumps({
             'original_blocked_assertion_preserved': blocked,
             'original_input_exception_identity_preserved': input_error,
             'failed_writes': failed_writes, 'observation_failures': alive.disclosure_observation_failures,
-            'receipt': receipt, 'quit_discard_exited': True}, indent=2))
+            'receipt': receipt, 'clean_quit_exited': True}, indent=2))
         print('PASS original native readiness/input failure and Quit', flush=True)
         return
     assert runtime
@@ -106,6 +112,7 @@ def run():
     assert len(receipts) == 1 and receipts[0]['presses'] == receipts[0]['releases'] == 1
     assert covering['owner'] not in covering['hit_path']
     assert receipts[0]['owner'] in receipts[0]['samples'][-1]['hit_path']
+    presentation.capture(1280, 800)
 
     ui.click('Duplicate clip')
     ui.click('Select Pulse slot 2')

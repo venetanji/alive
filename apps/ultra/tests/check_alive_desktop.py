@@ -517,6 +517,13 @@ def reorder_click(name):
     return native_control_click(name, 'reorder')
 
 
+def history_click(name):
+    action = lambda: native_control_click(name, 'history', require_accessible_hit=True)
+    if sustained_driver is not None:
+        return sustained_driver.observer.action(name, action)
+    return action()
+
+
 def select_device_click(name):
     if sustained_driver is not None:
         result = sustained_driver.observer.action(name, lambda: native_control_click(name, 'device selection'))
@@ -1060,8 +1067,11 @@ def _run():
     wait_value('Hosted Gain base', lambda s: float(s) == .65)
     windows.focus(MAIN)
     numeric('Note 1 pitch', 61)
-    ui.click('Undo'); wait_value('Note 1 pitch', lambda s: s == '60')
-    ui.click('Redo'); wait_value('Note 1 pitch', lambda s: s == '61')
+    wait_value('Note 1 pitch', lambda s: s == '61'); settled()
+    history_click('Undo')
+    wait_value('Note 1 pitch', lambda s: s == '60')
+    history_click('Redo')
+    wait_value('Note 1 pitch', lambda s: s == '61')
     windows.focus('Pulse - Ultra Hosted Editor')
     wait_value('Hosted Gain base', lambda s: float(s) == .65)
     close_effect_editor()
@@ -1075,7 +1085,8 @@ def _run():
     screenshot('session-playing.png')
     log('two independent device chains; immediate music, history, mixer and hosted editors')
     numeric('Note 1 pitch', 62)
-    ui.click('Undo')
+    wait_value('Note 1 pitch', lambda s: s == '62'); settled()
+    history_click('Undo')
     wait_value('Note 1 pitch', lambda s: s == '61')
     assert ui.wait_for('Redo').get_state_set().contains(Atspi.StateType.ENABLED)
     source = ui.output / 'journey.alive'

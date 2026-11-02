@@ -66,8 +66,9 @@ Diagnostic commit `6e277a92728816d010ec5577663a2471df7972c5` is on the
 separate audit branch. Manual CI:
 https://github.com/venetanji/alive/actions/runs/41367960025.
 PR 12 remains at the audited head. UI/protocol, Chromium, native adapter/release
-Rust, headless rendering, desktop/hosted editor and Master passed. Arrangement
-failed later at the Cutoff inspector. Downstream clip/resource/loopback steps
+Rust, headless rendering and Master passed. The desktop journey failed at Redo
+(Note 1 pitch remained 60); Arrangement failed later at the Cutoff inspector.
+The original 41274569028 desktop pass remains separate. Downstream clip/resource/loopback steps
 were skipped again, not passed. Release Rust: 298 passes, four ignored.
 
 An exact local rebuild passed startup and produced coherent native observations.
@@ -183,6 +184,78 @@ simulation): [800x600](captures/transport-popup-800x600.png),
 [1440x900](captures/transport-popup-1440x900.png).
 The native defect capture is
 [Seek blocked before the fix](captures/native-seek-blocked-before-fix.png).
+
+### Downstream local software checks
+
+The previously skipped gates are now executed locally against the matching
+native library; these are separate from the original CI's skipped results.
+
+- Clip observation: all four modes pass (normal, failed receipt write, blocked
+  input plus failed write, native input exception). The real native tooltip must
+  cover the target before one owned disclosure click is attempted. The approved
+  pinned-mixer layout needs an explicit 800x600 window for this precondition;
+  restore 1280x800 before the musical journey. Blocked/input-failure paths make
+  no document edit, so Quit correctly exits without an unsaved dialog. Normal
+  and write-error paths still require Discard after actual edits.
+- Saved clips and bounded measurements: complete pass, including independent
+  source/occurrence identities, Undo/Redo, regions, persistence/reopen, editor
+  continuity, shared-source replacement refusal and recovery. Six completed
+  stream epochs, 7.324 seconds of proven playback, no sampling errors; wall time
+  214.754 seconds. Each of three cycles proves base while stopped, automation
+  while playing, then base after Stop. This follows SESSION_CONTRACT.md; the
+  old extension incorrectly expected automation after Stop. Audio settings are
+  saved only after explicitly stopping the private software Audio stream.
+- Hosted editor resources: eight close/reopen cycles plus 25-second idle pass
+  the unchanged bounds. First closed editor vs final idle: one WebKit worker
+  each, 127 file descriptors each, PSS 422419 vs 424382 KiB. This is a bounded
+  short-run resource check, not endurance or exhaustive process coverage.
+- CPAL private software loopback: pass; 48000 Hz, stereo finite PCM, 152576
+  captured frames, per-channel peak 0.13779527. The Rust probe passes exactly
+  one ignored test, with observed callback size 512, no stream/native errors,
+  and successful stop/start and saved configuration reload.
+- Matching-library release Rust: **298 passed, 0 failed, 4 ignored**. An earlier
+  run failed 20 configuration-header checks because Cargo's runtime path found
+  an inherited release-library symlink into the older UI worktree. The private
+  cache link was replaced with the same library used by the passing desktop
+  binaries; the other worktree and its library were not modified. The original
+  source also reproduced the header error with the stale link. No native source
+  or ABI change was needed. Retain `/tmp/alive-pr12-rust-release-final.log`,
+  `/tmp/alive-pr12-rust-release-baseline.log` and the corrected
+  `/tmp/alive-pr12-rust-release-matched.log`.
+- Latest Python helper discovery: **142 passed** after a red/green diagnostic
+  navigation regression. One intervening 141-test run observed an empty helper
+  PID file during recorder setup; its ten-test focused rerun and subsequent
+  full discovery pass. The unrelated recorder fixture was not changed.
+
+The latest complete local desktop journey passes through save/reopen, device
+removal and Quit. Opt-in `ALIVE_HISTORY` request/result/snapshot tracing records
+all three expected requests and matching native pitches 60, 61 and 61, with
+APPLIED publications, no pending publication and corresponding history state.
+See `evidence/local-history-trace.json` and `evidence/local-desktop.json`.
+Earlier local input runs failed intermittently (Redo retained 60; a later Undo
+retained 62), including one guarded-click run. Their precise dispatch cannot be
+reconstructed without tracing; do not label an engine defect or claim that
+intermittency is fully explained. The current helpers verify native ownership,
+allow edit completion, and retain request/result evidence for any recurrence.
+A late missing diagnostic disclosure also has a red/green navigation regression
+using the existing owned input helper.
+
+Current manual CI on `2a599bc` has passed desktop, Arrangement, UI, Chromium and
+release Rust; Master and downstream results are still pending. Final helper
+changes require a new exact commit and manual CI run. This diagnostic binary
+pair has Alive SHA256 `38d542bc17e7e99ffbc310f4dfd662b51869d04d2ef05a0201da81b2631146cd`
+and Ultra `e50bc9efe1d0d0238c4c4e701a244588a072f57a0ce2636f43fc6ffc7982d898`;
+the native library remains `1652d52c581395a9919ea2dbe5a03c4d365c7f9a4da6d10cff233e590099eaa8`.
+Fresh release Rust including the history diagnostic passes 298, with four
+ignored. Hardware and sustained endurance remain unrun. The separate proposed
+hardware checklist is `HARDWARE-CHECKLIST.md`; executing it requires agreement
+on device/settings actions and restoration.
+
+Selected reports are retained under `evidence/clip-observation-*.json`,
+`evidence/local-clips.json`, `evidence/local-measurements.json`,
+`evidence/local-editor-resources.json`, `evidence/local-cpal-probe.log` and
+`evidence/local-cpal-capture.json`. Full logs/artifacts retain their matching
+`/tmp/alive-pr12-*` directories.
 
 Impeccable's mechanical check reports only pre-existing type/color advisories
 in this stylesheet; the changed property adds none. Its design sidecar is stale

@@ -45,7 +45,7 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
             expand(f'Scene {next(value for value in scene.groups() if value)} receipt details')
             return
         if name in diagnostic or re.fullmatch(r'Track \d+ active voices', name):
-            expand('Audio details')
+            expand('Audio details', activate_disclosure or click)
             return
         device = (name == 'Edit selected device in Ultra' or
                   re.search(r' (?:base(?: slider)?|effective ownership)$', name) or

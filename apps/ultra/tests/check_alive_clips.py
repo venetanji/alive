@@ -107,9 +107,13 @@ def run():
     _, duplicated = saved('clips-shared-source.alive')
     assert duplicated['tracks'][0]['slots'][0]['sourceId'] == duplicated['tracks'][0]['slots'][1]['sourceId']
     ui.click('Make source independent')
+    alive.settled()
     alive.numeric('Note 1 pitch', 61)
-    ui.click('Undo'); alive.wait_value('Note 1 pitch', lambda value: value == '60')
-    ui.click('Redo'); alive.wait_value('Note 1 pitch', lambda value: value == '61')
+    alive.wait_value('Note 1 pitch', lambda value: value == '61'); alive.settled()
+    alive.history_click('Undo')
+    alive.wait_value('Note 1 pitch', lambda value: value == '60')
+    alive.history_click('Redo')
+    alive.wait_value('Note 1 pitch', lambda value: value == '61')
     alive.numeric('Loop Length', 4)
     alive.numeric('Loop Position', 2)
     alive.numeric('Clip Start', 1)
@@ -119,7 +123,8 @@ def run():
     assert float(alive.value('Clip Start')) == 0
     ui.click('Select Pulse slot 3'); ui.click('Create clip'); ui.click('Add note')
     assert alive.value('Note 1 velocity') == '100'
-    ui.click('Delete clip'); ui.click('Undo')
+    ui.click('Delete clip'); alive.settled()
+    alive.history_click('Undo')
     ui.click('Select Pulse slot 2')
     assert float(alive.value('Clip Start')) == 1
     assert float(alive.value('Loop Position')) == 2

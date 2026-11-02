@@ -28,6 +28,7 @@ boundary = 0
 last_diagnostics = None
 start = time.monotonic()
 references = {}
+ownership = []
 
 
 def accessible(name):
@@ -146,11 +147,21 @@ def qualify_and_finish():
         windows.focus('Pulse - Ultra Hosted Editor')
         alive.numeric('Hosted Cutoff base', 900+cycle*50)
         alive.wait_value('Hosted Cutoff base', lambda text: float(text) == 900+cycle*50)
-        alive.wait_value('Hosted Cutoff effective ownership', lambda text: 'Automation:' in text)
+        expected_base = f'Base: {900+cycle*50} Hz'
+        base = alive.wait_value('Hosted Cutoff effective ownership', lambda text: text == expected_base)
+        # Stop restores the base; prove automation ownership while actually playing.
+        windows.focus(alive.MAIN); alive.transport('start')
+        windows.focus('Pulse - Ultra Hosted Editor')
+        automated = alive.wait_value('Hosted Cutoff effective ownership', lambda text: 'Automation:' in text)
+        windows.focus(alive.MAIN); alive.transport('stop')
+        windows.focus('Pulse - Ultra Hosted Editor')
+        restored = alive.wait_value('Hosted Cutoff effective ownership', lambda text: text == expected_base)
+        ownership.append({'cycle': cycle+1, 'stopped': base, 'playing': automated, 'restored': restored})
         original_click('Close hosted editor')
         windows.focus(alive.MAIN)
         original_click('Audio details')
         original_click('Alive audio settings')
+        original_click('Stop Alive audio to edit settings')
         original_click('Save Alive audio settings')
         original_click('Save and start Alive audio')
         original_click('Close audio settings')
@@ -176,6 +187,7 @@ def qualify_and_finish():
                'completed_epochs': epochs.cursor, 'resources': resource_log.manifest(),
                'epochs': epoch_log.manifest(), 'actions': actions.manifest(),
                'wall_seconds': time.monotonic()-start, 'sampling_errors': errors,
+               'automation_ownership': ownership,
                'cpu_coverage': 'observed identities; transient workers and exited final deltas remain unavailable'}
     summary['epoch_duration_intervals'] = {e['epoch_id']: histogram_summary(e['metrics']['duration_hist'], last_diagnostics['duration_upper_edges_ns'], e['metrics']['duration_max_ns']) for e in last_diagnostics['completed']}
     summary['epoch_utilization_intervals'] = {e['epoch_id']: histogram_summary(e['metrics']['util_hist'], last_diagnostics['utilization_upper_percent'], e['metrics']['max_utilization_ppm']) for e in last_diagnostics['completed']}

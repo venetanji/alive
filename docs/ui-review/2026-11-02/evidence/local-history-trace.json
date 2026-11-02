@@ -1,0 +1,4541 @@
+{
+  "scope": "opt-in control-boundary diagnostics; latest native desktop journey",
+  "sourceBase": "2a599bc8420711d9ceda166b56484b6d6c50133a plus bounded helper/history tracing changes",
+  "binarySha256": {
+    "alive": "38d542bc17e7e99ffbc310f4dfd662b51869d04d2ef05a0201da81b2631146cd",
+    "ultra": "e50bc9efe1d0d0238c4c4e701a244588a072f57a0ce2636f43fc6ffc7982d898",
+    "native": "1652d52c581395a9919ea2dbe5a03c4d365c7f9a4da6d10cff233e590099eaa8"
+  },
+  "records": [
+    {
+      "direction": "undo",
+      "editRevision": 32,
+      "generation": 10,
+      "kind": "request"
+    },
+    {
+      "kind": "result",
+      "result": {
+        "Ok": null
+      }
+    },
+    {
+      "kind": "snapshot",
+      "snapshot": {
+        "Ok": {
+          "audio": {
+            "callbacks": "1210",
+            "config": {
+              "buffer_frames": 512,
+              "device": "default",
+              "host": "default",
+              "sample_rate": 48000
+            },
+            "device": "default_output",
+            "epoch": {
+              "config": {
+                "channels": 2,
+                "device": "default_output",
+                "host": "PipeWire",
+                "rate_hz": 48000,
+                "requested_buffer_frames": 512,
+                "sample_format": "f32",
+                "source_id": "db3937551d59a00e195d7ed23440fb0d2b5d6cacf37fb2534e98e34c25c09d75",
+                "timing_enabled": true
+              },
+              "epoch_id": "3",
+              "error_observations_independent": true,
+              "failed": false,
+              "final": false,
+              "metrics": {
+                "budget_samples": "1210",
+                "buffer_frames_last": "512",
+                "buffer_frames_max": "512",
+                "buffer_frames_min": "512",
+                "buffer_size_changed_count": "0",
+                "callbacks_after_failure": "0",
+                "callbacks_entered": "1210",
+                "clock_anomaly_count": "0",
+                "counter_overflow": "0",
+                "cpal_error_total": "0",
+                "cpal_non_xrun_reports": "0",
+                "cpal_xrun_reports": "0",
+                "duration_max_ns": "1489914",
+                "duration_samples": "1210",
+                "duration_sum_ns": "832713027",
+                "invalid_callback_shape": "0",
+                "max_utilization_ppm": "139679",
+                "native_render_failures": "0",
+                "output_frames": "619520",
+                "over_buffer_budget_count": "0",
+                "render_calls": "1210",
+                "silenced_callbacks": "0",
+                "valid_callbacks": "1210",
+                "zero_frame_callbacks": "0"
+              },
+              "opened_mono_ns": "94398756112",
+              "retire_reason": "none",
+              "retired_mono_ns": null,
+              "snapshot_sequence": "2420",
+              "stale": false,
+              "state": "running"
+            },
+            "failed": false,
+            "host": "PipeWire",
+            "lifetime_errors": {
+              "cpal_error_total": "0",
+              "cpal_non_xrun_reports": "0",
+              "cpal_xrun_reports": "0"
+            },
+            "message": "Audio output is running.",
+            "native_quiescent": false,
+            "observed_buffer_frames": 512,
+            "retirement_pending": false,
+            "running": true,
+            "stream_errors": "0"
+          },
+          "capabilities": {
+            "arrangement": true,
+            "atomicTrackActions": true,
+            "audioSources": true,
+            "launchQuantization": true,
+            "launchUnavailableReason": null,
+            "launchWindowFrames": 1024,
+            "maxClips": 32,
+            "maxDevices": 6,
+            "maxPlacements": 64,
+            "maxSources": 32,
+            "maxTracks": 8,
+            "midiEdit": true,
+            "midiPreview": true,
+            "midiUnavailableReason": null,
+            "slotsPerTrack": 4,
+            "workspaces": true
+          },
+          "deviceIndex": null,
+          "deviceInstances": {
+            "instance-c7cb7be65f4c9fb1222d419f9f136c37": {
+              "index": 0,
+              "manifest": {
+                "id": "org.alive.subtractive",
+                "input": null,
+                "kind": "instrument",
+                "name": "Subtractive",
+                "noteNode": 2,
+                "output": {
+                  "channels": 2,
+                  "layout": "stereo"
+                },
+                "parameters": [
+                  {
+                    "base": 10.0,
+                    "integral": false,
+                    "key": "attack",
+                    "label": "Attack",
+                    "max": 10000.0,
+                    "min": 1.0,
+                    "node": 5,
+                    "param": "attack",
+                    "slot": 0,
+                    "unit": "ms"
+                  },
+                  {
+                    "base": 150.0,
+                    "integral": false,
+                    "key": "decay",
+                    "label": "Decay",
+                    "max": 10000.0,
+                    "min": 1.0,
+                    "node": 5,
+                    "param": "decay",
+                    "slot": 1,
+                    "unit": "ms"
+                  },
+                  {
+                    "base": 0.65,
+                    "integral": false,
+                    "key": "sustain",
+                    "label": "Sustain",
+                    "max": 1.0,
+                    "min": 0.0,
+                    "node": 5,
+                    "param": "sustain",
+                    "slot": 2,
+                    "unit": ""
+                  },
+                  {
+                    "base": 300.0,
+                    "integral": false,
+                    "key": "release",
+                    "label": "Release",
+                    "max": 10000.0,
+                    "min": 1.0,
+                    "node": 5,
+                    "param": "release",
+                    "slot": 3,
+                    "unit": "ms"
+                  },
+                  {
+                    "base": 2400.0,
+                    "integral": false,
+                    "key": "cutoff",
+                    "label": "Cutoff",
+                    "max": 20000.0,
+                    "min": 20.0,
+                    "node": 4,
+                    "param": "cutoff",
+                    "slot": 0,
+                    "unit": "Hz"
+                  },
+                  {
+                    "base": 0.7,
+                    "integral": false,
+                    "key": "resonance",
+                    "label": "Resonance",
+                    "max": 20.0,
+                    "min": 0.1,
+                    "node": 4,
+                    "param": "resonance",
+                    "slot": 1,
+                    "unit": "Q"
+                  },
+                  {
+                    "base": 90.0,
+                    "integral": true,
+                    "key": "level",
+                    "label": "Level",
+                    "max": 127.0,
+                    "min": 0.0,
+                    "node": 9,
+                    "param": "value",
+                    "slot": 0,
+                    "unit": "raw"
+                  }
+                ],
+                "presentation": {
+                  "items": [
+                    {
+                      "id": "attack",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Attack",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 8,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "attack",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 10000.0,
+                          "min": 1.0,
+                          "unit": "ms"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "attack"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "decay",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Decay",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 96,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "decay",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 10000.0,
+                          "min": 1.0,
+                          "unit": "ms"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "decay"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "sustain",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Sustain",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 184,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "sustain",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 1.0,
+                          "min": 0.0,
+                          "unit": ""
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "sustain"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "release",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Release",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 272,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "release",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 10000.0,
+                          "min": 1.0,
+                          "unit": "ms"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "release"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "cutoff",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Cutoff",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 360,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "cutoff",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 20000.0,
+                          "min": 20.0,
+                          "unit": "Hz"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 4,
+                        "param": "cutoff"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "resonance",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Resonance",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 448,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "resonance",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 20.0,
+                          "min": 0.1,
+                          "unit": "Q"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 4,
+                        "param": "resonance"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "level",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Level",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 536,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "level",
+                        "descriptor": {
+                          "integral": true,
+                          "max": 127.0,
+                          "min": 0.0,
+                          "unit": "raw"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 9,
+                        "param": "value"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    }
+                  ],
+                  "openOnLoad": false,
+                  "size": {
+                    "height": 112,
+                    "width": 640
+                  },
+                  "version": 1
+                },
+                "version": 2
+              },
+              "path": "/tmp/alive-pr12-native-20261102/apps/ultra/examples/subtractive.ultra",
+              "track": 0
+            },
+            "instance-f364f4bbe0c6f9e03cfda168b332d235": {
+              "index": 1,
+              "manifest": {
+                "id": "org.alive.subtractive",
+                "input": null,
+                "kind": "instrument",
+                "name": "Subtractive",
+                "noteNode": 2,
+                "output": {
+                  "channels": 2,
+                  "layout": "stereo"
+                },
+                "parameters": [
+                  {
+                    "base": 10.0,
+                    "integral": false,
+                    "key": "attack",
+                    "label": "Attack",
+                    "max": 10000.0,
+                    "min": 1.0,
+                    "node": 5,
+                    "param": "attack",
+                    "slot": 0,
+                    "unit": "ms"
+                  },
+                  {
+                    "base": 150.0,
+                    "integral": false,
+                    "key": "decay",
+                    "label": "Decay",
+                    "max": 10000.0,
+                    "min": 1.0,
+                    "node": 5,
+                    "param": "decay",
+                    "slot": 1,
+                    "unit": "ms"
+                  },
+                  {
+                    "base": 0.65,
+                    "integral": false,
+                    "key": "sustain",
+                    "label": "Sustain",
+                    "max": 1.0,
+                    "min": 0.0,
+                    "node": 5,
+                    "param": "sustain",
+                    "slot": 2,
+                    "unit": ""
+                  },
+                  {
+                    "base": 300.0,
+                    "integral": false,
+                    "key": "release",
+                    "label": "Release",
+                    "max": 10000.0,
+                    "min": 1.0,
+                    "node": 5,
+                    "param": "release",
+                    "slot": 3,
+                    "unit": "ms"
+                  },
+                  {
+                    "base": 2400.0,
+                    "integral": false,
+                    "key": "cutoff",
+                    "label": "Cutoff",
+                    "max": 20000.0,
+                    "min": 20.0,
+                    "node": 4,
+                    "param": "cutoff",
+                    "slot": 0,
+                    "unit": "Hz"
+                  },
+                  {
+                    "base": 0.7,
+                    "integral": false,
+                    "key": "resonance",
+                    "label": "Resonance",
+                    "max": 20.0,
+                    "min": 0.1,
+                    "node": 4,
+                    "param": "resonance",
+                    "slot": 1,
+                    "unit": "Q"
+                  },
+                  {
+                    "base": 90.0,
+                    "integral": true,
+                    "key": "level",
+                    "label": "Level",
+                    "max": 127.0,
+                    "min": 0.0,
+                    "node": 9,
+                    "param": "value",
+                    "slot": 0,
+                    "unit": "raw"
+                  }
+                ],
+                "presentation": {
+                  "items": [
+                    {
+                      "id": "attack",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Attack",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 8,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "attack",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 10000.0,
+                          "min": 1.0,
+                          "unit": "ms"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "attack"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "decay",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Decay",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 96,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "decay",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 10000.0,
+                          "min": 1.0,
+                          "unit": "ms"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "decay"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "sustain",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Sustain",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 184,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "sustain",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 1.0,
+                          "min": 0.0,
+                          "unit": ""
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "sustain"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "release",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Release",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 272,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "release",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 10000.0,
+                          "min": 1.0,
+                          "unit": "ms"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "release"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "cutoff",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Cutoff",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 360,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "cutoff",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 20000.0,
+                          "min": 20.0,
+                          "unit": "Hz"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 4,
+                        "param": "cutoff"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "resonance",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Resonance",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 448,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "resonance",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 20.0,
+                          "min": 0.1,
+                          "unit": "Q"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 4,
+                        "param": "resonance"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "level",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Level",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 536,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "level",
+                        "descriptor": {
+                          "integral": true,
+                          "max": 127.0,
+                          "min": 0.0,
+                          "unit": "raw"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 9,
+                        "param": "value"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    }
+                  ],
+                  "openOnLoad": false,
+                  "size": {
+                    "height": 112,
+                    "width": 640
+                  },
+                  "version": 1
+                },
+                "version": 2
+              },
+              "path": "/tmp/alive-pr12-native-20261102/apps/ultra/examples/subtractive.ultra",
+              "track": 1
+            },
+            "instance-f6c995403119678853de32c8ee967eba": {
+              "index": 2,
+              "manifest": {
+                "id": "org.alive.utility",
+                "input": {
+                  "bundle": {
+                    "channels": 2,
+                    "layout": "stereo"
+                  },
+                  "node": 1
+                },
+                "kind": "audioEffect",
+                "name": "Stereo Utility",
+                "noteNode": null,
+                "output": {
+                  "channels": 2,
+                  "layout": "stereo"
+                },
+                "parameters": [
+                  {
+                    "base": 0.65,
+                    "integral": false,
+                    "key": "gain",
+                    "label": "Gain",
+                    "max": 2.0,
+                    "min": 0.0,
+                    "node": 2,
+                    "param": "value",
+                    "slot": 0,
+                    "unit": "linear"
+                  }
+                ],
+                "presentation": {
+                  "items": [
+                    {
+                      "id": "gain",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Gain",
+                      "rect": {
+                        "height": 96,
+                        "width": 88,
+                        "x": 8,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "gain",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 2.0,
+                          "min": 0.0,
+                          "unit": "linear"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "cyan",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 2,
+                        "param": "value"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    }
+                  ],
+                  "openOnLoad": false,
+                  "size": {
+                    "height": 112,
+                    "width": 160
+                  },
+                  "version": 1
+                },
+                "version": 2
+              },
+              "path": "/tmp/alive-pr12-desktop-history-trace/journey-utility.ultra",
+              "track": 0
+            }
+          },
+          "dirty": true,
+          "document": {
+            "format": "alive-session-v4",
+            "lengthBeats": 8.0,
+            "loopEnabled": true,
+            "loopEndBeats": 8.0,
+            "loopStartBeats": 0.0,
+            "placements": [
+              {
+                "duration": 8.0,
+                "id": "track-1-placement",
+                "region": {
+                  "end": 8.0,
+                  "loopEnabled": true,
+                  "loopEnd": 8.0,
+                  "loopStart": 0.0,
+                  "start": 0.0
+                },
+                "sourceId": "track-1-source",
+                "start": 0.0,
+                "trackId": "track-1"
+              },
+              {
+                "duration": 8.0,
+                "id": "track-2-placement",
+                "region": {
+                  "end": 8.0,
+                  "loopEnabled": true,
+                  "loopEnd": 8.0,
+                  "loopStart": 0.0,
+                  "start": 0.0
+                },
+                "sourceId": "track-2-source",
+                "start": 0.0,
+                "trackId": "track-2"
+              }
+            ],
+            "sources": [
+              {
+                "automation": [
+                  {
+                    "enabled": true,
+                    "instanceId": "instance-c7cb7be65f4c9fb1222d419f9f136c37",
+                    "key": "cutoff",
+                    "points": [
+                      {
+                        "beat": 0.0,
+                        "value": 900.0
+                      },
+                      {
+                        "beat": 4.0,
+                        "value": 3400.0
+                      }
+                    ]
+                  },
+                  {
+                    "enabled": true,
+                    "instanceId": "instance-c7cb7be65f4c9fb1222d419f9f136c37",
+                    "key": "level",
+                    "points": [
+                      {
+                        "beat": 0.0,
+                        "value": 62.0
+                      },
+                      {
+                        "beat": 4.0,
+                        "value": 78.0
+                      }
+                    ]
+                  }
+                ],
+                "id": "track-1-source",
+                "kind": "midi",
+                "lengthBeats": 8.0,
+                "name": "Clip 1",
+                "notes": [
+                  {
+                    "beat": 0.0,
+                    "duration": 0.75,
+                    "id": "track-1-note-1",
+                    "pitch": 60,
+                    "velocity": 83
+                  }
+                ],
+                "trackId": "track-1"
+              },
+              {
+                "automation": [],
+                "id": "track-2-source",
+                "kind": "midi",
+                "lengthBeats": 8.0,
+                "name": "Clip 1",
+                "notes": [
+                  {
+                    "beat": 0.0,
+                    "duration": 8.0,
+                    "id": "track-2-note-1",
+                    "pitch": 72,
+                    "velocity": 65
+                  }
+                ],
+                "trackId": "track-2"
+              }
+            ],
+            "tempo": 116.0,
+            "title": "First Light",
+            "tracks": [
+              {
+                "chain": {
+                  "instrument": {
+                    "bypassed": false,
+                    "id": "org.alive.subtractive",
+                    "instanceId": "instance-c7cb7be65f4c9fb1222d419f9f136c37",
+                    "parameters": {
+                      "attack": 10.0,
+                      "cutoff": 2400.0,
+                      "decay": 150.0,
+                      "level": 90.0,
+                      "release": 300.0,
+                      "resonance": 0.7,
+                      "sustain": 0.65
+                    },
+                    "path": "../alive-pr12-native-20261102/apps/ultra/examples/subtractive.ultra",
+                    "sourceSha256": "96342f492f1bd80798524bb88eb46e3d48f4b155593cd465697bbf65a0e37521",
+                    "version": 2
+                  },
+                  "kind": "midi"
+                },
+                "color": "#c77b61",
+                "effects": [
+                  {
+                    "bypassed": true,
+                    "id": "org.alive.utility",
+                    "instanceId": "instance-f6c995403119678853de32c8ee967eba",
+                    "parameters": {
+                      "gain": 0.65
+                    },
+                    "path": "journey-utility.ultra",
+                    "sourceSha256": "59c2092edc2d507cc1b5705f19ee698a74c9466fd76bddab146427f5954c7dde",
+                    "version": 2
+                  }
+                ],
+                "gain": 0.7,
+                "id": "track-1",
+                "mute": false,
+                "name": "Pulse",
+                "slots": [
+                  {
+                    "id": "track-1-clip",
+                    "name": "Clip 1",
+                    "region": {
+                      "end": 8.0,
+                      "loopEnabled": true,
+                      "loopEnd": 8.0,
+                      "loopStart": 0.0,
+                      "start": 0.0
+                    },
+                    "sourceId": "track-1-source"
+                  },
+                  null,
+                  null,
+                  null
+                ],
+                "solo": false
+              },
+              {
+                "chain": {
+                  "instrument": {
+                    "bypassed": false,
+                    "id": "org.alive.subtractive",
+                    "instanceId": "instance-f364f4bbe0c6f9e03cfda168b332d235",
+                    "parameters": {
+                      "attack": 10.0,
+                      "cutoff": 2400.0,
+                      "decay": 150.0,
+                      "level": 90.0,
+                      "release": 300.0,
+                      "resonance": 0.7,
+                      "sustain": 0.65
+                    },
+                    "path": "../alive-pr12-native-20261102/apps/ultra/examples/subtractive.ultra",
+                    "sourceSha256": "96342f492f1bd80798524bb88eb46e3d48f4b155593cd465697bbf65a0e37521",
+                    "version": 2
+                  },
+                  "kind": "midi"
+                },
+                "color": "#86a59c",
+                "effects": [],
+                "gain": 0.7,
+                "id": "track-2",
+                "mute": false,
+                "name": "Harmony",
+                "slots": [
+                  {
+                    "id": "track-2-clip",
+                    "name": "Clip 1",
+                    "region": {
+                      "end": 8.0,
+                      "loopEnabled": true,
+                      "loopEnd": 8.0,
+                      "loopStart": 0.0,
+                      "start": 0.0
+                    },
+                    "sourceId": "track-2-source"
+                  },
+                  null,
+                  null,
+                  null
+                ],
+                "solo": false
+              }
+            ]
+          },
+          "editRevision": 33,
+          "generation": 10,
+          "history": {
+            "canRedo": true,
+            "canUndo": true,
+            "redoLabel": "Workspace edit",
+            "undoLabel": "Workspace edit"
+          },
+          "instanceId": null,
+          "launch": {
+            "clipQuantization": [],
+            "globalQuantization": "bar1"
+          },
+          "master": {
+            "acceptedSerial": "19",
+            "available": true,
+            "gain": 1.0,
+            "observation": {
+              "appliedFrame": "405504",
+              "appliedSerial": "19",
+              "clipMask": 0,
+              "currentGain": 1.0,
+              "observationEndFrame": "1025024",
+              "observationStartFrame": "1024512",
+              "peakLeft": 0.03715585922577396,
+              "peakRight": 0.03715585922577396,
+              "targetGain": 1.0
+            },
+            "observationStale": false,
+            "unavailableReason": null
+          },
+          "midi": {
+            "pending": false,
+            "previewActive": false,
+            "previewError": 0,
+            "previewSerial": "0",
+            "publication": {
+              "appliedFrame": "1024512",
+              "error": 0,
+              "serial": "21",
+              "status": 3
+            },
+            "sourceRevision": "17"
+          },
+          "notice": null,
+          "patch": null,
+          "path": "/tmp/alive-pr12-desktop-history-trace/before-reorder.alive",
+          "preparationRevision": "10",
+          "preparedWorkspaces": {
+            "placements": [
+              {
+                "durationFrames": "198621",
+                "placementId": "track-1-placement",
+                "region": {
+                  "endFrame": "198621",
+                  "loopEnabled": true,
+                  "loopEndFrame": "198621",
+                  "loopStartFrame": "0",
+                  "startFrame": "0"
+                },
+                "sourceId": "track-1-source",
+                "startFrame": "0",
+                "trackId": "track-1"
+              },
+              {
+                "durationFrames": "198621",
+                "placementId": "track-2-placement",
+                "region": {
+                  "endFrame": "198621",
+                  "loopEnabled": true,
+                  "loopEndFrame": "198621",
+                  "loopStartFrame": "0",
+                  "startFrame": "0"
+                },
+                "sourceId": "track-2-source",
+                "startFrame": "0",
+                "trackId": "track-2"
+              }
+            ],
+            "preparationRevision": "10",
+            "slots": [
+              {
+                "name": "Clip 1",
+                "region": {
+                  "endFrame": "198621",
+                  "loopEnabled": true,
+                  "loopEndFrame": "198621",
+                  "loopStartFrame": "0",
+                  "startFrame": "0"
+                },
+                "slot": 0,
+                "slotId": "track-1-clip",
+                "sourceId": "track-1-source",
+                "trackId": "track-1"
+              },
+              {
+                "name": "Clip 1",
+                "region": {
+                  "endFrame": "198621",
+                  "loopEnabled": true,
+                  "loopEndFrame": "198621",
+                  "loopStartFrame": "0",
+                  "startFrame": "0"
+                },
+                "slot": 0,
+                "slotId": "track-2-clip",
+                "sourceId": "track-2-source",
+                "trackId": "track-2"
+              }
+            ],
+            "sources": [
+              {
+                "kind": "midi",
+                "lengthFrames": "198621",
+                "name": "Clip 1",
+                "sourceId": "track-1-source",
+                "trackId": "track-1",
+                "waveformPeaks": null
+              },
+              {
+                "kind": "midi",
+                "lengthFrames": "198621",
+                "name": "Clip 1",
+                "sourceId": "track-2-source",
+                "trackId": "track-2",
+                "waveformPeaks": null
+              }
+            ]
+          },
+          "runtime": {
+            "appliedStopEpoch": "16",
+            "requestedStopEpoch": "16",
+            "requests": [
+              {
+                "appliedMask": 0,
+                "canceledMask": 0,
+                "kind": "start",
+                "members": [],
+                "pendingMask": 0,
+                "preparationRevision": "10",
+                "quantization": null,
+                "reason": 0,
+                "rejectedMask": 0,
+                "requestSerial": "2",
+                "sceneSlot": null,
+                "slotId": null,
+                "sourceId": null,
+                "status": "applied",
+                "supersededMask": 0,
+                "targetFrame": "504832",
+                "trackId": null,
+                "trackMask": 0
+              }
+            ],
+            "tracks": [
+              {
+                "activePlacementId": "track-1-placement",
+                "activeSlotId": null,
+                "activeSourceId": "track-1-source",
+                "authority": "arrangement",
+                "epoch": "4",
+                "pendingAction": null,
+                "pendingAuthority": null,
+                "pendingFrame": null,
+                "pendingSerial": null,
+                "pendingSlotId": null,
+                "phase": "122950",
+                "trackId": "track-1"
+              },
+              {
+                "activePlacementId": "track-2-placement",
+                "activeSlotId": null,
+                "activeSourceId": "track-2-source",
+                "authority": "arrangement",
+                "epoch": "4",
+                "pendingAction": null,
+                "pendingAuthority": null,
+                "pendingFrame": null,
+                "pendingSerial": null,
+                "pendingSlotId": null,
+                "phase": "122950",
+                "trackId": "track-2"
+              }
+            ]
+          },
+          "snapshotSequence": "1019",
+          "state": {
+            "absoluteFrame": "1025024",
+            "configured": 1,
+            "devices": [
+              {
+                "base": [
+                  10.0,
+                  150.0,
+                  0.65,
+                  300.0,
+                  2400.0,
+                  0.7,
+                  90.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "bypassed": 0,
+                "document": 0,
+                "effective": [
+                  10.0,
+                  150.0,
+                  0.65,
+                  300.0,
+                  3400.0,
+                  0.7,
+                  78.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "owned": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "parameterCount": 7,
+                "revision": "10"
+              },
+              {
+                "base": [
+                  10.0,
+                  150.0,
+                  0.65,
+                  300.0,
+                  2400.0,
+                  0.7,
+                  90.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "bypassed": 0,
+                "document": 1,
+                "effective": [
+                  10.0,
+                  150.0,
+                  0.65,
+                  300.0,
+                  2400.0,
+                  0.7,
+                  90.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "owned": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "parameterCount": 7,
+                "revision": "9"
+              },
+              {
+                "base": [
+                  0.65,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "bypassed": 1,
+                "document": 2,
+                "effective": [
+                  0.65,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "owned": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "parameterCount": 1,
+                "revision": "6"
+              }
+            ],
+            "fault": 0,
+            "generation": "17",
+            "peakLeft": 0.03715585922577396,
+            "peakRight": 0.03715585922577396,
+            "playing": 1,
+            "position": "122950",
+            "profile": 1,
+            "rejected": "0",
+            "tracks": [
+              {
+                "activeVoices": 0,
+                "gain": 0.7,
+                "mute": 0,
+                "peakLeft": 0.0,
+                "peakRight": 0.0,
+                "reserved": 0,
+                "solo": 0
+              },
+              {
+                "activeVoices": 1,
+                "gain": 0.7,
+                "mute": 0,
+                "peakLeft": 0.03715585922577396,
+                "peakRight": 0.03715585922577396,
+                "reserved": 0,
+                "solo": 0
+              }
+            ],
+            "workPolicy": 1
+          },
+          "track": null,
+          "trackChains": [
+            {
+              "effectIds": [
+                "instance-f6c995403119678853de32c8ee967eba"
+              ],
+              "instrumentId": "instance-c7cb7be65f4c9fb1222d419f9f136c37",
+              "kind": "midi",
+              "trackId": "track-1"
+            },
+            {
+              "effectIds": [],
+              "instrumentId": "instance-f364f4bbe0c6f9e03cfda168b332d235",
+              "kind": "midi",
+              "trackId": "track-2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "direction": "redo",
+      "editRevision": 33,
+      "generation": 10,
+      "kind": "request"
+    },
+    {
+      "kind": "result",
+      "result": {
+        "Ok": null
+      }
+    },
+    {
+      "kind": "snapshot",
+      "snapshot": {
+        "Ok": {
+          "audio": {
+            "callbacks": "1336",
+            "config": {
+              "buffer_frames": 512,
+              "device": "default",
+              "host": "default",
+              "sample_rate": 48000
+            },
+            "device": "default_output",
+            "epoch": {
+              "config": {
+                "channels": 2,
+                "device": "default_output",
+                "host": "PipeWire",
+                "rate_hz": 48000,
+                "requested_buffer_frames": 512,
+                "sample_format": "f32",
+                "source_id": "db3937551d59a00e195d7ed23440fb0d2b5d6cacf37fb2534e98e34c25c09d75",
+                "timing_enabled": true
+              },
+              "epoch_id": "3",
+              "error_observations_independent": true,
+              "failed": false,
+              "final": false,
+              "metrics": {
+                "budget_samples": "1336",
+                "buffer_frames_last": "512",
+                "buffer_frames_max": "512",
+                "buffer_frames_min": "512",
+                "buffer_size_changed_count": "0",
+                "callbacks_after_failure": "0",
+                "callbacks_entered": "1336",
+                "clock_anomaly_count": "0",
+                "counter_overflow": "0",
+                "cpal_error_total": "0",
+                "cpal_non_xrun_reports": "0",
+                "cpal_xrun_reports": "0",
+                "duration_max_ns": "1489914",
+                "duration_samples": "1336",
+                "duration_sum_ns": "911566998",
+                "invalid_callback_shape": "0",
+                "max_utilization_ppm": "139679",
+                "native_render_failures": "0",
+                "output_frames": "684032",
+                "over_buffer_budget_count": "0",
+                "render_calls": "1336",
+                "silenced_callbacks": "0",
+                "valid_callbacks": "1336",
+                "zero_frame_callbacks": "0"
+              },
+              "opened_mono_ns": "94398756112",
+              "retire_reason": "none",
+              "retired_mono_ns": null,
+              "snapshot_sequence": "2672",
+              "stale": false,
+              "state": "running"
+            },
+            "failed": false,
+            "host": "PipeWire",
+            "lifetime_errors": {
+              "cpal_error_total": "0",
+              "cpal_non_xrun_reports": "0",
+              "cpal_xrun_reports": "0"
+            },
+            "message": "Audio output is running.",
+            "native_quiescent": false,
+            "observed_buffer_frames": 512,
+            "retirement_pending": false,
+            "running": true,
+            "stream_errors": "0"
+          },
+          "capabilities": {
+            "arrangement": true,
+            "atomicTrackActions": true,
+            "audioSources": true,
+            "launchQuantization": true,
+            "launchUnavailableReason": null,
+            "launchWindowFrames": 1024,
+            "maxClips": 32,
+            "maxDevices": 6,
+            "maxPlacements": 64,
+            "maxSources": 32,
+            "maxTracks": 8,
+            "midiEdit": true,
+            "midiPreview": true,
+            "midiUnavailableReason": null,
+            "slotsPerTrack": 4,
+            "workspaces": true
+          },
+          "deviceIndex": null,
+          "deviceInstances": {
+            "instance-c7cb7be65f4c9fb1222d419f9f136c37": {
+              "index": 0,
+              "manifest": {
+                "id": "org.alive.subtractive",
+                "input": null,
+                "kind": "instrument",
+                "name": "Subtractive",
+                "noteNode": 2,
+                "output": {
+                  "channels": 2,
+                  "layout": "stereo"
+                },
+                "parameters": [
+                  {
+                    "base": 10.0,
+                    "integral": false,
+                    "key": "attack",
+                    "label": "Attack",
+                    "max": 10000.0,
+                    "min": 1.0,
+                    "node": 5,
+                    "param": "attack",
+                    "slot": 0,
+                    "unit": "ms"
+                  },
+                  {
+                    "base": 150.0,
+                    "integral": false,
+                    "key": "decay",
+                    "label": "Decay",
+                    "max": 10000.0,
+                    "min": 1.0,
+                    "node": 5,
+                    "param": "decay",
+                    "slot": 1,
+                    "unit": "ms"
+                  },
+                  {
+                    "base": 0.65,
+                    "integral": false,
+                    "key": "sustain",
+                    "label": "Sustain",
+                    "max": 1.0,
+                    "min": 0.0,
+                    "node": 5,
+                    "param": "sustain",
+                    "slot": 2,
+                    "unit": ""
+                  },
+                  {
+                    "base": 300.0,
+                    "integral": false,
+                    "key": "release",
+                    "label": "Release",
+                    "max": 10000.0,
+                    "min": 1.0,
+                    "node": 5,
+                    "param": "release",
+                    "slot": 3,
+                    "unit": "ms"
+                  },
+                  {
+                    "base": 2400.0,
+                    "integral": false,
+                    "key": "cutoff",
+                    "label": "Cutoff",
+                    "max": 20000.0,
+                    "min": 20.0,
+                    "node": 4,
+                    "param": "cutoff",
+                    "slot": 0,
+                    "unit": "Hz"
+                  },
+                  {
+                    "base": 0.7,
+                    "integral": false,
+                    "key": "resonance",
+                    "label": "Resonance",
+                    "max": 20.0,
+                    "min": 0.1,
+                    "node": 4,
+                    "param": "resonance",
+                    "slot": 1,
+                    "unit": "Q"
+                  },
+                  {
+                    "base": 90.0,
+                    "integral": true,
+                    "key": "level",
+                    "label": "Level",
+                    "max": 127.0,
+                    "min": 0.0,
+                    "node": 9,
+                    "param": "value",
+                    "slot": 0,
+                    "unit": "raw"
+                  }
+                ],
+                "presentation": {
+                  "items": [
+                    {
+                      "id": "attack",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Attack",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 8,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "attack",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 10000.0,
+                          "min": 1.0,
+                          "unit": "ms"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "attack"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "decay",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Decay",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 96,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "decay",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 10000.0,
+                          "min": 1.0,
+                          "unit": "ms"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "decay"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "sustain",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Sustain",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 184,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "sustain",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 1.0,
+                          "min": 0.0,
+                          "unit": ""
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "sustain"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "release",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Release",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 272,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "release",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 10000.0,
+                          "min": 1.0,
+                          "unit": "ms"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "release"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "cutoff",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Cutoff",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 360,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "cutoff",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 20000.0,
+                          "min": 20.0,
+                          "unit": "Hz"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 4,
+                        "param": "cutoff"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "resonance",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Resonance",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 448,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "resonance",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 20.0,
+                          "min": 0.1,
+                          "unit": "Q"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 4,
+                        "param": "resonance"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "level",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Level",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 536,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "level",
+                        "descriptor": {
+                          "integral": true,
+                          "max": 127.0,
+                          "min": 0.0,
+                          "unit": "raw"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 9,
+                        "param": "value"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    }
+                  ],
+                  "openOnLoad": false,
+                  "size": {
+                    "height": 112,
+                    "width": 640
+                  },
+                  "version": 1
+                },
+                "version": 2
+              },
+              "path": "/tmp/alive-pr12-native-20261102/apps/ultra/examples/subtractive.ultra",
+              "track": 0
+            },
+            "instance-f364f4bbe0c6f9e03cfda168b332d235": {
+              "index": 1,
+              "manifest": {
+                "id": "org.alive.subtractive",
+                "input": null,
+                "kind": "instrument",
+                "name": "Subtractive",
+                "noteNode": 2,
+                "output": {
+                  "channels": 2,
+                  "layout": "stereo"
+                },
+                "parameters": [
+                  {
+                    "base": 10.0,
+                    "integral": false,
+                    "key": "attack",
+                    "label": "Attack",
+                    "max": 10000.0,
+                    "min": 1.0,
+                    "node": 5,
+                    "param": "attack",
+                    "slot": 0,
+                    "unit": "ms"
+                  },
+                  {
+                    "base": 150.0,
+                    "integral": false,
+                    "key": "decay",
+                    "label": "Decay",
+                    "max": 10000.0,
+                    "min": 1.0,
+                    "node": 5,
+                    "param": "decay",
+                    "slot": 1,
+                    "unit": "ms"
+                  },
+                  {
+                    "base": 0.65,
+                    "integral": false,
+                    "key": "sustain",
+                    "label": "Sustain",
+                    "max": 1.0,
+                    "min": 0.0,
+                    "node": 5,
+                    "param": "sustain",
+                    "slot": 2,
+                    "unit": ""
+                  },
+                  {
+                    "base": 300.0,
+                    "integral": false,
+                    "key": "release",
+                    "label": "Release",
+                    "max": 10000.0,
+                    "min": 1.0,
+                    "node": 5,
+                    "param": "release",
+                    "slot": 3,
+                    "unit": "ms"
+                  },
+                  {
+                    "base": 2400.0,
+                    "integral": false,
+                    "key": "cutoff",
+                    "label": "Cutoff",
+                    "max": 20000.0,
+                    "min": 20.0,
+                    "node": 4,
+                    "param": "cutoff",
+                    "slot": 0,
+                    "unit": "Hz"
+                  },
+                  {
+                    "base": 0.7,
+                    "integral": false,
+                    "key": "resonance",
+                    "label": "Resonance",
+                    "max": 20.0,
+                    "min": 0.1,
+                    "node": 4,
+                    "param": "resonance",
+                    "slot": 1,
+                    "unit": "Q"
+                  },
+                  {
+                    "base": 90.0,
+                    "integral": true,
+                    "key": "level",
+                    "label": "Level",
+                    "max": 127.0,
+                    "min": 0.0,
+                    "node": 9,
+                    "param": "value",
+                    "slot": 0,
+                    "unit": "raw"
+                  }
+                ],
+                "presentation": {
+                  "items": [
+                    {
+                      "id": "attack",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Attack",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 8,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "attack",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 10000.0,
+                          "min": 1.0,
+                          "unit": "ms"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "attack"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "decay",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Decay",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 96,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "decay",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 10000.0,
+                          "min": 1.0,
+                          "unit": "ms"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "decay"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "sustain",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Sustain",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 184,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "sustain",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 1.0,
+                          "min": 0.0,
+                          "unit": ""
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "sustain"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "release",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Release",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 272,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "release",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 10000.0,
+                          "min": 1.0,
+                          "unit": "ms"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "release"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "cutoff",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Cutoff",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 360,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "cutoff",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 20000.0,
+                          "min": 20.0,
+                          "unit": "Hz"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 4,
+                        "param": "cutoff"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "resonance",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Resonance",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 448,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "resonance",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 20.0,
+                          "min": 0.1,
+                          "unit": "Q"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 4,
+                        "param": "resonance"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "level",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Level",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 536,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "level",
+                        "descriptor": {
+                          "integral": true,
+                          "max": 127.0,
+                          "min": 0.0,
+                          "unit": "raw"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 9,
+                        "param": "value"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    }
+                  ],
+                  "openOnLoad": false,
+                  "size": {
+                    "height": 112,
+                    "width": 640
+                  },
+                  "version": 1
+                },
+                "version": 2
+              },
+              "path": "/tmp/alive-pr12-native-20261102/apps/ultra/examples/subtractive.ultra",
+              "track": 1
+            },
+            "instance-f6c995403119678853de32c8ee967eba": {
+              "index": 2,
+              "manifest": {
+                "id": "org.alive.utility",
+                "input": {
+                  "bundle": {
+                    "channels": 2,
+                    "layout": "stereo"
+                  },
+                  "node": 1
+                },
+                "kind": "audioEffect",
+                "name": "Stereo Utility",
+                "noteNode": null,
+                "output": {
+                  "channels": 2,
+                  "layout": "stereo"
+                },
+                "parameters": [
+                  {
+                    "base": 0.65,
+                    "integral": false,
+                    "key": "gain",
+                    "label": "Gain",
+                    "max": 2.0,
+                    "min": 0.0,
+                    "node": 2,
+                    "param": "value",
+                    "slot": 0,
+                    "unit": "linear"
+                  }
+                ],
+                "presentation": {
+                  "items": [
+                    {
+                      "id": "gain",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Gain",
+                      "rect": {
+                        "height": 96,
+                        "width": 88,
+                        "x": 8,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "gain",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 2.0,
+                          "min": 0.0,
+                          "unit": "linear"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "cyan",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 2,
+                        "param": "value"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    }
+                  ],
+                  "openOnLoad": false,
+                  "size": {
+                    "height": 112,
+                    "width": 160
+                  },
+                  "version": 1
+                },
+                "version": 2
+              },
+              "path": "/tmp/alive-pr12-desktop-history-trace/journey-utility.ultra",
+              "track": 0
+            }
+          },
+          "dirty": true,
+          "document": {
+            "format": "alive-session-v4",
+            "lengthBeats": 8.0,
+            "loopEnabled": true,
+            "loopEndBeats": 8.0,
+            "loopStartBeats": 0.0,
+            "placements": [
+              {
+                "duration": 8.0,
+                "id": "track-1-placement",
+                "region": {
+                  "end": 8.0,
+                  "loopEnabled": true,
+                  "loopEnd": 8.0,
+                  "loopStart": 0.0,
+                  "start": 0.0
+                },
+                "sourceId": "track-1-source",
+                "start": 0.0,
+                "trackId": "track-1"
+              },
+              {
+                "duration": 8.0,
+                "id": "track-2-placement",
+                "region": {
+                  "end": 8.0,
+                  "loopEnabled": true,
+                  "loopEnd": 8.0,
+                  "loopStart": 0.0,
+                  "start": 0.0
+                },
+                "sourceId": "track-2-source",
+                "start": 0.0,
+                "trackId": "track-2"
+              }
+            ],
+            "sources": [
+              {
+                "automation": [
+                  {
+                    "enabled": true,
+                    "instanceId": "instance-c7cb7be65f4c9fb1222d419f9f136c37",
+                    "key": "cutoff",
+                    "points": [
+                      {
+                        "beat": 0.0,
+                        "value": 900.0
+                      },
+                      {
+                        "beat": 4.0,
+                        "value": 3400.0
+                      }
+                    ]
+                  },
+                  {
+                    "enabled": true,
+                    "instanceId": "instance-c7cb7be65f4c9fb1222d419f9f136c37",
+                    "key": "level",
+                    "points": [
+                      {
+                        "beat": 0.0,
+                        "value": 62.0
+                      },
+                      {
+                        "beat": 4.0,
+                        "value": 78.0
+                      }
+                    ]
+                  }
+                ],
+                "id": "track-1-source",
+                "kind": "midi",
+                "lengthBeats": 8.0,
+                "name": "Clip 1",
+                "notes": [
+                  {
+                    "beat": 0.0,
+                    "duration": 0.75,
+                    "id": "track-1-note-1",
+                    "pitch": 61,
+                    "velocity": 83
+                  }
+                ],
+                "trackId": "track-1"
+              },
+              {
+                "automation": [],
+                "id": "track-2-source",
+                "kind": "midi",
+                "lengthBeats": 8.0,
+                "name": "Clip 1",
+                "notes": [
+                  {
+                    "beat": 0.0,
+                    "duration": 8.0,
+                    "id": "track-2-note-1",
+                    "pitch": 72,
+                    "velocity": 65
+                  }
+                ],
+                "trackId": "track-2"
+              }
+            ],
+            "tempo": 116.0,
+            "title": "First Light",
+            "tracks": [
+              {
+                "chain": {
+                  "instrument": {
+                    "bypassed": false,
+                    "id": "org.alive.subtractive",
+                    "instanceId": "instance-c7cb7be65f4c9fb1222d419f9f136c37",
+                    "parameters": {
+                      "attack": 10.0,
+                      "cutoff": 2400.0,
+                      "decay": 150.0,
+                      "level": 90.0,
+                      "release": 300.0,
+                      "resonance": 0.7,
+                      "sustain": 0.65
+                    },
+                    "path": "../alive-pr12-native-20261102/apps/ultra/examples/subtractive.ultra",
+                    "sourceSha256": "96342f492f1bd80798524bb88eb46e3d48f4b155593cd465697bbf65a0e37521",
+                    "version": 2
+                  },
+                  "kind": "midi"
+                },
+                "color": "#c77b61",
+                "effects": [
+                  {
+                    "bypassed": true,
+                    "id": "org.alive.utility",
+                    "instanceId": "instance-f6c995403119678853de32c8ee967eba",
+                    "parameters": {
+                      "gain": 0.65
+                    },
+                    "path": "journey-utility.ultra",
+                    "sourceSha256": "59c2092edc2d507cc1b5705f19ee698a74c9466fd76bddab146427f5954c7dde",
+                    "version": 2
+                  }
+                ],
+                "gain": 0.7,
+                "id": "track-1",
+                "mute": false,
+                "name": "Pulse",
+                "slots": [
+                  {
+                    "id": "track-1-clip",
+                    "name": "Clip 1",
+                    "region": {
+                      "end": 8.0,
+                      "loopEnabled": true,
+                      "loopEnd": 8.0,
+                      "loopStart": 0.0,
+                      "start": 0.0
+                    },
+                    "sourceId": "track-1-source"
+                  },
+                  null,
+                  null,
+                  null
+                ],
+                "solo": false
+              },
+              {
+                "chain": {
+                  "instrument": {
+                    "bypassed": false,
+                    "id": "org.alive.subtractive",
+                    "instanceId": "instance-f364f4bbe0c6f9e03cfda168b332d235",
+                    "parameters": {
+                      "attack": 10.0,
+                      "cutoff": 2400.0,
+                      "decay": 150.0,
+                      "level": 90.0,
+                      "release": 300.0,
+                      "resonance": 0.7,
+                      "sustain": 0.65
+                    },
+                    "path": "../alive-pr12-native-20261102/apps/ultra/examples/subtractive.ultra",
+                    "sourceSha256": "96342f492f1bd80798524bb88eb46e3d48f4b155593cd465697bbf65a0e37521",
+                    "version": 2
+                  },
+                  "kind": "midi"
+                },
+                "color": "#86a59c",
+                "effects": [],
+                "gain": 0.7,
+                "id": "track-2",
+                "mute": false,
+                "name": "Harmony",
+                "slots": [
+                  {
+                    "id": "track-2-clip",
+                    "name": "Clip 1",
+                    "region": {
+                      "end": 8.0,
+                      "loopEnabled": true,
+                      "loopEnd": 8.0,
+                      "loopStart": 0.0,
+                      "start": 0.0
+                    },
+                    "sourceId": "track-2-source"
+                  },
+                  null,
+                  null,
+                  null
+                ],
+                "solo": false
+              }
+            ]
+          },
+          "editRevision": 34,
+          "generation": 10,
+          "history": {
+            "canRedo": false,
+            "canUndo": true,
+            "redoLabel": null,
+            "undoLabel": "Workspace edit"
+          },
+          "instanceId": null,
+          "launch": {
+            "clipQuantization": [],
+            "globalQuantization": "bar1"
+          },
+          "master": {
+            "acceptedSerial": "19",
+            "available": true,
+            "gain": 1.0,
+            "observation": {
+              "appliedFrame": "405504",
+              "appliedSerial": "19",
+              "clipMask": 0,
+              "currentGain": 1.0,
+              "observationEndFrame": "1089536",
+              "observationStartFrame": "1089024",
+              "peakLeft": 0.03717641255999564,
+              "peakRight": 0.03717641255999564,
+              "targetGain": 1.0
+            },
+            "observationStale": false,
+            "unavailableReason": null
+          },
+          "midi": {
+            "pending": false,
+            "previewActive": false,
+            "previewError": 0,
+            "previewSerial": "0",
+            "publication": {
+              "appliedFrame": "1089024",
+              "error": 0,
+              "serial": "22",
+              "status": 3
+            },
+            "sourceRevision": "18"
+          },
+          "notice": null,
+          "patch": null,
+          "path": "/tmp/alive-pr12-desktop-history-trace/before-reorder.alive",
+          "preparationRevision": "10",
+          "preparedWorkspaces": {
+            "placements": [
+              {
+                "durationFrames": "198621",
+                "placementId": "track-1-placement",
+                "region": {
+                  "endFrame": "198621",
+                  "loopEnabled": true,
+                  "loopEndFrame": "198621",
+                  "loopStartFrame": "0",
+                  "startFrame": "0"
+                },
+                "sourceId": "track-1-source",
+                "startFrame": "0",
+                "trackId": "track-1"
+              },
+              {
+                "durationFrames": "198621",
+                "placementId": "track-2-placement",
+                "region": {
+                  "endFrame": "198621",
+                  "loopEnabled": true,
+                  "loopEndFrame": "198621",
+                  "loopStartFrame": "0",
+                  "startFrame": "0"
+                },
+                "sourceId": "track-2-source",
+                "startFrame": "0",
+                "trackId": "track-2"
+              }
+            ],
+            "preparationRevision": "10",
+            "slots": [
+              {
+                "name": "Clip 1",
+                "region": {
+                  "endFrame": "198621",
+                  "loopEnabled": true,
+                  "loopEndFrame": "198621",
+                  "loopStartFrame": "0",
+                  "startFrame": "0"
+                },
+                "slot": 0,
+                "slotId": "track-1-clip",
+                "sourceId": "track-1-source",
+                "trackId": "track-1"
+              },
+              {
+                "name": "Clip 1",
+                "region": {
+                  "endFrame": "198621",
+                  "loopEnabled": true,
+                  "loopEndFrame": "198621",
+                  "loopStartFrame": "0",
+                  "startFrame": "0"
+                },
+                "slot": 0,
+                "slotId": "track-2-clip",
+                "sourceId": "track-2-source",
+                "trackId": "track-2"
+              }
+            ],
+            "sources": [
+              {
+                "kind": "midi",
+                "lengthFrames": "198621",
+                "name": "Clip 1",
+                "sourceId": "track-1-source",
+                "trackId": "track-1",
+                "waveformPeaks": null
+              },
+              {
+                "kind": "midi",
+                "lengthFrames": "198621",
+                "name": "Clip 1",
+                "sourceId": "track-2-source",
+                "trackId": "track-2",
+                "waveformPeaks": null
+              }
+            ]
+          },
+          "runtime": {
+            "appliedStopEpoch": "16",
+            "requestedStopEpoch": "16",
+            "requests": [
+              {
+                "appliedMask": 0,
+                "canceledMask": 0,
+                "kind": "start",
+                "members": [],
+                "pendingMask": 0,
+                "preparationRevision": "10",
+                "quantization": null,
+                "reason": 0,
+                "rejectedMask": 0,
+                "requestSerial": "2",
+                "sceneSlot": null,
+                "slotId": null,
+                "sourceId": null,
+                "status": "applied",
+                "supersededMask": 0,
+                "targetFrame": "504832",
+                "trackId": null,
+                "trackMask": 0
+              }
+            ],
+            "tracks": [
+              {
+                "activePlacementId": "track-1-placement",
+                "activeSlotId": null,
+                "activeSourceId": "track-1-source",
+                "authority": "arrangement",
+                "epoch": "4",
+                "pendingAction": null,
+                "pendingAuthority": null,
+                "pendingFrame": null,
+                "pendingSerial": null,
+                "pendingSlotId": null,
+                "phase": "187462",
+                "trackId": "track-1"
+              },
+              {
+                "activePlacementId": "track-2-placement",
+                "activeSlotId": null,
+                "activeSourceId": "track-2-source",
+                "authority": "arrangement",
+                "epoch": "4",
+                "pendingAction": null,
+                "pendingAuthority": null,
+                "pendingFrame": null,
+                "pendingSerial": null,
+                "pendingSlotId": null,
+                "phase": "187462",
+                "trackId": "track-2"
+              }
+            ]
+          },
+          "snapshotSequence": "1046",
+          "state": {
+            "absoluteFrame": "1089536",
+            "configured": 1,
+            "devices": [
+              {
+                "base": [
+                  10.0,
+                  150.0,
+                  0.65,
+                  300.0,
+                  2400.0,
+                  0.7,
+                  90.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "bypassed": 0,
+                "document": 0,
+                "effective": [
+                  10.0,
+                  150.0,
+                  0.65,
+                  300.0,
+                  3400.0,
+                  0.7,
+                  78.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "owned": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "parameterCount": 7,
+                "revision": "10"
+              },
+              {
+                "base": [
+                  10.0,
+                  150.0,
+                  0.65,
+                  300.0,
+                  2400.0,
+                  0.7,
+                  90.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "bypassed": 0,
+                "document": 1,
+                "effective": [
+                  10.0,
+                  150.0,
+                  0.65,
+                  300.0,
+                  2400.0,
+                  0.7,
+                  90.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "owned": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "parameterCount": 7,
+                "revision": "9"
+              },
+              {
+                "base": [
+                  0.65,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "bypassed": 1,
+                "document": 2,
+                "effective": [
+                  0.65,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "owned": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "parameterCount": 1,
+                "revision": "6"
+              }
+            ],
+            "fault": 0,
+            "generation": "17",
+            "peakLeft": 0.03717641255999564,
+            "peakRight": 0.03717641255999564,
+            "playing": 1,
+            "position": "187462",
+            "profile": 1,
+            "rejected": "0",
+            "tracks": [
+              {
+                "activeVoices": 0,
+                "gain": 0.7,
+                "mute": 0,
+                "peakLeft": 0.0,
+                "peakRight": 0.0,
+                "reserved": 0,
+                "solo": 0
+              },
+              {
+                "activeVoices": 1,
+                "gain": 0.7,
+                "mute": 0,
+                "peakLeft": 0.03717641255999564,
+                "peakRight": 0.03717641255999564,
+                "reserved": 0,
+                "solo": 0
+              }
+            ],
+            "workPolicy": 1
+          },
+          "track": null,
+          "trackChains": [
+            {
+              "effectIds": [
+                "instance-f6c995403119678853de32c8ee967eba"
+              ],
+              "instrumentId": "instance-c7cb7be65f4c9fb1222d419f9f136c37",
+              "kind": "midi",
+              "trackId": "track-1"
+            },
+            {
+              "effectIds": [],
+              "instrumentId": "instance-f364f4bbe0c6f9e03cfda168b332d235",
+              "kind": "midi",
+              "trackId": "track-2"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "direction": "undo",
+      "editRevision": 35,
+      "generation": 10,
+      "kind": "request"
+    },
+    {
+      "kind": "result",
+      "result": {
+        "Ok": null
+      }
+    },
+    {
+      "kind": "snapshot",
+      "snapshot": {
+        "Ok": {
+          "audio": {
+            "callbacks": "4147",
+            "config": {
+              "buffer_frames": 512,
+              "device": "default",
+              "host": "default",
+              "sample_rate": 48000
+            },
+            "device": "default_output",
+            "epoch": {
+              "config": {
+                "channels": 2,
+                "device": "default_output",
+                "host": "PipeWire",
+                "rate_hz": 48000,
+                "requested_buffer_frames": 512,
+                "sample_format": "f32",
+                "source_id": "db3937551d59a00e195d7ed23440fb0d2b5d6cacf37fb2534e98e34c25c09d75",
+                "timing_enabled": true
+              },
+              "epoch_id": "3",
+              "error_observations_independent": true,
+              "failed": false,
+              "final": false,
+              "metrics": {
+                "budget_samples": "4147",
+                "buffer_frames_last": "512",
+                "buffer_frames_max": "512",
+                "buffer_frames_min": "512",
+                "buffer_size_changed_count": "0",
+                "callbacks_after_failure": "0",
+                "callbacks_entered": "4147",
+                "clock_anomaly_count": "0",
+                "counter_overflow": "0",
+                "cpal_error_total": "0",
+                "cpal_non_xrun_reports": "0",
+                "cpal_xrun_reports": "0",
+                "duration_max_ns": "1739684",
+                "duration_samples": "4147",
+                "duration_sum_ns": "2982640260",
+                "invalid_callback_shape": "0",
+                "max_utilization_ppm": "163095",
+                "native_render_failures": "0",
+                "output_frames": "2123264",
+                "over_buffer_budget_count": "0",
+                "render_calls": "4147",
+                "silenced_callbacks": "0",
+                "valid_callbacks": "4147",
+                "zero_frame_callbacks": "0"
+              },
+              "opened_mono_ns": "94398756112",
+              "retire_reason": "none",
+              "retired_mono_ns": null,
+              "snapshot_sequence": "8294",
+              "stale": false,
+              "state": "running"
+            },
+            "failed": false,
+            "host": "PipeWire",
+            "lifetime_errors": {
+              "cpal_error_total": "0",
+              "cpal_non_xrun_reports": "0",
+              "cpal_xrun_reports": "0"
+            },
+            "message": "Audio output is running.",
+            "native_quiescent": false,
+            "observed_buffer_frames": 512,
+            "retirement_pending": false,
+            "running": true,
+            "stream_errors": "0"
+          },
+          "capabilities": {
+            "arrangement": true,
+            "atomicTrackActions": true,
+            "audioSources": true,
+            "launchQuantization": true,
+            "launchUnavailableReason": null,
+            "launchWindowFrames": 1024,
+            "maxClips": 32,
+            "maxDevices": 6,
+            "maxPlacements": 64,
+            "maxSources": 32,
+            "maxTracks": 8,
+            "midiEdit": true,
+            "midiPreview": true,
+            "midiUnavailableReason": null,
+            "slotsPerTrack": 4,
+            "workspaces": true
+          },
+          "deviceIndex": null,
+          "deviceInstances": {
+            "instance-c7cb7be65f4c9fb1222d419f9f136c37": {
+              "index": 0,
+              "manifest": {
+                "id": "org.alive.subtractive",
+                "input": null,
+                "kind": "instrument",
+                "name": "Subtractive",
+                "noteNode": 2,
+                "output": {
+                  "channels": 2,
+                  "layout": "stereo"
+                },
+                "parameters": [
+                  {
+                    "base": 10.0,
+                    "integral": false,
+                    "key": "attack",
+                    "label": "Attack",
+                    "max": 10000.0,
+                    "min": 1.0,
+                    "node": 5,
+                    "param": "attack",
+                    "slot": 0,
+                    "unit": "ms"
+                  },
+                  {
+                    "base": 150.0,
+                    "integral": false,
+                    "key": "decay",
+                    "label": "Decay",
+                    "max": 10000.0,
+                    "min": 1.0,
+                    "node": 5,
+                    "param": "decay",
+                    "slot": 1,
+                    "unit": "ms"
+                  },
+                  {
+                    "base": 0.65,
+                    "integral": false,
+                    "key": "sustain",
+                    "label": "Sustain",
+                    "max": 1.0,
+                    "min": 0.0,
+                    "node": 5,
+                    "param": "sustain",
+                    "slot": 2,
+                    "unit": ""
+                  },
+                  {
+                    "base": 300.0,
+                    "integral": false,
+                    "key": "release",
+                    "label": "Release",
+                    "max": 10000.0,
+                    "min": 1.0,
+                    "node": 5,
+                    "param": "release",
+                    "slot": 3,
+                    "unit": "ms"
+                  },
+                  {
+                    "base": 1333.0,
+                    "integral": false,
+                    "key": "cutoff",
+                    "label": "Cutoff",
+                    "max": 20000.0,
+                    "min": 20.0,
+                    "node": 4,
+                    "param": "cutoff",
+                    "slot": 0,
+                    "unit": "Hz"
+                  },
+                  {
+                    "base": 0.7,
+                    "integral": false,
+                    "key": "resonance",
+                    "label": "Resonance",
+                    "max": 20.0,
+                    "min": 0.1,
+                    "node": 4,
+                    "param": "resonance",
+                    "slot": 1,
+                    "unit": "Q"
+                  },
+                  {
+                    "base": 90.0,
+                    "integral": true,
+                    "key": "level",
+                    "label": "Level",
+                    "max": 127.0,
+                    "min": 0.0,
+                    "node": 9,
+                    "param": "value",
+                    "slot": 0,
+                    "unit": "raw"
+                  }
+                ],
+                "presentation": {
+                  "items": [
+                    {
+                      "id": "attack",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Attack",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 8,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "attack",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 10000.0,
+                          "min": 1.0,
+                          "unit": "ms"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "attack"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "decay",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Decay",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 96,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "decay",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 10000.0,
+                          "min": 1.0,
+                          "unit": "ms"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "decay"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "sustain",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Sustain",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 184,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "sustain",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 1.0,
+                          "min": 0.0,
+                          "unit": ""
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "sustain"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "release",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Release",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 272,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "release",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 10000.0,
+                          "min": 1.0,
+                          "unit": "ms"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "release"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "cutoff",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Cutoff",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 360,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "cutoff",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 20000.0,
+                          "min": 20.0,
+                          "unit": "Hz"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 4,
+                        "param": "cutoff"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "resonance",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Resonance",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 448,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "resonance",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 20.0,
+                          "min": 0.1,
+                          "unit": "Q"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 4,
+                        "param": "resonance"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "level",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Level",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 536,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "level",
+                        "descriptor": {
+                          "integral": true,
+                          "max": 127.0,
+                          "min": 0.0,
+                          "unit": "raw"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 9,
+                        "param": "value"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    }
+                  ],
+                  "openOnLoad": false,
+                  "size": {
+                    "height": 112,
+                    "width": 640
+                  },
+                  "version": 1
+                },
+                "version": 2
+              },
+              "path": "/tmp/alive-pr12-native-20261102/apps/ultra/examples/subtractive.ultra",
+              "track": 0
+            },
+            "instance-f364f4bbe0c6f9e03cfda168b332d235": {
+              "index": 1,
+              "manifest": {
+                "id": "org.alive.subtractive",
+                "input": null,
+                "kind": "instrument",
+                "name": "Subtractive",
+                "noteNode": 2,
+                "output": {
+                  "channels": 2,
+                  "layout": "stereo"
+                },
+                "parameters": [
+                  {
+                    "base": 10.0,
+                    "integral": false,
+                    "key": "attack",
+                    "label": "Attack",
+                    "max": 10000.0,
+                    "min": 1.0,
+                    "node": 5,
+                    "param": "attack",
+                    "slot": 0,
+                    "unit": "ms"
+                  },
+                  {
+                    "base": 150.0,
+                    "integral": false,
+                    "key": "decay",
+                    "label": "Decay",
+                    "max": 10000.0,
+                    "min": 1.0,
+                    "node": 5,
+                    "param": "decay",
+                    "slot": 1,
+                    "unit": "ms"
+                  },
+                  {
+                    "base": 0.65,
+                    "integral": false,
+                    "key": "sustain",
+                    "label": "Sustain",
+                    "max": 1.0,
+                    "min": 0.0,
+                    "node": 5,
+                    "param": "sustain",
+                    "slot": 2,
+                    "unit": ""
+                  },
+                  {
+                    "base": 300.0,
+                    "integral": false,
+                    "key": "release",
+                    "label": "Release",
+                    "max": 10000.0,
+                    "min": 1.0,
+                    "node": 5,
+                    "param": "release",
+                    "slot": 3,
+                    "unit": "ms"
+                  },
+                  {
+                    "base": 2400.0,
+                    "integral": false,
+                    "key": "cutoff",
+                    "label": "Cutoff",
+                    "max": 20000.0,
+                    "min": 20.0,
+                    "node": 4,
+                    "param": "cutoff",
+                    "slot": 0,
+                    "unit": "Hz"
+                  },
+                  {
+                    "base": 0.7,
+                    "integral": false,
+                    "key": "resonance",
+                    "label": "Resonance",
+                    "max": 20.0,
+                    "min": 0.1,
+                    "node": 4,
+                    "param": "resonance",
+                    "slot": 1,
+                    "unit": "Q"
+                  },
+                  {
+                    "base": 90.0,
+                    "integral": true,
+                    "key": "level",
+                    "label": "Level",
+                    "max": 127.0,
+                    "min": 0.0,
+                    "node": 9,
+                    "param": "value",
+                    "slot": 0,
+                    "unit": "raw"
+                  }
+                ],
+                "presentation": {
+                  "items": [
+                    {
+                      "id": "attack",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Attack",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 8,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "attack",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 10000.0,
+                          "min": 1.0,
+                          "unit": "ms"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "attack"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "decay",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Decay",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 96,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "decay",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 10000.0,
+                          "min": 1.0,
+                          "unit": "ms"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "decay"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "sustain",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Sustain",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 184,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "sustain",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 1.0,
+                          "min": 0.0,
+                          "unit": ""
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "sustain"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "release",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Release",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 272,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "release",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 10000.0,
+                          "min": 1.0,
+                          "unit": "ms"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 5,
+                        "param": "release"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "cutoff",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Cutoff",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 360,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "cutoff",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 20000.0,
+                          "min": 20.0,
+                          "unit": "Hz"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 4,
+                        "param": "cutoff"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "resonance",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Resonance",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 448,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "resonance",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 20.0,
+                          "min": 0.1,
+                          "unit": "Q"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 4,
+                        "param": "resonance"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    },
+                    {
+                      "id": "level",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Level",
+                      "rect": {
+                        "height": 96,
+                        "width": 80,
+                        "x": 536,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "level",
+                        "descriptor": {
+                          "integral": true,
+                          "max": 127.0,
+                          "min": 0.0,
+                          "unit": "raw"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "default",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 9,
+                        "param": "value"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    }
+                  ],
+                  "openOnLoad": false,
+                  "size": {
+                    "height": 112,
+                    "width": 640
+                  },
+                  "version": 1
+                },
+                "version": 2
+              },
+              "path": "/tmp/alive-pr12-native-20261102/apps/ultra/examples/subtractive.ultra",
+              "track": 1
+            },
+            "instance-f6c995403119678853de32c8ee967eba": {
+              "index": 2,
+              "manifest": {
+                "id": "org.alive.utility",
+                "input": {
+                  "bundle": {
+                    "channels": 2,
+                    "layout": "stereo"
+                  },
+                  "node": 1
+                },
+                "kind": "audioEffect",
+                "name": "Stereo Utility",
+                "noteNode": null,
+                "output": {
+                  "channels": 2,
+                  "layout": "stereo"
+                },
+                "parameters": [
+                  {
+                    "base": 0.65,
+                    "integral": false,
+                    "key": "gain",
+                    "label": "Gain",
+                    "max": 2.0,
+                    "min": 0.0,
+                    "node": 2,
+                    "param": "value",
+                    "slot": 0,
+                    "unit": "linear"
+                  }
+                ],
+                "presentation": {
+                  "items": [
+                    {
+                      "id": "gain",
+                      "included": true,
+                      "kind": "control",
+                      "label": "Gain",
+                      "rect": {
+                        "height": 96,
+                        "width": 88,
+                        "x": 8,
+                        "y": 8
+                      },
+                      "resolved": {
+                        "bindingId": "gain",
+                        "descriptor": {
+                          "integral": false,
+                          "max": 2.0,
+                          "min": 0.0,
+                          "unit": "linear"
+                        },
+                        "kind": "parameter"
+                      },
+                      "style": {
+                        "accent": "cyan",
+                        "labelPosition": "above"
+                      },
+                      "target": {
+                        "kind": "parameter",
+                        "node": 2,
+                        "param": "value"
+                      },
+                      "visible": true,
+                      "widget": "dial"
+                    }
+                  ],
+                  "openOnLoad": false,
+                  "size": {
+                    "height": 112,
+                    "width": 160
+                  },
+                  "version": 1
+                },
+                "version": 2
+              },
+              "path": "/tmp/alive-pr12-desktop-history-trace/journey-utility.ultra",
+              "track": 0
+            }
+          },
+          "dirty": true,
+          "document": {
+            "format": "alive-session-v4",
+            "lengthBeats": 8.0,
+            "loopEnabled": true,
+            "loopEndBeats": 8.0,
+            "loopStartBeats": 0.0,
+            "placements": [
+              {
+                "duration": 8.0,
+                "id": "track-1-placement",
+                "region": {
+                  "end": 8.0,
+                  "loopEnabled": true,
+                  "loopEnd": 8.0,
+                  "loopStart": 0.0,
+                  "start": 0.0
+                },
+                "sourceId": "track-1-source",
+                "start": 0.0,
+                "trackId": "track-1"
+              },
+              {
+                "duration": 8.0,
+                "id": "track-2-placement",
+                "region": {
+                  "end": 8.0,
+                  "loopEnabled": true,
+                  "loopEnd": 8.0,
+                  "loopStart": 0.0,
+                  "start": 0.0
+                },
+                "sourceId": "track-2-source",
+                "start": 0.0,
+                "trackId": "track-2"
+              }
+            ],
+            "sources": [
+              {
+                "automation": [
+                  {
+                    "enabled": true,
+                    "instanceId": "instance-c7cb7be65f4c9fb1222d419f9f136c37",
+                    "key": "cutoff",
+                    "points": [
+                      {
+                        "beat": 0.0,
+                        "value": 900.0
+                      },
+                      {
+                        "beat": 4.0,
+                        "value": 3400.0
+                      }
+                    ]
+                  },
+                  {
+                    "enabled": true,
+                    "instanceId": "instance-c7cb7be65f4c9fb1222d419f9f136c37",
+                    "key": "level",
+                    "points": [
+                      {
+                        "beat": 0.0,
+                        "value": 62.0
+                      },
+                      {
+                        "beat": 4.0,
+                        "value": 78.0
+                      }
+                    ]
+                  }
+                ],
+                "id": "track-1-source",
+                "kind": "midi",
+                "lengthBeats": 8.0,
+                "name": "Clip 1",
+                "notes": [
+                  {
+                    "beat": 0.0,
+                    "duration": 0.75,
+                    "id": "track-1-note-1",
+                    "pitch": 61,
+                    "velocity": 83
+                  }
+                ],
+                "trackId": "track-1"
+              },
+              {
+                "automation": [],
+                "id": "track-2-source",
+                "kind": "midi",
+                "lengthBeats": 8.0,
+                "name": "Clip 1",
+                "notes": [
+                  {
+                    "beat": 0.0,
+                    "duration": 8.0,
+                    "id": "track-2-note-1",
+                    "pitch": 72,
+                    "velocity": 65
+                  }
+                ],
+                "trackId": "track-2"
+              }
+            ],
+            "tempo": 116.0,
+            "title": "First Light",
+            "tracks": [
+              {
+                "chain": {
+                  "instrument": {
+                    "bypassed": false,
+                    "id": "org.alive.subtractive",
+                    "instanceId": "instance-c7cb7be65f4c9fb1222d419f9f136c37",
+                    "parameters": {
+                      "attack": 10.0,
+                      "cutoff": 1333.0,
+                      "decay": 150.0,
+                      "level": 90.0,
+                      "release": 300.0,
+                      "resonance": 0.7,
+                      "sustain": 0.65
+                    },
+                    "path": "../alive-pr12-native-20261102/apps/ultra/examples/subtractive.ultra",
+                    "sourceSha256": "96342f492f1bd80798524bb88eb46e3d48f4b155593cd465697bbf65a0e37521",
+                    "version": 2
+                  },
+                  "kind": "midi"
+                },
+                "color": "#c77b61",
+                "effects": [
+                  {
+                    "bypassed": true,
+                    "id": "org.alive.utility",
+                    "instanceId": "instance-f6c995403119678853de32c8ee967eba",
+                    "parameters": {
+                      "gain": 0.65
+                    },
+                    "path": "journey-utility.ultra",
+                    "sourceSha256": "59c2092edc2d507cc1b5705f19ee698a74c9466fd76bddab146427f5954c7dde",
+                    "version": 2
+                  }
+                ],
+                "gain": 0.55,
+                "id": "track-1",
+                "mute": false,
+                "name": "Pulse",
+                "slots": [
+                  {
+                    "id": "track-1-clip",
+                    "name": "Clip 1",
+                    "region": {
+                      "end": 8.0,
+                      "loopEnabled": true,
+                      "loopEnd": 8.0,
+                      "loopStart": 0.0,
+                      "start": 0.0
+                    },
+                    "sourceId": "track-1-source"
+                  },
+                  null,
+                  null,
+                  null
+                ],
+                "solo": false
+              },
+              {
+                "chain": {
+                  "instrument": {
+                    "bypassed": false,
+                    "id": "org.alive.subtractive",
+                    "instanceId": "instance-f364f4bbe0c6f9e03cfda168b332d235",
+                    "parameters": {
+                      "attack": 10.0,
+                      "cutoff": 2400.0,
+                      "decay": 150.0,
+                      "level": 90.0,
+                      "release": 300.0,
+                      "resonance": 0.7,
+                      "sustain": 0.65
+                    },
+                    "path": "../alive-pr12-native-20261102/apps/ultra/examples/subtractive.ultra",
+                    "sourceSha256": "96342f492f1bd80798524bb88eb46e3d48f4b155593cd465697bbf65a0e37521",
+                    "version": 2
+                  },
+                  "kind": "midi"
+                },
+                "color": "#86a59c",
+                "effects": [],
+                "gain": 0.7,
+                "id": "track-2",
+                "mute": false,
+                "name": "Harmony",
+                "slots": [
+                  {
+                    "id": "track-2-clip",
+                    "name": "Clip 1",
+                    "region": {
+                      "end": 8.0,
+                      "loopEnabled": true,
+                      "loopEnd": 8.0,
+                      "loopStart": 0.0,
+                      "start": 0.0
+                    },
+                    "sourceId": "track-2-source"
+                  },
+                  null,
+                  null,
+                  null
+                ],
+                "solo": false
+              }
+            ]
+          },
+          "editRevision": 36,
+          "generation": 10,
+          "history": {
+            "canRedo": true,
+            "canUndo": true,
+            "redoLabel": "Workspace edit",
+            "undoLabel": "Workspace edit"
+          },
+          "instanceId": null,
+          "launch": {
+            "clipQuantization": [],
+            "globalQuantization": "bar1"
+          },
+          "master": {
+            "acceptedSerial": "19",
+            "available": true,
+            "gain": 1.0,
+            "observation": {
+              "appliedFrame": "405504",
+              "appliedSerial": "19",
+              "clipMask": 0,
+              "currentGain": 1.0,
+              "observationEndFrame": "2528768",
+              "observationStartFrame": "2528256",
+              "peakLeft": 0.03718358089802581,
+              "peakRight": 0.03718358089802581,
+              "targetGain": 1.0
+            },
+            "observationStale": false,
+            "unavailableReason": null
+          },
+          "midi": {
+            "pending": false,
+            "previewActive": false,
+            "previewError": 0,
+            "previewSerial": "0",
+            "publication": {
+              "appliedFrame": "2528256",
+              "error": 0,
+              "serial": "24",
+              "status": 3
+            },
+            "sourceRevision": "20"
+          },
+          "notice": null,
+          "patch": null,
+          "path": "/tmp/alive-pr12-desktop-history-trace/before-reorder.alive",
+          "preparationRevision": "10",
+          "preparedWorkspaces": {
+            "placements": [
+              {
+                "durationFrames": "198621",
+                "placementId": "track-1-placement",
+                "region": {
+                  "endFrame": "198621",
+                  "loopEnabled": true,
+                  "loopEndFrame": "198621",
+                  "loopStartFrame": "0",
+                  "startFrame": "0"
+                },
+                "sourceId": "track-1-source",
+                "startFrame": "0",
+                "trackId": "track-1"
+              },
+              {
+                "durationFrames": "198621",
+                "placementId": "track-2-placement",
+                "region": {
+                  "endFrame": "198621",
+                  "loopEnabled": true,
+                  "loopEndFrame": "198621",
+                  "loopStartFrame": "0",
+                  "startFrame": "0"
+                },
+                "sourceId": "track-2-source",
+                "startFrame": "0",
+                "trackId": "track-2"
+              }
+            ],
+            "preparationRevision": "10",
+            "slots": [
+              {
+                "name": "Clip 1",
+                "region": {
+                  "endFrame": "198621",
+                  "loopEnabled": true,
+                  "loopEndFrame": "198621",
+                  "loopStartFrame": "0",
+                  "startFrame": "0"
+                },
+                "slot": 0,
+                "slotId": "track-1-clip",
+                "sourceId": "track-1-source",
+                "trackId": "track-1"
+              },
+              {
+                "name": "Clip 1",
+                "region": {
+                  "endFrame": "198621",
+                  "loopEnabled": true,
+                  "loopEndFrame": "198621",
+                  "loopStartFrame": "0",
+                  "startFrame": "0"
+                },
+                "slot": 0,
+                "slotId": "track-2-clip",
+                "sourceId": "track-2-source",
+                "trackId": "track-2"
+              }
+            ],
+            "sources": [
+              {
+                "kind": "midi",
+                "lengthFrames": "198621",
+                "name": "Clip 1",
+                "sourceId": "track-1-source",
+                "trackId": "track-1",
+                "waveformPeaks": null
+              },
+              {
+                "kind": "midi",
+                "lengthFrames": "198621",
+                "name": "Clip 1",
+                "sourceId": "track-2-source",
+                "trackId": "track-2",
+                "waveformPeaks": null
+              }
+            ]
+          },
+          "runtime": {
+            "appliedStopEpoch": "16",
+            "requestedStopEpoch": "16",
+            "requests": [
+              {
+                "appliedMask": 0,
+                "canceledMask": 0,
+                "kind": "start",
+                "members": [],
+                "pendingMask": 0,
+                "preparationRevision": "10",
+                "quantization": null,
+                "reason": 0,
+                "rejectedMask": 0,
+                "requestSerial": "2",
+                "sceneSlot": null,
+                "slotId": null,
+                "sourceId": null,
+                "status": "applied",
+                "supersededMask": 0,
+                "targetFrame": "504832",
+                "trackId": null,
+                "trackMask": 0
+              }
+            ],
+            "tracks": [
+              {
+                "activePlacementId": "track-1-placement",
+                "activeSlotId": null,
+                "activeSourceId": "track-1-source",
+                "authority": "arrangement",
+                "epoch": "12",
+                "pendingAction": null,
+                "pendingAuthority": null,
+                "pendingFrame": null,
+                "pendingSerial": null,
+                "pendingSlotId": null,
+                "phase": "37726",
+                "trackId": "track-1"
+              },
+              {
+                "activePlacementId": "track-2-placement",
+                "activeSlotId": null,
+                "activeSourceId": "track-2-source",
+                "authority": "arrangement",
+                "epoch": "12",
+                "pendingAction": null,
+                "pendingAuthority": null,
+                "pendingFrame": null,
+                "pendingSerial": null,
+                "pendingSlotId": null,
+                "phase": "37726",
+                "trackId": "track-2"
+              }
+            ]
+          },
+          "snapshotSequence": "1409",
+          "state": {
+            "absoluteFrame": "2528768",
+            "configured": 1,
+            "devices": [
+              {
+                "base": [
+                  10.0,
+                  150.0,
+                  0.65,
+                  300.0,
+                  1333.0,
+                  0.7,
+                  90.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "bypassed": 0,
+                "document": 0,
+                "effective": [
+                  10.0,
+                  150.0,
+                  0.65,
+                  300.0,
+                  900.0,
+                  0.7,
+                  62.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "owned": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "parameterCount": 7,
+                "revision": "10"
+              },
+              {
+                "base": [
+                  10.0,
+                  150.0,
+                  0.65,
+                  300.0,
+                  2400.0,
+                  0.7,
+                  90.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "bypassed": 0,
+                "document": 1,
+                "effective": [
+                  10.0,
+                  150.0,
+                  0.65,
+                  300.0,
+                  2400.0,
+                  0.7,
+                  90.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "owned": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "parameterCount": 7,
+                "revision": "9"
+              },
+              {
+                "base": [
+                  0.65,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "bypassed": 1,
+                "document": 2,
+                "effective": [
+                  0.65,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                "owned": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "parameterCount": 1,
+                "revision": "6"
+              }
+            ],
+            "fault": 0,
+            "generation": "25",
+            "peakLeft": 0.03718358089802581,
+            "peakRight": 0.03718358089802581,
+            "playing": 1,
+            "position": "37726",
+            "profile": 1,
+            "rejected": "0",
+            "tracks": [
+              {
+                "activeVoices": 0,
+                "gain": 0.55,
+                "mute": 0,
+                "peakLeft": 0.0,
+                "peakRight": 0.0,
+                "reserved": 0,
+                "solo": 0
+              },
+              {
+                "activeVoices": 1,
+                "gain": 0.7,
+                "mute": 0,
+                "peakLeft": 0.03718358089802581,
+                "peakRight": 0.03718358089802581,
+                "reserved": 0,
+                "solo": 0
+              }
+            ],
+            "workPolicy": 1
+          },
+          "track": null,
+          "trackChains": [
+            {
+              "effectIds": [
+                "instance-f6c995403119678853de32c8ee967eba"
+              ],
+              "instrumentId": "instance-c7cb7be65f4c9fb1222d419f9f136c37",
+              "kind": "midi",
+              "trackId": "track-1"
+            },
+            {
+              "effectIds": [],
+              "instrumentId": "instance-f364f4bbe0c6f9e03cfda168b332d235",
+              "kind": "midi",
+              "trackId": "track-2"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
