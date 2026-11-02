@@ -104,6 +104,10 @@ presentation hosts, registry/generator and existing Browser integration.
       This does not expose state commands or admit native playback.
 - [ ] Carry sources through preparation/install/rollback; authorize full-state panel
       reads/writes by generation, instance, source node and revision.
+- [x] Add an independently reviewed off-thread native document batch API. Prepare
+      at most six roots before replacement, retain old banks through exchange,
+      and restore them with fresh revisions without foreign reconstruction.
+      Rust session callers/configuration/Master rollback remain subsequent work.
 - [ ] Add failing note/Stop/Start/seek/loop/clip-transition tests and resolve continuous
       native lifecycle before enabling the native note capability.
 - [ ] Measure foreign-DSP render/state/discontinuity work and fit an explicit admitted
@@ -185,3 +189,14 @@ source data. All 126 adjacent session tests pass; the reviewer independently
 ran 82 pure canvas/instance-state tests. The source/resource review found and
 verified a corrected JavaScript/native node-ID bound mismatch (100000 maximum).
 No native source edit command or playable profile has been enabled.
+
+The native batch slice passes native-on/off built-in exchange tests, explicit
+no-adapter refusal and real two-bank Analog command-cell retention. Adjacent
+bank/descriptor-variant, lifecycle and ordinary Analog backend tests pass.
+Independent actual-backend synthetic fault injection verifies that late binding
+failure restores the exact old owners, borrowed inputs can die after preparation,
+and exchange/restore make no foreign calls or destruction. The caller must hold
+one serialized lock across the transaction; the ownership mask is a current-owner
+assertion, not an independent generation registry. No Rust caller or native
+playback admission is included. A fresh combined JavaScript run has 739 passes
+without skips, including actual installed pack identity tests.

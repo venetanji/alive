@@ -16,6 +16,7 @@
 #include <cstring>
 #include <chrono>
 #include <limits>
+#include <memory>
 #if defined(__linux__)
 #include <dlfcn.h>
 #endif
@@ -489,6 +490,7 @@ int rate(Frames n,void*){if(n!=48000){fault_reason.store(5);lost.store(true);eng
 void put16(FILE*f,uint16_t n){unsigned char b[]={static_cast<unsigned char>(n),static_cast<unsigned char>(n>>8)};fwrite(b,1,2,f);}
 void put32(FILE*f,uint32_t n){put16(f,n);put16(f,n>>16);}
 }
+#include "document_batch.hpp"
 extern "C" {
 int alive_session_master_limits(AliveMasterLimitsV1* out){
  if(!out)return ALIVE_MASTER_INVALID;
