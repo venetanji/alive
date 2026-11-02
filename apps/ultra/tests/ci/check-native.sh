@@ -66,6 +66,9 @@ c++ -std=c++17 -O2 -Wall -Wextra -Werror \
 c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE \
   -c apps/ultra/src-tauri/native/backend.cpp -o "$TEST_DIR/alive-v3-backend.o"
 python3 apps/ultra/tests/alive_session_v3_fixtures.py "$TEST_DIR/saved_graphs.hpp"
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -UNDEBUG -DULTRA_ALIVE_SESSION_TEST_TRACE -I"$TEST_DIR" \
+  apps/ultra/tests/alive_session_release_accounting_test.cpp -o "$TEST_DIR/alive-release-accounting"
+"$TEST_DIR/alive-release-accounting"
 python3 apps/ultra/tests/check_note_companion_exports.py "$NATIVE_BUILD/libultra_native.so"
 note_flags=()
 if grep -q '^ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL:BOOL=ON$' "$NATIVE_BUILD/CMakeCache.txt"; then

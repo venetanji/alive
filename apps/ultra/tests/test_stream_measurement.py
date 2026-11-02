@@ -113,7 +113,9 @@ class MeasurementTests(unittest.TestCase):
             code = ('import os,signal,time,pathlib\n'
                     'if os.fork()==0:\n'
                     ' signal.signal(signal.SIGTERM,signal.SIG_IGN)\n'
-                    f' pathlib.Path({str(pidfile)!r}).write_text(str(os.getpid()))\n'
+                    # Publish readiness only after the PID write has closed.
+                    f' pathlib.Path({str(pidfile)+".tmp"!r}).write_text(str(os.getpid()))\n'
+                    f' pathlib.Path({str(pidfile)+".tmp"!r}).replace({str(pidfile)!r})\n'
                     ' while True: time.sleep(.05)\n'
                     'else:\n'
                     ' while True: time.sleep(.05)\n')
