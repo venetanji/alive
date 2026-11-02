@@ -87,7 +87,8 @@ geometry/widget tests pass; all native parameter inputs remain disabled.
 
 Independent visual and mechanical assessments retain source hashes, browser
 observations and captures privately. The source detector reports zero findings,
-which does not qualify generated DOM or original fidelity. Schematic artwork,+splash/card/header proportions and original knob drawing/angles remain open.
+which does not qualify generated DOM or original fidelity. Schematic artwork,
+splash/card/header proportions and original knob drawing/angles remain open.
 The new profile/importer/widget tests are explicitly selected by the existing
 manual CI scripts. Workflow triggers remain manual-only.
 
@@ -103,7 +104,8 @@ does not establish a playback capacity or admit any native profile.
 1. Finish reviewed profile facts and original editor geometry, keeping unresolved
    controls unavailable. Retain captures at 800x600, 1280x800 and 1440x900.
 2. Add an explicit native note capability through saved manifests and a versioned
-   companion ABI. Preserve existing manifest/ABI sizes and closed measured
+   companion ABI. Evolve current development manifests directly; preserve ABI
+   sizes and closed measured
    admission while validating identities and first-policy restrictions.
 3. Account for native releases in every scheduled/optional/emergency work ledger;
    qualify Start/Stop/seek/loop/clip transitions against actual native owners.
