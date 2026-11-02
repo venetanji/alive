@@ -18,7 +18,7 @@ c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -Iapps/ultra/src-tauri/native 
   -Wl,-rpath,"$NATIVE_BUILD" -ldl -o "$TEST_DIR/alive-master-test"
 "$TEST_DIR/alive-master-test"
 bash apps/ultra/tests/alive_session_master_resolver_test.sh
-for test in external_audio document_runtime document_audio signal_audio canvas_numeric_ui_backend canvas_message_ui_backend canvas_print_popup_backend; do
+for test in external_audio document_runtime document_audio document_batch signal_audio canvas_numeric_ui_backend canvas_message_ui_backend canvas_print_popup_backend; do
   c++ -std=c++20 -O2 -Wall -Wextra -Werror "apps/ultra/tests/${test}_test.cpp" \
     -L"$NATIVE_BUILD" -lultra_native -Wl,-rpath,"$NATIVE_BUILD" \
     -o "$TEST_DIR/${test}-test"

@@ -4,6 +4,7 @@
 #include <array>
 #include <cassert>
 #include <cstdio>
+#include <cstring>
 
 static UltraCanvasGraph number(uint64_t revision,double value){
  UltraCanvasGraph g{};g.revision=revision;g.node_count=1;g.nodes[0]={1,ultra::Number,0,0,value,0,0};return g;
@@ -24,6 +25,10 @@ int main(){
  assert(!ultra_prepare_document_batch_v1(nullptr,0,error,sizeof error));
  expect(0,1,1);expect(1,1,1);expect(9,1,1);
  UltraDocumentExchange* undo=nullptr;
+ assert(!ultra_exchange_document_batch_v1(batch,0x7f,&undo,error,sizeof error));assert(!undo);
+ assert(std::strstr(error,"Invalid document ownership mask"));
+ assert(!ultra_exchange_document_batch_v1(batch,1u<<16,&undo,error,sizeof error));assert(!undo);
+ assert(std::strstr(error,"Invalid document ownership mask"));
  assert(!ultra_exchange_document_batch_v1(batch,2,&undo,error,sizeof error));assert(!undo);
  assert(ultra_external_start());
  assert(!ultra_exchange_document_batch_v1(batch,3,&undo,error,sizeof error));assert(!undo);

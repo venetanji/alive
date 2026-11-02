@@ -1,7 +1,7 @@
 #pragma once
 // Included once by backend.cpp: all mutations share its serialized control owner.
 #include "document_batch.h"
-#include <bit>
+#include <bitset>
 
 struct UltraPreparedDocumentBatch {
  struct Row {
@@ -32,7 +32,8 @@ namespace {
 UltraPreparedDocumentBatch* pending_document_batch=nullptr;
 UltraDocumentExchange* pending_document_exchange=nullptr;
 int document_batch_failure(char* output,size_t capacity,const char* message){
- if(output&&capacity)std::snprintf(output,capacity,"%s",message);return 0;
+ if(output&&capacity)std::snprintf(output,capacity,"%s",message);
+ return 0;
 }
 bool document_exchange_quiescent()noexcept{return !running.load()&&!engine.status().ready&&!session.configured();}
 void document_batch_published()noexcept{
@@ -92,7 +93,7 @@ int ultra_exchange_document_batch_v1(UltraPreparedDocumentBatch* batch,uint32_t 
   if(!batch||batch!=pending_document_batch||batch->consumed||pending_document_exchange||!result||*result)
    return document_batch_failure(output,capacity,"Invalid or consumed document transaction.");
   if(!document_exchange_quiescent())return document_batch_failure(output,capacity,"Document exchange requires a retired audio driver and an unconfigured session.");
-  if((owned_mask>>MaxDocuments)||std::popcount(owned_mask)>6)return document_batch_failure(output,capacity,"Invalid document ownership mask.");
+  if((owned_mask>>MaxDocuments)||std::bitset<32>(owned_mask).count()>6)return document_batch_failure(output,capacity,"Invalid document ownership mask.");
   for(unsigned d=0;d<MaxDocuments;++d)if((owned_mask&(1u<<d))&&(!requested_documents[d].load()||!canvas.live(d)))
    return document_batch_failure(output,capacity,"Owned document mask no longer matches installed roots.");
   for(unsigned i=0;i<batch->count;++i){const auto& row=batch->rows[i];
@@ -146,12 +147,15 @@ int ultra_restore_document_exchange_v1(UltraDocumentExchange* undo,const uint64_
  }
  const bool ok=restore_document_rows(*undo,revisions);undo->restored=true;
  if(!ok)return document_batch_failure(output,capacity,"Retained document binding could not be restored.");
- if(output&&capacity)output[0]=0;return 1;
+ if(output&&capacity)output[0]=0;
+ return 1;
 }
 void ultra_release_document_batch_v1(UltraPreparedDocumentBatch* batch){
- if(batch==pending_document_batch)pending_document_batch=nullptr;delete batch;
+ if(batch==pending_document_batch)pending_document_batch=nullptr;
+ delete batch;
 }
 void ultra_release_document_exchange_v1(UltraDocumentExchange* undo){
- if(undo==pending_document_exchange)pending_document_exchange=nullptr;delete undo;
+ if(undo==pending_document_exchange)pending_document_exchange=nullptr;
+ delete undo;
 }
 }
