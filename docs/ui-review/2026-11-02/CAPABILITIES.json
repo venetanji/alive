@@ -2423,9 +2423,9 @@
       "label": "Independent Clip/Devices/Help and Browser toggles, resize/restore",
       "classification": "already_wired",
       "owner": "alive-commands.mjs; alive-workspace.mjs:navigate",
-      "prerequisites": "Existing workspace region",
+      "prerequisites": "Existing workspace; fixed Help/Devices height 224 px; Help width 231 px; drag-up affordance remains above footer",
       "disabledReason": "Reference Alt shortcuts are not implemented; focus menu already exists",
-      "errorHandling": "Park/restore drafts, preserve source/occurrence/instance identity; no musical IPC",
+      "errorHandling": "Preserve drafts and identity; last Clip/Device closure hides Help and yields the workspace; explicit Help can reopen alone; no musical IPC",
       "tests": "alive-commands.test.mjs; alive-dom.test.mjs; alive-chain.spec.mjs",
       "evidence": "Additional approved design/control audit; see AUDIT.md for exact current handlers and limits.",
       "evidenceLevel": "source_audit; runtime availability and acceptance reported separately"
@@ -2564,15 +2564,51 @@
     },
     {
       "id": "lower-area-drag-collapse",
-      "label": "Close the whole lower area by dragging below its minimum",
+      "label": "Drag the whole lower area closed and back up",
       "classification": "already_wired",
-      "owner": "alive-workspace.mjs; independent Help visibility and footer panel controls",
-      "prerequisites": "Clip, Devices or both open; fixed Device height stays 190 px; Clip minimum stays 224 px",
+      "owner": "alive-workspace.mjs; retained last nonempty Clip/Device combination",
+      "prerequisites": "Fixed Device row 224 px, accommodating a 169 px editor body; Clip minimum 224 px; 5 px separator remains reachable while closed",
       "disabledReason": "Master detail has no musical-panel resize/collapse handle",
-      "errorHandling": "Pointer cancellation restores prior panels and sizing; commit retains requested height and drafts; footer controls reopen, Help can reopen alone, Master round trip retains collapse; keyboard ArrowDown at minimum closes",
-      "tests": "Clip-only/Device-only/both drag/cancel/restore, exact height, drafts, Master round trip and keyboard/Help regressions; native three-size probe",
-      "evidence": "Help is temporarily hidden with the whole lower area only for this explicit collapse; ordinary Clip/Device toggles keep independent Help behavior",
+      "errorHandling": "Escape/lost capture restores prior panels, sizing and drafts, including a focused Device field; drag upward or ArrowUp/Enter/Space restores the last musical-panel combination; closing the last panel also hides Help; Help may explicitly reopen alone; Master round trip retains collapse",
+      "tests": "Clip/Devices/both at 800x600, 1280x800 and 1440x900; exact separator geometry, keyboard, pointer cancellation, original field identity, drafts and no musical IPC; native launcher probe",
+      "evidence": "LOWER-REOPEN.md and evidence/lower-reopen; supersedes Help retention on ordinary last-panel closure",
       "evidenceLevel": "source_implementation; runtime acceptance recorded separately"
+    },
+    {
+      "id": "device-rack-overview",
+      "label": "Device chain footer preview and scrolling",
+      "classification": "already_wired",
+      "owner": "alive-device-overview.mjs; Alive footer; mounted chain remains the only device owner",
+      "prerequisites": "Visible Device row and mounted device cards; ResizeObserver/MutationObserver; bounded one-frame presentation refresh",
+      "disabledReason": "Hidden when Device row is hidden; no audio-preview capability is implied",
+      "errorHandling": "Inert miniature clones carry no IDs or handlers; pointer capture/Escape/cancellation restore scroll; keyboard, pointer, wheel and resize keep viewport mapping; navigation parks drafts and emits no musical IPC",
+      "tests": "Three-size miniature/viewport, Home/End, drag, wheel, resize, retained draft/DOM identity, no duplicate IDs and no musical IPC; native three-size keyboard viewport checks",
+      "evidence": "LOWER-REOPEN.md; Device-chain scrollbar is hidden, contents keep natural dimensions",
+      "evidenceLevel": "source_implementation; runtime evidence recorded separately"
+    },
+    {
+      "id": "device-track-delete-shortcuts",
+      "label": "Delete/Backspace focused device or track",
+      "classification": "already_wired",
+      "owner": "alive.mjs:keydown, structural/remove, removeTrack; existing alive_device and alive_workspace_track native owners",
+      "prerequisites": "Focused device title or Session/Arrangement track title; stopped transport; no pending musical publication or unfinished parked draft; stable generation and native revision acknowledgement; at least one track retained",
+      "disabledReason": "Editable fields, menus/modals, modified/repeated key events, playback, pending edits and unfinished drafts retain their owners; no general clipboard/time/source delete command",
+      "errorHandling": "Capture exact track/device identity; validate before enqueue and dispatch; wait for native acknowledgement; refusal keeps chain/track; stale origin cannot retarget replacement session; source/slot/placement deletion stays separate",
+      "tests": "Delete and Backspace, rejected/native removal, instrument to MIDI-only, Session/Arrangement track targets, last-track rule, draft/field/menu/modifier/playing guards, queued replacement-session regressions; native second Utility/Delete and Harmony/Backspace",
+      "evidence": "LOWER-REOPEN.md; removal buttons/icons removed; existing handlers and contracts reused",
+      "evidenceLevel": "source_implementation; runtime evidence recorded separately"
+    },
+    {
+      "id": "device-activator",
+      "label": "Top-left device power activator",
+      "classification": "already_wired",
+      "owner": "alive.mjs:chain header and existing alive_bypass acknowledgement",
+      "prerequisites": "Qualified audio effect; selected or unselected card keeps its exact instance identity; pressed means active (inverse of native bypassed)",
+      "disabledReason": "Instrument power is unavailable: native session host explicitly permits bypass only for audio effects; no engine change in this batch",
+      "errorHandling": "Active colour/pressed state follows accepted snapshots; rejected bypass keeps previous state and contextual Help/error; control does not start or stop transport",
+      "tests": "Leftmost title-strip position, repeated native acknowledgements, rejected state, exact instance/generation, disabled instrument, existing live transport regression; native effect power/restore",
+      "evidence": "LOWER-REOPEN.md; 224 px fixed row fits an unscaled 169 px surface. Full Analog livePanel is rejected by current Alive projection; geometry is not loading qualification.",
+      "evidenceLevel": "source_implementation; effect power only; instrument/native panel contract remains missing"
     }
   ]
 }

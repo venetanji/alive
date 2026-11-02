@@ -1,0 +1,255 @@
+{
+  "source_commit": "8bcddd4b0bc73d753c80d12096140e58a47bf482",
+  "baseline_commit": "6ba3938796c6a02c26807603e08a4f44cc0c62ee",
+  "original_audited_pr_head": "11da097c27627a92629632ab62304d799e50099c",
+  "branch": "audit/pr12-native-20261102",
+  "checkout": "/tmp/alive-pr12-native-20261102",
+  "selected_snapshot": "/home/venetanji/.local/share/alive/builds/test-72a955d96240a31a0fd5",
+  "artifact_hashes": {
+    "bin/alive": "5c85da258ac1cb3ed521e7987edafa31a587ac69d659a15efccece8b43c52f74",
+    "bin/ultra": "32063fb35a4dd4040918b64c2f2d9a7dd005f9eade03c7dfa6a5844db16b28b2",
+    "bin/libultra_native.so": "1652d52c581395a9919ea2dbe5a03c4d365c7f9a4da6d10cff233e590099eaa8"
+  },
+  "source_provenance": {
+    "installed_artifacts_verified": 18,
+    "compiled_tracked_ui_files": 160,
+    "hashes": "compiled-ui-hashes.json",
+    "verified_against_source_commit": true,
+    "source_inventory": "changed-source-files.txt",
+    "report_inventory": "changed-report-files.txt",
+    "application_sources_unchanged_during_final_native_probe": true,
+    "manifest": "source-build-manifest.json"
+  },
+  "browser": {
+    "status": "passed",
+    "passed": 381,
+    "failed": 0,
+    "skipped": 0,
+    "retries": 0,
+    "exit_code": 0,
+    "sandbox": true,
+    "command": "env ALIVE_TEST_PORT=4197 npm run test:browser -- --workers=2 --reporter=list --output=/tmp/alive-lower-reopen-full2",
+    "cwd": "apps/ultra/tests/ci",
+    "log": "browser-full.log",
+    "raw_output": "/tmp/alive-lower-reopen-full2.log",
+    "raw_artifacts": "/tmp/alive-lower-reopen-full2"
+  },
+  "node": {
+    "status": "passed",
+    "passed": 673,
+    "failed": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "command": "node --test apps/ultra/ui/*.test.mjs apps/ultra/ui/components/*.test.mjs",
+    "log": "node.log",
+    "raw_output": "/tmp/alive-lower-reopen-node-final2.log"
+  },
+  "focused_browser_groups": [
+    {
+      "passed": 23,
+      "failed": 0,
+      "log": "focused.log"
+    },
+    {
+      "passed": 9,
+      "failed": 0,
+      "log": "preview-identity.log"
+    },
+    {
+      "passed": 8,
+      "failed": 0,
+      "log": "powers.log"
+    }
+  ],
+  "regression_red_evidence": [
+    {
+      "status": "failed_as_expected_before_implementation",
+      "failed": 1,
+      "log": "device-red.log",
+      "scope": "169 px editor body and removed chain title"
+    },
+    {
+      "status": "failed_as_expected_before_implementation",
+      "failed": 2,
+      "log": "controls-red.log",
+      "scope": "focused device deletion and footer overview"
+    }
+  ],
+  "browser_attempts": [
+    {
+      "attempt": 1,
+      "status": "failed",
+      "passed": 377,
+      "failed": 4,
+      "log": "browser-attempt1.log",
+      "cause": "One former Help expectation and three real-selector collisions from miniature titles; resolved before final suite."
+    },
+    {
+      "attempt": 2,
+      "status": "passed",
+      "passed": 381,
+      "failed": 0,
+      "log": "browser-full.log"
+    }
+  ],
+  "builds": {
+    "alive_exit_code": 0,
+    "ultra_exit_code": 0,
+    "order": [
+      "ultra",
+      "alive"
+    ],
+    "existing_ultra_library_warnings": 4,
+    "compiler": "system Cargo/Rust 1.99.1",
+    "locked_dependencies": true,
+    "jobs": 2,
+    "reproduce_command_template": "env ULTRA_NATIVE_LIB_DIR=/tmp/alive-pr12-native-20261102/apps/ultra/build /usr/bin/cargo build --locked -j 2 --manifest-path <app>/src-tauri/Cargo.toml --target-dir apps/ultra/src-tauri/target",
+    "logs": [
+      "ultra-build.log",
+      "alive-build.log"
+    ]
+  },
+  "native_probe": {
+    "status": "passed",
+    "exit_code": 0,
+    "command": "env ULTRA_TEST_ALIVE=1 ULTRA_TEST_ALIVE_DEFAULT=1 ULTRA_TEST_ALIVE_BINARY=/home/venetanji/.local/share/alive/current-test/bin/alive ULTRA_TEST_SCREEN_SIZE=1600x1000 ULTRA_TEST_SCRIPT=\"$PWD/docs/ui-review/2026-11-02/evidence/lower-reopen/native-panel-probe.py\" bash apps/ultra/tests/check_canvas_desktop.sh --software-audio /tmp/alive-lower-reopen-native-8bcddd4-d",
+    "log": "native-final.log",
+    "raw_output": "/tmp/alive-lower-reopen-native-8bcddd4-d.log",
+    "raw_artifacts": "/tmp/alive-lower-reopen-native-8bcddd4-d",
+    "result": "native-shell-results.json",
+    "probe_sha256": "ce75b57a660a83d1a900a28e0fbc5ab82f73bd05f0c438e747646d108247c624",
+    "apps": {
+      "alive": "passed",
+      "ultra": "passed"
+    },
+    "actual_desktop_entries": true,
+    "ld_library_path_override": false,
+    "scope": "actual desktop entries, private Xvfb/DBus and software-only PipeWire; brief native playback; no physical devices or recording",
+    "startup_file_delivery": "passed",
+    "accepted_fixture": "Harmony instrument removed through real UI, leaving its MIDI-only track/source; two Utility effects loaded on Pulse; no work-limit changes",
+    "native_loop": {
+      "native_loop_disc": "changed across native observations; cleared after track Stop",
+      "observed_loop_labels": [
+        "Pulse loop position: playing, 8 beats, 14 percent, play count unavailable",
+        "Pulse loop position: playing, 8 beats, 18 percent, play count unavailable",
+        "Pulse loop position: playing, 8 beats, 24 percent, play count unavailable",
+        "Pulse loop position: playing, 8 beats, 9 percent, play count unavailable"
+      ],
+      "probe_launch_grid": "existing 1 Bar; broad quantized acceptance is separate",
+      "private_buffer_frames_requested": 512,
+      "play_count": "unavailable; no renderer estimate"
+    },
+    "native_power_and_deletion": {
+      "native_device_power": "bypass and restore acknowledged",
+      "native_device_delete": "exact second Utility instance removed",
+      "native_track_backspace": "Harmony removed; Pulse retained"
+    }
+  },
+  "native_attempts": [
+    {
+      "attempt": 1,
+      "status": "failed",
+      "log": "native-attempt1.log",
+      "snapshot": "native-attempt1-missing-control.json",
+      "capture": "native-attempt1-missing-control.png",
+      "cause": "Fourth device root refused with resource 2, observed 20, limit 18 while Harmony retained its instrument."
+    },
+    {
+      "attempt": 2,
+      "status": "failed",
+      "log": "native-attempt2.log",
+      "snapshot": "native-attempt2-missing-control.json",
+      "capture": "native-attempt2-missing-control.png",
+      "cause": "Two Utility additions instead of Utility+Lowpass still refused at existing complete-work bound with Harmony instrument retained."
+    },
+    {
+      "attempt": 3,
+      "status": "failed",
+      "log": "native-attempt3.log",
+      "snapshot": "native-attempt3-missing-control.json",
+      "capture": "native-attempt3-modal-open.png",
+      "cause": "Probe left Audio Settings open; structural Delete correctly ignored while modal retained ownership. Probe now closes modal before structural shortcut checks."
+    },
+    {
+      "attempt": 4,
+      "status": "passed",
+      "log": "native-final.log",
+      "result": "native-shell-results.json"
+    }
+  ],
+  "viewports": [
+    [
+      800,
+      600
+    ],
+    [
+      1280,
+      800
+    ],
+    [
+      1440,
+      900
+    ]
+  ],
+  "visual_inspection": {
+    "status": "completed",
+    "captures": [
+      "alive-both-reopened-800x600.png",
+      "alive-last-panel-closed-800x600.png",
+      "alive-device-overview-800x600.png",
+      "ultra-launcher-800x600.png",
+      "alive-both-reopened-1280x800.png",
+      "alive-last-panel-closed-1280x800.png",
+      "alive-device-overview-1280x800.png",
+      "ultra-launcher-1280x800.png",
+      "alive-both-reopened-1440x900.png",
+      "alive-last-panel-closed-1440x900.png",
+      "alive-device-overview-1440x900.png",
+      "ultra-launcher-1440x900.png"
+    ],
+    "screenshot_inventory": "screenshot-hashes.json",
+    "native_capture_count": 38,
+    "browser_capture_count": 9
+  },
+  "design_scan": {
+    "advisories": 13,
+    "primary_findings": 0,
+    "log": "design-scan.json",
+    "decision": "Keep existing approved reference palette."
+  },
+  "capabilities": {
+    "unique_families": 170,
+    "changed_in_this_batch": [
+      "lower-area-drag-collapse",
+      "device-rack-overview",
+      "device-track-delete-shortcuts",
+      "device-activator"
+    ],
+    "instrument_power": "unavailable; native bypass supports effects only",
+    "full_analog_live_panel": "unavailable in current Alive presentation projection; admitted 169 px saved fixture tests geometry only",
+    "browser_audio_preview": "unavailable",
+    "completed_loop_play_count": "unavailable; no renderer estimate"
+  },
+  "unrun": [
+    "new remote CI",
+    "Python helper discovery for this batch",
+    "Rust unit tests for this batch",
+    "full current-build native desktop/hosted-editor, Arrangement and Master acceptance journeys",
+    "downstream clip observation",
+    "saved-clip measurements",
+    "full resource-bound qualification",
+    "CPAL loopback",
+    "physical hardware qualification",
+    "recording",
+    "user audio settings changes"
+  ],
+  "last_remote_ci": {
+    "url": "https://github.com/venetanji/alive/actions/runs/41381006275",
+    "commit": "c8f4cb3091b9754fa5c94e8a40718e72954aab14",
+    "status": "failed",
+    "arrangement_return_save_restart_and_master": "passed on that historical commit",
+    "desktop": "failed at first live-fixture Save As with unexpected hosted editor; causal dispatch unresolved",
+    "downstream_clip_observation_saved_measurements_resource_bounds_cpal_loopback": "skipped"
+  },
+  "scope": "Bounded Alive UI correction. Existing native acknowledgements reused. No engine/DSP/host/schema expansion. Both user launchers select exact source; private software audio only."
+}

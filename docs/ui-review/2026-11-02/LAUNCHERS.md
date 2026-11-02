@@ -1,8 +1,8 @@
 # Local Test Launchers
 
-Current selection: the adaptive Clip options and lower-area collapse build from
-`c06d96e0f6e2b6851e060e3cf3cc4efafd5134f1`, snapshot
-`test-06d2a008d01d266000dd`. See [the current visual report](CLIP-OPTIONS.md)
+Current selection: the lower-panel restore and Device navigation build from
+`8bcddd4b0bc73d753c80d12096140e58a47bf482`, snapshot
+`test-72a955d96240a31a0fd5`. See [the current visual report](LOWER-REOPEN.md)
 for its matching hashes and native launcher evidence. The rest of this document
 records the earlier launcher-installation batch and its historical build.
 

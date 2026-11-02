@@ -1,5 +1,11 @@
 # Adaptive Clip Options And Lower-Area Collapse
 
+The later [lower-panel restore and Device navigation report](LOWER-REOPEN.md)
+supersedes this batch's Help retention on last-panel closure and its 190 px
+Device height. It adds the retained divider for upward restore, a 224 px Device
+row, focused deletion, effect power and footer Device navigation. The evidence
+below records the earlier build.
+
 Baseline: `b872e55e409d80f5d1cfd019e6a5205220506cf0` in
 `/tmp/alive-pr12-native-20261102`, branch `audit/pr12-native-20261102`.
 Application/helper source: `c06d96e0f6e2b6851e060e3cf3cc4efafd5134f1`.

@@ -1,0 +1,191 @@
+
+> test:browser
+> playwright test --workers=2 --reporter=list --grep focused device Delete|device overview.*1280 --output=/tmp/alive-lower-reopen-controls-red
+
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:37] "GET /canvas.html HTTP/1.1" 200 -
+
+Running 2 tests using 1 worker
+
+(node:1178508) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1178508) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /alive.html HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /alive.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /alive-piano.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /alive-shell.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /canvas-presentation-view.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /creative-shell.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /alive-browser.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /alive-session-layout.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /alive-ui-contract.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /alive-info.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /live-controls.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /live-device-view.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /alive.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /live-envelope-editor.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /canvas-presentation-view.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /alive-clip-view.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /canvas-presentation-hosts.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /alive-browser.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /creative-info.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /alive-model.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /alive-shell.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /alive-commands.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /alive-device-drop.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /alive-midi-preview.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /alive-master.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /live-controls.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /live-device-view.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /canvas-hierarchy.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /canvas-model.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /canvas-parameter-gestures.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /live-device-layout.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /canvas-help-shell.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /canvas-cable-geometry.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /canvas-appearance.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /live-envelope-editor.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /canvas-presentation.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /canvas-print-ui.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /canvas-message-ui.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /canvas-device.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /canvas-arithmetic.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:39] "GET /live-resource-pack.mjs HTTP/1.1" 200 -
+  ✘  1 alive-chain.spec.mjs:2011:41 › focused device Delete uses its native identity and preserves rejected changes (5.9s)
+(node:1178731) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1178731) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /alive.html HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /alive.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /alive-shell.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /creative-shell.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /canvas-presentation-view.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /alive-piano.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /alive-browser.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /alive.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /alive-ui-contract.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /alive-session-layout.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /alive-info.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /live-controls.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /live-device-view.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /live-envelope-editor.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /alive-clip-view.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /creative-info.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /alive-browser.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /canvas-presentation-hosts.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /canvas-presentation-view.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /alive-device-drop.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /alive-shell.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /alive-model.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /alive-commands.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /alive-master.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /alive-midi-preview.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /live-device-view.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /live-controls.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /canvas-model.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /canvas-hierarchy.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /live-envelope-editor.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /live-device-layout.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /canvas-help-shell.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /canvas-cable-geometry.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /canvas-appearance.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /canvas-parameter-gestures.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /canvas-presentation.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /canvas-device.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /canvas-print-ui.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /canvas-message-ui.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /live-resource-pack.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:22:46] "GET /canvas-arithmetic.mjs HTTP/1.1" 200 -
+  ✘  2 alive-chain.spec.mjs:2044:92 › device overview previews the real chain and scrolls it at 1280 (5.7s)
+
+
+  1) alive-chain.spec.mjs:2011:41 › focused device Delete uses its native identity and preserves rejected changes
+
+    Error: expect(locator).toContainText(expected) failed
+
+    Locator: locator('#notice')
+    Expected substring: "Native device removal rejected"
+    Received string:    "Ready. Select a clip to edit notes or automation."
+    Timeout: 5000ms
+
+    Call log:
+      - Expect "toContainText" with timeout 5000ms
+      - waiting for locator('#notice')
+        9 × locator resolved to <p id="notice" role="status" aria-label="Session status" data-help="Ready. Select a clip to edit notes or automation.">Ready. Select a clip to edit notes or automation.</p>
+          - unexpected value "Ready. Select a clip to edit notes or automation."
+
+
+      2013 |   const device=page.getByRole('button',{name:'Select Pulse Stereo Lowpass effect 2',exact:true});await device.click();
+      2014 |   await page.evaluate(()=>window.browserLoadError='Native device removal rejected');await device.press(key);
+    > 2015 |   await expect(page.locator('#notice')).toContainText('Native device removal rejected');await expect(page.locator('.chain-device')).toHaveCount(3);
+           |                                         ^
+      2016 |   expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_device').at(-1).args)).toMatchObject({action:'remove',trackId:'track-1',instanceId:'stereo-lowpass'});
+      2017 |   await page.evaluate(()=>window.browserLoadError=null);await device.press(key);await expect(page.locator('.chain-device')).toHaveCount(2);
+      2018 |   expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_track'))).toEqual([]);
+        at /tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:2015:41
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../alive-lower-reopen-controls-red/alive-chain-focused-device-a0deb--preserves-rejected-changes/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../alive-lower-reopen-controls-red/alive-chain-focused-device-a0deb--preserves-rejected-changes/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../alive-lower-reopen-controls-red/alive-chain-focused-device-a0deb--preserves-rejected-changes/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../alive-lower-reopen-controls-red/alive-chain-focused-device-a0deb--preserves-rejected-changes/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) alive-chain.spec.mjs:2044:92 › device overview previews the real chain and scrolls it at 1280 ─
+
+    Error: expect(locator).toBeInViewport() failed
+
+    Locator: getByRole('slider', { name: 'Device chain overview', exact: true })
+    Expected: in viewport
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeInViewport" with timeout 5000ms
+      - waiting for getByRole('slider', { name: 'Device chain overview', exact: true })
+
+
+      2044 | for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`device overview previews the real chain and scrolls it at ${size.width}`,async({page},testInfo)=>{
+      2045 |   await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();await page.locator('#detail-clip').click();
+    > 2046 |   const overview=page.getByRole('slider',{name:'Device chain overview',exact:true}),chain=page.locator('#chain');await expect(overview).toBeInViewport({ratio:1});
+           |                                                                                                                                         ^
+      2047 |   await expect(overview.locator('.device-overview-miniature')).toHaveCount(3);await expect(overview.locator('[id]')).toHaveCount(0);
+      2048 |   const field=page.locator('.chain-device').first().getByLabel('Cutoff base',{exact:true});await field.fill('1777');await field.evaluate(e=>window.overviewDraft=e);
+      2049 |   await overview.press('End');expect(await chain.evaluate(e=>e.scrollLeft>0)).toBe(true);await expect(overview).toHaveAttribute('aria-valuenow','100');
+        at /tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:2046:137
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../alive-lower-reopen-controls-red/alive-chain-device-overvie-c12c9-hain-and-scrolls-it-at-1280/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../alive-lower-reopen-controls-red/alive-chain-device-overvie-c12c9-hain-and-scrolls-it-at-1280/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../alive-lower-reopen-controls-red/alive-chain-device-overvie-c12c9-hain-and-scrolls-it-at-1280/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../alive-lower-reopen-controls-red/alive-chain-device-overvie-c12c9-hain-and-scrolls-it-at-1280/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    alive-chain.spec.mjs:2011:41 › focused device Delete uses its native identity and preserves rejected changes
+    alive-chain.spec.mjs:2044:92 › device overview previews the real chain and scrolls it at 1280 ──

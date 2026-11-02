@@ -1,6 +1,17 @@
 # Changed files from the PR 12 audited head
 
-The latest local correction uses application/helper/test source
+The latest local correction uses application/test source
+`8bcddd4b0bc73d753c80d12096140e58a47bf482`, relative to
+`6ba3938796c6a02c26807603e08a4f44cc0c62ee`. Its exact seven-file source inventory
+is [evidence/lower-reopen/changed-source-files.txt](evidence/lower-reopen/changed-source-files.txt).
+See [LOWER-REOPEN.md](LOWER-REOPEN.md) for dragging the lower area back open,
+last-panel Help closure, fixed Device geometry, power, focused deletion and
+the Device footer preview/navigation. The matching Alive/Ultra launcher pair
+selects that source. Report, capability and evidence changes are listed in
+[evidence/lower-reopen/changed-report-files.txt](evidence/lower-reopen/changed-report-files.txt).
+No native engine, DSP, host or document schema changes are included.
+
+The preceding local correction uses application/helper/test source
 `c06d96e0f6e2b6851e060e3cf3cc4efafd5134f1`, relative to
 `b872e55e409d80f5d1cfd019e6a5205220506cf0`. Its exact nine-file source inventory
 is [evidence/clip-options/changed-source-files.txt](evidence/clip-options/changed-source-files.txt).

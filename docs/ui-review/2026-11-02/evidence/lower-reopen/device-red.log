@@ -1,0 +1,102 @@
+
+> test:browser
+> playwright test --workers=1 --reporter=list --grep Device row fits.*1280 --output=/tmp/alive-lower-reopen-device-red
+
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:24] "GET /canvas.html HTTP/1.1" 200 -
+
+Running 1 test using 1 worker
+
+(node:1170955) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1170955) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /alive.html HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /alive.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /canvas-presentation-view.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /alive-browser.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /alive-piano.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /alive-shell.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /creative-shell.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /alive-ui-contract.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /alive-session-layout.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /alive.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /live-controls.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /alive-info.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /live-device-view.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /live-envelope-editor.css HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /creative-info.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /canvas-presentation-view.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /alive-browser.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /alive-clip-view.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /alive-piano.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /alive-device-drop.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /canvas-presentation-hosts.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /alive-shell.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /alive-commands.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /audio-settings.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /alive-model.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /alive-master.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /alive-midi-preview.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /live-controls.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /canvas-hierarchy.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /canvas-model.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /live-device-view.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /canvas-help-shell.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /canvas-cable-geometry.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /live-envelope-editor.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /live-device-layout.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /canvas-parameter-gestures.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /canvas-appearance.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /canvas-message-ui.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /canvas-device.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /canvas-presentation.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /canvas-print-ui.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /canvas-arithmetic.mjs HTTP/1.1" 200 -
+[WebServer] 127.0.0.1 - - [02/Nov/2026 20:17:26] "GET /live-resource-pack.mjs HTTP/1.1" 200 -
+  ✘  1 alive-chain.spec.mjs:19:92 › Device row fits the standard 169 pixel editor without a chain title at 1280 (5.9s)
+
+
+  1) alive-chain.spec.mjs:19:92 › Device row fits the standard 169 pixel editor without a chain title at 1280
+
+    Error: expect(locator).toBeHidden() failed
+
+    Locator:  locator('#device-detail > .chain-section > .section-heading')
+    Expected: hidden
+    Received: visible
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeHidden" with timeout 5000ms
+      - waiting for locator('#device-detail > .chain-section > .section-heading')
+        9 × locator resolved to <header class="section-heading">…</header>
+          - unexpected value "visible"
+
+
+      19 | for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`Device row fits the standard 169 pixel editor without a chain title at ${size.width}`,async({page},testInfo)=>{
+      20 |   await page.setViewportSize(size);await openSession(page,{deviceSurfaceHeight:169});await page.locator('#detail-devices').click();await page.locator('#detail-clip').click();
+    > 21 |   await expect(page.locator('#device-detail > .chain-section > .section-heading')).toBeHidden();
+         |                                                                                    ^
+      22 |   const card=page.locator('.chain-device').first(),surface=card.locator('.presentation-surface');
+      23 |   expect((await page.locator('#device-detail').boundingBox()).height).toBe(224);
+      24 |   expect(await surface.evaluate(e=>[e.offsetWidth,e.offsetHeight])).toEqual([640,169]);
+        at /tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:21:84
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../alive-lower-reopen-device-red/alive-chain-Device-row-fit-f4e34-thout-a-chain-title-at-1280/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../alive-lower-reopen-device-red/alive-chain-Device-row-fit-f4e34-thout-a-chain-title-at-1280/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../alive-lower-reopen-device-red/alive-chain-Device-row-fit-f4e34-thout-a-chain-title-at-1280/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../alive-lower-reopen-device-red/alive-chain-Device-row-fit-f4e34-thout-a-chain-title-at-1280/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    alive-chain.spec.mjs:19:92 › Device row fits the standard 169 pixel editor without a chain title at 1280
