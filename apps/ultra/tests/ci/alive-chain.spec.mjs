@@ -233,6 +233,17 @@ test('Browser drag collapses, reverses and cancels without losing its useful wid
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
 
+test('Audio diagnostics retain their accessible name when descriptions move to Help',async({page})=>{
+  await openSession(page);
+  const summary=page.getByRole('button',{name:'Audio details',exact:true});
+  await expect(summary).toBeVisible();await expect(summary).not.toHaveAttribute('title');
+  await expect(summary).toHaveAttribute('data-help','Audio details');
+  await summary.focus();await summary.press('Enter');await expect(page.locator('#audio-details')).toHaveAttribute('open','');
+  await expect(page.getByLabel('Audio backend',{exact:true})).toBeVisible();
+  await summary.press('Space');await expect(page.locator('#audio-details')).not.toHaveAttribute('open','');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
 test('Alive descriptions stay in contextual Help after dynamic updates without hover tooltips',async({page})=>{
   await openSession(page);await page.locator('#stop').hover();await expect(page.locator('#info-text')).toContainText('Stop transport');
   await page.locator('#stop').evaluate(e=>e.title='Updated Stop description');await page.waitForTimeout(150);
