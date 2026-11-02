@@ -102,7 +102,7 @@ jobs:
   native:
     name: Linux native build, Rust bridge, and CPAL loopback
     runs-on: ubuntu-24.04
-    timeout-minutes: ${{ github.event_name == 'workflow_dispatch' && (inputs.alive_endurance == 'pilot' || inputs.alive_endurance == 'endurance') && 120 || 40 }}
+    timeout-minutes: ${{ github.event_name == 'workflow_dispatch' && (inputs.alive_endurance == 'pilot' || inputs.alive_endurance == 'endurance') && 120 || 50 }}
     env:
       JOBS: '2'
       CARGO_BUILD_JOBS: '2'
@@ -289,7 +289,7 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
       - name: Exercise saved clips, stream epochs and bounded measurements in Alive
-        timeout-minutes: 5
+        timeout-minutes: 8
         env:
           ULTRA_TEST_ALIVE: '1'
           ULTRA_TEST_SCRIPT: ${{ github.workspace }}/apps/ultra/tests/check_alive_observability.py

@@ -1,0 +1,752 @@
+{
+  "ci": "https://github.com/venetanji/alive/actions/runs/41374074682",
+  "head": "2e717b4ca72d34177c1c210ee7bd01f31e4c025e",
+  "outcome": "failed: workflow saved-clips/measurement step hit five-minute wall timeout",
+  "savedClipsReportWritten": true,
+  "measurementExtensionComplete": false,
+  "downstream": {
+    "editorResources": "skipped",
+    "CPALLoopback": "skipped"
+  },
+  "lastActions": [
+    {
+      "monotonic": 2456.646393724,
+      "action": 66,
+      "control": "Select Harmony slot 1"
+    },
+    {
+      "monotonic": 2457.009636641,
+      "action": 67,
+      "control": "Replace Harmony Stereo Utility effect 1"
+    },
+    {
+      "monotonic": 2459.733083995,
+      "action": 68,
+      "control": "Open"
+    },
+    {
+      "monotonic": 2460.578118573,
+      "action": 69,
+      "control": "Save session as"
+    },
+    {
+      "monotonic": 2461.759766393,
+      "action": 70,
+      "control": "Save"
+    },
+    {
+      "monotonic": 2479.728070614,
+      "action": 71,
+      "control": "Quit Alive"
+    },
+    {
+      "monotonic": 2479.732699527,
+      "action": 72,
+      "control": "Start transport"
+    },
+    {
+      "monotonic": 2483.183420738,
+      "action": 73,
+      "control": "Stop transport"
+    },
+    {
+      "monotonic": 2502.353880713,
+      "action": 74,
+      "control": "Start transport"
+    },
+    {
+      "monotonic": 2509.50417013,
+      "action": 75,
+      "control": "Stop transport"
+    },
+    {
+      "monotonic": 2521.539673746,
+      "action": 76,
+      "control": "Start transport"
+    },
+    {
+      "monotonic": 2527.832944373,
+      "action": 77,
+      "control": "Stop transport"
+    }
+  ],
+  "resourceSamples": 169,
+  "lastResourceMonotonic": 2538.98751091,
+  "firstResourceMonotonic": 2370.987402636,
+  "lastProvenPlaybackSeconds": 5.107877097666826,
+  "samplingErrorsReportPresent": false,
+  "nativeClipsReport": {
+    "kind": "actual standalone release Alive; private Xvfb and software PipeWire",
+    "physical_audio": false,
+    "settings": {
+      "saved": {
+        "host": "default",
+        "device": "default",
+        "sample_rate": 48000,
+        "buffer_frames": 512
+      },
+      "unsupported_buffer_preserved_settings": true,
+      "stop_audio_terminated_notes": true,
+      "restart_kept_transport_stopped": true
+    },
+    "observed_buffer": 512,
+    "audio": {
+      "frames": 1628160,
+      "seconds": 33.92,
+      "peak": 0.2452431619167328,
+      "one_second_peaks": [
+        0.057776451110839844,
+        0.08066724240779877,
+        0.05925072729587555,
+        0.2452431619167328,
+        0.057776451110839844,
+        0.08066724240779877,
+        0.07089458405971527,
+        0.05925072729587555,
+        0.06597340852022171,
+        0.05925072729587555,
+        0.06597340852022171,
+        0.05925072729587555,
+        0.06597340852022171,
+        0.05925072729587555,
+        0.06597340852022171,
+        0.05925072729587555,
+        0.05582365393638611,
+        0.05013522878289223,
+        0.10149755328893661,
+        0.09191375970840454,
+        0.09115496277809143,
+        0.10149755328893661,
+        0.09115496277809143,
+        0.10149755328893661,
+        0.09115496277809143,
+        0.10149755328893661,
+        0.09115496277809143,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "unequal_stereo_samples_after_setup": 0,
+      "sha256": "68b1bcf65accaa7c09ad58111cbef575f05ae19e11f70ea16ee705d9fca14c30",
+      "path": "clips-rendered.f32",
+      "physical_audio": false,
+      "supervision": {
+        "complete": true,
+        "reason": "requested_stop",
+        "group_id": 25991,
+        "recorder_pid": 25994,
+        "returncode": 1,
+        "wall_seconds": 34.064010804999725,
+        "audio_bytes": 13025280,
+        "stderr_bytes": 0,
+        "limits": {
+          "wall_seconds": 2700.0,
+          "audio_bytes": 1073741824,
+          "metadata_bytes": 67108864,
+          "stderr_bytes": 1048576,
+          "disk_reserve_bytes": 268435456
+        }
+      }
+    },
+    "native_observations": [
+      {
+        "label": "Pulse clip runtime",
+        "value": "Session: Cued Clip 1 / request 2 applied (1 Bar) at frame 1677312 for Clip 1 / Pulse: applied",
+        "monotonic": 2379.498976517
+      },
+      {
+        "label": "Pulse clip runtime",
+        "value": "Session: Playing Clip 1 / pending launch (session) at frame 2193023 / request 4 pending (1 Bar) at frame 2193023 for Clip 1 copy / Pulse: pending",
+        "monotonic": 2388.417214308
+      },
+      {
+        "label": "Pulse clip runtime",
+        "value": "Session: Playing Clip 1 copy / request 4 applied (1 Bar) at frame 2193023 for Clip 1 copy / Pulse: applied",
+        "monotonic": 2388.999815101
+      },
+      {
+        "label": "Harmony clip runtime",
+        "value": "Arrangement: Playing Clip 1",
+        "monotonic": 2389.993361022
+      },
+      {
+        "label": "Pulse clip runtime",
+        "value": "Session: Session silence / request 5 applied (1 Bar) at frame 3221593 / Pulse: applied",
+        "monotonic": 2410.479441818
+      },
+      {
+        "label": "Harmony clip runtime",
+        "value": "Arrangement: Playing Clip 1",
+        "monotonic": 2410.933529606
+      },
+      {
+        "label": "Pulse clip runtime",
+        "value": "Arrangement: Cued Clip 1",
+        "monotonic": 2428.166586526
+      }
+    ],
+    "shared_source_errors": [
+      "Device source changed or fingerprint invalid: Track 'Harmony' instance 'instance-42ea54700900a5e41f2934d36a004f67' (../shared-utility.ultra). Selected Replace changes only that instance; stale siblings block full preparation. Stop transport and resolve pending edits; preserve the changed .ultra at a new path before restoring anything. Restore a matching original backup at the shared path, then explicitly Replace each intended instance from the preserved changed copy and Save. A matching original backup is required; without one there is no general supported recovery in the current desktop workflow. Replace gives a fresh instance identity, default bases/bypass and removes that instance's automation lanes. Copying alone or trying siblings in turn does not recover this session.",
+      "Device source changed or fingerprint invalid: Track 'Pulse' instance 'instance-793246d10b19a03cdacda3f84de3be6f' (../shared-utility.ultra). Selected Replace changes only that instance; stale siblings block full preparation. Stop transport and resolve pending edits; preserve the changed .ultra at a new path before restoring anything. Restore a matching original backup at the shared path, then explicitly Replace each intended instance from the preserved changed copy and Save. A matching original backup is required; without one there is no general supported recovery in the current desktop workflow. Replace gives a fresh instance identity, default bases/bypass and removes that instance's automation lanes. Copying alone or trying siblings in turn does not recover this session."
+    ],
+    "initial": "/home/runner/work/alive/alive/apps/ultra/build/clip-desktop-evidence/initial-v4.alive",
+    "fixture": "/home/runner/work/alive/alive/apps/ultra/build/clip-desktop-evidence/shared-owner.alive",
+    "saved": "/home/runner/work/alive/alive/apps/ultra/build/clip-desktop-evidence/moved/relocated.alive",
+    "immediate_edit_editor_continuity": true,
+    "independent_source_and_region": true,
+    "reopen_stopped_arrangement": true,
+    "sequential_shared_source_recovery": true,
+    "failed_shared_replace_editor_continuity": true,
+    "native_inputs": [
+      {
+        "action": "slash location entry",
+        "monotonic": 2234.537634551,
+        "scope": "Open Alive Session",
+        "ready_before_release": true,
+        "released": true
+      },
+      {
+        "action": "slash location entry",
+        "monotonic": 2238.033804812,
+        "scope": "Load Ultra Device",
+        "ready_before_release": true,
+        "released": true
+      },
+      {
+        "action": "slash location entry",
+        "monotonic": 2241.209483466,
+        "scope": "Load Ultra Device",
+        "ready_before_release": true,
+        "released": true
+      },
+      {
+        "action": "device selection click",
+        "monotonic": 2245.051539483,
+        "name": "Select Pulse Stereo Utility effect 1",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              890,
+              607,
+              342,
+              23
+            ],
+            "hit_path": [
+              543,
+              4194307
+            ]
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          890,
+          607,
+          342,
+          23
+        ]
+      },
+      {
+        "action": "history click",
+        "monotonic": 2274.044720713,
+        "name": "Undo",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              1065,
+              264,
+              60,
+              24
+            ],
+            "hit_path": [
+              543,
+              4194307
+            ],
+            "accessible_hit": {
+              "status": "complete",
+              "path": [
+                {
+                  "name": "* First Light - Alive",
+                  "role": "document web"
+                },
+                {
+                  "name": "Undo",
+                  "role": "push button"
+                }
+              ]
+            },
+            "web_ancestor": {
+              "status": "complete",
+              "nodes": 3
+            }
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          1065,
+          264,
+          60,
+          24
+        ]
+      },
+      {
+        "action": "history click",
+        "monotonic": 2276.863904548,
+        "name": "Redo",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              1131,
+              264,
+              60,
+              24
+            ],
+            "hit_path": [
+              543,
+              4194307
+            ],
+            "accessible_hit": {
+              "status": "complete",
+              "path": [
+                {
+                  "name": "* First Light - Alive",
+                  "role": "document web"
+                },
+                {
+                  "name": "Redo",
+                  "role": "push button"
+                }
+              ]
+            },
+            "web_ancestor": {
+              "status": "complete",
+              "nodes": 3
+            }
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          1131,
+          264,
+          60,
+          24
+        ]
+      },
+      {
+        "action": "history click",
+        "monotonic": 2307.065341053,
+        "name": "Undo",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              1065,
+              264,
+              60,
+              24
+            ],
+            "hit_path": [
+              543,
+              4194307
+            ],
+            "accessible_hit": {
+              "status": "complete",
+              "path": [
+                {
+                  "name": "* First Light - Alive",
+                  "role": "document web"
+                },
+                {
+                  "name": "Undo",
+                  "role": "push button"
+                }
+              ]
+            },
+            "web_ancestor": {
+              "status": "complete",
+              "nodes": 3
+            }
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          1065,
+          264,
+          60,
+          24
+        ]
+      },
+      {
+        "action": "disclosure click",
+        "monotonic": 2335.884944083,
+        "name": "Audio details",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              1119,
+              778,
+              73,
+              14
+            ],
+            "hit_path": [
+              543,
+              4194307
+            ]
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          1119,
+          778,
+          73,
+          14
+        ]
+      },
+      {
+        "action": "disclosure click",
+        "monotonic": 2352.339932914,
+        "name": "Audio details",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              1119,
+              778,
+              73,
+              14
+            ],
+            "hit_path": [
+              543,
+              4194307
+            ]
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          1119,
+          778,
+          73,
+          14
+        ]
+      },
+      {
+        "action": "disclosure click",
+        "monotonic": 2364.498808415,
+        "name": "Audio details",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              1119,
+              778,
+              73,
+              14
+            ],
+            "hit_path": [
+              543,
+              4194307
+            ]
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          1119,
+          778,
+          73,
+          14
+        ]
+      },
+      {
+        "action": "reorder click",
+        "monotonic": 2377.775825121,
+        "name": "Launch Pulse Clip 1",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              225,
+              87,
+              23,
+              22
+            ],
+            "hit_path": [
+              543,
+              4194307
+            ]
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          225,
+          87,
+          23,
+          22
+        ]
+      },
+      {
+        "action": "disclosure click",
+        "monotonic": 2379.069998998,
+        "name": "Pulse runtime details",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              286,
+              133,
+              66,
+              19
+            ],
+            "hit_path": [
+              543,
+              4194307
+            ]
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          286,
+          133,
+          66,
+          19
+        ]
+      },
+      {
+        "action": "disclosure click",
+        "monotonic": 2389.744249035,
+        "name": "Harmony runtime details",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              414,
+              133,
+              66,
+              19
+            ],
+            "hit_path": [
+              543,
+              4194307
+            ]
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          414,
+          133,
+          66,
+          19
+        ]
+      },
+      {
+        "action": "device selection click",
+        "monotonic": 2394.907424763,
+        "name": "Select Pulse Stereo Utility effect 1",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              890,
+              607,
+              235,
+              23
+            ],
+            "hit_path": [
+              543,
+              4194307
+            ]
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          890,
+          607,
+          235,
+          23
+        ]
+      },
+      {
+        "action": "disclosure click",
+        "monotonic": 2415.866174698,
+        "name": "Audio details",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              1119,
+              778,
+              73,
+              14
+            ],
+            "hit_path": [
+              543,
+              4194307
+            ]
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          1119,
+          778,
+          73,
+          14
+        ]
+      },
+      {
+        "action": "slash location entry",
+        "monotonic": 2421.406415236,
+        "scope": "Open Alive Session",
+        "ready_before_release": true,
+        "released": true
+      },
+      {
+        "action": "disclosure click",
+        "monotonic": 2427.790292531,
+        "name": "Pulse runtime details",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              286,
+              133,
+              66,
+              19
+            ],
+            "hit_path": [
+              543,
+              4194307
+            ]
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          286,
+          133,
+          66,
+          19
+        ]
+      },
+      {
+        "action": "device selection click",
+        "monotonic": 2432.193201179,
+        "name": "Select Pulse Stereo Utility effect 1",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              890,
+              607,
+              235,
+              23
+            ],
+            "hit_path": [
+              543,
+              4194307
+            ]
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          890,
+          607,
+          235,
+          23
+        ]
+      },
+      {
+        "action": "slash location entry",
+        "monotonic": 2439.717377491,
+        "scope": "Load Ultra Device",
+        "ready_before_release": true,
+        "released": true
+      },
+      {
+        "action": "slash location entry",
+        "monotonic": 2445.844390136,
+        "scope": "Load Ultra Device",
+        "ready_before_release": true,
+        "released": true
+      },
+      {
+        "action": "slash location entry",
+        "monotonic": 2452.525717783,
+        "scope": "Load Ultra Device",
+        "ready_before_release": true,
+        "released": true
+      },
+      {
+        "action": "slash location entry",
+        "monotonic": 2459.005058548,
+        "scope": "Load Ultra Device",
+        "ready_before_release": true,
+        "released": true
+      },
+      {
+        "action": "disclosure click",
+        "monotonic": 2464.888489249,
+        "name": "Audio details",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              1119,
+              778,
+              73,
+              14
+            ],
+            "hit_path": [
+              543,
+              4194307
+            ]
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          1119,
+          778,
+          73,
+          14
+        ]
+      }
+    ],
+    "final_audio": {
+      "Audio backend": "PipeWire",
+      "Audio device": "default_output",
+      "Audio sample rate": "48000",
+      "Audio buffer frames": "512",
+      "Audio callbacks": "5947",
+      "Audio stream errors": "0",
+      "Audio failed": "false",
+      "Audio status": "Audio is off.",
+      "Transport playing": "false",
+      "Absolute frame": "3899392",
+      "Rejected commands": "0",
+      "Native generation": "33",
+      "Track 1 active voices": "0",
+      "Track 2 active voices": "0"
+    }
+  },
+  "rawArtifactDirectory": "/tmp/alive-pr12-evidence-41374074682/clips",
+  "failedLog": "/tmp/alive-pr12-evidence-41374074682/failed-ci.log"
+}
