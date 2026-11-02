@@ -11,6 +11,25 @@ mod device_transactions;
 
 fn trace_commands() -> bool { std::env::var_os("ALIVE_TRACE_COMMANDS").as_deref() == Some(std::ffi::OsStr::new("1")) }
 
+fn trace_arrangement(record: impl FnOnce() -> serde_json::Value) {
+    if std::env::var_os("ALIVE_TRACE_ARRANGEMENT").as_deref() == Some(std::ffi::OsStr::new("1")) {
+        eprintln!("ALIVE_ARRANGEMENT {}", record());
+    }
+}
+
+fn arrangement_gap_frames(length: u64, placements: &[(u64, u64)]) -> Vec<(u64, u64)> {
+    let mut spans = placements.to_vec();
+    spans.sort_unstable();
+    let mut gaps = Vec::new();
+    let mut end = 0;
+    for (start, duration) in spans {
+        if start > end { gaps.push((end, start)); }
+        end = end.max(start.saturating_add(duration));
+    }
+    if end < length { gaps.push((end, length)); }
+    gaps
+}
+
 struct Control {
     host: Host,
     runtime: runtime::Runtime,
@@ -184,12 +203,18 @@ impl Control {
         let mut history=self.history.clone();if history.record_with_launch(&before,&document,&before_launch,&after_launch,"Workspace edit")?{self.publish_music(&before,&document,&after_launch,&history)?;}Ok(affected)
     }
     fn workspace_action(&mut self,label:&str,generation:u64,preparation_revision:&str,action:runtime_workspaces::Action)->Result<runtime_workspaces::RequestResult,String>{
+        trace_arrangement(||serde_json::json!({"kind":"request","window":label,"generation":generation,"preparationRevision":preparation_revision,"action":action}));
         main_only(label)?;check_generation(self.generation,generation)?;
         self.reconcile_publication();if self.publication_pending.is_some(){return Err("Music is awaiting playback; refresh before launching".into())}
         if runtime::decimal(preparation_revision)?!=self.host.preparation_revision{return Err("Prepared workspace changed. Refresh before playback".into());}
 
         if !self.driver.snapshot().running{return Err("Start Audio before workspace playback".into());}
-        self.runtime.workspace_request(&self.host,action)
+        let result=self.runtime.workspace_request(&self.host,action);
+        trace_arrangement(||match &result {
+            Ok(receipt)=>serde_json::json!({"kind":"receipt","generation":generation,"receipt":receipt}),
+            Err(error)=>serde_json::json!({"kind":"requestError","generation":generation,"error":error}),
+        });
+        result
     }
 
 
@@ -237,6 +262,17 @@ impl Control {
         let (native_state,runtime)=if awaiting&&self.publication_pending.is_none(){self.runtime.poll(&self.host)?}else{polled?};
         self.snapshot_sequence=sequence;
         let prepared=self.host.prepared.as_ref().ok_or("Open an Alive session")?;let limits=host::workspace_limits()?;
+        // State and receipts come from the same native poll, before renderer navigation.
+        trace_arrangement(|| {
+            let score = &prepared.saved.score;
+            let gaps = workspaces::frame_at(score.length_beats, score.tempo).ok().map(|length| {
+                score.tracks.iter().enumerate().map(|(index, track)| {
+                    let spans = prepared.schedule.placements.iter().filter(|p|p.descriptor.track as usize == index).map(|p|(p.descriptor.start_frame, p.descriptor.duration_frames)).collect::<Vec<_>>();
+                    serde_json::json!({"trackId":track.id,"intervals":arrangement_gap_frames(length, &spans).iter().map(|(start,end)|serde_json::json!({"startFrame":start.to_string(),"endFrame":end.to_string()})).collect::<Vec<_>>()})
+                }).collect::<Vec<_>>()
+            });
+            serde_json::json!({"kind":"snapshot","generation":self.generation,"preparationRevision":self.host.preparation_revision.to_string(),"snapshotSequence":sequence.to_string(),"state":native_state,"runtime":runtime,"tempo":score.tempo,"songLoop":{"enabled":score.loop_enabled,"startBeats":score.loop_start_beats,"endBeats":score.loop_end_beats},"placements":score.placements,"gapBounds":gaps,"preparedWorkspaces":runtime_workspaces::prepared(&self.host).ok()})
+        });
         let midi_edit=super::native_publication::require(self.host.preparation_revision).map(|_|());
         let midi_preview=super::native_midi::require(self.host.preparation_revision).map(|_|());
         let midi_unavailable_reason=midi_edit.as_ref().err().or_else(||midi_preview.as_ref().err()).cloned();
@@ -771,6 +807,13 @@ pub fn run(mut context: tauri::Context<tauri::Wry>, path: Option<PathBuf>) {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn arrangement_trace_gaps_keep_exact_half_open_compiled_boundaries() {
+        assert_eq!(arrangement_gap_frames(160, &[(125, 25), (0, 80), (95, 25)]), vec![(80, 95), (120, 125), (150, 160)]);
+        assert_eq!(arrangement_gap_frames(160, &[(0, 80), (80, 80)]), vec![]);
+        assert_eq!(arrangement_gap_frames(160, &[]), vec![(0, 160)]);
+        assert_eq!(arrangement_gap_frames(160, &[(20, 100)]), vec![(0, 20), (120, 160)]);
+    }
 use super::*;
 pub(super) fn musical_control()->Control {
  let prepared=read(&Path::new(env!("CARGO_MANIFEST_DIR")).join("../../alive/examples/two-instruments.alive")).unwrap();

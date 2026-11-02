@@ -2,7 +2,7 @@
 use super::{host::Host,native as n,PreparedSession,prepare_workspaces::PreparedWorkspaces};
 use serde::{Deserialize,Serialize};
 
-#[derive(Clone,Deserialize)]
+#[derive(Clone,Deserialize,Serialize)]
 #[serde(tag="kind",rename_all="camelCase",rename_all_fields="camelCase",deny_unknown_fields)]
 pub enum Action {Launch{track_id:String,slot_id:String},Stop{track_id:String},Return{track_ids:Vec<String>},Scene{slot:usize},Start{},Seek{beat:f64}}
 #[derive(Clone,Default,Serialize)]

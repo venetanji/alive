@@ -240,6 +240,7 @@ jobs:
           ULTRA_TEST_ALIVE_BINARY: ${{ github.workspace }}/apps/ultra/src-tauri/target/release/alive
           ULTRA_TEST_ALIVE_SESSION: ${{ github.workspace }}/apps/alive/examples/midi-arrangement.alive
           ULTRA_TEST_SCRIPT: ${{ github.workspace }}/apps/ultra/tests/check_alive_arrangement.py
+          ALIVE_TRACE_ARRANGEMENT: '1'
         run: bash apps/ultra/tests/check_canvas_desktop.sh "$GITHUB_WORKSPACE/apps/ultra/build/arrangement-desktop-evidence"
       - name: Save Arrangement evidence even on failure
         if: always()
