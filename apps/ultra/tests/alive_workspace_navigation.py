@@ -37,7 +37,7 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
             return
         runtime = re.fullmatch(r'(.+) clip runtime', name)
         if runtime:
-            expand(runtime.group(1) + ' runtime details', activate_disclosure)
+            # Runtime is a passive accessible output; reading it must not activate UI.
             return
         scene = re.fullmatch(r'Scene (\d+) (?:request|clips)', name)
         if scene:

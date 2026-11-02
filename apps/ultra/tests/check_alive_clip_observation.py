@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Actual native regressions for tooltip activation and transient clip receipts."""
+"""Actual native regressions for owned disclosure input and passive clip receipts."""
 import json
 import os
 from pathlib import Path
@@ -29,14 +29,13 @@ def quit_alive(*, unsaved=True):
 
 def run():
     windows.focus(alive.MAIN)
-    # The pinned mixer leaves the runtime row too far below slot 4 in tall windows.
-    # Use the real compact layout to establish the covering-tooltip precondition.
     presentation.capture(800, 600)
     ui.wait_for('Select Pulse slot 4')
-    summary = ui.wait_for('Pulse runtime details')
+    target = 'Source / Clip'
+    summary = ui.wait_for(target)
     assert not summary.get_state_set().contains(alive.Atspi.StateType.EXPANDED)
-    covering = alive.force_covering_tooltip('Pulse runtime details', 'Select Pulse slot 4',
-                                          kind='disclosure')
+    runtime = alive.value('Pulse clip runtime')
+    assert runtime
     write_error = os.environ.get('ALIVE_TEST_DISCLOSURE_WRITE_ERROR') == '1'
     blocked = os.environ.get('ALIVE_TEST_DISCLOSURE_BLOCKED') == '1'
     input_error = os.environ.get('ALIVE_TEST_DISCLOSURE_INPUT_ERROR') == '1'
@@ -45,6 +44,9 @@ def run():
     press_error = AssertionError('Deliberately unavailable native disclosure press')
     failed_writes = []
     releases = []
+
+    def activate():
+        return alive.native_control_click(target, 'disclosure', record=alive.record_disclosure_input)
 
     def unavailable_write(path, contents, *args, **kwargs):
         if (write_error and path == ui.output / 'native-inputs.json' and
@@ -67,21 +69,21 @@ def run():
     try:
         if input_error:
             try:
-                alive.value('Pulse clip runtime')
+                activate()
             except AssertionError as error:
                 assert error is press_error, 'The original native input exception must propagate'
             else:
                 raise AssertionError('Native input failure was swallowed')
         elif blocked:
             try:
-                alive.value('Pulse clip runtime')
+                activate()
             except AssertionError as error:
                 assert str(error) == ('Native disclosure target remains occluded or unavailable: '
-                                      'Pulse runtime details')
+                                      'Source / Clip')
             else:
                 raise AssertionError('Blocked owned-window input was accepted')
         else:
-            runtime = alive.value('Pulse clip runtime')
+            activate()
     finally:
         Path.write_text, alive.native_hit_path = original_write, original_hit
         ui.t.XTestFakeButtonEvent = original_button
@@ -107,10 +109,9 @@ def run():
         print('PASS original native readiness/input failure and Quit', flush=True)
         return
     assert runtime
-    assert ui.wait_for('Pulse runtime details').get_state_set().contains(alive.Atspi.StateType.EXPANDED)
+    assert ui.wait_for(target).get_state_set().contains(alive.Atspi.StateType.EXPANDED)
     receipts = [row for row in alive.native_inputs if row['action'] == 'disclosure click']
     assert len(receipts) == 1 and receipts[0]['presses'] == receipts[0]['releases'] == 1
-    assert covering['owner'] not in covering['hit_path']
     assert receipts[0]['owner'] in receipts[0]['samples'][-1]['hit_path']
     presentation.capture(1280, 800)
 
@@ -140,7 +141,7 @@ def run():
     assert audio['Audio stream errors'] == '0' and audio['Audio failed'] == 'false', audio
     assert audio['Rejected commands'] == '0' and audio['Transport playing'] == 'false', audio
     quit_alive()
-    report = {'physical_audio': False, 'covering_tooltip': covering,
+    report = {'physical_audio': False, 'disclosure_target': target, 'runtime_is_passive': True,
               'single_disclosure_click': receipts[0], 'late_position': late_position,
               'launch_position_beats': launch_position, 'pending': pending, 'applied': applied,
               'settings': settings, 'audio': audio, 'quit_discard_exited': True,

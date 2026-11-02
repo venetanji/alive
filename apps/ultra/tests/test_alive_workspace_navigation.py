@@ -102,6 +102,14 @@ class NavigationTest(unittest.TestCase):
         ui.click('Stop Pulse track', observer=observer)
         self.assertEqual(calls, [('Stop Pulse track', {'observer': observer})])
 
+    def test_passive_runtime_observation_never_opens_a_disclosure_or_dispatches_input(self):
+        def unexpected(*args, **kwargs):
+            raise AssertionError('A runtime read must not navigate or activate a control')
+        ui = types.SimpleNamespace(click=unexpected, text=unexpected, wait_for=unexpected)
+        prepare = navigation.install(ui, types.SimpleNamespace(scope='Alive'), None, unexpected)
+        prepare('Pulse clip runtime')
+        prepare('Harmony clip runtime')
+
     def test_add_note_closes_open_source_disclosure_before_real_click(self):
         calls = []
         class Control:
