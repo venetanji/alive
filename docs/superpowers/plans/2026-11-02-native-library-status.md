@@ -715,6 +715,95 @@ of side effects. Later graph attachment and dummy publication remain unresolved.
 Retained report `workers/electric-unit-construction-r1/report.md`, SHA-256
 `8f94f89197bc92c715f38bfeaf800ff729ad578de1d681b50c79d1ad1b885294`.
 
+The complete local manual native runner passes at exact commit
+`8be296d95ecc4e0f4ea5173e33dbdc863ee87499` in 263.28 seconds
+(`release-bc1-full-native-r1-result.json`). The matching paired build is selected
+by both launchers as `test-0e5d15ba5130f2d905dd`; the coordinator freshly verifies
+all 18 artifact hashes. Actual Tauri/WebKit layout smoke passes at 800x600,
+1280x800 and 1440x900, including repeated independent Clip/Device toggles and
+visible target bounds. All six initial/restored screenshots from
+`paired-native-smoke-8be296d-r2/` are visually inspected. The first smoke's
+1440x900 capture exceeded its default 1280x840 private display; its successful
+geometry assertions and clipped capture remain retained in r1. R2 uses a
+1600x1000 private display and captures the complete application. Verification is
+retained in `checkpoint-8be296d-coordinator-validation.json`. This is software
+evidence, not native-profile publication or physical hardware qualification.
+Manual CI run 41530372161 is still pending at this checkpoint.
+
+The reviewed U1 design reuses the existing shared queue, `document_commit`,
+native state-only admission and owning history. Its only backend extension is
+an optional owner/runtime precondition on the existing commit: authoring CAS
+alone cannot detect force-reapply at unchanged authoring revision. Exact source
+comparison remains necessary on every frontend retry. Raw untouched native
+numbers must also survive subsequent unrelated generic edits. U1 returns native
+status `unobserved` and keeps panel inputs disabled. The implementation is
+isolated from the tested checkout until independent review. Concrete design:
+`workers/analog-source-command-design-r1/report.md`, SHA-256
+`54521a0d4acd4cd4130b797c376f70c806869d1ea0bb97900d95e4cdeba4558f`.
+
+The C2 design now targets actual prepared reducer traces rather than another
+disconnected synthetic plan. Existing ordered event and shared-debit hooks need
+one additional, separately opted-in clear-intent observation; its inline null
+default keeps existing trace tests link-compatible. A pure adapter would derive
+the reservation plan from that complete trace and independently check frame and
+operation-prefix admission. This is a proposed test-only bridge to the actual
+producer, not a production caller or admission certificate. The actual bank
+still permits all 16 queued records without reserved release space and clears
+its queued count before validating render success; neither behavior proves Off
+delivery. Runtime queue synchronization, continuous release routing and measured
+work remain separate. The read-only design is
+`workers/release-c2-design-r1/report.md`, SHA-256
+`15a9caa77ff7beb7dcf49703693e17fdb959be10c441088475b03be1c7050c15`.
+
+The next panel integration is separated into U2a read-only acquisition and U2b
+draft/grouped-commit settlement. U2a reuses U1's raw canonical source, loads exact
+installed resources, joins real native requested/applied observations, and
+rechecks node/runtime/full-source identity across asynchronous work. Current
+mapping groups decode independently so one nonrepresentable group does not
+erase the whole panel. Its physical display allowlist starts empty: the older
+display bindings are not current-host qualification. U2b must preserve rejected
+drafts and enroll asynchronously mounted controls in save/close settlement
+before any input activation. No backend API extension is proposed for U2a.
+The read-only design is `workers/analog-panel-u2-design-r1/report.md`, SHA-256
+`8fa62a84671ffc05bdd44a5f9fda2b4ce0e6df9c3db349e4aa1d19fca093a97e`.
+
+U1 is implemented and independently reviewed in commits `54fde6a` and
+`da893705f2efc51aa08ec7d9a7bda9c3acee1022`. The five-file batch adds exact-source
+read/queued commit methods, the optional existing-command owner/runtime guard,
+and covering controller/Registry regressions. Untouched raw values survive
+later generic edits; ambiguous writes reconcile once without replay or rollback;
+conflicting queued edits are isolated while independent later edits survive.
+Native status remains `unobserved`; panel inputs and native admission remain
+disabled. No DSP API, history owner, engine limit or driver policy is added.
+
+Task U1: fix round 1/5 (one malformed-acceptance finding addressed, zero open).
+The first review demonstrates that a fabricated changed-source acceptance at
+unchanged authoring/publication revisions can taint canonical state and then
+be replayed by an unrelated layout edit. Retained REDs precede the fix. Changed
+acceptances now require exactly the invocation base plus one authoring revision
+and a safe advanced descriptor publication before adoption. A valid older reply
+overtaken by a newer source/runtime broadcast retains the newer canonical state.
+Independent re-review passes 66 focused, five original adversarial and three
+additional broadcast-ordering cases, with no new findings. Report:
+`workers/source-u1-independent-review/r2/report.md`, SHA-256
+`45dd15d457e7853005f7c5b5b10f41157cdaf4daef4f933c02458a5f43f473d5`.
+Task U1: complete (commits `8be296d`..`da89370`, review clean).
+
+The integrated configured Node run passes all 826 tests with zero skips
+(`source-u1-configured-node-r2/`). Pinned Rust 1.85.1 release verification passes
+all 324 nonignored tests with five ignored and zero filtered; the final
+JavaScript-only fix leaves its Rust sources unchanged
+(`source-u1-release-rust-r1/`). The separate opt-in actual Analog test passes
+commanded-state, owning history, save, destruction and reopen
+(`source-u1-ordinary-native-state-r1/`); it does not qualify original defaults,
+musical lifecycle or Alive playback. The full development-build Rust run
+reproduces the previously retained allocator instrumentation failure:
+323 passed, one failed, five ignored (`source-u1-full-rust-r1/`). The release
+pass does not explain or erase that failure; no case is excluded or weakened.
+The full configured Chromium run and final paired rebuild/desktop smoke are
+still pending at this source checkpoint. Their subsequent private result
+manifests must be consulted before claiming acceptance or build selection.
+
 ## Next Gates
 
 1. Finish reviewed profile facts and original editor geometry, keeping unresolved
@@ -724,9 +813,11 @@ Retained report `workers/electric-unit-construction-r1/report.md`, SHA-256
    No native Host configuration path is enabled by the companion foundation.
 3. Account for native releases in every scheduled/optional/emergency work ledger;
    qualify Start/Stop/seek/loop/clip transitions against actual native owners.
-4. Add stopped instance-authorized native state commands/history, connect the
-   original panel through acknowledged transactions, and finish original state
-   and editor qualification for the first profiles.
+4. Add exact-source, owner/runtime-authorized native state commits through the
+   existing queue/history, then connect the original panel through acknowledged
+   transactions. Ordinary Ultra state-only publication retains its existing
+   running-audio capability; graph replacement retains its driver fence. Finish
+   original state and editor qualification for the first profiles.
 5. Rebuild matching Alive/Ultra/native artifacts and atomically refresh both local
    launchers after each verified checkpoint; report exact selected provenance.
 6. Complete software-native acceptance, including previously skipped clip,
