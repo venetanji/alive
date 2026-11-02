@@ -1,11 +1,11 @@
-.clip-area{display:flex;flex-direction:column;height:calc(var(--detail-height) - 27px);min-height:247px;overflow:hidden;background:#2b2b2b}
-.clip-view-tools{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;flex:0 0 auto;min-height:26px;min-width:0;padding:2px 7px;background:#292929;border-bottom:1px solid #505050;white-space:nowrap}
+.clip-area{display:flex;flex-direction:column;height:calc(var(--detail-height) - 27px);min-height:247px;overflow:hidden;background:#3b3b3b}
+.clip-view-tools{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;flex:0 0 auto;min-height:22px;min-width:0;padding:2px 7px;background:#414141;border-bottom:1px solid #505050;white-space:nowrap}
 .clip-view-tools>*{flex-shrink:0}
 .clip-tool-group{display:flex;align-items:center;gap:2px}.clip-tool-group>span{font-size:11px;color:var(--muted);padding-right:3px}
-.clip-view-tools button{min-width:22px;height:21px;min-height:21px;padding:0 5px;font-size:12px;line-height:18px;border-color:#565656}
+.clip-view-tools button{min-width:22px;height:19px;min-height:19px;padding:0 5px;font-size:10px;line-height:16px;border-color:#565656}
 .clip-view-range{margin-left:auto;min-width:max-content;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
 :is(#piano-roll,#audio-waveform){flex:1 0 156px;width:100%;height:156px;min-height:156px;overflow:hidden;display:block;touch-action:none;cursor:crosshair}
-:is(#piano-roll,#audio-waveform) text,.piano-velocity-lane text{font-family:"Liberation Sans","Helvetica Neue",sans-serif;user-select:none}
+:is(#piano-roll,#audio-waveform) text,.piano-velocity-lane text{font-family:Arial,Helvetica,sans-serif;user-select:none}
 :is(#piano-roll,#audio-waveform) [data-key]{cursor:default}:is(#piano-roll,#audio-waveform) [data-part=body]{cursor:move}:is(#piano-roll,#audio-waveform) [data-part=resize]{cursor:ew-resize}
 /* Keep empty-grid clicks on the stable SVG while selection redraws its marks. */
 :is(#piano-roll,#audio-waveform) rect,:is(#piano-roll,#audio-waveform) line,:is(#piano-roll,#audio-waveform) text{pointer-events:none}
@@ -16,7 +16,7 @@
 .clip-area .note-velocity{display:flex;flex:0 0 25px;height:25px;min-height:25px;gap:8px;padding:2px 9px;border-top:1px solid #454545;font-size:11px}
 .clip-area .note-velocity input{width:130px;min-height:17px}.clip-area .note-velocity output{min-width:75px}
 
-.clip-region-tools{display:flex;flex-wrap:wrap;align-items:center;gap:5px 12px;flex:0 0 auto;min-height:31px;padding:4px 8px;background:#2b2b2b;border-bottom:1px solid #505050;font-size:11px;font-variant-numeric:tabular-nums}
+.clip-region-tools{display:flex;flex-wrap:wrap;align-items:center;gap:5px 12px;flex:0 0 auto;min-height:31px;padding:4px 8px;background:#3b3b3b;border-bottom:1px solid #505050;font-size:11px;font-variant-numeric:tabular-nums}
 .clip-region-tools label{display:flex;align-items:center;gap:5px;white-space:nowrap}
 .clip-region-tools input[type=number]{width:58px;height:22px;min-height:22px;padding:1px 4px}
 .clip-region-tools input[type=checkbox]{width:13px;height:13px;min-height:13px;margin:0}
@@ -35,8 +35,8 @@
 
 /* Clip properties stay beside the editor; each side scrolls independently. */
 .clip-area.has-source{display:grid;grid-template-columns:clamp(150px,22%,210px) minmax(0,1fr);grid-template-rows:auto minmax(156px,1fr) auto auto;align-items:stretch}
-.clip-properties{grid-column:1;grid-row:1 / -1;min-width:0;min-height:0;overflow:auto;overscroll-behavior:contain;background:var(--chrome);border-right:1px solid var(--line)}
-.clip-properties>details>summary{padding:5px 7px;border-bottom:1px solid var(--line);font-size:11px;color:var(--text)}
+.clip-properties{grid-column:1;grid-row:1 / -1;min-width:0;min-height:0;overflow:auto;overscroll-behavior:contain;background:#3b3b3b;border-right:5px solid #292929}
+.clip-properties>details>summary{padding:3px 6px;height:22px;border-bottom:1px solid var(--line);font-size:11px;color:var(--text);background:#444}
 .clip-properties-heading{display:none}
 .clip-area.has-source>.clip-view-tools{grid-column:2;grid-row:1}
 .clip-area.has-source>:is(#piano-roll,#audio-waveform,.audio-clip-empty){grid-column:2;grid-row:2;min-width:0;height:100%}
@@ -68,3 +68,5 @@
   .clip-properties{display:flex;align-items:flex-start}
   .clip-properties>details{flex:1 0 130px;min-width:0}
 }
+
+.clip-properties>details:first-child>summary{background:#af7dbe;color:#17121b;font-weight:bold}

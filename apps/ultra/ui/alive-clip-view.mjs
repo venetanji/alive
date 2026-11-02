@@ -172,7 +172,7 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
       const region=last.region,loopStart=beatX(region.loopStart,g),loopEnd=beatX(region.loopEnd,g);
       for(const [key,input]of Object.entries(regionInputs))if(doc.activeElement!==input&&!isDraft(input))input.value=String(key==='loopLength'?region.loopEnd-region.loopStart:region[key]);
       loopToggle.checked=region.loopEnabled;loopSelection.disabled=!last.timeSelection;
-      const color=region.loopEnabled?'#c8ae74':'#898983',brace=clip(svg,'piano-clip-markers',pad-1,17,width-pad+2,35);
+      const color=region.loopEnabled?'#acc8b7':'#898983',brace=clip(svg,'piano-clip-markers',pad-1,17,width-pad+2,35);
       brace.append(make('rect',{x:loopStart,y:21,width:Math.max(1,loopEnd-loopStart),height:10,fill:color,'data-region':'loopMove','aria-label':'Clip loop brace'}));
       for(const [kind,x]of [['loopLeft',loopStart],['loopRight',loopEnd]])brace.append(make('rect',{x:x-4,y:19,width:8,height:15,fill:color,'data-region':kind,'aria-label':kind==='loopLeft'?'Loop start handle':'Loop end handle'}));
       for(const [kind,beat]of [['start',region.start],['end',region.end]]){
@@ -185,8 +185,8 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
     const notes=clip(svg,'piano-note-bodies',pad,top,width-pad,height-top);
     for(const [index,note]of (audio?[]:last.notes).entries()){
       const x=beatX(note.beat,g)+1,y=top+(g.max-note.pitch)*pitchHeight+1,w=Math.max(2,note.duration*g.pixelsPerBeat-2),h=Math.max(1,pitchHeight-2),chosen=last.selectedNote===note.id;
-      const body=make('rect',{x,y,width:w,height:h,rx:1,fill:chosen?'#f1c77d':'#c8ae74',stroke:chosen?'#91b9ed':'#2b2924','stroke-width':chosen?2:.5,'data-note':index,'data-part':'body','aria-selected':chosen,'aria-label':`${pitchName(note.pitch)}, beat ${note.beat+1}, velocity ${note.velocity}`});
-      notes.append(body,make('rect',{x:x+Math.max(0,w-6),y,width:Math.min(6,w),height:h,fill:chosen?'#91b9ed':'#ab9461',stroke:'none','data-note':index,'data-part':'resize'}));
+      const body=make('rect',{x,y,width:w,height:h,rx:1,fill:chosen?'#dfc5ac':last.color??'#c8ae74',stroke:chosen?'#91b9ed':'#2b2924','stroke-width':chosen?2:.5,'data-note':index,'data-part':'body','aria-selected':chosen,'aria-label':`${pitchName(note.pitch)}, beat ${note.beat+1}, velocity ${note.velocity}`});
+      notes.append(body,make('rect',{x:x+Math.max(0,w-6),y,width:Math.min(6,w),height:h,fill:chosen?'#819da3':last.color??'#ab9461',stroke:'none','data-note':index,'data-part':'resize'}));
       if(w>33&&h>=10)text(notes,x+4,y+Math.min(h-1,10),pitchName(note.pitch),{fill:'#302a1f','pointer-events':'none'});
     }
     notes.append(make('line',{class:'playhead',x1:pad,x2:pad,y1:top,y2:height,stroke:'#eeeeec','stroke-width':1,'pointer-events':'none'}));
@@ -197,7 +197,7 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
   function drawVelocity(){
     const height=40,bottom=36,top=8;
     velocityLane.setAttribute('viewBox',`0 0 ${g.width} ${height}`);velocityLane.setAttribute('preserveAspectRatio','xMinYMin meet');
-    velocityLane.replaceChildren();velocityLane.append(make('rect',{x:0,y:0,width:g.width,height,fill:'#292929',stroke:'none'}));
+    velocityLane.replaceChildren();velocityLane.append(make('rect',{x:0,y:0,width:g.width,height,fill:'#393939',stroke:'none'}));
     text(velocityLane,5,16,'Vel');text(velocityLane,5,31,'1-127',{'font-size':9});
     const stems=clip(velocityLane,'piano-velocity-stems',g.pad,0,g.width-g.pad,height);
     stems.append(make('line',{x1:g.pad,x2:g.width,y1:bottom,y2:bottom,stroke:'#555'}));
@@ -206,8 +206,8 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
     ordered.sort((a,b)=>Number(last.selectedNote===a.note.id)-Number(last.selectedNote===b.note.id));
     ordered.forEach(({note,index})=>{
       const x=beatX(note.beat,g),chosen=last.selectedNote===note.id,y=bottom-(note.velocity/127)*(bottom-top);
-      stems.append(make('line',{x1:x,x2:x,y1:y,y2:bottom,stroke:chosen?'#91b9ed':'#c8ae74','stroke-width':chosen?2:1,'pointer-events':'none'}));
-      stems.append(make('rect',{x:x-3,y:y-3,width:7,height:7,fill:chosen?'#91b9ed':'#c8ae74',stroke:'#272727','data-note':index,'data-part':'velocity','aria-label':`Note ${index+1} velocity ${note.velocity}`}));
+      stems.append(make('line',{x1:x,x2:x,y1:y,y2:bottom,stroke:chosen?'#a7c8cd':'#8dbab1','stroke-width':chosen?2:1,'pointer-events':'none'}));
+      stems.append(make('rect',{x:x-3,y:y-3,width:7,height:7,fill:chosen?'#a7c8cd':'#8dbab1',stroke:'#272727','data-note':index,'data-part':'velocity','aria-label':`Note ${index+1} velocity ${note.velocity}`}));
     });
   }
   const wheel=event=>{

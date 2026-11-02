@@ -39,11 +39,15 @@ export function mountBrowser({doc,root,onLoad,onSource,onCatalog,onNavigate=()=>
   const body=make('div','browser-body'),nav=make('nav','browser-categories'),results=make('div','browser-results'),heading=make('div','browser-results-heading','Name'),list=make('div','browser-list'),empty=make('p','browser-empty'),footer=make('div','browser-selection'),description=make('p','browser-description'),activate=make('button','browser-load','Load'),status=make('p','browser-status');
   nav.setAttribute('aria-label','Browser categories');list.setAttribute('role','tree');list.setAttribute('aria-label','Browser results');list.tabIndex=0;
   status.setAttribute('role','status');description.textContent='Select a device or clip';
-  toolbar.append(search,refresh);results.append(heading,list,empty);body.append(nav,results);footer.append(description,activate);root.append(toolbar,body,footer,status);
+  const filters=make('div','browser-filters'),preview=make('div','browser-preview'),previewButton=make('button','','Preview');
+  for(const label of ['Sounds','Character','Devices']){const filter=make('button','browser-filter',label);filter.disabled=true;filter.title='Unavailable: the catalog does not expose tags or filter groups.';filters.append(filter);}
+  previewButton.disabled=true;previewButton.setAttribute('aria-label','Browser audio preview unavailable');previewButton.title='Unavailable: Browser audio preview has no provider or native contract.';preview.append(previewButton,make('span','','Audio preview unavailable'));
+  toolbar.append(search,refresh);results.append(filters,heading,list,empty);body.append(nav,results);footer.append(description,activate);results.append(footer,preview);root.append(toolbar,body,status);
   let category='all',selected=null,entries=[],state={},bundled=[],catalogState='idle',catalogError='',catalogNotices=[],requestOwner=0,key='',resultsKey='',disposed=false;const expanded=new Set();
   const categoryButtons=[];
+  nav.append(make('div','browser-group-label','Library'));
   for(const [id,label]of categories){
-    const button=make('button','browser-category',label);button.setAttribute('aria-label',`Browse ${label}`);button.addEventListener('click',()=>{category=id;paint();if(id!=='source')ensureCatalog();});nav.append(button);categoryButtons.push([id,button]);
+    const button=make('button','browser-category'),glyph=make('span',`browser-glyph ${id}`);glyph.setAttribute('aria-hidden','true');button.append(glyph,make('span','',label));button.setAttribute('aria-label',`Browse ${label}`);button.addEventListener('click',()=>{category=id;paint();if(id!=='source')ensureCatalog();});nav.append(button);categoryButtons.push([id,button]);
   }
   function selectedEntry(){return entries.find(entry=>entry.id===selected);}
   async function ensureCatalog(refreshIndex=false){

@@ -70,7 +70,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     const svg=svgElement('svg',{viewBox:'0 0 18 18','aria-hidden':'true',focusable:'false'});svg.append(svgElement('path',{d:paths[kind]??paths.file}));return svg;
   }
   function decorate(button,kind,label,{only=false}={}){button.replaceChildren(icon(kind),make('span',only?'sr-only':'',label));button.title=button.getAttribute('aria-label')??label;}
-  for(const[id,kind]of Object.entries({'toggle-browser':'browser','view-session':'session','view-arrangement':'arrangement','detail-devices':'devices','toggle-detail':'detail','add-track':'instrument','add-effect':'effect','new':'file','open':'file','save':'save','save-as':'save','edit-device':'edit','undo':'undo','redo':'redo'}))decorate($(id),kind,$(id).textContent);
+  for(const[id,kind]of Object.entries({'toggle-browser':'browser','view-session':'session','view-arrangement':'arrangement','toggle-detail':'detail','add-track':'instrument','add-effect':'effect','new':'file','open':'file','save':'save','save-as':'save','edit-device':'edit','undo':'undo','redo':'redo'}))decorate($(id),kind,$(id).textContent);
   for(const[id,kind]of [['start','play'],['stop','stop']])decorate($(id),kind,id==='start'?'Start':'Stop',{only:true});
   const quantizations=[['none','None'],['thirtySecond','1/32'],['sixteenth','1/16'],['eighth','1/8'],['quarter','1/4'],['half','1/2'],['bar1','1 Bar'],['bar2','2 Bars'],['bar4','4 Bars'],['bar8','8 Bars']];
   const gridLabel=value=>quantizations.find(([key])=>key===value)?.[1]??'1 Bar';
@@ -124,7 +124,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     gain.type='range';gain.min='0';gain.max='4';gain.step='.01';gain.setAttribute('aria-label','Master gain fader');gain.setAttribute('aria-orientation','vertical');
     number.type='number';number.min='0';number.max='4';number.step='.01';number.setAttribute('aria-label','Master gain');
     leftText.setAttribute('aria-label','Master left peak');rightText.setAttribute('aria-label','Master right peak');readout.setAttribute('aria-label','Master gain decibels');state.setAttribute('aria-label','Master output status');unity.setAttribute('aria-label','Reset Master gain to unity');reset.setAttribute('aria-label','Reset Master digital overload');decorate(unity,'reset','Unity');decorate(reset,'reset','Overload');
-    bars.setAttribute('aria-label','Master stereo peak');bars.append(left,right);const meterArea=make('div','master-meter-area');meterArea.append(bars,leftText,rightText);const marks=make('div','master-marks');marks.append(make('span','','+12'),make('span','','0'),make('span','','-inf'));const faderArea=make('div','master-fader-area');faderArea.append(gain,marks,meterArea);const actions=make('div','master-actions');actions.append(unity,reset);const top=make('div','master-gain-top');top.append(number,readout);root.append(top,faderArea,actions,state);container.append(root);
+    bars.setAttribute('aria-label','Master stereo peak');bars.append(left,right);const meterArea=make('div','master-meter-area');meterArea.append(bars,leftText,rightText);const marks=make('div','master-marks');marks.append(make('span','','1'),make('span','','.5'),make('span','','0'));const faderArea=make('div','master-fader-area');faderArea.append(gain,marks,meterArea);const actions=make('div','master-actions');actions.append(unity,reset);const top=make('div','master-gain-top');top.append(number,readout);root.append(top,faderArea,actions,state);container.append(root);
     gain.addEventListener('input',()=>masterProducer.gain(Number(gain.value)));gain.addEventListener('dblclick',()=>masterProducer.gain(1));
     number.addEventListener('change',()=>{const value=Number(number.value);if(number.value===''||!Number.isFinite(value)||value<0||value>4){masterStatus='Master gain must be between 0 and 4.';masterError=true;notice(masterStatus,true,'master');renderMaster();return;}masterProducer.gain(value);});
     unity.addEventListener('click',()=>masterProducer.gain(1));reset.addEventListener('click',()=>masterProducer.reset());
@@ -161,6 +161,9 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   function sourceOf(track=model.document()?.tracks[selected],document=model.document()){return document?.sources?.find(s=>s.id===(sourceSelection?.trackId===track?.id?sourceSelection.sourceId:selectedClip(track)?.sourceId))??null;}
   function paintClipOverview(){
     const holder=$('clip-overview'),source=sourceOf(),notes=source?.kind==='midi'?source.notes??[]:[];
+    const track=model.document()?.tracks[selected];
+    if($('footer-track-name'))$('footer-track-name').textContent=track?`${selected+1}-${track.name}`:'';
+    if(track)holder.style.setProperty('--clip-color',track.color);
     holder.replaceChildren();holder.title=source?source.kind==='audio'?'Audio clip selected':`${notes.length} MIDI notes`:'No clip selected';
     const peaks=source?.kind==='audio'?model.snapshot()?.preparedWorkspaces?.sources?.find(item=>item.sourceId===source.id)?.waveformPeaks??[]:[];
     if(!notes.length&&!peaks.length)return;
@@ -247,7 +250,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   function paintClip(notes,length){
     const original=sourceOf(),source=stretchPreview===null?original:{...original,sourceTempo:stretchPreview},ratio=stretchPreview===null?1:stretchPreview/original.sourceTempo,occurrence=editorOccurrence();
     const region=regionPreview??(occurrence?.region?{...occurrence.region,...Object.fromEntries(['start','end','loopStart','loopEnd'].map(k=>[k,occurrence.region[k]*ratio]))}:null);
-    pianoGeometry=clipView.render({notes,length:length*ratio,selectedNote,kind:source?.kind??model.document().tracks[selected].chain.kind,source,canImport:!source&&!sourceSelection,waveformPeaks:model.snapshot()?.preparedWorkspaces.sources.find(s=>s.sourceId===source?.id)?.waveformPeaks,region,timeSelection:clipTimeSelection,scope:JSON.stringify([generation(),source?.id]),regionScope:JSON.stringify([generation(),model.document().tracks[selected].id,source?.id,sourceSelection?.occurrence??{kind:'slot',slotId:selectedClip()?.id}]),revision:model.snapshot()?.editRevision,frozenGeometry:gesture?.geometry});
+    pianoGeometry=clipView.render({notes,color:model.document().tracks[selected].color,length:length*ratio,selectedNote,kind:source?.kind??model.document().tracks[selected].chain.kind,source,canImport:!source&&!sourceSelection,waveformPeaks:model.snapshot()?.preparedWorkspaces.sources.find(s=>s.sourceId===source?.id)?.waveformPeaks,region,timeSelection:clipTimeSelection,scope:JSON.stringify([generation(),source?.id]),regionScope:JSON.stringify([generation(),model.document().tracks[selected].id,source?.id,sourceSelection?.occurrence??{kind:'slot',slotId:selectedClip()?.id}]),revision:model.snapshot()?.editRevision,frozenGeometry:gesture?.geometry});
   }
   let clipControlsKey='',clipControlsScope='',slotViews=[],sceneViews=[];
   function sceneText(result,snapshot){
@@ -432,7 +435,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       const gainLabel=make('label','track-gain','Gain'),gain=numeric(`${track.name} gain`,track.gain,{min:0,max:2,step:.05},value=>mix(index,{gain:value}));gainLabel.append(gain);
       const fader=make('input','gain-fader');fader.type='range';fader.min='0';fader.max='2';fader.step='any';fader.value=String(track.gain);fader.setAttribute('aria-label',`${track.name} gain fader`);fader.setAttribute('aria-orientation','vertical');fader.title='Linear gain, 0 to 2';
       let faderEditing=false;fader.addEventListener('input',()=>{faderEditing=true;});fader.addEventListener('change',guard(()=>{faderEditing=false;return mix(index,{gain:Number(fader.value)});}));fader.addEventListener('pointercancel',()=>{faderEditing=false;render();});
-      const mute=make('button','mixer-toggle','M'),solo=make('button','mixer-toggle','S');mute.setAttribute('aria-label',`${track.name} mute`);solo.setAttribute('aria-label',`${track.name} solo`);
+      const mute=make('button','mixer-toggle track-activator',String(index+1)),solo=make('button','mixer-toggle','S');mute.setAttribute('aria-label',`${track.name} mute`);mute.title='Track activator: press to mute or unmute';solo.setAttribute('aria-label',`${track.name} solo`);
       mute.addEventListener('click',guard(()=>mix(index,{mute:!model.document().tracks[index].mute})));solo.addEventListener('click',guard(()=>mix(index,{solo:!model.document().tracks[index].solo})));
       const meters=make('div','track-meter'),bar=make('div','stereo-meter vertical-meter'),readout=make('output');bar.append(make('i'),make('i'));bar.setAttribute('aria-label',`${track.name} stereo peak`);readout.setAttribute('aria-label',`${track.name} peak`);meters.append(bar,readout);
       const actions=make('div','track-actions');for(const[action,label]of [['editor','Editor'],['load','Replace'],['remove','Remove track']]){
@@ -446,7 +449,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       row.dataset.trackId=track.id;row.style.setProperty('--track-color',track.color??['#efbb62','#88c5c7','#91b9ed','#d8a0a7','#b4c98b','#d3b48a','#a5b9ce','#c5b6cf'][index%8]);
       const resize=make('div','track-width-handle');resize.setAttribute('role','separator');resize.tabIndex=0;resize.setAttribute('aria-label',`Resize ${track.name} track`);resize.setAttribute('aria-orientation','vertical');resize.setAttribute('aria-valuemin','72');resize.setAttribute('aria-valuemax','280');
       const applyWidth=value=>{const width=Math.max(72,Math.min(280,Math.round(value)));trackWidths.set(track.id,width);row.style.setProperty('--individual-track-width',`${width}px`);resize.setAttribute('aria-valuenow',String(width));};
-      const initialWidth=trackWidths.get(track.id);if(initialWidth)applyWidth(initialWidth);else resize.setAttribute('aria-valuenow',$('track-width').value||'128');
+      const initialWidth=trackWidths.get(track.id);if(initialWidth)applyWidth(initialWidth);else resize.setAttribute('aria-valuenow',$('track-width').value||'108');
       let resizing=null;resize.addEventListener('pointerdown',event=>{if(event.button!==0)return;event.preventDefault();resizing={id:event.pointerId,x:event.clientX,width:row.getBoundingClientRect().width};resize.setPointerCapture?.(event.pointerId);});
       resize.addEventListener('pointermove',event=>{if(resizing?.id===event.pointerId)applyWidth(resizing.width+event.clientX-resizing.x);});
       resize.addEventListener('pointerup',event=>{if(resizing?.id===event.pointerId){resizing=null;resize.releasePointerCapture?.(event.pointerId);}});
@@ -456,7 +459,10 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       summary.addEventListener('pointerdown',()=>workspace.preserveFocused());
       inspector.addEventListener('toggle',()=>{if(!inspector.open)return;const shell=$('session-workspace').getBoundingClientRect(),dock=doc.querySelector('.scene-column').getBoundingClientRect(),anchor=inspector.getBoundingClientRect(),width=actions.getBoundingClientRect().width;const left=Math.max(shell.left,Math.min(anchor.right-width,Math.min(shell.right,dock.left)-width));actions.style.left=`${left-anchor.left}px`;actions.style.right='auto';});
       inspector.addEventListener('keydown',event=>{if(event.key==='Escape'&&inspector.open){event.preventDefault();event.stopPropagation();inspector.open=false;summary.focus();}});
-      const strip=make('div','mixer-strip'),midiOnly=make('div','midi-only-status','MIDI only');midiOnly.title='MIDI event activity is not available in this build.';strip.append(fader,meters);toggles.append(mute,solo);mixer.append(gainLabel,strip,midiOnly,toggles);inspector.append(summary,actions);
+      const strip=make('div','mixer-strip'),midiOnly=make('div','midi-only-status','MIDI only');midiOnly.title='MIDI event activity is not available in this build.';
+      const scale=make('div','mixer-scale');scale.setAttribute('aria-hidden','true');for(const value of ['1','.8','.6','.4','.2','0'])scale.append(make('span','',value));
+      const pan=make('button','mixer-pan'),arm=make('button','mixer-arm');pan.disabled=arm.disabled=true;pan.setAttribute('aria-label',`${track.name} pan unavailable`);arm.setAttribute('aria-label',`${track.name} recording unavailable`);pan.title='Unavailable: the native mixer supports gain, mute and solo only.';arm.title='Unavailable: input capture, arm and recording are not implemented.';
+      strip.append(fader,meters,scale);toggles.append(mute,solo);mixer.append(gainLabel,pan,strip,midiOnly,toggles,arm);inspector.append(summary,actions);
       row.append(name,resize);const bank=make('div','clip-bank');row.append(bank);buildSlots(bank,track,index);row.append(mixer,inspector);$('tracks').append(row);slotsRestore(bank);trackViews.push({row,name,resize,inspector,detail,gain,gainLabel,strip,mixer,midiOnly,fader,faderEditing:()=>faderEditing,mute,solo,bar,readout,actions});
     });
   }

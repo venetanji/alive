@@ -2,6 +2,84 @@ import {test,expect} from '@playwright/test';
 import {projectFixturePresentation} from '../presentation-dom.mjs';
 import {readFileSync,mkdirSync} from 'node:fs';
 
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`Help stays independent with both editors closed at ${size.width}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);
+  await page.locator('#detail-clip').click();
+  await expect(page.locator('#clip-detail')).toBeHidden();await expect(page.locator('#device-detail')).toBeHidden();
+  const help=page.locator('#info-view');await expect(help).toBeVisible();
+  const box=await help.boundingBox();expect(box.height).toBeGreaterThanOrEqual(180);expect(box.width).toBeGreaterThanOrEqual(180);
+  expect(box.y+box.height).toBeLessThanOrEqual((await page.locator('footer').boundingBox()).y);
+  await page.locator('#toggle-help').click();await expect(help).toBeHidden();
+  await page.locator('#toggle-help').click();await expect(help).toBeVisible();
+  await page.locator('#detail-devices').click();await page.locator('#detail-devices').click();await expect(help).toBeVisible();
+  await page.screenshot({path:testInfo.outputPath(`independent-help-${size.width}.png`)});
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('Alive follows the approved HTML geometry, palette and mixer composition',async({page,context},testInfo)=>{
+  const size={width:1440,height:900};await page.setViewportSize(size);await openSession(page);
+  const reference=await context.newPage();await reference.setViewportSize(size);
+  await reference.setContent(readFileSync(new URL('../../../../docs/ui-review/2026-10-31/Alive-layout-01.html',import.meta.url),'utf8'));
+  const metrics=async(target,selectors)=>target.evaluate(selectors=>Object.fromEntries(Object.entries(selectors).map(([key,selector])=>{
+    const element=document.querySelector(selector),rect=element.getBoundingClientRect(),style=getComputedStyle(element);
+    return[key,{x:rect.x,y:rect.y,width:rect.width,height:rect.height,background:style.backgroundColor,color:style.color}];
+  })),selectors);
+  const expected=await metrics(reference,{browser:'.browser',track:'.track',header:'.track-name',slot:'.slot',footer:'.footer',help:'.info',mixer:'.mixer'});
+  const actual=await metrics(page,{browser:'#workspace-browser',track:'.track',header:'.track-name',slot:'.clip-slot',footer:'footer',help:'#info-view',mixer:'.track-mixer'});
+  for(const key of ['browser','track','header','slot','footer']){
+    if(['browser','track'].includes(key))expect.soft(actual[key].width,`${key} width follows the approved HTML`).toBeCloseTo(expected[key].width,0);
+    if(['header','slot','footer'].includes(key))expect.soft(actual[key].height,`${key} height follows the approved HTML`).toBeCloseTo(expected[key].height,0);
+  }
+  for(const key of ['browser','mixer','help'])expect.soft(actual[key].background,`${key} uses the approved surface`).toBe(expected[key].background);
+  const fader=await page.getByRole('slider',{name:'Pulse gain fader',exact:true}).boundingBox(),mute=await page.getByRole('button',{name:'Pulse mute',exact:true}).boundingBox();
+  expect.soft(fader.x,'fader belongs to the right of the activator/solo column').toBeGreaterThan(mute.x+mute.width);
+  const trackColor=await page.locator('.track').first().evaluate(e=>e.style.getPropertyValue('--track-color'));
+  await expect.soft(page.locator('#piano-roll [data-part="body"]').first()).toHaveAttribute('fill',trackColor);
+  await expect.soft(page.getByRole('button',{name:'Browser audio preview unavailable',exact:true})).toBeDisabled();
+  await page.screenshot({path:testInfo.outputPath('alive-html-fidelity.png')});
+  await reference.screenshot({path:testInfo.outputPath('approved-html.png')});await reference.close();
+});
+
+test('Browser restores its requested study width after a compact-window resize',async({page})=>{
+  await page.setViewportSize({width:1440,height:900});await openSession(page);
+  const browser=page.locator('#workspace-browser'),handle=page.locator('#browser-resizer');
+  expect((await browser.boundingBox()).width).toBe(334);
+  await page.setViewportSize({width:800,height:600});expect((await browser.boundingBox()).width).toBe(290);
+  await page.setViewportSize({width:1280,height:800});expect((await browser.boundingBox()).width).toBe(334);
+  await handle.focus();await handle.press('ArrowRight');const requested=(await browser.boundingBox()).width;
+  await page.setViewportSize({width:800,height:600});await page.setViewportSize({width:1440,height:900});
+  expect((await browser.boundingBox()).width).toBe(requested);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('track and Master headers keep their readable identity colours on hover',async({page})=>{
+  await openSession(page);
+  for(const header of [page.getByRole('button',{name:'Select Harmony track',exact:true}),page.locator('#master-select-session')]){
+    const background=await header.evaluate(e=>getComputedStyle(e).backgroundColor);
+    await header.hover();
+    await expect.soft(header).toHaveCSS('background-color',background);
+  }
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('maximized Clip uses the workspace released by the compact history footer',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);
+  await page.locator('#maximize-detail').click();
+  const clip=await page.locator('#clip-detail').boundingBox(),transport=await page.locator('.transport').boundingBox();
+  expect(clip.y).toBe(transport.y+transport.height+5);
+  expect(clip.y+clip.height).toBe((await page.locator('footer').boundingBox()).y);
+});
+
+test('wrapped compact Clip toolbar leaves velocity controls inside their editor',async({page})=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page);
+  await page.locator('#piano-roll [data-part="body"]').first().click();
+  await page.locator('#clip-detail').evaluate(e=>e.scrollTop=e.scrollHeight);
+  const slider=page.locator('#note-velocity'),box=await slider.boundingBox(),area=await page.locator('.clip-area').boundingBox();
+  expect(box.y+box.height).toBeLessThanOrEqual(area.y+area.height);
+  expect(await slider.evaluate(e=>{const r=e.getBoundingClientRect();return document.elementFromPoint(r.x+r.width/2,r.y+r.height/2)===e;})).toBe(true);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_edit'))).toEqual([]);
+});
+
 test('Save has one real owner inside File and retains native acknowledgement',async({page})=>{
   await openSession(page);
   await expect(page.locator('#application-menus > button')).toHaveCount(0);
@@ -25,7 +103,7 @@ for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,he
   const d=await device.boundingBox(),h=await help.boundingBox();
   expect(d.height).toBe(baseline.height);expect(h.height).toBe(d.height);
   expect(Math.abs(d.y-h.y)).toBeLessThanOrEqual(1);expect(large.y+large.height).toBeLessThanOrEqual(d.y+1);
-  expect(large.x).toBeLessThanOrEqual(1);
+  expect(large.x).toBe((await page.locator('#workspace-browser').boundingBox()).x);
   for(const id of ['detail-clip','detail-devices','maximize-detail','toggle-detail','display-menu-toggle'])await expect(page.locator('#footer-display-controls #'+id)).toBeInViewport({ratio:1});
   await page.screenshot({path:testInfo.outputPath(`fixed-device-row-${size.width}.png`)});
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
@@ -358,14 +436,14 @@ test('Session slot scrolling is synchronized while mixer controls stay pinned',a
 test('track width boundary supports keyboard resizing and narrow controls reflow',async({page})=>{
   await page.setViewportSize({width:1280,height:800});await openSession(page);await page.locator('#detail-devices').click();
   const handle=page.getByRole('separator',{name:'Resize Pulse track',exact:true}),track=page.locator('.track').first();await handle.focus();await handle.press('Home');await expect(handle).toHaveAttribute('aria-valuenow','72');expect((await track.boundingBox()).width).toBe(72);
-  const mute=await track.getByRole('button',{name:'Pulse mute'}).boundingBox(),solo=await track.getByRole('button',{name:'Pulse solo'}).boundingBox(),gain=await track.getByRole('spinbutton',{name:'Pulse gain',exact:true}).boundingBox();expect(mute.x+mute.width).toBeLessThanOrEqual(solo.x+1);expect(gain.x+gain.width).toBeLessThanOrEqual((await track.boundingBox()).x+72);
+  const mute=await track.getByRole('button',{name:'Pulse mute'}).boundingBox(),solo=await track.getByRole('button',{name:'Pulse solo'}).boundingBox(),gain=await track.getByRole('spinbutton',{name:'Pulse gain',exact:true}).boundingBox();expect(mute.y+mute.height).toBeLessThanOrEqual(solo.y+1);expect(gain.x+gain.width).toBeLessThanOrEqual((await track.boundingBox()).x+72);
   await handle.press('End');await expect(handle).toHaveAttribute('aria-valuenow','280');await handle.press('Home');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
 
 test('track width handle is hover-only and pointer resize is independent',async({page},testInfo)=>{
   await page.setViewportSize({width:800,height:600});await openSession(page,{trackCount:8});await page.locator('#detail-devices').click();
   const handle=page.getByRole('separator',{name:'Resize Pulse track',exact:true}),track=page.locator('.track').first(),other=page.locator('.track').nth(1);await page.mouse.move(700,45);await handle.focus();expect(await handle.evaluate(e=>getComputedStyle(e,'::before').opacity)).toBe('0');
-  const box=await handle.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);expect(await handle.evaluate(e=>getComputedStyle(e,'::before').opacity)).toBe('1');await page.mouse.down();await page.mouse.move(box.x-48,box.y+box.height/2,{steps:5});await page.mouse.up();expect((await track.boundingBox()).width).toBeLessThan(90);expect((await other.boundingBox()).width).toBe(128);
+  const box=await handle.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);expect(await handle.evaluate(e=>getComputedStyle(e,'::before').opacity)).toBe('1');await page.mouse.down();await page.mouse.move(box.x-48,box.y+box.height/2,{steps:5});await page.mouse.up();expect((await track.boundingBox()).width).toBeLessThan(90);expect((await other.boundingBox()).width).toBe(108);
   await page.mouse.move(700,45);await page.screenshot({path:testInfo.outputPath('narrow-overflow-800x600.png')});expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
 test('global track width reports inherited values without overwriting individually resized tracks',async({page})=>{
@@ -415,7 +493,7 @@ test('Clip and Device footer toggles independently own the lower rows',async({pa
   expect(await page.locator('#clip-overview svg rect').count()).toBeGreaterThan(0);
   await expect(clip).toBeVisible();await deviceToggle.click();await expect(clip).toBeVisible();await expect(device).toBeVisible();
   const c=await clip.boundingBox(),d=await device.boundingBox(),h=await help.boundingBox();
-  expect(c.x).toBeLessThanOrEqual(1);expect(c.y+c.height).toBeLessThanOrEqual(Math.min(d.y,h.y)+1);expect(h.x+h.width).toBeLessThanOrEqual(d.x+1);
+  expect(c.x).toBe(7);expect(c.y+c.height).toBeLessThanOrEqual(Math.min(d.y,h.y)+1);expect(h.x+h.width).toBeLessThanOrEqual(d.x+1);
   await clipToggle.click();await expect(clip).toBeHidden();await expect(device).toBeVisible();
   await deviceToggle.click();await expect(device).toBeHidden();await clipToggle.click();await expect(clip).toBeVisible();
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
@@ -518,14 +596,14 @@ for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,he
   const toggle=page.getByRole('button',{name:'Toggle contextual help',exact:true});
   const before=await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document));
   const a=await help.boundingBox(),b=await page.locator('#clip-detail').boundingBox();
-  expect(a.x).toBeLessThanOrEqual(1);expect(a.x+a.width).toBeLessThanOrEqual(b.x+1);expect(a.y).toBe(b.y);expect(a.height).toBe(b.height);
+  expect(a.x).toBe(7);expect(a.x+a.width).toBeLessThanOrEqual(b.x+1);expect(a.y).toBe(b.y);expect(a.height).toBe(b.height);
   await page.locator('#detail-devices').click();
   const lower=await help.boundingBox(),clip=await page.locator('#clip-detail').boundingBox();
-  expect(lower.height).toBe(180);expect(clip.x).toBeLessThanOrEqual(1);expect(clip.y+clip.height).toBeLessThanOrEqual(lower.y+1);
+  expect(lower.height).toBe(180);expect(clip.x).toBe(7);expect(clip.y+clip.height).toBeLessThanOrEqual(lower.y+1);
   await page.screenshot({path:testInfo.outputPath(`help-shown-${size.width}x${size.height}.png`)});
   await toggle.click();await expect(help).toBeHidden();
   await page.screenshot({path:testInfo.outputPath(`help-hidden-${size.width}x${size.height}.png`)});
-  await page.locator('#toggle-browser').click();expect((await detail.boundingBox()).x).toBeLessThanOrEqual(1);await page.locator('#toggle-detail').click();await toggle.click();
+  await page.locator('#toggle-browser').click();expect((await detail.boundingBox()).x).toBe(7);await page.locator('#toggle-detail').click();await toggle.click();
   await expect(help).toBeVisible();await expect(page.locator('#workspace-browser')).toBeHidden();await expect(page.locator('#clip-detail')).toBeHidden();await expect(page.locator('#device-detail')).toBeHidden();
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.documentElement.scrollHeight<=innerHeight)).toBe(true);
   expect(await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document))).toBe(before);
@@ -1046,7 +1124,7 @@ test('vertical gain fader sends one bounded change and reflects external snapsho
 for(const size of [{width:1440,height:900},{width:1280,height:800}])test(`two fixed track columns leave blank stage and expose piano roll at ${size.width}x${size.height}`,async({page},testInfo)=>{
   await page.setViewportSize(size);await openSession(page);
   const geometry=await page.evaluate(()=>{const rect=e=>e.getBoundingClientRect().toJSON();return{track:[...document.querySelectorAll('.track')].map(rect),mixerControls:[...document.querySelectorAll('.mixer-toggle,.track-inspector')].map(rect),session:rect(document.querySelector('#session-workspace')),piano:rect(document.querySelector('#piano-roll')),detail:rect(document.querySelector('#detail-content')),scene:rect(document.querySelector('.scene-column'))};});
-  for(const track of geometry.track)expect(track.width).toBe(128);expect(geometry.scene.x-(geometry.track[1].x+geometry.track[1].width)).toBeGreaterThan(300);
+  for(const track of geometry.track)expect(track.width).toBe(108);expect(geometry.scene.x-(geometry.track[1].x+geometry.track[1].width)).toBeGreaterThan(300);
   for(const control of geometry.mixerControls)expect(control.bottom).toBeLessThanOrEqual(geometry.session.bottom);
   expect(geometry.piano.y).toBeLessThan(geometry.detail.y+128);expect(geometry.piano.height).toBeGreaterThanOrEqual(156);expect(Math.min(geometry.piano.bottom,geometry.detail.bottom)-geometry.piano.y).toBeGreaterThanOrEqual(144);
   await page.screenshot({path:testInfo.outputPath(`two-tracks-${size.width}x${size.height}.png`)});
@@ -1220,7 +1298,7 @@ for(const size of [{width:1440,height:900},{width:1280,height:800}])test(`eight 
   });
   expect(bounds.columns).toHaveLength(8);expect(bounds.scenes).toHaveLength(4);expect(bounds.whole).toBe(size.width);
   for(let c=0;c<8;c++){expect(bounds.columns[c].box.x).toBeLessThan(bounds.columns[c].box.x+bounds.columns[c].box.width);if(c)expect(bounds.columns[c].box.x).toBeGreaterThan(bounds.columns[c-1].box.x);for(let r=0;r<4;r++){expect(bounds.columns[c].slots[r].y).toBe(bounds.scenes[r].y);expect(bounds.columns[c].slots[r].height).toBe(bounds.scenes[r].height);}expect(bounds.columns[c].mixer.y).toBeGreaterThanOrEqual(bounds.columns[c].slots[3].y+bounds.columns[c].slots[3].height);}
-  expect(bounds.session.height).toBeGreaterThan(250);expect(bounds.detail.y+bounds.detail.height).toBeLessThanOrEqual(size.height-30);
+  expect(bounds.session.height).toBeGreaterThan(250);expect(bounds.detail.y+bounds.detail.height).toBeLessThanOrEqual((await page.locator('footer').boundingBox()).y);
   await page.screenshot({path:testInfo.outputPath(`session-${size.width}x${size.height}.png`)});
   await page.locator('#session-workspace').evaluate(e=>e.scrollLeft=e.scrollWidth);await expect(page.getByRole('button',{name:'Select Track 8 slot 4',exact:true})).toBeInViewport();await expect(page.getByRole('button',{name:'Launch scene 4',exact:true})).toBeInViewport();
 });
@@ -1409,8 +1487,8 @@ for(const size of [{width:1440,height:900},{width:1280,height:800}])test(`Arrang
 for(const size of [{width:1440,height:900},{width:1280,height:800}])for(const trackCount of [2,8])test(`Master and compact workspace geometry ${trackCount} tracks ${size.width}`,async({page},testInfo)=>{
   await page.setViewportSize(size);await openSession(page,{trackCount});
   const geometry=await page.evaluate(()=>{const box=e=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width,height:r.height,bottom:r.bottom,right:r.right};};return {chrome:box(document.querySelector('.workspace-tools')).bottom, browser:box(document.querySelector('#workspace-browser')),header:box(document.querySelector('.track-name')),slots:[...document.querySelectorAll('.track:first-child .clip-slot')].map(box),scenes:[...document.querySelectorAll('.scene-row')].map(box),master:box(document.querySelector('.scene-column')),masterMixer:box(document.querySelector('#master-session .master-controls')),masterRail:box(document.querySelector('#master-session .master-fader')),masterMeter:box(document.querySelector('#master-session .master-bars')),trackRail:box(document.querySelector('.track .gain-fader')),trackMeter:box(document.querySelector('.track .vertical-meter')),trackMixer:box(document.querySelector('.track-mixer')),workspace:box(document.querySelector('#session-workspace')),stop:box(document.querySelector('#stop')),scrollWidth:document.documentElement.scrollWidth,innerWidth:innerWidth};});
-  expect(geometry.chrome).toBeLessThanOrEqual(80);expect(geometry.browser.width).toBe(220);expect(geometry.header.height).toBe(28);expect(geometry.master.width).toBe(128);expect(geometry.masterMixer.y).toBe(geometry.trackMixer.y);expect(geometry.masterMixer.bottom).toBe(geometry.trackMixer.bottom);expect(Math.abs(geometry.masterRail.y-geometry.trackRail.y)).toBeLessThanOrEqual(2);expect(Math.abs(geometry.masterRail.bottom-geometry.trackRail.bottom)).toBeLessThanOrEqual(2);expect(Math.abs(geometry.masterMeter.y-geometry.trackMeter.y)).toBeLessThanOrEqual(2);expect(Math.abs(geometry.masterMeter.bottom-geometry.trackMeter.bottom)).toBeLessThanOrEqual(3);expect(geometry.slots).toHaveLength(4);expect(geometry.scenes).toHaveLength(4);
-  for(let i=0;i<4;i++){expect(geometry.slots[i].height).toBe(24);expect(geometry.scenes[i].y).toBe(geometry.slots[i].y);}expect(geometry.scrollWidth).toBe(geometry.innerWidth);expect(geometry.stop.right).toBeLessThan(size.width);
+  expect(geometry.chrome).toBeLessThanOrEqual(80);expect(geometry.browser.width).toBe(334);expect(geometry.header.height).toBe(21);expect(geometry.master.width).toBe(108);expect(geometry.masterMixer.y).toBe(geometry.trackMixer.y);expect(geometry.masterMixer.bottom).toBe(geometry.trackMixer.bottom);expect(Math.abs(geometry.masterRail.y-geometry.trackRail.y)).toBeLessThanOrEqual(2);expect(Math.abs(geometry.masterRail.bottom-geometry.trackRail.bottom)).toBeLessThanOrEqual(2);expect(Math.abs(geometry.masterMeter.y-geometry.trackMeter.y)).toBeLessThanOrEqual(2);expect(Math.abs(geometry.masterMeter.bottom-geometry.trackMeter.bottom)).toBeLessThanOrEqual(3);expect(geometry.slots).toHaveLength(4);expect(geometry.scenes).toHaveLength(4);
+  for(let i=0;i<4;i++){expect(geometry.slots[i].height).toBe(20);expect(geometry.scenes[i].y).toBe(geometry.slots[i].y);}expect(geometry.scrollWidth).toBe(geometry.innerWidth);expect(geometry.stop.right).toBeLessThan(size.width);
   for(const x of [0,99999]){await page.locator('#session-workspace').evaluate((e,x)=>e.scrollLeft=x,x);await expect(page.locator('#master-select-session')).toBeInViewport();}
   await page.locator('#session-workspace').evaluate(e=>e.scrollLeft=0);await page.mouse.move(500,10);await page.waitForTimeout(700);await page.screenshot({path:testInfo.outputPath(`master-session-${trackCount}-${size.width}.png`)});
   {await page.locator('#view-arrangement').click();const pos=await page.evaluate(()=>{const lane=document.querySelector('.timeline-lane').getBoundingClientRect(),header=document.querySelector('.timeline-header').getBoundingClientRect(),master=document.querySelector('#master-arrangement-lane').getBoundingClientRect();return {laneRight:lane.right,headerLeft:header.left,headerRight:header.right,viewportRight:document.querySelector('#timeline-scroll').getBoundingClientRect().right,masterY:master.y};});expect(pos.headerLeft).toBeGreaterThanOrEqual(pos.laneRight-1);expect(Math.abs(pos.headerRight-pos.viewportRight)).toBeLessThanOrEqual(1);expect(pos.masterY).toBeGreaterThan(0);await page.mouse.move(500,10);await page.waitForTimeout(700);await page.screenshot({path:testInfo.outputPath(`master-arrangement-${size.width}.png`)});}
@@ -1561,7 +1639,7 @@ test('generation change visibly cancels a pending Master intent and ignores its 
 test('Arrangement Master markings and meter remain separate in the right-hand control group',async({page})=>{
   await page.setViewportSize({width:1280,height:800});await openSession(page);await page.locator('#view-arrangement').click();
   const boxes=await page.evaluate(()=>{const rect=e=>e.getBoundingClientRect();const root=document.querySelector('#master-arrangement');return {marks:rect(root.querySelector('.master-marks')).toJSON(),markLabel:rect(root.querySelector('.master-marks span:first-child')).toJSON(),meter:rect(root.querySelector('.master-bars')).toJSON(),root:rect(root).toJSON(),button:rect(root.querySelector('.master-actions button:last-child')).toJSON()};});
-  expect(boxes.marks.right).toBeLessThanOrEqual(boxes.meter.left);expect(boxes.markLabel.right).toBeLessThanOrEqual(boxes.meter.left);expect(boxes.meter.right).toBeLessThanOrEqual(boxes.root.right);expect(boxes.button.right).toBeLessThanOrEqual(boxes.root.right);
+  expect(boxes.meter.right).toBeLessThanOrEqual(boxes.marks.left);expect(boxes.meter.right).toBeLessThanOrEqual(boxes.markLabel.left);expect(boxes.meter.right).toBeLessThanOrEqual(boxes.root.right);expect(boxes.button.right).toBeLessThanOrEqual(boxes.root.right);
 });
 
 test('pointer-derived track gain remains readable in both mixer and Arrangement detail',async({page})=>{

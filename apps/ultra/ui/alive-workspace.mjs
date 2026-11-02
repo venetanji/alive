@@ -2,14 +2,15 @@
 export function mountWorkspace({doc,win,onNavigate=()=>{}}){
   const $=id=>doc.getElementById(id);
   const deviceHeight=180;
-  let view='session',detail='clip',previousDetail='clip',expanded=true,browser=true,height=310,resize=null,browserWidth=220,browserResize=null,mixer=true;
+  let view='session',detail='clip',previousDetail='clip',expanded=true,browser=true,height=310,resize=null,browserWidth=334,browserResize=null,mixer=true;
   let clipOpen=true,deviceOpen=false,masterOpen=false,previousPanels=null;
   let requestedHeight=height,maximized=false;
+  let requestedBrowserWidth=browserWidth;
   const handle=$('detail-resizer'),shell=$('workspace-shell');
   const parked=new Map(),scopedDrafts=new Map();
   const detailRoot=()=>$(detail==='clip'?'clip-detail':detail==='master'?'master-detail':'device-detail');
-  const maxBrowserWidth=()=>Math.max(180,Math.min(420,(shell.clientWidth||900)-480));
-  const detailBudget=()=>shell.clientHeight-$('edit-controls').getBoundingClientRect().height-($('detail-panel').getBoundingClientRect().height-$('detail-content').getBoundingClientRect().height);
+  const maxBrowserWidth=()=>Math.max(180,Math.min(win?.innerWidth<=1000?290:420,(shell.clientWidth||900)-440));
+  const detailBudget=()=>shell.clientHeight-($('detail-panel').getBoundingClientRect().height-$('detail-content').getBoundingClientRect().height);
   const workspaceMinimum=()=>{
     if(view==='arrangement')return $('timeline').querySelector('.timeline-tools').getBoundingClientRect().height+$('master-arrangement-lane').getBoundingClientRect().height+96;
     const session=$('session-workspace'),track=session.querySelector('.track'),header=track?.querySelector('.track-name'),bank=track?.querySelector('.clip-bank'),mixer=track?.querySelector('.track-mixer');
@@ -97,9 +98,9 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
   handle.addEventListener('pointercancel',cancelResize);handle.addEventListener('lostpointercapture',cancelResize);
   handle.addEventListener('keydown',event=>{if(clipVisible()&&['ArrowUp','ArrowDown','Home','End'].includes(event.key)){event.preventDefault();setHeight(event.key==='Home'?minHeight():event.key==='End'?maxHeight():height+(event.key==='ArrowUp'?1:-1)*(event.shiftKey?50:20));}});
   const browserHandle=$('browser-resizer');
-  function setBrowserWidth(value){browserWidth=Math.round(Math.max(180,Math.min(maxBrowserWidth(),value)));paint();}
-  function cancelBrowserResize(){if(!browserResize)return;const old=browserResize;browserResize=null;setBrowserWidth(old.width);if(browserHandle.hasPointerCapture?.(old.id))browserHandle.releasePointerCapture(old.id);}
-  browserHandle.addEventListener('pointerdown',event=>{if(event.button!==0)return;browserResize={id:event.pointerId,x:event.clientX,width:browserWidth};browserHandle.setPointerCapture?.(event.pointerId);event.preventDefault();});
+  function setBrowserWidth(value){requestedBrowserWidth=browserWidth=Math.round(Math.max(180,Math.min(maxBrowserWidth(),value)));paint();}
+  function cancelBrowserResize(){if(!browserResize)return;const old=browserResize;browserResize=null;requestedBrowserWidth=old.requestedWidth;browserWidth=Math.min(requestedBrowserWidth,maxBrowserWidth());paint();if(browserHandle.hasPointerCapture?.(old.id))browserHandle.releasePointerCapture(old.id);}
+  browserHandle.addEventListener('pointerdown',event=>{if(event.button!==0)return;browserResize={id:event.pointerId,x:event.clientX,width:browserWidth,requestedWidth:requestedBrowserWidth};browserHandle.setPointerCapture?.(event.pointerId);event.preventDefault();});
   browserHandle.addEventListener('pointermove',event=>{if(browserResize?.id===event.pointerId)setBrowserWidth(browserResize.width+event.clientX-browserResize.x);});
   browserHandle.addEventListener('pointerup',event=>{if(browserResize?.id!==event.pointerId)return;browserResize=null;browserHandle.releasePointerCapture?.(event.pointerId);});
   browserHandle.addEventListener('pointercancel',cancelBrowserResize);browserHandle.addEventListener('lostpointercapture',cancelBrowserResize);
@@ -112,6 +113,6 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
     event.preventDefault();navigate(view==='session'?'arrangement':'session');
     $(view+'-workspace').focus();
   };
-  const fit=()=>{cancelResize();cancelBrowserResize();browserWidth=Math.min(browserWidth,maxBrowserWidth());fitHeight();paint();};doc.addEventListener('keydown',keydown);win?.addEventListener('blur',cancelResize);win?.addEventListener('resize',fit);paint();if(win?.innerHeight)fit();
+  const fit=()=>{cancelResize();cancelBrowserResize();browserWidth=Math.min(requestedBrowserWidth,maxBrowserWidth());fitHeight();paint();};doc.addEventListener('keydown',keydown);win?.addEventListener('blur',cancelResize);win?.addEventListener('resize',fit);paint();if(win?.innerHeight)fit();
   return{preserves:element=>parked.has(element),uncommitted,discardPreserved,resetPreserved,stashPreserved,recallPreserved,park,restore,preserveFocused,openMaster(){if(!masterOpen){previousDetail=detail;previousPanels={clip:clipOpen,devices:deviceOpen,expanded};if(expanded){park($('clip-detail'));park($('device-detail'));}}masterOpen=true;detail='master';expanded=true;paint();},returnMusic(){if(masterOpen){park($('master-detail'));masterOpen=false;clipOpen=previousPanels?.clip??true;deviceOpen=previousPanels?.devices??false;detail=previousDetail;expanded=previousPanels?.expanded??true;paint();fitHeight();paint();}},openDevices(){masterOpen=false;deviceOpen=true;detail='devices';expanded=true;paint();fitHeight();paint();},openClip(){masterOpen=false;clipOpen=true;detail='clip';expanded=true;paint();fitHeight();paint();},dispose(){doc.removeEventListener('keydown',keydown);doc.removeEventListener('change',change,true);doc.removeEventListener('blur',blur,true);doc.removeEventListener('focus',focus,true);resetPreserved();win?.removeEventListener('blur',cancelResize);win?.removeEventListener('resize',fit);}};
 }
