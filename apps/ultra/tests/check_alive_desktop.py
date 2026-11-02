@@ -29,6 +29,7 @@ from gi.repository import Atspi, GLib
 from alive_workspace_navigation import install as install_workspace_navigation
 from chooser_observation import find_web_ancestor, planned_hit_path, hit_path_owns
 from native_tooltip_geometry import covering_hover_plan
+from alive_diagnostics import scan_named_controls, scan_scoped_frames
 
 prepare_workspace_control = install_workspace_navigation(
     ui, windows, select_device=lambda name: select_device_click(name),
@@ -64,9 +65,10 @@ def screenshot(name):
         str(ui.output / name), 'png', [], [])
 
 
-def value(name):
-    prepare_workspace_control(name)
-    control = ui.wait_for(name)
+def value(name, control=None):
+    if control is None:
+        prepare_workspace_control(name)
+        control = ui.wait_for(name)
     if 'Value' in control.get_interfaces():
         return format(float(Atspi.Value.get_current_value(control)), '.15g')
 
@@ -143,11 +145,21 @@ def wait_value(name, predicate, seconds=8):
 
 
 def detail():
-    return {name: value(name) for name in (
+    names = (
         'Audio backend', 'Audio device', 'Audio sample rate', 'Audio buffer frames',
         'Audio callbacks', 'Audio stream errors', 'Audio failed', 'Audio status',
         'Transport playing', 'Absolute frame', 'Rejected commands', 'Native generation',
-        'Track 1 active voices', 'Track 2 active voices')}
+        'Track 1 active voices', 'Track 2 active voices')
+    if windows.scope == MAIN:
+        prepare_workspace_control(names[0])
+        try:
+            frames = scan_scoped_frames(ui.desktop_apps(), ui.pid, windows.scope, Atspi.StateType.SHOWING)
+            controls = scan_named_controls(frames[0], names) if frames is not None and len(frames) == 1 else None
+        except GLib.GError:
+            controls = None
+        if controls is not None:
+            return {name: value(name, controls[name]) for name in names}
+    return {name: value(name) for name in names}
 
 
 def log(action):

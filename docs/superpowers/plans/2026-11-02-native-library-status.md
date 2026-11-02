@@ -467,6 +467,20 @@ base/launch/Preview test. Checkpoint B's rolling optional horizon, emergency
 reservations, policy propagation, actual releases and measured admission remain
 unfinished. No profile qualifies for library publication.
 
+The diagnostic batching follow-up reduces repeated accessibility traversal while
+retaining the same 14 fields and conversion rules. Each read strictly enumerates
+the owned showing Alive frame and a complete unique control set afresh. Unknown
+PID, null child, unreadable sibling, duplicate/missing frame or control and
+transient errors fall back to all incumbent per-control reads. Independent
+review caught a permissive sibling-enumeration case in r1; RED regressions and
+the strict r2 correction close it without changing the shared frame finder.
+All 215 Python helper tests pass; independent r2 review finds no further issue
+(`workers/endurance-diagnostics-batch-review-r1/report-r2.md`). Actual selected
+native-build smoke accepts all three fresh scans
+(`diagnostics-native-smoke-r2/diagnostics-native-smoke.json`). This changes no
+musical input, input guard, clock origin, duration, resource limit or acceptance
+assertion; the full endurance rerun is still required.
+
 ## Next Gates
 
 1. Finish reviewed profile facts and original editor geometry, keeping unresolved
