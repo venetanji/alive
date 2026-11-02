@@ -9,12 +9,19 @@
 .live-device-control .live-control{position:relative;width:100%;height:100%;min-width:0;gap:0;display:grid;grid-template-rows:10px minmax(0,1fr);justify-items:start}
 .live-device-control .live-label{font-size:10px;line-height:10px;max-width:100%;overflow:hidden;white-space:nowrap}
 .live-device-control .live-dial{width:23px;height:23px;align-self:start}
+.live-device-combi .live-control{grid-template-rows:11px var(--live-device-dial-height) 10px;justify-items:center}
+.live-device-combi .live-dial{width:var(--live-device-dial-width);height:var(--live-device-dial-height)}
+.live-device-combi .live-range.is-disabled{opacity:1}
+.live-device-combi.live-device-position-unresolved .live-dial-arc,.live-device-combi.live-device-position-unresolved .live-dial-needle{visibility:hidden}
 .live-device-control .live-readout{position:absolute;right:0;bottom:0;width:calc(100% - 17px);height:12px;gap:0;max-width:calc(100% - 17px);justify-content:flex-end}
 .live-device-control .live-value{font-size:10px;line-height:10px;height:100%;width:100%;min-width:0;min-height:0;padding:0 2px;border-radius:0;color:var(--live-device-control-ink,var(--live-ink))}
 .live-device-control[data-view-class=LoadableDisplayStyleEditField]>.live-value{text-align:left}
 .live-device-control .live-readout .live-value{width:100%;flex:1;padding:0}
+.live-device-combi .live-readout{position:relative;right:auto;bottom:auto;width:100%;height:10px;max-width:100%;justify-content:center}
 .live-device-control .live-control-formatted .live-readout{width:100%;max-width:100%}
 .live-device-control .live-control-formatted .live-readout .live-value{text-align:right}
+.live-device-combi .live-control-formatted .live-readout .live-value{text-align:center}
+.live-device-combi .live-value:disabled{opacity:1;color:var(--live-muted)}
 .live-device-control .live-unit{flex:none;font-size:10px;line-height:10px}
 .live-device-control .live-toggle{width:100%;height:100%;min-height:0;padding:0 2px;font-size:10px;line-height:12px;white-space:nowrap;overflow:hidden}
 .live-device-control .live-menu{position:relative;width:100%;height:100%;min-width:0;padding:0;gap:0}
@@ -22,6 +29,9 @@
 .live-device-control .live-menu select{appearance:none;-webkit-appearance:none;width:100%;height:100%;min-height:0;font-size:10px;line-height:13px;padding:0 10px 0 2px;color:var(--live-device-control-ink,var(--live-ink))}
 .live-device-control .live-menu:after{content:"";position:absolute;right:3px;top:50%;width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid var(--live-ink);transform:translateY(-50%);pointer-events:none}
 .live-device-control .live-radio-group{width:100%;height:100%;font-size:10px;gap:2px}
+.live-device-pickup-type .live-radio-group{align-items:center}
+.live-device-pickup-type .live-radio-option{flex:none;width:var(--live-device-radio-width);height:var(--live-device-radio-height)}
+.live-device-pickup-type .live-radio-option:disabled{opacity:1;color:var(--live-muted)}
 .live-device-control .live-radio-option svg{display:block;width:10px;height:10px;margin:auto}
 .live-device-control .live-toggle.live-device-checkbox{padding:0;border:1px solid var(--live-accent);background:transparent;color:var(--live-accent)}
 .live-device-control .live-toggle.live-device-checkbox[aria-pressed=true]{background:var(--live-accent)}

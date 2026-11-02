@@ -29,7 +29,7 @@ worktrees are preserved. No merge or automatic CI has been requested.
 | Saved native state | Ordinary Ultra commanded-state/history/destroy/reopen passes; Alive per-instance persistence passes | Controlled edited destroy/reconstruct matches one symmetric PCM case; ordinary host integration unrun | Unrun |
 | Multiple instances | Ordinary Ultra and retained-owner tests pass; Alive native admission closed | Controlled independent instances pass; ordinary host integration unrun | Unrun |
 | Musical lifecycle | Synthetic bounded release and owner/time continuity pass; session callers unqualified | Controlled notes/release/retrigger pass; session callers unqualified | Unrun |
-| Timing/admission | Unqualified | Private actual-bank measurement in progress; no Alive admission | Unrun |
+| Timing/admission | Unqualified | Private actual-bank observations complete; eight instances/four keys miss deadlines; full Alive path unqualified | Unrun |
 | Alive library/loading | Unrun; unavailable | Unrun; unavailable | Unrun; unavailable |
 
 Mapping completeness does not establish original defaults, editor fidelity,
@@ -51,7 +51,8 @@ Private evidence root:
 Installed binaries, presets, XML/artwork, disassembly, captures and raw probe
 output stay there. Only authored interoperability facts/adapters/tests enter Git.
 
-- Full JavaScript run: 750 passed, zero failed/skipped (`frontend-full-r6.log`).
+- Full JavaScript/component/profile run: 766 passed, zero failed/skipped
+  (`frontend-full-r7.log`). All 35 importer tests also pass.
 - Full configured browser suite: 381 passed (`frontend-browser-full-r2.log`).
   Separate profile/resource/widget tests exercise optional installed fixtures;
   they are not implicitly included in the configured suite's count.
@@ -74,6 +75,28 @@ reset and rollback revisions were not reserved. A second regression caught
 overflow at the final revision. Green coverage also restores a root omitted by
 the failed candidate and directly checks that fatal rollback leaves driver I/O
 retired and the native session unconfigured/stopped.
+
+The released shared renderer adds the original six composite dials, R/W radio
+structure and preserved row-title containers. Resource padding no longer clips
+valid 17/33/36-unit insets. A subsequent independent visual review found that
+embedded Size330x80 still clipped 98-unit detail content; a failing regression
+now covers content visibility and explicit fixed constraints. The corrected
+embedded minimum height exposes every lower-row input. Module navigation now
+announces the visible Hammer/Fork/Damper-Pickup/Global headings. Ten focused
+geometry/widget tests pass; all native parameter inputs remain disabled.
+
+Independent visual and mechanical assessments retain source hashes, browser
+observations and captures privately. The source detector reports zero findings,
+which does not qualify generated DOM or original fidelity. Schematic artwork,+splash/card/header proportions and original knob drawing/angles remain open.
+The new profile/importer/widget tests are explicitly selected by the existing
+manual CI scripts. Workflow triggers remain manual-only.
+
+Electric's private CPU-pinned bank/runtime matrix covers eight instance/key
+cases and 5120 callback observations. Finite audio, commanded acknowledgements,
+retrigger/release and fresh rearm checks pass. Eight instances/four keys exceed
+nominal deadlines at 64/128/256/512 frames; the worst observed ratio is 183.32%
+at 128 frames. This excludes the full Engine tick, driver and Alive queues and
+does not establish a playback capacity or admit any native profile.
 
 ## Next Gates
 

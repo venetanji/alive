@@ -5,8 +5,11 @@ import {createLiveEnvelopeEditor} from './live-envelope-editor.mjs';
 const continuous=new Set(['LoadableCombiSliderSmall','LoadableSliderEditField','LoadableBipolSliderEditField','LoadableDisplayStyleEditField']);
 const toggles=new Set(['LoadableCheckControlText','LoadableDisplayCheckControl','RadioButtonControlModulated','LoadableAnimationButtonControl']);
 const menus=new Set(['LoadableChooserControl','LoadableDisplayChooser']);
-const containers=new Set(['LoadableView','EmbeddedLoadableView','VoidView','HorizBoxView','VertBoxView','BorderedCellView','ExpandableCellView','CardView','FingerView','SplashCellView','StackView','GridLayoutView','ControlManager','']);
+const containers=new Set(['LoadableView','EmbeddedLoadableView','VoidView','HorizBoxView','VertBoxView','BorderLayoutView','BorderedCellView','ExpandableCellView','CardView','FingerView','SplashCellView','StackView','GridLayoutView','ControlManager','']);
 const colorTokens=new Map([['RetroDisplayBackground','--live-well'],['RetroDisplayForeground2','--live-accent'],['RetroDisplayForegroundDisabled','--live-muted'],['RetroDisplayBackgroundLine','--live-edge']]);
+// These aliases are established by the retained/current resource XML comparison.
+const borderColors=new Map([['56','Black'],['63','RetroDisplayForegroundDisabled']]);
+const cornerColors=new Map([['1','UseBackground']]);
 const key=connection=>JSON.stringify([connection?.scope??[],connection?.expression??'']);
 const make=(doc,tag,cls,text)=>{const e=doc.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e;};
 const visibilityReference=node=>{
@@ -16,12 +19,18 @@ const visibilityReference=node=>{
 };
 
 export function createLiveDeviceView(doc,{layout,graphics=null,resolveBinding=()=>null,evaluateExpression=null,onError=()=>{}}={}){
-  let disposed=false;const cleanup=[],refreshers=[],drafts=[],cards=new Map(),fingers=[],selectors=[],unsupported=new Set();let unresolved=0,controls=0;
+  let disposed=false;const cleanup=[],refreshers=[],drafts=[],cards=new Map(),fingers=[],selectors=[],unsupported=new Set(),borders=[],unsupportedProperties=[];let unresolved=0,controls=0;
   const textMeasure=doc.createElement('canvas').getContext('2d');if(textMeasure)textMeasure.font='11px "Liberation Sans"';
   const guard=fn=>(...args)=>{if(disposed)return false;try{const result=fn?.(...args);if(result?.then)result.catch(onError);return result;}catch(e){onError(e);return false;}};
   const label=node=>node.text('Label')||node.text('Text')||node.text('TrueText')||node.text('InfoTextHeader').replace(/^@/,'')||node.connection?.expression||node.className;
   function render(node,ancestorExpressions=[],naturalText=false){
     const type=node.className,e=make(doc,'div','live-device-node');e.dataset.viewClass=type;
+    const poti=node.children[0],potiSize=poti?.className==='ModulatedPoti'?propertyPoint(poti,'Size'):null;
+    const combi=type==='LoadableCombiSlider'&&node.children.length===1&&poti.id==='Slider'&&!poti.connection&&!poti.embedded&&!poti.children.length
+      &&Object.keys(poti.properties).every(name=>name==='Size'||name==='BackgroundColor')&&potiSize?.x>0&&potiSize.x<=64&&potiSize.y>0&&potiSize.y<=64;
+    const buttonSize=type==='RadioButtonControlManager'?propertyPoint(node,'ButtonSize'):null;
+    const pickupRadio=type==='RadioButtonControlManager'&&node.resource==='Devices/LoungeLizard/Contents.xml'&&node.connection?.expression==='PickupModel.Current'
+      &&!node.children.length&&value(node,'IsVertical')==='true'&&buttonSize?.x>0&&buttonSize.x<=64&&buttonSize.y>0&&buttonSize.y<=64;
     const color=name=>{const token=colorTokens.get(value(node,name));return token?`var(${token})`:null;};
     const background=color('BackgroundColor'),foreground=color('TextColor'),controlInk=color('Color')??color('Color Scheme');
     if(background)e.style.backgroundColor=background;if(foreground)e.style.color=foreground;
@@ -31,6 +40,8 @@ export function createLiveDeviceView(doc,{layout,graphics=null,resolveBinding=()
     const ownExpressions=Object.entries(node.properties).filter(([name,p])=>p.tag==='ViewExpressionProperty'&&name!=='IndexExpression').map(([name,p])=>({name,value:p.attributes.Value,scope:node.scope,resource:node.resource,connection:node.connection}));
     const stateExpressions=[...ancestorExpressions,...ownExpressions];
     let children=node.embedded?[node.embedded]:node.children;
+    // The child supplies the composite's dial geometry, not another parameter.
+    if(combi)children=[];
     if(type==='GridLayoutView')children=node.children.find(n=>n.id==='ViewChildren')?.children??[];
     const horizontal=type==='HorizBoxView',vertical=type==='VertBoxView';
     const compactToolbar=horizontal&&children.some(child=>child.className==='RadioButtonControlModulated'&&child.connection?.expression==='ExponentialSlope');
@@ -96,25 +107,38 @@ export function createLiveDeviceView(doc,{layout,graphics=null,resolveBinding=()
     if(type==='FingerView'&&node.connection){
       const index=Number(value(node,'IndexExpression','-1'));
       if(Number.isInteger(index)&&index>=0){
-        const button=make(doc,'button','live-device-finger',viewId||node.children.find(n=>value(n,'ViewId'))?.properties.ViewId?.attributes.Value||'Details');button.type='button';
-        button.setAttribute('aria-label',`Show ${label(children[0]??node)} details`);e.prepend(button);
+        const title=e.querySelector('[data-view-class=TextField]')?.textContent.trim()||viewId||`Module ${index+1}`;
+        const button=make(doc,'button','live-device-finger',title);button.type='button';
+        button.setAttribute('aria-label',`Show ${title} details`);e.prepend(button);
         e.classList.add('live-device-module');
         fingers.push({button,element:e,group:key(node.connection),index});
       }
     }
-    if(continuous.has(type)||toggles.has(type)||menus.has(type)){
+    if(continuous.has(type)||toggles.has(type)||menus.has(type)||combi||pickupRadio){
       controls++;e.classList.add('live-device-control');
       const binding=node.connection?resolveBinding(node.connection,node,{stateExpressions}):null;
       const verified=binding?.verified===true&&(!stateExpressions.length||binding.handlesExpressions===true);
       const read=()=>binding?.getState?.()??{enabled:verified,known:verified,value:binding?.value,initial:binding?.value};
       let state=read(),enabled=verified&&state.enabled;
-      const title=label(node),numeric=continuous.has(type);
+      const title=combi?node.text('Name')||label(node):label(node),numeric=continuous.has(type)||combi;
       const validRange=Number.isFinite(binding?.min)&&Number.isFinite(binding?.max)&&binding.min<binding.max;
       const validOptions=Array.isArray(binding?.options)&&binding.options.length>0;
+      const pickupOptions=pickupRadio&&validOptions&&binding.options.length===2&&binding.options.every((option,index)=>option?.label===['R','W'][index]&&Object.hasOwn(option,'value'));
       let control;
       const change=guard(v=>enabled&&binding.onChange?.(v));
-      if(type==='LoadableCombiSliderSmall'){
+      if(type==='LoadableCombiSliderSmall'||combi){
         control=createDial(doc,{label:title,min:validRange?binding.min:0,max:validRange?binding.max:1,value:state.known?state.value:0,step:validRange?binding.step??'any':'any',unit:binding?.unit??'',display:binding?.display,disabled:!enabled,onInput:guard(v=>enabled&&binding.onInput?.(v)),onChange:change,onCancel:guard(v=>binding.onCancel?.(v))});
+        if(combi){
+          e.classList.add('live-device-combi');e.style.setProperty('--live-device-dial-width',potiSize.x+'px');e.style.setProperty('--live-device-dial-height',potiSize.y+'px');
+          width=Math.max(width,potiSize.x);height=Math.max(height,11+potiSize.y+10);
+          if(!verified)unsupportedProperties.push({resource:node.resource,id:node.id,scope:[...node.scope],property:'Dial.Position',reason:'Model-to-dial position is unqualified; indicator hidden.'});
+        }
+      }else if(pickupRadio){
+        // The capture establishes labels/order; values require explicit binding options.
+        control=createRadioGroup(doc,{label:'Pickup type',options:pickupOptions?binding.options:[{value:'R',label:'R'},{value:'W',label:'W'}],value:pickupOptions&&state.known?state.value:undefined,vertical:true,disabled:!enabled||!pickupOptions,onChange:change});
+        e.classList.add('live-device-pickup-type');e.style.setProperty('--live-device-radio-width',buttonSize.x+'px');e.style.setProperty('--live-device-radio-height',buttonSize.y+'px');
+        width=Math.max(width,buttonSize.x);height=Math.max(height,buttonSize.y*2+2);
+        if(!pickupOptions)unsupportedProperties.push({resource:node.resource,id:node.id,scope:[...node.scope],property:'Radio.Options',reason:'R/W labels and order are observed; model values and selection are unqualified.'});
       }else if(numeric){control=createNumber(doc,{label:title,min:validRange?binding.min:undefined,max:validRange?binding.max:undefined,value:state.known?state.value:0,step:binding?.step??'any',display:binding?.display,disabled:!enabled,onChange:change});}
       else if(type==='RadioButtonControlModulated'&&node.text('FalseText')&&node.text('TrueText')){control=createRadioGroup(doc,{label:title,options:[{value:0,label:node.text('FalseText')},{value:1,label:node.text('TrueText')}],value:Number(!!state.value),disabled:!enabled,onChange:change});}
       else if(type==='RadioButtonControlModulated'&&node.connection?.expression.endsWith('LFOSyncToggle')){
@@ -133,6 +157,7 @@ export function createLiveDeviceView(doc,{layout,graphics=null,resolveBinding=()
         state=read();enabled=verified&&state.enabled;
         if(numeric)enabled=enabled&&validRange&&Number.isFinite(state.value)&&state.value>=binding.min&&state.value<=binding.max;
         if(menus.has(type))enabled=enabled&&validOptions;
+        if(pickupRadio)enabled=enabled&&pickupOptions;
         if(control.setDisabled)control.setDisabled(!enabled);else (control.input??control.element).disabled=!enabled;
         e.classList.toggle('live-device-unresolved',!state.known);
         e.classList.toggle('live-device-pending',!!state.pending);
@@ -142,6 +167,16 @@ export function createLiveDeviceView(doc,{layout,graphics=null,resolveBinding=()
           if(control.number&&!control.hasDraft?.())control.number.value='';
           else if(numeric&&!control.hasDraft?.()){control.input.value='';control.input.placeholder='--';}
           if(control.input?.type==='range')control.input.setAttribute('aria-valuetext','Unresolved model binding');
+        }
+        if(pickupRadio&&!pickupOptions)control.update(undefined);
+        if(combi){
+          const positionKnown=verified&&validRange&&state.known&&Number.isFinite(state.value)&&state.value>=binding.min&&state.value<=binding.max;
+          e.classList.toggle('live-device-position-unresolved',!positionKnown);
+          if(!positionKnown)control.input.setAttribute('aria-valuetext','Unresolved dial position');
+          if(!verified){
+            control.number.removeAttribute('aria-valuenow');
+            if(typeof binding?.display?.format!=='function'||typeof binding?.display?.parse!=='function'){control.number.value='';control.number.placeholder='--';}
+          }
         }
       };
       refreshers.push(refresh);refresh();
@@ -167,10 +202,26 @@ export function createLiveDeviceView(doc,{layout,graphics=null,resolveBinding=()
     }else if(!containers.has(type)){
       unsupported.add(type);e.classList.add('live-device-unimplemented');e.textContent=type==='RadioButtonControlManager'?'Tabs unavailable':type.replace(/^Analog/,'').replace(/Display$/,'');e.title=`${type}: compiled Live drawing behavior is not implemented.`;
     }
-    const border=node.properties.Border?.attributes;
+    const borderProperty=node.properties.Border,border=borderProperty?.attributes;
+    if(border){
+      const identity={resource:node.resource,id:node.id,scope:[...node.scope]},colorValue=border.ColorString??border.ColorName,cornerValue=border.CornerColorString??border.CornerColorName;
+      const color=border.ColorString!==undefined?(border.ColorString==='Black'||border.ColorString==='RetroDisplayForegroundDisabled'?border.ColorString:null):borderColors.get(border.ColorName)??null;
+      const cornerColor=border.CornerColorString!==undefined?(border.CornerColorString==='UseBackground'?border.CornerColorString:null):cornerColors.get(border.CornerColorName)??null;
+      borders.push({...identity,color,cornerColor});
+      const unsupportedBorder=(property,value,reason)=>unsupportedProperties.push({...identity,property:`Border.${property}`,value,reason});
+      // Serialization equivalence does not qualify native border drawing semantics.
+      if(colorValue!==undefined)unsupportedBorder('Color',colorValue,color?'Native border color drawing is unqualified; generic outline retained.':'Unknown border color; generic outline retained.');
+      if(cornerValue!==undefined)unsupportedBorder('CornerColor',cornerValue,cornerColor?'Native corner color drawing is unqualified.':'Unknown corner color.');
+      for(const name of ['RoundedCorners','EdgesToDraw'])if(border[name]!==undefined)unsupportedBorder(name,border[name],'Native border geometry is unqualified.');
+      for(const child of borderProperty.children)if(child.tag==='BorderType')unsupportedBorder('BorderType',child.attributes.Value,'Native border type drawing is unqualified.');
+    }
     if(type==='BorderedCellView'){
       e.classList.add('live-device-cell');
-      const padding=['Top','Right','Bottom','Left'].map(k=>Math.min(16,Math.max(0,Number(border?.[k])||0)));
+      const padding=['Top','Right','Bottom','Left'].map(k=>{
+        const requested=Number(border?.[k]),applied=Number.isFinite(requested)?Math.min(64,Math.max(0,requested)):0;
+        if(border?.[k]!==undefined&&(!Number.isFinite(requested)||requested!==applied))unsupportedProperties.push({resource:node.resource,id:node.id,scope:[...node.scope],property:`Border.${k}`,value:border[k],applied,reason:'Padding is bounded to finite 0..64 CSS pixels.'});
+        return applied;
+      });
       e.style.padding=padding.map(n=>n+'px').join(' ');width+=padding[1]+padding[3];height+=padding[0]+padding[2];
     }
     if(!fitWidth&&['LoadableView','EmbeddedLoadableView','BorderedCellView','CardView'].includes(type)){
@@ -178,11 +229,14 @@ export function createLiveDeviceView(doc,{layout,graphics=null,resolveBinding=()
       if(flexible.length)fitWidth=available=>{for(const c of flexible)c.fitWidth(Math.max(0,Math.min(c.width,available-inset)));};
     }
     const size=propertyPoint(node,'Size');
-    // Box Size is a natural minimum; FixedLength below is the explicit constraint.
-    width=naturalText&&type==='TextField'?Math.ceil(textMeasure?.measureText(e.textContent).width??e.textContent.length*6):horizontal||vertical?Math.max(size?.x||0,width):size?.x||width;height=horizontal||vertical?Math.max(size?.y||0,height):size?.y||height;
+    // Box/embedded heights retain preferred content; FixedLength is authoritative.
+    width=naturalText&&type==='TextField'?Math.ceil(textMeasure?.measureText(e.textContent).width??e.textContent.length*6):horizontal||vertical?Math.max(size?.x||0,width):size?.x||width;
+    height=horizontal||vertical||pickupRadio||type==='EmbeddedLoadableView'?Math.max(size?.y||0,height):size?.y||height;
     if(type==='ControlManager'&&size?.x){for(const c of childViews){const available=size.x-(propertyPoint(c.node,'Position')?.x??0);if(c.fitWidth&&c.width>available)c.fitWidth(available);}}
     for(const [name,dimension]of [['HorizResizePolicy','width'],['VertResizePolicy','height']]){
-      const policy=node.properties[name]?.attributes,length=Number(policy?.Value1);
+      // Electric row-title containers use this default when no explicit width policy exists.
+      const fallback=type==='BorderLayoutView'&&name==='HorizResizePolicy'?node.properties.DefaultHorizResizePolicy:null;
+      const policy=(node.properties[name]??fallback)?.attributes,length=Number(policy?.Value1);
       if(policy?.PolicyName==='FixedLength'&&Number.isFinite(length)&&length>=0&&length<=4096){if(dimension==='width')width=length;else height=length;}
     }
     if(type==='EmbeddedLoadableView'&&size?.x&&fitWidth)fitWidth(width);
@@ -215,5 +269,5 @@ export function createLiveDeviceView(doc,{layout,graphics=null,resolveBinding=()
   }
   for(const selector of selectors){const targets=cards.get(selector.group)??[];selector.control.setDisabled(!targets.length);selector.control.update(targets[0]?.initial??0);}
   const refresh=()=>{if(!disposed)for(const update of refreshers)update();};refresh();
-  return{element,refresh,hasDraft:()=>drafts.some(read=>read()),report:{controls,unresolved,unsupportedClasses:[...unsupported].sort(),warnings:layout.warnings},dispose(){if(disposed)return;disposed=true;for(const release of cleanup)release();}};
+  return{element,refresh,hasDraft:()=>drafts.some(read=>read()),report:{controls,unresolved,unsupportedClasses:[...unsupported].sort(),borders,unsupportedProperties,warnings:layout.warnings},dispose(){if(disposed)return;disposed=true;for(const release of cleanup)release();}};
 }
