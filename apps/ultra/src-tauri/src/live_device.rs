@@ -4,6 +4,8 @@ use serde::Serialize;
 use crate::canvas::live_device::{Source, PROFILE, PARAMETER_COUNT};
 use std::{ffi::{c_char, CStr, CString}, io::Read, path::{Path, PathBuf}};
 
+pub(crate) mod document_batch;
+
 #[repr(C)]
 struct NativeSource {
     node: u32, profile_version: u32, parameter_count: u32, reserved: u32,
@@ -44,18 +46,31 @@ fn native_result(operation: impl FnOnce(*mut c_char, usize) -> i32) -> Result<()
 
 pub(crate) fn count(document: u32) -> u32 { unsafe { ultra_canvas_live_devices_count_document(document) } }
 
+struct SourceRows<'a> {
+    _profile: CString,
+    _path: CString,
+    rows: Vec<NativeSource>,
+    _sources: std::marker::PhantomData<&'a [Source]>,
+}
+impl<'a> SourceRows<'a> {
+    fn new(sources: &'a [Source]) -> Result<Self, String> {
+        let profile = CString::new(PROFILE).unwrap();
+        let path = if sources.is_empty() { CString::new("").unwrap() } else {
+            CString::new(resource_directory()?.join("Devices/Pc/Analog_64.dll").as_os_str().as_encoded_bytes())
+                .map_err(|_| "Invalid installed Live Resources path")?
+        };
+        let rows = sources.iter().map(|source| NativeSource {
+            node: source.node, profile_version: source.state.version, parameter_count: source.state.values.len() as u32,
+            reserved: 0, profile: profile.as_ptr(), dll_path: path.as_ptr(), values: source.state.values.as_ptr(),
+        }).collect();
+        Ok(Self { _profile: profile, _path: path, rows, _sources: std::marker::PhantomData })
+    }
+}
+
 pub(crate) fn install(document: u32, graph: &canvas::NativeGraph, sources: &[Source]) -> Result<(), String> {
-    let profile = CString::new(PROFILE).unwrap();
-    let path = if sources.is_empty() { CString::new("").unwrap() } else {
-        CString::new(resource_directory()?.join("Devices/Pc/Analog_64.dll").as_os_str().as_encoded_bytes())
-            .map_err(|_| "Invalid installed Live Resources path")?
-    };
-    let rows: Vec<_> = sources.iter().map(|source| NativeSource {
-        node: source.node, profile_version: source.state.version, parameter_count: source.state.values.len() as u32,
-        reserved: 0, profile: profile.as_ptr(), dll_path: path.as_ptr(), values: source.state.values.as_ptr(),
-    }).collect();
+    let sources = SourceRows::new(sources)?;
     native_result(|error, capacity| unsafe {
-        ultra_canvas_install_live_devices_document(document, graph, rows.as_ptr(), rows.len() as u32, error, capacity)
+        ultra_canvas_install_live_devices_document(document, graph, sources.rows.as_ptr(), sources.rows.len() as u32, error, capacity)
     })
 }
 

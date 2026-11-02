@@ -97,17 +97,24 @@ presentation hosts, registry/generator and existing Browser integration.
       fault quarantine and conservative generic teardown. Synthetic realtime,
       ASan/UBSan and adjacent default runtime tests pass; actual DSP/session
       callers and timing remain unqualified.
-- [ ] Add failing full-sidecar retention and accepted-instance state tests.
+- [x] Add failing full-sidecar retention and accepted-instance state tests.
 - [x] Persist bounded complete per-instance source overrides, retain source-file
       fingerprints, refuse foreign/duplicate/invalid overrides, and verify two
       same-file instances through actual Save/reopen without editing that file.
       This does not expose state commands or admit native playback.
-- [ ] Carry sources through preparation/install/rollback; authorize full-state panel
-      reads/writes by generation, instance, source node and revision.
+- [x] Carry sources through preparation and staged install/rollback while retaining
+      old native bank owners. Keep musical publications from changing native state
+      without preparation; reserve candidate and rollback revisions before mutation.
+- [ ] Authorize full-state panel reads/writes by generation, instance, source node
+      and revision, including stopped transactional state edits and history.
 - [x] Add an independently reviewed off-thread native document batch API. Prepare
       at most six roots before replacement, retain old banks through exchange,
       and restore them with fresh revisions without foreign reconstruction.
       Rust session callers/configuration/Master rollback remain subsequent work.
+- [x] Connect the Rust host to that batch API, keeping its control lock through
+      preparation/exchange/configuration/Master/restore/release. Failed candidate
+      preparation retains the configured session, and rollback binds the exact
+      retained roots at fresh revisions, including roots removed by the candidate.
 - [ ] Add failing note/Stop/Start/seek/loop/clip-transition tests and resolve continuous
       native lifecycle before enabling the native note capability.
 - [ ] Measure foreign-DSP render/state/discontinuity work and fit an explicit admitted

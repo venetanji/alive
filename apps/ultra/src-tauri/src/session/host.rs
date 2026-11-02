@@ -2,6 +2,7 @@
 use super::*;
 use serde::Serialize;
 use std::path::Path;
+use crate::live_device::document_batch::{Document, DocumentBatch, DocumentExchange};
 
 #[derive(Default)]
 pub struct Host {
@@ -42,10 +43,7 @@ impl Host {
         Ok(candidate)
     }
     pub(super) fn publication_config(&self,candidate:&PreparedSession)->Result<Box<native::ConfigV4>,String>{
-        let (mut config,_)=self.configuration_workspaces(candidate)?;
-        config.preparation_revision=self.preparation_revision;
-        for (i,device) in config.devices[..config.device_count as usize].iter_mut().enumerate(){device.revision=self.revisions[i];}
-        Ok(config)
+        self.configuration(candidate,true).map(|(config,_)|config)
     }
     pub(super) fn preflight_master(prepared:&PreparedSession)->Result<(),String>{
         prepared.saved.validate_master()?;
@@ -53,11 +51,14 @@ impl Host {
         Ok(())
     }
     pub(super) fn configuration_workspaces(&self, prepared:&PreparedSession)->Result<(Box<native::ConfigV4>,Vec<crate::canvas::NativeGraph>),String> {
+        self.configuration(prepared,false)
+    }
+    fn configuration(&self, prepared:&PreparedSession, installed:bool)->Result<(Box<native::ConfigV4>,Vec<crate::canvas::NativeGraph>),String> {
         let (project,workspace)=(&prepared.saved.score,&prepared.schedule);
-        let (common,graphs)=self.configuration_common(prepared)?;
+        let (common,graphs)=self.configuration_common(prepared,installed)?;
         let mut config=Box::<native::ConfigV4>::default();
         config.profile=native::V4_PROFILE_2X4;config.work_policy=native::V4_WORK_POLICY_1;
-        config.preparation_revision=self.preparation_revision.checked_add(1).ok_or("Native preparation revision exhausted")?;
+        config.preparation_revision=if installed{self.preparation_revision}else{self.preparation_revision.checked_add(1).ok_or("Native preparation revision exhausted")?};
         config.track_count=common.track_count;config.device_count=common.device_count;config.devices=common.devices;
         config.event_count=common.event_count;config.events=common.events;config.loop_enabled=common.loop_enabled;
         config.length_frames=prepared.length_frames;config.tempo_bpm=project.tempo;
@@ -82,7 +83,7 @@ impl Host {
         let p=self.prepared.as_ref().ok_or("Create or open an Alive session")?;
         Ok(View{document:&p.saved.score,path:&p.origin,devices:p.devices.iter().map(|d|&d.manifest).collect()})
     }
-    fn configuration_common(&self, prepared: &PreparedSession) -> Result<(Box<native::ConfigV4>, Vec<crate::canvas::NativeGraph>),String> {
+    fn configuration_common(&self, prepared: &PreparedSession, installed:bool) -> Result<(Box<native::ConfigV4>, Vec<crate::canvas::NativeGraph>),String> {
         let mut config = Box::<native::ConfigV4>::default();
         config.track_count = prepared.tracks.len() as u32;
         config.device_count = prepared.devices.len() as u32;
@@ -94,7 +95,7 @@ impl Host {
             let model = &prepared.saved.score.tracks()[device.track];
             let reference = model.devices().find(|d| d.instance_id == device.instance_id).unwrap();
             let mut graph = device.graph.clone();
-            graph.revision = self.revisions[index] + 1;
+            graph.revision = if installed{self.revisions[index]}else{self.revisions[index].checked_add(1).ok_or("Native graph revision exhausted")?};
             let output = &device.manifest.output;
             let input = device.manifest.input.as_ref();
             let mut native = native::DeviceV2 { document: index as u32, kind: if device.manifest.kind == crate::canvas::device::DeviceKind::Instrument { 1 } else { 2 },
@@ -128,7 +129,7 @@ impl Host {
         self.admit(prepared).map_err(|e|e.message)
     }
     pub(super) fn admit(&self,prepared:&PreparedSession)->Result<(),AdmissionError> {
-        if self.revisions.iter().any(|r|*r==u64::MAX)||self.preparation_revision==u64::MAX{return Err(AdmissionError{code:native::V4_BAD_FIELD,message:"Native revision exhausted".into()});}
+        self.reserve_install_revisions().map_err(|message|AdmissionError{code:native::V4_BAD_FIELD,message})?;
         workspace_limits().map_err(|message|AdmissionError{code:native::V4_FEATURE_DISABLED,message})?;
         let (config,graphs)=self.configuration_workspaces(prepared).map_err(|message|AdmissionError{code:native::V4_BAD_FIELD,message})?;
         for (index,graph) in graphs.iter().enumerate() {
@@ -155,54 +156,79 @@ impl Host {
         Ok(serials.0)
     }
     pub(super) fn install_reserved(&mut self,prepared:PreparedSession,serials:(u64,u64))->Result<(),InstallFailure> {
+        let retained = |error| InstallFailure{message:format!("Session apply failed; prior session retained: {error}"),rollback_serial:None};
+        self.reserve_install_revisions().map_err(retained)?;
+        let (config,graphs)=self.configuration_workspaces(&prepared).map_err(retained)?;
+        let documents=graphs.iter().zip(&prepared.devices).enumerate().map(|(slot,(graph,device))|
+            Document{slot:slot as u32,graph,sources:&device.live_devices}).collect::<Vec<_>>();
+        // Every bank is fully constructed before reset, while the prior owners live.
+        let mut batch=DocumentBatch::prepare(&documents).map_err(retained)?;
+        let prior_owned=self.owned_roots;
+        let mut exchange=None;
+        let mut reset=false;
         unsafe { native::ultra_audio_stop(); }
-        let mut replaced=false;
-        let result=self.apply(&prepared,&mut replaced).and_then(|()|Self::initialize_master(prepared.saved.master.gain,serials.0));
+        let result=(|| {
+            Self::reset_session()?;
+            reset=true;
+            self.preparation_revision=config.preparation_revision;
+            let owned_mask=prior_owned.iter().enumerate().fold(0,|mask,(slot,owned)|mask|((*owned as u32)<<slot));
+            exchange=Some(batch.exchange(owned_mask)?);
+            self.owned_roots=[false;16];
+            for (slot,graph) in graphs.iter().enumerate(){self.revisions[slot]=graph.revision;self.owned_roots[slot]=true;}
+            Self::install_fault()?;
+            Self::configure(&prepared,&config)?;
+            Self::initialize_master(prepared.saved.master.gain,serials.0)
+        })();
         if let Err(error) = result {
-            if !replaced{return Err(InstallFailure{message:format!("Session apply failed; prior session retained: {error}"),rollback_serial:None});}
-            if let Some(previous) = self.prepared.clone() {
-                let mut rollback_replaced=false;
-                if let Err(rollback) = self.apply(&previous,&mut rollback_replaced).and_then(|()|Self::initialize_master(previous.saved.master.gain,serials.1)) {
-                    return Err(InstallFailure{message:format!("Session apply failed: {error}; prior session remains saved in memory but audio restoration failed: {rollback}"),rollback_serial:None});
-                }
-                return Err(InstallFailure{message:format!("Session apply failed; prior session retained: {error}"),rollback_serial:Some(serials.1)});
+            if !reset{return Err(retained(error));}
+            if let Err(rollback)=self.restore_install(exchange.as_mut(),prior_owned,serials.1){
+                return Err(InstallFailure{message:format!("Session apply failed: {error}; prior session remains saved in memory but audio restoration failed: {rollback}"),rollback_serial:None});
             }
-            return Err(InstallFailure{message:format!("Session apply failed; prior session retained: {error}"),rollback_serial:None});
+            return Err(InstallFailure{message:format!("Session apply failed; prior session retained: {error}"),rollback_serial:self.prepared.as_ref().map(|_|serials.1)});
         }
         self.prepared = Some(prepared);
         self.bank_revision = 0;
         Ok(())
     }
+    fn reserve_install_revisions(&self)->Result<(),String>{
+        // Reserve candidate and rollback identities before any session mutation.
+        if self.revisions.iter().any(|r|*r>=u64::MAX-1)||self.preparation_revision>=u64::MAX-1{return Err("Native revision exhausted".into());}Ok(())
+    }
+    fn reset_session()->Result<(),String>{
+        if unsafe{native::alive_session_reset()}==0{return Err("Stop device I/O before applying a session".into());}Ok(())
+    }
+    fn install_fault()->Result<(),String>{
+        #[cfg(test)]
+        if TEST_FAIL_AFTER_RESET.with(|remaining|{let count=remaining.get();if count>0{remaining.set(count-1);true}else{false}}){return Err("Injected failure after native reset".into());}
+        Ok(())
+    }
+    fn configure(prepared:&PreparedSession,config:&native::ConfigV4)->Result<(),String>{
+        let audio=prepared.schedule.audio_descriptors();
+        if unsafe{native::alive_session_configure_v4(config,audio.as_ptr(),audio.len() as u32)}==0{return Err(native::error());}Ok(())
+    }
+    fn restore_install(&mut self,exchange:Option<&mut DocumentExchange>,prior_owned:[bool;16],serial:u64)->Result<(),String>{
+        Self::reset_session()?;
+        if let Some(exchange)=exchange{
+            let mut revisions=self.revisions;
+            for (slot,revision) in revisions.iter_mut().enumerate(){
+                if prior_owned[slot]||self.owned_roots[slot]{*revision=revision.checked_add(1).ok_or("Native rollback revision exhausted")?;}
+            }
+            exchange.restore(&revisions)?;
+            self.revisions=revisions;self.owned_roots=prior_owned;
+        }
+        if let Some(previous)=self.prepared.as_ref(){
+            self.preparation_revision=self.preparation_revision.checked_add(1).ok_or("Native rollback preparation revision exhausted")?;
+            // Configuration names the exact revisions bound by restore.
+            let (config,_)=self.configuration(previous,true)?;
+            Self::install_fault()?;
+            Self::configure(previous,&config)?;
+            Self::initialize_master(previous.saved.master.gain,serial)?;
+        }
+        self.bank_revision=0;Ok(())
+    }
     fn initialize_master(gain:f64,serial:u64)->Result<(),String>{
         let capability=native::master_capability().ok_or("Native Master support is unavailable")?;
         if unsafe{(capability.set)(1,gain,serial)}!=1{return Err("Native Master initialization failed".into());}Ok(())
-    }
-    fn apply(&mut self, prepared: &PreparedSession, replaced:&mut bool) -> Result<(), String> {
-        if self.revisions.iter().any(|r|*r==u64::MAX)||self.preparation_revision==u64::MAX{return Err("Native revision exhausted".into());}
-        let (config,graphs)=self.configuration_workspaces(prepared)?;
-        self.preparation_revision=self.preparation_revision.checked_add(1).ok_or("Native preparation revision exhausted")?;
-        unsafe {
-            if native::alive_session_reset() == 0 { return Err("Stop device I/O before applying a session".into()); }
-            *replaced=true;
-            #[cfg(test)]
-            if TEST_FAIL_AFTER_RESET.with(|remaining|{let count=remaining.get();if count>0{remaining.set(count-1);true}else{false}}){return Err("Injected failure after native reset".into());}
-            for slot in 0..16 {
-                if self.owned_roots[slot] {
-                    if crate::ultra_canvas_close_document(slot as u32) == 0 { return Err(format!("Native root {slot} could not be closed")); }
-                    self.owned_roots[slot] = false;
-                }
-            }
-            for (slot, graph) in graphs.iter().enumerate() {
-                self.revisions[slot] = graph.revision;
-                if crate::ultra_canvas_install_document(slot as u32, graph) == 0 { return Err(format!("Native device {} installation failed", slot + 1)); }
-                self.owned_roots[slot] = true;
-            }
-            let audio=prepared.schedule.audio_descriptors();
-            let accepted=native::alive_session_configure_v4(&*config,audio.as_ptr(),audio.len() as u32);
-            if accepted == 0 { return Err(native::error()); }
-        }
-        self.bank_revision=0;
-        Ok(())
     }
     pub fn base(&mut self, instance_id: &str, key: &str, value: f64) -> Result<(), String> {
         let prepared = self.prepared.as_mut().ok_or("No session")?;
@@ -249,3 +275,7 @@ pub(super) fn workspace_limits()->Result<native::LimitsV4,String>{
 fn layout(value: &str) -> u32 { match value { "stereo" => 2, "mono" => 1, _ => 0 } }
 
 pub(super) struct AdmissionError {pub code:u32,pub message:String}
+
+#[cfg(test)]
+#[path = "host_install_tests.rs"]
+mod install_tests;

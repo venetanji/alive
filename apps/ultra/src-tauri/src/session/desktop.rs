@@ -945,6 +945,10 @@ fn master_failed_rollback_does_not_claim_receipt() {
         host::test_fail_after_reset(2);
         assert!(c.install(candidate).unwrap_err().contains("audio restoration failed"));
         assert_eq!(c.accepted_serial,accepted);assert_eq!(c.generation,7);assert_eq!(c.host.prepared.as_ref().unwrap().saved,original.saved);
+        let io=c.driver.snapshot();assert!(!io.running);assert!(io.native_quiescent);assert!(!io.retirement_pending);
+        let mut score=native::State::default();
+        assert_eq!(unsafe{native::alive_session_state(&mut score)},1);
+        assert_eq!(score.configured,0);assert_eq!(score.playing,0);
         unsafe{native::alive_session_reset();for slot in 0..16{crate::ultra_canvas_close_document(slot);}}
     }
 #[test]
