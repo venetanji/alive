@@ -202,7 +202,8 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
       treeNodes(patch).find(node=>node.id===expected.node).params.state=copy(nextState);
       try {
         validateExactSources(patch);new CanvasDocument(patch);
-        const result=await invoke('document_commit',{baseRevision:descriptor.authoringRevision,patch,history:true,
+        const baseRevision=descriptor.authoringRevision,publicationRevision=descriptor.descriptorRevision;
+        const result=await invoke('document_commit',{baseRevision,patch,history:true,
           expectedScope:{ownerLabel:expected.ownerLabel,runtimeRevision:expected.runtimeRevision}});
         if(typeof result?.accepted!=='boolean'||!result.document?.shared||result.document.ownerLabel!==descriptor.ownerLabel)
           throw Error('Native source operation did not return the authoritative document.');
@@ -212,13 +213,19 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
           !Number.isSafeInteger(result.document.runtimeRevision)||result.document.runtimeRevision<1)
           throw Error('Invalid native document revision.');
         if(result.accepted){
+          if(result.document.authoringRevision!==baseRevision+1||!Number.isSafeInteger(publicationRevision)||
+            !Number.isSafeInteger(result.document.descriptorRevision)||result.document.descriptorRevision<=publicationRevision)
+            throw Error('Native source acceptance did not advance the invocation revisions.');
           const source=treeNodes(result.document.patch).find(node=>node.id===expected.node);
           if(result.document.runtimeRevision!==expected.runtimeRevision||source?.type!=='live_device'||
             source.params.device!==expected.device||!sameSource(source.params.state,nextState))
             throw Error('Native source acceptance returned a different source.');
+          // The receipt proves this invocation even if a newer canonical
+          // broadcast has already overtaken its descriptor publication.
+          acceptDescriptor(result.document);
+          return sourceResult('accepted',expected.node);
         }
         if(!acceptDescriptor(result.document))throw Error('Native source reply was out of order.');
-        if(result.accepted)return sourceResult('accepted',expected.node);
       } catch(error) {
         // An IPC failure can follow successful admission. Reconcile once and
         // leave later queued edits intact; this write must never be replayed.

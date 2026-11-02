@@ -272,6 +272,60 @@ test('ambiguous source replies reconcile canonical state and retain later unrela
   }
 });
 
+test('malformed acceptance without one authoring step cannot replay through a later layout edit',async()=>{
+  for(const authoringOffset of [0,2]){
+    const host=service();let fabricated=false;
+    const a=createSharedCanvasController({invoke:async(name,args)=>{
+      if(name==='document_commit'&&args.expectedScope&&!fabricated){
+        fabricated=true;
+        return {accepted:true,document:{...host.descriptor(),authoringRevision:args.baseRevision+authoringOffset,
+          descriptorRevision:2,patch:clone(args.patch)}};
+      }
+      return host.invoke(name,args);
+    }});
+    await a.prepare();const result=await a.commitLiveSource(request(a));
+    assert.equal(result.outcome,'unknown');assert.equal(result.canonical.source.state.values[26],.5);
+    assert.equal(host.calls.filter(call=>call.name==='document_current').length,2);
+    a.move(3,450,460);await a.flush();
+    assert.equal(host.patch.nodes[0].params.state.values[26],.5);
+    assert.equal(host.patch.nodes[0].params.state.values[194],12.1);assert.equal(host.patch.nodes[2].x,450);
+    assert.equal(host.past.length,1);
+  }
+});
+
+test('malformed acceptance requires a safe advanced descriptor publication',async()=>{
+  for(const publication of [1,undefined,1.5,Number.MAX_SAFE_INTEGER+1]){
+    const host=service();let malformed=false;
+    const a=createSharedCanvasController({invoke:async(name,args)=>{
+      const result=await host.invoke(name,args);
+      if(name==='document_commit'&&!malformed){malformed=true;result.document.descriptorRevision=publication;}
+      return result;
+    }});
+    await a.prepare();const result=await a.commitLiveSource(request(a));
+    assert.equal(result.outcome,'unknown');assert.equal(result.canonical.source.state.values[26],.875);
+    assert.equal(host.calls.filter(call=>call.name==='document_current').length,2);
+    assert.equal(writes(host).length,1);assert.equal(host.past.length,1);
+  }
+});
+
+test('valid accepted receipt uses invocation revisions when overtaken by a newer broadcast',async()=>{
+  const host=service();let overtaken=false;
+  const a=createSharedCanvasController({invoke:async(name,args)=>{
+    const result=await host.invoke(name,args);
+    if(name==='document_commit'&&args.expectedScope&&!overtaken){
+      overtaken=true;const next=host.patch;next.nodes[2].x=470;host.replace(next);
+    }
+    return result;
+  }});
+  host.listen(a.acceptDescriptor);await a.prepare();
+  const result=await a.commitLiveSource(request(a));
+  assert.equal(result.outcome,'accepted');assert.equal(result.canonical.authoringRevision,3);
+  assert.equal(result.canonical.source.state.values[26],.875);
+  assert.equal(a.getState().document.nodes[2].x,470);
+  assert.equal(host.calls.filter(call=>call.name==='document_current').length,1);
+  assert.equal(writes(host).length,1);assert.equal(host.past.length,1);
+});
+
 test('source acknowledgement isolates conflicting later edits and retains independent queued layout',async()=>{
   const {host,a}=await setup(),release=host.hold(),pending=a.commitLiveSource(request(a));await tick();
   const source=clone(a.getState().document.nodes[0].params.state);source.values[26]=.25;
