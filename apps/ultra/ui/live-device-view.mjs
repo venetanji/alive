@@ -1,6 +1,7 @@
 import {createDial,createNumber,createToggle,createMenu,createRadioGroup} from './live-controls.mjs';
 import {propertyPoint,propertyValue as value} from './live-device-layout.mjs';
 import {createLiveEnvelopeEditor} from './live-envelope-editor.mjs';
+import {createLiveDeviceRaster} from './live-device-raster.mjs';
 
 const continuous=new Set(['LoadableCombiSliderSmall','LoadableSliderEditField','LoadableBipolSliderEditField','LoadableDisplayStyleEditField']);
 const toggles=new Set(['LoadableCheckControlText','LoadableDisplayCheckControl','RadioButtonControlModulated','LoadableAnimationButtonControl']);
@@ -18,11 +19,73 @@ const visibilityReference=node=>{
   return match?{name:match[2],negated:!!match[1]}:null;
 };
 
-export function createLiveDeviceView(doc,{layout,graphics=null,resolveBinding=()=>null,evaluateExpression=null,onError=()=>{}}={}){
-  let disposed=false;const cleanup=[],refreshers=[],drafts=[],cards=new Map(),fingers=[],selectors=[],unsupported=new Set(),borders=[],unsupportedProperties=[];let unresolved=0,controls=0;
+export function createLiveDeviceView(doc,{layout,gui=null,graphics=null,electricSchematicFamily='normal',isCurrent=()=>true,resolveBinding=()=>null,evaluateExpression=null,onError=()=>{}}={}){
+  let disposed=false,raster=null,tintContext=null;const cleanup=[],refreshers=[],drafts=[],cards=new Map(),fingers=[],selectors=[],schematics=[],artwork=[],unsupported=new Set(),borders=[],unsupportedProperties=[];let unresolved=0,controls=0;
   const textMeasure=doc.createElement('canvas').getContext('2d');if(textMeasure)textMeasure.font='11px "Liberation Sans"';
   const guard=fn=>(...args)=>{if(disposed)return false;try{const result=fn?.(...args);if(result?.then)result.catch(onError);return result;}catch(e){onError(e);return false;}};
   const label=node=>node.text('Label')||node.text('Text')||node.text('TrueText')||node.text('InfoTextHeader').replace(/^@/,'')||node.connection?.expression||node.className;
+  function rasterOwner(){
+    if(!['normal','large'].includes(electricSchematicFamily))throw Error('Electric schematic: unsupported explicit artwork family.');
+    if(!raster){
+      raster=createLiveDeviceRaster(gui,graphics);
+      raster.selectFamily(`Devices/Electric${electricSchematicFamily==='large'?'/Large':''}`);cleanup.push(()=>raster.dispose());
+    }
+    return raster;
+  }
+  function tintColor(element,node){
+    const token=colorTokens.get(value(node,'BitmapColor'));
+    const css=token&&doc.defaultView?.getComputedStyle(element).getPropertyValue(token).trim();
+    if(!css)throw Error('Electric schematic: artwork theme color is unavailable.');
+    if(!tintContext){const canvas=doc.createElement('canvas');canvas.width=canvas.height=1;tintContext=canvas.getContext('2d');cleanup.push(()=>{canvas.width=canvas.height=0;tintContext=null;});}
+    if(!tintContext)throw Error('Electric schematic: canvas drawing is unavailable.');
+    // Invalid CSS colors preserve fillStyle; two sentinels distinguish rejection.
+    tintContext.fillStyle='#010203';tintContext.fillStyle=css;const first=tintContext.fillStyle;
+    tintContext.fillStyle='#040506';tintContext.fillStyle=css;
+    if(first!==tintContext.fillStyle)throw Error('Electric schematic: artwork theme color is invalid.');
+    tintContext.clearRect(0,0,1,1);tintContext.fillRect(0,0,1,1);
+    return [...tintContext.getImageData(0,0,1,1).data];
+  }
+  function mountSchematicLayer(element,node,mask){
+    const family=`Devices/Electric${electricSchematicFamily==='large'?'/Large':''}`,mode=mask?'coverage':'rgba';
+    const record={resource:node.resource,id:node.id,scope:[...node.scope],family,mode,status:'loading',path:null,error:null};artwork.push(record);
+    unsupportedProperties.push({resource:node.resource,id:node.id,scope:[...node.scope],property:'Artwork.Placement',reason:'Provisional XML origin; native parent alignment, DPI family choice and resampling remain unqualified.'});
+    let frame=0,serial=0,desired=null,canvas=null;
+    const paint=()=>{
+      if(disposed||!isCurrent())return;
+      const name=mask?`DeviceSchema0${frame}.png`:'DeviceSchemaBase.png',path=`${family}/${name}`;
+      let owner;
+      try{owner=rasterOwner();}catch(error){unavailable(error,path);return;}
+      let tint;
+      // Resolve inherited theme values after mounting, including an initial async load.
+      try{tint=mask&&element.isConnected?tintColor(element,node):null;}catch(error){unavailable(error,path);return;}
+      const renderKey=JSON.stringify([path,tint]);if(desired===renderKey)return;desired=renderKey;
+      const ticket=++serial;element.dataset.artworkPath=path;element.dataset.artworkState='loading';record.path=path;record.status='loading';
+      if(canvas)canvas.width=canvas.height=0;
+      owner.load(name,{mode}).then(image=>{
+        if(disposed||ticket!==serial||!isCurrent())return;
+        const expected=electricSchematicFamily==='large'?180:90;
+        if(image.width!==expected||image.height!==expected)throw Error('Electric schematic: artwork dimensions do not match the selected family.');
+        const currentTint=mask?tintColor(element,node):null,source=mask?image.tint(currentTint):image;
+        if(!canvas){canvas=make(doc,'canvas');canvas.setAttribute('aria-hidden','true');Object.assign(canvas.style,{display:'block',width:'100%',height:'100%',pointerEvents:'none'});}
+        canvas.width=source.width;canvas.height=source.height;
+        const context=canvas.getContext('2d');if(!context)throw Error('Electric schematic: canvas drawing is unavailable.');
+        const pixels=context.createImageData(source.width,source.height);pixels.data.set(source.copyPixels());
+        element.replaceChildren(canvas);context.putImageData(pixels,0,0);
+        element.classList.remove('live-device-unimplemented');element.removeAttribute('title');element.dataset.artworkState='ready';
+        record.status='ready';record.error=null;desired=JSON.stringify([path,currentTint]);
+      }).catch(error=>{if(!disposed&&ticket===serial&&isCurrent())unavailable(error,path);});
+    };
+    function unavailable(error,path){
+      const message=String(error.message??error);if(record.status==='unavailable'&&record.error===message&&record.path===path)return;
+      serial++;desired=null;if(canvas)canvas.width=canvas.height=0;
+      element.dataset.artworkPath=path;element.dataset.artworkState='unavailable';element.classList.add('live-device-unimplemented');
+      element.replaceChildren(make(doc,'span','','Schematic artwork unavailable'));element.title=message;
+      record.path=path;record.status='unavailable';record.error=message;onError(error);
+    }
+    element.style.pointerEvents='none';
+    if(mask)schematics.push({group:key({scope:node.scope,expression:'SelectedFinger'}),select(index){if(Number.isInteger(index)&&index>=0&&index<=3&&index!==frame){frame=index;desired=null;paint();}}});
+    refreshers.push(paint);cleanup.push(()=>{serial++;if(canvas)canvas.width=canvas.height=0;});
+  }
   function render(node,ancestorExpressions=[],naturalText=false){
     const type=node.className,e=make(doc,'div','live-device-node');e.dataset.viewClass=type;
     const poti=node.children[0],potiSize=poti?.className==='ModulatedPoti'?propertyPoint(poti,'Size'):null;
@@ -192,7 +255,14 @@ export function createLiveDeviceView(doc,{layout,graphics=null,resolveBinding=()
       e.classList.add('live-device-navigation');e.append(control.element);selectors.push({group,control});cleanup.push(control.dispose);
     }else if(type==='TextField'){e.classList.add('live-device-text');e.textContent=node.text('Text');width=width||Math.ceil(textMeasure?.measureText(e.textContent).width??e.textContent.length*6);height=height||11;}
     else if(type==='SeparatorView')e.classList.add('live-device-separator');
-    else if(type==='BitmapView'){
+    else if(node.resource==='Devices/LoungeLizard/Contents.xml'&&(
+      type==='BitmapView'&&value(node,'BitmapName')==='Devices/Electric/DeviceSchemaBase.png'||
+      type==='LoadableAnimationView'&&viewId==='DeviceSchemaAnimation'&&value(node,'AnimationName')==='Devices/Electric/DeviceSchema00.png'&&value(node,'BitmapColor')==='RetroDisplayForeground2'
+    ))mountSchematicLayer(e,node,type==='LoadableAnimationView');
+    else if(type==='ClickMapView'&&node.resource==='Devices/LoungeLizard/Contents.xml'&&viewId==='DeviceSchemaClickMap'){
+      unsupported.add(type);e.setAttribute('aria-hidden','true');e.style.pointerEvents='none';
+      unsupportedProperties.push({resource:node.resource,id:node.id,scope:[...node.scope],property:'ClickMap.Interaction',reason:'Schematic pointer navigation is not implemented; use the existing module navigation.'});
+    }else if(type==='BitmapView'){
       const bitmap=value(node,'BitmapName');
       if(bitmap&&graphics?.has(bitmap)&&bitmap.endsWith('.png')){
         const url=URL.createObjectURL(new Blob([graphics.read(bitmap)],{type:'image/png'})),image=make(doc,'img');image.src=url;image.alt='';e.append(image);cleanup.push(()=>URL.revokeObjectURL(url));
@@ -254,6 +324,7 @@ export function createLiveDeviceView(doc,{layout,graphics=null,resolveBinding=()
     for(const target of cards.get(group)??[])if(index>=0&&index<target.count)target.select(index);
     for(const finger of fingers)if(finger.group===group){finger.button.setAttribute('aria-pressed',String(finger.index===index));finger.element.classList.toggle('is-selected',finger.index===index);}
     for(const selector of selectors)if(selector.group===group)selector.control.update(index);
+    for(const schematic of schematics)if(schematic.group===group)schematic.select(index);
   }
   const result=render(layout.root),element=make(doc,'div','live-device-view');element.append(result.element);
   for(const finger of fingers){
@@ -268,6 +339,7 @@ export function createLiveDeviceView(doc,{layout,graphics=null,resolveBinding=()
     }
   }
   for(const selector of selectors){const targets=cards.get(selector.group)??[];selector.control.setDisabled(!targets.length);selector.control.update(targets[0]?.initial??0);}
+  for(const schematic of schematics)schematic.select(cards.get(schematic.group)?.[0]?.initial??0);
   const refresh=()=>{if(!disposed)for(const update of refreshers)update();};refresh();
-  return{element,refresh,hasDraft:()=>drafts.some(read=>read()),report:{controls,unresolved,unsupportedClasses:[...unsupported].sort(),borders,unsupportedProperties,warnings:layout.warnings},dispose(){if(disposed)return;disposed=true;for(const release of cleanup)release();}};
+  return{element,refresh,hasDraft:()=>drafts.some(read=>read()),report:{controls,unresolved,unsupportedClasses:[...unsupported].sort(),borders,unsupportedProperties,artwork,warnings:layout.warnings},dispose(){if(disposed)return;disposed=true;for(const release of cleanup)release();}};
 }

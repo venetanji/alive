@@ -95,7 +95,7 @@ export function mountPresentation({doc,root,presentation,host,mode='preview',onE
       if(!result)return;if(!authorized()){result.bindings?.disconnect();return;}
       const resources=result.resources;bindings=result.bindings;
       if(!resources?.identity||!resources.layout||!bindings?.snapshot||!bindings.resolveBinding)throw Error('Device panel resources or bindings are unavailable.');
-      body=createLiveDeviceView(doc,{layout:resources.layout,graphics:resources.graphics,resolveBinding:(connection,node,options)=>{
+      body=createLiveDeviceView(doc,{layout:resources.layout,gui:resources.gui,graphics:resources.graphics,isCurrent:authorized,resolveBinding:(connection,node,options)=>{
         const binding=bindings.resolveBinding(connection,node,options);if(!binding)return null;const bindingId=binding.bindingId;
         return{...binding,getState:()=>{const state=binding.getState();return{...state,enabled:authorized()&&state.enabled,value:candidate&&Object.hasOwn(candidate,bindingId)?candidate[bindingId]:state.value};},onInput:v=>edit(bindingId,v,'preview'),onChange:v=>edit(bindingId,v,'commit'),onCancel:v=>edit(bindingId,v,'cancel')};
       },evaluateExpression:(...args)=>bindings.evaluateExpression?.(...args),onError:e=>report(e,status)});
