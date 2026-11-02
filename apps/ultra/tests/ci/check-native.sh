@@ -73,6 +73,9 @@ c++ -std=c++17 -O2 -Wall -Wextra -Werror -UNDEBUG \
   -DULTRA_ALIVE_SESSION_TEST_TRACE -DULTRA_ALIVE_SESSION_V4_PROVISIONAL \
   apps/ultra/tests/alive_session_release_horizon_test.cpp -o "$TEST_DIR/alive-release-horizon"
 "$TEST_DIR/alive-release-horizon"
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -UNDEBUG \
+  apps/ultra/tests/alive_session_release_reservation_test.cpp -o "$TEST_DIR/alive-release-reservation"
+"$TEST_DIR/alive-release-reservation"
 c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE \
   -c apps/ultra/src-tauri/native/backend.cpp -o "$TEST_DIR/alive-v3-backend.o"
 python3 apps/ultra/tests/alive_session_v3_fixtures.py "$TEST_DIR/saved_graphs.hpp"

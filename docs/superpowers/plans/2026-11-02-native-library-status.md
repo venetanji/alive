@@ -635,7 +635,23 @@ and all 11 deliberate new-helper mutants are detected after strengthening two
 test boundary gaps. The unchanged raw-bank lifecycle passes strict Clang;
 its GCC custom-new/delete warning failure remains retained without suppression.
 Separate metadata checks preserve closed admission. Independent review remains
-pending and no C1 source is integrated yet.
+separate from runtime admission. Its independent scalar checks cover 60000
+literal plans, 40880 interrupted-prefix terminal conversions and 12000 dated
+history horizons. One documentation/test finding is corrected in immutable r2:
+`horizon()` checks the first frame and rolling windows; tail frame and
+interruptible-prefix admission, including the outstanding reserve, require
+independent certification. Differences of cumulative bounds do not establish
+that certificate. A literal H1/R4 plus cumulative29 from cut100 demonstrates
+the horizon/producer distinction. Header arithmetic is unchanged; strict and
+ASan/UBSan now pass all 16 groups. Independent r2 review has no new findings,
+SHA-256 `238ea195f418244032553ec39607ddb008648f182d68ddb96464d21302f2c9c1`
+at `workers/release-reservation-c1-independent-review/r2/report.md`.
+The coordinator accepts and applies the exact r2 two-file patch, registers it
+in the existing manual native runner and independently compiles/runs all
+16 groups (`release-reservation-c1-root-integrated-r2/`). No production include
+or caller is added. Validation/sweep work is model-only and is not already
+paid for by the runtime callback work bound. Full runtime queue synchronization,
+trusted producer admission, release delivery and lifecycle/timing remain gates.
 This does not establish runtime release routing, timing or native admission.
 
 Corpus's two later static reports close conditional ordinal forwarding to
