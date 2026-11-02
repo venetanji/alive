@@ -148,6 +148,8 @@ class AliveSession {
  }
  const char* error()const noexcept{return error_;}
  bool configured()const noexcept{return state_.configured!=0;}
+ // Control-thread proof also observes the preparation floor retained by reset.
+ bool note_preparation_after(uint64_t revision)const noexcept{return revision>last_preparation_;}
  void clear_master()noexcept{master_={ALIVE_MASTER_V1,sizeof(AliveMasterStateV1),0,0,1.,1.,0.,0.,0,0,state_.absolute_frame,state_.absolute_frame};master_from_=1.;master_ramp_=0;}
  void apply_master(const Command& c)noexcept{
   if(c.kind==7){master_.target_gain=c.value;master_from_=master_.current_gain;master_ramp_=master_quiescent_?0:64;if(master_quiescent_)master_.current_gain=c.value;}

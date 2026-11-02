@@ -1,5 +1,6 @@
 #include "live_device.hpp"
 #include "device_profiles.hpp"
+#include "live_device_source.hpp"
 #include <atomic>
 #include <cmath>
 #include <cstdio>
@@ -79,23 +80,10 @@ LiveDeviceBank::LiveDeviceBank(std::unique_ptr<State> state):state_(std::move(st
 LiveDeviceBank::~LiveDeviceBank()=default;
 std::unique_ptr<LiveDeviceBank> LiveDeviceBank::prepare(const UltraCanvasGraph& graph,const UltraLiveDeviceSource* sources,unsigned count,char* error,size_t capacity){
  try{
-  require(count<=Instances&&(!count||sources),"Invalid Live device source count.");
-  unsigned expected=0;for(unsigned i=0;i<graph.node_count;++i){
-   require(graph.nodes[i].kind!=ExternalParameter,"Owned Live devices do not admit experimental parameter proxies.");
-   expected+=graph.nodes[i].kind==ExternalInstrument;
-  }
-  require(expected==count,"Every live.device~ node requires exactly one source state.");
+  const char* source_error=nullptr;
+  const bool source_valid=validate_live_device_sources(graph,sources,count,source_error);
+  require(source_valid,source_error?source_error:"Invalid Live device sources.");
   auto next=std::make_unique<State>();next->graph=graph;
-  // Validate source identities before any foreign construction.
-  for(unsigned i=0;i<count;++i){
-   const auto& s=sources[i];
-   const auto* profile=live_device_profile(s.profile,s.profile_version);
-   require(profile&&profile->descriptors&&!s.reserved,"Unsupported Live device profile.");
-   require(s.parameter_count==profile->parameter_count&&s.values&&s.dll_path&&s.dll_path[0],"Live device requires complete source state and a local DLL.");
-   bool found=false;for(unsigned n=0;n<graph.node_count;++n)found|=graph.nodes[n].id==s.node&&graph.nodes[n].kind==ExternalInstrument;
-   require(found,"Live device source references a missing instrument node.");
-   for(unsigned prior=0;prior<i;++prior)require(sources[prior].node!=s.node,"Duplicate Live device source node.");
-  }
   for(unsigned i=0;i<count;++i){
    const auto& s=sources[i];auto instance=std::make_unique<State::Instance>();instance->node=s.node;instance->path=s.dll_path;
    instance->profile=live_device_profile(s.profile,s.profile_version);
@@ -130,6 +118,14 @@ std::unique_ptr<LiveDeviceBank> LiveDeviceBank::prepare(const UltraCanvasGraph& 
 }
 bool LiveDeviceBank::has(unsigned node)const noexcept{return state_->find(node);}
 unsigned LiveDeviceBank::count()const noexcept{return unsigned(state_->instances.size());}
+bool LiveDeviceBank::matches_note_source(const CanvasRuntime& runtime,unsigned node,const char* profile,
+ unsigned version,const uint8_t* digest,uint64_t revision)const noexcept{
+ if(state_->fault||state_->instances.size()!=1||runtime.failed()||runtime.plan().graph.revision!=revision)return false;
+ const auto* instance=state_->find(node);
+ return instance&&!instance->fault&&instance->device&&instance->profile==live_device_profile(profile,version)
+  &&live_device_digest_matches(*instance->profile,digest)
+  &&runtime.matches_external_binding(node,instance,State::Instance::release_notes);
+}
 bool LiveDeviceBank::bind(CanvasRuntime& runtime)noexcept{
  if(state_->fault)return false;
  for(const auto& i:state_->instances){const int slot=runtime.plan().find(i->node);if(i->fault||slot<0||runtime.plan().graph.nodes[unsigned(slot)].kind!=ExternalInstrument)return false;}

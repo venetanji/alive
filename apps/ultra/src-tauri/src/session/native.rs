@@ -524,3 +524,7 @@ extern "C" {
 mod native_v4;
 #[allow(unused_imports)] // The additive ABI is not wired into Document until Task 2D.
 pub use native_v4::*;
+#[path = "native_note_inputs.rs"]
+mod native_note_inputs;
+#[allow(unused_imports)] // Closed foundation; Host does not use the companion yet.
+pub use native_note_inputs::*;

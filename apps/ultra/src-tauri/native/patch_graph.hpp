@@ -496,6 +496,15 @@ class CanvasRuntime {
  bool unbind_external(uint32_t id)noexcept{
   auto* binding=external_binding(id);if(!binding)return false;*binding={};return true;
  }
+ // Control owner only, with the callback fenced. Never invokes a callback.
+ bool matches_external_binding(uint32_t id,const void* owner,
+  bool (*release)(void*,uint64_t)noexcept)const noexcept{
+  const int slot=plan_.find(id);
+  if(failed_||slot<0||plan_.graph.nodes[unsigned(slot)].kind!=ExternalInstrument||!owner||!release)return false;
+  for(const auto& binding:external_bindings_)if(binding.node==id)
+   return binding.armed&&binding.callbacks.owner==owner&&binding.callbacks.release_notes==release;
+  return false;
+ }
 #endif
  unsigned active_voice_count()const noexcept{return poly_.active();}
  bool pop_console(UltraCanvasConsoleRecord& record)noexcept {

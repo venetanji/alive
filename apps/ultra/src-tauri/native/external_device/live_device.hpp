@@ -21,5 +21,7 @@ class LiveDeviceBank {
  bool apply_pending()noexcept;
  bool has(unsigned node)const noexcept;
  unsigned count()const noexcept;
+ bool matches_note_source(const CanvasRuntime&,unsigned node,const char* profile,unsigned version,
+  const uint8_t* dll_sha256,uint64_t revision)const noexcept;
 };
 }

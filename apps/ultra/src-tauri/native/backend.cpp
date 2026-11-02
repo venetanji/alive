@@ -2,6 +2,7 @@
 #include "sequence.hpp"
 #include "canvas_workspace.hpp"
 #include "alive_session.hpp"
+#include "alive_session_note_inputs.hpp"
 #include "alive-master-v1.h"
 #include "../../core/engine.hpp"
 #include "external_device/live_device.h"
@@ -491,7 +492,75 @@ void put16(FILE*f,uint16_t n){unsigned char b[]={static_cast<unsigned char>(n),s
 void put32(FILE*f,uint32_t n){put16(f,n);put16(f,n>>16);}
 }
 #include "document_batch.hpp"
+namespace {
+int note_validation_status(const ultra::AliveSession& validator){
+ AliveSessionDiagnosticV4 diagnostic{};diagnostic.version=4;diagnostic.struct_bytes=sizeof diagnostic;
+ return validator.diagnostic_v4(diagnostic)&&diagnostic.error?int(diagnostic.error):ALIVE_SESSION_V4_GRAPH_REJECTED;
+}
+int note_preflight(const AliveSessionConfigV4* config,const AliveSessionNoteInputsV1* notes,
+ ultra::AliveSession& validator){
+ if(!config||!notes)return ALIVE_SESSION_V4_BAD_HEADER;
+ const int status=ultra::note_inputs::metadata(*config,*notes);if(status)return status;
+ if(!session.note_preparation_after(config->preparation_revision))return ALIVE_SESSION_V4_STALE_PREPARATION;
+ return validator.validate_v4(*config)?ALIVE_SESSION_V4_OK:note_validation_status(validator);
+}
+int note_validate_graphs(ultra::AliveSession& validator,const AliveSessionConfigV4& config,
+ const AliveSessionNoteInputsV1& notes,const UltraCanvasGraph* graphs,
+ const AliveSessionAudioBufferV4* audio,unsigned audio_count){
+ if(!ultra::note_inputs::has_native(notes))
+  return validator.validate_prepared_v4(config,graphs,config.device_count,audio,audio_count)?ALIVE_SESSION_V4_OK:note_validation_status(validator);
+ if(!validator.audio_bounds_v4(config,audio,audio_count))return note_validation_status(validator);
+ for(unsigned d=0;d<config.device_count;++d)
+  if(ultra::note_inputs::row(notes,d).kind!=ALIVE_NOTE_NATIVE&&!validator.validate_device_v2(config.devices[d],graphs[d]))return ALIVE_SESSION_V4_GRAPH_REJECTED;
+ return ALIVE_SESSION_V4_FEATURE_DISABLED;
+}
+}
 extern "C" {
+int alive_session_note_limits_v1(uint32_t profile,AliveSessionNoteLimitsV1* out){
+ if(!out||out->version!=1||out->struct_bytes!=sizeof(*out))return ALIVE_SESSION_V4_BAD_HEADER;
+ if(profile!=1&&profile!=2)return ALIVE_SESSION_V4_BAD_PROFILE;
+ *out={1,sizeof(*out),profile,0,ALIVE_NOTE_POLICY_NATIVE,0,4,16,4,0,0,0};return ALIVE_SESSION_V4_OK;
+}
+int alive_session_validate_prepared_notes_v1(const AliveSessionConfigV4* config,
+ const UltraPreparedDocumentV1* documents,uint32_t count,const AliveSessionAudioBufferV4* audio,
+ uint32_t audio_count,const AliveSessionNoteInputsV1* notes)try{
+ auto validator=std::make_unique<ultra::AliveSession>();
+ int status=note_preflight(config,notes,*validator);if(status)return status;
+ auto graphs=std::make_unique<std::array<UltraCanvasGraph,16>>();
+ status=ultra::note_inputs::prepared(*config,*notes,documents,count,graphs->data());if(status)return status;
+ return note_validate_graphs(*validator,*config,*notes,graphs->data(),audio,audio_count);
+}catch(...){return ALIVE_SESSION_V4_WORK_LIMIT;}
+int alive_session_configure_notes_v1(const AliveSessionConfigV4* config,
+ const AliveSessionAudioBufferV4* audio,uint32_t audio_count,const AliveSessionNoteInputsV1* notes)try{
+ if(running.load()||engine.status().ready)return ALIVE_SESSION_V4_BAD_FIELD;
+ auto validator=std::make_unique<ultra::AliveSession>();
+ int status=note_preflight(config,notes,*validator);if(status)return status;
+#ifndef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+ if(ultra::note_inputs::has_native(*notes))return ALIVE_SESSION_V4_FEATURE_DISABLED;
+#endif
+ auto graphs=std::make_unique<std::array<UltraCanvasGraph,16>>();
+ unsigned owned=0;
+ for(unsigned d=0;d<config->device_count;++d){const auto& device=config->devices[d];
+  if(!canvas.live(device.document))return ALIVE_SESSION_V4_GRAPH_REJECTED;
+  const auto& graph=canvas.runtime(device.document).plan().graph;
+  if(graph.revision!=device.revision)return ALIVE_SESSION_V4_GRAPH_REJECTED;
+  owned|=1u<<device.document;(*graphs)[d]=graph;
+  const auto& input=ultra::note_inputs::row(*notes,d);
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+  const auto& bank=live_devices[device.document];
+  if(input.kind==ALIVE_NOTE_NATIVE){
+   if(!ultra::note_inputs::native_graph(graph,input.note_node))return ALIVE_SESSION_V4_GRAPH_REJECTED;
+   if(!bank||!bank->matches_note_source(canvas.runtime(device.document),input.note_node,input.profile,input.profile_version,input.dll_sha256,input.revision))return ALIVE_SESSION_V4_BAD_SOURCE;
+  }else if(bank&&bank->count())return ALIVE_SESSION_V4_BAD_SOURCE;
+#else
+  (void)input;
+#endif
+ }
+ for(unsigned d=0;d<MaxDocuments;++d)if(canvas.live(d)&&!(owned&(1u<<d)))return ALIVE_SESSION_V4_GRAPH_REJECTED;
+ status=note_validate_graphs(*validator,*config,*notes,graphs->data(),audio,audio_count);if(status)return status;
+ if(!session.configure_v4(*config,audio,audio_count,canvas))return note_validation_status(session);
+ publish_canvas();return ALIVE_SESSION_V4_OK;
+}catch(...){return ALIVE_SESSION_V4_WORK_LIMIT;}
 int alive_session_master_limits(AliveMasterLimitsV1* out){
  if(!out)return ALIVE_MASTER_INVALID;
  if(out->version!=ALIVE_MASTER_V1||out->struct_bytes!=sizeof(*out))return ALIVE_MASTER_UNSUPPORTED;
