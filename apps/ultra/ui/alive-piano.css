@@ -37,7 +37,8 @@
 .clip-area.has-source{display:grid;grid-template-columns:clamp(150px,22%,210px) minmax(0,1fr);grid-template-rows:auto minmax(156px,1fr) auto auto;align-items:stretch}
 .clip-area:not(.has-source){display:grid;grid-template-columns:210px minmax(0,1fr);grid-template-rows:22px minmax(0,1fr)}
 .clip-area:not(.has-source)>.audio-clip-empty{grid-column:2;grid-row:1 / -1}
-.clip-properties{grid-column:1;grid-row:1 / -1;min-width:0;min-height:0;overflow:auto;overscroll-behavior:contain;background:#3b3b3b;border-right:5px solid #292929}
+.clip-properties{grid-column:1;grid-row:1 / -1;display:flex;flex-direction:column;min-width:0;min-height:0;overflow:hidden;background:#3b3b3b;border-right:5px solid #292929}
+.clip-option-groups{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain}
 .clip-option-groups>details>summary{padding:3px 6px;height:22px;border-bottom:1px solid var(--line);font-size:11px;color:var(--text);background:#444;cursor:pointer}
 .clip-properties-title{display:flex;flex:none;align-items:center;justify-content:space-between;height:22px;min-height:22px;padding:0 4px;background:var(--selection);color:#18272c;font-size:11px;font-weight:bold}
 .clip-properties-title>span::before{content:'';display:inline-block;width:9px;height:9px;margin-right:5px;background:var(--amber);border:1px solid #202020}

@@ -89,6 +89,32 @@ for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,he
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
 
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`Clip source header stays reachable above scrolling properties at ${size.width}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);
+  await page.locator('#detail-resizer').press('Home');
+  await page.getByRole('button',{name:'Vertical Clip layout',exact:true}).click();
+  const properties=page.locator('.clip-properties'),header=page.locator('.clip-properties-title'),source=page.locator('.clip-source-actions > summary');
+  const initial=await header.boundingBox(),box=await properties.boundingBox();
+  await page.mouse.move(box.x+box.width/2,box.y+box.height-12);await page.mouse.wheel(0,350);
+  await expect.poll(async()=>await properties.evaluate(e=>e.scrollTop+e.querySelector('.clip-option-groups').scrollTop)).toBeGreaterThan(0);
+  expect((await header.boundingBox()).y).toBe(initial.y);await expect(source).toBeInViewport({ratio:1});
+  expect(await source.evaluate(e=>{const r=e.getBoundingClientRect();return e.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));})).toBe(true);
+  await source.click();await expect(page.getByRole('button',{name:'Create MIDI source',exact:true})).toBeVisible();await source.click();
+  await page.getByRole('button',{name:'Horizontal Clip layout',exact:true}).click();
+  await source.click();await expect(page.getByRole('button',{name:'Create MIDI source',exact:true})).toBeVisible();await source.click();
+  await page.locator('#detail-devices').click();await source.click();await expect(page.getByRole('button',{name:'Create MIDI source',exact:true})).toBeVisible();await source.click();
+  const field=page.getByLabel('Clip Start',{exact:true});await field.fill('0.75');
+  await page.getByRole('button',{name:'Vertical Clip layout',exact:true}).click();
+  const draftHeader=await header.boundingBox(),draftBox=await properties.boundingBox();
+  await page.mouse.move(draftBox.x+draftBox.width/2,draftBox.y+draftBox.height-12);await page.mouse.wheel(0,350);
+  await expect.poll(async()=>await properties.locator('.clip-option-groups').evaluate(e=>e.scrollTop)).toBeGreaterThan(0);
+  expect((await header.boundingBox()).y).toBe(draftHeader.y);
+  await page.getByRole('button',{name:'Horizontal Clip layout',exact:true}).click();
+  await page.locator('#detail-devices').click();await page.locator('#detail-devices').click();
+  await expect(field).toHaveValue('0.75');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  await page.screenshot({path:testInfo.outputPath(`clip-properties-header-${size.width}.png`)});
+});
+
 test('piano header exposes real modes and honest unavailable tools without the old title band',async({page})=>{
   await page.setViewportSize({width:1440,height:900});await openSession(page);
   const header=page.locator('.clip-view-tools');await expect(header.getByRole('button',{name:'Notes',exact:true})).toHaveAttribute('aria-pressed','true');
