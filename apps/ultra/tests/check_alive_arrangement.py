@@ -288,11 +288,11 @@ def run():
     expanded('Automation inspector')
     alive.numeric('Cutoff point 1 value', 1781)
     ui.click('Select Pulse Subtractive instrument')
-    ui.click('Edit selected device in Ultra')
+    alive.editor_click('Pulse Subtractive instrument')
     windows.focus('Pulse - Ultra Hosted Editor')
     alive.numeric('Hosted Cutoff base', 1777)
     ui.click('Close hosted editor'); windows.focus('Alive')
-    arrangement(); ui.click('Edit selected device in Ultra')
+    arrangement(); alive.editor_click('Pulse Subtractive instrument')
     windows.focus('Pulse - Ultra Hosted Editor')
     assert float(alive.value('Hosted Cutoff base')) == 1777
     ui.click('Close hosted editor'); windows.focus('Alive')

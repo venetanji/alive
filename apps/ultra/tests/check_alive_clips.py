@@ -40,11 +40,11 @@ def set_audio_details(expanded):
 
 
 def edit_selected():
-    # The diagnostics overlay covers the selected-device Editor button.
+    # Restore diagnostics after opening the instance-owned card editor.
     restore = ui.wait_for('Audio details').get_state_set().contains(Atspi.StateType.EXPANDED)
     if restore:
         set_audio_details(False)
-    ui.click('Edit selected device in Ultra')
+    alive.editor_click('Pulse Stereo Utility effect 1')
     if restore:
         windows.focus('Pulse - Ultra Hosted Editor')
         windows.focus(alive.MAIN)
@@ -154,7 +154,7 @@ def run():
     observed('Pulse clip runtime'); observed('Harmony clip runtime')
     ui.click('Select Pulse Stereo Utility effect 1'); edit_selected()
     windows.focus('Pulse - Ultra Hosted Editor'); alive.numeric('Hosted Gain base', .55); windows.focus(alive.MAIN)
-    ui.click('Bypass Pulse Stereo Utility effect 1')
+    alive.device_active_click('Pulse Stereo Utility effect 1')
     ui.click('Select Pulse slot 1'); alive.numeric('Note 1 velocity', 82); ui.click('Undo')
     assert editor_exists()
     ui.click('Stop Pulse track')

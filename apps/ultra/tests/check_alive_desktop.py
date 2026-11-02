@@ -514,8 +514,56 @@ def native_control_click(name, kind, record=None, require_accessible_hit=False):
 
 def reorder_click(name):
     if sustained_driver is not None:
-        return sustained_driver.observer.action(name, lambda: native_control_click(name, 'reorder'))
-    return native_control_click(name, 'reorder')
+        return sustained_driver.observer.action(name, lambda: native_control_click(name, 'reorder', require_accessible_hit=True))
+    return native_control_click(name, 'reorder', require_accessible_hit=True)
+
+
+def editor_click(context):
+    name = 'Edit ' + context + ' in Ultra'
+    action = lambda: native_control_click(name, 'device editor', require_accessible_hit=True)
+    if sustained_driver is not None:
+        return sustained_driver.observer.action(name, action)
+    return action()
+
+
+def device_active_click(context):
+    name = 'Device active: ' + context
+    action = lambda: native_control_click(name, 'device active', require_accessible_hit=True)
+    if sustained_driver is not None:
+        return sustained_driver.observer.action(name, action)
+    return action()
+
+
+def delete_control(name, expected_status):
+    def action():
+        assert windows.scope == MAIN, 'Native deletion is scoped to the Alive main frame'
+        assert value('Transport playing') == 'false', 'Stop transport before native deletion'
+        if ui.wait_for('Audio details').get_state_set().contains(Atspi.StateType.EXPANDED):
+            native_control_click('Audio details', 'disclosure', record_disclosure_input, require_accessible_hit=True)
+        selection = native_control_click(name, 'delete selection', require_accessible_hit=True)
+        # Selection can rebuild the track/card; focus its current mounted control.
+        control = ui.wait_for(name)
+        assert Atspi.Component.grab_focus(control), 'Could not focus native deletion target: ' + name
+        assert all(control.get_state_set().contains(state) for state in (
+            Atspi.StateType.FOCUSED, Atspi.StateType.ENABLED, Atspi.StateType.SHOWING,
+            Atspi.StateType.SENSITIVE)), 'Native deletion target is not focused and usable: ' + name
+        focus = C.c_ulong(); revert = C.c_int()
+        ui.x.XGetInputFocus(ui.display, C.byref(focus), C.byref(revert))
+        assert focus.value == selection['owner'], 'Native deletion focus left the owned Alive frame'
+        ui.keys('Delete')
+        row = input_record('delete key', name=name, key='Delete', owner=selection['owner'],
+                           input_focus=focus.value, selection=selection, presses=1, releases=1)
+        wait_value('Session status', lambda text: text == expected_status)
+        try:
+            ui.find(name)
+        except StopIteration:
+            pass
+        else:
+            raise AssertionError('Deleted selection remains available: ' + name)
+        return row
+    if sustained_driver is not None:
+        return sustained_driver.observer.action(name, action)
+    return action()
 
 
 def history_click(name):
@@ -855,8 +903,7 @@ def prepare_chain():
     # Reordering twice must preserve identities and restore the saved signal order.
     reorder_click('Move Pulse Stereo Utility effect 1 later')
     ui.wait_for('Select Pulse Stereo Utility effect 2')
-    with covering_reorder_tooltip('Move Pulse Stereo Utility effect 2 earlier', 'journey-utility.ultra'):
-        reorder_click('Move Pulse Stereo Utility effect 2 earlier')
+    reorder_click('Move Pulse Stereo Utility effect 2 earlier')
     ui.wait_for('Select Pulse Stereo Lowpass effect 2')
     ui.click('Select Pulse Stereo Utility effect 1')
     numeric('Gain base', .6)
@@ -875,8 +922,8 @@ def prepare_chain():
     choose_file('Save session as', 'Save Alive Session', after)
     devices = file_score(json.loads(after.read_text()))['tracks'][0]['effects']
     assert [device['instanceId'] for device in devices] == identities
-    ui.click('Bypass Pulse Stereo Lowpass effect 2')
-    ui.click('Bypass Pulse Stereo Lowpass effect 2')
+    device_active_click('Pulse Stereo Lowpass effect 2')
+    device_active_click('Pulse Stereo Lowpass effect 2')
     return {'utility_source': str(utility), 'lowpass_source': str(lowpass),
             'audit_saved': str(after), 'audited_instances': identities, 'utility': devices[0]}
 
@@ -1052,7 +1099,7 @@ def _run():
     chain['initial_instances'] = [d['instanceId'] for d in file_score(json.loads(before_reorder.read_text()))['tracks'][0]['effects']]
     ui.click('Select Pulse Stereo Utility effect 1')
     numeric('Gain base', .65)
-    ui.click('Bypass Pulse Stereo Utility effect 1')
+    device_active_click('Pulse Stereo Utility effect 1')
     ui.click('Alive audio settings')
     ui.click('Save and start Alive audio')
     ui.click('Close audio settings')
@@ -1063,7 +1110,7 @@ def _run():
     wait_value('Gain effective ownership', lambda s: 'Base:' in s)
     numeric('Gain base', .65)
     assert float(value('Gain base')) == .65
-    ui.click('Edit selected device in Ultra')
+    editor_click('Pulse Stereo Utility effect 1')
     windows.focus('Pulse - Ultra Hosted Editor')
     wait_value('Hosted Gain base', lambda s: float(s) == .65)
     windows.focus(MAIN)
@@ -1217,11 +1264,11 @@ def _run():
     ui.click('Save session')
     # Device removal runs while stopped, after every voice has terminated.
     select_clip('Pulse')
-    ui.click('Remove Pulse Stereo Utility effect 1'); time.sleep(.3)
+    delete_control('Select Pulse Stereo Utility effect 1', 'Device chain updated.'); time.sleep(.3)
     assert value('Track 1 active voices') == '0'
     select_clip('Harmony')
     choose_file('Replace Harmony device', 'Load Ultra Device', DEVICE)
-    ui.click('Remove Harmony track'); time.sleep(.4)
+    delete_control('Select Harmony track', 'Track removed.'); time.sleep(.4)
     assert value('Track 2 active voices') == '0'
     report = {'kind': 'actual native Tauri application; private Xvfb + software PipeWire loopback',
               'entrypoints': entrypoints,

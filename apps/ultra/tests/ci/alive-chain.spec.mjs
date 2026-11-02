@@ -855,11 +855,11 @@ test('Clip and Device footer toggles independently own the lower rows',async({pa
 
 test('Clip properties arrange horizontally when short and as vertical disclosures when tall',async({page})=>{
   await page.setViewportSize({width:1280,height:800});await openSession(page);
-  const resize=page.getByRole('separator',{name:'Resize detail area',exact:true}),properties=page.locator('.clip-properties');
+  const resize=page.getByRole('separator',{name:'Resize detail area',exact:true}),properties=page.locator('.clip-properties'),area=page.locator('.clip-area');
   await resize.focus();await resize.press('Home');
-  await expect(properties).toBeVisible();expect(await properties.evaluate(el=>getComputedStyle(el).display)).toBe('flex');
+  await expect(properties).toBeVisible();await expect(area).toHaveAttribute('data-inspector-layout','horizontal');
   await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
-  expect(await properties.evaluate(el=>getComputedStyle(el).display)).toBe('block');
+  await expect(area).toHaveAttribute('data-inspector-layout','vertical');
   await expect(properties.locator('.clip-option-groups > details > summary').first()).toBeVisible();
 });
 

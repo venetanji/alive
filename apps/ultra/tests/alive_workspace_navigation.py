@@ -18,11 +18,13 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
     def ensure_detail(tab, sentinel):
         # If an accessibility snapshot omits PRESSED, do not toggle a
         # visibly open panel shut while preparing a control.
-        try:
-            if ui.find(sentinel).get_state_set().contains(Atspi.StateType.VISIBLE):
-                return
-        except (AttributeError, StopIteration):
-            pass
+        sentinels = (sentinel,) if isinstance(sentinel, str) else sentinel
+        for name in sentinels:
+            try:
+                if ui.find(name).get_state_set().contains(Atspi.StateType.VISIBLE):
+                    return
+            except (AttributeError, StopIteration):
+                pass
         if not ui.wait_for(tab).get_state_set().contains(Atspi.StateType.PRESSED):
             click(tab)
 
@@ -47,7 +49,8 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
         if name in diagnostic or re.fullmatch(r'Track \d+ active voices', name):
             expand('Audio details', activate_disclosure or click)
             return
-        device = (name == 'Edit selected device in Ultra' or
+        device = (re.fullmatch(r'Edit .+ (?:instrument|effect \d+) in Ultra', name) or
+                  re.fullmatch(r'Device active: .+ (?:instrument|effect \d+)', name) or
                   re.search(r' (?:base(?: slider)?|effective ownership)$', name) or
                   re.fullmatch(r'(?:Select|Bypass|Move|Remove|Replace) .+ (?:instrument|effect \d+)(?: earlier| later)?', name))
         notes = re.match(r'Note \d+ ', name)
@@ -76,7 +79,7 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
             expand('Add track or device')
         if device or clip:
             tab = 'Toggle Device view' if device else 'Toggle Clip view'
-            ensure_detail(tab, 'Edit selected device in Ultra' if device else 'Source / Clip')
+            ensure_detail(tab, (name, 'Device chain drop area') if device else 'Source / Clip')
             if launch_option:
                 try:
                     option = ui.find('Toggle Launch options')
@@ -89,7 +92,11 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
                 else:
                     expand('Launch', activate_disclosure or click)
             if notes:
-                expand('Note inspector')
+                # The open Automation summary can cover the Note disclosure.
+                inspector = ui.wait_for('Automation inspector')
+                if inspector.get_state_set().contains(Atspi.StateType.EXPANDED):
+                    (activate_disclosure or click)('Automation inspector')
+                expand('Note inspector', activate_disclosure or click)
             if automation:
                 expand('Automation inspector')
             if source_actions:
@@ -111,7 +118,7 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
     def visible_click(name, observer=None):
         if windows.scope == 'Alive' and name in ('Clip detail', 'Devices detail'):
             tab = 'Toggle Clip view' if name == 'Clip detail' else 'Toggle Device view'
-            ensure_detail(tab, 'Source / Clip' if name == 'Clip detail' else 'Edit selected device in Ultra')
+            ensure_detail(tab, 'Source / Clip' if name == 'Clip detail' else 'Device chain drop area')
             return
         if re.fullmatch(r'Select .+ (?:instrument|effect \d+)', name):
             return select_device(name)

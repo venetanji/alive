@@ -59,7 +59,7 @@ def run():
         {'before': before, 'arrow_up': after, 'numeric_and_fader': .713}, indent=2))
     capture(1440, 900)
     capture(1280, 800)
-    ui.click('Edit selected device in Ultra')
+    alive.editor_click('Pulse Subtractive instrument')
     windows.focus('Pulse - Ultra Hosted Editor')
     ui.wait_for('Hosted Cutoff base')
     ui.click('Close hosted editor')

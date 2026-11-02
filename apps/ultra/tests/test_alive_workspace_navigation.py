@@ -11,6 +11,53 @@ import alive_workspace_navigation as navigation
 
 
 class NavigationTest(unittest.TestCase):
+    def test_visible_empty_device_panel_does_not_toggle_closed_for_detail_alias(self):
+        calls = []
+        class Control:
+            def __init__(self, name): self.name = name
+            def get_state_set(self): return self
+            def contains(self, state):
+                return state == 'visible' and self.name == 'Device chain drop area'
+        ui = types.SimpleNamespace(click=calls.append, text=lambda *args: None,
+            wait_for=lambda name: Control(name), find=lambda name: Control(name))
+        navigation.install(ui, types.SimpleNamespace(scope='Alive'), None, None)
+        ui.click('Devices detail')
+        self.assertEqual(calls, [])
+
+    def test_missing_device_control_does_not_hide_an_already_visible_rack(self):
+        calls = []
+        class Control:
+            def __init__(self, name): self.name = name
+            def get_state_set(self): return self
+            def contains(self, state):
+                return state == 'visible' and self.name == 'Device chain drop area'
+        ui = types.SimpleNamespace(click=calls.append, text=lambda *args: None,
+            wait_for=lambda name: Control(name), find=lambda name: Control(name))
+        prepare = navigation.install(ui, types.SimpleNamespace(scope='Alive'), None, None)
+        prepare('Edit Pulse Missing effect 2 in Ultra')
+        prepare('Missing parameter base')
+        self.assertEqual(calls, [])
+
+    def test_card_editor_and_activator_prepare_their_device_view_without_reselection(self):
+        for name in ('Edit Pulse Subtractive instrument in Ultra',
+                     'Edit Harmony Stereo Utility effect 2 in Ultra',
+                     'Device active: Pulse Stereo Utility effect 1'):
+            with self.subTest(name=name):
+                calls = []
+                observer = object()
+                class Control:
+                    def __init__(self, name): self.name = name
+                    def get_state_set(self): return self
+                    def contains(self, state):
+                        return state == 'expanded' and self.name == 'Audio details'
+                ui = types.SimpleNamespace(click=lambda name, **kwargs: calls.append((name, kwargs)),
+                    text=lambda *args: None, wait_for=lambda name: Control(name), find=lambda name: Control(name))
+                navigation.install(ui, types.SimpleNamespace(scope='Alive'),
+                    lambda name: self.fail('Card actions must retain their own instance owner'), None)
+                ui.click(name, observer=observer)
+                self.assertEqual(calls, [('Audio details', {}), ('Toggle Device view', {}),
+                    (name, {'observer': observer})])
+
     def test_clip_launch_prepares_the_visible_option_owner_before_selecting(self):
         for horizontal in (False, True):
             with self.subTest(horizontal=horizontal):
@@ -53,6 +100,46 @@ class NavigationTest(unittest.TestCase):
                            lambda name: calls.append(('owned', name)))
         ui.click('Place source in range')
         self.assertEqual(calls, [('owned', 'Source / Clip'), ('blind', 'Place source in range')])
+
+    def test_note_preparation_closes_only_open_automation_before_owned_note_input(self):
+        cases = (
+            (True, False, 1, ['Automation inspector', 'Note inspector']),
+            (True, True, 1, ['Automation inspector']),
+            (False, False, 1, ['Note inspector']),
+            (True, False, 2, ['Automation inspector', 'Note inspector']),
+        )
+        for automation_open, note_open, edits, disclosures in cases:
+            with self.subTest(automation_open=automation_open, note_open=note_open, edits=edits):
+                calls = []
+                expanded = {'Automation inspector': automation_open, 'Note inspector': note_open}
+                class Control:
+                    def __init__(self, name): self.name = name
+                    def get_state_set(self): return self
+                    def contains(self, state):
+                        return (state == 'visible' and self.name == 'Source / Clip' or
+                                state == 'expanded' and expanded.get(self.name, False))
+                def raw_click(name):
+                    calls.append(('blind', name))
+                    # The open Automation summary covers the underlying Note icon.
+                    target = 'Automation inspector' if name == 'Note inspector' and expanded['Automation inspector'] else name
+                    expanded[target] = not expanded.get(target, False)
+                def owned(name):
+                    if name == 'Note inspector' and expanded['Automation inspector']:
+                        raise AssertionError('Note disclosure is occluded by Automation')
+                    calls.append(('owned', name))
+                    expanded[name] = not expanded[name]
+                def text(name, value):
+                    self.assertTrue(expanded['Note inspector'], 'Note field must be disclosed before editing')
+                    self.assertFalse(expanded['Automation inspector'], 'Automation must not cover the Note field')
+                    calls.append(('text', name, value))
+                ui = types.SimpleNamespace(click=raw_click, text=text,
+                    wait_for=lambda name: Control(name), find=lambda name: Control(name))
+                navigation.install(ui, types.SimpleNamespace(scope='Alive'), None, owned)
+                for value in range(edits):
+                    ui.text('Note 1 duration', str(value + 1))
+                self.assertEqual(calls, [('owned', name) for name in disclosures] +
+                    [('text', 'Note 1 duration', str(value + 1)) for value in range(edits)])
+                self.assertEqual(expanded, {'Automation inspector': False, 'Note inspector': True})
 
     def test_diagnostic_disclosure_uses_owned_input_before_reading_voices(self):
         calls = []
@@ -146,7 +233,7 @@ class NavigationTest(unittest.TestCase):
         class Control:
             def __init__(self, name): self.name = name
             def get_state_set(self): return self
-            def contains(self, state): return state == 'visible' and self.name in ('Source / Clip', 'Edit selected device in Ultra')
+            def contains(self, state): return state == 'visible' and self.name in ('Source / Clip', 'Cutoff base')
         ui = types.SimpleNamespace(click=lambda name: calls.append(name), text=lambda *args: None,
                                    wait_for=lambda name: Control(name), find=lambda name: Control(name))
         prepare = navigation.install(ui, types.SimpleNamespace(scope='Alive'), None, None)
