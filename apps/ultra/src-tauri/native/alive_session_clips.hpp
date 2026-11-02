@@ -904,9 +904,12 @@ bool optional_admission() noexcept {
   using namespace clip_admission;
   const auto limits = policy(config().profile);
   Cost charge{};
-  for (unsigned t = 0; t < config().track_count; ++t)
+  bool releases = false;
+  for (unsigned t = 0; t < config().track_count; ++t) {
+    releases |= midi_proof().reset[t][0] != 0;
     if (candidate_.clear_mask & (1u << t))
       charge = add(charge, midi_proof().reset[t]);
+  }
   // Releases share the scheduled event ledger even when an optional clear owns
   // the reset's other work dimensions.
   charge[0] = 0;
@@ -949,7 +952,13 @@ bool optional_admission() noexcept {
   uint64_t past_optional_placement=placement_optional_.total+placement_optional_.expired-placement_optional_.entries[current];
   for (unsigned j = 0; j <= Window; ++j) {
     for (unsigned m = 0; m < 5; ++m) {
-      const uint64_t future = j && candidate_.playing ? midi_proof(launch_active_ || candidate_.quantized).future[m][j] : 0;
+      uint64_t future = j && candidate_.playing ? midi_proof(launch_active_ || candidate_.quantized).future[m][j] : 0;
+      if (!m && j && releases) {
+        // The pending first frame precedes an arbitrary tail of j-1 frames.
+        const uint64_t tail = candidate_.playing && j > 1
+            ? midi_proof(launch_active_ || candidate_.quantized).future[0][j - 1] : 0;
+        future = std::max(future, first[0] + tail);
+      }
       if (past_scheduled[m] + future + (j ? scheduled_.entries[current][m] : 0) >
           (m ? scheduled_window[m] : 64))
         accepted = false;

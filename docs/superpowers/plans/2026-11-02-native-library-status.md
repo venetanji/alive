@@ -520,6 +520,185 @@ They are ordinary bounded PE/Capstone observations, not REA or runtime values.
 Original initialization, native admission and all ten-stage publication gates
 remain unchanged.
 
+## 3 November Continuation
+
+Manual CI [41517331264](https://github.com/venetanji/alive/actions/runs/41517331264)
+passes at exact head `d838c7f2d7f598ae909a2a56332ab1003cf1b106`. Native desktop
+and hosted editor, the full Arrangement journey, Master save/Quit/restart, all
+four clip-observation modes, six saved-clip stream epochs, eight-cycle editor
+resource bounds and private CPAL software loopback all execute and pass.
+Node reports 783 passed/15 private-fixture skips, Chromium 407 passed/13
+private-fixture skips, Rust 319 passed/five ignored, Alive's executable test
+one passed, and the explicitly registered diagnostic helpers 149 passed.
+The Plus008 checker passes, but its licensed oracle and 11 oracle items remain
+unavailable. Endurance is off in this run. None of those exclusions or physical
+hardware receives pass credit.
+
+The correlated Return request has serial 7/preparation 1 and bar quantization.
+Its absolute target is 1586685, corresponding to song frame 205714, the start of
+gap `[205714,244286)`. Application is observed three frames after the target,
+inside the gap, with Arrangement authority and null active source/placement/
+slot; the sibling Session source is preserved. This satisfies the current
+expectation without an Arrangement engine change. The historical short-gap
+failure's cause and the separate earlier accessible-ancestor failure remain
+unresolved. Independent review identifies no findings within the exercised
+gates; report SHA-256 is
+`f9359bddc1084695d42f8a976003c3c76064b13d82c901e92457a26dec927379`
+under `workers/ci-41517331264-independent-review/`.
+
+Manual CI [41521761339](https://github.com/venetanji/alive/actions/runs/41521761339)
+passes at `563671f0dadbf3cf222d8c1ad3aa82170ea9ad13`. The same software-native
+gates all execute and pass, including downstream observations, measurements,
+editor resource bounds and CPAL. Counts remain Node 783 passed/15 skipped,
+Chromium 407 passed/13 skipped, Rust 319 passed/five ignored and Alive executable
+one passed. Desktop helpers now report 160 passed across 17 modules, including
+diagnostic batching. Return serial 7 targets absolute 1583613/song 205714;
+the applied observation is 3075 frames after target at song 208789, inside
+`[205714,244286)`, with Arrangement authority and null active identities.
+Six epochs prove 8.35346790499985 playing seconds with no errors or budget
+overruns; maximum callback duration is 9375710 ns. Independent software PCM
+parsing confirms 151040 finite stereo frames and empty capture stderr.
+Endurance is explicitly off. The independent report has no findings within
+these gates, SHA-256
+`3f9bd96b8519681903f8c1e759ceeb7b93508d29db8da24077e0959ddb3e6716`
+at `workers/ci-41521761339-independent-review/report.md`; the coordinator
+rehashes all 23 selected inputs and five review outputs.
+
+Local endurance `paired-endurance-1800-099418f-r1/` passes on the selected
+099418f build: wrapper exit 0 after 2669.371189594269 seconds, with all recorded
+Python/shell test sources unchanged. It conservatively credits
+1804.3711025703742 playing seconds across 11 edit/transport cycles. Final
+Quit/discard, dirty-guard cancellation, save-picker cancellation, stream
+retirement and all five epoch qualifications execute and pass. Epoch totals
+are zero for native render failures, invalid callback shapes, CPAL errors/xrun
+reports and processing-budget exceedances. Software capture contains
+104342528 stereo frames, 2173.8026666666665 seconds and peak
+0.08945509791374207, with 834740224 audio bytes and empty stderr. Recorder
+status 1 is the retained supported SIGINT shutdown, not an asserted zero exit.
+The collector's complete final record credits 1806.7221852313742 playing seconds
+including later post-capture actions; these are not substituted for the
+endurance segment's conservative duration. Physical underruns remain unmeasured.
+The maximum observed callback duration is 6076026 ns against the 10666667 ns
+buffer budget; all 223333 entered callbacks have timing samples.
+The collector excludes 38.798605221076286 uncertain seconds. Its gap log retains
+643 transport-read-shape records and 979 observation-gap records; no claim of
+continuous readable UI observation follows from complete native epoch retention.
+The credited duration excludes uncertain intervals. Coordinator validation
+rehashes the PCM, all five declared streams and all 18 selected artifacts:
+`paired-endurance-1800-099418f-r1/coordinator-validation.json`, SHA-256
+`40083e9ce7ef34bc2293a78cd0644dbf225eae6aec0b28d9fa29bfd5030dbac5`.
+
+The actual run stays within the unchanged 2700-second collector, 1 GiB audio
+and 64 MiB metadata bounds. Final metadata is 49960742 bytes. The separately
+reported conservative pilot projection still fails collector headroom:
+with 10% variability it projects 2871.035582012744 collector seconds, above 2700
+and below the required 5% spare margin. That projection is not a passed planning
+gate; actual completion does not promise repeatable margin or heavier native
+workload capacity. Earlier failed endurance attempts remain failed evidence.
+The quiet window is released only after wrapper completion; B and C1 may now
+use at most two sequential compiler streams in total. No original application
+or physical settings were changed for this software test.
+
+Checkpoint B is accepted from the isolated synthetic rolling-horizon worktree
+`/tmp/alive-release-horizon-b-20261103`. Its public stopped-Seek regression
+demonstrates an accepted retained 61 plus pending release 4 before the correction.
+The event bound retains the incumbent envelope and also covers
+pending first debit plus a j-1 tail at positive-width cuts. All production
+release inputs remain zero. Four final baseline runs fail at the intended
+semantic assertions; all seven GREEN modes pass 19952 public reducer proposals.
+The 55803520-byte R0 snapshots compare byte-for-byte, SHA-256
+`bcff4893c8a53bdf3383db7563a3254a5edb9bb71f5acfb63ae3b42f94061405`.
+All eight adjacent built-in/release-accounting suites pass on baseline and
+changed source; only explicitly retained timing/concurrent-reader values need
+normalization. Independent review repeats fresh RED/GREEN/R0 and an additional
+UBSan scalar oracle: 15360 proposals, 9248 accepted/6112 refused and 332799744
+literal window comparisons. It reports no findings, SHA-256
+`e458b66d57c4d9cb81570e5de3ce82ce1904b49f69f1f400d6688479d7b268d8`
+at `workers/release-horizon-b-independent-review/report.md`.
+The coordinator applies the exact frozen two-file patch, registers all seven
+modes in the existing manual native runner and independently compiles/runs them
+successfully (`release-proof-b-root-integrated-r1/`). Earlier provisional-macro
+and generated-header setup failures remain preserved. No source policy,
+callback loop, ABI, event/work limit, guard or native admission changes.
+
+C1 is a separate, pure synthetic reservation model, with no production callers.
+The selected policy leaves four physical queue slots whenever keys are held,
+keeps the emergency token inside the shared 32/frame and 64/window event budgets,
+and distinguishes reserved, queued and delivered release work. Full-batch
+precharge must cover peak prefix obligation; a fresh held generation must
+reacquire its token. Faulted/disarmed retirement means quarantine and later
+fenced reconstruction, not guaranteed Off delivery or ResetA silence. The
+worker implements a 215-line helper and 15 focused groups in the isolated
+`/tmp/alive-release-reservation-c1-20261103` tree. Explicit missing-feature RED
+precedes implementation; final strict GCC and ASan/UBSan pass all 15 groups,
+and all 11 deliberate new-helper mutants are detected after strengthening two
+test boundary gaps. The unchanged raw-bank lifecycle passes strict Clang;
+its GCC custom-new/delete warning failure remains retained without suppression.
+Separate metadata checks preserve closed admission. Independent review remains
+pending and no C1 source is integrated yet.
+This does not establish runtime release routing, timing or native admission.
+
+Corpus's two later static reports close conditional ordinal forwarding to
+SetParameterA and the ordinal 34 Decay current converter. Selector 6 uses
+MultiplyOffset coefficients `fma(-1,input,+1)`, not a demonstrated host range
+of -1..1. The host's MidiMode ordinal 37 remains outside the DLL's 37 regular
+descriptors 0..36 and must not become a fabricated descriptor. Decay constructs
+a current 0..1/default 0 with an identity linear converter; the separate saved
+Manual 0 still does not prove initial native 1 or effective player publication.
+Retained manifests are
+`d3149140d1774f79ee5511728adf8e0219f1588596082296fcba636fa62f6a3b`
+(`workers/corpus-export-edge-r1/`) and
+`27835648f699193bf44742b7751c9f7686fb32fccf310e17051167fee0da9406`
+(`workers/corpus-decay-conversion-r1/`). No device stage is promoted.
+
+The read-only editor audit at 563671f recommends the existing ordinary Analog
+host as the first integration target. Complete native source edits already use
+document-owned admission/history and retained-instance state publication, but
+both real presentation hosts currently refuse panel acquisition/grouped writes.
+Current profile adapters also lack the panel's snapshot/binding interface;
+scalar gestures cannot accept a native source object, and asynchronously mounted
+panel inputs are not yet enrolled in save/close draft flushing. Same-runtime
+source edits need exact expected-source comparison independent of mount lifetime.
+The bounded next editor batch is a commit-only source-state command through the
+existing document owner, with production inputs remaining disabled. It needs
+no C++ engine expansion. Read-only acquisition, draft settlement and qualified
+control activation follow separately. Audit report SHA-256:
+`1badee4912160824d474b77e3f4c9f9e2ae973cd25480719a926ca300b5acaf3`
+at `workers/native-editor-next-batch-r1/report.md`. No implementation or fresh
+editor qualification is claimed by this audit.
+
+Ruling: the audit's proposed stopped-driver restriction for ordinary Ultra U1
+is not adopted. The auditor confirms this was a conservative proposal, not an
+existing contract. `admit_owned` already publishes complete state-only changes
+without replacing instances or stopping callbacks; structural construction and
+destruction separately require the driver fence. U1 must preserve complete-state
+validation, source/CAS conflict checks, owner/history barriers, fault handling and
+requested-versus-applied acknowledgement on that existing path. Commit-only
+means local previews do not publish, not that ordinary state commits require
+audio off. Alive's stopped structural-edit guards and closed native admission
+remain unchanged. If this ruling proves insufficient, narrow input activation
+and repair the demonstrated ownership/fault case before widening the contract.
+
+The immutable correction note is
+`workers/electric-receiver-init-r1/U1-correction.md`, SHA-256
+`50142ec7bdbcf86a1df23d09494cb28d70e962b3dcd31ac1f76408756d36c8f7`.
+The associated receiver report rejects two unrelated model/file-drop constructor
+leads. A subsequent exact function-pointer query over the host's `.rdata`
+establishes two primary vtable owners for the common binding method:
+`AGenericThirdPartyMpeInstrumentUnit` and `AThirdPartyMpeInstrumentUnit`, both
+slot 22/+0xb0. This does not identify Electric's concrete runtime owner or
+construct its +0x138 child/+0x80 receiver. Report SHA-256:
+`c5951bc841aae658b2f3746bf130f6057afd8191fc715bfc6d07a14aec1b3ab6`
+at `workers/electric-owner-vtable-r1/report.md`. No initialization, native-write
+or publication gate is promoted by static owner identity.
+The subsequent exact-vtable constructor trace reaches an explicit +0x138 zero
+store in `ADeviceUnit`, and resolves the generic factory's +0x108 target as a
+no-op. No positive child/receiver construction appears in the retained bodies;
+unqualified metadata callbacks mean this is not proof of final zero or absence
+of side effects. Later graph attachment and dummy publication remain unresolved.
+Retained report `workers/electric-unit-construction-r1/report.md`, SHA-256
+`8f94f89197bc92c715f38bfeaf800ff729ad578de1d681b50c79d1ad1b885294`.
+
 ## Next Gates
 
 1. Finish reviewed profile facts and original editor geometry, keeping unresolved
