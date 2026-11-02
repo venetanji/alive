@@ -13,13 +13,14 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
   const detailBudget=()=>shell.clientHeight-($('detail-panel').getBoundingClientRect().height-$('detail-content').getBoundingClientRect().height);
   const workspaceMinimum=()=>{
     if(view==='arrangement')return $('timeline').querySelector('.timeline-tools').getBoundingClientRect().height+$('master-arrangement-lane').getBoundingClientRect().height+96;
-    const session=$('session-workspace'),track=session.querySelector('.track'),header=track?.querySelector('.track-name'),bank=track?.querySelector('.clip-bank'),mixer=track?.querySelector('.track-mixer');
+    const session=$('session-workspace'),track=session.querySelector('.track'),header=track?.querySelector('.track-name'),bank=track?.querySelector('.clip-bank'),rack=track?.querySelector('.track-mixer');
     if(!win?.getComputedStyle)return 96;
     const minimum=win.innerHeight<700?180:190;
     // Reserve the rack before the first native snapshot mounts its track nodes.
-    if(!header||!bank||!mixer)return minimum;
-    const minHeight=element=>win.getComputedStyle(element).display==='none'?0:parseFloat(win.getComputedStyle(element).minHeight)||0;
-    return Math.max(minimum,Math.ceil(header.getBoundingClientRect().height+minHeight(bank)+minHeight(mixer)+Math.max(0,session.offsetHeight-session.clientHeight)));
+    if(!header||!bank||!rack)return minimum;
+    // Compression must not reduce the minimum needed to show the mixer again.
+    const minHeight=element=>parseFloat(win.getComputedStyle(element).minHeight)||0;
+    return Math.max(minimum,Math.ceil(minHeight(header)+minHeight(bank)+(mixer?minHeight(rack):0)+Math.max(0,session.offsetHeight-session.clientHeight)));
   };
   const clipVisible=()=>expanded&&clipOpen&&!masterOpen;
   const minHeight=()=>224;

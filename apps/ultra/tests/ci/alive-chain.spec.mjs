@@ -595,7 +595,7 @@ for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,he
   expect(await visible(page.getByRole('button',{name:'Select Pulse slot 1',exact:true}))).toBe(true);
   if(size.width===800){await page.locator('#detail-clip').click();}
   expect(await visible(page.getByRole('treeitem',{name:'Subtractive',exact:true}))).toBe(true);
-  for(const locator of [page.getByRole('button',{name:'Pulse mute',exact:true}),page.getByRole('button',{name:'Pulse solo',exact:true}),page.locator('#master-session').getByRole('spinbutton',{name:'Master gain',exact:true})])expect(await visible(locator),await locator.getAttribute('aria-label')).toBe(true);
+  for(const locator of [page.locator('.track-mixer').first(),page.locator('#master-session'),page.getByRole('button',{name:'Pulse mute',exact:true}),page.getByRole('button',{name:'Pulse solo',exact:true}),page.locator('#master-session').getByRole('spinbutton',{name:'Master gain',exact:true})])expect(await visible(locator),await locator.getAttribute('aria-label')).toBe(true);
   await page.screenshot({path:testInfo.outputPath(`session-both-${size.width}x${size.height}.png`)});
 });
 
