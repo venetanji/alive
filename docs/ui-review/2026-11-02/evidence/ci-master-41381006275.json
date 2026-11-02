@@ -1,0 +1,208 @@
+{
+  "kind": "native Tauri on private software PipeWire",
+  "physical_audio": false,
+  "actions": [
+    {
+      "action": "initial artifact identity",
+      "monotonic": 998.910988155,
+      "identity": {
+        "executable_path": "/home/runner/work/alive/alive/apps/ultra/src-tauri/target/release/alive",
+        "executable": {
+          "device": 66305,
+          "inode": 9723631,
+          "sha256": "535dd2d664ad1cfa1ecc835d0dadbae592d34bc4d38cc93f8510fe1b21ad94e3"
+        },
+        "libraries": [
+          {
+            "path": "/home/runner/work/alive/alive/apps/ultra/src-tauri/target/release/libultra_native.so",
+            "mapping_device": [
+              259,
+              1
+            ],
+            "mapping_inode": 9723620,
+            "device": 66305,
+            "inode": 9723620,
+            "sha256": "91ae0ad63ac5ce7a55d750c02106a69b55164e611a83229436c37990c51a9fce"
+          }
+        ]
+      }
+    },
+    {
+      "action": "viewport",
+      "monotonic": 1083.054482276,
+      "view": "session",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "action": "viewport",
+      "monotonic": 1084.339378736,
+      "view": "session",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "action": "viewport",
+      "monotonic": 1085.867108842,
+      "view": "arrangement",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "action": "viewport",
+      "monotonic": 1086.677657986,
+      "view": "arrangement",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "action": "saved v6 and actual quit",
+      "monotonic": 1092.962873419,
+      "identity": {
+        "executable_path": "/home/runner/work/alive/alive/apps/ultra/src-tauri/target/release/alive",
+        "executable": {
+          "device": 66305,
+          "inode": 9723631,
+          "sha256": "535dd2d664ad1cfa1ecc835d0dadbae592d34bc4d38cc93f8510fe1b21ad94e3"
+        },
+        "libraries": [
+          {
+            "path": "/home/runner/work/alive/alive/apps/ultra/src-tauri/target/release/libultra_native.so",
+            "mapping_device": [
+              259,
+              1
+            ],
+            "mapping_inode": 9723620,
+            "device": 66305,
+            "inode": 9723620,
+            "sha256": "91ae0ad63ac5ce7a55d750c02106a69b55164e611a83229436c37990c51a9fce"
+          }
+        ]
+      }
+    },
+    {
+      "action": "same executable and module, reopened owner and replay",
+      "monotonic": 1106.710308713,
+      "identity": {
+        "executable_path": "/home/runner/work/alive/alive/apps/ultra/src-tauri/target/release/alive",
+        "executable": {
+          "device": 66305,
+          "inode": 9723631,
+          "sha256": "535dd2d664ad1cfa1ecc835d0dadbae592d34bc4d38cc93f8510fe1b21ad94e3"
+        },
+        "libraries": [
+          {
+            "path": "/home/runner/work/alive/alive/apps/ultra/src-tauri/target/release/libultra_native.so",
+            "mapping_device": [
+              259,
+              1
+            ],
+            "mapping_inode": 9723620,
+            "device": 66305,
+            "inode": 9723620,
+            "sha256": "91ae0ad63ac5ce7a55d750c02106a69b55164e611a83229436c37990c51a9fce"
+          }
+        ]
+      },
+      "complete": true
+    }
+  ],
+  "first_audio": {
+    "frames": 1725440,
+    "seconds": 35.946666666666665,
+    "peak": 0.19014066457748413,
+    "one_second_peaks": [
+      0.14162153005599976,
+      0.13599134981632233,
+      0.19014066457748413,
+      0.18659110367298126,
+      0.10612676292657852,
+      0.06799567490816116,
+      0.09507033228874207,
+      0.05342648923397064,
+      0.05082523077726364,
+      0.06197041645646095,
+      0.08348129689693451,
+      0.08268166333436966,
+      0.06431451439857483,
+      0.05284864455461502,
+      0.06197041645646095,
+      0.08348129689693451,
+      0.08268166333436966,
+      0.06431451439857483,
+      0.06197041645646095,
+      0.08348129689693451,
+      0.08268166333436966,
+      0.06431451439857483,
+      0.06197041645646095,
+      0.08348129689693451,
+      0.08268166333436966,
+      0.05892585217952728,
+      0.06197041645646095,
+      0.08348129689693451,
+      0.06226717680692673,
+      0.08268166333436966,
+      0.05892585217952728,
+      0.06197041645646095,
+      0.08348129689693451,
+      0.08268166333436966,
+      0.0,
+      0.0
+    ],
+    "unequal_stereo_samples_after_setup": 0,
+    "sha256": "1450e218a118f460d35d274a83e90219404e996b64c2ea32f54382d33c6a8e1b",
+    "path": "master-before-restart.f32",
+    "physical_audio": false,
+    "supervision": {
+      "complete": true,
+      "reason": "requested_stop",
+      "group_id": 22697,
+      "recorder_pid": 22700,
+      "returncode": 1,
+      "wall_seconds": 36.082657987000175,
+      "audio_bytes": 13803520,
+      "stderr_bytes": 0,
+      "limits": {
+        "wall_seconds": 2700.0,
+        "audio_bytes": 1073741824,
+        "metadata_bytes": 67108864,
+        "stderr_bytes": 1048576,
+        "disk_reserve_bytes": 268435456
+      }
+    }
+  },
+  "reopened_audio": {
+    "frames": 273920,
+    "seconds": 5.706666666666667,
+    "peak": 0.08348129689693451,
+    "one_second_peaks": [
+      0.05892585217952728,
+      0.06197041645646095,
+      0.08348129689693451,
+      0.08268166333436966,
+      0.04968900978565216,
+      0.0
+    ],
+    "unequal_stereo_samples_after_setup": 0,
+    "sha256": "cbd6e44b584c8708a752cee1004e70a6df977025a2321e4b335460e3bb04c45e",
+    "path": "master-reopened-playback.f32",
+    "physical_audio": false,
+    "supervision": {
+      "complete": true,
+      "reason": "requested_stop",
+      "group_id": 22904,
+      "recorder_pid": 22907,
+      "returncode": 1,
+      "wall_seconds": 5.834870887000079,
+      "audio_bytes": 2191360,
+      "stderr_bytes": 0,
+      "limits": {
+        "wall_seconds": 2700.0,
+        "audio_bytes": 1073741824,
+        "metadata_bytes": 67108864,
+        "stderr_bytes": 1048576,
+        "disk_reserve_bytes": 268435456
+      }
+    }
+  }
+}

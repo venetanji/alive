@@ -1,0 +1,2888 @@
+{
+  "codeHelperCommit": "c8f4cb3091b9754fa5c94e8a40718e72954aab14",
+  "result": "Passed focused prehistory Save As only; did not reproduce CI failure",
+  "fullDesktopPass": false,
+  "physical_audio": false,
+  "scope": "Original pointer actions with observations; stop after before-reorder.alive save; no injected native command",
+  "causalLimit": "Only final wrapped actions have added observations. Internal preparation disclosures still use their existing paths and were not all observed. A passing local probe does not explain the CI hosted-editor activation.",
+  "artifacts": "/tmp/alive-pr12-prehistory-input-trace",
+  "script": "/tmp/alive-pr12-prehistory-input-trace.py",
+  "log": "/tmp/alive-pr12-prehistory-input-trace.log",
+  "inputRecords": 200,
+  "beforePressRecords": [
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12053.883863792,
+      "name": "Open session",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Open session",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        54,
+        59,
+        198,
+        27
+      ],
+      "point": [
+        153,
+        72
+      ],
+      "current_rect": [
+        54,
+        59,
+        198,
+        27
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 5
+      },
+      "observation_seconds": 0.03060578999975405
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12057.663302284,
+      "name": "Open",
+      "scope": "Open Alive Session",
+      "planned_accessible_hit": {
+        "status": "unknown",
+        "reason": "web_ancestor_unavailable",
+        "path": []
+      },
+      "rect": [
+        903,
+        700,
+        91,
+        34
+      ],
+      "point": [
+        948,
+        717
+      ],
+      "current_rect": [
+        903,
+        700,
+        91,
+        34
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194432
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194432,
+          "title": "Open Alive Session",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            264
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "unavailable",
+        "reason": "no_web_ancestor",
+        "nodes": 7
+      },
+      "observation_seconds": 0.023266555999725824
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12061.080105459,
+      "name": "Alive audio settings",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Alive audio settings",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        1027,
+        773,
+        82,
+        24
+      ],
+      "point": [
+        1068,
+        785
+      ],
+      "current_rect": [
+        1027,
+        773,
+        82,
+        24
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 3
+      },
+      "observation_seconds": 0.052367016000061994
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12065.689919129,
+      "name": "Save Alive audio settings",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Save Alive audio settings",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        853,
+        516,
+        82,
+        26
+      ],
+      "point": [
+        894,
+        529
+      ],
+      "current_rect": [
+        853,
+        516,
+        82,
+        26
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 3
+      },
+      "observation_seconds": 0.05545610900117026
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12069.938105555,
+      "name": "Save Alive audio settings",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Save Alive audio settings",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        853,
+        516,
+        82,
+        26
+      ],
+      "point": [
+        894,
+        529
+      ],
+      "current_rect": [
+        853,
+        516,
+        82,
+        26
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 3
+      },
+      "observation_seconds": 0.019183529000656563
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12075.796942945,
+      "name": "Save and start Alive audio",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Save and start Alive audio",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        941,
+        516,
+        105,
+        26
+      ],
+      "point": [
+        993,
+        529
+      ],
+      "current_rect": [
+        941,
+        516,
+        105,
+        26
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 3
+      },
+      "observation_seconds": 0.05060350100029609
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12078.776073702,
+      "name": "Close audio settings",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Close audio settings",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        1146,
+        62,
+        44,
+        22
+      ],
+      "point": [
+        1168,
+        73
+      ],
+      "current_rect": [
+        1146,
+        62,
+        44,
+        22
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 2
+      },
+      "observation_seconds": 0.0529602229999
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12088.748576781,
+      "name": "Start transport",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Start transport",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        666,
+        30,
+        29,
+        28
+      ],
+      "point": [
+        680,
+        44
+      ],
+      "current_rect": [
+        666,
+        30,
+        29,
+        28
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 3
+      },
+      "observation_seconds": 0.05695980100063025
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12098.968799829,
+      "name": "Alive audio settings",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Alive audio settings",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        1027,
+        773,
+        82,
+        24
+      ],
+      "point": [
+        1068,
+        785
+      ],
+      "current_rect": [
+        1027,
+        773,
+        82,
+        24
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 3
+      },
+      "observation_seconds": 0.015081366000231355
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12100.579611939,
+      "name": "Stop Alive audio to edit settings",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "unknown",
+        "reason": "web_ancestor_unavailable",
+        "path": []
+      },
+      "rect": [
+        853,
+        549,
+        140,
+        26
+      ],
+      "point": [
+        923,
+        562
+      ],
+      "current_rect": [
+        853,
+        549,
+        140,
+        26
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "unavailable",
+        "error_type": "Error",
+        "nodes": 2
+      },
+      "observation_seconds": 0.006618695000724983
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12102.09686401,
+      "name": "Close audio settings",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Close audio settings",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        1146,
+        62,
+        44,
+        22
+      ],
+      "point": [
+        1168,
+        73
+      ],
+      "current_rect": [
+        1146,
+        62,
+        44,
+        22
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 2
+      },
+      "observation_seconds": 0.012876419999884092
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12119.058934957,
+      "name": "Alive audio settings",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Alive audio settings",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        1027,
+        773,
+        82,
+        24
+      ],
+      "point": [
+        1068,
+        785
+      ],
+      "current_rect": [
+        1027,
+        773,
+        82,
+        24
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 3
+      },
+      "observation_seconds": 0.018780828000672045
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12120.647462351,
+      "name": "Save and start Alive audio",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Save and start Alive audio",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        941,
+        516,
+        105,
+        26
+      ],
+      "point": [
+        993,
+        529
+      ],
+      "current_rect": [
+        941,
+        516,
+        105,
+        26
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 3
+      },
+      "observation_seconds": 0.053343651999966823
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12122.20375208,
+      "name": "Close audio settings",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Close audio settings",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        1146,
+        62,
+        44,
+        22
+      ],
+      "point": [
+        1168,
+        73
+      ],
+      "current_rect": [
+        1146,
+        62,
+        44,
+        22
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 2
+      },
+      "observation_seconds": 0.016925390998949297
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12135.349734018,
+      "name": "Open session",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Open session",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        54,
+        59,
+        198,
+        27
+      ],
+      "point": [
+        153,
+        72
+      ],
+      "current_rect": [
+        54,
+        59,
+        198,
+        27
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 5
+      },
+      "observation_seconds": 0.017960711998966872
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12138.741486254,
+      "name": "Open",
+      "scope": "Open Alive Session",
+      "planned_accessible_hit": {
+        "status": "unknown",
+        "reason": "web_ancestor_unavailable",
+        "path": []
+      },
+      "rect": [
+        903,
+        700,
+        91,
+        34
+      ],
+      "point": [
+        948,
+        717
+      ],
+      "current_rect": [
+        903,
+        700,
+        91,
+        34
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4201438
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4201438,
+          "title": "Open Alive Session",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            264
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "unavailable",
+        "reason": "no_web_ancestor",
+        "nodes": 7
+      },
+      "observation_seconds": 0.007754625999950804
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12139.984019991,
+      "name": "Select Pulse slot 1",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Select Pulse slot 1",
+            "role": "toggle button"
+          }
+        ]
+      },
+      "rect": [
+        248,
+        88,
+        104,
+        22
+      ],
+      "point": [
+        300,
+        99
+      ],
+      "current_rect": [
+        248,
+        88,
+        104,
+        22
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 7
+      },
+      "observation_seconds": 0.053914075000648154
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12144.153719717,
+      "name": "Add effect",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Add effect",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        7,
+        426,
+        205,
+        25
+      ],
+      "point": [
+        109,
+        438
+      ],
+      "current_rect": [
+        7,
+        426,
+        205,
+        25
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 5
+      },
+      "observation_seconds": 0.02722819799964782
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12147.158197388,
+      "name": "Open",
+      "scope": "Load Ultra Device",
+      "planned_accessible_hit": {
+        "status": "unknown",
+        "reason": "web_ancestor_unavailable",
+        "path": []
+      },
+      "rect": [
+        903,
+        700,
+        91,
+        34
+      ],
+      "point": [
+        948,
+        717
+      ],
+      "current_rect": [
+        903,
+        700,
+        91,
+        34
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4203612
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4203612,
+          "title": "Load Ultra Device",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            264
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "unavailable",
+        "reason": "no_web_ancestor",
+        "nodes": 7
+      },
+      "observation_seconds": 0.01737977700031479
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12149.855944305,
+      "name": "Add effect",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "* First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Add effect",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        7,
+        426,
+        205,
+        25
+      ],
+      "point": [
+        109,
+        438
+      ],
+      "current_rect": [
+        7,
+        426,
+        205,
+        25
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 5
+      },
+      "observation_seconds": 0.02309700200021325
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12152.920295867,
+      "name": "Open",
+      "scope": "Load Ultra Device",
+      "planned_accessible_hit": {
+        "status": "unknown",
+        "reason": "web_ancestor_unavailable",
+        "path": []
+      },
+      "rect": [
+        903,
+        700,
+        91,
+        34
+      ],
+      "point": [
+        948,
+        717
+      ],
+      "current_rect": [
+        903,
+        700,
+        91,
+        34
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4205863
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4205863,
+          "title": "Load Ultra Device",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            264
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "unavailable",
+        "reason": "no_web_ancestor",
+        "nodes": 7
+      },
+      "observation_seconds": 0.017915035001351498
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12154.069441273,
+      "name": "Save session as",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "* First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Save session as",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        54,
+        115,
+        198,
+        27
+      ],
+      "point": [
+        153,
+        128
+      ],
+      "current_rect": [
+        54,
+        115,
+        198,
+        27
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 5
+      },
+      "observation_seconds": 0.047917682999468525
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12155.249422746,
+      "name": "Save",
+      "scope": "Save Alive Session",
+      "planned_accessible_hit": {
+        "status": "unknown",
+        "reason": "web_ancestor_unavailable",
+        "path": []
+      },
+      "rect": [
+        903,
+        700,
+        91,
+        34
+      ],
+      "point": [
+        948,
+        717
+      ],
+      "current_rect": [
+        903,
+        700,
+        91,
+        34
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4208416
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4208416,
+          "title": "Save Alive Session",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            264
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "unavailable",
+        "reason": "no_web_ancestor",
+        "nodes": 7
+      },
+      "observation_seconds": 0.01630259600096906
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12225.58815114,
+      "name": "Add automation lane",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "* First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Add automation lane",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        301,
+        419,
+        66,
+        26
+      ],
+      "point": [
+        334,
+        432
+      ],
+      "current_rect": [
+        301,
+        419,
+        66,
+        26
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 5
+      },
+      "observation_seconds": 0.025676089999251417
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12231.710673019,
+      "name": "Stereo Lowpass effect 2 / Cutoff automation enabled",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "* First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Stereo Lowpass effect 2 / Cutoff automation enabled",
+            "role": "check box"
+          }
+        ]
+      },
+      "rect": [
+        14,
+        461,
+        12,
+        13
+      ],
+      "point": [
+        20,
+        467
+      ],
+      "current_rect": [
+        14,
+        461,
+        12,
+        13
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 6
+      },
+      "observation_seconds": 0.07380395299878728
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12237.930391388,
+      "name": "Add Stereo Lowpass effect 2 / Cutoff point",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "* First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Add Stereo Lowpass effect 2 / Cutoff point",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        345,
+        456,
+        243,
+        24
+      ],
+      "point": [
+        466,
+        468
+      ],
+      "current_rect": [
+        345,
+        456,
+        243,
+        24
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 5
+      },
+      "observation_seconds": 0.02638400400064711
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12247.335353599,
+      "name": "Save session as",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "* First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Save session as",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        54,
+        115,
+        198,
+        27
+      ],
+      "point": [
+        153,
+        128
+      ],
+      "current_rect": [
+        54,
+        115,
+        198,
+        27
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 5
+      },
+      "observation_seconds": 0.05501526299849502
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12248.526306675,
+      "name": "Save",
+      "scope": "Save Alive Session",
+      "planned_accessible_hit": {
+        "status": "unknown",
+        "reason": "web_ancestor_unavailable",
+        "path": []
+      },
+      "rect": [
+        903,
+        700,
+        91,
+        34
+      ],
+      "point": [
+        948,
+        717
+      ],
+      "current_rect": [
+        903,
+        700,
+        91,
+        34
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4217171
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4217171,
+          "title": "Save Alive Session",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            264
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "unavailable",
+        "reason": "no_web_ancestor",
+        "nodes": 7
+      },
+      "observation_seconds": 0.008965486000306555
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12252.787048952,
+      "name": "Bypass Pulse Stereo Lowpass effect 2",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Bypass Pulse Stereo Lowpass effect 2",
+            "role": "toggle button"
+          }
+        ]
+      },
+      "rect": [
+        1025,
+        607,
+        51,
+        24
+      ],
+      "point": [
+        1050,
+        619
+      ],
+      "current_rect": [
+        1025,
+        607,
+        51,
+        24
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 7
+      },
+      "observation_seconds": 0.0334316550015501
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12256.167843765,
+      "name": "Bypass Pulse Stereo Lowpass effect 2",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "* First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Bypass Pulse Stereo Lowpass effect 2",
+            "role": "toggle button"
+          }
+        ]
+      },
+      "rect": [
+        1025,
+        607,
+        51,
+        24
+      ],
+      "point": [
+        1050,
+        619
+      ],
+      "current_rect": [
+        1025,
+        607,
+        51,
+        24
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 7
+      },
+      "observation_seconds": 0.058972759999960545
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12256.515763856,
+      "name": "Save session",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "* First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Save session",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        439,
+        0,
+        69,
+        24
+      ],
+      "point": [
+        473,
+        12
+      ],
+      "current_rect": [
+        439,
+        0,
+        69,
+        24
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 4
+      },
+      "observation_seconds": 0.05517176700050186
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12257.22350141,
+      "name": "Open session",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Open session",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        54,
+        59,
+        198,
+        27
+      ],
+      "point": [
+        153,
+        72
+      ],
+      "current_rect": [
+        54,
+        59,
+        198,
+        27
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 5
+      },
+      "observation_seconds": 0.056285885999386664
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12260.7504104,
+      "name": "Open",
+      "scope": "Open Alive Session",
+      "planned_accessible_hit": {
+        "status": "unknown",
+        "reason": "web_ancestor_unavailable",
+        "path": []
+      },
+      "rect": [
+        903,
+        700,
+        91,
+        34
+      ],
+      "point": [
+        948,
+        717
+      ],
+      "current_rect": [
+        903,
+        700,
+        91,
+        34
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4219328
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4219328,
+          "title": "Open Alive Session",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            264
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "unavailable",
+        "reason": "no_web_ancestor",
+        "nodes": 7
+      },
+      "observation_seconds": 0.029646031000083894
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12268.096721785,
+      "name": "Open",
+      "scope": "Load Ultra Device",
+      "planned_accessible_hit": {
+        "status": "unknown",
+        "reason": "web_ancestor_unavailable",
+        "path": []
+      },
+      "rect": [
+        903,
+        700,
+        91,
+        34
+      ],
+      "point": [
+        948,
+        717
+      ],
+      "current_rect": [
+        903,
+        700,
+        91,
+        34
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4222064
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4222064,
+          "title": "Load Ultra Device",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            264
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "unavailable",
+        "reason": "no_web_ancestor",
+        "nodes": 7
+      },
+      "observation_seconds": 0.02084435300093901
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12275.65867641,
+      "name": "Open",
+      "scope": "Load Ultra Device",
+      "planned_accessible_hit": {
+        "status": "unknown",
+        "reason": "web_ancestor_unavailable",
+        "path": []
+      },
+      "rect": [
+        903,
+        700,
+        91,
+        34
+      ],
+      "point": [
+        948,
+        717
+      ],
+      "current_rect": [
+        903,
+        700,
+        91,
+        34
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4224758
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4224758,
+          "title": "Load Ultra Device",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            264
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "unavailable",
+        "reason": "no_web_ancestor",
+        "nodes": 7
+      },
+      "observation_seconds": 0.00805171400133986
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12277.01772858,
+      "name": "Select Pulse slot 1",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "* First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Select Pulse slot 1",
+            "role": "toggle button"
+          }
+        ]
+      },
+      "rect": [
+        248,
+        88,
+        104,
+        22
+      ],
+      "point": [
+        300,
+        99
+      ],
+      "current_rect": [
+        248,
+        88,
+        104,
+        22
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 7
+      },
+      "observation_seconds": 0.06765254700076184
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12307.986562685,
+      "name": "Cutoff automation enabled",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "* First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Cutoff automation enabled",
+            "role": "check box"
+          }
+        ]
+      },
+      "rect": [
+        14,
+        462,
+        12,
+        13
+      ],
+      "point": [
+        20,
+        468
+      ],
+      "current_rect": [
+        14,
+        462,
+        12,
+        13
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 6
+      },
+      "observation_seconds": 0.06750956199903158
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12315.163863581,
+      "name": "Add Cutoff point",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "* First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Add Cutoff point",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        484,
+        456,
+        104,
+        24
+      ],
+      "point": [
+        536,
+        468
+      ],
+      "current_rect": [
+        484,
+        456,
+        104,
+        24
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 5
+      },
+      "observation_seconds": 0.020741315000122995
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12332.171018827,
+      "name": "Add Cutoff point",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "* First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Add Cutoff point",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        484,
+        456,
+        104,
+        24
+      ],
+      "point": [
+        536,
+        468
+      ],
+      "current_rect": [
+        484,
+        456,
+        104,
+        24
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 5
+      },
+      "observation_seconds": 0.0662993979985913
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12359.507595563,
+      "name": "Level automation enabled",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "* First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Level automation enabled",
+            "role": "check box"
+          }
+        ]
+      },
+      "rect": [
+        614,
+        462,
+        12,
+        13
+      ],
+      "point": [
+        620,
+        468
+      ],
+      "current_rect": [
+        614,
+        462,
+        12,
+        13
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 6
+      },
+      "observation_seconds": 0.062872205999156
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12366.919125849,
+      "name": "Add Level point",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "* First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Add Level point",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        1086,
+        456,
+        101,
+        24
+      ],
+      "point": [
+        1136,
+        468
+      ],
+      "current_rect": [
+        1086,
+        456,
+        101,
+        24
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 5
+      },
+      "observation_seconds": 0.06174622100115812
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12384.427084531,
+      "name": "Add Level point",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "* First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Add Level point",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        1086,
+        458,
+        101,
+        24
+      ],
+      "point": [
+        1136,
+        470
+      ],
+      "current_rect": [
+        1086,
+        458,
+        101,
+        24
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 5
+      },
+      "observation_seconds": 0.06339286999900651
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12408.395486243,
+      "name": "Save session as",
+      "scope": "Alive",
+      "planned_accessible_hit": {
+        "status": "complete",
+        "path": [
+          {
+            "name": "* First Light - Alive",
+            "role": "document web"
+          },
+          {
+            "name": "Save session as",
+            "role": "button"
+          }
+        ]
+      },
+      "rect": [
+        54,
+        115,
+        198,
+        27
+      ],
+      "point": [
+        153,
+        128
+      ],
+      "current_rect": [
+        54,
+        115,
+        198,
+        27
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4194307
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4194307,
+          "title": "Alive",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            268
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "complete",
+        "nodes": 5
+      },
+      "observation_seconds": 0.06424374599919247
+    },
+    {
+      "action": "prehistory diagnostic input before",
+      "monotonic": 12409.65980834,
+      "name": "Save",
+      "scope": "Save Alive Session",
+      "planned_accessible_hit": {
+        "status": "unknown",
+        "reason": "web_ancestor_unavailable",
+        "path": []
+      },
+      "rect": [
+        903,
+        700,
+        91,
+        34
+      ],
+      "point": [
+        948,
+        717
+      ],
+      "current_rect": [
+        903,
+        700,
+        91,
+        34
+      ],
+      "showing": true,
+      "visible": true,
+      "x_errors": [],
+      "hit_path": [
+        927,
+        4235943
+      ],
+      "windows": [
+        {
+          "window": 927,
+          "title": "",
+          "map_state": 2,
+          "pid": [],
+          "type": []
+        },
+        {
+          "window": 4235943,
+          "title": "Save Alive Session",
+          "map_state": 2,
+          "pid": [
+            266440
+          ],
+          "type": [
+            264
+          ]
+        }
+      ],
+      "web_ancestor": {
+        "status": "unavailable",
+        "reason": "no_web_ancestor",
+        "nodes": 7
+      },
+      "observation_seconds": 0.018105035000189673
+    }
+  ],
+  "completePlannedHitMismatches": 0,
+  "nativeInputsSha256": "c5fbaf4e917f1a49539377637860876ec5d9bdbe6e308e74a9d0cd4afa7cbc39",
+  "savedSessionSha256": "bbfe9a5978abf28c9fa604ec9d0a3833934eea495eac8aeb9ce7bfe7a1f365ca"
+}

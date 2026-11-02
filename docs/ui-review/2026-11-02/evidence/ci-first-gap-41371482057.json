@@ -1,0 +1,2056 @@
+{
+  "ci": "https://github.com/venetanji/alive/actions/runs/41371482057",
+  "head": "2a599bc8420711d9ceda166b56484b6d6c50133a",
+  "completeArrangementJourney": true,
+  "return": {
+    "action": "Return applied inside its compiled gap",
+    "monotonic": 1482.058669693,
+    "phase": {
+      "gapBounds": [
+        {
+          "intervals": [
+            {
+              "endFrame": "244286",
+              "startFrame": "205714"
+            },
+            {
+              "endFrame": "321429",
+              "startFrame": "308571"
+            },
+            {
+              "endFrame": "411429",
+              "startFrame": "385714"
+            }
+          ],
+          "trackId": "track-1"
+        },
+        {
+          "intervals": [
+            {
+              "endFrame": "411429",
+              "startFrame": "205714"
+            }
+          ],
+          "trackId": "track-2"
+        }
+      ],
+      "generation": 1,
+      "kind": "snapshot",
+      "placements": [
+        {
+          "duration": 8.0,
+          "id": "placement-c532c9612459d4c4de79a3c4caaaa690",
+          "region": {
+            "end": 8.0,
+            "loopEnabled": true,
+            "loopEnd": 8.0,
+            "loopStart": 0.0,
+            "start": 0.0
+          },
+          "sourceId": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
+          "start": 0.0,
+          "trackId": "track-1"
+        },
+        {
+          "duration": 8.0,
+          "id": "placement-0b6c0afb776c2e33414692d8e5e893d0",
+          "region": {
+            "end": 8.0,
+            "loopEnabled": true,
+            "loopEnd": 8.0,
+            "loopStart": 0.0,
+            "start": 0.0
+          },
+          "sourceId": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+          "start": 0.0,
+          "trackId": "track-2"
+        },
+        {
+          "duration": 2.5,
+          "id": "placement-8c3efa4a08c2b177c8e49bbee6d106be",
+          "region": {
+            "end": 8.0,
+            "loopEnabled": true,
+            "loopEnd": 2.5,
+            "loopStart": 0.5,
+            "start": 0.25
+          },
+          "sourceId": "source-7fd5a7d0a70f5c2bd9f0b37217955ca4",
+          "start": 9.5,
+          "trackId": "track-1"
+        },
+        {
+          "duration": 2.5,
+          "id": "placement-9cdaa7e63dbaa522bad30b8a4176e424",
+          "region": {
+            "end": 8.0,
+            "loopEnabled": true,
+            "loopEnd": 2.5,
+            "loopStart": 0.5,
+            "start": 0.25
+          },
+          "sourceId": "source-900c9960f76d0f87f04432f64a25d84b",
+          "start": 12.5,
+          "trackId": "track-1"
+        }
+      ],
+      "preparationRevision": "1",
+      "preparedWorkspaces": {
+        "placements": [
+          {
+            "durationFrames": "205714",
+            "placementId": "placement-c532c9612459d4c4de79a3c4caaaa690",
+            "region": {
+              "endFrame": "205714",
+              "loopEnabled": true,
+              "loopEndFrame": "205714",
+              "loopStartFrame": "0",
+              "startFrame": "0"
+            },
+            "sourceId": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
+            "startFrame": "0",
+            "trackId": "track-1"
+          },
+          {
+            "durationFrames": "64285",
+            "placementId": "placement-8c3efa4a08c2b177c8e49bbee6d106be",
+            "region": {
+              "endFrame": "205714",
+              "loopEnabled": true,
+              "loopEndFrame": "64286",
+              "loopStartFrame": "12857",
+              "startFrame": "6429"
+            },
+            "sourceId": "source-7fd5a7d0a70f5c2bd9f0b37217955ca4",
+            "startFrame": "244286",
+            "trackId": "track-1"
+          },
+          {
+            "durationFrames": "64285",
+            "placementId": "placement-9cdaa7e63dbaa522bad30b8a4176e424",
+            "region": {
+              "endFrame": "205714",
+              "loopEnabled": true,
+              "loopEndFrame": "64286",
+              "loopStartFrame": "12857",
+              "startFrame": "6429"
+            },
+            "sourceId": "source-900c9960f76d0f87f04432f64a25d84b",
+            "startFrame": "321429",
+            "trackId": "track-1"
+          },
+          {
+            "durationFrames": "205714",
+            "placementId": "placement-0b6c0afb776c2e33414692d8e5e893d0",
+            "region": {
+              "endFrame": "205714",
+              "loopEnabled": true,
+              "loopEndFrame": "205714",
+              "loopStartFrame": "0",
+              "startFrame": "0"
+            },
+            "sourceId": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+            "startFrame": "0",
+            "trackId": "track-2"
+          }
+        ],
+        "preparationRevision": "1",
+        "slots": [
+          {
+            "name": "Clip 1",
+            "region": {
+              "endFrame": "205714",
+              "loopEnabled": true,
+              "loopEndFrame": "205714",
+              "loopStartFrame": "0",
+              "startFrame": "0"
+            },
+            "slot": 0,
+            "slotId": "clip-8254b7a92a82cb008365518183971131",
+            "sourceId": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
+            "trackId": "track-1"
+          },
+          {
+            "name": "MIDI journey",
+            "region": {
+              "endFrame": "205714",
+              "loopEnabled": true,
+              "loopEndFrame": "205714",
+              "loopStartFrame": "0",
+              "startFrame": "0"
+            },
+            "slot": 1,
+            "slotId": "slot-4e4c9aebb275146c40198af3066cd73b",
+            "sourceId": "source-7fd5a7d0a70f5c2bd9f0b37217955ca4",
+            "trackId": "track-1"
+          },
+          {
+            "name": "Clip 1",
+            "region": {
+              "endFrame": "205714",
+              "loopEnabled": true,
+              "loopEndFrame": "205714",
+              "loopStartFrame": "0",
+              "startFrame": "0"
+            },
+            "slot": 0,
+            "slotId": "clip-74455c81c6f6a3d38bfd0c64d85d0fd5",
+            "sourceId": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+            "trackId": "track-2"
+          }
+        ],
+        "sources": [
+          {
+            "kind": "midi",
+            "lengthFrames": "205714",
+            "name": "MIDI journey",
+            "sourceId": "source-7fd5a7d0a70f5c2bd9f0b37217955ca4",
+            "trackId": "track-1",
+            "waveformPeaks": null
+          },
+          {
+            "kind": "midi",
+            "lengthFrames": "205714",
+            "name": "MIDI journey",
+            "sourceId": "source-900c9960f76d0f87f04432f64a25d84b",
+            "trackId": "track-1",
+            "waveformPeaks": null
+          },
+          {
+            "kind": "midi",
+            "lengthFrames": "205714",
+            "name": "Clip 1",
+            "sourceId": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
+            "trackId": "track-1",
+            "waveformPeaks": null
+          },
+          {
+            "kind": "midi",
+            "lengthFrames": "205714",
+            "name": "Clip 1",
+            "sourceId": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+            "trackId": "track-2",
+            "waveformPeaks": null
+          }
+        ]
+      },
+      "runtime": {
+        "appliedStopEpoch": "2",
+        "requestedStopEpoch": "2",
+        "requests": [
+          {
+            "appliedMask": 0,
+            "canceledMask": 0,
+            "kind": "start",
+            "members": [],
+            "pendingMask": 0,
+            "preparationRevision": "1",
+            "quantization": null,
+            "reason": 0,
+            "rejectedMask": 0,
+            "requestSerial": "1",
+            "sceneSlot": null,
+            "slotId": null,
+            "sourceId": null,
+            "status": "applied",
+            "supersededMask": 0,
+            "targetFrame": "0",
+            "trackId": null,
+            "trackMask": 0
+          },
+          {
+            "appliedMask": 0,
+            "canceledMask": 0,
+            "kind": "seek",
+            "members": [],
+            "pendingMask": 0,
+            "preparationRevision": "1",
+            "quantization": null,
+            "reason": 0,
+            "rejectedMask": 0,
+            "requestSerial": "2",
+            "sceneSlot": null,
+            "slotId": null,
+            "sourceId": null,
+            "status": "applied",
+            "supersededMask": 0,
+            "targetFrame": "393728",
+            "trackId": null,
+            "trackMask": 0
+          },
+          {
+            "appliedMask": 1,
+            "canceledMask": 0,
+            "kind": "launch",
+            "members": [
+              {
+                "action": "launch",
+                "authority": "session",
+                "slotId": "clip-8254b7a92a82cb008365518183971131",
+                "sourceId": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
+                "status": "applied",
+                "trackId": "track-1",
+                "trackIndex": 0
+              }
+            ],
+            "pendingMask": 0,
+            "preparationRevision": "1",
+            "quantization": "bar1",
+            "reason": 0,
+            "rejectedMask": 0,
+            "requestSerial": "3",
+            "sceneSlot": null,
+            "slotId": "clip-8254b7a92a82cb008365518183971131",
+            "sourceId": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
+            "status": "applied",
+            "supersededMask": 0,
+            "targetFrame": "558300",
+            "trackId": "track-1",
+            "trackMask": 1
+          },
+          {
+            "appliedMask": 1,
+            "canceledMask": 0,
+            "kind": "stop",
+            "members": [
+              {
+                "action": "stop",
+                "authority": "session",
+                "slotId": null,
+                "sourceId": null,
+                "status": "applied",
+                "trackId": "track-1",
+                "trackIndex": 0
+              }
+            ],
+            "pendingMask": 0,
+            "preparationRevision": "1",
+            "quantization": "bar1",
+            "reason": 0,
+            "rejectedMask": 0,
+            "requestSerial": "4",
+            "sceneSlot": null,
+            "slotId": null,
+            "sourceId": null,
+            "status": "applied",
+            "supersededMask": 0,
+            "targetFrame": "1175442",
+            "trackId": "track-1",
+            "trackMask": 1
+          },
+          {
+            "appliedMask": 2,
+            "canceledMask": 0,
+            "kind": "launch",
+            "members": [
+              {
+                "action": "launch",
+                "authority": "session",
+                "slotId": "clip-74455c81c6f6a3d38bfd0c64d85d0fd5",
+                "sourceId": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+                "status": "applied",
+                "trackId": "track-2",
+                "trackIndex": 1
+              }
+            ],
+            "pendingMask": 0,
+            "preparationRevision": "1",
+            "quantization": "bar1",
+            "reason": 0,
+            "rejectedMask": 0,
+            "requestSerial": "5",
+            "sceneSlot": null,
+            "slotId": "clip-74455c81c6f6a3d38bfd0c64d85d0fd5",
+            "sourceId": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+            "status": "applied",
+            "supersededMask": 0,
+            "targetFrame": "1638300",
+            "trackId": "track-2",
+            "trackMask": 2
+          },
+          {
+            "appliedMask": 0,
+            "canceledMask": 0,
+            "kind": "seek",
+            "members": [],
+            "pendingMask": 0,
+            "preparationRevision": "1",
+            "quantization": null,
+            "reason": 0,
+            "rejectedMask": 0,
+            "requestSerial": "6",
+            "sceneSlot": null,
+            "slotId": null,
+            "sourceId": null,
+            "status": "applied",
+            "supersededMask": 0,
+            "targetFrame": "1891328",
+            "trackId": null,
+            "trackMask": 0
+          }
+        ],
+        "tracks": [
+          {
+            "activePlacementId": null,
+            "activeSlotId": null,
+            "activeSourceId": null,
+            "authority": "session",
+            "epoch": "19",
+            "pendingAction": null,
+            "pendingAuthority": null,
+            "pendingFrame": null,
+            "pendingSerial": null,
+            "pendingSlotId": null,
+            "phase": null,
+            "trackId": "track-1"
+          },
+          {
+            "activePlacementId": null,
+            "activeSlotId": "clip-74455c81c6f6a3d38bfd0c64d85d0fd5",
+            "activeSourceId": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+            "authority": "session",
+            "epoch": "13",
+            "pendingAction": null,
+            "pendingAuthority": null,
+            "pendingFrame": null,
+            "pendingSerial": null,
+            "pendingSlotId": null,
+            "phase": "204608",
+            "trackId": "track-2"
+          }
+        ]
+      },
+      "snapshotSequence": "1184",
+      "songLoop": {
+        "enabled": true,
+        "endBeats": 16.0,
+        "startBeats": 2.0
+      },
+      "state": {
+        "absoluteFrame": "2254336",
+        "configured": 1,
+        "devices": [
+          {
+            "base": [
+              10.0,
+              150.0,
+              0.65,
+              300.0,
+              2400.0,
+              0.7,
+              55.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bypassed": 0,
+            "document": 0,
+            "effective": [
+              10.0,
+              150.0,
+              0.65,
+              300.0,
+              2400.0,
+              0.7,
+              55.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "owned": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "parameterCount": 7,
+            "revision": "1"
+          },
+          {
+            "base": [
+              10.0,
+              150.0,
+              0.65,
+              300.0,
+              2400.0,
+              0.7,
+              43.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bypassed": 0,
+            "document": 1,
+            "effective": [
+              10.0,
+              150.0,
+              0.65,
+              300.0,
+              2400.0,
+              0.7,
+              43.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "owned": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "parameterCount": 7,
+            "revision": "1"
+          },
+          {
+            "base": [
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "bypassed": 0,
+            "document": 2,
+            "effective": [
+              1.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "owned": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "parameterCount": 1,
+            "revision": "1"
+          }
+        ],
+        "fault": 0,
+        "generation": "29",
+        "peakLeft": 0.005702781307233199,
+        "peakRight": 0.005702781307233199,
+        "playing": 1,
+        "position": "108437",
+        "profile": 1,
+        "rejected": "0",
+        "tracks": [
+          {
+            "activeVoices": 0,
+            "gain": 0.7,
+            "mute": 0,
+            "peakLeft": 0.0,
+            "peakRight": 0.0,
+            "reserved": 0,
+            "solo": 0
+          },
+          {
+            "activeVoices": 1,
+            "gain": 0.7,
+            "mute": 0,
+            "peakLeft": 0.005702781307233199,
+            "peakRight": 0.005702781307233199,
+            "reserved": 0,
+            "solo": 0
+          }
+        ],
+        "workPolicy": 1
+      },
+      "tempo": 112.0
+    },
+    "evidence": {
+      "request": {
+        "request": {
+          "action": {
+            "kind": "return",
+            "trackIds": [
+              "track-1"
+            ]
+          },
+          "generation": 1,
+          "kind": "request",
+          "preparationRevision": "1",
+          "window": "main"
+        },
+        "receipt": {
+          "generation": 1,
+          "kind": "receipt",
+          "receipt": {
+            "appliedMask": 0,
+            "canceledMask": 0,
+            "kind": "return",
+            "members": [
+              {
+                "action": "return",
+                "authority": "arrangement",
+                "slotId": null,
+                "sourceId": null,
+                "status": "queued",
+                "trackId": "track-1",
+                "trackIndex": 0
+              }
+            ],
+            "pendingMask": 0,
+            "preparationRevision": "1",
+            "quantization": "bar1",
+            "reason": 0,
+            "rejectedMask": 0,
+            "requestSerial": "7",
+            "sceneSlot": null,
+            "slotId": null,
+            "sourceId": null,
+            "status": "queued",
+            "supersededMask": 0,
+            "targetFrame": null,
+            "trackId": null,
+            "trackMask": 1
+          }
+        }
+      },
+      "targetPositionFrame": 205714,
+      "gapFrames": [
+        205714,
+        244286
+      ],
+      "gapEndAbsoluteFrame": 2390185,
+      "pending": {
+        "gapBounds": [
+          {
+            "intervals": [
+              {
+                "endFrame": "244286",
+                "startFrame": "205714"
+              },
+              {
+                "endFrame": "321429",
+                "startFrame": "308571"
+              },
+              {
+                "endFrame": "411429",
+                "startFrame": "385714"
+              }
+            ],
+            "trackId": "track-1"
+          },
+          {
+            "intervals": [
+              {
+                "endFrame": "411429",
+                "startFrame": "205714"
+              }
+            ],
+            "trackId": "track-2"
+          }
+        ],
+        "generation": 1,
+        "kind": "snapshot",
+        "placements": [
+          {
+            "duration": 8.0,
+            "id": "placement-c532c9612459d4c4de79a3c4caaaa690",
+            "region": {
+              "end": 8.0,
+              "loopEnabled": true,
+              "loopEnd": 8.0,
+              "loopStart": 0.0,
+              "start": 0.0
+            },
+            "sourceId": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
+            "start": 0.0,
+            "trackId": "track-1"
+          },
+          {
+            "duration": 8.0,
+            "id": "placement-0b6c0afb776c2e33414692d8e5e893d0",
+            "region": {
+              "end": 8.0,
+              "loopEnabled": true,
+              "loopEnd": 8.0,
+              "loopStart": 0.0,
+              "start": 0.0
+            },
+            "sourceId": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+            "start": 0.0,
+            "trackId": "track-2"
+          },
+          {
+            "duration": 2.5,
+            "id": "placement-8c3efa4a08c2b177c8e49bbee6d106be",
+            "region": {
+              "end": 8.0,
+              "loopEnabled": true,
+              "loopEnd": 2.5,
+              "loopStart": 0.5,
+              "start": 0.25
+            },
+            "sourceId": "source-7fd5a7d0a70f5c2bd9f0b37217955ca4",
+            "start": 9.5,
+            "trackId": "track-1"
+          },
+          {
+            "duration": 2.5,
+            "id": "placement-9cdaa7e63dbaa522bad30b8a4176e424",
+            "region": {
+              "end": 8.0,
+              "loopEnabled": true,
+              "loopEnd": 2.5,
+              "loopStart": 0.5,
+              "start": 0.25
+            },
+            "sourceId": "source-900c9960f76d0f87f04432f64a25d84b",
+            "start": 12.5,
+            "trackId": "track-1"
+          }
+        ],
+        "preparationRevision": "1",
+        "preparedWorkspaces": {
+          "placements": [
+            {
+              "durationFrames": "205714",
+              "placementId": "placement-c532c9612459d4c4de79a3c4caaaa690",
+              "region": {
+                "endFrame": "205714",
+                "loopEnabled": true,
+                "loopEndFrame": "205714",
+                "loopStartFrame": "0",
+                "startFrame": "0"
+              },
+              "sourceId": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
+              "startFrame": "0",
+              "trackId": "track-1"
+            },
+            {
+              "durationFrames": "64285",
+              "placementId": "placement-8c3efa4a08c2b177c8e49bbee6d106be",
+              "region": {
+                "endFrame": "205714",
+                "loopEnabled": true,
+                "loopEndFrame": "64286",
+                "loopStartFrame": "12857",
+                "startFrame": "6429"
+              },
+              "sourceId": "source-7fd5a7d0a70f5c2bd9f0b37217955ca4",
+              "startFrame": "244286",
+              "trackId": "track-1"
+            },
+            {
+              "durationFrames": "64285",
+              "placementId": "placement-9cdaa7e63dbaa522bad30b8a4176e424",
+              "region": {
+                "endFrame": "205714",
+                "loopEnabled": true,
+                "loopEndFrame": "64286",
+                "loopStartFrame": "12857",
+                "startFrame": "6429"
+              },
+              "sourceId": "source-900c9960f76d0f87f04432f64a25d84b",
+              "startFrame": "321429",
+              "trackId": "track-1"
+            },
+            {
+              "durationFrames": "205714",
+              "placementId": "placement-0b6c0afb776c2e33414692d8e5e893d0",
+              "region": {
+                "endFrame": "205714",
+                "loopEnabled": true,
+                "loopEndFrame": "205714",
+                "loopStartFrame": "0",
+                "startFrame": "0"
+              },
+              "sourceId": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+              "startFrame": "0",
+              "trackId": "track-2"
+            }
+          ],
+          "preparationRevision": "1",
+          "slots": [
+            {
+              "name": "Clip 1",
+              "region": {
+                "endFrame": "205714",
+                "loopEnabled": true,
+                "loopEndFrame": "205714",
+                "loopStartFrame": "0",
+                "startFrame": "0"
+              },
+              "slot": 0,
+              "slotId": "clip-8254b7a92a82cb008365518183971131",
+              "sourceId": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
+              "trackId": "track-1"
+            },
+            {
+              "name": "MIDI journey",
+              "region": {
+                "endFrame": "205714",
+                "loopEnabled": true,
+                "loopEndFrame": "205714",
+                "loopStartFrame": "0",
+                "startFrame": "0"
+              },
+              "slot": 1,
+              "slotId": "slot-4e4c9aebb275146c40198af3066cd73b",
+              "sourceId": "source-7fd5a7d0a70f5c2bd9f0b37217955ca4",
+              "trackId": "track-1"
+            },
+            {
+              "name": "Clip 1",
+              "region": {
+                "endFrame": "205714",
+                "loopEnabled": true,
+                "loopEndFrame": "205714",
+                "loopStartFrame": "0",
+                "startFrame": "0"
+              },
+              "slot": 0,
+              "slotId": "clip-74455c81c6f6a3d38bfd0c64d85d0fd5",
+              "sourceId": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+              "trackId": "track-2"
+            }
+          ],
+          "sources": [
+            {
+              "kind": "midi",
+              "lengthFrames": "205714",
+              "name": "MIDI journey",
+              "sourceId": "source-7fd5a7d0a70f5c2bd9f0b37217955ca4",
+              "trackId": "track-1",
+              "waveformPeaks": null
+            },
+            {
+              "kind": "midi",
+              "lengthFrames": "205714",
+              "name": "MIDI journey",
+              "sourceId": "source-900c9960f76d0f87f04432f64a25d84b",
+              "trackId": "track-1",
+              "waveformPeaks": null
+            },
+            {
+              "kind": "midi",
+              "lengthFrames": "205714",
+              "name": "Clip 1",
+              "sourceId": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
+              "trackId": "track-1",
+              "waveformPeaks": null
+            },
+            {
+              "kind": "midi",
+              "lengthFrames": "205714",
+              "name": "Clip 1",
+              "sourceId": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+              "trackId": "track-2",
+              "waveformPeaks": null
+            }
+          ]
+        },
+        "runtime": {
+          "appliedStopEpoch": "2",
+          "requestedStopEpoch": "2",
+          "requests": [
+            {
+              "appliedMask": 0,
+              "canceledMask": 0,
+              "kind": "start",
+              "members": [],
+              "pendingMask": 0,
+              "preparationRevision": "1",
+              "quantization": null,
+              "reason": 0,
+              "rejectedMask": 0,
+              "requestSerial": "1",
+              "sceneSlot": null,
+              "slotId": null,
+              "sourceId": null,
+              "status": "applied",
+              "supersededMask": 0,
+              "targetFrame": "0",
+              "trackId": null,
+              "trackMask": 0
+            },
+            {
+              "appliedMask": 0,
+              "canceledMask": 0,
+              "kind": "seek",
+              "members": [],
+              "pendingMask": 0,
+              "preparationRevision": "1",
+              "quantization": null,
+              "reason": 0,
+              "rejectedMask": 0,
+              "requestSerial": "2",
+              "sceneSlot": null,
+              "slotId": null,
+              "sourceId": null,
+              "status": "applied",
+              "supersededMask": 0,
+              "targetFrame": "393728",
+              "trackId": null,
+              "trackMask": 0
+            },
+            {
+              "appliedMask": 1,
+              "canceledMask": 0,
+              "kind": "launch",
+              "members": [
+                {
+                  "action": "launch",
+                  "authority": "session",
+                  "slotId": "clip-8254b7a92a82cb008365518183971131",
+                  "sourceId": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
+                  "status": "applied",
+                  "trackId": "track-1",
+                  "trackIndex": 0
+                }
+              ],
+              "pendingMask": 0,
+              "preparationRevision": "1",
+              "quantization": "bar1",
+              "reason": 0,
+              "rejectedMask": 0,
+              "requestSerial": "3",
+              "sceneSlot": null,
+              "slotId": "clip-8254b7a92a82cb008365518183971131",
+              "sourceId": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
+              "status": "applied",
+              "supersededMask": 0,
+              "targetFrame": "558300",
+              "trackId": "track-1",
+              "trackMask": 1
+            },
+            {
+              "appliedMask": 1,
+              "canceledMask": 0,
+              "kind": "stop",
+              "members": [
+                {
+                  "action": "stop",
+                  "authority": "session",
+                  "slotId": null,
+                  "sourceId": null,
+                  "status": "applied",
+                  "trackId": "track-1",
+                  "trackIndex": 0
+                }
+              ],
+              "pendingMask": 0,
+              "preparationRevision": "1",
+              "quantization": "bar1",
+              "reason": 0,
+              "rejectedMask": 0,
+              "requestSerial": "4",
+              "sceneSlot": null,
+              "slotId": null,
+              "sourceId": null,
+              "status": "applied",
+              "supersededMask": 0,
+              "targetFrame": "1175442",
+              "trackId": "track-1",
+              "trackMask": 1
+            },
+            {
+              "appliedMask": 2,
+              "canceledMask": 0,
+              "kind": "launch",
+              "members": [
+                {
+                  "action": "launch",
+                  "authority": "session",
+                  "slotId": "clip-74455c81c6f6a3d38bfd0c64d85d0fd5",
+                  "sourceId": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+                  "status": "applied",
+                  "trackId": "track-2",
+                  "trackIndex": 1
+                }
+              ],
+              "pendingMask": 0,
+              "preparationRevision": "1",
+              "quantization": "bar1",
+              "reason": 0,
+              "rejectedMask": 0,
+              "requestSerial": "5",
+              "sceneSlot": null,
+              "slotId": "clip-74455c81c6f6a3d38bfd0c64d85d0fd5",
+              "sourceId": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+              "status": "applied",
+              "supersededMask": 0,
+              "targetFrame": "1638300",
+              "trackId": "track-2",
+              "trackMask": 2
+            },
+            {
+              "appliedMask": 0,
+              "canceledMask": 0,
+              "kind": "seek",
+              "members": [],
+              "pendingMask": 0,
+              "preparationRevision": "1",
+              "quantization": null,
+              "reason": 0,
+              "rejectedMask": 0,
+              "requestSerial": "6",
+              "sceneSlot": null,
+              "slotId": null,
+              "sourceId": null,
+              "status": "applied",
+              "supersededMask": 0,
+              "targetFrame": "1891328",
+              "trackId": null,
+              "trackMask": 0
+            },
+            {
+              "appliedMask": 0,
+              "canceledMask": 0,
+              "kind": "return",
+              "members": [
+                {
+                  "action": "return",
+                  "authority": "arrangement",
+                  "slotId": null,
+                  "sourceId": null,
+                  "status": "pending",
+                  "trackId": "track-1",
+                  "trackIndex": 0
+                }
+              ],
+              "pendingMask": 1,
+              "preparationRevision": "1",
+              "quantization": "bar1",
+              "reason": 0,
+              "rejectedMask": 0,
+              "requestSerial": "7",
+              "sceneSlot": null,
+              "slotId": null,
+              "sourceId": null,
+              "status": "pending",
+              "supersededMask": 0,
+              "targetFrame": "2351613",
+              "trackId": null,
+              "trackMask": 1
+            }
+          ],
+          "tracks": [
+            {
+              "activePlacementId": null,
+              "activeSlotId": null,
+              "activeSourceId": null,
+              "authority": "session",
+              "epoch": "19",
+              "pendingAction": "return",
+              "pendingAuthority": "arrangement",
+              "pendingFrame": "2351613",
+              "pendingSerial": "7",
+              "pendingSlotId": null,
+              "phase": null,
+              "trackId": "track-1"
+            },
+            {
+              "activePlacementId": null,
+              "activeSlotId": "clip-74455c81c6f6a3d38bfd0c64d85d0fd5",
+              "activeSourceId": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+              "authority": "session",
+              "epoch": "14",
+              "pendingAction": null,
+              "pendingAuthority": null,
+              "pendingFrame": null,
+              "pendingSerial": null,
+              "pendingSlotId": null,
+              "phase": "24494",
+              "trackId": "track-2"
+            }
+          ]
+        },
+        "snapshotSequence": "1191",
+        "songLoop": {
+          "enabled": true,
+          "endBeats": 16.0,
+          "startBeats": 2.0
+        },
+        "state": {
+          "absoluteFrame": "2279936",
+          "configured": 1,
+          "devices": [
+            {
+              "base": [
+                10.0,
+                150.0,
+                0.65,
+                300.0,
+                2400.0,
+                0.7,
+                55.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "bypassed": 0,
+              "document": 0,
+              "effective": [
+                10.0,
+                150.0,
+                0.65,
+                300.0,
+                2400.0,
+                0.7,
+                55.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "owned": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "parameterCount": 7,
+              "revision": "1"
+            },
+            {
+              "base": [
+                10.0,
+                150.0,
+                0.65,
+                300.0,
+                2400.0,
+                0.7,
+                43.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "bypassed": 0,
+              "document": 1,
+              "effective": [
+                10.0,
+                150.0,
+                0.65,
+                300.0,
+                2400.0,
+                0.7,
+                43.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "owned": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "parameterCount": 7,
+              "revision": "1"
+            },
+            {
+              "base": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "bypassed": 0,
+              "document": 2,
+              "effective": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "owned": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "parameterCount": 1,
+              "revision": "1"
+            }
+          ],
+          "fault": 0,
+          "generation": "30",
+          "peakLeft": 0.027400327546862988,
+          "peakRight": 0.027400327546862988,
+          "playing": 1,
+          "position": "134037",
+          "profile": 1,
+          "rejected": "0",
+          "tracks": [
+            {
+              "activeVoices": 0,
+              "gain": 0.7,
+              "mute": 0,
+              "peakLeft": 0.0,
+              "peakRight": 0.0,
+              "reserved": 0,
+              "solo": 0
+            },
+            {
+              "activeVoices": 1,
+              "gain": 0.7,
+              "mute": 0,
+              "peakLeft": 0.027400327546862988,
+              "peakRight": 0.027400327546862988,
+              "reserved": 0,
+              "solo": 0
+            }
+          ],
+          "workPolicy": 1
+        },
+        "tempo": 112.0
+      },
+      "applied": {
+        "gapBounds": [
+          {
+            "intervals": [
+              {
+                "endFrame": "244286",
+                "startFrame": "205714"
+              },
+              {
+                "endFrame": "321429",
+                "startFrame": "308571"
+              },
+              {
+                "endFrame": "411429",
+                "startFrame": "385714"
+              }
+            ],
+            "trackId": "track-1"
+          },
+          {
+            "intervals": [
+              {
+                "endFrame": "411429",
+                "startFrame": "205714"
+              }
+            ],
+            "trackId": "track-2"
+          }
+        ],
+        "generation": 1,
+        "kind": "snapshot",
+        "placements": [
+          {
+            "duration": 8.0,
+            "id": "placement-c532c9612459d4c4de79a3c4caaaa690",
+            "region": {
+              "end": 8.0,
+              "loopEnabled": true,
+              "loopEnd": 8.0,
+              "loopStart": 0.0,
+              "start": 0.0
+            },
+            "sourceId": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
+            "start": 0.0,
+            "trackId": "track-1"
+          },
+          {
+            "duration": 8.0,
+            "id": "placement-0b6c0afb776c2e33414692d8e5e893d0",
+            "region": {
+              "end": 8.0,
+              "loopEnabled": true,
+              "loopEnd": 8.0,
+              "loopStart": 0.0,
+              "start": 0.0
+            },
+            "sourceId": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+            "start": 0.0,
+            "trackId": "track-2"
+          },
+          {
+            "duration": 2.5,
+            "id": "placement-8c3efa4a08c2b177c8e49bbee6d106be",
+            "region": {
+              "end": 8.0,
+              "loopEnabled": true,
+              "loopEnd": 2.5,
+              "loopStart": 0.5,
+              "start": 0.25
+            },
+            "sourceId": "source-7fd5a7d0a70f5c2bd9f0b37217955ca4",
+            "start": 9.5,
+            "trackId": "track-1"
+          },
+          {
+            "duration": 2.5,
+            "id": "placement-9cdaa7e63dbaa522bad30b8a4176e424",
+            "region": {
+              "end": 8.0,
+              "loopEnabled": true,
+              "loopEnd": 2.5,
+              "loopStart": 0.5,
+              "start": 0.25
+            },
+            "sourceId": "source-900c9960f76d0f87f04432f64a25d84b",
+            "start": 12.5,
+            "trackId": "track-1"
+          }
+        ],
+        "preparationRevision": "1",
+        "preparedWorkspaces": {
+          "placements": [
+            {
+              "durationFrames": "205714",
+              "placementId": "placement-c532c9612459d4c4de79a3c4caaaa690",
+              "region": {
+                "endFrame": "205714",
+                "loopEnabled": true,
+                "loopEndFrame": "205714",
+                "loopStartFrame": "0",
+                "startFrame": "0"
+              },
+              "sourceId": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
+              "startFrame": "0",
+              "trackId": "track-1"
+            },
+            {
+              "durationFrames": "64285",
+              "placementId": "placement-8c3efa4a08c2b177c8e49bbee6d106be",
+              "region": {
+                "endFrame": "205714",
+                "loopEnabled": true,
+                "loopEndFrame": "64286",
+                "loopStartFrame": "12857",
+                "startFrame": "6429"
+              },
+              "sourceId": "source-7fd5a7d0a70f5c2bd9f0b37217955ca4",
+              "startFrame": "244286",
+              "trackId": "track-1"
+            },
+            {
+              "durationFrames": "64285",
+              "placementId": "placement-9cdaa7e63dbaa522bad30b8a4176e424",
+              "region": {
+                "endFrame": "205714",
+                "loopEnabled": true,
+                "loopEndFrame": "64286",
+                "loopStartFrame": "12857",
+                "startFrame": "6429"
+              },
+              "sourceId": "source-900c9960f76d0f87f04432f64a25d84b",
+              "startFrame": "321429",
+              "trackId": "track-1"
+            },
+            {
+              "durationFrames": "205714",
+              "placementId": "placement-0b6c0afb776c2e33414692d8e5e893d0",
+              "region": {
+                "endFrame": "205714",
+                "loopEnabled": true,
+                "loopEndFrame": "205714",
+                "loopStartFrame": "0",
+                "startFrame": "0"
+              },
+              "sourceId": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+              "startFrame": "0",
+              "trackId": "track-2"
+            }
+          ],
+          "preparationRevision": "1",
+          "slots": [
+            {
+              "name": "Clip 1",
+              "region": {
+                "endFrame": "205714",
+                "loopEnabled": true,
+                "loopEndFrame": "205714",
+                "loopStartFrame": "0",
+                "startFrame": "0"
+              },
+              "slot": 0,
+              "slotId": "clip-8254b7a92a82cb008365518183971131",
+              "sourceId": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
+              "trackId": "track-1"
+            },
+            {
+              "name": "MIDI journey",
+              "region": {
+                "endFrame": "205714",
+                "loopEnabled": true,
+                "loopEndFrame": "205714",
+                "loopStartFrame": "0",
+                "startFrame": "0"
+              },
+              "slot": 1,
+              "slotId": "slot-4e4c9aebb275146c40198af3066cd73b",
+              "sourceId": "source-7fd5a7d0a70f5c2bd9f0b37217955ca4",
+              "trackId": "track-1"
+            },
+            {
+              "name": "Clip 1",
+              "region": {
+                "endFrame": "205714",
+                "loopEnabled": true,
+                "loopEndFrame": "205714",
+                "loopStartFrame": "0",
+                "startFrame": "0"
+              },
+              "slot": 0,
+              "slotId": "clip-74455c81c6f6a3d38bfd0c64d85d0fd5",
+              "sourceId": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+              "trackId": "track-2"
+            }
+          ],
+          "sources": [
+            {
+              "kind": "midi",
+              "lengthFrames": "205714",
+              "name": "MIDI journey",
+              "sourceId": "source-7fd5a7d0a70f5c2bd9f0b37217955ca4",
+              "trackId": "track-1",
+              "waveformPeaks": null
+            },
+            {
+              "kind": "midi",
+              "lengthFrames": "205714",
+              "name": "MIDI journey",
+              "sourceId": "source-900c9960f76d0f87f04432f64a25d84b",
+              "trackId": "track-1",
+              "waveformPeaks": null
+            },
+            {
+              "kind": "midi",
+              "lengthFrames": "205714",
+              "name": "Clip 1",
+              "sourceId": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
+              "trackId": "track-1",
+              "waveformPeaks": null
+            },
+            {
+              "kind": "midi",
+              "lengthFrames": "205714",
+              "name": "Clip 1",
+              "sourceId": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+              "trackId": "track-2",
+              "waveformPeaks": null
+            }
+          ]
+        },
+        "runtime": {
+          "appliedStopEpoch": "2",
+          "requestedStopEpoch": "2",
+          "requests": [
+            {
+              "appliedMask": 0,
+              "canceledMask": 0,
+              "kind": "start",
+              "members": [],
+              "pendingMask": 0,
+              "preparationRevision": "1",
+              "quantization": null,
+              "reason": 0,
+              "rejectedMask": 0,
+              "requestSerial": "1",
+              "sceneSlot": null,
+              "slotId": null,
+              "sourceId": null,
+              "status": "applied",
+              "supersededMask": 0,
+              "targetFrame": "0",
+              "trackId": null,
+              "trackMask": 0
+            },
+            {
+              "appliedMask": 0,
+              "canceledMask": 0,
+              "kind": "seek",
+              "members": [],
+              "pendingMask": 0,
+              "preparationRevision": "1",
+              "quantization": null,
+              "reason": 0,
+              "rejectedMask": 0,
+              "requestSerial": "2",
+              "sceneSlot": null,
+              "slotId": null,
+              "sourceId": null,
+              "status": "applied",
+              "supersededMask": 0,
+              "targetFrame": "393728",
+              "trackId": null,
+              "trackMask": 0
+            },
+            {
+              "appliedMask": 1,
+              "canceledMask": 0,
+              "kind": "launch",
+              "members": [
+                {
+                  "action": "launch",
+                  "authority": "session",
+                  "slotId": "clip-8254b7a92a82cb008365518183971131",
+                  "sourceId": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
+                  "status": "applied",
+                  "trackId": "track-1",
+                  "trackIndex": 0
+                }
+              ],
+              "pendingMask": 0,
+              "preparationRevision": "1",
+              "quantization": "bar1",
+              "reason": 0,
+              "rejectedMask": 0,
+              "requestSerial": "3",
+              "sceneSlot": null,
+              "slotId": "clip-8254b7a92a82cb008365518183971131",
+              "sourceId": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
+              "status": "applied",
+              "supersededMask": 0,
+              "targetFrame": "558300",
+              "trackId": "track-1",
+              "trackMask": 1
+            },
+            {
+              "appliedMask": 1,
+              "canceledMask": 0,
+              "kind": "stop",
+              "members": [
+                {
+                  "action": "stop",
+                  "authority": "session",
+                  "slotId": null,
+                  "sourceId": null,
+                  "status": "applied",
+                  "trackId": "track-1",
+                  "trackIndex": 0
+                }
+              ],
+              "pendingMask": 0,
+              "preparationRevision": "1",
+              "quantization": "bar1",
+              "reason": 0,
+              "rejectedMask": 0,
+              "requestSerial": "4",
+              "sceneSlot": null,
+              "slotId": null,
+              "sourceId": null,
+              "status": "applied",
+              "supersededMask": 0,
+              "targetFrame": "1175442",
+              "trackId": "track-1",
+              "trackMask": 1
+            },
+            {
+              "appliedMask": 2,
+              "canceledMask": 0,
+              "kind": "launch",
+              "members": [
+                {
+                  "action": "launch",
+                  "authority": "session",
+                  "slotId": "clip-74455c81c6f6a3d38bfd0c64d85d0fd5",
+                  "sourceId": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+                  "status": "applied",
+                  "trackId": "track-2",
+                  "trackIndex": 1
+                }
+              ],
+              "pendingMask": 0,
+              "preparationRevision": "1",
+              "quantization": "bar1",
+              "reason": 0,
+              "rejectedMask": 0,
+              "requestSerial": "5",
+              "sceneSlot": null,
+              "slotId": "clip-74455c81c6f6a3d38bfd0c64d85d0fd5",
+              "sourceId": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+              "status": "applied",
+              "supersededMask": 0,
+              "targetFrame": "1638300",
+              "trackId": "track-2",
+              "trackMask": 2
+            },
+            {
+              "appliedMask": 0,
+              "canceledMask": 0,
+              "kind": "seek",
+              "members": [],
+              "pendingMask": 0,
+              "preparationRevision": "1",
+              "quantization": null,
+              "reason": 0,
+              "rejectedMask": 0,
+              "requestSerial": "6",
+              "sceneSlot": null,
+              "slotId": null,
+              "sourceId": null,
+              "status": "applied",
+              "supersededMask": 0,
+              "targetFrame": "1891328",
+              "trackId": null,
+              "trackMask": 0
+            },
+            {
+              "appliedMask": 1,
+              "canceledMask": 0,
+              "kind": "return",
+              "members": [
+                {
+                  "action": "return",
+                  "authority": "arrangement",
+                  "slotId": null,
+                  "sourceId": null,
+                  "status": "applied",
+                  "trackId": "track-1",
+                  "trackIndex": 0
+                }
+              ],
+              "pendingMask": 0,
+              "preparationRevision": "1",
+              "quantization": "bar1",
+              "reason": 0,
+              "rejectedMask": 0,
+              "requestSerial": "7",
+              "sceneSlot": null,
+              "slotId": null,
+              "sourceId": null,
+              "status": "applied",
+              "supersededMask": 0,
+              "targetFrame": "2351613",
+              "trackId": null,
+              "trackMask": 1
+            }
+          ],
+          "tracks": [
+            {
+              "activePlacementId": null,
+              "activeSlotId": null,
+              "activeSourceId": null,
+              "authority": "arrangement",
+              "epoch": "20",
+              "pendingAction": null,
+              "pendingAuthority": null,
+              "pendingFrame": null,
+              "pendingSerial": null,
+              "pendingSlotId": null,
+              "phase": null,
+              "trackId": "track-1"
+            },
+            {
+              "activePlacementId": null,
+              "activeSlotId": "clip-74455c81c6f6a3d38bfd0c64d85d0fd5",
+              "activeSourceId": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+              "authority": "session",
+              "epoch": "14",
+              "pendingAction": null,
+              "pendingAuthority": null,
+              "pendingFrame": null,
+              "pendingSerial": null,
+              "pendingSlotId": null,
+              "phase": "97198",
+              "trackId": "track-2"
+            }
+          ]
+        },
+        "snapshotSequence": "1208",
+        "songLoop": {
+          "enabled": true,
+          "endBeats": 16.0,
+          "startBeats": 2.0
+        },
+        "state": {
+          "absoluteFrame": "2352640",
+          "configured": 1,
+          "devices": [
+            {
+              "base": [
+                10.0,
+                150.0,
+                0.65,
+                300.0,
+                2400.0,
+                0.7,
+                55.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "bypassed": 0,
+              "document": 0,
+              "effective": [
+                10.0,
+                150.0,
+                0.65,
+                300.0,
+                2400.0,
+                0.7,
+                55.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "owned": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "parameterCount": 7,
+              "revision": "1"
+            },
+            {
+              "base": [
+                10.0,
+                150.0,
+                0.65,
+                300.0,
+                2400.0,
+                0.7,
+                43.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "bypassed": 0,
+              "document": 1,
+              "effective": [
+                10.0,
+                150.0,
+                0.65,
+                300.0,
+                2400.0,
+                0.7,
+                43.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "owned": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "parameterCount": 7,
+              "revision": "1"
+            },
+            {
+              "base": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "bypassed": 0,
+              "document": 2,
+              "effective": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "owned": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "parameterCount": 1,
+              "revision": "1"
+            }
+          ],
+          "fault": 0,
+          "generation": "31",
+          "peakLeft": 0.014163584323267767,
+          "peakRight": 0.014163584323267767,
+          "playing": 1,
+          "position": "206741",
+          "profile": 1,
+          "rejected": "0",
+          "tracks": [
+            {
+              "activeVoices": 0,
+              "gain": 0.7,
+              "mute": 0,
+              "peakLeft": 0.0,
+              "peakRight": 0.0,
+              "reserved": 0,
+              "solo": 0
+            },
+            {
+              "activeVoices": 1,
+              "gain": 0.7,
+              "mute": 0,
+              "peakLeft": 0.014163584323267767,
+              "peakRight": 0.014163584323267767,
+              "reserved": 0,
+              "solo": 0
+            }
+          ],
+          "workPolicy": 1
+        },
+        "tempo": 112.0
+      }
+    }
+  },
+  "finalAudio": {
+    "Audio backend": "PipeWire",
+    "Audio device": "default_output",
+    "Audio sample rate": "48000",
+    "Audio buffer frames": "512",
+    "Audio callbacks": "1567",
+    "Audio stream errors": "0",
+    "Audio failed": "false",
+    "Audio status": "Audio output is running.",
+    "Transport playing": "false",
+    "Absolute frame": "1017344",
+    "Rejected commands": "0",
+    "Native generation": "11",
+    "Track 1 active voices": "0",
+    "Track 2 active voices": "0"
+  },
+  "note": "Whole CI failed later at the stale clip-observation tooltip precondition; later gates were skipped."
+}

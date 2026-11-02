@@ -34,7 +34,7 @@ later native/provider features require their own contracts and approval.
   original short-gap case as diagnostic evidence. Do not widen expected musical
   semantics or edit the engine to compensate for test navigation.
   Ten observer regressions now pass; the corrected owned-input journey passes
-  locally through save/restart. Full helper discovery: 141 passes. Three red/green
+  locally through save/restart. Latest full helper discovery: 143 passes. Three red/green
   browser regressions prove the popup stacking fix at all required sizes.
 - [x] If an inside-gap native mismatch is proved, report the concrete native
   contract violation and proposed engine change before implementation/expansion.
@@ -47,9 +47,32 @@ later native/provider features require their own contracts and approval.
   modes, saved clips/measurement extension, eight-cycle editor resource gate and
   CPAL software loopback pass. Final exact-commit manual CI is still required;
   retain the earlier intermittent history/input failures and diagnostic traces.
-- [ ] Run required native adapter/Rust checks for any changed boundary. Inspect
+  CI on 2e717b4 passes through clip observation; its saved-clip journey completes,
+  but the measurement extension hits the external five-minute step timeout.
+  Resources and CPAL are skipped. Budget-only commit 2505767 retains this failure,
+  allows eight minutes for the unchanged journey and 50 for the native job;
+  manual rerun 41377736023 failed before Return at closed source-disclosure
+  navigation; downstream gates are skipped. The owned-disclosure correction in
+  c8f4cb3 has a failing-then-passing regression, 143 helper passes and a complete
+  local Arrangement pass through save/restart. Manual CI 41381006275 passes
+  Arrangement and Master, but desktop fails earlier at its first live-fixture
+  Save As with an unexpected hosted editor visible; downstream gates are skipped.
+  Retain that failure and capture the earlier original click targets before
+  another correction. No musical behavior or resource assertion changed.
+- [x] Run required native adapter/Rust checks for any changed boundary. Inspect
   current UI at 800x600, 1280x800 and 1440x900. Dispatch only the existing manual
   CI workflow against a reviewable exact commit; do not add automatic triggers.
+
+Next bounded acceptance work: reproduce only the desktop pre-history boundary,
+recording native/accessibility targets for final actions and their preparation
+disclosures. The first focused local probe reaches Save As but does not reproduce
+or explain CI; its extra observations omit internal preparation disclosures.
+Preserve the original Save As assertion and all failed artifacts.
+If a wrong target is proved, add its failing helper regression and correct the
+owning input path; if observations remain inconclusive, report that explicitly
+before any wider input-driver change. Then run the complete native journey and
+the four downstream gates on the same code identity. Do not infer success from
+Arrangement/Master running under `!cancelled()` after desktop failure.
 
 ## B. Small UI batches after A
 
@@ -61,13 +84,16 @@ Files: `apps/ultra/ui/alive-commands.mjs`, `alive.mjs`,
 `alive-commands.test.mjs`, `alive-dom.test.mjs`, and
 `apps/ultra/tests/ci/alive-chain.spec.mjs`.
 
-1. Write failing shortcut regressions for Ctrl/Cmd+Z, Shift+Z and the selected
-   Redo convention; prove one history request when piano/velocity already handle
-   the event. Editable fields retain text Undo. Repeats, modals, prevented events
+1. Write failing shortcut regressions for Ctrl/Cmd+Z and Ctrl/Cmd+Shift+Z;
+   reuse the piano/velocity Redo convention. Prove one history request when those
+   editors already handle the event. Editable fields retain text Undo. Repeats,
+   modals, prevented events
    and browser-preview command chords remain owned by their existing contexts.
 2. Write failing menu regressions for MIDI clip creation in the current active
    workspace, including menu focus outside Arrangement. Extract the current
-   contextual key handler once; use it from shortcut and menu. Session needs an
+   contextual key handler once; use it from shortcut and menu. Read the workspace
+   owner's active view, including maximized detail, rather than infer it from
+   menu focus or hidden canvas nodes. Session needs an
    empty MIDI slot; Arrangement needs a MIDI track and valid range. Capture
    stable identities, retain publication acknowledgement/rejection/history.
 3. Implement only these entries. Run focused Node/browser cases, full UI Node
@@ -80,7 +106,9 @@ Files: `apps/ultra/ui/alive-commands.mjs`, `alive.mjs`,
 Following reviewable batches:
 
 - B2: focus Clip, Devices and Browser search, distinct from visibility; optional
-  existing maximize/restore menu. Test hidden/open/both panel states and no IPC.
+  existing maximize/restore menu. Ensure the destination is visible without
+  toggling it closed; expose explicit open/focus ownership where needed. Test
+  hidden/open/both panel states and no IPC.
 - B3: contextual Duplicate/Delete/Rename/Make Independent, with explicit slot vs
   placement vs shared-source wording and captured destinations. Reuse existing
   empty-slot and `placementError` validation; never reinterpret as time/clipboard

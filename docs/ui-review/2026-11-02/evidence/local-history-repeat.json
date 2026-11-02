@@ -1,0 +1,1134 @@
+{
+  "sourceCommit": "2e717b4ca72d34177c1c210ee7bd01f31e4c025e",
+  "status": "pass",
+  "scope": "12 owned native history clicks, stopped and playing; diagnostic repetition, not a proof that earlier intermittent failures are fully explained",
+  "fullReport": "/tmp/alive-pr12-history-repeat-complete/history-repeat-report.json",
+  "fullReportSha256": "cd5fa3a763346497b578992151125460032c82f04be18f51c1c3d3fd294d8364",
+  "identity": {
+    "executable_path": "/home/venetanji/.cache/alive-pr12-native-20261102/target/debug/alive",
+    "executable": {
+      "device": 53,
+      "inode": 9695891,
+      "sha256": "38d542bc17e7e99ffbc310f4dfd662b51869d04d2ef05a0201da81b2631146cd"
+    },
+    "libraries": [
+      {
+        "path": "/home/venetanji/.cache/alive-pr12-native-20261102/target/debug/libultra_native.so",
+        "mapping_device": [
+          0,
+          30
+        ],
+        "mapping_inode": 9681188,
+        "device": 53,
+        "inode": 9681188,
+        "sha256": "1652d52c581395a9919ea2dbe5a03c4d365c7f9a4da6d10cff233e590099eaa8"
+      }
+    ]
+  },
+  "actions": [
+    {
+      "playing": false,
+      "editedPitch": 61,
+      "direction": "Undo",
+      "expected": 60,
+      "observedUI": "60",
+      "hit": {
+        "action": "history click",
+        "monotonic": 6419.231515215,
+        "name": "Undo",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              1065,
+              428,
+              60,
+              24
+            ],
+            "hit_path": [
+              927,
+              4194307
+            ],
+            "accessible_hit": {
+              "status": "complete",
+              "path": [
+                {
+                  "name": "* First Light - Alive",
+                  "role": "document web"
+                },
+                {
+                  "name": "Undo",
+                  "role": "button"
+                }
+              ]
+            },
+            "web_ancestor": {
+              "status": "complete",
+              "nodes": 3
+            }
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          1065,
+          428,
+          60,
+          24
+        ]
+      },
+      "nativeRequest": {
+        "direction": "undo",
+        "editRevision": 1,
+        "generation": 1,
+        "kind": "request"
+      },
+      "nativeResult": {
+        "kind": "result",
+        "result": {
+          "Ok": null
+        }
+      },
+      "snapshot": {
+        "generation": 1,
+        "preparationRevision": "1",
+        "snapshotSequence": "234",
+        "editRevision": 2,
+        "history": {
+          "canRedo": true,
+          "canUndo": false,
+          "redoLabel": "Workspace edit",
+          "undoLabel": null
+        },
+        "midi": {
+          "pending": false,
+          "previewActive": false,
+          "previewError": 0,
+          "previewSerial": "0",
+          "publication": {
+            "appliedFrame": "525312",
+            "error": 0,
+            "serial": "2",
+            "status": 3
+          },
+          "sourceRevision": "2"
+        },
+        "sourceId": "track-1-source",
+        "pitch": 60,
+        "playing": 0
+      }
+    },
+    {
+      "playing": false,
+      "editedPitch": 61,
+      "direction": "Redo",
+      "expected": 61,
+      "observedUI": "61",
+      "hit": {
+        "action": "history click",
+        "monotonic": 6420.558628546,
+        "name": "Redo",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              1131,
+              428,
+              60,
+              24
+            ],
+            "hit_path": [
+              927,
+              4194307
+            ],
+            "accessible_hit": {
+              "status": "complete",
+              "path": [
+                {
+                  "name": "* First Light - Alive",
+                  "role": "document web"
+                },
+                {
+                  "name": "Redo",
+                  "role": "button"
+                }
+              ]
+            },
+            "web_ancestor": {
+              "status": "complete",
+              "nodes": 3
+            }
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          1131,
+          428,
+          60,
+          24
+        ]
+      },
+      "nativeRequest": {
+        "direction": "redo",
+        "editRevision": 2,
+        "generation": 1,
+        "kind": "request"
+      },
+      "nativeResult": {
+        "kind": "result",
+        "result": {
+          "Ok": null
+        }
+      },
+      "snapshot": {
+        "generation": 1,
+        "preparationRevision": "1",
+        "snapshotSequence": "249",
+        "editRevision": 3,
+        "history": {
+          "canRedo": false,
+          "canUndo": true,
+          "redoLabel": null,
+          "undoLabel": "Workspace edit"
+        },
+        "midi": {
+          "pending": false,
+          "previewActive": false,
+          "previewError": 0,
+          "previewSerial": "0",
+          "publication": {
+            "appliedFrame": "589824",
+            "error": 0,
+            "serial": "3",
+            "status": 3
+          },
+          "sourceRevision": "3"
+        },
+        "sourceId": "track-1-source",
+        "pitch": 61,
+        "playing": 0
+      }
+    },
+    {
+      "playing": false,
+      "editedPitch": 61,
+      "direction": "Undo",
+      "expected": 60,
+      "observedUI": "60",
+      "hit": {
+        "action": "history click",
+        "monotonic": 6421.96227768,
+        "name": "Undo",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              1065,
+              428,
+              60,
+              24
+            ],
+            "hit_path": [
+              927,
+              4194307
+            ],
+            "accessible_hit": {
+              "status": "complete",
+              "path": [
+                {
+                  "name": "* First Light - Alive",
+                  "role": "document web"
+                },
+                {
+                  "name": "Undo",
+                  "role": "button"
+                }
+              ]
+            },
+            "web_ancestor": {
+              "status": "complete",
+              "nodes": 3
+            }
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          1065,
+          428,
+          60,
+          24
+        ]
+      },
+      "nativeRequest": {
+        "direction": "undo",
+        "editRevision": 3,
+        "generation": 1,
+        "kind": "request"
+      },
+      "nativeResult": {
+        "kind": "result",
+        "result": {
+          "Ok": null
+        }
+      },
+      "snapshot": {
+        "generation": 1,
+        "preparationRevision": "1",
+        "snapshotSequence": "264",
+        "editRevision": 4,
+        "history": {
+          "canRedo": true,
+          "canUndo": false,
+          "redoLabel": "Workspace edit",
+          "undoLabel": null
+        },
+        "midi": {
+          "pending": false,
+          "previewActive": false,
+          "previewError": 0,
+          "previewSerial": "0",
+          "publication": {
+            "appliedFrame": "656896",
+            "error": 0,
+            "serial": "4",
+            "status": 3
+          },
+          "sourceRevision": "4"
+        },
+        "sourceId": "track-1-source",
+        "pitch": 60,
+        "playing": 0
+      }
+    },
+    {
+      "playing": false,
+      "editedPitch": 62,
+      "direction": "Undo",
+      "expected": 60,
+      "observedUI": "60",
+      "hit": {
+        "action": "history click",
+        "monotonic": 6426.368191282,
+        "name": "Undo",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              1065,
+              428,
+              60,
+              24
+            ],
+            "hit_path": [
+              927,
+              4194307
+            ],
+            "accessible_hit": {
+              "status": "complete",
+              "path": [
+                {
+                  "name": "* First Light - Alive",
+                  "role": "document web"
+                },
+                {
+                  "name": "Undo",
+                  "role": "button"
+                }
+              ]
+            },
+            "web_ancestor": {
+              "status": "complete",
+              "nodes": 3
+            }
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          1065,
+          428,
+          60,
+          24
+        ]
+      },
+      "nativeRequest": {
+        "direction": "undo",
+        "editRevision": 5,
+        "generation": 1,
+        "kind": "request"
+      },
+      "nativeResult": {
+        "kind": "result",
+        "result": {
+          "Ok": null
+        }
+      },
+      "snapshot": {
+        "generation": 1,
+        "preparationRevision": "1",
+        "snapshotSequence": "311",
+        "editRevision": 6,
+        "history": {
+          "canRedo": true,
+          "canUndo": false,
+          "redoLabel": "Workspace edit",
+          "undoLabel": null
+        },
+        "midi": {
+          "pending": false,
+          "previewActive": false,
+          "previewError": 0,
+          "previewSerial": "0",
+          "publication": {
+            "appliedFrame": "868352",
+            "error": 0,
+            "serial": "6",
+            "status": 3
+          },
+          "sourceRevision": "6"
+        },
+        "sourceId": "track-1-source",
+        "pitch": 60,
+        "playing": 0
+      }
+    },
+    {
+      "playing": false,
+      "editedPitch": 62,
+      "direction": "Redo",
+      "expected": 62,
+      "observedUI": "62",
+      "hit": {
+        "action": "history click",
+        "monotonic": 6427.700859141,
+        "name": "Redo",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              1131,
+              428,
+              60,
+              24
+            ],
+            "hit_path": [
+              927,
+              4194307
+            ],
+            "accessible_hit": {
+              "status": "complete",
+              "path": [
+                {
+                  "name": "* First Light - Alive",
+                  "role": "document web"
+                },
+                {
+                  "name": "Redo",
+                  "role": "button"
+                }
+              ]
+            },
+            "web_ancestor": {
+              "status": "complete",
+              "nodes": 3
+            }
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          1131,
+          428,
+          60,
+          24
+        ]
+      },
+      "nativeRequest": {
+        "direction": "redo",
+        "editRevision": 6,
+        "generation": 1,
+        "kind": "request"
+      },
+      "nativeResult": {
+        "kind": "result",
+        "result": {
+          "Ok": null
+        }
+      },
+      "snapshot": {
+        "generation": 1,
+        "preparationRevision": "1",
+        "snapshotSequence": "325",
+        "editRevision": 7,
+        "history": {
+          "canRedo": false,
+          "canUndo": true,
+          "redoLabel": null,
+          "undoLabel": "Workspace edit"
+        },
+        "midi": {
+          "pending": false,
+          "previewActive": false,
+          "previewError": 0,
+          "previewSerial": "0",
+          "publication": {
+            "appliedFrame": "931840",
+            "error": 0,
+            "serial": "7",
+            "status": 3
+          },
+          "sourceRevision": "7"
+        },
+        "sourceId": "track-1-source",
+        "pitch": 62,
+        "playing": 0
+      }
+    },
+    {
+      "playing": false,
+      "editedPitch": 62,
+      "direction": "Undo",
+      "expected": 60,
+      "observedUI": "60",
+      "hit": {
+        "action": "history click",
+        "monotonic": 6429.016063401,
+        "name": "Undo",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              1065,
+              428,
+              60,
+              24
+            ],
+            "hit_path": [
+              927,
+              4194307
+            ],
+            "accessible_hit": {
+              "status": "complete",
+              "path": [
+                {
+                  "name": "* First Light - Alive",
+                  "role": "document web"
+                },
+                {
+                  "name": "Undo",
+                  "role": "button"
+                }
+              ]
+            },
+            "web_ancestor": {
+              "status": "complete",
+              "nodes": 3
+            }
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          1065,
+          428,
+          60,
+          24
+        ]
+      },
+      "nativeRequest": {
+        "direction": "undo",
+        "editRevision": 7,
+        "generation": 1,
+        "kind": "request"
+      },
+      "nativeResult": {
+        "kind": "result",
+        "result": {
+          "Ok": null
+        }
+      },
+      "snapshot": {
+        "generation": 1,
+        "preparationRevision": "1",
+        "snapshotSequence": "339",
+        "editRevision": 8,
+        "history": {
+          "canRedo": true,
+          "canUndo": false,
+          "redoLabel": "Workspace edit",
+          "undoLabel": null
+        },
+        "midi": {
+          "pending": false,
+          "previewActive": false,
+          "previewError": 0,
+          "previewSerial": "0",
+          "publication": {
+            "appliedFrame": "995328",
+            "error": 0,
+            "serial": "8",
+            "status": 3
+          },
+          "sourceRevision": "8"
+        },
+        "sourceId": "track-1-source",
+        "pitch": 60,
+        "playing": 0
+      }
+    },
+    {
+      "playing": true,
+      "editedPitch": 61,
+      "direction": "Undo",
+      "expected": 60,
+      "observedUI": "60",
+      "hit": {
+        "action": "history click",
+        "monotonic": 6435.656770925,
+        "name": "Undo",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              1065,
+              428,
+              60,
+              24
+            ],
+            "hit_path": [
+              927,
+              4194307
+            ],
+            "accessible_hit": {
+              "status": "complete",
+              "path": [
+                {
+                  "name": "* First Light - Alive",
+                  "role": "document web"
+                },
+                {
+                  "name": "Undo",
+                  "role": "button"
+                }
+              ]
+            },
+            "web_ancestor": {
+              "status": "complete",
+              "nodes": 3
+            }
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          1065,
+          428,
+          60,
+          24
+        ]
+      },
+      "nativeRequest": {
+        "direction": "undo",
+        "editRevision": 9,
+        "generation": 1,
+        "kind": "request"
+      },
+      "nativeResult": {
+        "kind": "result",
+        "result": {
+          "Ok": null
+        }
+      },
+      "snapshot": {
+        "generation": 1,
+        "preparationRevision": "1",
+        "snapshotSequence": "410",
+        "editRevision": 10,
+        "history": {
+          "canRedo": true,
+          "canUndo": false,
+          "redoLabel": "Workspace edit",
+          "undoLabel": null
+        },
+        "midi": {
+          "pending": false,
+          "previewActive": false,
+          "previewError": 0,
+          "previewSerial": "0",
+          "publication": {
+            "appliedFrame": "1313792",
+            "error": 0,
+            "serial": "10",
+            "status": 3
+          },
+          "sourceRevision": "10"
+        },
+        "sourceId": "track-1-source",
+        "pitch": 60,
+        "playing": 1
+      }
+    },
+    {
+      "playing": true,
+      "editedPitch": 61,
+      "direction": "Redo",
+      "expected": 61,
+      "observedUI": "61",
+      "hit": {
+        "action": "history click",
+        "monotonic": 6436.982058434,
+        "name": "Redo",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              1131,
+              428,
+              60,
+              24
+            ],
+            "hit_path": [
+              927,
+              4194307
+            ],
+            "accessible_hit": {
+              "status": "complete",
+              "path": [
+                {
+                  "name": "* First Light - Alive",
+                  "role": "document web"
+                },
+                {
+                  "name": "Redo",
+                  "role": "button"
+                }
+              ]
+            },
+            "web_ancestor": {
+              "status": "complete",
+              "nodes": 3
+            }
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          1131,
+          428,
+          60,
+          24
+        ]
+      },
+      "nativeRequest": {
+        "direction": "redo",
+        "editRevision": 10,
+        "generation": 1,
+        "kind": "request"
+      },
+      "nativeResult": {
+        "kind": "result",
+        "result": {
+          "Ok": null
+        }
+      },
+      "snapshot": {
+        "generation": 1,
+        "preparationRevision": "1",
+        "snapshotSequence": "424",
+        "editRevision": 11,
+        "history": {
+          "canRedo": false,
+          "canUndo": true,
+          "redoLabel": null,
+          "undoLabel": "Workspace edit"
+        },
+        "midi": {
+          "pending": false,
+          "previewActive": false,
+          "previewError": 0,
+          "previewSerial": "0",
+          "publication": {
+            "appliedFrame": "1377792",
+            "error": 0,
+            "serial": "11",
+            "status": 3
+          },
+          "sourceRevision": "11"
+        },
+        "sourceId": "track-1-source",
+        "pitch": 61,
+        "playing": 1
+      }
+    },
+    {
+      "playing": true,
+      "editedPitch": 61,
+      "direction": "Undo",
+      "expected": 60,
+      "observedUI": "60",
+      "hit": {
+        "action": "history click",
+        "monotonic": 6438.361579955,
+        "name": "Undo",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              1065,
+              428,
+              60,
+              24
+            ],
+            "hit_path": [
+              927,
+              4194307
+            ],
+            "accessible_hit": {
+              "status": "complete",
+              "path": [
+                {
+                  "name": "* First Light - Alive",
+                  "role": "document web"
+                },
+                {
+                  "name": "Undo",
+                  "role": "button"
+                }
+              ]
+            },
+            "web_ancestor": {
+              "status": "complete",
+              "nodes": 3
+            }
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          1065,
+          428,
+          60,
+          24
+        ]
+      },
+      "nativeRequest": {
+        "direction": "undo",
+        "editRevision": 11,
+        "generation": 1,
+        "kind": "request"
+      },
+      "nativeResult": {
+        "kind": "result",
+        "result": {
+          "Ok": null
+        }
+      },
+      "snapshot": {
+        "generation": 1,
+        "preparationRevision": "1",
+        "snapshotSequence": "439",
+        "editRevision": 12,
+        "history": {
+          "canRedo": true,
+          "canUndo": false,
+          "redoLabel": "Workspace edit",
+          "undoLabel": null
+        },
+        "midi": {
+          "pending": false,
+          "previewActive": false,
+          "previewError": 0,
+          "previewSerial": "0",
+          "publication": {
+            "appliedFrame": "1444864",
+            "error": 0,
+            "serial": "12",
+            "status": 3
+          },
+          "sourceRevision": "12"
+        },
+        "sourceId": "track-1-source",
+        "pitch": 60,
+        "playing": 1
+      }
+    },
+    {
+      "playing": true,
+      "editedPitch": 62,
+      "direction": "Undo",
+      "expected": 60,
+      "observedUI": "60",
+      "hit": {
+        "action": "history click",
+        "monotonic": 6442.842355548,
+        "name": "Undo",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              1065,
+              428,
+              60,
+              24
+            ],
+            "hit_path": [
+              927,
+              4194307
+            ],
+            "accessible_hit": {
+              "status": "complete",
+              "path": [
+                {
+                  "name": "* First Light - Alive",
+                  "role": "document web"
+                },
+                {
+                  "name": "Undo",
+                  "role": "button"
+                }
+              ]
+            },
+            "web_ancestor": {
+              "status": "complete",
+              "nodes": 3
+            }
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          1065,
+          428,
+          60,
+          24
+        ]
+      },
+      "nativeRequest": {
+        "direction": "undo",
+        "editRevision": 13,
+        "generation": 1,
+        "kind": "request"
+      },
+      "nativeResult": {
+        "kind": "result",
+        "result": {
+          "Ok": null
+        }
+      },
+      "snapshot": {
+        "generation": 1,
+        "preparationRevision": "1",
+        "snapshotSequence": "486",
+        "editRevision": 14,
+        "history": {
+          "canRedo": true,
+          "canUndo": false,
+          "redoLabel": "Workspace edit",
+          "undoLabel": null
+        },
+        "midi": {
+          "pending": false,
+          "previewActive": false,
+          "previewError": 0,
+          "previewSerial": "0",
+          "publication": {
+            "appliedFrame": "1658880",
+            "error": 0,
+            "serial": "14",
+            "status": 3
+          },
+          "sourceRevision": "14"
+        },
+        "sourceId": "track-1-source",
+        "pitch": 60,
+        "playing": 1
+      }
+    },
+    {
+      "playing": true,
+      "editedPitch": 62,
+      "direction": "Redo",
+      "expected": 62,
+      "observedUI": "62",
+      "hit": {
+        "action": "history click",
+        "monotonic": 6444.171065302,
+        "name": "Redo",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              1131,
+              428,
+              60,
+              24
+            ],
+            "hit_path": [
+              927,
+              4194307
+            ],
+            "accessible_hit": {
+              "status": "complete",
+              "path": [
+                {
+                  "name": "* First Light - Alive",
+                  "role": "document web"
+                },
+                {
+                  "name": "Redo",
+                  "role": "button"
+                }
+              ]
+            },
+            "web_ancestor": {
+              "status": "complete",
+              "nodes": 3
+            }
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          1131,
+          428,
+          60,
+          24
+        ]
+      },
+      "nativeRequest": {
+        "direction": "redo",
+        "editRevision": 14,
+        "generation": 1,
+        "kind": "request"
+      },
+      "nativeResult": {
+        "kind": "result",
+        "result": {
+          "Ok": null
+        }
+      },
+      "snapshot": {
+        "generation": 1,
+        "preparationRevision": "1",
+        "snapshotSequence": "500",
+        "editRevision": 15,
+        "history": {
+          "canRedo": false,
+          "canUndo": true,
+          "redoLabel": null,
+          "undoLabel": "Workspace edit"
+        },
+        "midi": {
+          "pending": false,
+          "previewActive": false,
+          "previewError": 0,
+          "previewSerial": "0",
+          "publication": {
+            "appliedFrame": "1722368",
+            "error": 0,
+            "serial": "15",
+            "status": 3
+          },
+          "sourceRevision": "15"
+        },
+        "sourceId": "track-1-source",
+        "pitch": 62,
+        "playing": 1
+      }
+    },
+    {
+      "playing": true,
+      "editedPitch": 62,
+      "direction": "Undo",
+      "expected": 60,
+      "observedUI": "60",
+      "hit": {
+        "action": "history click",
+        "monotonic": 6445.49787933,
+        "name": "Undo",
+        "owner": 4194307,
+        "samples": [
+          {
+            "rect": [
+              1065,
+              428,
+              60,
+              24
+            ],
+            "hit_path": [
+              927,
+              4194307
+            ],
+            "accessible_hit": {
+              "status": "complete",
+              "path": [
+                {
+                  "name": "* First Light - Alive",
+                  "role": "document web"
+                },
+                {
+                  "name": "Undo",
+                  "role": "button"
+                }
+              ]
+            },
+            "web_ancestor": {
+              "status": "complete",
+              "nodes": 3
+            }
+          }
+        ],
+        "presses": 1,
+        "releases": 1,
+        "final_rect": [
+          1065,
+          428,
+          60,
+          24
+        ]
+      },
+      "nativeRequest": {
+        "direction": "undo",
+        "editRevision": 15,
+        "generation": 1,
+        "kind": "request"
+      },
+      "nativeResult": {
+        "kind": "result",
+        "result": {
+          "Ok": null
+        }
+      },
+      "snapshot": {
+        "generation": 1,
+        "preparationRevision": "1",
+        "snapshotSequence": "514",
+        "editRevision": 16,
+        "history": {
+          "canRedo": true,
+          "canUndo": false,
+          "redoLabel": "Workspace edit",
+          "undoLabel": null
+        },
+        "midi": {
+          "pending": false,
+          "previewActive": false,
+          "previewError": 0,
+          "previewSerial": "0",
+          "publication": {
+            "appliedFrame": "1786368",
+            "error": 0,
+            "serial": "16",
+            "status": 3
+          },
+          "sourceRevision": "16"
+        },
+        "sourceId": "track-1-source",
+        "pitch": 60,
+        "playing": 1
+      }
+    }
+  ]
+}

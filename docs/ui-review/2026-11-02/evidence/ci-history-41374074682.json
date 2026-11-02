@@ -1,0 +1,138 @@
+{
+  "ci": "https://github.com/venetanji/alive/actions/runs/41374074682",
+  "head": "2e717b4ca72d34177c1c210ee7bd01f31e4c025e",
+  "status": "pass",
+  "fullLog": "/tmp/alive-pr12-evidence-41374074682/desktop/app.log",
+  "fullLogSha256": "309be1feaf78d266bdff066d603358c8919e79f905b5a9957a1789f38518b1dc",
+  "records": [
+    {
+      "direction": "undo",
+      "editRevision": 32,
+      "generation": 10,
+      "kind": "request"
+    },
+    {
+      "kind": "result",
+      "result": {
+        "Ok": null
+      }
+    },
+    {
+      "kind": "snapshot",
+      "nativeSnapshot": {
+        "generation": 10,
+        "preparationRevision": "10",
+        "snapshotSequence": "1716",
+        "editRevision": 33,
+        "history": {
+          "canRedo": true,
+          "canUndo": true,
+          "redoLabel": "Workspace edit",
+          "undoLabel": "Workspace edit"
+        },
+        "midi": {
+          "pending": false,
+          "previewActive": false,
+          "previewError": 0,
+          "previewSerial": "0",
+          "publication": {
+            "appliedFrame": "2058240",
+            "error": 0,
+            "serial": "21",
+            "status": 3
+          },
+          "sourceRevision": "17"
+        }
+      },
+      "sourceId": "track-1-source",
+      "pitch": 60,
+      "playing": 1
+    },
+    {
+      "direction": "redo",
+      "editRevision": 33,
+      "generation": 10,
+      "kind": "request"
+    },
+    {
+      "kind": "result",
+      "result": {
+        "Ok": null
+      }
+    },
+    {
+      "kind": "snapshot",
+      "nativeSnapshot": {
+        "generation": 10,
+        "preparationRevision": "10",
+        "snapshotSequence": "1775",
+        "editRevision": 34,
+        "history": {
+          "canRedo": false,
+          "canUndo": true,
+          "redoLabel": null,
+          "undoLabel": "Workspace edit"
+        },
+        "midi": {
+          "pending": false,
+          "previewActive": false,
+          "previewError": 0,
+          "previewSerial": "0",
+          "publication": {
+            "appliedFrame": "2200064",
+            "error": 0,
+            "serial": "22",
+            "status": 3
+          },
+          "sourceRevision": "18"
+        }
+      },
+      "sourceId": "track-1-source",
+      "pitch": 61,
+      "playing": 1
+    },
+    {
+      "direction": "undo",
+      "editRevision": 35,
+      "generation": 10,
+      "kind": "request"
+    },
+    {
+      "kind": "result",
+      "result": {
+        "Ok": null
+      }
+    },
+    {
+      "kind": "snapshot",
+      "nativeSnapshot": {
+        "generation": 10,
+        "preparationRevision": "10",
+        "snapshotSequence": "2447",
+        "editRevision": 36,
+        "history": {
+          "canRedo": true,
+          "canUndo": true,
+          "redoLabel": "Workspace edit",
+          "undoLabel": "Workspace edit"
+        },
+        "midi": {
+          "pending": false,
+          "previewActive": false,
+          "previewError": 0,
+          "previewSerial": "0",
+          "publication": {
+            "appliedFrame": "4904448",
+            "error": 0,
+            "serial": "24",
+            "status": 3
+          },
+          "sourceRevision": "20"
+        }
+      },
+      "sourceId": "track-1-source",
+      "pitch": 61,
+      "playing": 1
+    }
+  ]
+}

@@ -12,6 +12,57 @@ The existing `feat/alive-clip-view-live` worktree is clean at `6478e29`, behind
 the requested PR. No checkout, reset, stash, merge, or application settings
 change was performed in either existing worktree.
 
+## Current checkpoint
+
+Current application/helper commit: `c8f4cb3091b9754fa5c94e8a40718e72954aab14`.
+Manual CI: https://github.com/venetanji/alive/actions/runs/41381006275 (failed).
+The previous run on `2505767` failed at source-disclosure navigation before Return;
+its downstream gates were skipped. The current helper requires accessible ownership
+when expanding Source / Clip. Its red/green regression, all 143 helper tests and
+the complete local Arrangement journey pass. The production change remains
+workspace stacking isolation; native additions are opt-in diagnostics.
+The current CI passes Arrangement, including Return inside the first gap and
+save/restart, and Master. Desktop fails earlier at its first live-fixture Save As,
+with an unexpected hosted editor visible over main; its original dispatch is
+unavailable. Downstream CI gates are skipped. Full native acceptance stays open.
+No engine scheduling, DSP, gap expectation or broad command wiring changed.
+
+| Gate | Latest local result | Latest completed CI on c8f4cb3 |
+| --- | --- | --- |
+| Node UI/controllers | 668 pass, 0 fail, 0 skip | 655 pass, 13 licensed-local-Max skips |
+| Chromium including shared Ultra | 316 pass | Pass; three new Seek hit-target regressions |
+| Python helper discovery | 143 pass | Included helper checks pass |
+| Native adapter / release Rust | Release Rust 298 pass, 4 ignored | Pass; 298 release Rust pass, 4 ignored |
+| Desktop and hosted editor | Earlier complete pass; further 12-action traced history probe passes | Failed at first live-fixture Save As before history |
+| Arrangement through save/restart | Complete pass, Return proved inside first gap | Pass, Return proved inside first gap |
+| Master save/Quit/restart | Earlier CI pass; not replaced by software meter inference | Pass |
+| Native clip observation | All four modes pass on earlier helper code | Skipped after desktop failure |
+| Saved clips and measurements | Earlier pass; six epochs, 7.324 seconds proven playback | Skipped after desktop failure |
+| Hosted editor resources | Earlier eight cycles plus 25-second idle pass | Skipped after desktop failure |
+| Private CPAL loopback | Pass; finite stereo 48 kHz PCM, unchanged native library | Skipped after desktop failure |
+| Sustained endurance | Unrun | Not selected |
+| Physical hardware | Unrun | Outside software CI |
+
+The earlier debug-only Rust deallocation assertion failure is reproduced on
+pristine audited source with local Rust 1.99.1 and remains unfixed. The pinned
+release profile passes. Earlier history/input intermittency has retained failure
+evidence and new request tracing; the later passes do not explain it completely.
+The four release-suite ignored cases are private CPAL output (executed separately
+by the loopback gate), two opt-in release timing benchmarks
+(`native_saved_clip_release_overhead` and `paired_release_overhead`) and the
+licensed-local-installation identity probe. The last three remain unrun; the
+saved-clips/stream-epochs software gate does not claim their timing measurements.
+Detailed historical failures/skips and current local evidence follow. Exact
+changed paths are in [`CHANGED-FILES.md`](CHANGED-FILES.md); the per-control map
+and bounded next batches are [`CAPABILITIES.json`](CAPABILITIES.json) and
+[`CONTINUATION-PLAN.md`](CONTINUATION-PLAN.md).
+
+A read-only review of all 14 substantive changed paths from `11da097` through
+`2505767` found no correctness or acceptance false-pass issue. The reviewer also
+ran all ten Arrangement observer unit tests successfully. It did not rerun
+native audio/desktop or broaden implementation; final CI and the earlier
+untraced history intermittency remain separate acceptance limits.
+
 ## Authority and boundaries
 
 Read the 31 October implementation brief, implementation plan, M1a capability
@@ -240,9 +291,106 @@ allow edit completion, and retain request/result evidence for any recurrence.
 A late missing diagnostic disclosure also has a red/green navigation regression
 using the existing owned input helper.
 
-Current manual CI on `2a599bc` has passed desktop, Arrangement, UI, Chromium and
-release Rust; Master and downstream results are still pending. Final helper
-changes require a new exact commit and manual CI run. This diagnostic binary
+Manual CI on `2a599bc8420711d9ceda166b56484b6d6c50133a` is complete:
+https://github.com/venetanji/alive/actions/runs/41371482057. UI/contracts,
+Chromium (316), native adapter/release Rust, desktop/hosted editor, complete
+Arrangement and Master save/Quit/restart pass. Clip observation fails its old
+covering-tooltip precondition; saved clips/measurements, editor resources and
+CPAL loopback are skipped. The subsequent local corrections above qualify
+those paths separately. Its complete first-gap Return evidence is
+[`evidence/ci-first-gap-41371482057.json`](evidence/ci-first-gap-41371482057.json).
+Return serial 7 targets absolute 2351613, song position 205714; the first applied
+sample is absolute 2352640, position 206741, with null source/placement/slot in
+the same [205714,244286) gap and the sibling's Session source preserved.
+
+Code/helper commit `2e717b4ca72d34177c1c210ee7bd01f31e4c025e` is pushed
+on the separate audit branch. Its manual CI is
+https://github.com/venetanji/alive/actions/runs/41374074682. UI/contracts (655
+Node passes, 13 licensed-local-Max skips), Chromium (316), native adapter/release
+Rust (298 passes, four ignored), complete desktop/hosted editor, Arrangement,
+Master and all four clip-observation modes pass. Saved clips writes its complete
+report with identity/history/persistence/recovery assertions. The measurement
+extension is then interrupted by the workflow's five-minute wall timeout, after
+the third playback/Stop cycle. Resources and CPAL are skipped, not passed.
+
+Selected exact-head Return evidence is
+[`evidence/ci-first-gap-41374074682.json`](evidence/ci-first-gap-41374074682.json).
+Seek(4.1) is native serial 6, with an applied receipt and zero unintended Scenes
+before Return. Return serial 7, generation/preparation 1, captures `bar1` and
+targets absolute **2175485**, song position **205714** in [205714,244286).
+Pending snapshot 1077 and applied snapshot 1095 correlate the same request.
+Applied absolute **2178560**, position **208789**, has Arrangement authority
+and null source/slot/placement; Harmony retains its Session source. Complete
+save/reopen/restart and all three-size captures pass.
+
+The failed timing evidence is
+[`evidence/ci-measurement-timeout-41374074682.json`](evidence/ci-measurement-timeout-41374074682.json).
+The measurement worker has 169 advancing resource samples, with the final
+transport Stop at action 77; no behavior assertion or sampling-error report
+precedes cancellation. This is incomplete measurement acceptance. The bounded
+CI correction increases only that step from five to eight minutes and the
+normal sequential job from 40 to 50. Step commands, musical assertions,
+measurement requirements and resource bounds are unchanged. Commit
+`250576706e4cb32bee742d509fbd1c92dd0ce802` contains only these limits and the
+failed evidence. Its manual rerun is
+https://github.com/venetanji/alive/actions/runs/41377736023 failed before Return:
+`Place source in range` was missing while the Source / Clip disclosure was closed.
+The authored source and notes exist. There is no receipt for that original
+disclosure click, so its actual hit and the cause of closure are unproved.
+Master passes independently; clip observation, measurements, resources and
+CPAL are skipped. Retained failure evidence is
+[`evidence/ci-source-disclosure-failure-41377736023.json`](evidence/ci-source-disclosure-failure-41377736023.json).
+
+The bounded correction uses the existing owned disclosure callback for source
+actions and requires the intended accessible hit in that callback. It sends one
+press/release, retaining failure when ownership is blocked or unavailable. The
+regression failed with a blind Source / Clip activation and passes with the owned
+activation preceding Place source in range; fallback callers remain covered.
+All 143 helper tests pass. The full local native Arrangement journey also passes
+through first-gap Return, save/reopen, restart and authored MIDI replay, using
+the same binary/library identities. Actual captures at 800x600, 1280x800 and
+1440x900 were inspected. Selected report/input evidence is
+[`evidence/local-source-disclosure-arrangement.json`](evidence/local-source-disclosure-arrangement.json).
+Full artifacts are `/tmp/alive-pr12-arrangement-owned-source-disclosure/`;
+the log is `/tmp/alive-pr12-arrangement-owned-source-disclosure.log`.
+The fresh helper log is `/tmp/alive-pr12-helpers-resume.log`.
+Commit `c8f4cb3091b9754fa5c94e8a40718e72954aab14` is pushed to the separate
+audit branch; manual CI is
+https://github.com/venetanji/alive/actions/runs/41381006275 is complete and failed.
+UI/contracts (655 Node passes, 13 licensed-local-Max skips), Chromium (316),
+native adapter and release Rust (298 passes, four ignored), Arrangement and
+Master pass. The desktop journey fails at line 1051 before the first live-fixture
+Save As and before any history command. Save session as is absent; the failure
+capture shows an unexpected Pulse hosted editor over main. No original input
+receipt identifies which earlier click opened that editor, so no engine defect
+or specific input cause is established. Clip observation, measurements, editor
+resources and CPAL are skipped. The earlier local passes remain separate.
+Retained results are [`evidence/ci-results-41381006275.json`](evidence/ci-results-41381006275.json)
+and [`evidence/ci-desktop-failure-41381006275.json`](evidence/ci-desktop-failure-41381006275.json).
+
+Arrangement independently passes through save/restart. Return serial 7 targets
+absolute **1352701**, song frame **205714**, in gap **[205714,244286)**.
+Pending snapshot **771** has pending mask 1. Applied snapshot **792** has
+absolute **1355264**, song frame **208277**, applied mask 1, Arrangement authority
+and null source/slot/placement, with Harmony's playing Session source retained.
+This is the same intended gap occurrence, not a later-loop observation.
+See [`evidence/ci-arrangement-41381006275.json`](evidence/ci-arrangement-41381006275.json).
+Current CI native Arrangement and browser popup captures at all three required
+sizes were inspected; names begin `ci-41381006275-` under `captures/`.
+
+A focused local diagnostic retains the existing clicks, adds their planned
+accessible/native hit observations, and stops at the first live-fixture Save As.
+It is outside production and sends no injected native commands. Its artifacts
+are `/tmp/alive-pr12-prehistory-input-trace/` and matching `.log`; the original
+CI disclosure activations remain untraced. The focused local probe completes
+the first Save As with the original actions and no observed final-action hit
+mismatch. It does not reproduce or explain the CI failure, and its observations
+do not cover every internal preparation disclosure. Selected evidence is
+[`evidence/local-prehistory-input-trace.json`](evidence/local-prehistory-input-trace.json).
+No further correction is inferred from that local pass. Full software-native acceptance
+remains open until the desktop input cause is understood and the complete
+selected native CI gates execute successfully. No broader command work starts.
+Automatic workflow triggers remain absent. This diagnostic binary
 pair has Alive SHA256 `38d542bc17e7e99ffbc310f4dfd662b51869d04d2ef05a0201da81b2631146cd`
 and Ultra `e50bc9efe1d0d0238c4c4e701a244588a072f57a0ce2636f43fc6ffc7982d898`;
 the native library remains `1652d52c581395a9919ea2dbe5a03c4d365c7f9a4da6d10cff233e590099eaa8`.
@@ -250,6 +398,14 @@ Fresh release Rust including the history diagnostic passes 298, with four
 ignored. Hardware and sustained endurance remain unrun. The separate proposed
 hardware checklist is `HARDWARE-CHECKLIST.md`; executing it requires agreement
 on device/settings actions and restoration.
+
+A further focused diagnostic repetition passes all **12 history actions**:
+edit pitches 61/62, Undo/Redo/Undo, both stopped and playing. Every owned native
+click has exactly one request/result/snapshot, successful native result, no
+pending publication, the expected source pitch and matching UI. This is bounded
+supporting evidence, not a retrospective explanation of the earlier failures.
+Selected evidence is [`evidence/local-history-repeat.json`](evidence/local-history-repeat.json);
+the full trace, binary identity and report hash are retained there.
 
 Selected reports are retained under `evidence/clip-observation-*.json`,
 `evidence/local-clips.json`, `evidence/local-measurements.json`,
@@ -269,6 +425,12 @@ semantics. `CAPABILITIES.json` assesses each of the 140 captured menu rows and
 the additional approved control families separately, with owner, prerequisite,
 disabled reason, failure policy and test obligations. Classification is a
 source audit; availability is still contextual and native evidence is separate.
+Coverage validation finds 159 unique rows: 16 W, 13 E, 5 F, 33 N and 92 U.
+These include historical menu rows and overlapping control families, so the
+counts are not totals of implemented features or native-qualified commands.
+The captured Fit to Time Range and Return Play Position labels retain unresolved
+semantics; existing local zoom/Fit and native seek capabilities do not establish
+those exact operations. Local zoom/Fit has its own explicit capability row.
 
 | Controls | Class | Existing owner / required work | Preconditions and failure behavior | Tests |
 | --- | --- | --- | --- | --- |
@@ -304,7 +466,7 @@ source audit; availability is still contextual and native evidence is separate.
 | Multichannel intent | U | Product decision, then mixer/routing contracts | Clarify multiple tracks vs wider speaker layouts, channel counts, route formats, metering and export before implementing | Contract-dependent |
 | Other captured Live-only actions | U or N | Per-row assessment in JSON | Captured enabled/disabled states do not establish Alive support or desired semantics | Keep unavailable until scoped and verified |
 
-## Verification record
+## Historical baseline verification
 
 Fresh checks at the audited head before diagnostics:
 

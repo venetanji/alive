@@ -1,0 +1,19 @@
+{
+  "ci": "https://github.com/venetanji/alive/actions/runs/41381006275",
+  "head": "c8f4cb3091b9754fa5c94e8a40718e72954aab14",
+  "status": "Desktop failed before first live-fixture Save As",
+  "missing": "Save session as",
+  "originalStepLine": 1051,
+  "unexpectedHostedEditorVisible": true,
+  "originalDispatchUnavailable": true,
+  "error": "Missing native control: Save session as",
+  "causalLimit": "The retained screenshot shows a hosted editor over main and Save As is absent. No receipt proves which earlier input opened the editor; do not assign an engine cause or claim a fix.",
+  "downstream": {
+    "clipObservation": "skipped",
+    "savedClipsAndMeasurements": "skipped",
+    "editorResources": "skipped",
+    "CPALLoopback": "skipped"
+  },
+  "arrangement": "passed independently under !cancelled()",
+  "master": "passed independently under !cancelled()"
+}

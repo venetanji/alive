@@ -1,0 +1,86 @@
+{
+  "ci": "https://github.com/venetanji/alive/actions/runs/41377736023",
+  "head": "250576706e4cb32bee742d509fbd1c92dd0ce802",
+  "status": "failed before Return",
+  "arrangementReport": {
+    "physical_audio": false,
+    "actions": [
+      {
+        "action": "loaded",
+        "monotonic": 1135.11897052,
+        "process_identity": {
+          "executable_path": "/home/runner/work/alive/alive/apps/ultra/src-tauri/target/release/alive",
+          "executable": {
+            "device": 66305,
+            "inode": 9723901,
+            "sha256": "535dd2d664ad1cfa1ecc835d0dadbae592d34bc4d38cc93f8510fe1b21ad94e3"
+          },
+          "libraries": [
+            {
+              "path": "/home/runner/work/alive/alive/apps/ultra/src-tauri/target/release/libultra_native.so",
+              "mapping_device": [
+                259,
+                1
+              ],
+              "mapping_inode": 9723890,
+              "device": 66305,
+              "inode": 9723890,
+              "sha256": "91ae0ad63ac5ce7a55d750c02106a69b55164e611a83229436c37990c51a9fce"
+            }
+          ]
+        }
+      },
+      {
+        "action": "failure",
+        "monotonic": 1179.229923791,
+        "error": "AssertionError('Missing native control: Place source in range')"
+      }
+    ],
+    "kind": "Actual Tauri/WebKit with private software PipeWire"
+  },
+  "missingControl": "Place source in range",
+  "sourceDisclosureClosedInCapture": true,
+  "inputReceiptForOriginalDisclosure": false,
+  "causalLimit": "The screenshot and missing control establish a navigation failure. They do not establish where the blind disclosure click landed or prove focus/scroll geometry as the cause.",
+  "nativeWorkspacePlaybackRequests": [],
+  "selectedAccessibilityNodes": [
+    {
+      "name": "Source / Clip",
+      "role": "unknown",
+      "text": "\ufffcSource / Clip"
+    },
+    {
+      "name": "Note 1 velocity 83",
+      "role": "image",
+      "text": ""
+    },
+    {
+      "name": "Note 1 beat",
+      "role": "entry",
+      "text": "0.25"
+    },
+    {
+      "name": "Note 1 pitch",
+      "role": "entry",
+      "text": "67"
+    },
+    {
+      "name": "Note 1 duration",
+      "role": "entry",
+      "text": "1"
+    },
+    {
+      "name": "Note 1 velocity",
+      "role": "entry",
+      "text": "83"
+    }
+  ],
+  "downstream": {
+    "clipObservation": "skipped",
+    "savedClipsAndMeasurements": "skipped",
+    "editorResources": "skipped",
+    "CPALLoopback": "skipped"
+  },
+  "master": "passed independently under !cancelled(); not evidence that Arrangement passed",
+  "correction": "Use the existing owned disclosure callback for Source / Clip, with required accessible hit ownership; one press/release, blocked/unavailable remains a failure."
+}
