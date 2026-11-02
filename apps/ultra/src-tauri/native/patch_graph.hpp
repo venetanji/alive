@@ -359,6 +359,8 @@ class CanvasRuntime {
   bool (*sample)(void*,double*,double*,uint64_t)noexcept=nullptr;
   bool (*clear)(void*,uint64_t)noexcept=nullptr;
   bool realtime_clear=false;
+  // Qualified bounded note release, distinct from destructive clear/reset.
+  bool (*release_notes)(void*,uint64_t)noexcept=nullptr;
  };
  private:
  struct ExternalBinding {uint32_t node=0;ExternalCallbacks callbacks{};bool armed=false;};
@@ -469,9 +471,12 @@ class CanvasRuntime {
   return duration(release);
  }
  void clear_voice_lane(unsigned voice)noexcept{for(unsigned i=0;i<plan_.graph.node_count;i++)if(canvas_voice_kind(plan_.graph.nodes[i].kind))voice_dsp_[i].clear(voice);}
- void clear_voice_state()noexcept{
+ void clear_local_voice_state()noexcept{
   // Hard termination also clears stereo filter tails in bounded node/lane storage.
   poly_.clear();for(unsigned i=0;i<plan_.graph.node_count;i++)if(canvas_voice_kind(plan_.graph.nodes[i].kind)||plan_.graph.nodes[i].kind==FilterStereo){voice_dsp_[i].clear();states_[i].voices={};}
+ }
+ void clear_voice_state()noexcept{
+  clear_local_voice_state();
 #ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
   clear_external_state();
 #endif
@@ -503,7 +508,12 @@ class CanvasRuntime {
  void bind_workspace(CanvasDispatchContext& context,unsigned document)noexcept{context_=&context;device_base_=document*2;}
  const char* bound_name(unsigned slot)const noexcept{return states_[slot].bound_name;}
  void begin_callback()noexcept{budget_=4096;}
- void fail()noexcept{failed_=true;signal_notifications_=0;for(auto& s:states_)s.armed=false;for(auto& t:timers_)t.active=false;}
+ void fail()noexcept{
+  failed_=true;signal_notifications_=0;for(auto& s:states_)s.armed=false;for(auto& t:timers_)t.active=false;
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+  for(auto& binding:external_bindings_)binding.armed=false;
+#endif
+ }
  void recover()noexcept{failed_=false;budget_=4096;clear_timers();}
  bool failed()const noexcept{return failed_;}
  const CanvasPlan& plan()const noexcept{return plan_;}
@@ -521,6 +531,22 @@ class CanvasRuntime {
  bool signal_active()const noexcept{return signal_active_;}
  void resume_signals()noexcept{signal_active_=true;}
  void audio_started()noexcept{signal_active_=true;signal_vector_frame_=0;for(unsigned i=0;i<plan_.graph.node_count;i++)if(plan_.graph.nodes[i].kind==Cycle)states_[i].phase=states_[i].reset_phase;}
+ // Release musical state while retaining foreign owners and continuous DSP time.
+ bool musical_discontinuity()noexcept{
+  if(dispatch_failed())return false;
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+  // Validate the whole root before releasing any instance. Disarmed owners
+  // require off-thread reconstruction; this operation never rearms them.
+  for(unsigned i=0;i<plan_.graph.node_count;i++)if(plan_.graph.nodes[i].kind==ExternalInstrument){
+   auto* binding=external_binding(plan_.graph.nodes[i].id);
+   if(!binding||!binding->armed||!binding->callbacks.release_notes){fail();return false;}
+  }
+  for(auto& binding:external_bindings_)if(binding.node&&binding.armed)
+   if(!binding.callbacks.release_notes(binding.callbacks.owner,signal_frame_)){fail();return false;}
+#endif
+  clear_local_voice_state();clear_timers();signal_notifications_=0;signal_active_=true;
+  return true;
+ }
  void reset(const CanvasPlan& p,bool reset_budget=true)noexcept{
   text_edit_serial_=0;plan_=p;states_={};timers_={};frame_=0;signal_frame_=0;signal_vector_frame_=0;signal_active_=true;signal_notifications_=0;if(reset_budget)budget_=4096;failed_=false;
   clear_voice_state();

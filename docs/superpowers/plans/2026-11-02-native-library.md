@@ -92,6 +92,11 @@ Every assignment includes exact packet digest, contract, private paths and resul
 Coordinator owns session preparation/host/persistence/history/native admission,
 presentation hosts, registry/generator and existing Browser integration.
 
+- [x] Add and review an isolated musical-discontinuity runtime operation with a
+      four-key held ledger, unchanged sixteen-record queue, continuous owner/time,
+      fault quarantine and conservative generic teardown. Synthetic realtime,
+      ASan/UBSan and adjacent default runtime tests pass; actual DSP/session
+      callers and timing remain unqualified.
 - [ ] Add failing full-sidecar retention and accepted-instance state tests.
 - [ ] Carry sources through preparation/install/rollback; authorize full-state panel
       reads/writes by generation, instance, source node and revision.
@@ -146,3 +151,11 @@ Analog has 126/175 mapped controls and 128/203 supported default writes; 75 nati
 slots currently depend on authored research fallback values and do not qualify
 as original initialization. Electric has 33 exact descriptors and 34 parsed
 model fields, with no qualified model-to-DSP mappings. Both remain unfinished.
+
+Current-host Analog tracing additionally contradicts the retained LFO sync-toggle
+association and research polyphony initialization. Retained mapping counts are
+historical coverage, not current-host qualification. The ordinary native panel
+has not been connected to these bindings and the publication registry remains
+empty. Original initial Analog and Electric panels are now captured privately
+from the installed Live application in a stopped root-created Untitled session;
+Analog r2 and Electric r6 packets pin those references.

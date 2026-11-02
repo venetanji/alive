@@ -28,6 +28,8 @@ struct LiveDeviceBank::State {
   std::array<UltraExternalParameter,Parameters> descriptors{};
   std::array<std::atomic<uint64_t>,Parameters> requested{},applied{};
   std::array<UltraExternalMidi,16> notes{};unsigned note_count=0;
+  std::array<unsigned,4> held{};unsigned held_count=0;
+  bool fault=false; // Callback owner only, except under the quiescent fence.
   ~Instance(){ultra_external_device_close(device);}
   bool accepts(unsigned index,float v)const noexcept{
    if(index>=profile->parameter_count)return false;
@@ -35,14 +37,35 @@ struct LiveDeviceBank::State {
    return d.initialized&&std::isfinite(v)&&v>=d.minimum&&v<=d.maximum&&(d.type!=3||std::trunc(v)==v);
   }
   static bool note(void* raw,unsigned pitch,unsigned velocity,uint64_t)noexcept{
-   auto& self=*static_cast<Instance*>(raw);if(self.note_count==self.notes.size())return false;
+   auto& self=*static_cast<Instance*>(raw);if(self.fault)return false;
+   if(pitch>127||velocity>127){self.fault=true;return false;}
+   unsigned at=0;while(at<self.held_count&&self.held[at]<pitch)++at;
+   const bool present=at<self.held_count&&self.held[at]==pitch;
+   if(!velocity&&!present)return true;
+   if(self.note_count==self.notes.size()||(velocity&&(present||self.held_count==self.held.size()))){self.fault=true;return false;}
+   if(velocity){
+    for(unsigned i=self.held_count;i>at;--i)self.held[i]=self.held[i-1];
+    self.held[at]=pitch;++self.held_count;
+   }else{
+    for(unsigned i=at+1;i<self.held_count;++i)self.held[i-1]=self.held[i];
+    --self.held_count;
+   }
    self.notes[self.note_count++]={0,uint8_t(velocity?0x90:0x80),uint8_t(pitch),uint8_t(velocity),0};return true;
+  }
+  static bool release_notes(void* raw,uint64_t)noexcept{
+   auto& self=*static_cast<Instance*>(raw);if(self.fault)return false;
+   if(self.held_count>self.notes.size()-self.note_count){self.fault=true;return false;}
+   for(unsigned i=0;i<self.held_count;++i)self.notes[self.note_count++]={0,0x80,uint8_t(self.held[i]),0,0};
+   self.held_count=0;return true;
   }
   static bool parameter(void*,unsigned,double,uint64_t)noexcept{return false;}
   static bool sample(void* raw,double* l,double* r,uint64_t)noexcept{
-   auto& self=*static_cast<Instance*>(raw);float left=0,right=0;
+   auto& self=*static_cast<Instance*>(raw);*l=*r=0;if(self.fault)return false;
+   float left=0,right=0;
    const bool result=ultra_external_device_render(self.device,1,&left,&right,self.notes.data(),self.note_count);
-   self.note_count=0;*l=left;*r=right;return result;
+   self.note_count=0;
+   if(!result||!std::isfinite(left)||!std::isfinite(right)){self.fault=true;return false;}
+   *l=left;*r=right;return true;
   }
  };
  UltraCanvasGraph graph{};
@@ -108,10 +131,11 @@ std::unique_ptr<LiveDeviceBank> LiveDeviceBank::prepare(const UltraCanvasGraph& 
 bool LiveDeviceBank::has(unsigned node)const noexcept{return state_->find(node);}
 unsigned LiveDeviceBank::count()const noexcept{return unsigned(state_->instances.size());}
 bool LiveDeviceBank::bind(CanvasRuntime& runtime)noexcept{
- for(const auto& i:state_->instances){const int slot=runtime.plan().find(i->node);if(slot<0||runtime.plan().graph.nodes[unsigned(slot)].kind!=ExternalInstrument)return false;}
+ if(state_->fault)return false;
+ for(const auto& i:state_->instances){const int slot=runtime.plan().find(i->node);if(i->fault||slot<0||runtime.plan().graph.nodes[unsigned(slot)].kind!=ExternalInstrument)return false;}
  unsigned bound=0;
  for(const auto& i:state_->instances){
-  if(!runtime.bind_external(i->node,{i.get(),State::Instance::note,State::Instance::parameter,State::Instance::sample,nullptr,false})){
+  if(!runtime.bind_external(i->node,{i.get(),State::Instance::note,State::Instance::parameter,State::Instance::sample,nullptr,false,State::Instance::release_notes})){
    for(unsigned n=0;n<bound;++n)runtime.unbind_external(state_->instances[n]->node);
    return false;
   }
@@ -163,6 +187,7 @@ unsigned LiveDeviceBank::parameters(unsigned node,UltraLiveDeviceParameterState*
 }
 bool LiveDeviceBank::apply_pending()noexcept{
  if(state_->fault)return false;
+ for(const auto& i:state_->instances)if(i->fault)return false;
  std::array<std::array<uint64_t,Parameters>,Instances> cells{};
  const auto before=state_->requested_epoch.load();if(before&1)return true;
  bool changed=false;
