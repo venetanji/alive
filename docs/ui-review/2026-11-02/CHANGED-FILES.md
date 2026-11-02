@@ -11,6 +11,13 @@ application binaries and does not add a CI acceptance pass.
 This inventory includes the current audit/evidence working changes. Later
 report updates do not change the application or acceptance helpers.
 
+The later HTML-fidelity correction is built from
+`6eb7d450c73b1bb40d3dd2dd8752da1564d6d685`. Its exact source allowlist is
+[`evidence/html-fidelity/changed-source-files.txt`](evidence/html-fidelity/changed-source-files.txt),
+relative to the preceding local report commit `a039b1b`. It changes Alive
+presentation, focused browser/native rendering checks and its visual report;
+see [HTML-FIDELITY.md](HTML-FIDELITY.md) for screenshots, results and limitations.
+
 ## Scope
 
 - Production UI: one `isolation:isolate` property keeps workspace children below shell popups.

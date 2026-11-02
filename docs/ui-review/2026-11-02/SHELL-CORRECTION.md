@@ -1,5 +1,9 @@
 # Local shell correction, 2 November 2026
 
+Historical topology correction. The user rejected its visual fidelity; the
+current build, screenshots and launcher selection are recorded in
+[HTML-FIDELITY.md](HTML-FIDELITY.md).
+
 The user's local clarification keeps Clip and Devices independently enabled.
 When both are open, Clip spans the row above Help-left / Devices-right. The
 bottom row has a fixed height; resizing Clip must not resize Devices. Returning

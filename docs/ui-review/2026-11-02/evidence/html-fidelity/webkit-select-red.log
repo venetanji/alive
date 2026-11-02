@@ -1,0 +1,24 @@
+/usr/lib/python3.14/site-packages/gi/events.py:803: DeprecationWarning: 'asyncio.AbstractEventLoopPolicy' is deprecated and slated for removal in Python 3.16
+  AbstractEventLoopPolicy = getattr(asyncio, "AbstractEventLoopPolicy", object)
+/usr/lib/python3.14/site-packages/gi/events.py:890: DeprecationWarning: 'asyncio.get_event_loop_policy' is deprecated and slated for removal in Python 3.16
+  if not isinstance(_get_event_loop_policy(), GLibEventLoopPolicy):
+127.0.0.1 - - [02/Nov/2026 14:52:04] "GET /alive-shell.css HTTP/1.1" 200 -
+127.0.0.1 - - [02/Nov/2026 14:52:04] "GET /alive-piano.css HTTP/1.1" 200 -
+127.0.0.1 - - [02/Nov/2026 14:52:04] "GET /alive.css HTTP/1.1" 200 -
+127.0.0.1 - - [02/Nov/2026 14:52:04] "GET /alive-ui-contract.css HTTP/1.1" 200 -
+F
+======================================================================
+FAIL: test_compact_option_has_the_same_visible_glyph_height_as_ordinary_text (__main__.AliveSelectWebKitTest.test_compact_option_has_the_same_visible_glyph_height_as_ordinary_text)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/alive-html-option-old-source/apps/ultra/tests/ci/check_alive_select_webkit.py", line 99, in test_compact_option_has_the_same_visible_glyph_height_as_ordinary_text
+    self.assertGreaterEqual(result['option-control']['ink_rows'],
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                            result['reference']['ink_rows'] - 1, result)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 9 not greater than or equal to 12 : {'option-control': {'x': 6.989457130432129, 'y': 25.437040328979492, 'width': 670.4531860351562, 'height': 19.994430541992188, 'top': 25.437040328979492, 'right': 677.4426431655884, 'bottom': 45.43147087097168, 'left': 6.989457130432129, 'ink_rows': 9}, 'reference': {'x': 6.989457130432129, 'y': 49.4227180480957, 'width': 670.4531860351562, 'height': 19.994430541992188, 'top': 49.4227180480957, 'right': 677.4426431655884, 'bottom': 69.41714859008789, 'left': 6.989457130432129, 'ink_rows': 13}}
+
+----------------------------------------------------------------------
+Ran 1 test in 0.869s
+
+FAILED (failures=1)

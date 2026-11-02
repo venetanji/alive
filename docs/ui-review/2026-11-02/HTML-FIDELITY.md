@@ -79,8 +79,50 @@ Showing a disabled reference affordance does not promote its classification.
 
 ## Verification
 
-Final results, source commit, launcher snapshot and screenshots are recorded
-after the final native run. Preliminary red runs are retained in `/tmp`:
+Final application/test source: `6eb7d450c73b1bb40d3dd2dd8752da1564d6d685`.
+Both apps are debug builds from that tracked-clean source, built with
+`cargo build --locked -j 2` using system Rust/Cargo 1.99.1. The selected snapshot
+is `test-54455121dfca08632273`, reached by both **Alive (Test)** and
+**Ultra (Latest Build)** through `/home/venetanji/.local/share/alive/current-test`.
+Existing user windows and prior snapshots are preserved; reopen to use it.
+
+| Final check | Result |
+| --- | --- |
+| Full sandboxed Chromium suite, including Ultra | 333 passed, 0 failed, 0 skipped; retries disabled |
+| Node UI/controller/component suite | 668 passed, 0 failed, 0 skipped |
+| Python helper discovery | 144 passed, 0 failed, 0 skipped |
+| Native WebKit compact option regression | 1 passed; calibrated test fails on the preceding styles |
+| Focused SVG/panel/velocity checks | 12 passed before the final full rerun |
+| Both Cargo builds | Passed; four pre-existing Ultra library warnings remain |
+| Both desktop files | `desktop-file-validate` passed |
+| Actual desktop entry launches and runtime executable/library hashes | Both passed; no `LD_LIBRARY_PATH` override |
+| Native startup document delivery | Passed on the selected Ultra binary |
+| Native panel/Help/resize checks | Passed at 800x600, 1280x800, 1440x900, then repeated shrink/restore |
+| Native drafts, display keyboard/focus, Save in File | Passed; Save includes a native acknowledgement and staged-file write |
+| Final screenshot inspection | 24 retained captures; actual Alive and Ultra native windows inspected |
+| Whitespace/source isolation | `git diff --check` passed; no shared Ultra UI or native source changed |
+| New remote CI / Rust unit tests / full native audio journeys / CPAL loopback | Unrun for this local presentation batch |
+| Physical hardware, device settings, recording | Unrun; the shell probe starts no audio |
+
+The final full browser log is `/tmp/alive-html-final-webkit-qualified-20261102.log`
+(333 passed, 4.1 minutes). The final native raw directory is
+`/tmp/alive-html-native-final-6eb7d45`. Portable retained results, matching
+manifest, build logs and exact changed source allowlist are under
+[`evidence/html-fidelity/`](evidence/html-fidelity/).
+
+| Artifact | SHA-256 |
+| --- | --- |
+| `bin/alive` | `2cd697bb956336a1cc53183eaf3f0ab08ba347187fae0c9c96a3991375c08186` |
+| `bin/ultra` | `3c0e57ff60f16a234f5221fd243ed63c8cabe8064332b44b909b05b191d91f31` |
+| `bin/libultra_native.so` | `1652d52c581395a9919ea2dbe5a03c4d365c7f9a4da6d10cff233e590099eaa8` |
+
+The mechanical design scan reports 147 warnings, retained with an explicit
+review in `design-scan-review.json`. Its older DESIGN.md token comparisons,
+generic website text-size/padding thresholds and functional piano-grid pattern
+conflict with the pinned compact HTML. No low-contrast findings remain after
+the header-hover fix; no general accessibility or clean-detector pass is claimed.
+
+Preliminary red runs are retained in `/tmp`:
 
 - `/tmp/alive-html-fidelity-red.log`: geometry/palette/mixer regression failed;
   three Help-without-editors cases passed.
@@ -108,6 +150,24 @@ after the final native run. Preliminary red runs are retained in `/tmp`:
 Screenshots and native probes use Chromium with its sandbox, and a private
 Xvfb/DBus/software-only PipeWire session. They do not qualify physical hardware.
 The native shell probe starts no audio and changes no physical-device settings.
+
+## Screenshots
+
+The [original HTML render](evidence/html-fidelity/original-html-1440x900.png)
+and [rendered production comparison](evidence/html-fidelity/chromium-html-fidelity-1440x900.png)
+use the same 1440x900 viewport. Real project contents and available capabilities
+remain distinct from the prototype's illustrative data.
+
+| Actual selected native build | 800x600 | 1280x800 | 1440x900 |
+| --- | --- | --- | --- |
+| Clip above Help / Devices, after resizing | [Capture](evidence/html-fidelity/alive-both-800x600.png) | [Capture](evidence/html-fidelity/alive-both-1280x800.png) | [Capture](evidence/html-fidelity/alive-both-1440x900.png) |
+| Help with Clip and Devices closed | [Capture](evidence/html-fidelity/alive-help-without-editors-800x600.png) | [Capture](evidence/html-fidelity/alive-help-without-editors-1280x800.png) | [Capture](evidence/html-fidelity/alive-help-without-editors-1440x900.png) |
+| Ultra launcher | [Capture](evidence/html-fidelity/ultra-launcher-800x600.png) | [Capture](evidence/html-fidelity/ultra-launcher-1280x800.png) | [Capture](evidence/html-fidelity/ultra-launcher-1440x900.png) |
+| Chromium default simultaneous panels | [Capture](evidence/html-fidelity/chromium-both-800x600.png) | [Capture](evidence/html-fidelity/chromium-both-1280x800.png) | [Capture](evidence/html-fidelity/chromium-both-1440x900.png) |
+
+The native isolated Browser correctly reports its absent private user-library
+directory; available catalog items load. Compact Clip contents scroll inside
+the Clip container while Help / Devices retain their fixed lower row.
 
 ## Remaining acceptance
 

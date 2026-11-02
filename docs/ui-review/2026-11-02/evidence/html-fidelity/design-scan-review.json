@@ -1,0 +1,17 @@
+{
+  "source_commit": "6eb7d450c73b1bb40d3dd2dd8752da1564d6d685",
+  "warnings": 147,
+  "categories": {
+    "undersized-ui-text": 9,
+    "tiny-text": 8,
+    "cramped-padding": 5,
+    "design-system-font": 3,
+    "design-system-color": 79,
+    "overused-font": 3,
+    "flat-type-hierarchy": 1,
+    "repeating-stripes-gradient": 1,
+    "design-system-font-size": 36,
+    "design-system-radius": 2
+  },
+  "review": "The approved HTML overrides older DESIGN.md palette/font/size/radius tokens. Compact labels and flat task-oriented hierarchy/padding follow the pinned study. The repeating pattern is the functional piano grid. No low-contrast findings remain after the owned header-hover fix. These warnings remain reported; no generic design or accessibility clean-pass is claimed."
+}
