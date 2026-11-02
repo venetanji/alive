@@ -585,8 +585,8 @@ fn capture_device(path: &Path, document: &Session) -> Result<DeviceInstance, Str
     static NEXT: AtomicU64 = AtomicU64::new(1);
     let loaded = crate::documents::read_patch(path)?;
     let patch = loaded.patch.ok_or("Choose a saved Ultra device")?;
-    let graph = crate::canvas::prepare(patch.clone())?.native;
-    let manifest = crate::canvas::device::host_manifest(&patch, &graph)?;
+    let compiled = crate::canvas::prepare(patch.clone())?;
+    let manifest = crate::canvas::device::host_manifest(&patch, &compiled.native)?;
     let instance_id = loop {
         let seed = format!("{}-{:?}-{}", std::process::id(), std::time::SystemTime::now(), NEXT.fetch_add(1, Ordering::Relaxed));
         let hex = format!("{:x}", Sha256::digest(seed.as_bytes()));
@@ -594,7 +594,8 @@ fn capture_device(path: &Path, document: &Session) -> Result<DeviceInstance, Str
         if !document.tracks().into_iter().flat_map(|t|t.devices()).any(|d| d.instance_id == id) { break id; }
     };
     Ok(DeviceInstance { instance_id, source_sha256: prepare::fingerprint(&patch)?, bypassed: false,
-        path: loaded.path.to_str().ok_or("Device path must be UTF-8")?.into(), id: manifest.id, version: manifest.version, parameters: Default::default() })
+        path: loaded.path.to_str().ok_or("Device path must be UTF-8")?.into(), id: manifest.id, version: manifest.version, parameters: Default::default(),
+        native_sources: super::native_sources::capture(&compiled.live_devices)? })
 }
 fn document_capacity(_document:&Session)->Result<(usize,usize,usize),String>{
     let limits=host::workspace_limits()?;Ok((limits.max_tracks as usize,limits.max_devices as usize,limits.max_slots as usize))

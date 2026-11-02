@@ -88,6 +88,7 @@ pub(super) fn prepare_device(reference: &DeviceInstance, session_path: &Path, tr
     let manifest = canvas::device::host_manifest(&patch, &initial.native)?;
     if manifest.version != reference.version { return Err(format!("Device manifest version mismatch: expected {}, found {}", reference.version, manifest.version)); }
     if manifest.id != reference.id { return Err(format!("Device identity mismatch: expected {}, found {}", reference.id, manifest.id)); }
+    super::native_sources::apply(&mut patch, &reference.native_sources, &initial.live_devices)?;
     if reference.parameters.len() > manifest.parameters.len() { return Err("Unknown stored device parameter".into()); }
     for (key, &value) in &reference.parameters {
         let binding = manifest.parameters.iter().find(|p| &p.key == key).ok_or_else(|| format!("Unknown stored device parameter: {key}"))?;

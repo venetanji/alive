@@ -492,6 +492,7 @@ mod tests {
             version: manifest.version,
             source_sha256: super::super::prepare::fingerprint(&patch).unwrap(),
             parameters: Default::default(),
+            native_sources: Default::default(),
             bypassed: true,
         });
         let prepared = prepare(&saved(&project), &project, Path::new("/tmp/effect.alive")).unwrap();

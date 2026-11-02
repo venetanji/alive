@@ -15,7 +15,7 @@ fn effect(instance: &str, filename: &str) -> DeviceInstance {
     let graph = crate::canvas::prepare(patch.clone()).unwrap().native;
     let manifest = crate::canvas::device::host_manifest(&patch, &graph).unwrap();
     DeviceInstance { instance_id: instance.into(), path: path.to_string_lossy().into(), id: manifest.id, version: manifest.version,
-        source_sha256: prepare::fingerprint(&patch).unwrap(), parameters: Default::default(), bypassed: false }
+        source_sha256: prepare::fingerprint(&patch).unwrap(), parameters: Default::default(), native_sources: Default::default(), bypassed: false }
 }
 
 #[test]

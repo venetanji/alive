@@ -503,6 +503,7 @@ impl ProjectV4 {
                 text(&device.path, 4096, "Device path")?;
                 super::prepare::token(&device.id, "Device ID")?;
                 fingerprint(&device.source_sha256)?;
+                super::native_sources::validate(&device.native_sources)?;
                 if device.version != 2 {
                     return Err(format!(
                         "Track '{}' instance '{}': Unsupported manifest version {}",

@@ -27,6 +27,12 @@ test('native source validation rejects nonfinite values and foreign identities',
   assert.throws(()=>validatePatch({version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[foreign],edges:[]}),/identity|unsupported/i);
 });
 
+test('native source node identities share the native host bound',()=>{
+  const patch=id=>({version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[makeNode('live_device',id)],edges:[]});
+  assert.equal(validatePatch(patch(100000)).nodes[0].id,100000);
+  assert.throws(()=>validatePatch(patch(100001)),/ID|100000|identity/i);
+});
+
 test('saved native nodes require explicit device identity and complete source state',()=>{
   const source=makeNode('live_device',1);
   const patch=node=>({version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[node],edges:[]});

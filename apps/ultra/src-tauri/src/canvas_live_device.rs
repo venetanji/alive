@@ -1,5 +1,5 @@
 //! Pure, bounded source-state validation for saved live.device~ objects.
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value};
 include!("canvas_live_device_facts.rs");
 
@@ -13,7 +13,7 @@ const RESOURCE_PAIRS: [(&str, &str); 2] = [
     ("75940fa314699a5fe0f37a6b0ee904bd7cc2ee87fc42acce2c8cea61df55563f", "ec6ed560b42b1497fd976beff38d86424aa0c2ef59e4995e3d10ba9b68535c9d"),
 ];
 
-#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct SourceState {
     pub version: u32,

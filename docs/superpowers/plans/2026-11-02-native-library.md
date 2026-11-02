@@ -98,6 +98,10 @@ presentation hosts, registry/generator and existing Browser integration.
       ASan/UBSan and adjacent default runtime tests pass; actual DSP/session
       callers and timing remain unqualified.
 - [ ] Add failing full-sidecar retention and accepted-instance state tests.
+- [x] Persist bounded complete per-instance source overrides, retain source-file
+      fingerprints, refuse foreign/duplicate/invalid overrides, and verify two
+      same-file instances through actual Save/reopen without editing that file.
+      This does not expose state commands or admit native playback.
 - [ ] Carry sources through preparation/install/rollback; authorize full-state panel
       reads/writes by generation, instance, source node and revision.
 - [ ] Add failing note/Stop/Start/seek/loop/clip-transition tests and resolve continuous
@@ -174,3 +178,10 @@ Preparation now retains complete native sidecars after scalar overrides; its
 new regression and all 24 adjacent session tests pass with native admission
 still closed. Persisted per-instance state and transactional native ownership
 remain outstanding. Host/lifecycle checkpoint `d47e601` is remote-verified.
+
+The per-instance persistence slice has an independent review with no findings;
+two full-app regressions pass, including actual Save/reopen and unchanged shared
+source data. All 126 adjacent session tests pass; the reviewer independently
+ran 82 pure canvas/instance-state tests. The source/resource review found and
+verified a corrected JavaScript/native node-ID bound mismatch (100000 maximum).
+No native source edit command or playable profile has been enabled.

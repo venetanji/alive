@@ -27,6 +27,16 @@ remain independent even when they reference the same source file. No patch copy
 is embedded in a session. Missing or changed dependencies refuse Open without
 replacing the working project. A replacement does not rewrite sibling hashes.
 
+An instance may also retain `nativeSources`: complete commanded native source
+states keyed by authored source node ID. Each record must match the exact source
+profile, DLL and GUI/Graphics identities in its fingerprinted `.ultra` dependency.
+Preparation applies these values to the instance's own patch before compiling;
+it never modifies the shared file. Missing records use that complete saved source
+state. Duplicate, foreign or malformed records refuse preparation. The field is
+omitted for ordinary built-in devices. Native paths, owners and DLL bytes are not
+serialized. Persisting this field does not admit native playback: the measured
+Alive profile still refuses native instruments until their separate qualification.
+
 Graph loading, removal, replacement and reordering require stopped transport.
 Device-panel controls and hosted Ultra editors share manifest-bound bases.
 Unbound graph structure is read-only in a hosted editor. The editor does not own

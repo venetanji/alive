@@ -166,6 +166,7 @@ function validateFlatPatch(input,internal=false) {
     if(hierarchyType(node.type)&&!(internal&&['inlet','outlet'].includes(node.type)))fail('Hierarchy objects require version 2.');
     fields(node,['id','type','x','y','params','style'],'node',['id','type','x','y','params']); numeric(node.id,1,4294967295,true,'Node ID');
     if(nodes.has(node.id)) fail('Duplicate node ID.');
+    if(node.type==='live_device'&&node.id>100000)fail('live.device~ node ID must be at most 100000.');
     const s=Object.hasOwn(REGISTRY,node.type)?REGISTRY[node.type]:null; if(!s) fail(`Unknown object type: ${node.type}.`);
     numeric(node.x,0,4000,false,'X position'); numeric(node.y,0,4000,false,'Y position');
     fields(node.params,Object.keys(s.params),`${node.type} parameters`,false);

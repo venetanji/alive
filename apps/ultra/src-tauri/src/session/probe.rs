@@ -101,7 +101,7 @@ fn saved_chain_proof(host: &mut Host, source: &super::PreparedSession, output: &
         let graph = crate::canvas::prepare(patch.clone())?.native;
         let manifest = crate::canvas::device::host_manifest(&patch, &graph)?;
         Ok(DeviceInstance { instance_id: instance.into(), path: loaded.path.to_str().ok_or("Probe source path must be UTF-8")?.into(), id: manifest.id,
-            version: manifest.version, source_sha256: super::prepare::fingerprint(&patch)?, parameters: Default::default(), bypassed: false })
+            version: manifest.version, source_sha256: super::prepare::fingerprint(&patch)?, parameters: Default::default(), native_sources: Default::default(), bypassed: false })
     };
     let folder = source.devices[source.tracks[0].midi_instrument()?].path.parent().ok_or("Missing device folder")?;
     let instrument = reference(&impulse,"probe-instrument")?;

@@ -2,6 +2,7 @@
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
 mod prepare;
+mod native_sources;
 mod master;
 mod launch;
 pub use master::{MasterSettings, SavedSession};
@@ -38,6 +39,8 @@ pub struct DeviceInstance {
     pub id: String,
     pub version: u32,
     pub parameters: BTreeMap<String, f64>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub(crate) native_sources: Vec<native_sources::PersistedSource>,
 }
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -48,3 +51,5 @@ pub struct Point { pub beat: f64, pub value: f64 }
 
 #[cfg(test)]
 mod tests;
+#[cfg(test)]
+mod native_sources_tests;
