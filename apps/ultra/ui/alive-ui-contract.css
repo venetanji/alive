@@ -22,7 +22,6 @@
 .document-bar .app-menu-items button:disabled{opacity:.5}
 .document-bar .app-menu-items button[aria-pressed=true]::before{content:"✓ ";color:var(--amber)}
 .document-bar .app-menu-items kbd{float:right;margin-left:24px;color:var(--muted);font:inherit}
-.document-bar #save{margin-left:7px}
 @media(max-width:850px){.document-bar .app-menu>summary{padding:2px 4px}.document-bar .app-menu-items{min-width:210px}}
 #file-menu{position:relative;flex:none;margin:0;}
 #file-menu>summary{
@@ -63,8 +62,6 @@
   background:transparent;
 }
 .document-bar .file-menu-items button:hover{background:var(--raised)}
-.document-bar #save{min-height:23px;padding:2px 9px;background:var(--raised);border:1px solid var(--line)}
-.document-bar #save:hover{border-color:var(--muted)}
 
 /* Browser commands are discoverable but do not permanently displace results. */
 #workspace-browser .browser-files{padding:5px 7px;background:var(--chrome)}
@@ -95,39 +92,29 @@ main#workspace-shell{flex-direction:column;position:relative}
 .workspace-upper{position:relative;display:flex;flex:1;min-height:0;min-width:0;overflow:hidden}
 .workspace-lower{display:flex;flex:none;min-height:0;min-width:0}
 .workspace-lower #detail-panel{flex:1;min-width:0}
-.detail-both:has(#timeline-inspector[hidden]) #detail-panel{position:relative}
-.detail-both:has(#timeline-inspector[hidden]) #detail-tabs{position:absolute;top:8px;right:0;height:31px;background:transparent;border:0;z-index:4}
-.detail-both:has(#timeline-inspector[hidden]) #clip-bank-notice{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
-.detail-both:has(#timeline-inspector[hidden]) #clip-detail{position:relative}
-.detail-both:has(#timeline-inspector[hidden]) #clip-controls{padding-right:235px}
-.detail-both:has(#timeline-inspector[hidden]) #clip-detail>.clip-section{flex-basis:280px;min-height:280px}
-.detail-both:has(#timeline-inspector[hidden]) #clip-detail>.clip-section:has(.note-table[open]){min-height:500px}
-.detail-both:has(#timeline-inspector[hidden]) .clip-section>.section-heading{position:absolute;top:0;right:135px;width:90px;height:32px;min-height:0;padding:3px 5px;background:transparent;border:0;z-index:3}
-.detail-both:has(#timeline-inspector[hidden]) .clip-section>.section-heading h1{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
-#detail-content{display:grid;grid-template-columns:calc(var(--browser-width,220px) + 5px) minmax(0,1fr);grid-template-rows:minmax(0,1fr) minmax(120px,.65fr);overflow:hidden}
-.detail-both #detail-content{grid-template-rows:minmax(0,1fr) minmax(205px,.65fr)}
-@media(max-height:699px){
-  .detail-both #detail-content{grid-template-rows:minmax(0,1fr) minmax(180px,.65fr)}
-  .detail-both #chain-status{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
-  .detail-both #chain{padding-top:4px}
-}
-#clip-detail:not([hidden]){grid-column:1 / -1;grid-row:1;min-height:0;height:100%;overflow:auto}
+#detail-content{display:grid;grid-template-columns:calc(var(--browser-width,220px) + 5px) minmax(0,1fr);grid-template-rows:minmax(0,1fr);overflow:hidden}
+.detail-both #detail-content{grid-template-rows:minmax(0,1fr) var(--device-row-height,180px)}
+#clip-detail:not([hidden]){grid-column:2;grid-row:1;min-height:0;height:100%;overflow:auto}
+.detail-both #clip-detail:not([hidden]){grid-column:1 / -1}
 #clip-detail>.clip-section{flex:1 0 310px;min-height:310px}
 #clip-detail>.clip-section:has(.note-table[open]){min-height:500px}
+#clip-detail>.clip-section>.section-heading{padding:0;gap:0;min-height:32px}
+#clip-detail #clip-controls{flex:1;min-width:0}
+#clip-detail #add-note{margin:0 8px 0 0}
 #clip-detail .clip-editors{flex:1 1 0;min-height:0}
 #clip-detail .clip-area{flex:1 0 247px;min-height:247px}
 #clip-detail .clip-area.has-source{grid-template-columns:min(var(--clip-properties-width,clamp(150px,22%,210px)),calc(100% - 160px)) minmax(0,1fr);grid-template-rows:auto minmax(156px,1fr) auto auto}
 #clip-detail .clip-properties-resizer{grid-column:1;grid-row:1 / -1;justify-self:end;width:7px;z-index:2;cursor:ew-resize;touch-action:none}
 #clip-detail .clip-properties-resizer:focus-visible{outline:2px solid var(--selection);outline-offset:-2px}
 @container clip-detail (max-height:360px){#clip-detail .clip-area.has-source{grid-template-columns:min(var(--clip-properties-width,clamp(260px,38%,450px)),calc(100% - 160px)) minmax(0,1fr)}}
-#device-detail:not([hidden]),#master-detail:not([hidden]){grid-column:2;grid-row:2;min-height:0;overflow:auto}
-#info-view:not([hidden]){display:flex;flex-direction:column;align-items:stretch;grid-column:1;grid-row:2;min-height:0;overflow:auto;padding:8px;gap:8px;background:#303030;border-top:1px solid var(--line);border-right:1px solid var(--line);color:var(--text)}
+#device-detail:not([hidden]),#master-detail:not([hidden]){grid-column:2;grid-row:1;min-height:0;overflow:auto}
+#device-detail .section-heading>.muted,#chain-status{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+#device-detail #chain{padding-top:4px;padding-bottom:4px}
+#info-view:not([hidden]){display:flex;flex-direction:column;align-items:stretch;grid-column:1;grid-row:1;min-height:0;overflow:auto;padding:8px;gap:8px;background:#303030;border-top:1px solid var(--line);border-right:1px solid var(--line);color:var(--text)}
+.detail-both #device-detail:not([hidden]),.detail-both #info-view:not([hidden]){grid-row:2}
 #info-view[hidden]{display:none}
-#detail-content:not(:has(#clip-detail:not([hidden]))){grid-template-rows:0 minmax(0,1fr)}
-#detail-content:has(#clip-detail:not([hidden])):not(:has(#device-detail:not([hidden]))):not(:has(#master-detail:not([hidden]))){grid-template-rows:minmax(0,1fr) 96px}
 #detail-content:not(:has(#info-view:not([hidden]))){grid-template-columns:0 minmax(0,1fr)}
-#detail-content:not(:has(#info-view:not([hidden]))):not(:has(#device-detail:not([hidden]))):not(:has(#master-detail:not([hidden]))){grid-template-rows:minmax(0,1fr) 0}
-.detail-collapsed #detail-content{height:120px;flex:none}
+.detail-collapsed #detail-content{height:var(--device-row-height,180px);flex:none}
 .detail-collapsed #detail-content:not(:has(#info-view:not([hidden]))){height:0}
 @media(min-width:621px){
   #workspace-browser:not([hidden]){position:absolute;top:0;left:0;bottom:0;width:var(--browser-width,220px);z-index:1}
@@ -150,3 +137,20 @@ main#workspace-shell{flex-direction:column;position:relative}
 #clip-overview svg{display:block;width:100%;height:100%;margin:0;fill:var(--amber);stroke:none}
 #clip-overview .clip-overview-waveform{fill:none;stroke:var(--amber);stroke-width:1}
 footer #notice{flex:1;min-width:40px}
+#footer-display-controls{display:flex;align-items:center;gap:3px;flex:none;margin-left:auto}
+#footer-display-controls .footer-view-toggle,#display-menu-toggle{display:flex;align-items:center;justify-content:center;height:23px;min-height:23px;width:25px;padding:2px;border:0;border-radius:2px;background:transparent;cursor:pointer}
+#footer-display-controls svg{width:16px;height:16px;margin:0;fill:none;stroke:currentColor;stroke-width:1.4}
+#footer-display-controls #detail-clip{width:auto;gap:3px;padding:2px 4px}
+#detail-clip>svg{fill:currentColor;stroke:none}
+#footer-display-controls [aria-pressed=true]{color:var(--amber);background:var(--raised)}
+#display-menu{position:relative;margin:0;padding:0;border:0}
+#display-menu-toggle{list-style:none}
+#display-menu-toggle::-webkit-details-marker{display:none}
+#display-menu[open]>summary{background:var(--raised);color:var(--amber)}
+#display-menu-items{position:absolute;bottom:calc(100% + 5px);right:0;display:flex;flex-direction:column;width:210px;max-height:calc(100dvh - 70px);overflow:auto;padding:5px;gap:2px}
+#display-menu:not([open]) #display-menu-items{display:none}
+#display-menu-items button{min-height:25px;padding:3px 7px;text-align:left;border:0;background:transparent}
+#display-menu-items button[aria-pressed=true]::before{content:'\2713 ';color:var(--amber)}
+#display-menu-items button:hover:not(:disabled){background:var(--raised)}
+.mixer-hidden .track-mixer,.mixer-hidden #master-session{display:none}
+@media(max-width:850px){footer{gap:5px;padding:3px 5px}#footer-display-controls{gap:1px}footer #notice{min-width:0}}

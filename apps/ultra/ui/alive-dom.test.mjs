@@ -150,10 +150,11 @@ test('browser and Clip Devices detail toggle locally without rebuilding active c
 test('detail resize supports keyboard and cancels pointer preview with Escape',async()=>{
   const page=dom('./alive.html'),native=backend(workspaceState()),view=mountAlive({...page,invoke:native.invoke});await settle();
   const handle=page.ids.get('detail-resizer'),shell=page.ids.get('workspace-shell');shell.clientHeight=700;
-  await handle.fire('keydown',{key:'ArrowUp'});assert.equal(handle.attrs['aria-valuenow'],'240');
-  await handle.fire('pointerdown',{pointerId:1,clientY:400});await handle.fire('pointermove',{pointerId:1,clientY:350});assert.equal(handle.attrs['aria-valuenow'],'290');
-  await page.doc.fire('keydown',{key:'Escape',target:handle});assert.equal(handle.attrs['aria-valuenow'],'240');assert.equal(shell.style['--detail-height'],'240px');
-  await handle.fire('pointerdown',{pointerId:2,clientY:400});await handle.fire('pointermove',{pointerId:2,clientY:450});await handle.fire('pointercancel');assert.equal(handle.attrs['aria-valuenow'],'240');view.dispose();
+  const height=Number(handle.attrs['aria-valuenow'])+20;
+  await handle.fire('keydown',{key:'ArrowUp'});assert.equal(handle.attrs['aria-valuenow'],String(height));
+  await handle.fire('pointerdown',{pointerId:1,clientY:400});await handle.fire('pointermove',{pointerId:1,clientY:350});assert.equal(handle.attrs['aria-valuenow'],String(height+50));
+  await page.doc.fire('keydown',{key:'Escape',target:handle});assert.equal(handle.attrs['aria-valuenow'],String(height));assert.equal(shell.style['--detail-height'],`${height}px`);
+  await handle.fire('pointerdown',{pointerId:2,clientY:400});await handle.fire('pointermove',{pointerId:2,clientY:450});await handle.fire('pointercancel');assert.equal(handle.attrs['aria-valuenow'],String(height));view.dispose();
 });
 test('detail can grow beyond the upper mixer minimum and maximize without musical commands',async()=>{
   const page=dom('./alive.html');page.win.innerHeight=900;page.ids.get('workspace-shell').clientHeight=700;

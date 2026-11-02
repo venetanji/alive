@@ -52,6 +52,7 @@ The parent commits this original design packet and small-cycle plan first. Terra
 
 - Clip and Device toggles live in the **footer**, independently toggleable rather than exclusive top tabs. Clip toggle includes a miniature clip overview preview.
 - When both open: **Clip spans the full row above**; bottom row contains **Help on the left and Devices on the right**. Help must not span both rows.
+- Local clarification, 2 November: Devices has a fixed default row height. Only Clip resizes or maximizes; its requested height survives hiding, shrinking/restoring the window and returning from Devices-only. Both toggles can be active together, with resizable Clip above the fixed Help/Devices row. The upper Browser remains beside Session/Arrangement. Save belongs inside File; compact display controls belong at the footer's right edge. See `../2026-11-02/SHELL-CORRECTION.md` for the bounded correction and evidence.
 - Support clip-only, device-only, both, and hidden detail states; resize, maximize, collapse and restore prior useful sizes. Help can be hidden independently.
 - `?` toggles Help outside editable fields; a visible question-mark control may also remain.
 - Clip options respond to **panel geometry**: short detail panel uses horizontal option selectors/groups even at compact scale; tall/narrow inspector uses a vertical accordion. Inspector divider is adjustable. Do not implement a width-only breakpoint that loses the short-panel horizontal mode.

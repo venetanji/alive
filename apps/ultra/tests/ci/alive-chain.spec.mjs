@@ -2,6 +2,100 @@ import {test,expect} from '@playwright/test';
 import {projectFixturePresentation} from '../presentation-dom.mjs';
 import {readFileSync,mkdirSync} from 'node:fs';
 
+test('Save has one real owner inside File and retains native acknowledgement',async({page})=>{
+  await openSession(page);
+  await expect(page.locator('#application-menus > button')).toHaveCount(0);
+  await page.getByRole('button',{name:'File menu',exact:true}).click();
+  await expect(page.locator('#file-menu #save')).toBeVisible();
+  await expect(page.locator('#file-menu button').filter({hasText:/^Save(?:Ctrl\+S)?$/})).toHaveCount(1);
+  await saveSession(page);
+  await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_file').map(c=>c.args.action))).toEqual(['save']);
+});
+
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`Device and Help keep a fixed bottom row while Clip resizes at ${size.width}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);
+  const clip=page.locator('#clip-detail'),device=page.locator('#device-detail'),help=page.locator('#info-view'),handle=page.locator('#detail-resizer');
+  await page.locator('#detail-devices').click();await page.locator('#detail-clip').click();
+  const baseline=await device.boundingBox();expect(baseline.height).toBe(180);
+  expect((await help.boundingBox()).height).toBe(baseline.height);
+  await expect(handle).toBeHidden();await expect(page.locator('#maximize-detail')).toBeDisabled();
+  await page.locator('#detail-clip').click();await handle.focus();await handle.press('Home');
+  const small=await clip.boundingBox();await handle.press('End');const large=await clip.boundingBox();
+  expect(large.height).toBeGreaterThan(small.height);
+  const d=await device.boundingBox(),h=await help.boundingBox();
+  expect(d.height).toBe(baseline.height);expect(h.height).toBe(d.height);
+  expect(Math.abs(d.y-h.y)).toBeLessThanOrEqual(1);expect(large.y+large.height).toBeLessThanOrEqual(d.y+1);
+  expect(large.x).toBeLessThanOrEqual(1);
+  for(const id of ['detail-clip','detail-devices','maximize-detail','toggle-detail','display-menu-toggle'])await expect(page.locator('#footer-display-controls #'+id)).toBeInViewport({ratio:1});
+  await page.screenshot({path:testInfo.outputPath(`fixed-device-row-${size.width}.png`)});
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('Device-only mode restores its fixed height without forgetting the Clip height or drafts',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);
+  const draft=page.getByLabel('Clip name',{exact:true}),handle=page.locator('#detail-resizer');
+  await handle.focus();await handle.press('End');
+  const clipHeight=await handle.getAttribute('aria-valuenow');
+  await page.getByText('Source / Clip',{exact:true}).click();
+  await draft.fill('Unfinished clip');
+  await page.locator('#detail-devices').click();await page.locator('#detail-clip').click();
+  expect((await page.locator('#device-detail').boundingBox()).height).toBe(180);
+  await page.locator('#detail-devices').click();await page.locator('#detail-clip').click();
+  await expect(handle).toHaveAttribute('aria-valuenow',clipHeight);await expect(draft).toHaveValue('Unfinished clip');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('initial Clip-only layout reserves the pinned mixer before the native document arrives',async({page})=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page);
+  const workspace=await page.locator('#session-workspace').boundingBox();
+  for(const label of ['Pulse mute','Pulse solo']){
+    const control=await page.getByRole('button',{name:label,exact:true}).boundingBox();
+    expect(control.y+control.height).toBeLessThanOrEqual(workspace.y+workspace.height);
+  }
+});
+
+test('footer display menu owns passive visibility controls with honest unavailable sections',async({page})=>{
+  await page.setViewportSize({width:800,height:600});await openSession(page);
+  const menu=page.locator('#display-menu'),toggle=page.locator('#display-menu-toggle');
+  for(let i=0;i<2;i++){
+    await toggle.click();const popup=await page.locator('#display-menu-items').boundingBox(),footer=await page.locator('footer').boundingBox();
+    expect(popup.y+popup.height).toBeLessThanOrEqual(footer.y+1);
+    await page.getByRole('button',{name:'Show mixer controls',exact:true}).click();await expect(page.locator('.track-mixer').first()).toBeHidden();
+    await page.getByRole('button',{name:'Show mixer controls',exact:true}).click();await expect(page.locator('.track-mixer').first()).toBeVisible();
+    await page.getByRole('button',{name:'Show Browser',exact:true}).click();await expect(page.locator('#workspace-browser')).toBeHidden();
+    await page.getByRole('button',{name:'Show Browser',exact:true}).click();await expect(page.locator('#workspace-browser')).toBeVisible();
+    await expect(page.getByRole('button',{name:'Sends',exact:true})).toBeDisabled();
+    await expect(page.getByRole('button',{name:'Return Tracks',exact:true})).toBeDisabled();
+    await toggle.press('Escape');await expect(menu).not.toHaveAttribute('open','');await expect(toggle).toBeFocused();
+  }
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('detail collapse restores the requested Clip height with either panel combination',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);
+  const handle=page.locator('#detail-resizer');
+  for(const both of [false,true]){
+    if(both)await page.locator('#detail-devices').click();
+    await handle.focus();await handle.press('End');const height=await handle.getAttribute('aria-valuenow');
+    await page.locator('#toggle-detail').click();await expect(handle).toBeHidden();
+    await page.locator('#toggle-detail').click();await expect(handle).toHaveAttribute('aria-valuenow',height);
+    await page.setViewportSize({width:800,height:600});await page.setViewportSize({width:1280,height:800});
+    await expect(handle).toHaveAttribute('aria-valuenow',height);
+  }
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('Display options keyboard navigation preserves drafts and follows actual panel visibility',async({page})=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);
+  const gain=page.getByRole('spinbutton',{name:'Pulse gain',exact:true});await gain.fill('0.713');
+  const toggle=page.locator('#display-menu-toggle'),menu=page.locator('#display-menu');await toggle.click();await toggle.press('ArrowDown');
+  await expect(page.locator('#display-browser')).toBeFocused();await page.keyboard.press('ArrowDown');await expect(page.locator('#display-help')).toBeFocused();
+  await page.keyboard.press('Space');await expect(page.locator('#info-view')).toBeHidden();await expect(page.locator('#display-help')).toHaveAttribute('aria-pressed','false');
+  await toggle.focus();await page.keyboard.press('?');await expect(page.locator('#info-view')).toBeVisible();await expect(page.locator('#display-help')).toHaveAttribute('aria-pressed','true');
+  await toggle.press('End');await expect(page.locator('#toggle-mixer')).toBeFocused();await page.keyboard.press('Tab');await expect(menu).not.toHaveAttribute('open','');
+  await expect(gain).toHaveValue('0.713');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
 test('browser preview disables native-only menu commands and retains local Help',async({page})=>{
   await page.goto('/alive.html');
   await expect(page.locator('#start')).toBeDisabled();await expect(page.locator('#start')).toHaveCSS('opacity','0.5');
@@ -215,7 +309,7 @@ test('a parked Clip Start stays with its source through selection changes',async
   const field=page.getByRole('spinbutton',{name:'Clip Start',exact:true}),summary=page.locator('.clip-properties > details').first().locator('summary');
   await field.fill('1');await summary.click();await page.getByRole('button',{name:'Restore detail size',exact:true}).click();
   await page.getByRole('button',{name:'Select Harmony slot 1',exact:true}).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await summary.click();await expect(field).toHaveValue('0');
-  await page.locator('#save').click();await expect(page.locator('#notice')).toContainText('Finish Clip Start');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  await saveSession(page);await expect(page.locator('#notice')).toContainText('Finish Clip Start');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
   await summary.click();await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await page.getByRole('button',{name:'Select Pulse slot 1',exact:true}).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await summary.click();
   await expect(field).toHaveValue('1');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
   await field.focus();await field.press('Tab');await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_edit').length)).toBe(1);
@@ -421,7 +515,11 @@ for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,he
   const help=page.getByRole('complementary',{name:'Contextual help',exact:true}),detail=page.locator('#detail-panel');
   const toggle=page.getByRole('button',{name:'Toggle contextual help',exact:true});
   const before=await page.evaluate(()=>JSON.stringify(window.sessionSnapshot.document));
-  const a=await help.boundingBox(),b=await page.locator('#clip-detail').boundingBox();expect(a.x).toBeLessThanOrEqual(1);expect(b.y+b.height).toBeLessThanOrEqual(a.y+1);
+  const a=await help.boundingBox(),b=await page.locator('#clip-detail').boundingBox();
+  expect(a.x).toBeLessThanOrEqual(1);expect(a.x+a.width).toBeLessThanOrEqual(b.x+1);expect(a.y).toBe(b.y);expect(a.height).toBe(b.height);
+  await page.locator('#detail-devices').click();
+  const lower=await help.boundingBox(),clip=await page.locator('#clip-detail').boundingBox();
+  expect(lower.height).toBe(180);expect(clip.x).toBeLessThanOrEqual(1);expect(clip.y+clip.height).toBeLessThanOrEqual(lower.y+1);
   await page.screenshot({path:testInfo.outputPath(`help-shown-${size.width}x${size.height}.png`)});
   await toggle.click();await expect(help).toBeHidden();
   await page.screenshot({path:testInfo.outputPath(`help-hidden-${size.width}x${size.height}.png`)});
@@ -475,6 +573,7 @@ for(const size of [{width:800,height:600},{width:1280,height:800}])test(`saved A
 for(const size of [{width:1440,height:900},{width:1280,height:800},{width:800,height:600}])test(`detail expands and maximizes the piano editor at ${size.width}x${size.height}`,async({page},testInfo)=>{
   await page.setViewportSize(size);await openSession(page);
   const resize=page.getByRole('separator',{name:'Resize detail area',exact:true}),panel=page.locator('#detail-panel');
+  await resize.focus();await resize.press('Home');
   const visiblePiano=()=>page.evaluate(()=>{const piano=document.querySelector('#piano-roll').getBoundingClientRect(),clip=document.querySelector('#clip-detail').getBoundingClientRect();return Math.max(0,Math.min(piano.bottom,clip.bottom)-Math.max(piano.top,clip.top));});
   const originalPiano=await page.locator('#piano-roll').boundingBox(),originalVisible=await visiblePiano(),originalPanel=await panel.boundingBox(),originalHeight=Number(await resize.getAttribute('aria-valuenow'));await resize.focus();await resize.press('End');
   expect(Number(await resize.getAttribute('aria-valuenow'))).toBeGreaterThan(originalHeight);
@@ -496,6 +595,8 @@ for(const size of [{width:1440,height:900},{width:1280,height:800},{width:800,he
   await page.getByRole('button',{name:'Restore detail size',exact:true}).click();
   await expect(resize).toHaveAttribute('aria-valuenow',previous);await expect(page.locator('#session-workspace')).toBeVisible();
   await page.getByRole('button',{name:'Toggle detail',exact:true}).click();
+  await expect(page.getByRole('button',{name:'Maximize detail',exact:true})).toBeDisabled();
+  await page.locator('#detail-clip').click();
   await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
   const panelBounds=await panel.boundingBox(),workspaceBounds=await page.locator('#workspace-shell').boundingBox();
   expect(panelBounds.y+panelBounds.height).toBeLessThanOrEqual(workspaceBounds.y+workspaceBounds.height);
@@ -516,13 +617,15 @@ test('maximized Arrangement keeps source actions available without covering the 
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
 
-test('Devices and Master share detail maximization without changing musical state',async({page})=>{
+test('Devices and Master retain the fixed lower row without changing musical state',async({page})=>{
   await page.setViewportSize({width:800,height:600});await openSession(page);
+  await page.locator('#detail-clip').click();
   for(const [button,content] of [['#detail-devices','#device-detail'],['#master-select-session','#master-detail']]){
-    await page.locator(button).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
-    await expect(page.locator(content)).toBeVisible();expect((await page.locator('#detail-panel').boundingBox()).height).toBeGreaterThan(450);
+    await page.locator(button).click();await expect(page.getByRole('button',{name:'Maximize detail',exact:true})).toBeDisabled();
+    await expect(page.locator(content)).toBeVisible();expect((await page.locator(content).boundingBox()).height).toBe(180);
+    await expect(page.locator('#detail-resizer')).toBeHidden();
     await expect(page.locator('#stop')).toBeInViewport();await expect(page.locator('#show-audio')).toBeInViewport();
-    await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await expect(page.locator('#session-workspace')).toBeVisible();
+    await expect(page.locator('#session-workspace')).toBeVisible();
   }
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
@@ -1073,7 +1176,7 @@ test('browser selection and transport dismissal preserve unfinished musical fiel
   await page.getByRole('treeitem',{name:'Subtractive',exact:true}).click();
   await expect(tempo).toHaveValue('130');
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
-  await page.locator('#save').click();await expect(page.locator('#notice')).toContainText('Finish Tempo');
+  await saveSession(page);await expect(page.locator('#notice')).toContainText('Finish Tempo');
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
   await tempo.focus();await tempo.press('Tab');
   await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_edit').length)).toBe(1);
@@ -1090,7 +1193,7 @@ test('browser selection and transport dismissal preserve unfinished musical fiel
   await tempo.focus();await tempo.press('Tab');
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
   const search=page.getByRole('searchbox',{name:'Search browser'});await search.fill('sub');await page.getByRole('treeitem',{name:'Subtractive',exact:true}).click();
-  await page.locator('#save').click();await expect(page.locator('#notice')).not.toContainText('Finish Search');
+  await saveSession(page);await expect(page.locator('#notice')).not.toContainText('Finish Search');
 });
 
 
@@ -1559,14 +1662,14 @@ test('detached rack draft blocks Save until its cached field is deliberately com
   await openSession(page);await page.locator('#detail-devices').click();
   const cutoff=page.locator('.chain-device[data-instance-id="instrument-0"]').getByLabel('Cutoff base',{exact:true});
   await cutoff.evaluate(e=>window.retainedRackCutoff=e);await cutoff.fill('1828');
-  await page.getByRole('button',{name:'Select Harmony track',exact:true}).click();await page.locator('#save').click();
+  await page.getByRole('button',{name:'Select Harmony track',exact:true}).click();await saveSession(page);
   await expect(page.locator('#notice')).toContainText('Finish Cutoff base before using file actions');
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_base'||c.name==='alive_file'))).toEqual([]);
   await page.getByRole('button',{name:'Select Pulse track',exact:true}).click();
   expect(await cutoff.evaluate(e=>e===window.retainedRackCutoff)).toBe(true);await expect(cutoff).toHaveValue('1828');
   await cutoff.focus();await cutoff.press('Tab');
   await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_base').length)).toBe(1);
-  await page.locator('#save').click();await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_file').map(c=>c.args.action))).toEqual(['save']);
+  await saveSession(page);await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_file').map(c=>c.args.action))).toEqual(['save']);
 });
 
 test('removing the selected empty MIDI track rebuilds the rack for the audio track at the same index',async({page})=>{
@@ -1582,6 +1685,11 @@ test('removing a track releases its detached cached rack and parked draft',async
   await page.getByRole('button',{name:'Select Harmony track',exact:true}).click();
   await page.evaluate(()=>{const s=window.sessionSnapshot;s.document.tracks.splice(0,1);s.deviceInstances['instrument-1'].track=0;s.state.tracks.splice(0,1);s.editRevision++;});
   await expect(page.locator('#chain-title')).toHaveText('Harmony chain');await expect(page.locator('.track')).toHaveCount(1);
-  await page.locator('#save').click();await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_file').map(c=>c.args.action))).toEqual(['save']);
+  await saveSession(page);await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_file').map(c=>c.args.action))).toEqual(['save']);
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_base'))).toEqual([]);
 });
+
+async function saveSession(page){
+  if(!await page.locator('#file-menu').evaluate(menu=>menu.open))await page.getByRole('button',{name:'File menu',exact:true}).click();
+  await page.locator('#save').click();
+}

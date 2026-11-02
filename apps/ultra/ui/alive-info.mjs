@@ -6,7 +6,7 @@ const REGIONS=[
   ['#workspace-browser','Browse clips, instruments and effects. Drag a supported device onto a track.'],
   ['#session-workspace','Session View: select or launch clips independently; scene launches are at the right.'],
   ['#arrangement-workspace','Arrangement View: position clips on the timeline; switching views does not change playback.'],
-  ['#detail-panel','Selected clip or device editor. Drag its divider to resize.'],
+  ['#detail-panel','Selected clip or device editor. Drag the divider to resize Clip; Devices keeps a fixed height.'],
   ['.transport','Global tempo, transport and view navigation.'],
   ['footer','Session status, audio configuration and diagnostics.'],
 ];

@@ -1,9 +1,10 @@
 // Workspace navigation owns only presentation. Native state and editor nodes stay mounted.
 export function mountWorkspace({doc,win,onNavigate=()=>{}}){
   const $=id=>doc.getElementById(id);
-  let view='session',detail='clip',previousDetail='clip',expanded=true,browser=true,height=win?.innerHeight?340:220,resize=null,browserWidth=220,browserResize=null;
+  const deviceHeight=180;
+  let view='session',detail='clip',previousDetail='clip',expanded=true,browser=true,height=310,resize=null,browserWidth=220,browserResize=null,mixer=true;
   let clipOpen=true,deviceOpen=false,masterOpen=false,previousPanels=null;
-  let requestedHeight=height,maximized=false,customHeight=false;
+  let requestedHeight=height,maximized=false;
   const handle=$('detail-resizer'),shell=$('workspace-shell');
   const parked=new Map(),scopedDrafts=new Map();
   const detailRoot=()=>$(detail==='clip'?'clip-detail':detail==='master'?'master-detail':'device-detail');
@@ -12,17 +13,19 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
   const workspaceMinimum=()=>{
     if(view==='arrangement')return $('timeline').querySelector('.timeline-tools').getBoundingClientRect().height+$('master-arrangement-lane').getBoundingClientRect().height+96;
     const session=$('session-workspace'),track=session.querySelector('.track'),header=track?.querySelector('.track-name'),bank=track?.querySelector('.clip-bank'),mixer=track?.querySelector('.track-mixer');
-    if(!header||!bank||!mixer||!win?.getComputedStyle)return 96;
-    const minHeight=element=>parseFloat(win.getComputedStyle(element).minHeight)||0;
-    return Math.ceil(header.getBoundingClientRect().height+minHeight(bank)+minHeight(mixer)+Math.max(0,session.offsetHeight-session.clientHeight));
+    if(!win?.getComputedStyle)return 96;
+    const minimum=win.innerHeight<700?180:190;
+    // Reserve the rack before the first native snapshot mounts its track nodes.
+    if(!header||!bank||!mixer)return minimum;
+    const minHeight=element=>win.getComputedStyle(element).display==='none'?0:parseFloat(win.getComputedStyle(element).minHeight)||0;
+    return Math.max(minimum,Math.ceil(header.getBoundingClientRect().height+minHeight(bank)+minHeight(mixer)+Math.max(0,session.offsetHeight-session.clientHeight)));
   };
-  const maxHeight=()=>Math.max(160,detailBudget()-(maximized?0:workspaceMinimum()));
+  const clipVisible=()=>expanded&&clipOpen&&!masterOpen;
+  const minHeight=()=>deviceOpen?96:160;
+  const maxHeight=()=>Math.max(minHeight(),detailBudget()-(maximized?0:workspaceMinimum())-(deviceOpen?deviceHeight:0));
   const fitHeight=()=>{
-    if(!maximized&&!customHeight&&expanded&&clipOpen&&deviceOpen&&!masterOpen&&win?.innerHeight){
-      const workspaceFloor=win.innerHeight<700?180:win.innerHeight<850?200:240;
-      height=Math.round(Math.max(160,Math.min(510,maxHeight(),detailBudget()-workspaceFloor)));return;
-    }
-    const limit=!maximized&&!customHeight&&clipOpen&&!deviceOpen&&win?.innerHeight?Math.max(160,detailBudget()-(win.innerHeight<700?272:364)):maxHeight();height=Math.round(Math.max(160,Math.min(limit,maximized?Infinity:requestedHeight)));
+    if(!clipVisible()){height=deviceHeight;maximized=false;return;}
+    height=Math.round(Math.max(minHeight(),Math.min(maxHeight(),maximized?Infinity:requestedHeight)));
   };
   function park(root){const element=doc.activeElement;if(root.contains?.(element)&&element.matches?.('input,select,textarea'))parked.set(element,{root,value:element.value,visible:false,changed:parked.get(element)?.changed??false});}
   // Cached rack controls can be detached while another track is selected.
@@ -45,27 +48,33 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
   const focus=event=>{const state=parked.get(event.target);if(state?.resumeOnFocus)state.visible=true;};
   doc.addEventListener('change',change,true);doc.addEventListener('blur',blur,true);doc.addEventListener('focus',focus,true);
   function paint(){
-    const full=maximized&&expanded;
+    const full=maximized&&clipVisible();
     $('session-workspace').hidden=full||view!=='session';$('arrangement-workspace').hidden=full||view!=='arrangement';
     shell.classList.toggle('detail-maximized',full);
     shell.classList.toggle('detail-both',expanded&&!masterOpen&&clipOpen&&deviceOpen);
+    shell.classList.toggle('mixer-hidden',!mixer);
     const maximize=$('maximize-detail'),label=full?'Restore detail size':'Maximize detail';
     maximize.setAttribute('aria-label',label);maximize.setAttribute('aria-pressed',String(full));maximize.title=label;
+    maximize.disabled=!clipVisible();
     for(const name of ['session','arrangement'])$('view-'+name).setAttribute('aria-pressed',String(view===name));
     $('workspace-browser').hidden=!browser;$('browser-resizer').hidden=!browser;$('toggle-browser').setAttribute('aria-expanded',String(browser));$('timeline-inspector').hidden=view!=='arrangement';
     shell.style.setProperty('--browser-width',`${browserWidth}px`);$('browser-resizer').setAttribute('aria-valuenow',browserWidth);$('browser-resizer').setAttribute('aria-valuemax',maxBrowserWidth());
-    shell.classList.toggle('detail-collapsed',!expanded);handle.hidden=!expanded;
+    shell.classList.toggle('detail-collapsed',!expanded);handle.hidden=!clipVisible();
     $('toggle-detail').setAttribute('aria-expanded',String(expanded));
     $('clip-detail').hidden=!expanded||masterOpen||!clipOpen;$('device-detail').hidden=!expanded||masterOpen||!deviceOpen;
     $('detail-clip').setAttribute('aria-pressed',String(expanded&&!masterOpen&&clipOpen));$('detail-devices').setAttribute('aria-pressed',String(expanded&&!masterOpen&&deviceOpen));
     $('master-detail').hidden=!expanded||!masterOpen;for(const id of ['master-select-session','master-select-arrangement'])$(id).setAttribute('aria-pressed',String(masterOpen));
-    shell.style.setProperty('--detail-height',`${height}px`);handle.setAttribute('aria-valuenow',height);handle.setAttribute('aria-valuemax',maxHeight());
+    // Clip keeps its own requested height; the rack never borrows from it.
+    const total=clipVisible()?height+(deviceOpen?deviceHeight:0):deviceHeight;
+    shell.style.setProperty('--device-row-height',`${deviceHeight}px`);
+    shell.style.setProperty('--detail-height',`${total}px`);handle.setAttribute('aria-valuenow',height);handle.setAttribute('aria-valuemin',minHeight());handle.setAttribute('aria-valuemax',maxHeight());
+    $('toggle-mixer').setAttribute('aria-pressed',String(mixer));
     restore($(view+'-workspace'));
     if(expanded){if(clipOpen&&!masterOpen)restore($('clip-detail'));if(deviceOpen&&!masterOpen)restore($('device-detail'));if(masterOpen)restore($('master-detail'));if(view==='arrangement'&&clipOpen&&!masterOpen)restore($('timeline-inspector'));}
   }
-  function setHeight(value){maximized=false;customHeight=true;requestedHeight=value;fitHeight();paint();}
-  function cancelResize(){if(!resize)return;const old=resize;resize=null;maximized=old.maximized;customHeight=old.customHeight;requestedHeight=old.requestedHeight;fitHeight();paint();if(handle.hasPointerCapture?.(old.id))handle.releasePointerCapture(old.id);}
-  function toggleMaximize(){cancelResize();if(!maximized)park($(view+'-workspace'));maximized=!maximized;expanded=true;if(!clipOpen&&!deviceOpen&&!masterOpen)clipOpen=true;paint();fitHeight();paint();}
+  function setHeight(value){if(!clipVisible())return;maximized=false;requestedHeight=value;fitHeight();paint();}
+  function cancelResize(){if(!resize)return;const old=resize;resize=null;maximized=old.maximized;requestedHeight=old.requestedHeight;fitHeight();paint();if(handle.hasPointerCapture?.(old.id))handle.releasePointerCapture(old.id);}
+  function toggleMaximize(){if(!clipVisible())return;cancelResize();if(!maximized)park($(view+'-workspace'));maximized=!maximized;paint();fitHeight();paint();}
   function navigate(name){cancelResize();if(maximized){maximized=false;fitHeight();}const changed=name!==view;if(changed){park($(view+'-workspace'));if(view==='arrangement')park($('timeline-inspector'));}view=name;paint();fitHeight();paint();if(changed)onNavigate(name);}
   for(const name of ['session','arrangement'])$('view-'+name).addEventListener('click',()=>navigate(name));
   // A pointer navigation must not blur an unfinished field and publish its change.
@@ -79,13 +88,14 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
     detail=name;expanded=clipOpen||deviceOpen;if(!expanded)maximized=false;paint();fitHeight();paint();
   });
   $('toggle-browser').addEventListener('click',()=>{browser=!browser;paint();});
-  $('toggle-detail').addEventListener('click',()=>{cancelResize();if(expanded){if(clipOpen)park($('clip-detail'));if(deviceOpen)park($('device-detail'));if(masterOpen)park($('master-detail'));}expanded=!expanded;if(expanded&&!clipOpen&&!deviceOpen&&!masterOpen)clipOpen=true;if(!expanded){maximized=false;fitHeight();}paint();});
+  $('toggle-mixer').addEventListener('click',()=>{preserveFocused();mixer=!mixer;paint();fitHeight();paint();});
+  $('toggle-detail').addEventListener('click',()=>{cancelResize();if(expanded){if(clipOpen)park($('clip-detail'));if(deviceOpen)park($('device-detail'));if(masterOpen)park($('master-detail'));}expanded=!expanded;if(expanded&&!clipOpen&&!deviceOpen&&!masterOpen)clipOpen=true;if(!expanded)maximized=false;paint();fitHeight();paint();});
   $('maximize-detail').addEventListener('click',toggleMaximize);handle.addEventListener('dblclick',toggleMaximize);handle.title='Drag to resize; double-click to maximize or restore';
-  handle.addEventListener('pointerdown',event=>{if(event.button!==0||resize)return;resize={id:event.pointerId,y:event.clientY,height,requestedHeight,maximized,customHeight};handle.setPointerCapture?.(event.pointerId);event.preventDefault();});
+  handle.addEventListener('pointerdown',event=>{if(event.button!==0||resize||!clipVisible())return;resize={id:event.pointerId,y:event.clientY,height,requestedHeight,maximized};handle.setPointerCapture?.(event.pointerId);event.preventDefault();});
   handle.addEventListener('pointermove',event=>{if(resize?.id===event.pointerId)setHeight(resize.height+resize.y-event.clientY);});
   handle.addEventListener('pointerup',event=>{if(resize?.id!==event.pointerId)return;resize=null;handle.releasePointerCapture?.(event.pointerId);});
   handle.addEventListener('pointercancel',cancelResize);handle.addEventListener('lostpointercapture',cancelResize);
-  handle.addEventListener('keydown',event=>{if(['ArrowUp','ArrowDown','Home','End'].includes(event.key)){event.preventDefault();setHeight(event.key==='Home'?160:event.key==='End'?maxHeight():height+(event.key==='ArrowUp'?1:-1)*(event.shiftKey?50:20));}});
+  handle.addEventListener('keydown',event=>{if(clipVisible()&&['ArrowUp','ArrowDown','Home','End'].includes(event.key)){event.preventDefault();setHeight(event.key==='Home'?minHeight():event.key==='End'?maxHeight():height+(event.key==='ArrowUp'?1:-1)*(event.shiftKey?50:20));}});
   const browserHandle=$('browser-resizer');
   function setBrowserWidth(value){browserWidth=Math.round(Math.max(180,Math.min(maxBrowserWidth(),value)));paint();}
   function cancelBrowserResize(){if(!browserResize)return;const old=browserResize;browserResize=null;setBrowserWidth(old.width);if(browserHandle.hasPointerCapture?.(old.id))browserHandle.releasePointerCapture(old.id);}

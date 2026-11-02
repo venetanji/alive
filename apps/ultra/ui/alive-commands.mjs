@@ -41,23 +41,16 @@ export function shortcutCommand(event,{native=true}={}){
 export function mountCommandMenus({doc,park=()=>{},native=true}){
   const nav=doc.getElementById('application-menus');if(!nav)return{dispose(){}};
   const file=doc.getElementById('file-menu'),menus=[file].filter(Boolean),rows=[];
-  const save=doc.getElementById('save');
-  const fileSurface=file?.querySelector?.('.file-menu-items');
   if(!native)for(const id of NATIVE_TARGETS){const target=doc.getElementById(id);if(target){target.disabled=true;target.setAttribute('data-native-unavailable','');target.setAttribute('data-help','Available in the native Alive app.');target.title='Available in the native Alive app.';}}
   for(const command of COMMANDS.filter(c=>c.menu==='File')){
     const target=doc.getElementById(command.target);if(native)target?.setAttribute('data-help',command.help+(command.shortcut?' ('+command.shortcut+').':''));
-  }
-  if(fileSurface){
-    const command=COMMANDS.find(c=>c.target==='save'),button=doc.createElement('button');
-    button.type='button';button.textContent=command.label;button.setAttribute('aria-label',command.label);button.setAttribute('data-help',command.help+(native?' ('+command.shortcut+').':''));
-    if(native){const key=doc.createElement('kbd');key.textContent=command.shortcut;button.append(key);}
-    button.addEventListener('pointerdown',park);button.addEventListener('click',()=>{file.open=false;save.click();file.querySelector('summary')?.focus();});
-    fileSurface.insertBefore(button,doc.getElementById('save-as'));rows.push({button,command});
+    target?.addEventListener('pointerdown',park);
+    if(target&&native&&command.shortcut){const key=doc.createElement('kbd');key.textContent=command.shortcut;target.append(key);}
   }
   for(const group of ['Edit','Create','Playback','View','Navigate','Options','Help']){
     const details=doc.createElement('details'),summary=doc.createElement('summary'),surface=doc.createElement('div');
     details.className='app-menu';summary.textContent=group;summary.setAttribute('role','button');summary.setAttribute('aria-label',group+' menu');
-    surface.className='app-menu-items ui-menu-surface';details.append(summary,surface);nav.insertBefore(details,save);menus.push(details);
+    surface.className='app-menu-items ui-menu-surface';details.append(summary,surface);nav.append(details);menus.push(details);
     for(const command of COMMANDS.filter(c=>c.menu===group)){
       const button=doc.createElement('button');button.type='button';button.textContent=command.label;
       button.setAttribute('aria-label',command.label);

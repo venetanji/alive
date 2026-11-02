@@ -26,6 +26,7 @@ Files: apps/ultra/ui/alive.html, Alive-owned shell/workspace CSS/controller, foc
 - [x] Committed and pushed as `4e415e983acf57c3f2e029c6509fea289bb57508`; parent review found no supported-native-size blocker. Carry the <=620px Browser/Help overlap into the panel batch.
 
 ## M1b — Lower panel topology
+- Local correction, 2 November: qualify the fixed Device/Help row separately from the resizable Clip height; consolidate the Clip header, keep Save inside File, restore compact footer display controls, and test real menu ownership, draft preservation and resize/restore. This is the current bounded slice; broader command wiring and native/provider work remain separate. Execution and exact-build evidence: `../2026-11-02/SHELL-CORRECTION.md`.
 - [x] Include adaptive Clip options and the narrow-preview Browser/Help correction. Reviewed captures at 600x600 as preview hardening and at 800x600, 1280x800 and 1440x900 as supported sizes.
 - [x] Independent footer Clip/Device toggles, full-width Clip above Help-left/Device-right when both open; neither/single/both states, resize/maximize/restore.
 - [x] Tests assert rectangle ownership, no overlap, no draft loss, and no musical commands from navigation. Parent review remains the next gate.

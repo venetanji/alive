@@ -11,6 +11,17 @@ import alive_workspace_navigation as navigation
 
 
 class NavigationTest(unittest.TestCase):
+    def test_save_opens_its_file_menu_before_the_existing_action(self):
+        calls = []
+        class Control:
+            def get_state_set(self): return self
+            def contains(self, state): return False
+        ui = types.SimpleNamespace(click=lambda name: calls.append(name), text=lambda *args: None,
+                                   wait_for=lambda name: Control())
+        navigation.install(ui, types.SimpleNamespace(scope='Alive'), None, None)
+        ui.click('Save session')
+        self.assertEqual(calls, ['File menu', 'Save session'])
+
     def test_source_disclosure_uses_owned_input_before_placing_an_arrangement_source(self):
         calls = []
         class Control:

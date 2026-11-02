@@ -29,7 +29,7 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
     def prepare(name):
         if windows.scope != 'Alive':
             return
-        if name in ('New session', 'Open session', 'Save session as', 'Quit Alive'):
+        if name in ('New session', 'Open session', 'Save session', 'Save session as', 'Quit Alive'):
             expand('File menu')
             return
         if name in ('Seek beat', 'Seek transport', 'Transport length beats', 'Track column width'):

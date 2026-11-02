@@ -4,7 +4,7 @@ import {point,beatAt,beatX,pitchAt,transformNote,velocityEdit,addNote,keyEdit,ti
 import {mountClipView} from './alive-clip-view.mjs';
 import {mountBrowser,deviceAdmissionReason} from './alive-browser.mjs';
 import {mountDeviceDrop} from './alive-device-drop.mjs';
-import {mountTransportOptions} from './alive-shell.mjs';
+import {mountTransportOptions,mountDisplayOptions} from './alive-shell.mjs';
 import {createAliveModel,nativeInteger,instrumentOf,actualDevices,sourceLength} from './alive-model.mjs';
 import {mountAudioSettings} from './audio-settings.mjs';
 import {mountWorkspace} from './alive-workspace.mjs';
@@ -21,6 +21,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   const workspace=mountWorkspace({doc,win,onNavigate:()=>{timeline?.cancel();timeline?.render();}});
   const transportOptions=mountTransportOptions(doc,{onClose:workspace.park,onOpen:workspace.restore});
   const commandMenus=mountCommandMenus({doc,park:()=>workspace.preserveFocused(),native:!!invoke});
+  const displayOptions=mountDisplayOptions(doc,{park:()=>workspace.preserveFocused()});
   let selectedSlots=new Map(),selectionToken=0,selectedNote=null,gesture=null,preview=null,pianoGeometry=null,velocityCanceled=false,listRevision=0,scopeRevision=0,transportRequestKey='';
   let rootlessInstrumentButton=null;const trackViews=[],chainViews=[],parameterViews=new Map(),rackCache=new Map(),diagnostics=new Map();let audioSettings;
   let operationText=$('notice').textContent,operationError=false,noticeOwner=null,refreshError='',previewFailure='';
@@ -860,6 +861,6 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   }
   if(invoke)win.setTimeout(pollMeasurements,1000);
   if(invoke){enqueue(refresh,true).then(()=>notice('Ready. Select a clip to edit notes or automation.')).catch(()=>{});win.setTimeout(poll,80);}else notice('Open the native app with bash apps/alive/run.sh. This page does not synthesize audio.',true);
-  return{model,refresh,dispose(){disposed=true;clearTimeout(scrollFadeTimer);win?.removeEventListener('resize',dismissTrackMenus);doc.removeEventListener('pointerdown',closeTrackMenus,true);$('track-width').removeEventListener('input',globalWidth);$('scene-controls').removeEventListener('scroll',sceneScroll);$('session-workspace').removeEventListener('scroll',sessionScroll);$('session-workspace').removeEventListener('wheel',sessionWheel);for(const [key,cached]of rackCache)discardRack(key,cached);audition.dispose();win?.removeEventListener('blur',releaseAudition);deviceDrop.dispose();browser.dispose();commandMenus.dispose();transportOptions.dispose();masterProducer.dispose();workspace.dispose();timeline?.dispose();clipView.dispose();win?.removeEventListener('blur',cancelGesture);unlisten?.();doc.removeEventListener('keydown',keydown);}};
+  return{model,refresh,dispose(){disposed=true;clearTimeout(scrollFadeTimer);win?.removeEventListener('resize',dismissTrackMenus);doc.removeEventListener('pointerdown',closeTrackMenus,true);$('track-width').removeEventListener('input',globalWidth);$('scene-controls').removeEventListener('scroll',sceneScroll);$('session-workspace').removeEventListener('scroll',sessionScroll);$('session-workspace').removeEventListener('wheel',sessionWheel);for(const [key,cached]of rackCache)discardRack(key,cached);audition.dispose();win?.removeEventListener('blur',releaseAudition);deviceDrop.dispose();browser.dispose();commandMenus.dispose();displayOptions.dispose();transportOptions.dispose();masterProducer.dispose();workspace.dispose();timeline?.dispose();clipView.dispose();win?.removeEventListener('blur',cancelGesture);unlisten?.();doc.removeEventListener('keydown',keydown);}};
 }
 if(globalThis.document)mountAlive();
