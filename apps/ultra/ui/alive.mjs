@@ -4,6 +4,7 @@ import {point,beatAt,beatX,pitchAt,transformNote,velocityEdit,addNote,keyEdit,ti
 import {mountClipView} from './alive-clip-view.mjs';
 import {mountBrowser,deviceAdmissionReason} from './alive-browser.mjs';
 import {mountDeviceDrop} from './alive-device-drop.mjs';
+import {mountDeviceOverview} from './alive-device-overview.mjs';
 import {mountTransportOptions,mountDisplayOptions} from './alive-shell.mjs';
 import {createAliveModel,nativeInteger,instrumentOf,actualDevices,sourceLength,clipPlayback} from './alive-model.mjs';
 import {mountAudioSettings} from './audio-settings.mjs';
@@ -444,7 +445,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     $('tracks').replaceChildren();trackViews.length=0;slotViews=[];slotScrollers=[];
     document.tracks.forEach((track,index)=>{
       const row=make('article','track'),name=make('button','track-name'),title=make('span','',`${index+1}  ${track.name}`),detail=make('small','',`${(track.notes?.length??0)} notes / stereo`);
-      name.append(title,detail);name.addEventListener('pointerdown',()=>workspace.preserveFocused());name.setAttribute('aria-label',`Select ${track.name} track`);name.title=track.name;
+      name.append(title,detail);name.addEventListener('pointerdown',()=>workspace.preserveFocused());name.setAttribute('aria-label',`Select ${track.name} track`);name.title=track.name;name.setAttribute('data-help',`${track.name} track. Press Delete or Backspace to remove the track while stopped. Keep at least one track.`);
       const choose=()=>{workspace.returnMusic();if(selected!==index){cancelGesture();selectedNote=null;selectionToken++;selected=index;selectedInstance=null;musicKey=parameterKey='';}render();};name.addEventListener('click',choose);
       const gainLabel=make('label','track-gain','Gain'),gain=numeric(`${track.name} gain`,track.gain,{min:0,max:2,step:.05},value=>mix(index,{gain:value})),gainDb=make('output','track-db');gainDb.setAttribute('aria-label',`${track.name} gain decibels`);gainLabel.append(gain,gainDb);
       const fader=make('input','gain-fader');fader.type='range';fader.min='0';fader.max='2';fader.step='any';fader.value=String(track.gain);fader.setAttribute('aria-label',`${track.name} gain fader`);fader.setAttribute('aria-orientation','vertical');fader.title='Linear gain, 0 to 2';
@@ -452,12 +453,12 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       const mute=make('button','mixer-toggle track-activator',String(index+1)),solo=make('button','mixer-toggle','S');mute.setAttribute('aria-label',`${track.name} mute`);mute.title='Track activator: press to mute or unmute';solo.setAttribute('aria-label',`${track.name} solo`);
       mute.addEventListener('click',guard(()=>mix(index,{mute:!model.document().tracks[index].mute})));solo.addEventListener('click',guard(()=>mix(index,{solo:!model.document().tracks[index].solo})));
       const meters=make('div','track-meter'),bar=make('div','stereo-meter vertical-meter'),readout=make('output'),left=make('i'),right=make('i');left.setAttribute('aria-label',`${track.name} left meter`);right.setAttribute('aria-label',`${track.name} right meter`);bar.append(left,right);bar.setAttribute('aria-label',`${track.name} stereo peak`);readout.setAttribute('aria-label',`${track.name} peak`);meters.append(bar,readout);
-      const actions=make('div','track-actions');for(const[action,label]of [['editor','Editor'],['load','Replace'],['remove','Remove track']]){
-        const button=make('button','',label);button.setAttribute('aria-label',action==='editor'?`Open ${track.name} editor`:action==='remove'?`Remove ${track.name} track`:`${label} ${track.name} device`);
-        button.disabled=action!=='remove'&&!instrumentOf(track);button.addEventListener('click',guard(()=>{const origin=generation();return enqueue(async()=>{
+      const actions=make('div','track-actions');for(const[action,label]of [['editor','Editor'],['load','Replace']]){
+        const button=make('button','',label);button.setAttribute('aria-label',action==='editor'?`Open ${track.name} editor`:`${label} ${track.name} device`);
+        button.disabled=!instrumentOf(track);button.addEventListener('click',guard(()=>{const origin=generation();return enqueue(async()=>{
           if(generation()!==origin)throw Error('The originating device session changed.');
           if(action!=='editor'){commitFocused();cancelGesture();selectedNote=null;}
-          if(action==='editor')await command('alive_editor',{instanceId:instrumentOf(track)?.instanceId});else{const result=action==='remove'?await publicationCommand('alive_workspace_track',{operation:{kind:'remove',trackId:track.id}}):await command('alive_device',{trackId:track.id,instanceId:instrumentOf(track)?.instanceId,action});applySnapshot(result.snapshot??result);trackKey=musicKey=parameterKey='';render();notice('Device updated.');}
+          if(action==='editor')await command('alive_editor',{instanceId:instrumentOf(track)?.instanceId});else{const result=await command('alive_device',{trackId:track.id,instanceId:instrumentOf(track)?.instanceId,action});applySnapshot(result.snapshot??result);trackKey=musicKey=parameterKey='';render();notice('Device updated.');}
         });}));actions.append(button);
       }
       row.dataset.trackId=track.id;row.style.setProperty('--track-color',track.color??['#efbb62','#88c5c7','#91b9ed','#d8a0a7','#b4c98b','#d3b48a','#a5b9ce','#c5b6cf'][index%8]);
@@ -482,16 +483,31 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     workspace.refreshLayout();
   }
   function chainDevices(track=model.document().tracks[selected]){return actualDevices(track);}
+  function requireStructuralRemoval(){
+    if(model.snapshot().state.playing)throw Error('Stop transport before removing a device or track.');
+    if(model.snapshot().midi?.pending)throw Error('Wait for the musical edit to finish before removing a device or track.');
+    if(workspace.uncommitted())throw Error('Finish the unfinished field before removing a device or track.');
+  }
+  function removeTrack(trackId){
+    requireStructuralRemoval();cancelGesture();const origin=generation();
+    return enqueue(async()=>{
+      if(generation()!==origin)throw Error('The originating track session changed.');
+      requireStructuralRemoval();if(model.document().tracks.length<=1)throw Error('Keep at least one track.');
+      const result=await publicationCommand('alive_workspace_track',{operation:{kind:'remove',trackId}});
+      applySnapshot(result.snapshot??result);trackKey=musicKey=parameterKey=chainKey='';render();notice('Track removed.');
+    });
+  }
   function instanceView(id){return model.snapshot().deviceInstances[id];}
   function instanceName(reference,index){const isInstrument=reference.instanceId===instrumentOf(model.document().tracks[selected])?.instanceId,effect=index+(instrumentOf(model.document().tracks[selected])?0:1);return `${instanceView(reference.instanceId)?.manifest.name??'Device'}${isInstrument?' instrument':` effect ${effect}`}`;}
   const trackViewShape=document=>document.tracks.map(t=>[t.id,t.name,t.color,t.chain?.kind,t.slots?.map(c=>c?[c.id,c.name,c.sourceId]:null)]);
   const trackViewIdentity=document=>JSON.stringify([trackViewShape(document),document.tracks.map(t=>instrumentOf(t)),document.sources.map(s=>[s.id,s.trackId,s.kind])]);
   function structural(reference,action,beforeInstanceId){
+    if(action==='remove')requireStructuralRemoval();
     commitFocused();cancelGesture();selectedNote=null;
     const trackId=model.document().tracks[selected].id,instanceId=reference?.instanceId,origin=generation(),token=selectionToken;
     const focused=action==='reorder'&&doc.activeElement?.closest?.('.chain-device')?.dataset?.instanceId===instanceId?doc.activeElement:null;
     const direction=focused?.getAttribute('aria-label')?.match(/ (earlier|later)$/)?.[1];
-    return enqueue(async()=>{if(generation()!==origin)throw Error('The originating device session changed.');const snapshot=await command('alive_device',{trackId,instanceId,action,...(action==='reorder'?{beforeInstanceId}: {})});
+    return enqueue(async()=>{if(generation()!==origin)throw Error('The originating device session changed.');if(action==='remove')requireStructuralRemoval();const snapshot=await command('alive_device',{trackId,instanceId,action,...(action==='reorder'?{beforeInstanceId}: {})});
       const restore=focused&&direction&&doc.activeElement===focused&&token===selectionToken&&model.document()?.tracks[selected]?.id===trackId;
       const previousTracks=action==='reorder'&&trackKey?trackViewIdentity(model.document()):null;
       const sameTracks=!!(previousTracks&&snapshot?.generation===origin+1&&snapshot.document&&previousTracks===trackViewIdentity(snapshot.document));
@@ -550,19 +566,20 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       row.dataset.instanceId=reference.instanceId;row.setAttribute('role','group');row.setAttribute('aria-label',context);
       const header=make('header','device-card-header'),tools=make('div','device-card-actions');
       choose.setAttribute('aria-label',`Select ${context}`);choose.addEventListener('pointerdown',()=>workspace.preserveFocused());choose.addEventListener('click',()=>{selectedInstance=reference.instanceId;parameterKey='';render();});
-      bypass.setAttribute('aria-label',`Bypass ${context}`);decorate(bypass,'reset','Bypass',{only:true});const isInstrument=reference.instanceId===instrumentOf(track)?.instanceId;bypass.disabled=isInstrument;bypass.title=isInstrument?'Only effects support bypass. Use track mute to silence this track.':'Live bypass keeps the device state warm; audio output stays open.';
+      bypass.setAttribute('aria-label',`Device active: ${context}`);decorate(bypass,'reset','Bypass',{only:true});const isInstrument=reference.instanceId===instrumentOf(track)?.instanceId;bypass.disabled=isInstrument;bypass.title=isInstrument?'Only effects support bypass. Use track mute to silence this track.':'Live bypass keeps the device state warm; audio output stays open.';
       bypass.addEventListener('click',guard(()=>{const instanceId=reference.instanceId,bypassed=!chainDevices().find(d=>d.instanceId===instanceId).bypassed,origin=generation();return enqueue(async()=>{if(generation()!==origin)throw Error('The originating device session changed.');await command('alive_bypass',{instanceId,bypassed});await refresh();});}));
-      header.append(choose,bypass);row.append(header);
+      bypass.classList.add('device-power');bypass.replaceChildren();const power=doc.createElementNS('http://www.w3.org/2000/svg','svg'),circle=doc.createElementNS('http://www.w3.org/2000/svg','circle');power.setAttribute('viewBox','0 0 18 18');power.setAttribute('aria-hidden','true');circle.setAttribute('cx','9');circle.setAttribute('cy','9');circle.setAttribute('r','5.5');power.append(circle);bypass.append(power);
+      choose.setAttribute('data-help',`${context}. Press Delete or Backspace to remove this device while stopped.`);
+      header.append(bypass,choose);row.append(header);
       const action=(label,aria,fn,blocked=false)=>{const button=make('button');button.setAttribute('aria-label',aria);decorate(button,label==='Remove'?'remove':label==='Earlier'?'undo':label==='Later'?'redo':'file',label,{only:true});button.addEventListener('click',guard(fn));tools.append(button);actions.push({button,blocked});};
       action('Replace...',`Replace ${context}`,()=>structural(reference,'replace'));
       if(!isInstrument){
         action('Earlier',`Move ${context} earlier`,()=>structural(reference,'reorder',devices[index-1].instanceId),index===(instrumentOf(track)?1:0));
         action('Later',`Move ${context} later`,()=>structural(reference,'reorder',devices[index+2]?.instanceId??null),index===devices.length-1);
-        action('Remove',`Remove ${context}`,()=>structural(reference,'remove'));
       }
       const editor=make('button');editor.setAttribute('aria-label',`Edit ${context} in Ultra`);decorate(editor,'edit','Edit in Ultra',{only:true});editor.addEventListener('click',guard(()=>openDevice(reference.instanceId)));tools.replaceChildren(editor,...tools.children);
       const path=make('div','device-card-path',reference.path);path.title=reference.path;
-      row.append(buildParameters(reference.instanceId),tools,path);
+      header.append(tools);row.append(buildParameters(reference.instanceId),path);
       $('chain').append(row);chainViews.push({row,choose,bypass,reference,actions});
     });
     const tail=make('div','chain-drop-tail',track.chain.kind==='midi'&&!instrumentOf(track)?'Drop an instrument or audio effect here':'Drop audio effects here');tail.setAttribute('role','group');tail.setAttribute('aria-label','Device chain drop area');$('chain').append(tail);
@@ -771,7 +788,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     $('add-effect').disabled=structuralBlocked||document.tracks[selected].effects.length>=2||deviceCount>=maxDevices;
     const structureMessage=snapshot.midi.pending?'Wait for the musical edit to finish before loading a device.':snapshot.state.playing?'Stop transport before loading a device.':'';
     browser.render({document:model.document(),instances:snapshot.deviceInstances,instrumentNeedsTrack,instrumentBlocked:structureMessage||($('add-track').disabled?'Track or device capacity reached.':''),effectBlocked:structureMessage||($('add-effect').disabled?'Effect or device capacity reached.':'')});
-    for(const view of chainViews){view.choose.setAttribute('aria-pressed',String(view.reference.instanceId===selectedInstance));view.row.classList.toggle('selected',view.reference.instanceId===selectedInstance);view.bypass.setAttribute('aria-pressed',String(chainDevices().find(d=>d.instanceId===view.reference.instanceId).bypassed));view.row.classList.toggle('bypassed',!!chainDevices().find(d=>d.instanceId===view.reference.instanceId).bypassed);for(const {button,blocked} of view.actions){button.disabled=structuralBlocked||blocked;button.title=blocked?'Already at this end of the effect chain.':$('chain-status').textContent;}}
+    for(const view of chainViews){view.choose.setAttribute('aria-pressed',String(view.reference.instanceId===selectedInstance));view.row.classList.toggle('selected',view.reference.instanceId===selectedInstance);view.bypass.setAttribute('aria-pressed',String(!chainDevices().find(d=>d.instanceId===view.reference.instanceId).bypassed));view.row.classList.toggle('bypassed',!!chainDevices().find(d=>d.instanceId===view.reference.instanceId).bypassed);for(const {button,blocked} of view.actions){button.disabled=structuralBlocked||blocked;button.title=blocked?'Already at this end of the effect chain.':$('chain-status').textContent;}}
     const nextMusic=JSON.stringify([snapshot.generation,selected,selectedClip()?.id,sourceOf()?.id,document.tracks[selected].sourceKind,document.tempo,document.lengthBeats,document.loopEnabled,document.tracks[selected]?.notes,document.tracks[selected]?.automation,editorOccurrence()?.region,clipTimeSelection,sourceOf()?.kind==='audio'?snapshot.preparedWorkspaces?.sources?.find(item=>item.sourceId===sourceOf()?.id)?.waveformPeaks:null]);
     if(nextMusic!==musicKey){musicKey=nextMusic;paintClipOverview();buildMusic(document);}
     paintLanes();
@@ -782,7 +799,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       view.gainDb.textContent=db(track.gain);view.fader.setAttribute('aria-valuetext',db(track.gain));
       if(!view.faderEditing()&&!workspace.preserves(view.fader))view.fader.value=track.gain;
       meter(view.bar,runtime?.peakLeft??0,runtime?.peakRight??0);view.readout.textContent=peak(runtime?.peakLeft??0,runtime?.peakRight??0);
-      for(const button of [...view.actions.children].slice(1)){button.disabled=button===view.actions.children[2]?!!snapshot.midi?.pending||document.tracks.length<=1:!!snapshot.state.playing||snapshot.midi.pending||!instrumentOf(track);button.title=snapshot.midi.pending?'Wait for the musical edit to finish before changing devices.':snapshot.state.playing?'Stop transport before replacing a device or removing a track.':button.textContent==='Remove track'?'Remove this whole track, its instrument, effects and automation. Keep at least one track.':'Replace this instrument from a saved Ultra source; its automation lanes are removed.';}
+      for(const button of [...view.actions.children].slice(1)){button.disabled=!!snapshot.state.playing||snapshot.midi.pending||!instrumentOf(track);button.title=snapshot.midi.pending?'Wait for the musical edit to finish before changing devices.':snapshot.state.playing?'Stop transport before replacing a device.':'Replace this instrument from a saved Ultra source; its automation lanes are removed.';}
     });
     for(const cached of rackCache.values())for(const view of cached.parameters.values())view.host.publish();
     const frameBeat=value=>Number(nativeInteger(value)*1000000n/48000n)/1000000*snapshot.document.tempo/60;
@@ -856,6 +873,11 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     if(event.defaultPrevented)return;
     if(event.key==='Escape'&&!$('alive-audio-settings').hidden){event.preventDefault();closeAudioSettings();return;}
     if(doc.querySelector?.('dialog[open],[aria-modal="true"]:not([hidden])'))return;
+    if(['Delete','Backspace'].includes(event.key)&&!event.repeat&&!event.ctrlKey&&!event.metaKey&&!event.altKey&&!event.shiftKey&&!event.target?.isContentEditable&&!event.target?.closest?.('input,select,textarea,[contenteditable]')&&!doc.querySelector?.('.app-menu[open],.track-inspector[open],.clip-source-actions[open]')){
+      const device=event.target?.closest?.('.chain-select'),track=event.target?.closest?.('.track-name,.timeline-track-name');
+      if(device){event.preventDefault();const id=device.closest('.chain-device').dataset.instanceId,reference=chainDevices().find(d=>d.instanceId===id);if(reference)return structural(reference,'remove');return;}
+      if(track){event.preventDefault();return removeTrack(track.closest('.track,.timeline-row').dataset.trackId);}
+    }
     const target=shortcutCommand(event,{native:!!invoke});if(!target)return;
     const owner=target==='toggle-transport'?(model.snapshot()?.state.playing?'stop':'start'):target;
     if($(owner)?.disabled)return;
@@ -869,6 +891,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     }
     $(target).click();
   });doc.addEventListener('keydown',keydown);
+  const deviceOverview=mountDeviceOverview({doc,win,chain:$('chain'),root:$('device-overview'),park:()=>workspace.preserveFocused()});
   let unlisten=null;
   if(win?.__TAURI__?.event?.listen)win.__TAURI__.event.listen('alive-close-requested',()=>{guard(()=>file('quit'))();}).then(fn=>{unlisten=fn;});
   win?.addEventListener('blur',cancelGesture);
@@ -883,6 +906,6 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   }
   if(invoke)win.setTimeout(pollMeasurements,1000);
   if(invoke){enqueue(refresh,true).then(()=>notice('Ready. Select a clip to edit notes or automation.')).catch(()=>{});win.setTimeout(poll,80);}else notice('Open the native app with bash apps/alive/run.sh. This page does not synthesize audio.',true);
-  return{model,refresh,dispose(){disposed=true;clearTimeout(scrollFadeTimer);win?.removeEventListener('resize',dismissTrackMenus);doc.removeEventListener('pointerdown',closeTrackMenus,true);$('track-width').removeEventListener('input',globalWidth);$('scene-controls').removeEventListener('scroll',sceneScroll);$('session-workspace').removeEventListener('scroll',sessionScroll);$('session-workspace').removeEventListener('wheel',sessionWheel);for(const [key,cached]of rackCache)discardRack(key,cached);audition.dispose();win?.removeEventListener('blur',releaseAudition);deviceDrop.dispose();browser.dispose();commandMenus.dispose();displayOptions.dispose();transportOptions.dispose();masterProducer.dispose();workspace.dispose();timeline?.dispose();clipView.dispose();win?.removeEventListener('blur',cancelGesture);unlisten?.();doc.removeEventListener('keydown',keydown);}};
+  return{model,refresh,dispose(){disposed=true;clearTimeout(scrollFadeTimer);win?.removeEventListener('resize',dismissTrackMenus);doc.removeEventListener('pointerdown',closeTrackMenus,true);$('track-width').removeEventListener('input',globalWidth);$('scene-controls').removeEventListener('scroll',sceneScroll);$('session-workspace').removeEventListener('scroll',sessionScroll);$('session-workspace').removeEventListener('wheel',sessionWheel);for(const [key,cached]of rackCache)discardRack(key,cached);deviceOverview.dispose();audition.dispose();win?.removeEventListener('blur',releaseAudition);deviceDrop.dispose();browser.dispose();commandMenus.dispose();displayOptions.dispose();transportOptions.dispose();masterProducer.dispose();workspace.dispose();timeline?.dispose();clipView.dispose();win?.removeEventListener('blur',cancelGesture);unlisten?.();doc.removeEventListener('keydown',keydown);}};
 }
 if(globalThis.document)mountAlive();

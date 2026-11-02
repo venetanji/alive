@@ -87,10 +87,9 @@
 #workspace-browser .insert-track-actions{display:grid;grid-template-columns:1fr 1fr;gap:3px}
 #workspace-browser .insert-track-actions button{min-width:0;padding:3px;font-size:10px;text-align:center;justify-content:center}
 
-/* Help owns its visibility even when both editors are closed. Clip spans the
-   full width only when stacked above the fixed Help / Devices row. */
+/* Clip spans the full width when stacked above the fixed Help / Devices row. */
 #detail-content{display:grid;grid-template-columns:var(--help-width,231px) minmax(0,1fr);grid-template-rows:minmax(0,1fr);overflow:hidden}
-.detail-both #detail-content{grid-template-rows:minmax(0,1fr) var(--device-row-height,190px);row-gap:var(--detail-row-gap,5px);background:#292929}
+.detail-both #detail-content{grid-template-rows:minmax(0,1fr) var(--device-row-height,224px);row-gap:var(--detail-row-gap,5px);background:#292929}
 #clip-detail:not([hidden]){display:flex;flex-direction:column;grid-column:2;grid-row:1;min-height:0;height:100%;overflow:hidden;container:clip-detail / size}
 .detail-both #clip-detail:not([hidden]){grid-column:1 / -1}
 #clip-detail>.clip-section{display:flex;flex-direction:column;flex:1 1 0;min-height:0;border:0}
@@ -105,24 +104,27 @@
 #clip-detail .clip-properties-resizer{grid-column:1;grid-row:1 / -1;justify-self:end;width:5px;z-index:2;cursor:ew-resize;touch-action:none;background:#292929}
 #clip-detail .clip-properties-resizer:focus-visible{outline:2px solid var(--selection);outline-offset:-2px}
 #device-detail:not([hidden]),#master-detail:not([hidden]){grid-column:2;grid-row:1;min-height:0;overflow:auto}
-#device-detail .section-heading{height:22px;min-height:22px;padding:1px 5px;background:#434343}
-#device-detail .section-heading h2{font-size:11px}
-#device-detail .section-heading button{height:18px;min-height:18px;padding:0 5px;font-size:10px}
-#device-detail .section-heading>.muted,#chain-status{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
-#device-detail #chain{padding:5px;gap:5px;background:#3b3b3b}
+#device-detail .section-heading{display:none}
+#chain-status{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+#device-detail #chain{padding:5px;gap:5px;background:#3b3b3b;scrollbar-width:none}
 #device-detail .chain-device{position:relative;min-height:0;height:100%}
 #device-detail .device-controls{min-height:0;overflow:auto;padding:5px 9px}
+#device-detail .chain-device:has(.presentation-surface){max-width:none}
+#device-detail .device-controls:has(.presentation-surface){padding:0}
 #device-detail .presentation-item>.live-control{gap:1px}
 #device-detail .presentation-item>.live-control .live-dial{width:32px;height:32px}
-#device-detail .device-card-actions{padding:2px 4px;gap:3px;min-height:24px}
+#device-detail .device-card-actions{padding:0;gap:3px;min-height:0;margin:0;border:0;background:transparent;flex-wrap:nowrap}
 #device-detail .device-card-path{position:absolute;left:0;top:0;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+#device-detail .device-power{order:-1;width:18px;min-width:18px;border:0;background:transparent;color:#454545}
+#device-detail .device-power svg{width:15px;height:15px;fill:currentColor;stroke:#252525}
+#device-detail .device-power[aria-pressed=true]{color:var(--amber)}
 #info-view:not([hidden]){display:flex;flex-direction:column;align-items:stretch;grid-column:1;grid-row:1;min-height:0;overflow:auto;padding:9px 10px;gap:7px;background:#393939;border-right:5px solid #292929;color:var(--text)}
 .detail-both #device-detail:not([hidden]),.detail-both #info-view:not([hidden]){grid-row:2}
 #info-view[hidden]{display:none}
 #info-view .info-label{font-size:12px;font-weight:bold;color:#e2e2db;line-height:16px;border-bottom:1px solid #575753;padding-bottom:5px}
 #info-view #info-text{display:block;flex:none;overflow:visible;font-size:12px;line-height:1.6;color:#c7c7c0;white-space:normal;overflow-wrap:anywhere}
 #detail-content:not(:has(#info-view:not([hidden]))){grid-template-columns:0 minmax(0,1fr)}
-.detail-collapsed #detail-content{height:var(--device-row-height,190px)}
+.detail-collapsed #detail-content{height:var(--device-row-height,224px)}
 .detail-collapsed #detail-content:not(:has(#info-view:not([hidden]))){height:0}
 #toggle-help{width:20px;height:18px;min-height:18px;padding:0;border:0;border-radius:50%;background:var(--amber);color:#292929;font-size:13px;font-weight:bold}
 #footer-display-controls{display:flex;align-items:center;gap:4px;flex:none;margin-left:auto}
@@ -135,6 +137,14 @@
 #clip-overview svg{display:block;width:100%;height:100%;margin:0;fill:var(--clip-color,var(--amber));stroke:none}
 #clip-overview .clip-overview-waveform{fill:none;stroke:var(--clip-color,var(--amber));stroke-width:1}
 #footer-track-name{max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px}
+#device-overview{position:relative;flex:none;width:180px;height:20px;overflow:hidden;cursor:ew-resize;touch-action:none;background:#292929}
+#device-overview[hidden],body:has(#clip-detail[hidden]) #clip-overview{display:none}
+#device-overview:focus-visible{outline:1px solid var(--selection);outline-offset:1px}
+.device-overview-strip{position:absolute;inset:0 auto auto 0;transform-origin:0 0;pointer-events:none}
+.device-overview-strip .device-overview-miniature{position:absolute;display:flex;flex-direction:column;min-height:0;max-width:none;margin:0;overflow:hidden;pointer-events:none;background:#464646;border:1px solid #252525}
+.device-overview-miniature .device-controls{padding:0;overflow:hidden}
+.device-overview-miniature .device-card-actions,.device-overview-miniature .device-card-path{display:none}
+.device-overview-window{position:absolute;top:0;bottom:0;border:2px solid #a4a4a0;border-radius:4px;background:#ffffff08}
 #footer-display-controls #detail-devices>svg{fill:currentColor;stroke:none}
 #footer-display-controls [aria-pressed=true]:not(#detail-clip){color:#292929;background:var(--amber)}
 #display-menu{position:relative;margin:0;padding:0;border:0}
@@ -180,5 +190,5 @@
 #clip-detail .clip-area[data-inspector-layout=horizontal] .clip-option-groups>details{flex:1 0 145px;min-width:0;overflow:auto;border-right:1px solid #292929}
 #clip-detail .clip-area[data-inspector-layout=horizontal] .clip-option-groups>details:not([open]){display:none}
 #clip-detail .clip-area[data-inspector-layout=horizontal] .clip-option-groups>details>summary{display:none}
-.lower-drag-collapsed .workspace-lower{display:none}
-@media(max-width:850px){footer{gap:4px;padding:3px 7px}#footer-display-controls{gap:3px}#clip-overview{width:110px}}
+.lower-drag-collapsed #detail-content{display:none}
+@media(max-width:850px){footer{gap:4px;padding:3px 7px}#footer-display-controls{gap:3px}#clip-overview{width:110px}#device-overview{width:120px}}
