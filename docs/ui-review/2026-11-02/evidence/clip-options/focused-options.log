@@ -1,0 +1,25 @@
+
+> test:browser
+> playwright test alive-chain.spec.mjs --grep fixed Devices divider closes|Clip options match|lower row drag|Clip.*draft|Clip.*unfinished|piano header exposes --workers=2 --reporter=list --output=/tmp/alive-clip-options-focused-final
+
+
+Running 12 tests using 1 worker
+
+(node:1035089) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1035089) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 alive-chain.spec.mjs:12:92 › Clip options match the compact tabs and tall accordion reference at 800 (3.7s)
+  ✓   2 alive-chain.spec.mjs:12:92 › Clip options match the compact tabs and tall accordion reference at 1280 (2.8s)
+  ✓   3 alive-chain.spec.mjs:12:92 › Clip options match the compact tabs and tall accordion reference at 1440 (2.7s)
+  ✓   4 alive-chain.spec.mjs:40:1 › piano header exposes real modes and honest unavailable tools without the old title band (1.2s)
+  ✓   5 alive-chain.spec.mjs:52:1 › fixed Devices divider closes with the keyboard and Help reopens independently (1.3s)
+  ✓   6 alive-chain.spec.mjs:61:47 › lower row drag collapses and restores clip without losing drafts (2.0s)
+  ✓   7 alive-chain.spec.mjs:61:47 › lower row drag collapses and restores devices without losing drafts (2.0s)
+  ✓   8 alive-chain.spec.mjs:61:47 › lower row drag collapses and restores both without losing drafts (2.2s)
+  ✓   9 alive-chain.spec.mjs:357:1 › Device-only mode restores its fixed height without forgetting the Clip height or drafts (1.5s)
+  ✓  10 alive-chain.spec.mjs:620:42 › Clip disclosure preserves an unfinished Start through mouse navigation (1.7s)
+  ✓  11 alive-chain.spec.mjs:620:42 › Clip disclosure preserves an unfinished Start through keyboard navigation (2.3s)
+  ✓  12 alive-chain.spec.mjs:1664:1 › a parked Clip region draft follows its Arrangement occurrence when placements share a source (3.2s)
+
+  12 passed (29.5s)

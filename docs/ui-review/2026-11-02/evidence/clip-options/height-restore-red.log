@@ -1,0 +1,49 @@
+
+> test:browser
+> playwright test alive-chain.spec.mjs --grep lower row drag --workers=2 --reporter=list --output=/tmp/alive-clip-options-height-red
+
+
+Running 3 tests using 1 worker
+
+(node:1047317) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1047317) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 alive-chain.spec.mjs:61:47 › lower row drag collapses and restores clip without losing drafts (2.9s)
+  ✓  2 alive-chain.spec.mjs:61:47 › lower row drag collapses and restores devices without losing drafts (2.0s)
+  ✘  3 alive-chain.spec.mjs:61:47 › lower row drag collapses and restores both without losing drafts (2.7s)
+
+
+  1) alive-chain.spec.mjs:61:47 › lower row drag collapses and restores both without losing drafts ─
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: 498
+    Received: 510
+
+      74 |   if(panels==='both'){await page.locator('#master-select-session').click();await expect(page.locator('#master-detail')).toBeVisible();await page.getByRole('button',{name:'Select Pulse track',exact:true}).click();await expect(page.locator('.workspace-lower')).toBeHidden();}
+      75 |   await page.locator('#toggle-detail').click();await expect(page.locator('.workspace-lower')).toBeVisible();
+    > 76 |   expect((await page.locator('.workspace-lower').boundingBox()).height).toBe(initial);
+         |                                                                         ^
+      77 |   await expect(page.locator('#clip-detail'))[panels==='devices'?'toBeHidden':'toBeVisible']();await expect(page.locator('#device-detail'))[panels==='clip'?'toBeHidden':'toBeVisible']();
+      78 |   if(panels!=='devices')await expect(field).toHaveValue('0.75');
+      79 |   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+        at /tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:76:73
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../alive-clip-options-height-red/alive-chain-lower-row-drag-9e251--both-without-losing-drafts/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../alive-clip-options-height-red/alive-chain-lower-row-drag-9e251--both-without-losing-drafts/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../alive-clip-options-height-red/alive-chain-lower-row-drag-9e251--both-without-losing-drafts/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../alive-clip-options-height-red/alive-chain-lower-row-drag-9e251--both-without-losing-drafts/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    alive-chain.spec.mjs:61:47 › lower row drag collapses and restores both without losing drafts ──
+  2 passed (11.8s)

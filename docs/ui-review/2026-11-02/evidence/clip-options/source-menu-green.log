@@ -1,0 +1,19 @@
+
+> test:browser
+> playwright test --workers=2 --reporter=list --grep Master selection parks unfinished|source disclosure keeps|renaming an Arrangement source|maximized Arrangement keeps|four-slot bank|piano header exposes --output=/tmp/alive-clip-options-source-menu
+
+
+Running 6 tests using 1 worker
+
+(node:1107963) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1107963) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 alive-chain.spec.mjs:40:1 › piano header exposes real modes and honest unavailable tools without the old title band (1.8s)
+  ✓  2 alive-chain.spec.mjs:944:1 › maximized Arrangement keeps source actions available without covering the editor (1.9s)
+  ✓  3 alive-chain.spec.mjs:1543:1 › four-slot bank preserves stable note identity and fits the minimum desktop (1.6s)
+  ✓  4 alive-chain.spec.mjs:1804:1 › Master selection parks unfinished clip text and caret without a native edit (1.1s)
+  ✓  5 alive-chain.spec.mjs:1831:1 › renaming an Arrangement source keeps its source controls open after the accepted edit (1.5s)
+  ✓  6 alive-chain.spec.mjs:1842:1 › source disclosure keeps the Arrangement Add note target reachable before and after closing (2.1s)
+
+  6 passed (13.0s)

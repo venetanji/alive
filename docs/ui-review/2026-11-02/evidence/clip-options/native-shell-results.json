@@ -1,0 +1,186 @@
+{
+  "selected_snapshot": "/home/venetanji/.local/share/alive/builds/test-06d2a008d01d266000dd",
+  "reported_build_commit": "c06d96e0f6e2b6851e060e3cf3cc4efafd5134f1",
+  "scope": "actual desktop entries, private Xvfb/DBus and software-only PipeWire; brief native playback; no physical devices or recording",
+  "apps": [
+    {
+      "app": "alive",
+      "desktop_entry": "/home/venetanji/.local/share/applications/org.alive.session.test.desktop",
+      "executable": "/home/venetanji/.local/share/alive/builds/test-06d2a008d01d266000dd/bin/alive",
+      "executable_sha256": "7c5f36f391f6f6f94fd570d6e63de1b3e2cc94d8df2308d8ab61e70c036d9f5e",
+      "native_library": "/home/venetanji/.local/share/alive/builds/test-06d2a008d01d266000dd/bin/libultra_native.so",
+      "native_library_sha256": "1652d52c581395a9919ea2dbe5a03c4d365c7f9a4da6d10cff233e590099eaa8",
+      "ready_accessible_text": "Start transport",
+      "screenshots": [
+        "alive-both-1280x800.png",
+        "alive-both-1440x900.png",
+        "alive-both-800x600.png",
+        "alive-devices-1280x800.png",
+        "alive-devices-1440x900.png",
+        "alive-devices-800x600.png",
+        "alive-display-menu-1440x900.png",
+        "alive-expanded-1440x900.png",
+        "alive-help-without-editors-1280x800.png",
+        "alive-help-without-editors-1440x900.png",
+        "alive-help-without-editors-800x600.png",
+        "alive-horizontal-1440x900.png",
+        "alive-launcher-1280x800.png",
+        "alive-launcher-1440x900.png",
+        "alive-launcher-800x600.png",
+        "alive-lower-collapsed-1280x800.png",
+        "alive-lower-collapsed-1440x900.png",
+        "alive-lower-collapsed-800x600.png",
+        "alive-native-loop-playing-1440x900.png",
+        "alive-source-menu-1440x900.png",
+        "alive-stacked-1280x800.png",
+        "alive-stacked-1440x900.png",
+        "alive-stacked-800x600.png"
+      ],
+      "resize_restore": "passed",
+      "checks": [
+        {
+          "size": [
+            800,
+            600
+          ],
+          "device_height": 190,
+          "clip_resize": "passed",
+          "device_only_restore": "passed",
+          "full_height_and_restore": "passed",
+          "clip_device_gap": 5,
+          "compressed_mixer_hidden": true,
+          "display_toggles": "passed",
+          "help_without_editors": "passed",
+          "study_geometry": {
+            "browser_width": 290,
+            "track_header_height": 21
+          }
+        },
+        {
+          "size": [
+            1280,
+            800
+          ],
+          "device_height": 190,
+          "clip_resize": "passed",
+          "device_only_restore": "passed",
+          "full_height_and_restore": "passed",
+          "clip_device_gap": 5,
+          "compressed_mixer_hidden": false,
+          "display_toggles": "passed",
+          "help_without_editors": "passed",
+          "study_geometry": {
+            "browser_width": 334,
+            "track_header_height": 21
+          }
+        },
+        {
+          "size": [
+            1440,
+            900
+          ],
+          "device_height": 190,
+          "clip_resize": "passed",
+          "device_only_restore": "passed",
+          "full_height_and_restore": "passed",
+          "clip_device_gap": 5,
+          "compressed_mixer_hidden": false,
+          "display_toggles": "passed",
+          "help_without_editors": "passed",
+          "study_geometry": {
+            "browser_width": 334,
+            "track_header_height": 21
+          }
+        },
+        {
+          "size": [
+            800,
+            600
+          ],
+          "device_height": 190,
+          "clip_resize": "passed",
+          "device_only_restore": "passed",
+          "full_height_and_restore": "passed",
+          "clip_device_gap": 5,
+          "compressed_mixer_hidden": true,
+          "display_toggles": "passed",
+          "help_without_editors": "passed",
+          "study_geometry": {
+            "browser_width": 290,
+            "track_header_height": 21
+          }
+        },
+        {
+          "size": [
+            1440,
+            900
+          ],
+          "device_height": 190,
+          "clip_resize": "passed",
+          "device_only_restore": "passed",
+          "full_height_and_restore": "passed",
+          "clip_device_gap": 5,
+          "compressed_mixer_hidden": false,
+          "display_toggles": "passed",
+          "help_without_editors": "passed",
+          "study_geometry": {
+            "browser_width": 334,
+            "track_header_height": 21
+          }
+        },
+        {
+          "source_popup_and_master_target": "passed; popup remains inside Clip and Master receives pointer"
+        },
+        {
+          "draft_after_mixer_hide_show": "passed; admitted fader unchanged",
+          "display_keyboard_and_focus": "passed"
+        },
+        {
+          "browser_drag_collapse_cancel_reopen": "passed",
+          "independent_help_width": 231,
+          "expanded_mixer_draft": "passed; admitted fader unchanged",
+          "explicit_clip_layout_modes": "passed"
+        },
+        {
+          "compact_option_tabs_and_tall_accordion": "passed at three sizes",
+          "removed_title_band": "passed; editor toolbar starts at Clip top",
+          "lower_drag_collapse_cancel_reopen": "passed at three sizes",
+          "piano_modes_and_navigation": "passed; existing inspectors and viewport owners"
+        },
+        {
+          "save_from_file": "native acknowledgement and staged-file write passed"
+        },
+        {
+          "native_loop_disc": "changed across native observations; cleared after track Stop",
+          "observed_loop_labels": [
+            "Pulse loop position: playing, 8 beats, 28 percent, play count unavailable",
+            "Pulse loop position: playing, 8 beats, 39 percent, play count unavailable",
+            "Pulse loop position: playing, 8 beats, 50 percent, play count unavailable",
+            "Pulse loop position: playing, 8 beats, 9 percent, play count unavailable"
+          ],
+          "probe_launch_grid": "existing 1 Bar; broad quantized acceptance is separate",
+          "private_buffer_frames_requested": 512,
+          "play_count": "unavailable; no renderer estimate"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "app": "ultra",
+      "desktop_entry": "/home/venetanji/.local/share/applications/org.alive.ultra.research.desktop",
+      "executable": "/home/venetanji/.local/share/alive/builds/test-06d2a008d01d266000dd/bin/ultra",
+      "executable_sha256": "28ded4172ade24d1022f8d846ed24005eb828189d01019f8dc560f6862f1c93e",
+      "native_library": "/home/venetanji/.local/share/alive/builds/test-06d2a008d01d266000dd/bin/libultra_native.so",
+      "native_library_sha256": "1652d52c581395a9919ea2dbe5a03c4d365c7f9a4da6d10cff233e590099eaa8",
+      "ready_accessible_text": "Shared native patch ready.",
+      "screenshots": [
+        "ultra-launcher-1280x800.png",
+        "ultra-launcher-1440x900.png",
+        "ultra-launcher-800x600.png"
+      ],
+      "resize_restore": "passed",
+      "checks": [],
+      "pass": true
+    }
+  ]
+}

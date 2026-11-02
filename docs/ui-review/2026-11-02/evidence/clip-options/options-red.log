@@ -1,0 +1,323 @@
+
+> test:browser
+> playwright test alive-chain.spec.mjs --grep Clip options match|piano header exposes|lower row drag --workers=2 --reporter=list --output=/tmp/alive-clip-options-red
+
+
+Running 7 tests using 1 worker
+
+(node:1022597) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1022597) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 alive-chain.spec.mjs:5:92 › Clip options match the compact tabs and tall accordion reference at 800 (6.0s)
+(node:1022923) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1022923) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 alive-chain.spec.mjs:5:92 › Clip options match the compact tabs and tall accordion reference at 1280 (6.0s)
+(node:1023099) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1023099) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 alive-chain.spec.mjs:5:92 › Clip options match the compact tabs and tall accordion reference at 1440 (6.0s)
+(node:1023309) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1023309) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  4 alive-chain.spec.mjs:31:1 › piano header exposes real modes and honest unavailable tools without the old title band (5.7s)
+(node:1023504) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1023504) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  5 alive-chain.spec.mjs:43:47 › lower row drag collapses and restores clip without losing drafts (6.2s)
+(node:1023837) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1023837) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  6 alive-chain.spec.mjs:43:47 › lower row drag collapses and restores devices without losing drafts (5.9s)
+(node:1024027) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1024027) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  7 alive-chain.spec.mjs:43:47 › lower row drag collapses and restores both without losing drafts (6.4s)
+
+
+  1) alive-chain.spec.mjs:5:92 › Clip options match the compact tabs and tall accordion reference at 800
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('.clip-area')
+    Expected: "horizontal"
+    Received: ""
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 5000ms
+      - waiting for locator('.clip-area')
+        9 × locator resolved to <div data-layout="auto" class="clip-area has-source">…</div>
+          - unexpected value "null"
+
+
+       7 |   const resize=page.locator('#detail-resizer'),area=page.locator('.clip-area'),properties=page.locator('.clip-properties');
+       8 |   await resize.focus();await resize.press('Home');
+    >  9 |   await expect(area).toHaveAttribute('data-inspector-layout','horizontal');
+         |                      ^
+      10 |   await expect(properties.getByRole('navigation',{name:'Clip option sections'})).toBeVisible();
+      11 |   for(const name of ['Clip','Launch','Pitch & Time','Transform','Generate'])await expect(properties.getByRole('button',{name:`Toggle ${name} options`,exact:true})).toBeVisible();
+      12 |   await expect(properties.locator('[data-section=clip] > summary')).toBeHidden();
+        at /tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:9:22
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../alive-clip-options-red/alive-chain-Clip-options-m-e39ce--accordion-reference-at-800/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../alive-clip-options-red/alive-chain-Clip-options-m-e39ce--accordion-reference-at-800/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../alive-clip-options-red/alive-chain-Clip-options-m-e39ce--accordion-reference-at-800/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../alive-clip-options-red/alive-chain-Clip-options-m-e39ce--accordion-reference-at-800/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) alive-chain.spec.mjs:5:92 › Clip options match the compact tabs and tall accordion reference at 1280
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('.clip-area')
+    Expected: "horizontal"
+    Received: ""
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 5000ms
+      - waiting for locator('.clip-area')
+        9 × locator resolved to <div data-layout="auto" class="clip-area has-source">…</div>
+          - unexpected value "null"
+
+
+       7 |   const resize=page.locator('#detail-resizer'),area=page.locator('.clip-area'),properties=page.locator('.clip-properties');
+       8 |   await resize.focus();await resize.press('Home');
+    >  9 |   await expect(area).toHaveAttribute('data-inspector-layout','horizontal');
+         |                      ^
+      10 |   await expect(properties.getByRole('navigation',{name:'Clip option sections'})).toBeVisible();
+      11 |   for(const name of ['Clip','Launch','Pitch & Time','Transform','Generate'])await expect(properties.getByRole('button',{name:`Toggle ${name} options`,exact:true})).toBeVisible();
+      12 |   await expect(properties.locator('[data-section=clip] > summary')).toBeHidden();
+        at /tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:9:22
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../alive-clip-options-red/alive-chain-Clip-options-m-2ac8b-accordion-reference-at-1280/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../alive-clip-options-red/alive-chain-Clip-options-m-2ac8b-accordion-reference-at-1280/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../alive-clip-options-red/alive-chain-Clip-options-m-2ac8b-accordion-reference-at-1280/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../alive-clip-options-red/alive-chain-Clip-options-m-2ac8b-accordion-reference-at-1280/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) alive-chain.spec.mjs:5:92 › Clip options match the compact tabs and tall accordion reference at 1440
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator:  locator('.clip-area')
+    Expected: "horizontal"
+    Received: ""
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 5000ms
+      - waiting for locator('.clip-area')
+        9 × locator resolved to <div data-layout="auto" class="clip-area has-source">…</div>
+          - unexpected value "null"
+
+
+       7 |   const resize=page.locator('#detail-resizer'),area=page.locator('.clip-area'),properties=page.locator('.clip-properties');
+       8 |   await resize.focus();await resize.press('Home');
+    >  9 |   await expect(area).toHaveAttribute('data-inspector-layout','horizontal');
+         |                      ^
+      10 |   await expect(properties.getByRole('navigation',{name:'Clip option sections'})).toBeVisible();
+      11 |   for(const name of ['Clip','Launch','Pitch & Time','Transform','Generate'])await expect(properties.getByRole('button',{name:`Toggle ${name} options`,exact:true})).toBeVisible();
+      12 |   await expect(properties.locator('[data-section=clip] > summary')).toBeHidden();
+        at /tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:9:22
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../alive-clip-options-red/alive-chain-Clip-options-m-b3f90-accordion-reference-at-1440/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../alive-clip-options-red/alive-chain-Clip-options-m-b3f90-accordion-reference-at-1440/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../alive-clip-options-red/alive-chain-Clip-options-m-b3f90-accordion-reference-at-1440/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../alive-clip-options-red/alive-chain-Clip-options-m-b3f90-accordion-reference-at-1440/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) alive-chain.spec.mjs:31:1 › piano header exposes real modes and honest unavailable tools without the old title band
+
+    Error: expect(locator).toHaveAttribute(expected) failed
+
+    Locator: locator('.clip-view-tools').getByRole('button', { name: 'Notes', exact: true })
+    Expected: "true"
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toHaveAttribute" with timeout 5000ms
+      - waiting for locator('.clip-view-tools').getByRole('button', { name: 'Notes', exact: true })
+
+
+      31 | test('piano header exposes real modes and honest unavailable tools without the old title band',async({page})=>{
+      32 |   await page.setViewportSize({width:1440,height:900});await openSession(page);
+    > 33 |   const header=page.locator('.clip-view-tools');await expect(header.getByRole('button',{name:'Notes',exact:true})).toHaveAttribute('aria-pressed','true');
+         |                                                                                                                    ^
+      34 |   for(const name of ['Search notes unavailable','Fold unavailable','Scale unavailable','MPE unavailable'])await expect(header.getByRole('button',{name,exact:true})).toBeDisabled();
+      35 |   await expect(header.getByRole('checkbox',{name:'Highlight Scale unavailable',exact:true})).toBeDisabled();
+      36 |   await expect(header.getByRole('combobox',{name:'Piano roll grid',exact:true})).toBeDisabled();
+        at /tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:33:116
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../alive-clip-options-red/alive-chain-piano-header-e-c1279--without-the-old-title-band/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../alive-clip-options-red/alive-chain-piano-header-e-c1279--without-the-old-title-band/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../alive-clip-options-red/alive-chain-piano-header-e-c1279--without-the-old-title-band/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../alive-clip-options-red/alive-chain-piano-header-e-c1279--without-the-old-title-band/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) alive-chain.spec.mjs:43:47 › lower row drag collapses and restores clip without losing drafts ─
+
+    Error: expect(locator).toBeHidden() failed
+
+    Locator:  locator('.workspace-lower')
+    Expected: hidden
+    Received: visible
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeHidden" with timeout 5000ms
+      - waiting for locator('.workspace-lower')
+        9 × locator resolved to <div class="workspace-lower">…</div>
+          - unexpected value "visible"
+
+
+      49 |   const initial=(await page.locator('.workspace-lower').boundingBox()).height;
+      50 |   const drag=async()=>{const r=await handle.boundingBox();await page.mouse.move(r.x+r.width/2,r.y+r.height/2);await page.mouse.down();await page.mouse.move(r.x+r.width/2,770,{steps:8});};
+    > 51 |   await drag();await expect(page.locator('.workspace-lower')).toBeHidden();await page.keyboard.press('Escape');await page.mouse.up();
+         |                                                               ^
+      52 |   await expect(page.locator('.workspace-lower')).toBeVisible();expect((await page.locator('.workspace-lower').boundingBox()).height).toBe(initial);
+      53 |   await drag();await page.mouse.up();await expect(page.locator('.workspace-lower')).toBeHidden();
+      54 |   const upper=await page.locator('.workspace-upper').boundingBox(),shell=await page.locator('#workspace-shell').boundingBox();expect(upper.y+upper.height).toBe(shell.y+shell.height);
+        at /tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:51:63
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../alive-clip-options-red/alive-chain-lower-row-drag-7c564--clip-without-losing-drafts/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../alive-clip-options-red/alive-chain-lower-row-drag-7c564--clip-without-losing-drafts/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../alive-clip-options-red/alive-chain-lower-row-drag-7c564--clip-without-losing-drafts/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../alive-clip-options-red/alive-chain-lower-row-drag-7c564--clip-without-losing-drafts/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  6) alive-chain.spec.mjs:43:47 › lower row drag collapses and restores devices without losing drafts
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator:  locator('#detail-resizer')
+    Expected: visible
+    Received: hidden
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeVisible" with timeout 5000ms
+      - waiting for locator('#detail-resizer')
+        9 × locator resolved to <div hidden="" tabindex="0" role="separator" id="detail-resizer" aria-valuemin="224" aria-valuemax="517" aria-valuenow="190" aria-orientation="horizontal" aria-label="Resize detail area" data-help="Drag to resize; double-click to maximize or restore"></div>
+          - unexpected value "hidden"
+
+
+      44 |   await page.setViewportSize({width:1280,height:800});await openSession(page);
+      45 |   if(panels!=='clip')await page.locator('#detail-devices').click();if(panels==='devices')await page.locator('#detail-clip').click();
+    > 46 |   const handle=page.locator('#detail-resizer');await expect(handle).toBeVisible();
+         |                                                                     ^
+      47 |   const field=panels==='devices'?page.getByRole('spinbutton',{name:'Track 1 device 1 Cutoff base',exact:true}):page.getByLabel('Clip Start',{exact:true});
+      48 |   if(panels!=='devices')await field.fill('0.75');
+      49 |   const initial=(await page.locator('.workspace-lower').boundingBox()).height;
+        at /tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:46:69
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../alive-clip-options-red/alive-chain-lower-row-drag-32110-vices-without-losing-drafts/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../alive-clip-options-red/alive-chain-lower-row-drag-32110-vices-without-losing-drafts/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../alive-clip-options-red/alive-chain-lower-row-drag-32110-vices-without-losing-drafts/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../alive-clip-options-red/alive-chain-lower-row-drag-32110-vices-without-losing-drafts/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  7) alive-chain.spec.mjs:43:47 › lower row drag collapses and restores both without losing drafts ─
+
+    Error: expect(locator).toBeHidden() failed
+
+    Locator:  locator('.workspace-lower')
+    Expected: hidden
+    Received: visible
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeHidden" with timeout 5000ms
+      - waiting for locator('.workspace-lower')
+        9 × locator resolved to <div class="workspace-lower">…</div>
+          - unexpected value "visible"
+
+
+      49 |   const initial=(await page.locator('.workspace-lower').boundingBox()).height;
+      50 |   const drag=async()=>{const r=await handle.boundingBox();await page.mouse.move(r.x+r.width/2,r.y+r.height/2);await page.mouse.down();await page.mouse.move(r.x+r.width/2,770,{steps:8});};
+    > 51 |   await drag();await expect(page.locator('.workspace-lower')).toBeHidden();await page.keyboard.press('Escape');await page.mouse.up();
+         |                                                               ^
+      52 |   await expect(page.locator('.workspace-lower')).toBeVisible();expect((await page.locator('.workspace-lower').boundingBox()).height).toBe(initial);
+      53 |   await drag();await page.mouse.up();await expect(page.locator('.workspace-lower')).toBeHidden();
+      54 |   const upper=await page.locator('.workspace-upper').boundingBox(),shell=await page.locator('#workspace-shell').boundingBox();expect(upper.y+upper.height).toBe(shell.y+shell.height);
+        at /tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:51:63
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../alive-clip-options-red/alive-chain-lower-row-drag-9e251--both-without-losing-drafts/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../alive-clip-options-red/alive-chain-lower-row-drag-9e251--both-without-losing-drafts/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../alive-clip-options-red/alive-chain-lower-row-drag-9e251--both-without-losing-drafts/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../alive-clip-options-red/alive-chain-lower-row-drag-9e251--both-without-losing-drafts/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  7 failed
+    alive-chain.spec.mjs:5:92 › Clip options match the compact tabs and tall accordion reference at 800
+    alive-chain.spec.mjs:5:92 › Clip options match the compact tabs and tall accordion reference at 1280
+    alive-chain.spec.mjs:5:92 › Clip options match the compact tabs and tall accordion reference at 1440
+    alive-chain.spec.mjs:31:1 › piano header exposes real modes and honest unavailable tools without the old title band
+    alive-chain.spec.mjs:43:47 › lower row drag collapses and restores clip without losing drafts ──
+    alive-chain.spec.mjs:43:47 › lower row drag collapses and restores devices without losing drafts
+    alive-chain.spec.mjs:43:47 › lower row drag collapses and restores both without losing drafts ──

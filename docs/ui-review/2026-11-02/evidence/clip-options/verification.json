@@ -1,0 +1,249 @@
+{
+  "source_commit": "c06d96e0f6e2b6851e060e3cf3cc4efafd5134f1",
+  "baseline_commit": "b872e55e409d80f5d1cfd019e6a5205220506cf0",
+  "branch": "audit/pr12-native-20261102",
+  "checkout": "/tmp/alive-pr12-native-20261102",
+  "selected_snapshot": "/home/venetanji/.local/share/alive/builds/test-06d2a008d01d266000dd",
+  "artifact_hashes": {
+    "bin/alive": "7c5f36f391f6f6f94fd570d6e63de1b3e2cc94d8df2308d8ab61e70c036d9f5e",
+    "bin/ultra": "28ded4172ade24d1022f8d846ed24005eb828189d01019f8dc560f6862f1c93e",
+    "bin/libultra_native.so": "1652d52c581395a9919ea2dbe5a03c4d365c7f9a4da6d10cff233e590099eaa8"
+  },
+  "source_provenance": {
+    "compiled_tracked_ui_files": 159,
+    "hashes": "compiled-ui-hashes.json",
+    "verified_against_source_commit": true,
+    "compilation_before_commit": "Both binaries compiled while the final full browser suite ran; every tracked UI file was checked against its compiled-content hash and the committed source before installation.",
+    "manifest_correction": {
+      "previous_reported_build_commit": "c06d96e3e8b3c83d0b94ee000000000000000000",
+      "reason": "Installer argument transcription error corrected before native verification; all 159 tracked UI source hashes match the compiled content and exact source commit. Artifact files and hashes are unchanged."
+    }
+  },
+  "browser": {
+    "passed": 359,
+    "failed": 0,
+    "skipped": 0,
+    "retries": 0,
+    "exit_code": 0,
+    "sandbox": true,
+    "command": "env ALIVE_TEST_PORT=4195 npm run test:browser -- --workers=2 --reporter=list --output=/tmp/alive-clip-options-complete4",
+    "cwd": "apps/ultra/tests/ci",
+    "raw_output": "/tmp/alive-clip-options-complete4.log",
+    "raw_artifacts": "/tmp/alive-clip-options-complete4"
+  },
+  "node": {
+    "passed": 673,
+    "failed": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "command": "node --test apps/ultra/ui/*.test.mjs apps/ultra/ui/components/*.test.mjs",
+    "raw_output": "/tmp/alive-clip-options-node-final3.log"
+  },
+  "helpers": {
+    "passed": 146,
+    "failed": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "command": "python3 -m unittest discover -s apps/ultra/tests -p 'test_*.py'",
+    "raw_output": "/tmp/alive-clip-options-helpers.log"
+  },
+  "source_popup_regressions": {
+    "passed": 6,
+    "failed": 0,
+    "raw_output": "/tmp/alive-clip-options-source-menu.log",
+    "red_evidence": "browser-attempt3.log"
+  },
+  "browser_attempts": [
+    {
+      "attempt": 1,
+      "status": "interrupted",
+      "passed": 77,
+      "failed": 9,
+      "interrupted": 2,
+      "raw_output": "/tmp/alive-clip-options-complete.log"
+    },
+    {
+      "attempt": 2,
+      "status": "interrupted",
+      "passed": 311,
+      "failed": 4,
+      "interrupted": 1,
+      "did_not_run": 43,
+      "raw_output": "/tmp/alive-clip-options-complete2.log"
+    },
+    {
+      "attempt": 3,
+      "status": "failed",
+      "passed": 358,
+      "failed": 1,
+      "raw_output": "/tmp/alive-clip-options-complete3.log"
+    },
+    {
+      "attempt": 4,
+      "status": "passed",
+      "passed": 359,
+      "failed": 0,
+      "skipped": 0,
+      "raw_output": "/tmp/alive-clip-options-complete4.log"
+    }
+  ],
+  "builds": {
+    "alive_exit_code": 0,
+    "ultra_exit_code": 0,
+    "order": [
+      "ultra",
+      "alive"
+    ],
+    "existing_ultra_library_warnings": 4,
+    "compiler": "system Cargo/Rust 1.99.1",
+    "command": "env ULTRA_NATIVE_LIB_DIR=/tmp/alive-pr12-native-20261102/apps/ultra/build /usr/bin/cargo build --locked -j 2 --manifest-path <app>/src-tauri/Cargo.toml --target-dir apps/ultra/src-tauri/target"
+  },
+  "native_probe": {
+    "status": "passed",
+    "raw_output": "/tmp/alive-clip-options-native-c06d96e.log",
+    "raw_artifacts": "/tmp/alive-clip-options-native-c06d96e",
+    "probe_sha256": "dc5adbb176e9449e9eb7c8e1c5a782d1fedb1acc0992a3b2da4e11ca005cd562",
+    "scope": "Actual desktop entries; private Xvfb/DBus and software-only PipeWire. Brief playback/Stop observation, no physical devices or recording.",
+    "command": "env ULTRA_TEST_ALIVE=1 ULTRA_TEST_ALIVE_DEFAULT=1 ULTRA_TEST_ALIVE_BINARY=/home/venetanji/.local/share/alive/current-test/bin/alive ULTRA_TEST_SCREEN_SIZE=1600x1000 ULTRA_TEST_SCRIPT=\"$PWD/docs/ui-review/2026-11-02/evidence/clip-options/native-panel-probe.py\" bash apps/ultra/tests/check_canvas_desktop.sh --software-audio /tmp/alive-clip-options-native-c06d96e",
+    "exit_code": 0,
+    "apps": {
+      "alive": "passed",
+      "ultra": "passed"
+    },
+    "startup_file_delivery": "passed",
+    "ld_library_path_override": false,
+    "loop": {
+      "native_loop_disc": "changed across native observations; cleared after track Stop",
+      "observed_loop_labels": [
+        "Pulse loop position: playing, 8 beats, 28 percent, play count unavailable",
+        "Pulse loop position: playing, 8 beats, 39 percent, play count unavailable",
+        "Pulse loop position: playing, 8 beats, 50 percent, play count unavailable",
+        "Pulse loop position: playing, 8 beats, 9 percent, play count unavailable"
+      ],
+      "probe_launch_grid": "existing 1 Bar; broad quantized acceptance is separate",
+      "private_buffer_frames_requested": 512,
+      "play_count": "unavailable; no renderer estimate"
+    }
+  },
+  "viewports": [
+    [
+      800,
+      600
+    ],
+    [
+      1280,
+      800
+    ],
+    [
+      1440,
+      900
+    ]
+  ],
+  "design_detector": {
+    "findings": 40,
+    "advisories": 38,
+    "warnings": 2,
+    "warning_scope": "Pre-existing explicit Arial in SVG text at alive-piano.css:8",
+    "exit_code": 2,
+    "rendered_detector": "unrun; WebKitGTK has no CDP. Manual native screenshot inspection recorded separately."
+  },
+  "unrun": [
+    "new remote CI",
+    "Rust unit tests",
+    "full current-build native audio journeys",
+    "saved-clip measurements",
+    "resource bounds",
+    "CPAL loopback",
+    "physical hardware qualification",
+    "recording"
+  ],
+  "last_remote_ci": {
+    "url": "https://github.com/venetanji/alive/actions/runs/41381006275",
+    "commit": "c8f4cb3091b9754fa5c94e8a40718e72954aab14",
+    "status": "failed",
+    "arrangement_return_and_master": "passed on that historical commit",
+    "desktop": "failed on first live-fixture Save As with unexpected hosted editor; causal dispatch unresolved",
+    "clip_observation_saved_measurement_resources_loopback": "skipped"
+  },
+  "loop_count": "unavailable; no renderer estimate",
+  "scope": "Bounded Alive presentation/helper correction and matching local launcher pair. No native engine, DSP, host, document schema, routing or recording changes.",
+  "screenshots": [
+    "alive-both-1280x800.png",
+    "alive-both-1440x900.png",
+    "alive-both-800x600.png",
+    "alive-devices-1280x800.png",
+    "alive-devices-1440x900.png",
+    "alive-devices-800x600.png",
+    "alive-display-menu-1440x900.png",
+    "alive-expanded-1440x900.png",
+    "alive-help-without-editors-1280x800.png",
+    "alive-help-without-editors-1440x900.png",
+    "alive-help-without-editors-800x600.png",
+    "alive-horizontal-1440x900.png",
+    "alive-launcher-1280x800.png",
+    "alive-launcher-1440x900.png",
+    "alive-launcher-800x600.png",
+    "alive-lower-collapsed-1280x800.png",
+    "alive-lower-collapsed-1440x900.png",
+    "alive-lower-collapsed-800x600.png",
+    "alive-native-loop-playing-1440x900.png",
+    "alive-source-menu-1440x900.png",
+    "alive-stacked-1280x800.png",
+    "alive-stacked-1440x900.png",
+    "alive-stacked-800x600.png",
+    "chromium-clip-options-short-1280.png",
+    "chromium-clip-options-short-1440.png",
+    "chromium-clip-options-short-800.png",
+    "chromium-clip-options-tall-1280.png",
+    "chromium-clip-options-tall-1440.png",
+    "chromium-clip-options-tall-800.png",
+    "chromium-lower-collapsed-both.png",
+    "chromium-lower-collapsed-clip.png",
+    "chromium-lower-collapsed-devices.png",
+    "ultra-launcher-1280x800.png",
+    "ultra-launcher-1440x900.png",
+    "ultra-launcher-800x600.png"
+  ],
+  "screenshot_sha256": {
+    "alive-both-1280x800.png": "1e70d48fcbf5c208479adfe4436b378188506f03205b92f6911a196ce2e7f3de",
+    "alive-both-1440x900.png": "2bd145c5ed19dc6f3c9ab8e8237a183bb6af0787d7136d8b9a51cd2b5832299a",
+    "alive-both-800x600.png": "784419fd3e68867ba726f09c8841c5fe7ca016ae23376c9c10ebcb3284416f4f",
+    "alive-devices-1280x800.png": "80f6bb884f492082ea89f203c96ae5bc589430790f45e141ae82055ffa6a2807",
+    "alive-devices-1440x900.png": "c009449667bb4393e2ac6d586e185cbaae5d848c85ac4c619a7097216fe6271a",
+    "alive-devices-800x600.png": "27a44f7720a0de8977f39d67540db590b4f8a01ce6cd9ac383d80bf116c01372",
+    "alive-display-menu-1440x900.png": "c1e9d009c89c872a2a701a8b43925433dfdd006c4e529ff3dbbdb7c8e06a893b",
+    "alive-expanded-1440x900.png": "b491987774f2f92a976487631d4cc52d5688ef0836ba1e2cff3cda2c55ef721e",
+    "alive-help-without-editors-1280x800.png": "bb55166d418a4c75db9c4b1eef49ec5f7feb6afdbcafad2baf6575898d734d8f",
+    "alive-help-without-editors-1440x900.png": "e4d8136784e8490a51ab5565cae170a53b38425058965c3139e3759cc42a5d1b",
+    "alive-help-without-editors-800x600.png": "e06d04ac66df4b234ee08919dbb665c031ebd3e135fc190d2d3485012818e9b5",
+    "alive-horizontal-1440x900.png": "782ba5adc5dfbba4d5a3db248c2f8d190a953123761895bd6baff5c8ebdfeddd",
+    "alive-launcher-1280x800.png": "bdb811e4778fa6dafeedf40c72b44ad972176bf6ebb6e0f2fa681d3915312a42",
+    "alive-launcher-1440x900.png": "4fa863b2fb677e77ac43c2456d27ae1bbd25408c0c015cc9272032cabf6e7ba5",
+    "alive-launcher-800x600.png": "28ac760c4223be557c233cc25f70aeff5c66320db7ba81145f3574daa552997d",
+    "alive-lower-collapsed-1280x800.png": "c8263f83cfc240331b800236c68e630dc51f5c4f8e46e543c787e8a1b669a101",
+    "alive-lower-collapsed-1440x900.png": "558c341abde5b612767226aede87bf12541f350f0d5500f34f23783d9578e479",
+    "alive-lower-collapsed-800x600.png": "038aca54dac163e1020573a4544e0e9b1051fb4572750a894892f3efa7ced6b7",
+    "alive-native-loop-playing-1440x900.png": "3c3bec6b60eac3bbbed1f41b0e06fc1eeba79bd0143b2585bf44263cd14ccae1",
+    "alive-source-menu-1440x900.png": "0a305f43daad8f6e1207bf285691d92135b252fa73e7afbead567d4316051d75",
+    "alive-stacked-1280x800.png": "77e0c9fc646b05efdbe6a6fd50365e49adb5ae609d75b9df11d42d4990f9293f",
+    "alive-stacked-1440x900.png": "853543d588f644bc4644621af39878cebabd71bcca4f970a0a1b70e7edafe77f",
+    "alive-stacked-800x600.png": "4739f934139ff3567a7b8c9ca0cf349d67b6252ecb87ea2557823f39fce3a8dc",
+    "chromium-clip-options-short-1280.png": "9e3ef3aff4fa6623112854e4a77da1e7461b25cbc140dbd8154f092addf0219d",
+    "chromium-clip-options-short-1440.png": "c94ce13514a4336720f391b3121c5f1b92362f34849ccf56f951276737b20d30",
+    "chromium-clip-options-short-800.png": "a3090a1e3854bbe749b2b8c4c48fd0e9e872dd065b7ac917b7944c1c69127991",
+    "chromium-clip-options-tall-1280.png": "d4b901b3f0cb0e686d4463a6bddf7e91e0c138ffc7c2b971621da8718bd8065f",
+    "chromium-clip-options-tall-1440.png": "6dfcf4df3811e934303badca53ee288988ae3088b3abbb09e8220a9ca37ff95d",
+    "chromium-clip-options-tall-800.png": "504370affe258675fe0116fddadb1c85b005757597f41af5c8b87ed0d558a3b7",
+    "chromium-lower-collapsed-both.png": "a6e3cb70f32403c5aeadd773f307fc8f1d096723181289bcbba0a54ec7594acb",
+    "chromium-lower-collapsed-clip.png": "a6e3cb70f32403c5aeadd773f307fc8f1d096723181289bcbba0a54ec7594acb",
+    "chromium-lower-collapsed-devices.png": "1f4ddd38240ed0626621bbc671629635f579e45368196d4c00fa3e35e706026d",
+    "ultra-launcher-1280x800.png": "b442bf2691eaf0cc98c8e7aedc38450f93f5f40d726d8b91c71ec98a3026599d",
+    "ultra-launcher-1440x900.png": "0130f6fb4bc05cada529d6f81dd56c2de667d2ff5871d0d2f445799002647e50",
+    "ultra-launcher-800x600.png": "282dd879a36625d3f98f9d0caaf2621442701806cb5855aa54bd86468de12ecc"
+  },
+  "manual_visual_inspection": "Native compact/expanded/collapsed views at all three sizes; Ultra at all three sizes; Source popup, Help-only, fixed Devices and playing loop. Chromium compact/tall at all three sizes and collapsed both-open state.",
+  "desktop_entries": {
+    "validation_exit_code": 0,
+    "actual_launch_and_artifact_identity": "passed for both apps"
+  }
+}

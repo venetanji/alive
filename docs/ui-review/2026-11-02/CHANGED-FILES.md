@@ -1,6 +1,16 @@
 # Changed files from the PR 12 audited head
 
-The latest local UI correction uses application/test source
+The latest local correction uses application/helper/test source
+`c06d96e0f6e2b6851e060e3cf3cc4efafd5134f1`, relative to
+`b872e55e409d80f5d1cfd019e6a5205220506cf0`. Its exact nine-file source inventory
+is [evidence/clip-options/changed-source-files.txt](evidence/clip-options/changed-source-files.txt).
+See [CLIP-OPTIONS.md](CLIP-OPTIONS.md) for adaptive Clip options, the removed title
+band, piano-header navigation, Source popup placement, lower-area drag collapse
+and the matching rebuilt Alive/Ultra launcher pair. Additional changes update
+the capability map, reports, pointers and the new probe/evidence directory.
+No native engine, DSP, host or document schema changes are included.
+
+The preceding local UI correction uses application/test source
 `58eb6829e6bfbf515564a4532f5804d01b9e9d17`, relative to the preceding report
 `ad40d7d4132addef435a5e11b5d0452b671f5b36`. Its exact ten-file source inventory
 is [evidence/clip-divider/changed-source-files.txt](evidence/clip-divider/changed-source-files.txt).

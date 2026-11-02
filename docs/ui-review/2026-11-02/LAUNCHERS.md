@@ -1,8 +1,8 @@
 # Local Test Launchers
 
-Current selection: the Clip expansion and native loop display build from
-`58eb6829e6bfbf515564a4532f5804d01b9e9d17`, snapshot
-`test-3ed29c6aa405049d4d06`. See [the current visual report](CLIP-DIVIDER-LOOP.md)
+Current selection: the adaptive Clip options and lower-area collapse build from
+`c06d96e0f6e2b6851e060e3cf3cc4efafd5134f1`, snapshot
+`test-06d2a008d01d266000dd`. See [the current visual report](CLIP-OPTIONS.md)
 for its matching hashes and native launcher evidence. The rest of this document
 records the earlier launcher-installation batch and its historical build.
 

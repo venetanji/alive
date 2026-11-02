@@ -1,7 +1,7 @@
 {
   "auditedHead": "11da097c27627a92629632ab62304d799e50099c",
   "date": "2026-11-02",
-  "scope": "140 historical reference rows plus 19 audited control families and 2 loop-display follow-ups; source availability and runtime acceptance reported separately",
+  "scope": "140 historical reference rows, 19 audited control families, 2 loop-display follow-ups and 6 Clip/panel refinements; source availability and runtime acceptance reported separately",
   "classes": {
     "W": "already_wired",
     "E": "existing_capability_needing_ui_entry",
@@ -2501,6 +2501,78 @@
       "tests": "Native loop crossing, missed observations, reset, identity, overflow and lifecycle tests before enabling; frontend currently asserts unavailable count",
       "evidence": "alive_session_workspaces.hpp wraps placement and Session cursors; runtime_workspaces.rs exports source phase without completed plays. No engine changes in this UI batch",
       "evidenceLevel": "source_audit; missing native contract"
+    },
+    {
+      "id": "adaptive-clip-option-sections",
+      "label": "Compact Clip option tabs and tall accordion",
+      "classification": "already_wired",
+      "owner": "alive-clip-view.mjs; existing workspace draft ownership",
+      "prerequisites": "A selected source; Automatic follows editor height below 300 px or explicitly widened properties at least 350 px; manual layout choices retain their ownership",
+      "disabledReason": "Option groups are hidden for an empty selection; the title's Source / Clip action remains available. Opening an option section does not enable its unavailable musical controls",
+      "errorHandling": "Reuse mounted fields, source/occurrence scopes and parked drafts; cancel restores prior property width and layout; no musical command from section navigation",
+      "tests": "alive-chain.spec.mjs: three-size compact/tall/width and draft identity regressions; native-panel-probe.py",
+      "evidence": "See CLIP-OPTIONS.md for source/build and rendered evidence",
+      "evidenceLevel": "source_implementation; runtime acceptance recorded separately"
+    },
+    {
+      "id": "piano-header-existing-navigation",
+      "label": "Notes, Envelopes inspector access and piano navigation disclosure",
+      "classification": "already_wired",
+      "owner": "alive-clip-view.mjs; existing automation inspector and viewport navigation",
+      "prerequisites": "Selected MIDI source for modes; selected source for time/Fit navigation; MIDI Preview retains its native admission",
+      "disabledReason": "MIDI modes and Preview hide for audio; audio retains waveform/time/Fit controls",
+      "errorHandling": "Notes closes and Envelopes opens the existing automation inspector; they do not claim a new full-envelope editor. Existing viewport, Preview and native edit handlers remain authoritative",
+      "tests": "Mode/target/draft checks, MIDI/audio range and waveform navigation regressions, full shared Ultra suite",
+      "evidence": "Full-width selected-clip title band removed; source actions remain in the inspector title and existing edit handlers",
+      "evidenceLevel": "source_implementation; runtime acceptance recorded separately"
+    },
+    {
+      "id": "piano-search-and-fold",
+      "label": "Piano note search and Fold",
+      "classification": "frontend_only_work",
+      "owner": "Future Clip viewport and note-selection presentation",
+      "prerequisites": "Define search scope and folded-pitch navigation, hit geometry, selection/draft preservation and empty-note behavior",
+      "disabledReason": "Note search and folded note rows are not implemented",
+      "errorHandling": "Disabled header controls explain their state in Help; no fake filtering or note edits",
+      "tests": "Header unavailable-state and zero-command regressions; future geometry/keyboard tests required",
+      "evidence": "Reference header is visual authority, not capability evidence",
+      "evidenceLevel": "source_audit; unavailable"
+    },
+    {
+      "id": "clip-scales-and-midi-processing",
+      "label": "Scale, Highlight Scale, Pitch & Time, Transform and Generate",
+      "classification": "unresolved_product_semantics",
+      "owner": "Future source metadata, MIDI edit commands and existing acknowledged publication/history pipeline",
+      "prerequisites": "Define scale persistence and selection scope; identity, bounds, determinism, rejection and Undo for inversion, interval, stretch, length, humanize, reverse, legato, transforms and generators",
+      "disabledReason": "Reference controls have no admitted implementation; the existing fixed editing grid remains 1/16",
+      "errorHandling": "Disabled fields/actions show unavailable Help; opening sections is presentation only; do not emit musical commands or claim success",
+      "tests": "Unavailable-state/zero-command header and section regressions; musical validation and native acknowledgement tests required before enabling",
+      "evidence": "No scale schema or musical processing implemented in this presentation batch; existing audio Re-Pitch stays separate and functional",
+      "evidenceLevel": "source_audit; unresolved semantics"
+    },
+    {
+      "id": "piano-mpe-editor",
+      "label": "MPE per-note expression editor",
+      "classification": "missing_native_or_provider_contract",
+      "owner": "Future document/native MIDI expression and editor contract",
+      "prerequisites": "Expression representation, channel/voice ownership, admission, device support, persistence, errors, acknowledgements and Undo",
+      "disabledReason": "Per-note expression has no current native contract",
+      "errorHandling": "Disabled MPE header control; no simulated expression state",
+      "tests": "Current unavailable-state regression; native expression/lifecycle tests required before enabling",
+      "evidence": "Reference presence does not establish MPE support",
+      "evidenceLevel": "source_audit; missing native contract"
+    },
+    {
+      "id": "lower-area-drag-collapse",
+      "label": "Close the whole lower area by dragging below its minimum",
+      "classification": "already_wired",
+      "owner": "alive-workspace.mjs; independent Help visibility and footer panel controls",
+      "prerequisites": "Clip, Devices or both open; fixed Device height stays 190 px; Clip minimum stays 224 px",
+      "disabledReason": "Master detail has no musical-panel resize/collapse handle",
+      "errorHandling": "Pointer cancellation restores prior panels and sizing; commit retains requested height and drafts; footer controls reopen, Help can reopen alone, Master round trip retains collapse; keyboard ArrowDown at minimum closes",
+      "tests": "Clip-only/Device-only/both drag/cancel/restore, exact height, drafts, Master round trip and keyboard/Help regressions; native three-size probe",
+      "evidence": "Help is temporarily hidden with the whole lower area only for this explicit collapse; ordinary Clip/Device toggles keep independent Help behavior",
+      "evidenceLevel": "source_implementation; runtime acceptance recorded separately"
     }
   ]
 }

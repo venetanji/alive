@@ -1,0 +1,30 @@
+
+> test:browser
+> playwright test alive-chain.spec.mjs alive-clip-regions.spec.mjs --grep fixed Devices divider|lower row drag|editor actions use|Device and Help keep|MIDI and audio range controls|waveform zoom and navigation|Re-Pitch stretches --workers=2 --reporter=list --output=/tmp/alive-clip-options-access
+
+
+Running 13 tests using 2 workers
+
+(node:1045771) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1045772) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1045771) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1045772) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   2 alive-chain.spec.mjs:52:1 › fixed Devices divider closes with the keyboard and Help reopens independently (1.8s)
+  ✓   1 alive-clip-regions.spec.mjs:129:93 › MIDI and audio range controls preserve source content at 800x600 (4.0s)
+  ✓   3 alive-chain.spec.mjs:61:47 › lower row drag collapses and restores clip without losing drafts (2.2s)
+  ✓   5 alive-chain.spec.mjs:61:47 › lower row drag collapses and restores devices without losing drafts (2.1s)
+  ✓   4 alive-clip-regions.spec.mjs:129:93 › MIDI and audio range controls preserve source content at 1280x800 (3.7s)
+  ✓   6 alive-chain.spec.mjs:61:47 › lower row drag collapses and restores both without losing drafts (2.7s)
+  ✓   8 alive-chain.spec.mjs:227:1 › editor actions use icons while piano mode tabs retain their reference labels (2.5s)
+  ✓   7 alive-clip-regions.spec.mjs:129:93 › MIDI and audio range controls preserve source content at 1440x1000 (3.9s)
+  ✓   9 alive-chain.spec.mjs:338:92 › Device and Help keep a fixed bottom row while Clip resizes at 800 (1.9s)
+  ✓  10 alive-clip-regions.spec.mjs:178:1 › waveform zoom and navigation change only the view while marker drags edit the audio loop (2.7s)
+  ✓  11 alive-chain.spec.mjs:338:92 › Device and Help keep a fixed bottom row while Clip resizes at 1280 (2.0s)
+  ✓  12 alive-clip-regions.spec.mjs:193:1 › Re-Pitch stretches the shared sample with numeric and drag controls; Escape cancels preview (2.3s)
+  ✓  13 alive-chain.spec.mjs:338:92 › Device and Help keep a fixed bottom row while Clip resizes at 1440 (2.0s)
+
+  13 passed (21.5s)

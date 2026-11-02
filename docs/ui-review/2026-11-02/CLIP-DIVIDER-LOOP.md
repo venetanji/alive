@@ -1,5 +1,9 @@
 # Clip Expansion And Native Loop Display
 
+The later [Clip options and lower-area collapse correction](CLIP-OPTIONS.md)
+supersedes this report's Clip header, adaptive option layout and launcher
+selection. The loop observation and acceptance limitations here remain relevant.
+
 Application/test source: `58eb6829e6bfbf515564a4532f5804d01b9e9d17`, following
 `9bbae1020c73a1f322ce1dc9c1fb9529691a89b3`, relative to the preceding report
 commit `ad40d7d4132addef435a5e11b5d0452b671f5b36`.

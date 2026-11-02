@@ -1,0 +1,51 @@
+...FF...........
+======================================================================
+FAIL: test_clip_launch_prepares_the_visible_option_owner_before_selecting (test_alive_workspace_navigation.NavigationTest.test_clip_launch_prepares_the_visible_option_owner_before_selecting) (horizontal=False)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/alive-pr12-native-20261102/apps/ultra/tests/test_alive_workspace_navigation.py", line 29, in test_clip_launch_prepares_the_visible_option_owner_before_selecting
+    self.assertEqual(calls, [('owned', 'Toggle Launch options' if horizontal else 'Launch'),
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        ('click', 'Clip Launch Quantization')])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [('click', 'Clip Launch Quantization')] != [('owned', 'Launch'), ('click', 'Clip Launch Quantization')]
+
+First differing element 0:
+('click', 'Clip Launch Quantization')
+('owned', 'Launch')
+
+Second list contains 1 additional elements.
+First extra element 1:
+('click', 'Clip Launch Quantization')
+
+- [('click', 'Clip Launch Quantization')]
++ [('owned', 'Launch'), ('click', 'Clip Launch Quantization')]
+?  +++++++++++++++++++++
+
+
+======================================================================
+FAIL: test_clip_launch_prepares_the_visible_option_owner_before_selecting (test_alive_workspace_navigation.NavigationTest.test_clip_launch_prepares_the_visible_option_owner_before_selecting) (horizontal=True)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/alive-pr12-native-20261102/apps/ultra/tests/test_alive_workspace_navigation.py", line 29, in test_clip_launch_prepares_the_visible_option_owner_before_selecting
+    self.assertEqual(calls, [('owned', 'Toggle Launch options' if horizontal else 'Launch'),
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        ('click', 'Clip Launch Quantization')])
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: [('click', 'Clip Launch Quantization')] != [('owned', 'Toggle Launch options'), ('click', 'Clip Launch Quantization')]
+
+First differing element 0:
+('click', 'Clip Launch Quantization')
+('owned', 'Toggle Launch options')
+
+Second list contains 1 additional elements.
+First extra element 1:
+('click', 'Clip Launch Quantization')
+
+- [('click', 'Clip Launch Quantization')]
++ [('owned', 'Toggle Launch options'), ('click', 'Clip Launch Quantization')]
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.007s
+
+FAILED (failures=2)

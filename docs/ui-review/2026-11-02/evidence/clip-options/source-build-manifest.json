@@ -1,0 +1,90 @@
+{
+  "schema": 1,
+  "created_utc": "2026-11-02T11:49:40.902498+00:00",
+  "build_directory": "/home/venetanji/.cache/alive-pr12-native-20261102/target/debug",
+  "reported_build_commit": "c06d96e0f6e2b6851e060e3cf3cc4efafd5134f1",
+  "provenance_note": "Build commit is caller-supplied; checkout context records snapshot creation, not compilation.",
+  "checkout_context": {
+    "path": "/tmp/alive-pr12-native-20261102",
+    "head": "c06d96e0f6e2b6851e060e3cf3cc4efafd5134f1",
+    "tracked_status": "M docs/ui-review/2026-11-02/CAPABILITIES.json"
+  },
+  "artifacts": {
+    "bin/alive": {
+      "sha256": "7c5f36f391f6f6f94fd570d6e63de1b3e2cc94d8df2308d8ab61e70c036d9f5e",
+      "bytes": 278259240
+    },
+    "bin/ultra": {
+      "sha256": "28ded4172ade24d1022f8d846ed24005eb828189d01019f8dc560f6862f1c93e",
+      "bytes": 284968544
+    },
+    "bin/libultra_native.so": {
+      "sha256": "1652d52c581395a9919ea2dbe5a03c4d365c7f9a4da6d10cff233e590099eaa8",
+      "bytes": 9524688
+    },
+    "icon.png": {
+      "sha256": "c8bae0a0290192eb6355304d8e328fc9e2c09fbffc80c03fb1e3d25664f6b3be",
+      "bytes": 129
+    },
+    "lib/Alive/alive-session/alive/examples/empty-workspaces.alive": {
+      "sha256": "0127f73e4d3b8aa2b0939dc6c31956c6c145bbce2e2ce88708f78dd0ac38dc4f",
+      "bytes": 773
+    },
+    "lib/Alive/alive-session/alive/examples/two-instruments.alive": {
+      "sha256": "c293cd8635878e4662a7dfa727d8639b0c90e07198a9adeb4787543abe3c9306",
+      "bytes": 7651
+    },
+    "lib/Alive/alive-session/alive/examples/midi-arrangement.alive": {
+      "sha256": "ea050ca78bda865bc65c849b00e450f7532c0028109a52d087c38ffcbf195466",
+      "bytes": 7967
+    },
+    "lib/Alive/alive-session/alive/examples/quantized-midi.alive": {
+      "sha256": "e743bc8e1c4a0949dc48308b37a69f65eedaffab33fdb8c540e1d8cf21af34e3",
+      "bytes": 5742
+    },
+    "lib/Alive/alive-session/ultra/examples/subtractive.ultra": {
+      "sha256": "8e9f4e06fdab6dbf415f58cd673d294bd9f4b0076f51e88568b663467654e3de",
+      "bytes": 9716
+    },
+    "lib/Alive/alive-session/ultra/examples/utility.ultra": {
+      "sha256": "7bf78c3bbf7b2a8e2e36761f8495528e1c0f7a2b0a12d1218fc01360d1aface9",
+      "bytes": 2779
+    },
+    "lib/Alive/alive-session/ultra/examples/stereo-lowpass.ultra": {
+      "sha256": "9dcfa135dcdb09d7b05fe1c9acd05e0685d4c2ec9bc1ae9a4ec1f6c980e26683",
+      "bytes": 3153
+    },
+    "lib/Ultra Research/alive-session/alive/examples/empty-workspaces.alive": {
+      "sha256": "0127f73e4d3b8aa2b0939dc6c31956c6c145bbce2e2ce88708f78dd0ac38dc4f",
+      "bytes": 773
+    },
+    "lib/Ultra Research/alive-session/alive/examples/two-instruments.alive": {
+      "sha256": "c293cd8635878e4662a7dfa727d8639b0c90e07198a9adeb4787543abe3c9306",
+      "bytes": 7651
+    },
+    "lib/Ultra Research/alive-session/alive/examples/midi-arrangement.alive": {
+      "sha256": "ea050ca78bda865bc65c849b00e450f7532c0028109a52d087c38ffcbf195466",
+      "bytes": 7967
+    },
+    "lib/Ultra Research/alive-session/alive/examples/quantized-midi.alive": {
+      "sha256": "e743bc8e1c4a0949dc48308b37a69f65eedaffab33fdb8c540e1d8cf21af34e3",
+      "bytes": 5742
+    },
+    "lib/Ultra Research/alive-session/ultra/examples/subtractive.ultra": {
+      "sha256": "8e9f4e06fdab6dbf415f58cd673d294bd9f4b0076f51e88568b663467654e3de",
+      "bytes": 9716
+    },
+    "lib/Ultra Research/alive-session/ultra/examples/utility.ultra": {
+      "sha256": "7bf78c3bbf7b2a8e2e36761f8495528e1c0f7a2b0a12d1218fc01360d1aface9",
+      "bytes": 2779
+    },
+    "lib/Ultra Research/alive-session/ultra/examples/stereo-lowpass.ultra": {
+      "sha256": "9dcfa135dcdb09d7b05fe1c9acd05e0685d4c2ec9bc1ae9a4ec1f6c980e26683",
+      "bytes": 3153
+    }
+  },
+  "provenance_correction": {
+    "previous_reported_build_commit": "c06d96e3e8b3c83d0b94ee000000000000000000",
+    "reason": "Installer argument transcription error corrected before native verification; all 159 tracked UI source hashes match the compiled content and exact source commit. Artifact files and hashes are unchanged."
+  }
+}

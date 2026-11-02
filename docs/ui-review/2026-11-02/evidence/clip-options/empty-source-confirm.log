@@ -1,0 +1,19 @@
+
+> test:browser
+> playwright test --workers=2 --reporter=list --grep empty body double-click|four.*slot|native Preview control and piano key gestures --output=/tmp/alive-clip-options-empty-confirm
+
+
+Running 6 tests using 1 worker
+
+(node:1077683) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1077683) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 alive-chain.spec.mjs:1341:1 › empty body double-click creates one playable one-bar clip and never launches (1.6s)
+  ✓  2 alive-chain.spec.mjs:1350:116 › native Preview control and piano key gestures fit 1440x900 (1.6s)
+  ✓  3 alive-chain.spec.mjs:1350:116 › native Preview control and piano key gestures fit 1280x800 (1.4s)
+  ✓  4 alive-chain.spec.mjs:1350:116 › native Preview control and piano key gestures fit 1024x768 (1.3s)
+  ✓  5 alive-chain.spec.mjs:1350:116 › native Preview control and piano key gestures fit 800x600 (1.5s)
+  ✓  6 alive-chain.spec.mjs:1543:1 › four-slot bank preserves stable note identity and fits the minimum desktop (1.5s)
+
+  6 passed (13.2s)
