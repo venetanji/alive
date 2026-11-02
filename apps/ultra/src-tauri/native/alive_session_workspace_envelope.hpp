@@ -9,6 +9,7 @@ using clip_admission::Pulse;
 constexpr unsigned Window = clip_admission::Window;
 using Charge = std::array<uint64_t, 6>;
 using Curves = std::array<Envelope, 6>;
+using ReleaseBounds = std::array<unsigned, 8>;
 
 inline bool plus(uint64_t a, uint64_t b, uint64_t &out) noexcept {
   if (b > UINT64_MAX - a)
@@ -136,6 +137,49 @@ inline bool source_profile(const AliveSessionConfigV4 &c, unsigned source, uint6
   return true;
 }
 
+// Clear occupancy is independent of chase: a finite source also clears on exit.
+inline bool source_clears(uint64_t start, uint64_t end, uint64_t loop_start,
+                          uint64_t loop_end, bool loop, Envelope &out,
+                          unsigned width = Window) noexcept {
+  if (start >= end || !width || width > Window ||
+      (loop && (loop_start >= loop_end || start >= loop_end)))
+    return false;
+  const uint64_t period = loop ? loop_end - loop_start : end - start;
+  const Pulse pulses[]{{0, 1}, {period, 1}};
+  if (!pulse_envelope(pulses, loop ? 1 : 2, period, loop, out, width))
+    return false;
+  if (loop && start < loop_start) {
+    Envelope prefix{};
+    const Pulse entry_exit[]{{0, 1}, {loop_start - start, 1}};
+    if (!pulse_envelope(entry_exit, 2, loop_start - start, false, prefix, width))
+      return false;
+    for (unsigned w = 1; w <= width; ++w)
+      if (!plus(out[w], prefix[w], out[w]))
+        return false;
+  }
+  return true;
+}
+
+inline bool compose_clears(const Envelope &source, const Envelope &k, Envelope &out,
+                           unsigned &calls, unsigned width = Window,
+                           unsigned boundary_limit = 6) noexcept {
+  if (!width || width > Window || k[width] > boundary_limit)
+    return false;
+  for (unsigned w = 1; w <= width; ++w)
+    if (k[w] < k[w - 1] || source[w] > UINT64_MAX / (boundary_limit + 1))
+      return false;
+  ++calls;
+  clip_admission::segments(source, k, out, width);
+  for (unsigned w = 1; w <= width; ++w) {
+    uint64_t clears;
+    if (!plus(out[w], k[w] + 1, clears))
+      return false;
+    // Entry, local seams and transition causes share one clear per track/frame.
+    out[w] = std::min<uint64_t>(w, clears);
+  }
+  return true;
+}
+
 // The gate precedes every DP call, including tracks that will later fail policy.
 inline bool compose(const Curves &source, const Envelope &k, const Charge &transition,
                     Curves &out, unsigned &calls, unsigned width = Window, unsigned boundary_limit = 6) noexcept {
@@ -175,7 +219,8 @@ struct Proof {
 
 // Input has passed the final MIDI shape validator. This has no runtime authority
 // and cannot configure the host; the next preparation slice consumes its curves.
-inline bool build_validated(const AliveSessionConfigV4 &c, Proof &out, bool quantized = false) noexcept {
+inline bool build_validated(const AliveSessionConfigV4 &c, Proof &out, bool quantized = false,
+                            const ReleaseBounds &release = {}) noexcept {
   out = {};
   auto &diag = out.diagnostic;
   diag.version = 4;
@@ -201,6 +246,10 @@ inline bool build_validated(const AliveSessionConfigV4 &c, Proof &out, bool quan
     return false;
   };
   auto overflow = [&]() { return fail(ALIVE_SESSION_V4_WORK_LIMIT, 0, Window, UINT64_MAX, 0, 8); };
+  for (unsigned t = 0; t < release.size(); ++t)
+    if (release[t] > (t < c.track_count ? 4u : 0u))
+      return fail(ALIVE_SESSION_V4_BAD_FIELD, ALIVE_SESSION_V4_RESOURCE_EVENTS, 1,
+                  release[t], t < c.track_count ? 4 : 0, t);
   struct Use { unsigned source; uint64_t start,end,loop_start,loop_end; bool finite,cyclic; };
   std::array<Use, 96> uses{};
   auto use = [&](unsigned s, uint64_t start,uint64_t end,uint64_t loop_start,uint64_t loop_end,bool loop) {
@@ -272,11 +321,15 @@ inline bool build_validated(const AliveSessionConfigV4 &c, Proof &out, bool quan
     }
   }
   // One profile and one track maximum are streamed; never 96 envelope sets.
-  struct Scratch { Curves maximum{}, one{}, composed{}; };
+  struct Scratch {
+    Curves maximum{}, one{}, composed{};
+    Envelope clear_maximum{}, clear_one{}, clear_composed{};
+  };
   auto scratch = std::make_unique<Scratch>();
   for (unsigned t = 0; t < c.track_count; ++t) {
     const auto &tr = c.tracks[t];
     auto &reset = out.prepared.reset[t];
+    reset[0] = release[t];
     reset[1] = (tr.instrument!=ALIVE_SESSION_V4_NONE) + tr.effect_count;
     unsigned chase = 0;
     for (unsigned m = tr.instrument==ALIVE_SESSION_V4_NONE?1:0; m <= tr.effect_count; ++m)
@@ -289,9 +342,11 @@ inline bool build_validated(const AliveSessionConfigV4 &c, Proof &out, bool quan
     // Without placements, Return is constant silence; Launch needs only the
     // slot and source descriptors. No binary search is performed on that track.
     bool has_source=false;for(unsigned s=0;s<c.source_count;++s)has_source|=c.sources[s].track==t;
-    if(!has_source&&!reset[1])continue;
+    const bool legacy_active = has_source || reset[1];
+    if(!legacy_active&&!release[t])continue;
     Charge transition{chase, reset[1], reset[2], reset[3], 0, tr.placement_count ? 4u : 2u};
     scratch->maximum = {};
+    if (release[t]) scratch->clear_maximum = {};
     for (unsigned u = 0; u < out.uses; ++u) {
       const auto &a = uses[u];
       if (c.sources[a.source].track != t)
@@ -304,6 +359,16 @@ inline bool build_validated(const AliveSessionConfigV4 &c, Proof &out, bool quan
           continue;
         if (!source_profile(c, a.source,a.start,a.end,a.loop_start,a.loop_end,loop,pulse, scratch->one))
           return overflow();
+        if (release[t]) {
+          if (!source_clears(a.start, a.end, a.loop_start, a.loop_end, loop, scratch->clear_one))
+            return overflow();
+          for (unsigned w = 1; w <= Window; ++w)
+            if (scratch->clear_one[w] > scratch->clear_maximum[w]) {
+              scratch->clear_maximum[w] = scratch->clear_one[w];
+              if ((w == 1 || w == Window) && out.source[t][w == Window][0] == UINT32_MAX)
+                out.source[t][w == Window][0] = a.source;
+            }
+        }
         for (unsigned m = 0; m < 6; ++m)
           for (unsigned w = 1; w <= Window; ++w)
             if (scratch->one[m][w] > scratch->maximum[m][w]) {
@@ -313,9 +378,22 @@ inline bool build_validated(const AliveSessionConfigV4 &c, Proof &out, bool quan
             }
       }
     }
-    if (!compose(scratch->maximum, out.boundaries[t], transition,
-                  scratch->composed, out.segment_calls, Window, quantized ? 8 : 6))
-      return overflow();
+    if (legacy_active) {
+      if (!compose(scratch->maximum, out.boundaries[t], transition,
+                    scratch->composed, out.segment_calls, Window, quantized ? 8 : 6))
+        return overflow();
+    } else scratch->composed = {};
+    if (release[t]) {
+      if (!compose_clears(scratch->clear_maximum, out.boundaries[t], scratch->clear_composed,
+                           out.segment_calls, Window, quantized ? 8 : 6))
+        return overflow();
+      for (unsigned w = 1; w <= Window; ++w) {
+        uint64_t events;
+        if (!times(release[t], scratch->clear_composed[w], events) ||
+            !plus(scratch->composed[0][w], events, scratch->composed[0][w]))
+          return overflow();
+      }
+    }
     for (unsigned m = 0; m < 6; ++m) {
       auto &future = m == 5 ? out.placement : out.prepared.future[m];
       for (unsigned w = 1; w <= Window; ++w)

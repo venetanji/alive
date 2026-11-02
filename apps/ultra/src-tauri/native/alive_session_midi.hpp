@@ -45,12 +45,13 @@ const clip_admission::Envelope& placement_proof(bool launch=false)const noexcept
   if(mode_==Mode::Workspaces&&midi_)return launch?midi_->banks[midi_bank_].launch_placement:midi_->banks[midi_bank_].placement;
   return launch?launch_placement_:placement_future_;
 }
-bool midi_prove(MidiBank& bank,bool require_preview=true)noexcept {
+bool midi_prove(MidiBank& bank,bool require_preview=true,
+                const workspace_admission::ReleaseBounds& release={})noexcept {
   auto proof=std::make_unique<workspace_admission::Proof>();
-  if(!bounds_v4(bank.config,true)||!workspace_admission::build_validated(bank.config,*proof))return false;
+  if(!bounds_v4(bank.config,true)||!workspace_admission::build_validated(bank.config,*proof,false,release))return false;
   bank.regular=bank.base_regular=proof->prepared;
   bank.placement=proof->placement;
-  bank.launch_admitted=workspace_admission::build_validated(bank.config,*proof,true);
+  bank.launch_admitted=workspace_admission::build_validated(bank.config,*proof,true,release);
   bank.launch=bank.base_launch=proof->prepared;
   bank.launch_placement=proof->placement;
   bank.preview_admitted=bank.launch_admitted;

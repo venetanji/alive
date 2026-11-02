@@ -60,9 +60,15 @@ c++ -std=c++17 -O2 -Wall -Wextra -Werror \
   apps/ultra/tests/alive_session_launch_target_test.cpp -o "$TEST_DIR/alive-launch-target"
 "$TEST_DIR/alive-launch-target"
 "$TEST_DIR/alive-envelope"
-c++ -std=c++17 -O2 -Wall -Wextra -Werror \
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -UNDEBUG \
   apps/ultra/tests/alive_session_workspace_envelope_test.cpp -o "$TEST_DIR/alive-workspace-envelope"
 "$TEST_DIR/alive-workspace-envelope"
+for mode in finite curves invalid gates; do
+  "$TEST_DIR/alive-workspace-envelope" "--release-$mode"
+done
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -UNDEBUG \
+  apps/ultra/tests/alive_session_release_proof_test.cpp -o "$TEST_DIR/alive-release-proof"
+"$TEST_DIR/alive-release-proof"
 c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE \
   -c apps/ultra/src-tauri/native/backend.cpp -o "$TEST_DIR/alive-v3-backend.o"
 python3 apps/ultra/tests/alive_session_v3_fixtures.py "$TEST_DIR/saved_graphs.hpp"

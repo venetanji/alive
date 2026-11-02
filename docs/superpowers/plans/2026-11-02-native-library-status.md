@@ -423,6 +423,50 @@ musical parameter or audio/physical setting change was requested during this
 acquisition. Failed capture/input attempts and the separate GTK portal Save
 target are retained in its journal rather than counted as successful evidence.
 
+The fully configured local Chromium rerun passes all 420 tests with zero skips
+(`electric-placement-full-browser-r2.log`). The selected paired 7259223 build
+also passes actual Tauri/WebKit layout smoke at 800x600, 1280x800 and 1440x900,
+including repeated independent Clip/Device toggles and visible target bounds
+(`paired-native-smoke-7259223-r2/checkpoint-native-smoke.json`). Both desktop
+launchers select immutable snapshot `test-adb7ac8e2dd2eb25bd95`; all 18 artifact
+hashes and both launcher targets were verified. This is software UI evidence,
+not native-device admission or physical hardware qualification.
+
+The failed endurance audit additionally derives a stricter 1775.460-second
+post-baseline lower bound, excluding the interval crossing baseline assignment.
+Both that bound and the helper's 1777.527-second total fail the unchanged
+1800-second requirement. The frozen audit is
+`workers/endurance-2804cab-review/final-report.md`, SHA-256
+`8a549a1be65c07511515a2147a301cb9913fdd6fbe76bcbc1e40cbc2fc9db92c`.
+
+Corpus's bounded static follow-up establishes 38 emitted host source records,
+45 local model registrations and 37 regular native descriptors (indices0..36).
+All 38 emitted fields have saved Manual values; saved On is not emitted. The
+extra host ordinal37 is MidiMode, not a regular descriptor37. Its outer setter
+store falls outside the descriptor catalog and the generic fallback rejects it.
+No descriptor or runtime probe is invented for that ordinal. The final
+indexer-to-native-export edge and numeric module IDs remain unqualified. This
+is ordinary PE/Capstone static analysis, with no target execution or admission.
+The report is `workers/corpus-vector-static-r2/report.md`, SHA-256
+`da8caf8cd8d8a19e89d824e629b335f9015c8a2f3f8354e0d17bf912020c5612`.
+
+Release-aware envelope checkpoint A now accepts only a private synthetic
+per-track input0..4, zero beyond configured tracks. It composes separate
+clear-occupancy curves, includes finite exit and local prefix/loop seams, and
+caps overlapping causes at one clear per track/frame. The same input reaches
+regular/launch/base/Preview proofs. Every production caller still supplies zero;
+there is no policy source, ABI, native lifecycle, resource-limit or admission
+change. RED regressions precede the implementation. The independent scalar
+oracle passes 57,671,680 assertions; baseline and all-zero serialized envelope
+and MIDI proofs compare byte-for-byte, and eight adjacent native suite outputs
+match after normalizing timing/concurrent-reader counts. An independent UBSan
+oracle passes 1,746 geometries / 9,871,232 checks with no actionable review
+findings (`workers/release-proof-a-independent-review/report.md`). The manual
+native CI script now invokes all four release-envelope modes and the standalone
+base/launch/Preview test. Checkpoint B's rolling optional horizon, emergency
+reservations, policy propagation, actual releases and measured admission remain
+unfinished. No profile qualifies for library publication.
+
 ## Next Gates
 
 1. Finish reviewed profile facts and original editor geometry, keeping unresolved

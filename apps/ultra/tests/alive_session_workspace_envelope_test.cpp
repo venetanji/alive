@@ -813,7 +813,345 @@ void two_transition_authority() {
 }
 
 
-int main() {
+using ReleaseBounds = std::array<unsigned, 8>;
+bool release_build(const AliveSessionConfigV4& c, wa::Proof& proof, bool launch,
+                   const ReleaseBounds& release) {
+#ifdef ALIVE_RELEASE_BASELINE
+  (void)release;
+  return wa::build_validated(c, proof, launch);
+#else
+  return wa::build_validated(c, proof, launch, release);
+#endif
+}
+bool release_profile(uint64_t start, uint64_t end, uint64_t begin, uint64_t stop,
+                     bool loop, Envelope& out, unsigned width = 1024) {
+#ifdef ALIVE_RELEASE_BASELINE
+  const auto c = abstract_source(unsigned(end), 0, 0, unsigned(end));
+  Curves legacy{};
+  const bool ok = wa::source_profile(c, 0, start, end, begin, stop, loop,
+                                    Charge{1, 0, 0, 0, 0, 0}, legacy, width);
+  out = legacy[0];
+  return ok;
+#else
+  return wa::source_clears(start, end, begin, stop, loop, out, width);
+#endif
+}
+bool release_compose(const Envelope& source, const Envelope& cuts, Envelope& out,
+                     unsigned& calls, unsigned width = 1024, unsigned limit = 6) {
+#ifdef ALIVE_RELEASE_BASELINE
+  Curves legacy{}, composed{}; legacy[0] = source;
+  const bool ok = wa::compose(legacy, cuts, Charge{1, 0, 0, 0, 0, 0}, composed, calls, width, limit);
+  for (unsigned w = 0; w <= width; ++w) out[w] = std::min<uint64_t>(w, composed[0][w]);
+  return ok;
+#else
+  return wa::compose_clears(source, cuts, out, calls, width, limit);
+#endif
+}
+
+void release_finite_exit() {
+  Envelope finite{};
+  assert(release_profile(2, 7, 2, 7, false, finite));
+  assert(finite[1] == 1 && finite[5] == 1);
+  assert(finite[6] == 2 && finite[1024] == 2); // Both entry and silent exit clear.
+}
+
+void release_source_oracle() {
+  for (unsigned period : {1u, 2u, 188u, 375u})
+    for (unsigned start : {0u, 3u, 4u})
+      for (bool loop : {false, true}) {
+        const unsigned begin = 3, end = begin + period + 2, stop = begin + period;
+        if (loop && start >= stop) continue;
+        Envelope source{}, bound{}, cuts{}; unsigned calls = 0;
+        assert(release_profile(start, end, begin, stop, loop, source));
+        assert(release_compose(source, cuts, bound, calls));
+        std::array<unsigned, 3072> frames{};
+        unsigned phase = start;
+        bool active = true;
+        for (unsigned f = 0; f < frames.size(); ++f) {
+          bool clear = f == 0;
+          if (active && phase == (loop ? stop : end)) {
+            clear = true;
+            if (loop) phase = begin;
+            else active = false;
+          }
+          frames[f] = clear;
+          if (active) ++phase;
+        }
+        for (unsigned anchor = 0; anchor < 2048; ++anchor) {
+          unsigned actual = 0;
+          for (unsigned width = 1; width <= 1024; ++width) {
+            actual += frames[anchor + width - 1];
+            if (actual > bound[width])
+              std::fprintf(stderr, "clear underbound period=%u start=%u loop=%u anchor=%u width=%u actual=%u bound=%llu\n",
+                           period, start, unsigned(loop), anchor, width, actual, (unsigned long long)bound[width]);
+            assert(actual <= bound[width]);
+            ++assertions;
+          }
+        }
+      }
+}
+
+// Resolve causes into one Boolean before charging release. This reference uses
+// literal containment/phase arithmetic, never the production resolver or DP.
+uint64_t release_frame(const AliveSessionConfigV4& c, unsigned track, ScalarTrack& state,
+                       uint64_t song, bool wrap, bool first, unsigned action,
+                       bool playing, unsigned release, unsigned& clear_count) {
+  const auto previous_source = state.source, previous_occurrence = state.occurrence;
+  const auto previous_phase = state.phase;
+  bool clear = first || action || (!playing && previous_source != ALIVE_SESSION_V4_NONE);
+  if (action == 1) {
+    state.session = true; state.silent = false;
+    state.phase = c.slots[state.slot].start_marker;
+  } else if (action == 2) state.session = state.silent = true;
+  else if (action == 3) state.session = false;
+  state.source = state.occurrence = ALIVE_SESSION_V4_NONE;
+  if (playing && state.session && !state.silent) {
+    const auto& slot = c.slots[state.slot];
+    if (state.phase >= (slot.loop_enabled ? slot.loop_end : slot.end_marker)) {
+      clear = true;
+      if (slot.loop_enabled) state.phase = slot.loop_start;
+      else state.silent = true;
+    }
+    if (!state.silent) state.source = slot.source;
+  } else if (playing && !state.session) {
+    clear |= wrap;
+    const auto& tr = c.tracks[track];
+    for (unsigned i = 0; i < tr.placement_count; ++i) {
+      const auto index = tr.placement_begin + i;
+      const auto& p = c.placements[index];
+      if (song < p.start_frame || song >= p.start_frame + p.duration_frames) continue;
+      state.source = p.source; state.occurrence = index;
+      const auto elapsed = song - p.start_frame;
+      const auto first_length = (p.loop_enabled ? p.loop_end : p.end_marker) - p.start_marker;
+      state.phase = p.start_marker + elapsed;
+      if (p.loop_enabled && elapsed >= first_length)
+        state.phase = p.loop_start + (elapsed - first_length) % (p.loop_end - p.loop_start);
+      clear |= !first && previous_occurrence == index && state.phase <= previous_phase;
+    }
+    clear |= state.occurrence != previous_occurrence;
+  }
+  clear |= state.source != previous_source;
+  uint64_t events = ordinary(c, state.source, state.phase)[0];
+  if (clear) events += release + enter(c, state.source, state.phase, 0, 0, 0)[0];
+  clear_count = clear;
+  if (playing && state.session && !state.silent) ++state.phase;
+  return events;
+}
+
+void release_timeline_oracle() {
+  for (unsigned period : {1u, 2u, 188u, 375u})
+    for (bool loop : {false, true})
+      for (bool launch : {false, true})
+        for (bool notes : {false, true}) {
+        auto c = sparse(2);
+        c.loop_enabled = loop; c.loop_start = 2400; c.loop_end = 4000;
+        c.length_frames = 6000;
+        for (unsigned t = 0; t < 2; ++t) {
+          c.sources[t].length_frames = period + 3;
+          if (notes) {
+            c.sources[t].event_begin = c.event_count; c.sources[t].event_count = 2;
+            c.events[c.event_count++] = {0, t, ALIVE_SESSION_NOTE_ON, t, 60, 100};
+            c.events[c.event_count++] = {period + 2u, t, ALIVE_SESSION_NOTE_OFF, t, 60, 0};
+          }
+          c.slots[t] = {t, t, unsigned(loop), 0, 0, period + 3, 3, period + 3};
+          c.tracks[t].placement_begin = 3 * t; c.tracks[t].placement_count = 3;
+          for (unsigned i = 0; i < 3; ++i)
+            c.placements[c.placement_count++] = {t, t, unsigned(loop), 0,
+              2000u + i * 1100u, loop ? (i == 0 ? 1100u : 1000u) : period + 3u,
+              0, period + 3u, 3, period + 3u};
+        }
+        const ReleaseBounds release{4, 0}; // Both tracks still share one event envelope.
+        auto proof = std::make_unique<wa::Proof>(), zero = std::make_unique<wa::Proof>();
+        release_build(c, *proof, launch, release);
+        wa::build_validated(c, *zero, launch);
+        assert(proof->segment_calls);
+        for (unsigned m = 1; m < 5; ++m)
+          assert(proof->prepared.future[m] == zero->prepared.future[m]);
+        assert(proof->placement == zero->placement);
+        for (unsigned which = 0; which < 2; ++which) {
+          const unsigned w = which ? 1024 : 1;
+          assert(proof->contribution[0][which][0] + proof->contribution[1][which][0] ==
+                 proof->prepared.future[0][w]);
+        }
+        for (unsigned start : {0u, 1999u, 2399u, 2999u, 3999u, 5999u})
+          for (unsigned authority = 0; authority < 4; ++authority)
+            for (unsigned action = 0; action < 4; ++action) {
+              std::array<ScalarTrack, 2> state{};
+              for (unsigned t = 0; t < 2; ++t)
+                state[t] = {bool(authority & (1u << t)), false, t,
+                            ALIVE_SESSION_V4_NONE, ALIVE_SESSION_V4_NONE, 0};
+              std::array<uint64_t, 2048> events{}, clears{};
+              uint64_t song = start;
+              for (unsigned f = 0; f < events.size(); ++f) {
+                const bool wrap = loop && song >= c.loop_end;
+                if (wrap) song = c.loop_start;
+                const bool playing = song < c.length_frames;
+                for (unsigned t = 0; t < 2; ++t) {
+                  unsigned clear = 0;
+                  // Regular arbitrary entry; launch permits a second interior action.
+                  const unsigned due = f == 0 || (launch && f == 1023) ? action : 0;
+                  events[f] += release_frame(c, t, state[t], song, wrap, f == 0,
+                                            due, playing, release[t], clear);
+                  clears[f] += clear * release[t];
+                }
+                ++song;
+              }
+              std::array<uint64_t, 2049> event_prefix{}, clear_prefix{};
+              for (unsigned f = 0; f < events.size(); ++f) {
+                event_prefix[f + 1] = event_prefix[f] + events[f];
+                clear_prefix[f + 1] = clear_prefix[f] + clears[f];
+              }
+              for (unsigned w = 1; w <= 1024; ++w) {
+                uint64_t event_peak = 0, release_peak = 0;
+                for (unsigned anchor = 0; anchor + w <= events.size(); ++anchor) {
+                  event_peak = std::max(event_peak, event_prefix[anchor + w] - event_prefix[anchor]);
+                  release_peak = std::max(release_peak, clear_prefix[anchor + w] - clear_prefix[anchor]);
+                }
+                assert(event_peak <= proof->prepared.future[0][w]);
+                assert(release_peak <= proof->prepared.future[0][w] - zero->prepared.future[0][w]);
+                assert(proof->prepared.future[0][w] - zero->prepared.future[0][w] <= 4 * w);
+                assertions += 3;
+              }
+            }
+      }
+  // Strict-prefix chase, exact-boundary On/Off suppression, and literal union.
+  auto c = sparse(1);
+  c.event_count = c.sources[0].event_count = 4;
+  c.events[0] = {0, 0, ALIVE_SESSION_NOTE_ON, 0, 60, 100};
+  c.events[1] = {5, 0, ALIVE_SESSION_NOTE_ON, 0, 64, 90};
+  c.events[2] = {7, 0, ALIVE_SESSION_NOTE_OFF, 0, 64, 0};
+  c.events[3] = {9, 0, ALIVE_SESSION_NOTE_OFF, 0, 60, 0};
+  ScalarTrack state{true, false, 0, ALIVE_SESSION_V4_NONE, ALIVE_SESSION_V4_NONE, 5};
+  unsigned clears = 0;
+  assert(release_frame(c, 0, state, 0, true, true, 0, true, 4, clears) == 6 && clears == 1);
+  assert(enter(c, 0, 7, 0, 0, 0)[0] == 1 && enter(c, 0, 9, 0, 0, 0)[0] == 0);
+  c.event_count = c.sources[0].event_count = 4;
+  c.events[1] = {1, 0, ALIVE_SESSION_NOTE_ON, 0, 64, 90};
+  c.events[2] = {5, 0, ALIVE_SESSION_NOTE_OFF, 0, 64, 0};
+  c.events[3] = {5, 0, ALIVE_SESSION_NOTE_ON, 0, 64, 90};
+  state = {true, false, 0, ALIVE_SESSION_V4_NONE, ALIVE_SESSION_V4_NONE, 5};
+  assert(release_frame(c, 0, state, 0, true, true, 0, true, 4, clears) == 7 && clears == 1);
+  for (bool playing : {false, true}) {
+    state = {true, true, 0, ALIVE_SESSION_V4_NONE, ALIVE_SESSION_V4_NONE, 0};
+    assert(release_frame(c, 0, state, 0, true, true, 2, playing, 4, clears) == 4 && clears == 1);
+  }
+}
+
+void release_validation() {
+  auto c = sparse(2);
+  auto proof = std::make_unique<wa::Proof>();
+  for (unsigned invalid : {5u, UINT32_MAX}) {
+    ReleaseBounds release{invalid};
+    assert(!release_build(c, *proof, false, release));
+    assert(proof->diagnostic.error == ALIVE_SESSION_V4_BAD_FIELD && proof->segment_calls == 0);
+  }
+  for (unsigned track = c.track_count; track < 8; ++track) {
+    ReleaseBounds release{}; release[track] = 1;
+    assert(!release_build(c, *proof, false, release));
+    assert(proof->diagnostic.error == ALIVE_SESSION_V4_BAD_FIELD && proof->segment_calls == 0);
+  }
+  for (unsigned bound = 0; bound <= 4; ++bound) {
+    assert(release_build(c, *proof, false, ReleaseBounds{bound}));
+    assert(proof->prepared.reset[0][0] == bound && proof->prepared.reset[1][0] == 0);
+  }
+}
+
+void release_gates_and_caps() {
+  Envelope source{}, cuts{}, out{}; unsigned calls = 0;
+  assert(!release_compose(source, cuts, out, calls, 0) && calls == 0);
+  cuts[1024] = 7;
+  assert(!release_compose(source, cuts, out, calls) && calls == 0);
+  cuts[1024] = 9;
+  assert(!release_compose(source, cuts, out, calls, 1024, 8) && calls == 0);
+  cuts = {}; cuts[1] = 1;
+  assert(!release_compose(source, cuts, out, calls) && calls == 0);
+  cuts = {}; source[1] = UINT64_MAX;
+  assert(!release_compose(source, cuts, out, calls) && calls == 0);
+  source.fill(UINT64_MAX / 7); source[0] = 0; cuts.fill(6); cuts[0] = 0;
+  assert(!release_compose(source, cuts, out, calls) && calls == 1);
+  assert(release_profile(UINT64_MAX - 5, UINT64_MAX, 0, 1, false, out));
+  assert(out[5] == 1 && out[6] == 2);
+  assert(!release_profile(5, 5, 0, 1, false, out));
+  assert(!release_profile(0, 5, 3, 3, true, out));
+  assert(!release_profile(0, 5, 0, 5, true, out, 1025));
+
+  auto proof = std::make_unique<wa::Proof>(), zero = std::make_unique<wa::Proof>();
+  auto c = sparse(3);
+  assert(release_build(c, *proof, false, ReleaseBounds{4, 4, 2}));
+  assert(proof->prepared.future[0][1024] == 60);
+  assert(!release_build(c, *proof, false, ReleaseBounds{4, 4, 3}));
+  assert(proof->diagnostic.error == ALIVE_SESSION_V4_EVENT_WINDOW_LIMIT);
+  assert(proof->diagnostic.limit == 64 && proof->diagnostic.observed == 66);
+  assert(proof->diagnostic.contribution[0] == 24 && proof->diagnostic.contribution[2] == 18);
+  c = sparse(8);
+  const ReleaseBounds all{4, 4, 4, 4, 4, 4, 4, 4};
+  assert(!release_build(c, *proof, false, all));
+  assert(proof->prepared.future[0][1] == 32 && proof->diagnostic.window_frames == 1024);
+  c.event_count = c.sources[0].event_count = 1;
+  c.events[0] = {0, 0, ALIVE_SESSION_NOTE_ON, 0, 60, 100};
+  assert(!release_build(c, *proof, false, all));
+  assert(proof->diagnostic.error == ALIVE_SESSION_V4_EVENT_FRAME_LIMIT && proof->diagnostic.limit == 32);
+  // Even a later track's over-dense placement gate must precede all release DP.
+  c = sparse(2); c.placement_count = c.tracks[1].placement_count = 3;
+  for (unsigned i = 0; i < 3; ++i)
+    c.placements[i] = {1, 1, 0, 0, 100u + i * 200u, 100, 0, 4096, 0, 4096};
+  assert(!release_build(c, *proof, false, ReleaseBounds{4}));
+  assert(proof->segment_calls == 0 && proof->diagnostic.resource == 6);
+  // A configured silent/rootless track still owns its supplied clear cost.
+  c = sparse(1); c.source_count = c.slot_count = c.device_count = 0;
+  c.tracks[0].instrument = ALIVE_SESSION_V4_NONE;
+  std::fill_n(c.tracks[0].slots, 4, ALIVE_SESSION_V4_NONE);
+  assert(wa::build_validated(c, *zero));
+  assert(release_build(c, *proof, false, ReleaseBounds{4}));
+  assert(proof->prepared.reset[0][0] == 4 && proof->prepared.future[0][1] == 4);
+  for (unsigned m = 1; m < 5; ++m) assert(proof->prepared.future[m] == zero->prepared.future[m]);
+  assert(proof->placement == zero->placement);
+}
+
+template<class T> void bytes(FILE* file, const T& value) {
+  assert(std::fwrite(&value, sizeof value, 1, file) == 1);
+}
+void r0_snapshot(const char* path) {
+  FILE* file = std::fopen(path, "wb"); assert(file);
+  for (unsigned tracks : {1u, 2u, 8u})
+    for (unsigned shape = 0; shape < 5; ++shape)
+      for (bool launch : {false, true}) {
+        auto c = sparse(tracks);
+        for (unsigned t = 0; t < tracks; ++t) {
+          if (shape == 1) {
+            c.sources[t].event_begin = c.event_count; c.sources[t].event_count = 2;
+            c.events[c.event_count++] = {0, t, ALIVE_SESSION_NOTE_ON, t, 60, 100};
+            c.events[c.event_count++] = {100, t, ALIVE_SESSION_NOTE_OFF, t, 60, 0};
+          }
+          if (shape == 2) { c.slots[t].loop_enabled = 1; c.slots[t].loop_start = 3721; }
+          if (shape >= 3) {
+            c.tracks[t].placement_begin = c.placement_count; c.tracks[t].placement_count = shape - 1;
+            for (unsigned i = 0; i < shape - 1; ++i)
+              c.placements[c.placement_count++] = {t, t, 0, 0, 100u + i * 200u, 100, 0, 4096, 0, 4096};
+          }
+        }
+        auto proof = std::make_unique<wa::Proof>();
+        const bool accepted = release_build(c, *proof, launch, {});
+        bytes(file, accepted); bytes(file, proof->prepared.future); bytes(file, proof->prepared.reset);
+        bytes(file, proof->prepared.bars); bytes(file, proof->prepared.bar_count);
+        bytes(file, proof->placement); bytes(file, proof->boundaries); bytes(file, proof->contribution);
+        bytes(file, proof->source); bytes(file, proof->diagnostic); bytes(file, proof->uses);
+        bytes(file, proof->segment_calls); bytes(file, proof->loop_begin); bytes(file, proof->loop_end);
+        bytes(file, proof->grid_count); bytes(file, proof->loop_enabled); bytes(file, proof->placement_contributors);
+      }
+  assert(std::fclose(file) == 0);
+}
+
+int main(int argc, char** argv) {
+  if (argc == 3 && std::strcmp(argv[1], "--r0-snapshot") == 0) { r0_snapshot(argv[2]); return 0; }
+  if (argc == 2) {
+    if (std::strcmp(argv[1], "--release-finite") == 0) release_finite_exit();
+    else if (std::strcmp(argv[1], "--release-curves") == 0) { release_source_oracle(); release_timeline_oracle(); }
+    else if (std::strcmp(argv[1], "--release-invalid") == 0) release_validation();
+    else if (std::strcmp(argv[1], "--release-gates") == 0) release_gates_and_caps();
+    else assert(false);
+    std::printf("PASS: %s assertions=%llu\n", argv[1], (unsigned long long)assertions); return 0;
+  }
   separated_song_prefix_and_cycle_share_one_window_maximum();
   independent_start_and_loop_oracle();
   two_transition_authority();
