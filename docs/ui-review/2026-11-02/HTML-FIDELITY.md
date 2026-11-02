@@ -95,6 +95,10 @@ after the final native run. Preliminary red runs are retained in `/tmp`:
 - `/tmp/alive-html-hover-red-confirmed.log`: the global hover background erased
   Master's coloured surface and its text contrast. Header owners now retain
   their identity colours on hover without dispatching a command.
+- `/tmp/alive-html-intrinsic-diagnostic.log`: wide SVG intrinsic aspect ratios
+  enlarged the piano grid beyond the default both-open Clip viewport. SVG size
+  containment leaves the grid in charge of height; the default-visible velocity
+  requirement and the compact scroll-to-slider regression both remain intact.
 
 Screenshots and native probes use Chromium with its sandbox, and a private
 Xvfb/DBus/software-only PipeWire session. They do not qualify physical hardware.
