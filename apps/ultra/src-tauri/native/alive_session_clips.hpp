@@ -846,8 +846,16 @@ uint64_t target_frame(uint64_t position) const noexcept {
                  ? state_.absolute_frame + midi_proof().bars[b] - position : NoFrame;
   return config().loop_enabled ? state_.absolute_frame + config().length_frames - position : NoFrame;
 }
+uint64_t release_event_cost(unsigned mask) const noexcept {
+  uint64_t events = 0;
+  for (unsigned t = 0; t < config().track_count; ++t)
+    if (mask & (1u << t))
+      events += midi_proof().reset[t][0];
+  return events;
+}
 Cost first_candidate_cost() const noexcept {
   Cost out{};
+  out[0] = release_event_cost(candidate_.clear_mask);
   if (!candidate_.playing)
     return out;
   const bool global = mode_ != Mode::Workspaces && candidate_.position >= config().length_frames;
@@ -899,6 +907,9 @@ bool optional_admission() noexcept {
   for (unsigned t = 0; t < config().track_count; ++t)
     if (candidate_.clear_mask & (1u << t))
       charge = add(charge, midi_proof().reset[t]);
+  // Releases share the scheduled event ledger even when an optional clear owns
+  // the reset's other work dimensions.
+  charge[0] = 0;
   charge[4] = HorizonSteps;
   const auto optional_frame = cost(limits.optional_frame), optional_window = cost(limits.optional_window);
   const auto scheduled_frame = cost(limits.scheduled_frame), scheduled_window = cost(limits.scheduled_window);
@@ -1266,6 +1277,7 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
   for (unsigned t = 0; t < config().track_count; ++t)
     if ((mask & ~optional_clear_) & (1u << t))
       charge = add(charge, midi_proof().reset[t]);
+  charge[0] = release_event_cost(mask);
   if (mask) {
     if (const auto failure = scheduled_fits(charge)) {
       fault_v3(workspace, failure);
@@ -1315,7 +1327,7 @@ void sample_v3(CanvasWorkspace &workspace) noexcept {
           ++charge[3];
       }
     }
-  charge[0] = count;
+  charge[0] += count;
   const unsigned failure = scheduled_fits(charge);
   if (failure) {
     fault_v3(workspace, failure);
