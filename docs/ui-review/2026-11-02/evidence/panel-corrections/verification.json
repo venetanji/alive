@@ -1,0 +1,91 @@
+{
+  "source_commit": "06f6ffa61153ce1a2dcc295a7d1ce07921acd8fa",
+  "baseline_commit": "9ca347abd172efa70f189d82520c9fb8aa647c37",
+  "selected_snapshot": "/home/venetanji/.local/share/alive/builds/test-c65c6268a66672448950",
+  "native_probe_exit_code": 0,
+  "browser": {
+    "passed": 343,
+    "failed": 0,
+    "skipped": 0,
+    "retries": 0,
+    "exit_code": 0
+  },
+  "node": {
+    "passed": 669,
+    "failed": 0,
+    "skipped": 0,
+    "exit_code": 0
+  },
+  "helpers": {
+    "passed": 144,
+    "failed": 0,
+    "skipped": 0
+  },
+  "webkit_compact_select": {
+    "passed": 1,
+    "failed": 0
+  },
+  "focused_review_regressions": {
+    "passed": 3,
+    "failed": 0
+  },
+  "native_startup": "passed",
+  "native_launcher_apps": {
+    "alive": "passed",
+    "ultra": "passed"
+  },
+  "viewports": [
+    [
+      800,
+      600
+    ],
+    [
+      1280,
+      800
+    ],
+    [
+      1440,
+      900
+    ]
+  ],
+  "screenshots": [
+    "alive-both-1280x800.png",
+    "alive-both-1440x900.png",
+    "alive-both-800x600.png",
+    "alive-devices-1280x800.png",
+    "alive-devices-1440x900.png",
+    "alive-devices-800x600.png",
+    "alive-display-menu-1440x900.png",
+    "alive-expanded-1440x900.png",
+    "alive-help-without-editors-1280x800.png",
+    "alive-help-without-editors-1440x900.png",
+    "alive-help-without-editors-800x600.png",
+    "alive-horizontal-1440x900.png",
+    "alive-launcher-1280x800.png",
+    "alive-launcher-1440x900.png",
+    "alive-launcher-800x600.png",
+    "chromium-both-1280.png",
+    "chromium-both-1440.png",
+    "chromium-both-800.png",
+    "chromium-clip-expanded.png",
+    "chromium-clip-vertical.png",
+    "ultra-launcher-1280x800.png",
+    "ultra-launcher-1440x900.png",
+    "ultra-launcher-800x600.png"
+  ],
+  "unrun": [
+    "new remote CI",
+    "Rust unit tests",
+    "full current-build native audio journeys",
+    "CPAL loopback",
+    "physical hardware",
+    "recording"
+  ],
+  "last_remote_ci": {
+    "url": "https://github.com/venetanji/alive/actions/runs/41381006275",
+    "commit": "c8f4cb3091b9754fa5c94e8a40718e72954aab14",
+    "status": "failed",
+    "downstream_clip_measurement_resources_loopback": "skipped"
+  },
+  "scope": "UI presentation and local launcher pairing; no audio started, engine expansion or physical settings changes"
+}

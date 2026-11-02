@@ -1,0 +1,55 @@
+
+> test:browser
+> playwright test alive-clip-regions.spec.mjs --grep audio and empty clips do not --reporter=list --output=/tmp/alive-panel-audio-red
+
+
+Running 1 test using 1 worker
+
+(node:821483) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:821483) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 alive-clip-regions.spec.mjs:61:1 › audio and empty clips do not expose the MIDI Note inspector (6.1s)
+
+
+  1) alive-clip-regions.spec.mjs:61:1 › audio and empty clips do not expose the MIDI Note inspector
+
+    Error: expect(locator).toBeHidden() failed
+
+    Locator:  locator('.note-table')
+    Expected: hidden
+    Received: visible
+    Timeout:  5000ms
+
+    Call log:
+      - Expect "toBeHidden" with timeout 5000ms
+      - waiting for locator('.note-table')
+        9 × locator resolved to <details class="note-table">…</details>
+          - unexpected value "visible"
+
+
+      61 | test('audio and empty clips do not expose the MIDI Note inspector',async({page})=>{
+      62 |   await openRangeStudy(page);await page.getByRole('button',{name:'Select Audio slot 1',exact:true}).click();
+    > 63 |   await expect(page.locator('.note-table')).toBeHidden();
+         |                                             ^
+      64 |   await page.getByRole('button',{name:'Select Pulse slot 1',exact:true}).click();await expect(page.locator('.note-table')).toBeVisible();
+      65 |   await page.getByRole('button',{name:'Select Pulse slot 2',exact:true}).click();await expect(page.locator('.note-table')).toBeHidden();
+      66 |   expect(await mutations(page)).toEqual([]);
+        at /tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-clip-regions.spec.mjs:63:45
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../alive-panel-audio-red/alive-clip-regions-audio-a-d927b-ose-the-MIDI-Note-inspector/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../alive-panel-audio-red/alive-clip-regions-audio-a-d927b-ose-the-MIDI-Note-inspector/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../alive-panel-audio-red/alive-clip-regions-audio-a-d927b-ose-the-MIDI-Note-inspector/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../alive-panel-audio-red/alive-clip-regions-audio-a-d927b-ose-the-MIDI-Note-inspector/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    alive-clip-regions.spec.mjs:61:1 › audio and empty clips do not expose the MIDI Note inspector ─

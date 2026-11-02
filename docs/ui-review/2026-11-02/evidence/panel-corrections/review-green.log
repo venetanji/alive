@@ -1,0 +1,16 @@
+
+> test:browser
+> playwright test alive-chain.spec.mjs alive-clip-regions.spec.mjs --grep long Note inspector scrolls|audio and empty clips do not|expanded Clip retains --reporter=list --output=/tmp/alive-panel-review-green
+
+
+Running 3 tests using 1 worker
+
+(node:827830) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:827830) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 alive-chain.spec.mjs:58:1 › expanded Clip retains track context and mixer presents dB with separate stereo lanes (2.3s)
+  ✓  2 alive-chain.spec.mjs:86:1 › a long Note inspector scrolls inside its popup while the piano stays in place (1.3s)
+  ✓  3 alive-clip-regions.spec.mjs:61:1 › audio and empty clips do not expose the MIDI Note inspector (978ms)
+
+  3 passed (7.3s)

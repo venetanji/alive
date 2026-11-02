@@ -1,8 +1,8 @@
 # Local Test Launchers
 
-Current selection: the HTML-fidelity build from
-`6eb7d450c73b1bb40d3dd2dd8752da1564d6d685`, snapshot
-`test-54455121dfca08632273`. See [the current visual report](HTML-FIDELITY.md)
+Current selection: the panel-correction build from
+`06f6ffa61153ce1a2dcc295a7d1ce07921acd8fa`, snapshot
+`test-c65c6268a66672448950`. See [the current visual report](PANEL-CORRECTIONS.md)
 for its matching hashes and native launcher evidence. The rest of this document
 records the earlier launcher-installation batch and its historical build.
 

@@ -1,0 +1,142 @@
+{
+  "selected_snapshot": "/home/venetanji/.local/share/alive/builds/test-c65c6268a66672448950",
+  "reported_build_commit": "06f6ffa61153ce1a2dcc295a7d1ce07921acd8fa",
+  "scope": "actual desktop entries, private Xvfb/DBus and software-only PipeWire; no audio started",
+  "apps": [
+    {
+      "app": "alive",
+      "desktop_entry": "/home/venetanji/.local/share/applications/org.alive.session.test.desktop",
+      "executable": "/home/venetanji/.local/share/alive/builds/test-c65c6268a66672448950/bin/alive",
+      "executable_sha256": "f87afbd247db8f58c0262fd59f5206963224e5d5b9a3b2dc196ec21658498482",
+      "native_library": "/home/venetanji/.local/share/alive/builds/test-c65c6268a66672448950/bin/libultra_native.so",
+      "native_library_sha256": "1652d52c581395a9919ea2dbe5a03c4d365c7f9a4da6d10cff233e590099eaa8",
+      "ready_accessible_text": "Start transport",
+      "screenshots": [
+        "alive-both-1280x800.png",
+        "alive-both-1440x900.png",
+        "alive-both-800x600.png",
+        "alive-devices-1280x800.png",
+        "alive-devices-1440x900.png",
+        "alive-devices-800x600.png",
+        "alive-display-menu-1440x900.png",
+        "alive-expanded-1440x900.png",
+        "alive-help-without-editors-1280x800.png",
+        "alive-help-without-editors-1440x900.png",
+        "alive-help-without-editors-800x600.png",
+        "alive-horizontal-1440x900.png",
+        "alive-launcher-1280x800.png",
+        "alive-launcher-1440x900.png",
+        "alive-launcher-800x600.png"
+      ],
+      "resize_restore": "passed",
+      "checks": [
+        {
+          "size": [
+            800,
+            600
+          ],
+          "device_height": 190,
+          "clip_resize": "passed",
+          "device_only_restore": "passed",
+          "display_toggles": "passed",
+          "help_without_editors": "passed",
+          "study_geometry": {
+            "browser_width": 290,
+            "track_header_height": 21
+          }
+        },
+        {
+          "size": [
+            1280,
+            800
+          ],
+          "device_height": 190,
+          "clip_resize": "passed",
+          "device_only_restore": "passed",
+          "display_toggles": "passed",
+          "help_without_editors": "passed",
+          "study_geometry": {
+            "browser_width": 334,
+            "track_header_height": 21
+          }
+        },
+        {
+          "size": [
+            1440,
+            900
+          ],
+          "device_height": 190,
+          "clip_resize": "passed",
+          "device_only_restore": "passed",
+          "display_toggles": "passed",
+          "help_without_editors": "passed",
+          "study_geometry": {
+            "browser_width": 334,
+            "track_header_height": 21
+          }
+        },
+        {
+          "size": [
+            800,
+            600
+          ],
+          "device_height": 190,
+          "clip_resize": "passed",
+          "device_only_restore": "passed",
+          "display_toggles": "passed",
+          "help_without_editors": "passed",
+          "study_geometry": {
+            "browser_width": 290,
+            "track_header_height": 21
+          }
+        },
+        {
+          "size": [
+            1440,
+            900
+          ],
+          "device_height": 190,
+          "clip_resize": "passed",
+          "device_only_restore": "passed",
+          "display_toggles": "passed",
+          "help_without_editors": "passed",
+          "study_geometry": {
+            "browser_width": 334,
+            "track_header_height": 21
+          }
+        },
+        {
+          "draft_after_mixer_hide_show": "passed; admitted fader unchanged",
+          "display_keyboard_and_focus": "passed"
+        },
+        {
+          "browser_drag_collapse_cancel_reopen": "passed",
+          "independent_help_width": 231,
+          "expanded_mixer_draft": "passed; admitted fader unchanged",
+          "explicit_clip_layout_modes": "passed"
+        },
+        {
+          "save_from_file": "native acknowledgement and staged-file write passed"
+        }
+      ],
+      "pass": true
+    },
+    {
+      "app": "ultra",
+      "desktop_entry": "/home/venetanji/.local/share/applications/org.alive.ultra.research.desktop",
+      "executable": "/home/venetanji/.local/share/alive/builds/test-c65c6268a66672448950/bin/ultra",
+      "executable_sha256": "b094f0d5340bb81dc26c296bd9f838ce8c2af952f51a813479c0a18b8cb9c3eb",
+      "native_library": "/home/venetanji/.local/share/alive/builds/test-c65c6268a66672448950/bin/libultra_native.so",
+      "native_library_sha256": "1652d52c581395a9919ea2dbe5a03c4d365c7f9a4da6d10cff233e590099eaa8",
+      "ready_accessible_text": "Shared native patch ready.",
+      "screenshots": [
+        "ultra-launcher-1280x800.png",
+        "ultra-launcher-1440x900.png",
+        "ultra-launcher-800x600.png"
+      ],
+      "resize_restore": "passed",
+      "checks": [],
+      "pass": true
+    }
+  ]
+}

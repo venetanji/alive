@@ -25,7 +25,7 @@ selection identity, native acknowledgements and unavailable states survive.
 - [x] Run adjacent tests, then all relevant browser/Node/helper tests. Inspect
   actual 800x600, 1280x800 and 1440x900 renders, including rejected changes,
   drafts, keyboard focus, repeated toggles and resize/restore.
-- [ ] Build both applications and select the matching launcher pair. Verify
+- [x] Build both applications and select the matching launcher pair. Verify
   artifact hashes and software-native UI. Report exact sources, captures and
   all failed, skipped or unrun acceptance gates.
 

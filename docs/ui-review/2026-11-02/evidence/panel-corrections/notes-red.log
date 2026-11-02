@@ -1,0 +1,46 @@
+
+> test:browser
+> playwright test alive-chain.spec.mjs --grep long Note inspector scrolls --reporter=list --output=/tmp/alive-panel-notes-red
+
+
+Running 1 test using 1 worker
+
+(node:823793) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:823793) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 alive-chain.spec.mjs:86:1 › a long Note inspector scrolls inside its popup while the piano stays in place (1.8s)
+
+
+  1) alive-chain.spec.mjs:86:1 › a long Note inspector scrolls inside its popup while the piano stays in place
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 311
+    Received:    1650
+
+      92 |   const first=page.locator('#notes tr').first(),last=page.locator('#notes tr').last();
+      93 |   await last.scrollIntoViewIfNeeded();await expect(last).toBeInViewport({ratio:1});await expect(first).not.toBeInViewport();
+    > 94 |   expect(await clip.evaluate(e=>e.scrollHeight)).toBeLessThanOrEqual(scrollHeight+1);
+         |                                                  ^
+      95 |   expect((await page.locator('#piano-roll').boundingBox()).y).toBe(piano.y);
+      96 |   expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_edit'))).toEqual([]);
+      97 | });
+        at /tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:94:50
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../alive-panel-notes-red/alive-chain-a-long-Note-in-7ba79-le-the-piano-stays-in-place/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../alive-panel-notes-red/alive-chain-a-long-Note-in-7ba79-le-the-piano-stays-in-place/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../alive-panel-notes-red/alive-chain-a-long-Note-in-7ba79-le-the-piano-stays-in-place/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../alive-panel-notes-red/alive-chain-a-long-Note-in-7ba79-le-the-piano-stays-in-place/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    alive-chain.spec.mjs:86:1 › a long Note inspector scrolls inside its popup while the piano stays in place

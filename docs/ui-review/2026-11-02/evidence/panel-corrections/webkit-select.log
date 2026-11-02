@@ -1,0 +1,13 @@
+/usr/lib/python3.14/site-packages/gi/events.py:803: DeprecationWarning: 'asyncio.AbstractEventLoopPolicy' is deprecated and slated for removal in Python 3.16
+  AbstractEventLoopPolicy = getattr(asyncio, "AbstractEventLoopPolicy", object)
+/usr/lib/python3.14/site-packages/gi/events.py:890: DeprecationWarning: 'asyncio.get_event_loop_policy' is deprecated and slated for removal in Python 3.16
+  if not isinstance(_get_event_loop_policy(), GLibEventLoopPolicy):
+127.0.0.1 - - [02/Nov/2026 16:59:04] "GET /alive.css HTTP/1.1" 200 -
+127.0.0.1 - - [02/Nov/2026 16:59:04] "GET /alive-piano.css HTTP/1.1" 200 -
+127.0.0.1 - - [02/Nov/2026 16:59:04] "GET /alive-shell.css HTTP/1.1" 200 -
+127.0.0.1 - - [02/Nov/2026 16:59:04] "GET /alive-ui-contract.css HTTP/1.1" 200 -
+.
+----------------------------------------------------------------------
+Ran 1 test in 1.092s
+
+OK

@@ -18,6 +18,15 @@ relative to the preceding local report commit `a039b1b`. It changes Alive
 presentation, focused browser/native rendering checks and its visual report;
 see [HTML-FIDELITY.md](HTML-FIDELITY.md) for screenshots, results and limitations.
 
+The subsequent panel correction uses application/test/probe source
+`06f6ffa61153ce1a2dcc295a7d1ce07921acd8fa`, relative to `9ca347a`.
+Its exact 18-file inventory is
+[`evidence/panel-corrections/changed-source-files.txt`](evidence/panel-corrections/changed-source-files.txt).
+See [PANEL-CORRECTIONS.md](PANEL-CORRECTIONS.md) for independent upper/lower rows,
+fixed Help/Devices sizing, Clip layouts, contextual Help, stereo/dB presentation,
+current launcher selection and the final verification record. Later report,
+navigation and evidence updates do not alter those application sources.
+
 ## Scope
 
 - Production UI: one `isolation:isolate` property keeps workspace children below shell popups.

@@ -1,5 +1,9 @@
 # Local HTML fidelity correction, 2 November 2026
 
+The later [panel correction](PANEL-CORRECTIONS.md) supersedes this report's
+panel dimensions, screenshots and launcher selection. This file preserves the
+preceding batch's evidence.
+
 The earlier shell correction passed its recorded topology and behavior checks,
 but the user rejected its visual result. This correction uses the approved
 [original HTML](../2026-10-31/Alive-layout-01.html) as the visual authority. It

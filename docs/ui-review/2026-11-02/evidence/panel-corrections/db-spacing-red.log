@@ -1,0 +1,46 @@
+
+> test:browser
+> playwright test alive-chain.spec.mjs --grep expanded Clip retains track context --reporter=list --output=/tmp/alive-panel-db-spacing-red
+
+
+Running 1 test using 1 worker
+
+(node:817742) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:817742) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 alive-chain.spec.mjs:58:1 › expanded Clip retains track context and mixer presents dB with separate stereo lanes (1.6s)
+
+
+  1) alive-chain.spec.mjs:58:1 › expanded Clip retains track context and mixer presents dB with separate stereo lanes
+
+    Error: expect(received).toBeLessThanOrEqual(expected)
+
+    Expected: <= 152
+    Received:    159
+
+      67 |   await page.setViewportSize({width:800,height:600});
+      68 |   const readout=await page.getByLabel('Pulse gain decibels',{exact:true}).boundingBox(),pan=await page.getByRole('button',{name:'Pulse pan unavailable',exact:true}).boundingBox(),activator=await page.getByRole('button',{name:'Pulse mute',exact:true}).boundingBox();
+    > 69 |   expect(readout.y+readout.height).toBeLessThanOrEqual(pan.y);expect(pan.y+pan.height).toBeLessThanOrEqual(activator.y);
+         |                                    ^
+      70 |   await page.setViewportSize({width:1280,height:800});
+      71 |   await page.locator('#maximize-detail').click();await expect(page.locator('#session-workspace')).toBeVisible();await expect(page.getByRole('button',{name:'Select Pulse track',exact:true})).toBeInViewport();
+      72 |   expect((await page.locator('#session-workspace').boundingBox()).height).toBeGreaterThanOrEqual(96);
+        at /tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:69:36
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../alive-panel-db-spacing-red/alive-chain-expanded-Clip--b893f--with-separate-stereo-lanes/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../alive-panel-db-spacing-red/alive-chain-expanded-Clip--b893f--with-separate-stereo-lanes/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../alive-panel-db-spacing-red/alive-chain-expanded-Clip--b893f--with-separate-stereo-lanes/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../alive-panel-db-spacing-red/alive-chain-expanded-Clip--b893f--with-separate-stereo-lanes/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    alive-chain.spec.mjs:58:1 › expanded Clip retains track context and mixer presents dB with separate stereo lanes
