@@ -32,7 +32,7 @@ worktrees are preserved. No merge or automatic CI has been requested.
 | Stage | Analog | Electric | Corpus |
 | --- | --- | --- | --- |
 | Construction | Passed in controlled exact-DLL probes and ordinary Ultra host | Passed in controlled exact-DLL probes | Passed in controlled exact-DLL probes |
-| Complete original initialization | Partial: installed preset lacks five hidden vector fields | Partial: installed preset lacks separate dummy pitch-bend field | Unrun; no installed default found |
+| Complete original initialization | Partial: installed preset lacks five hidden vector fields | Partial: installed preset lacks separate dummy pitch-bend field | Unrun; original saved default model retained, native initialization unqualified |
 | Audio | Controlled note output; original state/host policy remains partial | 17 controlled musical cases pass under explicit fresh-instance policy | Real input causality established; wet/default behavior unqualified |
 | Model/native mapping | Current static bridge covers 203 slots through 172 groups/175 explicit fields | Current static bridge covers all 33 slots | Unrun |
 | Original editor | Partial; historical shared bindings remain separate from current static bridge | Partial; 33 static displays resolve, zero inputs enabled | Unrun |
@@ -276,6 +276,34 @@ batch and its admission, Note-navigation and keyboard-deletion increments
 (`continuation-python-helpers-keyboard-delete.log`). The full desktop rerun
 passes with zero rejected commands and zero reported stream errors.
 
+Manual CI run
+[41505550977](https://github.com/venetanji/alive/actions/runs/41505550977) at
+`2804cab8337d97c0863b7cc1a78ca55ad5e374ef` finishes with failure. UI/protocol/
+reference, 407 cloud Chromium tests, native adapter/build/headless checks,
+319 Rust tests (five ignored), the full desktop/hosted-editor journey and Master
+save/quit/restart pass. Chromium also skips 13 private-resource tests in cloud;
+the local 420-test run supplies their original-resource fixtures and skips none.
+
+The original Return-into-gap expectation also passes in this cloud run. Serial 7,
+preparation revision 1 targets absolute frame 2405373 / song frame 205714, the
+start of gap `[205714,244286)`. The applied observation at absolute2407936 /
+song 208277 is inside that gap, with Arrangement authority and null active
+source/slot/placement; the sibling Session source remains active and rejected
+commands remain zero. The complete correlated record is
+`workers/ci-41505550977/arrangement-return-gap-correlated.json`.
+
+Arrangement later fails at the global Return button's native-input admission,
+before any press or release. Its current rectangle is `[534,33,26,23]` and the
+native path reaches owned window 4194307, but walking the accessible ancestor
+raises `Error` at node 2. The existing receipt omits the failed operation and
+exception text, so its underlying cause remains unresolved. No global Return
+command was emitted. This is not evidence of an incorrect native musical route.
+Clip observation, saved-clip/epoch measurements, editor-resource bounds and the
+dedicated CPAL loopback gate are skipped after that failure, not passed. CI
+endurance was explicitly off; successful always-run artifact uploads do not
+change these test outcomes. Logs, 104 retained file hashes and independent review
+are under `workers/ci-41505550977/`.
+
 Master save/quit/restart and all four clip-observation modes pass
 (`paired-master-final-fb583bb/`, `paired-clip-{normal,write-error,blocked,input-error}-final-fb583bb/`).
 These independent journeys use an immutable private harness snapshot, with
@@ -307,6 +335,66 @@ admission must remain closed. The private read-only design review is
 policy propagation, real native lifecycle, initialization, editor transactions
 and measured admission remain separate dependencies; no slice-2 production
 change is included in this checkpoint.
+
+The current Electric visual reconciliation confirms that earlier embedded
+clipping, repeated module labels and schematic placeholders are fixed. The next
+bounded visual correction concerns schematic placement across the existing
+four pages at one recorded original-host scale. The coordinator captured all
+four pages after Stop
+in a separate reference session, preserving the user's saved tune. Electric r7
+pins those captures and read-only display/theme observations with manifest
+`feeee9c218f92c0d980847398e18db703e8e663fad24e019bb67b3a6955850a8`.
+Live shows 102% zoom and HiDPI On; the host log reports scale 1.6041667.
+Compositor scale 1.6 and configured Wine LogPixels 154 are separate evidence.
+The initial Fork capture showed playback for an unknown reason and is excluded;
+the acquisition must not be described as continuously stopped. Parameter,
+audio and physical settings were not edited. Measurements support centering both
+90x90 artwork layers at aggregate cell-relative `(8,4)` in the 106x98 cell.
+This is an inference at one display configuration; it does not establish the
+transparent StackView's internal allocation, selected raster family, native
+resampling or other scales. The implementation is restricted to the exact
+Electric subtree and preserves generic StackView behavior. Dial angles,
+automatic DPI selection, click-map interaction and native admission remain
+separate. The frozen measurement report is
+`workers/electric-placement-r7/report.md` (SHA-256
+`74ab45c6530ce6b3ea77b651a9a8f8f5d86a0fe2ecac5586ecf1176a738f7e43`);
+independent scope review accepts the proposal with no blocking findings
+(`workers/electric-placement-r7-review/report.md`).
+
+The bounded placement correction now has retained RED/GREEN regressions and
+independent implementation/visual reviews with no blocking findings. All 798
+Node tests pass with the private resource fixtures; the seven focused Chromium
+schematic tests pass, including all four pages and captures at 800x600, 1280x800
+and 1440x900. The subsequent full browser run passes 419 tests and skips the
+private Analog packet check because its environment variable was omitted
+(`electric-placement-full-browser-r1.log`). That exact skipped check passes
+separately with its verified packet (`electric-placement-analog-packet-r1.log`);
+these executions are not one all-passed full run. All 16 page/size captures were
+inspected independently, including the additional 390x844 case. At 390 pixels,
+the existing panel viewport crops horizontally; Global scrolls left and clips
+three CSS pixels of the cell boundary while the artwork remains complete.
+Desktop artwork and lower detail rows are complete. Full-panel typography,
+dials, borders/theme, extra width, click-map interaction and native DPI/sampling
+remain unqualified. The frozen visual report is
+`workers/electric-placement-visual-review-r1/report.md` (SHA-256
+`72408f52d35d3ace3cdd7d6a592d0c3cbf5755d14b573874b8262a6f5c5eb82b`).
+
+Corpus r2 now retains a separate original-host default-state witness. In the
+existing disposable reference session, the coordinator inserted an empty audio
+track, loaded the original Corpus device through Browser search, captured its
+stopped panel and saved the set under the private evidence directory. The user's
+saved tune remains on disk. The clean saved set contains exactly one Corpus
+model with 39 direct Manual fields, plus the earlier Electric reference. The
+19,018-byte original `.als` SHA-256 is
+`a15592d5e081127a0bc8298188614e36e64b8e10302f5c2e6f28e3459087eab4`.
+Packet r2 SHA-256
+`c4c25dc51376d41e8e1216e08269cd7289fa17a73cad8a5510285bd39cd8befe`
+verifies four installed artifacts, 34 retained files and four findings.
+These saved model values do not establish raw native slot encodings, hidden
+initialization, wet-audio behavior or Alive support. No playback, recording,
+musical parameter or audio/physical setting change was requested during this
+acquisition. Failed capture/input attempts and the separate GTK portal Save
+target are retained in its journal rather than counted as successful evidence.
 
 ## Next Gates
 

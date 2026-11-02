@@ -42,6 +42,14 @@ async function hashes(page){
 }
 const base=page=>page.locator('[data-artwork-path$="DeviceSchemaBase.png"]');
 const mask=page=>page.locator('[data-view-id="DeviceSchemaAnimation"]');
+async function expectSchematicPlacement(page){
+  const geometry=await base(page).evaluate(element=>{
+    const stack=element.parentElement,cell=stack.parentElement,cellBox=cell.getBoundingClientRect();
+    const relative=node=>{const box=node.getBoundingClientRect();return[box.x-cellBox.x,box.y-cellBox.y,box.width,box.height];};
+    return{cell:[cellBox.width,cellBox.height],stack:relative(stack),base:relative(element),mask:relative(stack.querySelector('[data-view-id="DeviceSchemaAnimation"]')),clickMap:relative(stack.querySelector('[data-view-id="DeviceSchemaClickMap"]'))};
+  });
+  expect(geometry).toEqual({cell:[106,98],stack:[0,0,106,95],base:[8,4,90,90],mask:[8,4,90,90],clickMap:[0,0,106,98]});
+}
 
 test('original normal base and four masks follow editor pages and current theme',async({page})=>{
   await page.evaluate(()=>window.mountSchematic());
@@ -54,6 +62,7 @@ test('original normal base and four masks follow editor pages and current theme'
     await expect(mask(page)).toHaveAttribute('data-artwork-path',path);
     await expect(mask(page)).toHaveAttribute('data-artwork-state','ready');
     expect((await hashes(page))[path]).toBe(fixture.pixels[path].tintCyan);
+    await expectSchematicPlacement(page);
   }
   await page.locator('[data-view-class=FingerView]').first().click();
   await expect(mask(page)).toHaveAttribute('data-artwork-state','ready');
@@ -63,7 +72,8 @@ test('original normal base and four masks follow editor pages and current theme'
   expect(await base(page).locator('canvas').evaluate(e=>({width:e.width,height:e.height,logical:e.getBoundingClientRect().width,dpr:devicePixelRatio}))).toEqual({width:90,height:90,logical:90,dpr:2});
   const report=await page.evaluate(()=>view.report);
   expect(report.unsupportedClasses).not.toContain('LoadableAnimationView');
-  expect(report.unsupportedProperties.some(p=>p.property==='Artwork.Placement'&&/provisional/i.test(p.reason))).toBe(true);
+  expect(report.unsupportedProperties.filter(p=>p.property==='Artwork.Placement').map(p=>p.status)).toEqual(['inferred','inferred']);
+  for(const property of ['Artwork.DpiFamily','Artwork.Resampling','Artwork.NativeLayout','Artwork.OtherScales'])expect(report.unsupportedProperties.filter(p=>p.property===property&&/unqualified/i.test(p.reason))).toHaveLength(2);
   expect(report.unsupportedProperties.some(p=>p.property==='ClickMap.Interaction')).toBe(true);
   await expect(page.locator('.live-device-control input:not(:disabled),.live-device-control button:not(:disabled),.live-device-control select:not(:disabled)')).toHaveCount(0);
   if(process.env.ALIVE_ELECTRIC_SCHEMATIC_OUTPUT){
@@ -73,7 +83,13 @@ test('original normal base and four masks follow editor pages and current theme'
     await writeFile(join(output,'renderer-report.json'),JSON.stringify(report,null,2)+'\n');
     for(const [width,height]of [[390,844],[800,600],[1280,800],[1440,900]]){
       await page.setViewportSize({width,height});expect(await page.evaluate(()=>document.body.scrollWidth)).toBeLessThanOrEqual(width);
-      await page.screenshot({path:join(output,`schematic-${width}x${height}.png`)});
+      for(let index=0;index<4;index++){
+        await page.locator('[data-view-class=FingerView]').nth(index).click();
+        await expect(mask(page)).toHaveAttribute('data-artwork-path',`${family}/DeviceSchema0${index}.png`);
+        await expect(mask(page)).toHaveAttribute('data-artwork-state','ready');
+        await expectSchematicPlacement(page);
+        await page.screenshot({path:join(output,index===0?`schematic-${width}x${height}.png`:`schematic-page-${index}-${width}x${height}.png`)});
+      }
     }
   }
 });
@@ -89,6 +105,7 @@ test('explicit Large family retains logical size and transparent Global mask',as
     await expect(mask(page)).toHaveAttribute('data-artwork-path',path);
     await expect(mask(page)).toHaveAttribute('data-artwork-state','ready');
     expect((await hashes(page))[path]).toBe(fixture.pixels[path].tintCyan);
+    await expectSchematicPlacement(page);
   }
   expect(await mask(page).locator('canvas').evaluate(e=>e.getContext('2d').getImageData(0,0,e.width,e.height).data.every((v,i)=>i%4!==3||v===0))).toBe(true);
 });

@@ -18,9 +18,25 @@ const visibilityReference=node=>{
   const match=String(expression.attributes.Value).trim().match(/^(!?)\s*([A-Za-z_]\w*(?:\[\d+\])?(?:\.[A-Za-z_]\w*(?:\[\d+\])?)*)$/);
   return match?{name:match[2],negated:!!match[1]}:null;
 };
+function electricSchematicLayers(node){
+  if(node.className!=='BorderedCellView'||node.children.length!==1)return null;
+  const stack=node.children[0];if(stack.className!=='StackView'||stack.children.length!==3)return null;
+  const [clickMap,base,mask]=stack.children,nodes=[node,stack,clickMap,base,mask];
+  if(nodes.some(n=>n.resource!=='Devices/LoungeLizard/Contents.xml'||n.embedded||n.connection||['Position','HorizResizePolicy','VertResizePolicy','DefaultHorizResizePolicy'].some(p=>n.properties[p])))return null;
+  const size=(n,x,y)=>{const point=propertyPoint(n,'Size');return point?.x===x&&point.y===y;};
+  const border=node.properties.Border,b=border?.attributes;
+  if(!size(node,106,98)||!size(stack,106,95)||value(node,'BackgroundColor')!=='RetroDisplayBackground'||value(node,'IsHorizExpandable')!=='false'||value(node,'IsVertExpandable')!=='false')return null;
+  if(!b||!['Left','Right','Top','Bottom'].every(p=>b[p]==='0')||b.ColorString!=='Black'||b.CornerColorString!=='UseBackground'||b.RoundedCornerSize!=='2'||b.RoundedCorners!=='5'||b.EdgesToDraw!=='15'
+    ||border.children?.length!==1||border.children[0].tag!=='BorderType'||border.children[0].attributes.Value!=='4')return null;
+  if(clickMap.className!=='ClickMapView'||!size(clickMap,106,98)||value(clickMap,'ViewId')!=='DeviceSchemaClickMap')return null;
+  if(base.className!=='BitmapView'||!size(base,90,90)||value(base,'BitmapName')!=='Devices/Electric/DeviceSchemaBase.png')return null;
+  if(mask.className!=='LoadableAnimationView'||!size(mask,90,90)||value(mask,'ViewId')!=='DeviceSchemaAnimation'||value(mask,'AnimationName')!=='Devices/Electric/DeviceSchema00.png'
+    ||value(mask,'BitmapColor')!=='RetroDisplayForeground2'||value(mask,'BackgroundColor')!=='Transparent'||[clickMap,base,mask].some(n=>n.children.length))return null;
+  return [base,mask];
+}
 
 export function createLiveDeviceView(doc,{layout,gui=null,graphics=null,electricSchematicFamily='normal',isCurrent=()=>true,resolveBinding=()=>null,evaluateExpression=null,onError=()=>{}}={}){
-  let disposed=false,raster=null,tintContext=null;const cleanup=[],refreshers=[],drafts=[],cards=new Map(),fingers=[],selectors=[],schematics=[],artwork=[],unsupported=new Set(),borders=[],unsupportedProperties=[];let unresolved=0,controls=0;
+  let disposed=false,raster=null,tintContext=null;const cleanup=[],refreshers=[],drafts=[],cards=new Map(),fingers=[],selectors=[],schematics=[],artwork=[],unsupported=new Set(),borders=[],unsupportedProperties=[],centeredSchematicLayers=new WeakSet();let unresolved=0,controls=0;
   const textMeasure=doc.createElement('canvas').getContext('2d');if(textMeasure)textMeasure.font='11px "Liberation Sans"';
   const guard=fn=>(...args)=>{if(disposed)return false;try{const result=fn?.(...args);if(result?.then)result.catch(onError);return result;}catch(e){onError(e);return false;}};
   const label=node=>node.text('Label')||node.text('Text')||node.text('TrueText')||node.text('InfoTextHeader').replace(/^@/,'')||node.connection?.expression||node.className;
@@ -48,7 +64,14 @@ export function createLiveDeviceView(doc,{layout,gui=null,graphics=null,electric
   function mountSchematicLayer(element,node,mask){
     const family=`Devices/Electric${electricSchematicFamily==='large'?'/Large':''}`,mode=mask?'coverage':'rgba';
     const record={resource:node.resource,id:node.id,scope:[...node.scope],family,mode,status:'loading',path:null,error:null};artwork.push(record);
-    unsupportedProperties.push({resource:node.resource,id:node.id,scope:[...node.scope],property:'Artwork.Placement',reason:'Provisional XML origin; native parent alignment, DPI family choice and resampling remain unqualified.'});
+    const identity={resource:node.resource,id:node.id,scope:[...node.scope]},centered=centeredSchematicLayers.has(node);
+    unsupportedProperties.push({...identity,property:'Artwork.Placement',status:centered?'inferred':'unknown',reason:centered?'Aggregate cell-relative origin (8,4) inferred from original Electric at one recorded display configuration.':'Provisional XML origin; native parent alignment remains unqualified.'});
+    for(const [property,reason]of [
+      ['Artwork.DpiFamily','Runtime raster-family selection and automatic DPI policy remain unqualified; explicit family retained.'],
+      ['Artwork.Resampling','Native resampling, pixel rounding and color handling remain unqualified.'],
+      ['Artwork.NativeLayout','Native StackView origin, assigned dimensions and allocator decomposition remain unqualified.'],
+      ['Artwork.OtherScales','Artwork placement at other original-host display scales remains unqualified.'],
+    ])unsupportedProperties.push({...identity,property,reason});
     let frame=0,serial=0,desired=null,canvas=null;
     const paint=()=>{
       if(disposed||!isCurrent())return;
@@ -88,6 +111,8 @@ export function createLiveDeviceView(doc,{layout,gui=null,graphics=null,electric
   }
   function render(node,ancestorExpressions=[],naturalText=false){
     const type=node.className,e=make(doc,'div','live-device-node');e.dataset.viewClass=type;
+    // The evidence qualifies this aggregate cell relation, not generic Stack allocation.
+    for(const layer of electricSchematicLayers(node)??[])centeredSchematicLayers.add(layer);
     const poti=node.children[0],potiSize=poti?.className==='ModulatedPoti'?propertyPoint(poti,'Size'):null;
     const combi=type==='LoadableCombiSlider'&&node.children.length===1&&poti.id==='Slider'&&!poti.connection&&!poti.embedded&&!poti.children.length
       &&Object.keys(poti.properties).every(name=>name==='Size'||name==='BackgroundColor')&&potiSize?.x>0&&potiSize.x<=64&&potiSize.y>0&&potiSize.y<=64;
@@ -158,7 +183,7 @@ export function createLiveDeviceView(doc,{layout,gui=null,graphics=null,electric
     }
     for(const c of childViews){
       if(type==='VoidView'||type==='CardView'||type==='StackView'||type==='ControlManager'){
-        const point=propertyPoint(c.node,'Position')??{x:0,y:0};c.element.style.position='absolute';c.element.style.left=point.x+'px';c.element.style.top=point.y+'px';
+        const point=centeredSchematicLayers.has(c.node)?{x:8,y:4}:propertyPoint(c.node,'Position')??{x:0,y:0};c.element.style.position='absolute';c.element.style.left=point.x+'px';c.element.style.top=point.y+'px';
       }
       e.append(c.element);
     }

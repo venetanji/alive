@@ -75,6 +75,15 @@ capture, manifest SHA-256
 The capture supports visual comparison only. Separate current-host static
 evidence qualifies the mappings, selector labels and physical curves.
 
+Electric r7 adds stopped original-host captures of all four pages and read-only
+display/theme observations, manifest SHA-256
+`feeee9c218f92c0d980847398e18db703e8e663fad24e019bb67b3a6955850a8`.
+Live reports 102% zoom with HiDPI enabled; its host log reports screen scale
+1.6041667. Compositor scale and configured Wine DPI are recorded separately.
+An initial playing Fork capture is excluded from the stopped reference set.
+These captures do not establish native initialization, the selected raster
+family or the missing dummy pitch-bend policy.
+
 Controlled private ordinary-note probes with an explicit complete 33-slot
 candidate additionally exercised descriptors, initialization, notes/releases,
 active Volume updates, two instances and one edited save/reconstruct run.
@@ -86,11 +95,17 @@ DummyPerNotePitchBendRange value.
 Required before registration: qualified model/native bridge and every slot's
 initialization policy, runtime comparison of physical parsing/rounding,
 complete panel support, transport and actual Alive timing/admission. Current
-resource captures resolve all 33 controls with zero enabled inputs, but native
-ClickMapView/LoadableAnimationView artwork, detailed geometry and clipping
-remain incomplete. Static display qualification does not establish knob-angle
-curves or original-panel visual fidelity. None of the remaining gates follows
-from passing the state validator or private note audio alone.
+resource captures resolve all 33 controls with zero enabled inputs. Verified
+original base/mask artwork, embedded content sizing and module navigation labels
+are implemented. The exact original schematic subtree centers both 90x90 artwork
+layers at cell-relative `(8,4)` within the 106x98 cell, preserving the declared
+106x95 StackView and generic positioning elsewhere. This aggregate placement is
+inferred from r7 at one display configuration. Runtime raster-family selection,
+native resampling, internal Stack allocation and other scales remain unqualified,
+as do click-map interaction and complete panel geometry. Static display
+qualification does not establish knob-angle curves or original-panel visual
+fidelity. None of the remaining gates follows from passing the state validator
+or private note audio alone.
 
 Run boundary tests with:
 
@@ -99,5 +114,5 @@ node --test apps/ultra/ui/live-profiles/electric/*.test.mjs
 ```
 
 The browser parser tests are in `apps/ultra/tests/ci/electric-profile.spec.mjs`.
-They use authored inline XML and the real Chromium DOMParser. The coordinator
-owns adding this specification to shared CI configuration when appropriate.
+They use authored inline XML and the real Chromium DOMParser, and are selected
+by the shared manual Chromium configuration.
