@@ -11,6 +11,20 @@ import alive_workspace_navigation as navigation
 
 
 class NavigationTest(unittest.TestCase):
+    def test_source_disclosure_uses_owned_input_before_placing_an_arrangement_source(self):
+        calls = []
+        class Control:
+            def __init__(self, name): self.name = name
+            def get_state_set(self): return self
+            def contains(self, state): return state == 'visible' and self.name == 'Source / Clip'
+        ui = types.SimpleNamespace(click=lambda name: calls.append(('blind', name)),
+                                   text=lambda *args: None,
+                                   wait_for=lambda name: Control(name), find=lambda name: Control(name))
+        navigation.install(ui, types.SimpleNamespace(scope='Alive'), None,
+                           lambda name: calls.append(('owned', name)))
+        ui.click('Place source in range')
+        self.assertEqual(calls, [('owned', 'Source / Clip'), ('blind', 'Place source in range')])
+
     def test_diagnostic_disclosure_uses_owned_input_before_reading_voices(self):
         calls = []
         class Control:

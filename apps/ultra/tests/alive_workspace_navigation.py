@@ -81,7 +81,7 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
             if automation:
                 expand('Automation inspector')
             if source_actions:
-                expand('Source / Clip')
+                expand('Source / Clip', activate_disclosure or click)
             elif name == 'Add note':
                 # Its popup can cover the following Clip header in Arrangement.
                 # Close it through the same disclosure a user would operate.

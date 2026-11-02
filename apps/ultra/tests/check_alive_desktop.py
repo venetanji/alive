@@ -32,7 +32,8 @@ from native_tooltip_geometry import covering_hover_plan
 
 prepare_workspace_control = install_workspace_navigation(
     ui, windows, select_device=lambda name: select_device_click(name),
-    activate_disclosure=lambda name: native_control_click(name, 'disclosure', record_disclosure_input),
+    activate_disclosure=lambda name: native_control_click(
+        name, 'disclosure', record_disclosure_input, require_accessible_hit=True),
     observe_replace=lambda *args: observe_replace_input(*args),
     observe_editor=lambda *args: observe_editor_input(*args))
 timing = None
