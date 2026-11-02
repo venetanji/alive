@@ -204,6 +204,7 @@ function dom(file){
   if(ids.has('piano-roll')){const area=doc.createElement('div');area.append(ids.get('piano-roll'));ids.set('piano-test-area',area);}
   if(ids.has('timeline')){const tools=doc.createElement('div');tools.className='timeline-tools';ids.get('timeline').append(tools);}
   if(ids.has('master-meter'))ids.get('master-meter').append(doc.createElement('i'),doc.createElement('i'));
+  if(ids.has('audio-details'))ids.get('audio-details').append(doc.createElement('summary'));
   const timeouts=[],win={setTimeout:(fn,delay)=>timeouts.push({fn,delay}),addEventListener(){},removeEventListener(){}};
   return{doc,win,ids,timeouts,find:label=>[...ids.values()].flatMap(e=>[e,...descendants(e)]).find(e=>e.attrs['aria-label']===label)};
 }

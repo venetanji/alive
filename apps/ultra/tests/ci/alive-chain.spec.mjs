@@ -233,14 +233,23 @@ test('Browser drag collapses, reverses and cancels without losing its useful wid
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
 
-test('Audio diagnostics retain their accessible name when descriptions move to Help',async({page})=>{
+test('Audio diagnostics retain their accessible name and disclosure state when descriptions move to Help',async({page})=>{
   await openSession(page);
   const summary=page.getByRole('button',{name:'Audio details',exact:true});
   await expect(summary).toBeVisible();await expect(summary).not.toHaveAttribute('title');
   await expect(summary).toHaveAttribute('data-help','Audio details');
+  await expect(page.getByRole('button',{name:'Audio details',expanded:false,exact:true})).toBeVisible();
   await summary.focus();await summary.press('Enter');await expect(page.locator('#audio-details')).toHaveAttribute('open','');
+  for(const name of ['Audio backend','Transport playing','Audio callbacks']){
+    const open=page.getByRole('button',{name:'Audio details',expanded:true,exact:true});
+    await expect(open).toBeVisible();await expect(page.getByLabel(name,{exact:true})).toBeVisible();
+  }
   await expect(page.getByLabel('Audio backend',{exact:true})).toBeVisible();
   await summary.press('Space');await expect(page.locator('#audio-details')).not.toHaveAttribute('open','');
+  await expect(page.getByRole('button',{name:'Audio details',expanded:false,exact:true})).toBeVisible();
+  await page.locator('#audio-details').evaluate(e=>e.open=true);
+  await expect(page.getByRole('button',{name:'Audio details',expanded:true,exact:true})).toBeVisible();
+  await summary.click();await expect(page.getByRole('button',{name:'Audio details',expanded:false,exact:true})).toBeVisible();
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
 
