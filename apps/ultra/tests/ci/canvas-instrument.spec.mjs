@@ -51,6 +51,7 @@ test('Perform saves a full preset, recalls bound parameters and creates an indep
   await expect(cutoff).toHaveValue('731');
   const commits=await page.evaluate(()=>window.instrumentCalls.filter(call=>call.name==='document_commit'));
   const saved=commits.findLast(c=>c.args.patch.device.presets.some(p=>p.name==='Warm')).args.patch;
+  expect(saved.device.midi.input.kind).toBe('polyNote');
   expect(saved.device.presets.at(-1).values.cutoff).toBe(731);
   expect(Object.keys(saved.device.presets.at(-1).values)).toHaveLength(7);
   await page.getByRole('button',{name:'New instance',exact:true}).click();

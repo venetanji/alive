@@ -11,7 +11,7 @@ pub(crate) struct HostManifest {
     pub id: String,
     pub name: String,
     pub kind: DeviceKind,
-    pub note_node: Option<u32>,
+    pub note_input: Option<HostNoteInput>,
     pub input: Option<HostAudioInput>,
     pub output: ChannelBundle,
     pub parameters: Vec<HostParameter>,
@@ -20,6 +20,20 @@ pub(crate) struct HostManifest {
 #[derive(Clone, Copy, Debug, PartialEq, Deserialize, serde::Serialize)]
 #[serde(rename_all = "camelCase")]
 pub(crate) enum DeviceKind { Instrument, AudioEffect }
+#[derive(Clone, Debug, PartialEq, Deserialize, serde::Serialize)]
+#[serde(tag = "kind", rename_all = "camelCase", rename_all_fields = "camelCase", deny_unknown_fields)]
+pub(crate) enum HostNoteInput {
+    PolyNote { node: u32, inlet: u32 },
+    NativeInstrument { node: u32, inlet: u32, profile: String, profile_version: u32 },
+}
+impl HostNoteInput {
+    pub fn built_in_node(&self) -> Result<u32, String> {
+        match self {
+            Self::PolyNote { node, .. } => Ok(*node),
+            Self::NativeInstrument { .. } => Err("Native instrument note inputs are not admitted by the current Alive playback profile".into()),
+        }
+    }
+}
 #[derive(Clone, Debug, Deserialize, serde::Serialize)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct ChannelBundle { pub channels: u32, pub layout: String }
@@ -34,10 +48,10 @@ pub(crate) struct HostParameter {
     pub integral: bool, pub unit: Option<String>,
 }
 
-pub(crate) fn host_manifest(patch: &serde_json::Value, graph: &NativeGraph) -> Result<HostManifest, String> {
+pub(crate) fn host_manifest(patch: &serde_json::Value, graph: &NativeGraph, sources: &[super::live_device::Source]) -> Result<HostManifest, String> {
     let device: Device = serde_json::from_value(patch.get("device").cloned()
         .ok_or("This Ultra patch has no reusable device manifest")?).map_err(|e| e.to_string())?;
-    validate(Some(&device), graph)?;
+    validate(Some(&device), graph, sources)?;
     let nodes = &graph.nodes[..graph.node_count as usize];
     let bindings: Vec<HostParameter> = device.parameters.into_iter().map(|binding| {
         let node = nodes.iter().find(|node| node.id == binding.node).unwrap();
@@ -49,14 +63,14 @@ pub(crate) fn host_manifest(patch: &serde_json::Value, graph: &NativeGraph) -> R
     }).collect();
     let presentation=super::presentation::project(patch,&bindings)?;
     Ok(HostManifest { version: device.version, id: device.id, name: device.name,
-        kind: device.kind, note_node: device.midi.map(|midi| midi.node),
+        kind: device.kind, note_input: device.midi,
         input: device.audio_input, output: device.audio_output,
         parameters: bindings, presentation })
 }
 
 pub(super) struct Device {
     version: u32, id: String, name: String, kind: DeviceKind,
-    midi: Option<Midi>, audio_input: Option<HostAudioInput>, audio_output: ChannelBundle,
+    midi: Option<HostNoteInput>, audio_input: Option<HostAudioInput>, audio_output: ChannelBundle,
     parameters: Vec<Binding>, presets: Vec<Preset>,
 }
 #[derive(Deserialize)]
@@ -69,7 +83,7 @@ struct DeviceV2 {
 #[serde(deny_unknown_fields)]
 struct MidiV2 {
     #[serde(deserialize_with = "required_option")]
-    input: Option<Midi>,
+    input: Option<HostNoteInput>,
     #[serde(deserialize_with = "required_option")]
     output: Option<()>,
 }
@@ -100,9 +114,6 @@ impl<'de> Deserialize<'de> for Device {
 }
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
-struct Midi { node: u32, inlet: u32 }
-#[derive(Deserialize)]
-#[serde(deny_unknown_fields)]
 struct Binding {
     key: String, label: String, node: u32, param: String, min: f64, max: f64,
     #[serde(default, deserialize_with = "present_string")]
@@ -126,7 +137,7 @@ fn key(value: &str) -> bool {
         && value.bytes().enumerate().all(|(index,byte)| byte.is_ascii_alphabetic() || byte==b'_' || index!=0 && byte.is_ascii_digit())
 }
 
-pub(super) fn validate(device: Option<&Device>, graph: &NativeGraph) -> Result<(), String> {
+pub(super) fn validate(device: Option<&Device>, graph: &NativeGraph, sources: &[super::live_device::Source]) -> Result<(), String> {
     let Some(device) = device else { return Ok(()); };
     let fail = |message: &str| format!("Invalid device manifest: {message}");
     if device.id.is_empty() || device.id.len()>127 || !device.id.split('.').all(|part| !part.is_empty()
@@ -141,8 +152,19 @@ pub(super) fn validate(device: Option<&Device>, graph: &NativeGraph) -> Result<(
     match device.kind {
         DeviceKind::Instrument => {
             if device.audio_input.is_some() { return Err(fail("instruments require no audio input")); }
-            if !device.midi.as_ref().is_some_and(|midi| midi.inlet==0 && nodes.iter().any(|node| node.id==midi.node && node.kind==60)) {
-                return Err(fail("MIDI must target inlet 0 of an authored poly.note~ node"));
+            match device.midi.as_ref() {
+                Some(HostNoteInput::PolyNote { node, inlet: 0 })
+                    if nodes.iter().any(|n| n.id==*node && n.kind==60) => {},
+                Some(HostNoteInput::NativeInstrument { node, inlet: 0, profile, profile_version }) => {
+                    if nodes.iter().filter(|n| n.kind==68).count()!=1
+                        || !nodes.iter().any(|n| n.id==*node && n.kind==68)
+                        || sources.len()!=1 || sources[0].node!=*node
+                        || sources[0].state.profile!=*profile || sources[0].state.version!=*profile_version {
+                        return Err(fail("native MIDI requires exactly one matching live.device~ node and complete source identity"));
+                    }
+                    sources[0].validate().map_err(|e| fail(&e))?;
+                },
+                _ => return Err(fail("MIDI must target inlet 0 of its authored PolyNote or native instrument node")),
             }
         }
         DeviceKind::AudioEffect => {

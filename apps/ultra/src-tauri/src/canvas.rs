@@ -1023,7 +1023,7 @@ fn prepare_flat(doc: Document, allow_relays: bool) -> Result<Prepared, String> {
             return Err("Signal cycles require a delay object and are not supported".into());
         }
     }
-    device::validate(doc.device.as_ref(), &graph)?;
+    device::validate(doc.device.as_ref(), &graph, &live_devices)?;
     Ok(Prepared { native: graph, live_devices })
 }
 

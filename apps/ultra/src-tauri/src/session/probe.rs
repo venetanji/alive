@@ -91,15 +91,16 @@ fn saved_chain_proof(host: &mut Host, source: &super::PreparedSession, output: &
             {"id":5,"type":"dac","x":0,"y":320,"params":{}}],
         "edges":[{"from":1,"outlet":1,"to":2,"inlet":0},{"from":2,"outlet":0,"to":3,"inlet":0},
             {"from":3,"outlet":0,"to":4,"inlet":0},{"from":3,"outlet":0,"to":4,"inlet":1},{"from":4,"outlet":0,"to":5,"inlet":0}],
-        "device":{"version":2,"kind":"instrument","id":"org.alive.probe-impulse","name":"Probe Impulse","midi":{"input":{"node":1,"inlet":0},"output":null},
+        "device":{"version":2,"kind":"instrument","id":"org.alive.probe-impulse","name":"Probe Impulse","midi":{"input":{"kind":"polyNote","node":1,"inlet":0},"output":null},
             "audio":{"input":null,"output":{"channels":2,"layout":"stereo"}},"parameters":[{"key":"level","label":"Level","node":3,"param":"value","min":0,"max":127}],"presets":[]}});
     let impulse = output.join("impulse.ultra");
     std::fs::write(&impulse, serde_json::to_vec_pretty(&patch).unwrap()).map_err(|e| e.to_string())?;
     let reference = |path: &Path, instance: &str| -> Result<DeviceInstance, String> {
         let loaded = crate::documents::read_patch(path)?;
         let patch = loaded.patch.ok_or("Expected saved probe device")?;
-        let graph = crate::canvas::prepare(patch.clone())?.native;
-        let manifest = crate::canvas::device::host_manifest(&patch, &graph)?;
+        let compiled = crate::canvas::prepare(patch.clone())?;
+        let graph = compiled.native;
+        let manifest = crate::canvas::device::host_manifest(&patch, &graph, &compiled.live_devices)?;
         Ok(DeviceInstance { instance_id: instance.into(), path: loaded.path.to_str().ok_or("Probe source path must be UTF-8")?.into(), id: manifest.id,
             version: manifest.version, source_sha256: super::prepare::fingerprint(&patch)?, parameters: Default::default(), native_sources: Default::default(), bypassed: false })
     };

@@ -85,7 +85,7 @@ pub(super) fn prepare_device(reference: &DeviceInstance, session_path: &Path, tr
     }
     if fingerprint(&patch)? != reference.source_sha256 { return Err("Device source changed".into()); }
     let initial = canvas::prepare(patch.clone())?;
-    let manifest = canvas::device::host_manifest(&patch, &initial.native)?;
+    let manifest = canvas::device::host_manifest(&patch, &initial.native, &initial.live_devices)?;
     if manifest.version != reference.version { return Err(format!("Device manifest version mismatch: expected {}, found {}", reference.version, manifest.version)); }
     if manifest.id != reference.id { return Err(format!("Device identity mismatch: expected {}, found {}", reference.id, manifest.id)); }
     super::native_sources::apply(&mut patch, &reference.native_sources, &initial.live_devices)?;
@@ -100,7 +100,7 @@ pub(super) fn prepare_device(reference: &DeviceInstance, session_path: &Path, tr
     if graph.nodes[..graph.node_count as usize].iter().any(|n| matches!(n.kind, 11 | 26 | 27)) {
         return Err("Alive's native instrument profile does not support legacy Voice or cross-document send/receive nodes".into());
     }
-    let manifest = canvas::device::host_manifest(&patch, &graph)?;
+    let manifest = canvas::device::host_manifest(&patch, &graph, &compiled.live_devices)?;
     Ok(PreparedDevice { instance_id: reference.instance_id.clone(), track, path: loaded.path, patch, graph, live_devices: compiled.live_devices, manifest })
 }
 

@@ -1,4 +1,5 @@
 // Saved device interface; DSP state and active notes never enter this manifest.
+import {validateLiveDeviceState} from './live-device-profile.mjs';
 const fail=message=>{throw Error(`Device: ${message}`);};
 const own=(value,key)=>Object.hasOwn(value,key);
 const clone=value=>JSON.parse(JSON.stringify(value));
@@ -24,8 +25,16 @@ export function validateDevice(patch,registry,structural){
   text(device.name,'name',64);
   const byId=new Map(nodes(patch).map(node=>[node.id,node]));
   const note=input=>{
-    fields(input,['node','inlet']);
-    if(!Number.isInteger(input.node)||byId.get(input.node)?.type!=='poly_note'||input.inlet!==0)fail('MIDI entry must be the note inlet of poly.note~.');
+    if(input?.kind==='polyNote'){
+      fields(input,['kind','node','inlet']);
+      if(!Number.isInteger(input.node)||byId.get(input.node)?.type!=='poly_note'||input.inlet!==0)fail('PolyNote MIDI entry must be inlet 0 of poly.note~.');
+    }else if(input?.kind==='nativeInstrument'){
+      fields(input,['kind','node','inlet','profile','profileVersion']);
+      const source=byId.get(input.node);
+      if(!Number.isInteger(input.node)||source?.type!=='live_device'||input.inlet!==0||[...byId.values()].filter(node=>node.type==='live_device').length!==1)fail('native MIDI requires exactly one matching live.device~ source at inlet 0.');
+      const state=validateLiveDeviceState(source.params.device,source.params.state);
+      if(input.profile!==state.profile||input.profileVersion!==state.version)fail('native MIDI profile must match its complete source identity.');
+    }else fail('MIDI input requires kind polyNote or nativeInstrument.');
   };
   const stereo=bundle=>{
     fields(bundle,['channels','layout']);

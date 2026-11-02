@@ -64,7 +64,7 @@ fn instantiating_revalidates_and_retains_canonical_device_metadata() {
     let source=serde_json::json!({"version":1,"profile":"ultra-canvas-v1","presentation":{"version":1,"openOnLoad":false,"size":{"width":640,"height":120},"items":[]},"nodes":[
         {"id":1,"type":"poly_note","x":0,"y":0,"params":{}},
         {"id":2,"type":"adsr_voice","x":0,"y":0,"params":{}}],"edges":[],
-        "device":{"version":2,"kind":"instrument","id":"org.alive.test","name":"Test","midi":{"input":{"node":1,"inlet":0},"output":null},
+        "device":{"version":2,"kind":"instrument","id":"org.alive.test","name":"Test","midi":{"input":{"kind":"polyNote","node":1,"inlet":0},"output":null},
             "audio":{"input":null,"output":{"channels":2,"layout":"stereo"}},
             "parameters":[{"key":"attack","label":"Attack","node":2,"param":"attack","min":1,"max":10000}],
             "presets":[{"name":"Init","values":{"attack":10}}]}});

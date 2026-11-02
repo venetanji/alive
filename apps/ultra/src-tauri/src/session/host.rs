@@ -99,7 +99,7 @@ impl Host {
             let output = &device.manifest.output;
             let input = device.manifest.input.as_ref();
             let mut native = native::DeviceV2 { document: index as u32, kind: if device.manifest.kind == crate::canvas::device::DeviceKind::Instrument { 1 } else { 2 },
-                note_node: device.manifest.note_node.unwrap_or(0), input_node: input.map_or(0, |i| i.node),
+                note_node: device.manifest.note_input.as_ref().map(|input| input.built_in_node()).transpose()?.unwrap_or(0), input_node: input.map_or(0, |i| i.node),
                 input_channels: input.map_or(0, |i| i.bundle.channels), input_layout: input.map_or(0, |i| layout(&i.bundle.layout)),
                 output_channels: output.channels, output_layout: layout(&output.layout),
                 parameter_count: device.manifest.parameters.len() as u32, revision: graph.revision, bypassed: reference.bypassed as u32, ..Default::default() };

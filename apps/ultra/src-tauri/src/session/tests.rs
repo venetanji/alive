@@ -12,8 +12,8 @@ fn automation_mut(s:&mut Session,index:usize)->&mut Vec<Lane>{let workspaces::So
 fn effect(instance: &str, filename: &str) -> DeviceInstance {
     let path = Path::new(env!("CARGO_MANIFEST_DIR")).join("../examples").join(filename);
     let patch = crate::documents::read_patch(&path).unwrap().patch.unwrap();
-    let graph = crate::canvas::prepare(patch.clone()).unwrap().native;
-    let manifest = crate::canvas::device::host_manifest(&patch, &graph).unwrap();
+    let prepared = crate::canvas::prepare(patch.clone()).unwrap();
+    let manifest = crate::canvas::device::host_manifest(&patch, &prepared.native, &prepared.live_devices).unwrap();
     DeviceInstance { instance_id: instance.into(), path: path.to_string_lossy().into(), id: manifest.id, version: manifest.version,
         source_sha256: prepare::fingerprint(&patch).unwrap(), parameters: Default::default(), native_sources: Default::default(), bypassed: false }
 }

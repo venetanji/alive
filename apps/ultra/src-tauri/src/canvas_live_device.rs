@@ -28,6 +28,11 @@ pub(crate) struct SourceState {
 pub(crate) struct Source { pub node: u32, pub state: SourceState }
 
 impl Source {
+    pub fn validate(&self) -> Result<(), String> {
+        let params = serde_json::json!({"device":"Analog","state":self.state});
+        Self::parse(self.node, params.as_object().unwrap()).map(|_| ())
+    }
+
     pub fn parse(node: u32, params: &Map<String, Value>) -> Result<Self, String> {
         if node > 100_000 { return Err("live.device~ node ID must be at most 100000".into()); }
         if params.len() != 2 || params.get("device").and_then(Value::as_str) != Some("Analog") {

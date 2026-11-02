@@ -16,7 +16,7 @@ export function packageInstrument(patch,{id=patch.device?.id??'org.alive.instrum
   const poly=find('poly_note'),envelope=find('adsr_voice'),filter=find('filter_voice'),gain=find('gain');
   const parameter=(key,label,node,param,min,max,unit)=>({key,label,node,param,min,max,unit});
   const presentation={version:1,openOnLoad:false,size:{width:640,height:112},items:[]};
-  const next={...patch,presentation:patch.presentation===null?presentation:patch.presentation,device:{version:2,kind:'instrument',id,name,midi:{input:{node:poly,inlet:0},output:null},audio:{input:null,output:{channels:2,layout:'stereo'}},parameters:[
+  const next={...patch,presentation:patch.presentation===null?presentation:patch.presentation,device:{version:2,kind:'instrument',id,name,midi:{input:{kind:'polyNote',node:poly,inlet:0},output:null},audio:{input:null,output:{channels:2,layout:'stereo'}},parameters:[
     parameter('attack','Attack',envelope,'attack',1,10000,'ms'),
     parameter('decay','Decay',envelope,'decay',1,10000,'ms'),
     parameter('sustain','Sustain',envelope,'sustain',0,1,''),

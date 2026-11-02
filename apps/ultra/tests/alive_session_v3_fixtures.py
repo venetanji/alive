@@ -39,6 +39,7 @@ for index, name in enumerate(["subtractive", "utility", "stereo-lowpass"]):
     manifest = patch["device"]
     out.append(f"d.kind={1 if index == 0 else 2};d.output_channels=2;d.output_layout=2;\n")
     if index == 0:
+        assert manifest['midi']['input']['kind'] == 'polyNote', 'built-in fixture requires PolyNote input'
         out.append(f"d.note_node={manifest['midi']['input']['node']};\n")
     else:
         out.append(f"d.input_node={manifest['audio']['input']['node']};d.input_channels=2;d.input_layout=2;\n")

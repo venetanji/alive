@@ -75,7 +75,7 @@ test('effect panel exposes live parameters and presets without a keyboard claim'
   p.ids.get('instrument-preset').value='Quiet';await p.ids.get('instrument-recall').fire('click');
   assert.equal(p.controller.getState().document.nodes.find(n=>n.id===2).params.value,.25);
   const instrument=structuredClone(patch);instrument.nodes[0]=makeNode('poly_note',1);
-  instrument.device.kind='instrument';instrument.device.midi.input={node:1,inlet:0};instrument.device.audio.input=null;
+  instrument.device.kind='instrument';instrument.device.midi.input={kind:'polyNote',node:1,inlet:0};instrument.device.audio.input=null;
   p.controller.load(instrument);await p.controller.flush();await p.controller.startAudio();
   assert.equal(p.ids.has('instrument-keyboard'),false);
   assert.equal(p.calls.some(c=>c.name==='canvas_event'&&c.args.node===1),false);

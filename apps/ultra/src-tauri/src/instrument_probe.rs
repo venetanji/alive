@@ -31,8 +31,8 @@ impl Host {
     }
     fn note(&self, label: &str, pitch: u32, velocity: u32) -> Result<(), String> {
         let owner=self.registry.get_open(label)?;
-        let node=instrument_manifest(owner.patch.as_ref().unwrap())?.note_node
-            .ok_or("Instrument probe requires an authored MIDI input")?;
+        let node=instrument_manifest(owner.patch.as_ref().unwrap())?.note_input
+            .ok_or("Instrument probe requires an authored MIDI input")?.built_in_node()?;
         let message=self.controls[owner.id as usize].event(owner.runtime_revision,node,0,json!([pitch,velocity]))?;
         if unsafe {crate::ultra_canvas_message_document(owner.id,owner.runtime_revision,node,0,&message)}==0 {
             return Err("Probe note was not admitted".into());
@@ -110,7 +110,7 @@ fn require(condition: bool, message: &str) -> Result<(), String> { if condition 
 
 fn instrument_manifest(source: &Value) -> Result<canvas::device::HostManifest, String> {
     let prepared=canvas::prepare(source.clone())?;
-    let manifest=canvas::device::host_manifest(source,&prepared.native)?;
+    let manifest=canvas::device::host_manifest(source,&prepared.native,&prepared.live_devices)?;
     if manifest.kind!=canvas::device::DeviceKind::Instrument {
         return Err("Instrument probe supports instruments only; an audio effect requires host audio input".into());
     }

@@ -95,22 +95,92 @@ fn reusable_device_patch() -> Value {
     let mut source=patch(vec![node(1,"poly_note",json!({})),node(2,"adsr_voice",json!({})),node(3,"filter_voice",json!({}))],vec![]);
     source["presentation"]=json!({"version":1,"openOnLoad":false,"size":{"width":640,"height":120},"items":[]});
     source["device"]=json!({"version":2,"kind":"instrument","id":"org.alive.subtractive","name":"Subtractive",
-        "midi":{"input":{"node":1,"inlet":0},"output":null},"audio":{"input":null,"output":{"channels":2,"layout":"stereo"}},
+        "midi":{"input":{"kind":"polyNote","node":1,"inlet":0},"output":null},"audio":{"input":null,"output":{"channels":2,"layout":"stereo"}},
         "parameters":[{"key":"attack","label":"Attack","node":2,"param":"attack","min":1,"max":10000,"unit":"ms"},
             {"key":"cutoff","label":"Cutoff","node":3,"param":"cutoff","min":20,"max":20000}],
         "presets":[{"name":"Init","values":{"attack":10,"cutoff":2400}}]});
     source
 }
+fn native_note_device_patch() -> Value {
+    let mut source = reusable_device_patch();
+    source["nodes"] = json!([
+        node(1,"live_device",json!({"device":"Analog","state":{
+            "version":1,"profile":"live12-analog-v1",
+            "dllSha256":"4528afb1fbc78d49ed92161ed13ae1df50606e2e2b2c4f28caeca0cbc1476133",
+            "guiSha256":"5ec872d673fd5f4f5f05787e4245c56e172ff2663c2d4493e94d598b883114e6",
+            "graphicsSha256":"a0b8aa480aa3d21f093b416ea59b3f200d2e2466936f95d886a554bffe875cb7",
+            "values":vec![0.;203]
+        }})),node(2,"signal_dac",json!({"channels":"1 2"}))
+    ]);
+    source["edges"] = json!([edge(1,0,2,0),edge(1,1,2,1)]);
+    source["device"]["midi"]["input"] = json!({"kind":"nativeInstrument","node":1,"inlet":0,
+        "profile":"live12-analog-v1","profileVersion":1});
+    source["device"]["parameters"] = json!([]);
+    source["device"]["presets"] = json!([]);
+    source
+}
+#[test]
+fn version_two_requires_tagged_note_inputs() {
+    let mut source = reusable_device_patch();
+    source["device"]["midi"]["input"]["kind"] = json!("polyNote");
+    prepare(source.clone()).expect("explicit PolyNote input");
+    for input in [json!({"node":1,"inlet":0}), json!({"kind":"unknown","node":1,"inlet":0}),
+        json!({"kind":"polyNote","node":1,"inlet":1}),
+        json!({"kind":"polyNote","node":1,"inlet":0,"profile":"live12-analog-v1"})] {
+        source["device"]["midi"]["input"] = input;
+        assert!(prepare(source.clone()).is_err());
+    }
+}
+#[test]
+fn native_note_input_requires_complete_matching_source_identity() {
+    let source = native_note_device_patch();
+    let prepared = prepare(source.clone()).expect("explicit native input with complete authored test state");
+    assert_eq!(prepared.live_devices.len(),1);
+    let manifest=device::host_manifest(&source,&prepared.native,&prepared.live_devices).unwrap();
+    let view=serde_json::to_value(&manifest).unwrap();
+    assert_eq!(view["noteInput"],source["device"]["midi"]["input"]);
+    assert!(view.get("noteNode").is_none());
+    assert!(manifest.note_input.unwrap().built_in_node().is_err());
+    assert!(device::host_manifest(&source,&prepared.native,&[]).is_err());
+    let mut duplicate=prepared.live_devices.clone();duplicate.push(duplicate[0].clone());
+    assert!(device::host_manifest(&source,&prepared.native,&duplicate).is_err());
+    let mut mismatched=prepared.live_devices.clone();mismatched[0].node=2;
+    assert!(device::host_manifest(&source,&prepared.native,&mismatched).is_err());
+    let mut incomplete=prepared.live_devices.clone();incomplete[0].state.values.clear();
+    assert!(device::host_manifest(&source,&prepared.native,&incomplete).is_err());
+    for (path,value) in [
+        ("/device/midi/input/kind",json!("polyNote")),
+        ("/device/midi/input/node",json!(2)),
+        ("/device/midi/input/inlet",json!(1)),
+        ("/device/midi/input/profile",json!("unregistered")),
+        ("/device/midi/input/profileVersion",json!(2)),
+        ("/device/kind",json!("audioEffect")),
+        ("/nodes/0/params/state/values",json!([])),
+        ("/nodes/0/params/state/dllSha256",json!("0".repeat(64))),
+    ] {
+        let mut invalid=source.clone();*invalid.pointer_mut(path).unwrap()=value;
+        assert!(prepare(invalid).is_err(),"must reject {path}");
+    }
+    for field in ["profile","profileVersion"] {
+        let mut invalid=source.clone();invalid["device"]["midi"]["input"].as_object_mut().unwrap().remove(field);
+        assert!(prepare(invalid).is_err(),"must require {field}");
+    }
+    let mut extra=source.clone();extra["device"]["midi"]["input"]["qualified"]=json!(true);
+    assert!(prepare(extra).is_err());
+    let mut extra=source.clone();let mut native=extra["nodes"][0].clone();native["id"]=json!(3);
+    extra["nodes"].as_array_mut().unwrap().push(native);
+    assert!(prepare(extra).is_err(),"native note input must identify a sole native source");
+}
 #[test]
 fn version_two_instrument_manifest_is_current_and_version_one_is_refused() {
     let mut source=reusable_device_patch();
     source["device"]["version"]=json!(2);source["device"]["kind"]=json!("instrument");
-    source["device"]["midi"]=json!({"input":{"node":1,"inlet":0},"output":null});
+    source["device"]["midi"]=json!({"input":{"kind":"polyNote","node":1,"inlet":0},"output":null});
     source["device"]["audio"]=json!({"input":null,"output":{"channels":2,"layout":"stereo"}});
     let prepared=prepare(source.clone()).expect("version two instrument");
-    let manifest=device::host_manifest(&source,&prepared.native).unwrap();
+    let manifest=device::host_manifest(&source,&prepared.native,&prepared.live_devices).unwrap();
     let view=serde_json::to_value(manifest).unwrap();
-    assert_eq!(view["kind"],"instrument");assert_eq!(view["noteNode"],1);assert!(view["input"].is_null());
+    assert_eq!(view["kind"],"instrument");assert_eq!(view["noteInput"],json!({"kind":"polyNote","node":1,"inlet":0}));assert!(view["input"].is_null());
     let mut legacy=reusable_device_patch();legacy["device"]["version"]=json!(1);
     assert!(prepare(legacy).is_err());
 }
@@ -123,8 +193,8 @@ fn version_two_effect_manifest_requires_bound_stereo_input_without_midi() {
         "midi":{"input":null,"output":null},"audio":{"input":{"node":1,"bundle":{"channels":2,"layout":"stereo"}},"output":{"channels":2,"layout":"stereo"}},
         "parameters":[{"key":"cutoff","label":"Cutoff","node":2,"param":"cutoff","min":20,"max":20000}],"presets":[{"name":"Soft","values":{"cutoff":350}}]});
     let prepared=prepare(source.clone()).expect("version two effect");
-    let view=serde_json::to_value(device::host_manifest(&source,&prepared.native).unwrap()).unwrap();
-    assert_eq!(view["kind"],"audioEffect");assert!(view["noteNode"].is_null());assert_eq!(view["input"]["node"],1);
+    let view=serde_json::to_value(device::host_manifest(&source,&prepared.native,&prepared.live_devices).unwrap()).unwrap();
+    assert_eq!(view["kind"],"audioEffect");assert!(view["noteInput"].is_null());assert_eq!(view["input"]["node"],1);
     assert_eq!(view["input"]["bundle"]["layout"],"stereo");assert_eq!(view["parameters"][0]["slot"],0);
     for (path,value) in [("/device/midi/input",json!({"node":1,"inlet":0})),("/device/midi/output",json!({})),
         ("/device/audio/input",Value::Null),("/device/audio/input/node",json!(2)),("/device/audio/input/bundle/channels",json!(1)),
@@ -140,8 +210,8 @@ fn saved_effect_examples_share_native_admission_and_normalized_live_bindings() {
     for (text,id,keys) in [(include_str!("../../examples/utility.ultra"),"org.alive.utility",vec!["gain"]),
         (include_str!("../../examples/stereo-lowpass.ultra"),"org.alive.stereo-lowpass",vec!["cutoff","resonance"])] {
         let source: Value=serde_json::from_str(text).unwrap();let prepared=prepare(source.clone()).unwrap();
-        let manifest=device::host_manifest(&source,&prepared.native).unwrap();
-        assert_eq!(manifest.id,id);assert_eq!(manifest.kind,device::DeviceKind::AudioEffect);assert_eq!(manifest.note_node,None);
+        let manifest=device::host_manifest(&source,&prepared.native,&prepared.live_devices).unwrap();
+        assert_eq!(manifest.id,id);assert_eq!(manifest.kind,device::DeviceKind::AudioEffect);assert_eq!(manifest.note_input,None);
         assert_eq!(manifest.input.as_ref().unwrap().node,1);
         assert_eq!(manifest.parameters.iter().map(|p|p.key.as_str()).collect::<Vec<_>>(),keys);
         for parameter in &manifest.parameters {
@@ -1595,36 +1665,36 @@ fn presentation_control(node:u32,param:&str)->Value {
 fn presentation_projection_resolves_descriptors_text_and_exact_capability_refusals(){
     let mut source=reusable_device_patch();source["presentation"]["items"]=json!([presentation_control(2,"attack")]);
     let graph=prepare(source.clone()).unwrap().native;
-    let manifest=device::host_manifest(&source,&graph).unwrap();
+    let manifest=device::host_manifest(&source,&graph,&[]).unwrap();
     assert_eq!(manifest.presentation["items"][0]["resolved"],json!({"kind":"parameter","bindingId":"attack","descriptor":{"min":1.,"max":10000.,"integral":false,"unit":"ms"}}));
     assert_eq!(manifest.presentation["items"][0]["visible"],false);
     source["presentation"]["items"][0]["target"]["param"]=json!("release");
     assert!(prepare(source.clone()).is_ok(),"Ultra can author unexposed live controls");
-    assert!(device::host_manifest(&source,&graph).unwrap_err().contains("parameter 2.release is not exposed"));
+    assert!(device::host_manifest(&source,&graph,&[]).unwrap_err().contains("parameter 2.release is not exposed"));
     source["presentation"]["items"][0]["included"]=json!(false);
-    assert!(device::host_manifest(&source,&graph).is_ok(),"excluded outline items need no Alive capability");
+    assert!(device::host_manifest(&source,&graph,&[]).is_ok(),"excluded outline items need no Alive capability");
     source["nodes"].as_array_mut().unwrap().push(node(4,"message",json!({"text":"Hello"})));
     source["presentation"]["items"][0]["included"]=json!(true);
     source["presentation"]["items"][0]["widget"]=json!("text");
     source["presentation"]["items"][0]["target"]=json!({"kind":"text","node":4,"param":"text"});
     let graph=prepare(source.clone()).unwrap().native;
-    assert_eq!(device::host_manifest(&source,&graph).unwrap().presentation["items"][0]["resolved"],json!({"kind":"text","text":"Hello","style":{}}));
+    assert_eq!(device::host_manifest(&source,&graph,&[]).unwrap().presentation["items"][0]["resolved"],json!({"kind":"text","text":"Hello","style":{}}));
     source["presentation"]["items"][0]["widget"]=json!("button");
     source["presentation"]["items"][0]["target"]=json!({"kind":"event","node":4,"inlet":0,"action":"bang"});
-    assert!(device::host_manifest(&source,&graph).unwrap_err().contains("event 4:0 bang"));
+    assert!(device::host_manifest(&source,&graph,&[]).unwrap_err().contains("event 4:0 bang"));
 }
 #[test]
 fn empty_surfaces_zero_exposed_parameters_and_nested_unmounted_controls_are_current(){
     let mut source=reusable_device_patch();source["device"]["parameters"]=json!([]);source["device"]["presets"]=json!([]);
     let graph=prepare(source.clone()).unwrap().native;
-    assert!(device::host_manifest(&source,&graph).unwrap().parameters.is_empty());
+    assert!(device::host_manifest(&source,&graph,&[]).unwrap().parameters.is_empty());
     source["presentation"]=Value::Null;assert!(prepare(source).is_err());
     let mut source=reusable_device_patch();
     let nested=json!({"version":2,"profile":"ultra-patcher-v2","presentation":source["presentation"],"device":source["device"],
         "nodes":[{"id":10,"type":"patcher","x":0,"y":0,"params":{"name":"instrument"},"patcher":{"nodes":source["nodes"],"edges":[],"presentation":{
             "version":1,"openOnLoad":true,"size":{"width":640,"height":120},"items":[presentation_control(2,"release")]}}}],"edges":[]});
     let graph=prepare(nested.clone()).unwrap().native;
-    assert!(device::host_manifest(&nested,&graph).is_ok(),"unmounted child presentation needs no Alive capability");
+    assert!(device::host_manifest(&nested,&graph,&[]).is_ok(),"unmounted child presentation needs no Alive capability");
     source["nodes"].as_array_mut().unwrap().push(node(9,"live_device",json!({"device":"Analog","state":{"profile":"live12-analog-v1"}})));
     assert!(prepare(source).is_err(),"schema support cannot admit an unavailable executable");
 }

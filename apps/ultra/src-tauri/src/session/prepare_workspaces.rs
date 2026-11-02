@@ -482,8 +482,9 @@ mod tests {
     fn first_effect_on_an_instrumentless_track_keeps_its_effect_role() {
         let path = Path::new(env!("CARGO_MANIFEST_DIR")).join("../examples/utility.ultra");
         let patch = crate::documents::read_patch(&path).unwrap().patch.unwrap();
-        let graph = crate::canvas::prepare(patch.clone()).unwrap().native;
-        let manifest = crate::canvas::device::host_manifest(&patch, &graph).unwrap();
+        let compiled = crate::canvas::prepare(patch.clone()).unwrap();
+        let graph = compiled.native;
+        let manifest = crate::canvas::device::host_manifest(&patch, &graph, &compiled.live_devices).unwrap();
         let mut project = empty_project();
         project.tracks[0].effects.push(DeviceInstance {
             instance_id: "effect".into(),

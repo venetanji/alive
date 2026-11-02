@@ -103,7 +103,7 @@ impl Builder {
         {
             return Err("Alive has not admitted native-source Voice or cross-document send/receive profiles".into());
         }
-        let manifest = canvas::device::host_manifest(&patch, &prepared.native)?;
+        let manifest = canvas::device::host_manifest(&patch, &prepared.native, &prepared.live_devices)?;
         let kind = match manifest.kind {
             canvas::device::DeviceKind::Instrument => MusicalKind::Instrument,
             canvas::device::DeviceKind::AudioEffect => MusicalKind::AudioEffect,

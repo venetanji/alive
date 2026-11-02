@@ -32,6 +32,51 @@ fn candidate_preparation_failure_retains_the_configured_session() {
 }
 
 #[test]
+fn explicit_native_notes_are_refused_before_replacement_and_preserve_revisions() {
+    if super::super::native_master::fresh_process("session::host::install_tests::explicit_native_notes_are_refused_before_replacement_and_preserve_revisions") { return; }
+    let _guard = crate::tests::NATIVE_FFI_TEST_LOCK.lock().unwrap();
+    let original=example();
+    let mut host=Host::default();host.install(original.clone()).unwrap();
+    let revisions=host.revisions;
+    let preparation_revision=host.preparation_revision;
+    let bank_revision=host.bank_revision;
+    let owned_roots=host.owned_roots;
+    let mut patch=serde_json::json!({"version":1,"profile":"ultra-canvas-v1",
+        "presentation":{"version":1,"openOnLoad":false,"size":{"width":640,"height":120},"items":[]},
+        "nodes":[{"id":1,"type":"live_device","x":0,"y":0,"params":{"device":"Analog","state":{
+            "version":1,"profile":"live12-analog-v1",
+            "dllSha256":"4528afb1fbc78d49ed92161ed13ae1df50606e2e2b2c4f28caeca0cbc1476133",
+            "guiSha256":"5ec872d673fd5f4f5f05787e4245c56e172ff2663c2d4493e94d598b883114e6",
+            "graphicsSha256":"a0b8aa480aa3d21f093b416ea59b3f200d2e2466936f95d886a554bffe875cb7",
+            "values":vec![0.;203]}}},
+            {"id":2,"type":"signal_dac","x":100,"y":0,"params":{"channels":"1 2"}}],
+        "edges":[{"from":1,"outlet":0,"to":2,"inlet":0},{"from":1,"outlet":1,"to":2,"inlet":1}]});
+    patch["device"]=serde_json::json!({"version":2,"kind":"instrument","id":original.devices[0].manifest.id,
+        "name":"Authored native test instrument","midi":{"input":{"kind":"nativeInstrument","node":1,"inlet":0,
+            "profile":"live12-analog-v1","profileVersion":1},"output":null},
+        "audio":{"input":null,"output":{"channels":2,"layout":"stereo"}},"parameters":[],"presets":[]});
+    let compiled=crate::canvas::prepare(patch.clone()).unwrap();
+    let manifest=crate::canvas::device::host_manifest(&patch,&compiled.native,&compiled.live_devices).unwrap();
+    let mut candidate=original.clone();
+    candidate.devices[0].patch=patch;candidate.devices[0].graph=compiled.native;
+    candidate.devices[0].live_devices=compiled.live_devices;candidate.devices[0].manifest=manifest;
+    // A pending batch makes any attempted foreign preparation fail independently.
+    let pending=DocumentBatch::prepare(&[]).unwrap();
+    let error=host.admit(&candidate).err().expect("native notes remain closed");
+    assert!(error.message.contains("Native instrument note inputs are not admitted"),"{}",error.message);
+    assert!(host.install(candidate).unwrap_err().contains("Native instrument note inputs are not admitted"));
+    drop(pending);
+    assert_eq!(host.revisions,revisions);assert_eq!(host.preparation_revision,preparation_revision);
+    assert_eq!(host.bank_revision,bank_revision);assert_eq!(host.owned_roots,owned_roots);
+    assert_eq!(host.prepared.as_ref().unwrap().saved,original.saved);
+    let mut state=native::StateV4::default();
+    assert_eq!(unsafe{native::alive_session_state_v4(&mut state)},1);
+    assert_eq!(state.preparation_revision,preparation_revision);
+    for (index,_) in original.devices.iter().enumerate(){assert_eq!(state.devices[index].revision,revisions[index]);}
+    host.install(original).unwrap();
+}
+
+#[test]
 fn prospective_admission_reserves_graph_and_preparation_revisions_for_rollback() {
     let candidate = example();
     let mut host = Host::default();

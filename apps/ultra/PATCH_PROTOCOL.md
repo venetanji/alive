@@ -79,11 +79,12 @@ native revision. The complete authored graph remains the device implementation.
 
 ```json
 {
-  "version": 1,
+  "version": 2,
+  "kind": "instrument",
   "id": "org.alive.subtractive",
   "name": "Subtractive",
-  "midi": {"node": 2, "inlet": 0},
-  "audio": {"inputs": 0, "outputs": 2, "layout": "stereo"},
+  "midi": {"input": {"kind": "polyNote", "node": 2, "inlet": 0}, "output": null},
+  "audio": {"input": null, "output": {"channels": 2, "layout": "stereo"}},
   "parameters": [
     {"key": "cutoff", "label": "Cutoff", "node": 4, "param": "cutoff", "min": 20, "max": 20000, "unit": "Hz"}
   ],
@@ -91,9 +92,24 @@ native revision. The complete authored graph remains the device implementation.
 }
 ```
 
-The MIDI entry must identify the graph's `poly_note` note inlet. Bindings address
+The current device manifest version is 2. Its instrument MIDI input requires an
+explicit `kind`: `polyNote` identifies the graph's `poly_note` note inlet;
+`nativeInstrument` identifies a sole `live_device` source with complete identity:
+
+```json
+{"kind":"nativeInstrument","node":1,"inlet":0,"profile":"live12-analog-v1","profileVersion":1}
+```
+
+Native MIDI requires exactly one native node and one complete validated source
+sidecar, with matching node ID, profile and version. Missing or unknown tags,
+untagged inputs, unknown fields and fields from the other variant reject.
+Validated native note metadata allows Ultra to inspect the authored device;
+it does not qualify native playback in Alive. Alive still refuses these
+candidates before changing the configured session or constructing native devices.
+
+Bindings address
 globally unique node IDs, including descendants, and existing live numeric
-parameters. They cannot address structural/text parameters. There are 1..16
+parameters. They cannot address structural/text parameters. There are 0..16
 bindings and 0..16 full presets. Keys are unique ASCII identifiers of at most
 31 bytes; `__proto__`, `prototype` and `constructor` are refused. Device IDs use
 1..127 ASCII identifier characters with optional dot-separated segments. Names,
@@ -102,9 +118,8 @@ labels and preset names are 1..64 printable ASCII bytes; optional units allow
 and contain its saved value. Presets contain exactly the binding keys and valid
 numeric values. Duplicate keys, target pairs, names and unknown fields reject.
 
-Version 1 remains the strict instrument format above. Version 2 requires an
-explicit `kind` (`instrument` or `audioEffect`) and replaces its MIDI/audio
-fields with the following stereo effect interface:
+The root device `kind` is `instrument` or `audioEffect`. An effect uses the
+following stereo interface:
 
 ```json
 {
@@ -122,18 +137,18 @@ fields with the following stereo effect interface:
 }
 ```
 
-All I/O fields are required, including explicit nulls. Version 2 instruments
-require `midi.input:{node,inlet:0}` targeting an authored `poly_note`,
-`midi.output:null`, and `audio.input:null`. Effects require both MIDI entries
-null and an audio input bound to an authored `audio_in`. Both versions require
+All I/O fields are required, including explicit nulls. Instruments require a
+tagged `midi.input` at inlet 0, `midi.output:null`, and `audio.input:null`.
+Effects require both MIDI entries null and an audio input bound to an authored
+`audio_in`. Both device kinds require
 two stereo output channels; effects also require two stereo input channels.
 Mono, wider layouts, mismatched descriptors and unknown fields reject visibly.
 The parameter/preset rules are identical for instruments and effects. Hosts
-receive one normalized descriptor with `kind`, nullable `noteNode`, nullable
+receive one validated descriptor with `kind`, nullable tagged `noteInput`, nullable
 `input:{node,bundle}`, `output:{channels,layout}` and resolved parameter slots.
-Manifest version retains the source version; it is independent of the document
-version. `alive-session-v1` accepts instruments of either manifest version and
-explicitly rejects effects pending the chain runtime.
+Manifest version is independent of the document version. The current schema
+has no old-format conversion or compatibility fallback. Maintained development
+fixtures evolve with it; actual user project work is preserved.
 
 `document_instantiate` clones the current canonical root into an untitled,
 independent native owner with no shared path, source, history or runtime state.

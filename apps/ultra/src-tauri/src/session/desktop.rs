@@ -586,7 +586,7 @@ fn capture_device(path: &Path, document: &Session) -> Result<DeviceInstance, Str
     let loaded = crate::documents::read_patch(path)?;
     let patch = loaded.patch.ok_or("Choose a saved Ultra device")?;
     let compiled = crate::canvas::prepare(patch.clone())?;
-    let manifest = crate::canvas::device::host_manifest(&patch, &compiled.native)?;
+    let manifest = crate::canvas::device::host_manifest(&patch, &compiled.native, &compiled.live_devices)?;
     let instance_id = loop {
         let seed = format!("{}-{:?}-{}", std::process::id(), std::time::SystemTime::now(), NEXT.fetch_add(1, Ordering::Relaxed));
         let hex = format!("{:x}", Sha256::digest(seed.as_bytes()));

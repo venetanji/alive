@@ -6,7 +6,7 @@ import {readFileSync} from 'node:fs';
 import {deviceValues,presetParameters} from './canvas-device.mjs';
 import {packageInstrument,subtractivePatch} from './canvas-instrument.mjs';
 
-const manifest=()=>({version:2,kind:'instrument',id:'org.alive.test',name:'Test synth',midi:{input:{node:1,inlet:0},output:null},
+const manifest=()=>({version:2,kind:'instrument',id:'org.alive.test',name:'Test synth',midi:{input:{kind:'polyNote',node:1,inlet:0},output:null},
   audio:{input:null,output:{channels:2,layout:'stereo'}},parameters:[{key:'cutoff',label:'Cutoff',node:3,param:'cutoff',min:20,max:20000,unit:'Hz'}],
   presets:[{name:'Soft',values:{cutoff:350}}]});
 
@@ -17,6 +17,40 @@ const graph = () => ({version:1,profile:'ultra-canvas-v1',presentation:{version:
 ],edges:[[1,0,2,0],[2,0,3,0],[1,1,4,0],[3,0,5,0],[4,0,5,1],
   [5,0,6,0],[6,0,7,0],[7,0,8,0],[7,0,8,1],[8,0,9,0]]
   .map(([from,outlet,to,inlet])=>({from,outlet,to,inlet}))});
+
+function nativeNotePatch(){
+  const patch=graph();
+  patch.nodes=[makeNode('live_device',1,0,0,{device:'Analog',state:{
+    version:1,profile:'live12-analog-v1',
+    dllSha256:'4528afb1fbc78d49ed92161ed13ae1df50606e2e2b2c4f28caeca0cbc1476133',
+    guiSha256:'5ec872d673fd5f4f5f05787e4245c56e172ff2663c2d4493e94d598b883114e6',
+    graphicsSha256:'a0b8aa480aa3d21f093b416ea59b3f200d2e2466936f95d886a554bffe875cb7',
+    values:Array(203).fill(0),
+  }}),makeNode('signal_dac',2,0,0,{channels:'1 2'})];
+  patch.edges=[{from:1,outlet:0,to:2,inlet:0},{from:1,outlet:1,to:2,inlet:1}];
+  patch.device={...manifest(),midi:{input:{kind:'nativeInstrument',node:1,inlet:0,profile:'live12-analog-v1',profileVersion:1},output:null},parameters:[],presets:[]};
+  return patch;
+}
+test('version 2 requires tagged note inputs',()=>{
+  const patch={...graph(),device:manifest()};patch.device.midi.input.kind='polyNote';
+  validatePatch(patch);
+  for(const input of [{node:1,inlet:0},{kind:'unknown',node:1,inlet:0},
+    {kind:'polyNote',node:1,inlet:1},{kind:'polyNote',node:1,inlet:0,profile:'live12-analog-v1'}]){
+    patch.device.midi.input=input;assert.throws(()=>validatePatch(patch),/device/i);
+  }
+});
+test('native note inputs require complete matching source identity',()=>{
+  validatePatch(nativeNotePatch());
+  for(const change of [p=>p.device.midi.input.kind='polyNote',p=>p.device.midi.input.node=2,
+    p=>p.device.midi.input.inlet=1,p=>p.device.midi.input.profile='unregistered',
+    p=>p.device.midi.input.profileVersion=2,p=>delete p.device.midi.input.profile,
+    p=>delete p.device.midi.input.profileVersion,p=>p.device.midi.input.qualified=true,
+    p=>p.device.kind='audioEffect',p=>p.nodes[0].params.state.values=[],
+    p=>p.nodes[0].params.state.dllSha256='0'.repeat(64),
+    p=>p.nodes.push({...structuredClone(p.nodes[0]),id:3}),p=>p.nodes.shift()]){
+    const invalid=nativeNotePatch();change(invalid);assert.throws(()=>validatePatch(invalid),/device|node|cable/i);
+  }
+});
 
 test('repackaging retains authored bindings, ranges, presets and interfaces',()=>{
   const before=subtractivePatch();
@@ -40,7 +74,7 @@ test('repackaging rejects incompatible saved bindings without changing the input
   assert.deepEqual(before,snapshot);
 });
 test('repackaging accepts a valid non-template version 2 device',()=>{
-  const before={...graph(),device:{...manifest(),version:2,kind:'instrument',midi:{input:{node:1,inlet:0},output:null},audio:{input:null,output:{channels:2,layout:'stereo'}}}};
+  const before={...graph(),device:{...manifest(),version:2,kind:'instrument',midi:{input:{kind:'polyNote',node:1,inlet:0},output:null},audio:{input:null,output:{channels:2,layout:'stereo'}}}};
   const after=packageInstrument(before,{id:before.device.id,name:'Renamed'});
   assert.deepEqual(after.device,{...before.device,name:'Renamed'});
 });
@@ -104,7 +138,7 @@ test('malformed device interfaces, duplicate bindings and out-of-range presets f
 
 test('version 2 instruments retain authored MIDI with explicit stereo output',()=>{
   const patch={...graph(),device:{...manifest(),version:2,kind:'instrument',
-    midi:{input:{node:1,inlet:0},output:null},audio:{input:null,output:{channels:2,layout:'stereo'}}}};
+    midi:{input:{kind:'polyNote',node:1,inlet:0},output:null},audio:{input:null,output:{channels:2,layout:'stereo'}}}};
   assert.equal(validatePatch(patch).device.kind,'instrument');
   for(const change of [d=>delete d.kind,d=>d.audio.input={node:3,bundle:{channels:2,layout:'stereo'}},
     d=>d.midi.output={},d=>delete d.midi.output,d=>d.audio.output.layout='discrete',d=>d.kind='audioEffect']){
@@ -119,7 +153,7 @@ test('version 2 effects bind stereo audio input and live filter parameters witho
       audio:{input:{node:1,bundle:{channels:2,layout:'stereo'}},output:{channels:2,layout:'stereo'}},
       parameters:[{key:'cutoff',label:'Cutoff',node:2,param:'cutoff',min:20,max:20000}],presets:[{name:'Soft',values:{cutoff:350}}]}};
   assert.equal(validatePatch(patch).device.kind,'audioEffect');
-  for(const change of [d=>d.midi.input={node:1,inlet:0},d=>d.audio.input=null,d=>d.audio.input.node=2,
+  for(const change of [d=>d.midi.input={kind:'polyNote',node:1,inlet:0},d=>d.audio.input=null,d=>d.audio.input.node=2,
     d=>d.audio.input.bundle.channels=1,d=>d.audio.input.bundle.layout='mono',d=>d.audio.output.channels=4,
     d=>d.audio.input.extra=true,d=>delete d.audio.input,d=>d.kind='effect']){
     const invalid=structuredClone(patch);change(invalid.device);assert.throws(()=>validatePatch(invalid),/device/i);
