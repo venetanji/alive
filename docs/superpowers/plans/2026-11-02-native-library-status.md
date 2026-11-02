@@ -481,6 +481,45 @@ native-build smoke accepts all three fresh scans
 musical input, input guard, clock origin, duration, resource limit or acceptance
 assertion; the full endurance rerun is still required.
 
+Checkpoint A is committed as `ebf4297`; the strict diagnostic batching is
+`099418fafc604a50d0e367f68d2fd3f75eca1647`, both pushed. A fresh paired build
+from 099418f preserves its tracked build inputs and selects immutable snapshot
+`test-d20978452380364c1edb` in both launchers. All 18 snapshot artifact hashes
+and both targets verify (`paired-build-099418f/selection-verification.json`).
+The native library SHA-256 is
+`98c637566d67c9849395c6213c808592d3ee4c91d75b360aef38397bb01e1c3c`.
+The entire manual native script passes against that build
+(`release-proof-a-full-native-r2.log`), including the newly registered proof
+modes. Its first setup attempt lacked the private diagnostic executable; that
+failure remains in r1, followed by building the missing target and the full
+successful r2. Root's standalone oracle rerun also passes the legacy
+110,195,654 assertions and the new 57,671,680 release assertions.
+
+Actual selected-build layout smoke again passes all three desktop sizes and
+repeated Clip/Device toggles (`paired-native-smoke-099418f-r1/`); the coordinator
+inspected every restored capture. The 1800-second endurance rerun now uses this
+snapshot and the unmodified 099418f Python/shell sources, with their complete
+hash manifest and unchanged 2700-second collector wall limit. It remains
+running at this checkpoint; no pass is claimed. Diagnostic batching's 11
+regressions are also registered in the existing manually invoked CI helper
+step; automatic workflow triggers remain disabled.
+
+Electric's bounded static getter follow-up resolves `ATimeableFloatCurrentValue`
+slot61 through its own converted current cache. It does not read the separate
+manual object. This corrects the earlier private reconciliation table's claim
+that the predicate directly tests stored manual value; saved real zero alone
+does not prove the current predicate false. The separate common binding
+connects the real property to `MpePitchBendRangeAutomation` and a receiving
+`InMpePitchBendRange` port. Its dynamic receiver/processor remains unresolved;
+there is no demonstrated dummy derivation or initial slot32 publication. The
+new reports are `workers/electric-range-leaf-r1/report.md` (SHA-256
+`6b3b7cfe40de39e79bbad06eb955e6eb7d633b0c459a54a275d86a0ee3293556`)
+and `workers/electric-policy-binding-r1/report.md` (SHA-256
+`62ccde151ca67bc840512db5ba0b1fa9028bf761f38d032c34c0723bbdd89874`).
+They are ordinary bounded PE/Capstone observations, not REA or runtime values.
+Original initialization, native admission and all ten-stage publication gates
+remain unchanged.
+
 ## Next Gates
 
 1. Finish reviewed profile facts and original editor geometry, keeping unresolved

@@ -57,6 +57,7 @@ jobs:
           python -m unittest discover -s apps/ultra/tests -p test_alive_native_input.py -v
           python -m unittest discover -s apps/ultra/tests -p test_arrangement_observation.py -v
           python -m unittest discover -s apps/ultra/tests -p test_alive_desktop_values.py -v
+          python -m unittest discover -s apps/ultra/tests -p test_alive_diagnostics.py -v
           python -m unittest discover -s apps/ultra/tests -p test_alive_clips_fixture.py -v
           python -m unittest discover -s apps/ultra/tests -p test_stage_alive_session.py -v
           python -m unittest discover -s apps/ultra/tests -p test_chooser_observation.py -v
