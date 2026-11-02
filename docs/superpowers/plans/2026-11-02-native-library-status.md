@@ -304,6 +304,16 @@ endurance was explicitly off; successful always-run artifact uploads do not
 change these test outcomes. Logs, 104 retained file hashes and independent review
 are under `workers/ci-41505550977/`.
 
+The diagnostic-only follow-up now retains the failed ancestor operation,
+exception type and a message bounded to 512 characters. Unprintable exceptions
+retain the original unavailable result through a formatting fallback. Fresh
+checkout regressions fail before the correction and all 204 Python helper tests
+pass afterward (`ancestor-diagnostic-checkout-{red,helpers-green}.log`).
+Independent review reports no findings
+(`workers/arrangement-ancestor-independent-review-r2/report.md`). Input guards,
+retries and press/release admission are unchanged; this records future failure
+evidence and does not fix or requalify the original cloud error.
+
 Master save/quit/restart and all four clip-observation modes pass
 (`paired-master-final-fb583bb/`, `paired-clip-{normal,write-error,blocked,input-error}-final-fb583bb/`).
 These independent journeys use an immutable private harness snapshot, with
@@ -320,6 +330,23 @@ including stop/start and settings reload (`continuation-cpal-loopback/`).
 The capture's exit 1 is the supported PipeWire SIGINT shutdown; stderr is empty
 and the PCM/Rust probe passes. All audio evidence is software-only; physical
 hardware remains unqualified.
+
+The full 1800-playing-second endurance attempt fails at the unchanged
+2700-second collector wall limit (`paired-endurance-1800-2804cab-r2/`). The
+wrapper exits 1 after 2710.240 seconds and verifies every Python test source is
+unchanged from the recorded 2804cab test revision. The paired application remains
+the immutable fb583bb snapshot. Its last cycle checkpoint credits 1746.858
+seconds; the complete playing log credits 1777.527 endurance seconds, still
+22.473 seconds short. Final retirement, epoch qualification and remaining
+journey assertions were not reached. Recorder cleanup completed with empty
+stderr and 884281344 bytes of software PCM; cleanup does not pass the journey.
+One callback took 30.552494 ms against its 10.666667 ms buffer budget, while
+reported CPAL errors/xruns and native render failures remained zero. The initial
+walkthrough consumes about 397 seconds of the same collector clock, and 13
+endurance diagnostic log calls consume about 142 seconds. Slow reads can also
+exclude playback intervals from conservative credit; the overlapping timing
+categories are not summed or treated as engine stalls. This failed gate must
+remain separate from the successful shorter journeys and physical hardware.
 
 The proposed physical-device procedure remains in
 `docs/ui-review/2026-11-02/HARDWARE-CHECKLIST.md`, unexecuted. It requires an

@@ -12,6 +12,62 @@ class Node:
 
 
 class ChooserObservationTest(unittest.TestCase):
+    def test_unprintable_ancestor_error_keeps_unavailable_decision(self):
+        class UnprintableError(Exception):
+            def __str__(self):
+                raise RuntimeError('exception formatting failed')
+        for operation in ('get_role_name', 'get_parent'):
+            with self.subTest(operation=operation):
+                middle = Node('Transport', 'panel')
+                def fail(): raise UnprintableError()
+                setattr(middle, operation, fail)
+                result, status = find_web_ancestor(Node('button', parent=middle))
+                self.assertIsNone(result)
+                self.assertEqual(status['status'], 'unavailable')
+                self.assertEqual(status['error_type'], 'UnprintableError')
+                self.assertEqual(status['nodes'], 2)
+                self.assertEqual(status['operation'], operation)
+                self.assertIsInstance(status['error_message'], str)
+                self.assertGreater(len(status['error_message']), 0)
+                self.assertLessEqual(len(status['error_message']), 512)
+
+    def test_second_node_role_and_parent_errors_identify_the_failed_operation(self):
+        class Error(Exception):
+            pass
+        for operation in ('get_role_name', 'get_parent'):
+            with self.subTest(operation=operation):
+                web = Node('document', 'document web')
+                middle = Node('Transport', 'panel', parent=web)
+                def fail(): raise Error('Accessible parent unavailable')
+                setattr(middle, operation, fail)
+                button = Node('Return all tracks to Arrangement', parent=middle)
+                result, status = find_web_ancestor(button)
+                self.assertIsNone(result)
+                self.assertEqual(status, {'status': 'unavailable', 'error_type': 'Error', 'nodes': 2,
+                    'operation': operation, 'error_message': 'Accessible parent unavailable'})
+
+    def test_ancestor_error_message_is_bounded_without_changing_unavailable_decision(self):
+        node = Node('button')
+        def fail(): raise RuntimeError('x' * 1024)
+        node.get_parent = fail
+        result, status = find_web_ancestor(node)
+        self.assertIsNone(result)
+        self.assertEqual(status, {'status': 'unavailable', 'error_type': 'RuntimeError', 'nodes': 1,
+            'operation': 'get_parent', 'error_message': 'x' * 512})
+
+    def test_complete_ancestor_retains_original_success_metadata(self):
+        web = Node('document', 'document web')
+        middle = Node('Transport', 'panel', parent=web)
+        button = Node('Return all tracks to Arrangement', parent=middle)
+        result, status = find_web_ancestor(button)
+        self.assertIs(result, web)
+        self.assertEqual(status, {'status': 'complete', 'nodes': 3})
+
+    def test_null_parent_retains_original_unavailable_reason(self):
+        result, status = find_web_ancestor(Node('button'))
+        self.assertIsNone(result)
+        self.assertEqual(status, {'status': 'unavailable', 'reason': 'no_web_ancestor', 'nodes': 1})
+
     def test_ancestor_depth_limit_reports_truncation(self):
         web = Node('document', 'document web')
         middle = Node('middle', parent=web)
