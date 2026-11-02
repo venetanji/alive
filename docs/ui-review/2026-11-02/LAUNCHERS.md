@@ -1,8 +1,8 @@
 # Local Test Launchers
 
-Current selection: the panel-correction build from
-`06f6ffa61153ce1a2dcc295a7d1ce07921acd8fa`, snapshot
-`test-c65c6268a66672448950`. See [the current visual report](PANEL-CORRECTIONS.md)
+Current selection: the Clip expansion and native loop display build from
+`58eb6829e6bfbf515564a4532f5804d01b9e9d17`, snapshot
+`test-3ed29c6aa405049d4d06`. See [the current visual report](CLIP-DIVIDER-LOOP.md)
 for its matching hashes and native launcher evidence. The rest of this document
 records the earlier launcher-installation batch and its historical build.
 

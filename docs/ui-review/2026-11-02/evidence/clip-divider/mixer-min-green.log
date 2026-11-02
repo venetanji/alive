@@ -1,0 +1,29 @@
+
+> test:browser
+> playwright test --workers=2 --reporter=list --grep both-open Session preserves|stacked Clip|initial Clip-only|detail maximum resize|Session slot scrolling|default simultaneous --output=/tmp/alive-mixer-min-green
+
+
+Running 16 tests using 1 worker
+
+(node:949095) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:949095) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 alive-chain.spec.mjs:41:92 › stacked Clip fits without outer scrolling and separates the Device row at 800 (2.3s)
+  ✓   2 alive-chain.spec.mjs:41:92 › stacked Clip fits without outer scrolling and separates the Device row at 1280 (1.8s)
+  ✓   3 alive-chain.spec.mjs:41:92 › stacked Clip fits without outer scrolling and separates the Device row at 1440 (1.5s)
+  ✓   4 alive-chain.spec.mjs:59:92 › stacked Clip can cover the upper workspace by dragging and restore at 800 (3.6s)
+  ✓   5 alive-chain.spec.mjs:59:92 › stacked Clip can cover the upper workspace by dragging and restore at 1280 (4.4s)
+  ✓   6 alive-chain.spec.mjs:59:92 › stacked Clip can cover the upper workspace by dragging and restore at 1440 (4.4s)
+  ✓   7 alive-chain.spec.mjs:296:1 › initial Clip-only layout reserves the pinned mixer before the native document arrives (785ms)
+  ✓   8 alive-chain.spec.mjs:486:92 › detail maximum resize hides Session and restores pinned controls at 800 (4.3s)
+  ✓   9 alive-chain.spec.mjs:486:92 › detail maximum resize hides Session and restores pinned controls at 1280 (6.1s)
+  ✓  10 alive-chain.spec.mjs:486:92 › detail maximum resize hides Session and restores pinned controls at 1440 (5.3s)
+  ✓  11 alive-chain.spec.mjs:570:69 › default simultaneous detail shows complete controls and useful Session workspace at 1280 (1.6s)
+  ✓  12 alive-chain.spec.mjs:570:69 › default simultaneous detail shows complete controls and useful Session workspace at 1440 (1.6s)
+  ✓  13 alive-chain.spec.mjs:592:92 › both-open Session preserves Browser and slots with mixers when room allows at 800 (1.7s)
+  ✓  14 alive-chain.spec.mjs:592:92 › both-open Session preserves Browser and slots with mixers when room allows at 1280 (1.5s)
+  ✓  15 alive-chain.spec.mjs:592:92 › both-open Session preserves Browser and slots with mixers when room allows at 1440 (1.6s)
+  ✓  16 alive-chain.spec.mjs:602:1 › Session slot scrolling is synchronized while mixer controls stay pinned (3.3s)
+
+  16 passed (49.4s)

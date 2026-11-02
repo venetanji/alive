@@ -1,0 +1,144 @@
+{
+  "source_commit": "58eb6829e6bfbf515564a4532f5804d01b9e9d17",
+  "baseline_commit": "ad40d7d4132addef435a5e11b5d0452b671f5b36",
+  "selected_snapshot": "/home/venetanji/.local/share/alive/builds/test-3ed29c6aa405049d4d06",
+  "artifact_hashes": {
+    "bin/alive": "db249e2fc2793e5c56f7c5dab9fdad4ae86a658bc1c86833b5b7e1de87fbecbe",
+    "bin/ultra": "129c4105400ab058c326631e2fad1a130279f84b0e88d96e701632105f65b031",
+    "bin/libultra_native.so": "1652d52c581395a9919ea2dbe5a03c4d365c7f9a4da6d10cff233e590099eaa8"
+  },
+  "browser": {
+    "passed": 351,
+    "failed": 0,
+    "skipped": 0,
+    "retries": 0,
+    "exit_code": 0,
+    "raw_output": "/tmp/alive-clip-divider-complete.log",
+    "raw_artifacts": "/tmp/alive-clip-divider-complete",
+    "command": "env ALIVE_TEST_PORT=4195 npm run test:browser -- --workers=2 --reporter=list --output=/tmp/alive-clip-divider-complete",
+    "cwd": "apps/ultra/tests/ci"
+  },
+  "node": {
+    "passed": 673,
+    "failed": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "command": "node --test apps/ultra/ui/*.test.mjs apps/ultra/ui/components/*.test.mjs",
+    "raw_output": "/tmp/alive-clip-divider-node-final2.log"
+  },
+  "helpers": {
+    "passed": 145,
+    "failed": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "command": "python3 -m unittest discover -s apps/ultra/tests -p 'test_*.py'",
+    "raw_output": "/tmp/alive-clip-divider-helpers-complete.log"
+  },
+  "adjacent_regressions": {
+    "passed": 21,
+    "failed": 0
+  },
+  "mixer_minimum_regressions": {
+    "red_failed": 1,
+    "green_passed": 16,
+    "green_failed": 0
+  },
+  "builds": {
+    "alive_exit_code": 0,
+    "ultra_exit_code": 0,
+    "existing_warnings": 4,
+    "command": "env ULTRA_NATIVE_LIB_DIR=/tmp/alive-pr12-native-20261102/apps/ultra/build /usr/bin/cargo build --locked -j 2 --manifest-path <app>/src-tauri/Cargo.toml --target-dir apps/ultra/src-tauri/target",
+    "order": [
+      "ultra",
+      "alive"
+    ]
+  },
+  "native_probe": {
+    "status": "passed",
+    "exit_code": 0,
+    "apps": {
+      "alive": "passed",
+      "ultra": "passed"
+    },
+    "scope": "actual desktop entries, private Xvfb/DBus and software-only PipeWire; brief native playback; no physical devices or recording",
+    "native_loop_labels": [
+      "Pulse loop position: playing, 8 beats, 24 percent, play count unavailable",
+      "Pulse loop position: playing, 8 beats, 37 percent, play count unavailable",
+      "Pulse loop position: playing, 8 beats, 46 percent, play count unavailable",
+      "Pulse loop position: playing, 8 beats, 5 percent, play count unavailable"
+    ],
+    "raw_output": "/tmp/alive-clip-divider-native-58eb682-v3.log",
+    "raw_artifacts": "/tmp/alive-clip-divider-native-58eb682-v3",
+    "probe_sha256": "7d7562aaf2800218251c0aa44da599ab95b43e63afad96b25a6a78aae1526bea",
+    "command": "env ULTRA_TEST_ALIVE=1 ULTRA_TEST_ALIVE_DEFAULT=1 ULTRA_TEST_ALIVE_BINARY=/home/venetanji/.local/share/alive/current-test/bin/alive ULTRA_TEST_SCREEN_SIZE=1600x1000 ULTRA_TEST_SCRIPT=\"$PWD/docs/ui-review/2026-11-02/evidence/clip-divider/native-panel-probe.py\" bash apps/ultra/tests/check_canvas_desktop.sh --software-audio /tmp/alive-clip-divider-native-58eb682-v3"
+  },
+  "viewports": [
+    [
+      800,
+      600
+    ],
+    [
+      1280,
+      800
+    ],
+    [
+      1440,
+      900
+    ]
+  ],
+  "loop_count": "unavailable; native phase wraps and does not report completed plays",
+  "unrun": [
+    "new remote CI",
+    "Rust unit tests",
+    "full current-build native audio journeys",
+    "saved-clip measurements",
+    "resource bounds",
+    "CPAL loopback",
+    "physical hardware qualification",
+    "recording"
+  ],
+  "last_remote_ci": {
+    "url": "https://github.com/venetanji/alive/actions/runs/41381006275",
+    "commit": "c8f4cb3091b9754fa5c94e8a40718e72954aab14",
+    "status": "failed",
+    "arrangement_return_and_master": "passed on that historical commit",
+    "clip_observation_saved_measurement_resources_loopback": "skipped"
+  },
+  "scope": "Alive presentation and matched local launcher pair; no native engine, DSP or host changes; no physical settings or recording",
+  "helper_commit": "8c9b39f72346c1ea0db0475cdf7da5ae9f412e1f",
+  "helper_alignment_journeys": "New passive-read regression failed before correction; helper suite passed. Full modified Arrangement/clip-observation journeys remain unrun.",
+  "screenshots": [
+    "alive-both-1280x800.png",
+    "alive-both-1440x900.png",
+    "alive-both-800x600.png",
+    "alive-devices-1280x800.png",
+    "alive-devices-1440x900.png",
+    "alive-devices-800x600.png",
+    "alive-display-menu-1440x900.png",
+    "alive-expanded-1440x900.png",
+    "alive-help-without-editors-1280x800.png",
+    "alive-help-without-editors-1440x900.png",
+    "alive-help-without-editors-800x600.png",
+    "alive-horizontal-1440x900.png",
+    "alive-launcher-1280x800.png",
+    "alive-launcher-1440x900.png",
+    "alive-launcher-800x600.png",
+    "alive-native-loop-playing-1440x900.png",
+    "alive-stacked-1280x800.png",
+    "alive-stacked-1440x900.png",
+    "alive-stacked-800x600.png",
+    "chromium-empty-1280.png",
+    "chromium-empty-1440.png",
+    "chromium-empty-800.png",
+    "chromium-expanded-1280.png",
+    "chromium-expanded-1440.png",
+    "chromium-expanded-800.png",
+    "chromium-loop-strip.png",
+    "chromium-stacked-1280.png",
+    "chromium-stacked-1440.png",
+    "chromium-stacked-800.png",
+    "ultra-launcher-1280x800.png",
+    "ultra-launcher-1440x900.png",
+    "ultra-launcher-800x600.png"
+  ]
+}

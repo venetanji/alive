@@ -1,5 +1,20 @@
 # Changed files from the PR 12 audited head
 
+The latest local UI correction uses application/test source
+`58eb6829e6bfbf515564a4532f5804d01b9e9d17`, relative to the preceding report
+`ad40d7d4132addef435a5e11b5d0452b671f5b36`. Its exact ten-file source inventory
+is [evidence/clip-divider/changed-source-files.txt](evidence/clip-divider/changed-source-files.txt).
+The later acceptance-helper alignment is
+`8c9b39f72346c1ea0db0475cdf7da5ae9f412e1f`; its exact four-file inventory is
+[evidence/clip-divider/changed-helper-files.txt](evidence/clip-divider/changed-helper-files.txt).
+It makes runtime observation passive and retargets disclosure probes to Source /
+Clip. Helper regressions pass; full modified native journeys remain unrun.
+See [CLIP-DIVIDER-LOOP.md](CLIP-DIVIDER-LOOP.md) for full-height Clip expansion,
+separators, mixer compression, toolbar alignment, native loop position and the
+matching launcher pair. Additional changes update that report, the capability
+map, current report pointers and the new probe/evidence directory. They do not
+change native/engine/DSP source. Earlier batch inventories below are historical.
+
 Audited base: `11da097c27627a92629632ab62304d799e50099c`.
 Application/acceptance-helper commit: `c8f4cb3091b9754fa5c94e8a40718e72954aab14`.
 Manual CI: https://github.com/venetanji/alive/actions/runs/41381006275 (failed; Arrangement/Master pass, desktop fails; downstream skipped).

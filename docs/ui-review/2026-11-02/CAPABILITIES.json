@@ -1,7 +1,7 @@
 {
   "auditedHead": "11da097c27627a92629632ab62304d799e50099c",
   "date": "2026-11-02",
-  "scope": "140 historical reference rows plus 19 additional control families; source audit, not native parity or implementation approval",
+  "scope": "140 historical reference rows plus 19 audited control families and 2 loop-display follow-ups; source availability and runtime acceptance reported separately",
   "classes": {
     "W": "already_wired",
     "E": "existing_capability_needing_ui_entry",
@@ -2477,6 +2477,30 @@
       "tests": "alive-piano.test.mjs; alive-clip-view.test.mjs; failing menu target/focus tests for Clip and Arrangement, missing target, drafts and no musical IPC; three-size browser zoom/Fit checks",
       "evidence": "Existing Clip viewport navigation and Arrangement zoom/Fit are real capabilities; they do not establish the reference Fit to Time Range operation",
       "evidenceLevel": "source_audit; runtime availability and acceptance reported separately"
+    },
+    {
+      "id": "native-loop-position-display",
+      "label": "Track loop disc and current loop length",
+      "classification": "already_wired",
+      "owner": "alive-model.mjs:clipPlayback; alive.mjs:renderWorkspaceControls; native runtime_workspaces.rs observations",
+      "prerequisites": "Matching installed preparation, track/source/slot or placement identities, canonical native phase and admitted region boundaries",
+      "disabledReason": "Disc and beat length clear when source, preparation, region or native phase is unavailable",
+      "errorHandling": "Passive projection only; no renderer clock, command dispatch, retries or invented progress; existing Stop and Return owners retained",
+      "tests": "alive-model.test.mjs; alive-chain.spec.mjs native-phase, stale-clearing, one-shot and intro checks; private native loop probe",
+      "evidence": "Presentation implemented in source 58eb6829e6bfbf515564a4532f5804d01b9e9d17; see CLIP-DIVIDER-LOOP.md for final runtime evidence",
+      "evidenceLevel": "source_implementation; runtime acceptance recorded separately"
+    },
+    {
+      "id": "completed-loop-play-count",
+      "label": "Completed Session loop play count",
+      "classification": "missing_native_or_provider_contract",
+      "owner": "Future native runtime observation contract; frontend presentation consumer",
+      "prerequisites": "Specify native count and reset semantics across launch, seek, loop edits, Stop/Return, source changes and restart; coherent generation/preparation identities, bounded counters and overflow behavior",
+      "disabledReason": "Native source phase wraps at the loop boundary and does not expose a reliable completed-play count; display is --",
+      "errorHandling": "Remain unavailable; never infer plays from polls, epoch, elapsed wall time or renderer animation. Define observation errors and whether presentation-only counts are persisted or undoable before extending the contract",
+      "tests": "Native loop crossing, missed observations, reset, identity, overflow and lifecycle tests before enabling; frontend currently asserts unavailable count",
+      "evidence": "alive_session_workspaces.hpp wraps placement and Session cursors; runtime_workspaces.rs exports source phase without completed plays. No engine changes in this UI batch",
+      "evidenceLevel": "source_audit; missing native contract"
     }
   ]
 }

@@ -1,0 +1,88 @@
+
+> test:browser
+> playwright test --grep track loop strip|compact transport centers --workers=2 --reporter=list --output=/tmp/alive-loop-strip-red
+
+
+Running 2 tests using 1 worker
+
+(node:883250) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:883250) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 alive-chain.spec.mjs:5:1 › track loop strip follows native phase and installed region without estimated play counts (6.4s)
+(node:883457) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:883457) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 alive-chain.spec.mjs:28:1 › compact transport centers its controls and distinguishes the two nudge icons (1.4s)
+
+
+  1) alive-chain.spec.mjs:5:1 › track loop strip follows native phase and installed region without estimated play counts
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoHaveAttribute[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('.track').first().locator('.clip-playback')
+    Expected: [32m"playing"[39m
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toHaveAttribute" with timeout 5000ms[22m
+    [2m  - waiting for locator('.track').first().locator('.clip-playback')[22m
+
+
+      13 |   });
+      14 |   const track=page.locator('.track').first(),disc=track.locator('.clip-loop-disc'),beats=track.locator('.clip-loop-beats'),count=track.locator('.clip-loop-count');
+    > 15 |   await expect(track.locator('.clip-playback')).toHaveAttribute('data-state','playing');
+         |                                                 ^
+      16 |   await expect(disc).toHaveAttribute('data-fraction','0.25');await expect(beats).toHaveText('4');await expect(count).toHaveText('--');
+      17 |   await expect(track.locator('.runtime-receipt')).toHaveCount(0);
+      18 |   await expect(track.getByRole('button',{name:'Stop Pulse track',exact:true})).toBeVisible();
+        at /tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:15:49
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../alive-loop-strip-red/alive-chain-track-loop-str-6790d-thout-estimated-play-counts/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../alive-loop-strip-red/alive-chain-track-loop-str-6790d-thout-estimated-play-counts/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../alive-loop-strip-red/alive-chain-track-loop-str-6790d-thout-estimated-play-counts/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../alive-loop-strip-red/alive-chain-track-loop-str-6790d-thout-estimated-play-counts/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) alive-chain.spec.mjs:28:1 › compact transport centers its controls and distinguishes the two nudge icons
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mnot[2m.[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: not [32m"M3 4V14M7 4V14M11 4V14M15 4V14"[39m
+
+      29 |   await openSession(page);
+      30 |   const down=page.getByRole('button',{name:'Phase Nudge Down unavailable',exact:true}),up=page.getByRole('button',{name:'Phase Nudge Up unavailable',exact:true});
+    > 31 |   expect(await down.locator('path').getAttribute('d')).not.toBe(await up.locator('path').getAttribute('d'));
+         |                                                            ^
+      32 |   for(const control of [down,up,page.locator('#return-all')]){
+      33 |     const b=await control.boundingBox(),s=await control.locator('svg').boundingBox();
+      34 |     expect(Math.abs(b.y+b.height/2-s.y-s.height/2)).toBeLessThanOrEqual(1);
+        at /tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:31:60
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../alive-loop-strip-red/alive-chain-compact-transp-ff8b2-guishes-the-two-nudge-icons/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../alive-loop-strip-red/alive-chain-compact-transp-ff8b2-guishes-the-two-nudge-icons/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../alive-loop-strip-red/alive-chain-compact-transp-ff8b2-guishes-the-two-nudge-icons/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../alive-loop-strip-red/alive-chain-compact-transp-ff8b2-guishes-the-two-nudge-icons/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2 failed
+    alive-chain.spec.mjs:5:1 › track loop strip follows native phase and installed region without estimated play counts
+    alive-chain.spec.mjs:28:1 › compact transport centers its controls and distinguishes the two nudge icons

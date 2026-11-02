@@ -1,0 +1,46 @@
+
+> test:browser
+> playwright test --workers=1 --reporter=list --grep both-open Session preserves.*1280 --output=/tmp/alive-mixer-min-red
+
+
+Running 1 test using 1 worker
+
+(node:945957) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:945957) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 alive-chain.spec.mjs:592:92 › both-open Session preserves Browser and slots with mixers when room allows at 1280 (1.4s)
+
+
+  1) alive-chain.spec.mjs:592:92 › both-open Session preserves Browser and slots with mixers when room allows at 1280
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32mtrue[39m
+    Received: [31mfalse[39m
+
+      596 |   if(size.width===800){await page.locator('#detail-clip').click();}
+      597 |   expect(await visible(page.getByRole('treeitem',{name:'Subtractive',exact:true}))).toBe(true);
+    > 598 |   for(const locator of [page.locator('.track-mixer').first(),page.locator('#master-session'),page.getByRole('button',{name:'Pulse mute',exact:true}),page.getByRole('button',{name:'Pulse solo',exact:true}),page.locator('#master-session').getByRole('spinbutton',{name:'Master gain',exact:true})])expect(await visible(locator),await locator.getAttribute('aria-label')).toBe(true);
+          |                                                                                                                                                                                                                                                                                                                                                                               ^
+      599 |   await page.screenshot({path:testInfo.outputPath(`session-both-${size.width}x${size.height}.png`)});
+      600 | });
+      601 |
+        at /tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:598:367
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../alive-mixer-min-red/alive-chain-both-open-Sess-62236-rs-when-room-allows-at-1280/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../alive-mixer-min-red/alive-chain-both-open-Sess-62236-rs-when-room-allows-at-1280/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../alive-mixer-min-red/alive-chain-both-open-Sess-62236-rs-when-room-allows-at-1280/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../alive-mixer-min-red/alive-chain-both-open-Sess-62236-rs-when-room-allows-at-1280/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    alive-chain.spec.mjs:592:92 › both-open Session preserves Browser and slots with mixers when room allows at 1280

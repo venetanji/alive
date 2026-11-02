@@ -1,0 +1,21 @@
+.......F......
+======================================================================
+FAIL: test_passive_runtime_observation_never_opens_a_disclosure_or_dispatches_input (test_alive_workspace_navigation.NavigationTest.test_passive_runtime_observation_never_opens_a_disclosure_or_dispatches_input)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/tmp/alive-pr12-native-20261102/apps/ultra/tests/test_alive_workspace_navigation.py", line 110, in test_passive_runtime_observation_never_opens_a_disclosure_or_dispatches_input
+    prepare('Pulse clip runtime')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/alive-pr12-native-20261102/apps/ultra/tests/alive_workspace_navigation.py", line 40, in prepare
+    expand(runtime.group(1) + ' runtime details', activate_disclosure)
+    ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/alive-pr12-native-20261102/apps/ultra/tests/alive_workspace_navigation.py", line 14, in expand
+    control = ui.wait_for(name)
+  File "/tmp/alive-pr12-native-20261102/apps/ultra/tests/test_alive_workspace_navigation.py", line 107, in unexpected
+    raise AssertionError('A runtime read must not navigate or activate a control')
+AssertionError: A runtime read must not navigate or activate a control
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.006s
+
+FAILED (failures=1)

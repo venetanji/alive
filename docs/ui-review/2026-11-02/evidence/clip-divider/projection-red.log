@@ -1,0 +1,141 @@
+TAP version 13
+# Subtest: accepted score and live controls come from one authoritative snapshot
+ok 1 - accepted score and live controls come from one authoritative snapshot
+  ---
+  duration_ms: 5.747824
+  type: 'test'
+  ...
+# Subtest: late generation, edit, preparation and runtime responses cannot replace accepted state
+ok 2 - late generation, edit, preparation and runtime responses cannot replace accepted state
+  ---
+  duration_ms: 1.098092
+  type: 'test'
+  ...
+# Subtest: current IPC requires editRevision before replacing accepted state
+ok 3 - current IPC requires editRevision before replacing accepted state
+  ---
+  duration_ms: 1.035474
+  type: 'test'
+  ...
+# Subtest: current IPC requires generation before replacing accepted state
+ok 4 - current IPC requires generation before replacing accepted state
+  ---
+  duration_ms: 0.52465
+  type: 'test'
+  ...
+# Subtest: current IPC requires master before replacing accepted state
+ok 5 - current IPC requires master before replacing accepted state
+  ---
+  duration_ms: 0.818103
+  type: 'test'
+  ...
+# Subtest: current IPC requires preparationRevision before replacing accepted state
+ok 6 - current IPC requires preparationRevision before replacing accepted state
+  ---
+  duration_ms: 0.383443
+  type: 'test'
+  ...
+# Subtest: current IPC requires snapshotSequence before replacing accepted state
+ok 7 - current IPC requires snapshotSequence before replacing accepted state
+  ---
+  duration_ms: 0.629067
+  type: 'test'
+  ...
+# Subtest: malformed Master and unsafe revision identities leave accepted state intact
+ok 8 - malformed Master and unsafe revision identities leave accepted state intact
+  ---
+  duration_ms: 1.364183
+  type: 'test'
+  ...
+# Subtest: nullable and stale Master observations remain explicit while score updates continue
+ok 9 - nullable and stale Master observations remain explicit while score updates continue
+  ---
+  duration_ms: 1.574721
+  type: 'test'
+  ...
+# Subtest: automation displays the live base separately from its effective owner
+ok 10 - automation displays the live base separately from its effective owner
+  ---
+  duration_ms: 2.060007
+  type: 'test'
+  ...
+# Subtest: rootless MIDI and audio tracks expose only their actual devices
+ok 11 - rootless MIDI and audio tracks expose only their actual devices
+  ---
+  duration_ms: 0.626552
+  type: 'test'
+  ...
+# Subtest: audio source length follows its frames and source tempo
+ok 12 - audio source length follows its frames and source tempo
+  ---
+  duration_ms: 0.391229
+  type: 'test'
+  ...
+# Subtest: loop position uses the admitted occurrence and never invents completed plays
+ok 13 - loop position uses the admitted occurrence and never invents completed plays
+  ---
+  duration_ms: 0.740617
+  type: 'test'
+  ...
+# Subtest: one-shot position and cued state use native frames without unsafe integer conversion
+ok 14 - one-shot position and cued state use native frames without unsafe integer conversion
+  ---
+  duration_ms: 0.449127
+  type: 'test'
+  ...
+# Subtest: loop intros and a source Start inside the loop keep distinct phase semantics
+ok 15 - loop intros and a source Start inside the loop keep distinct phase semantics
+  ---
+  duration_ms: 0.415183
+  type: 'test'
+  ...
+# Subtest: stale preparations, missing phase and impossible native regions clear loop presentation
+not ok 16 - stale preparations, missing phase and impossible native regions clear loop presentation
+  ---
+  duration_ms: 3.686886
+  type: 'test'
+  location: '/tmp/alive-pr12-native-20261102/apps/ultra/ui/alive-model.test.mjs:73:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+
+    + {
+    +   fraction: 0.25,
+    +   intro: false,
+    +   lengthBeats: 4,
+    +   loopEnabled: true,
+    +   playCount: null,
+    +   playing: true
+    + }
+    - null
+
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: ~
+  actual:
+    playing: true
+    loopEnabled: true
+    intro: false
+    fraction: 0.25
+    lengthBeats: 4
+    playCount: ~
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///tmp/alive-pr12-native-20261102/apps/ultra/ui/alive-model.test.mjs:75:49)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..16
+# tests 16
+# suites 0
+# pass 15
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 195.958892

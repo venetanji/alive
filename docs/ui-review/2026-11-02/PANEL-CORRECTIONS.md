@@ -1,5 +1,10 @@
 # Independent Rows And Panel Behavior
 
+The later [Clip expansion and native loop display correction](CLIP-DIVIDER-LOOP.md)
+supersedes this report's compact stacked scrolling, retained upper context,
+runtime receipt strip and launcher selection. This document retains the evidence
+for its earlier source revision; it is not the current-build report.
+
 This correction implements the user's November 2 clarification: Browser and
 Session/Arrangement share the upper row; Help and the editors occupy the lower
 area. It supersedes the panel dimensions and screenshots in `HTML-FIDELITY.md`.

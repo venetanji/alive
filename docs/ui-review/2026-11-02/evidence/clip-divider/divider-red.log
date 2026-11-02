@@ -1,0 +1,256 @@
+
+> test:browser
+> playwright test --grep stacked Clip (fits|can cover) --workers=2 --reporter=list --output=/tmp/alive-clip-divider-red
+
+
+Running 6 tests using 1 worker
+
+(node:871878) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:871878) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  1 alive-chain.spec.mjs:5:92 › stacked Clip fits without outer scrolling and separates the Device row at 800 (762ms)
+(node:872042) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:872042) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  2 alive-chain.spec.mjs:5:92 › stacked Clip fits without outer scrolling and separates the Device row at 1280 (773ms)
+(node:872187) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:872187) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  3 alive-chain.spec.mjs:5:92 › stacked Clip fits without outer scrolling and separates the Device row at 1440 (760ms)
+(node:872345) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:872345) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  4 alive-chain.spec.mjs:23:92 › stacked Clip can cover the upper workspace by dragging and restore at 800 (6.3s)
+(node:872668) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:872668) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  5 alive-chain.spec.mjs:23:92 › stacked Clip can cover the upper workspace by dragging and restore at 1280 (6.3s)
+(node:872876) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:872876) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✘  6 alive-chain.spec.mjs:23:92 › stacked Clip can cover the upper workspace by dragging and restore at 1440 (6.3s)
+
+
+  1) alive-chain.spec.mjs:5:92 › stacked Clip fits without outer scrolling and separates the Device row at 800
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m1[39m
+    Received:    [31m5[39m
+
+       8 |   const check=async()=>{
+       9 |     const c=await clip.boundingBox(),d=await device.boundingBox(),divider=await page.locator('#detail-resizer').boundingBox();
+    > 10 |     expect(Math.abs(d.y-c.y-c.height-divider.height)).toBeLessThanOrEqual(1);
+         |                                                       ^
+      11 |     expect(d.height).toBe(190);
+      12 |     expect(await clip.evaluate(e=>e.scrollHeight-e.clientHeight)).toBeLessThanOrEqual(1);
+      13 |   };
+        at check (/tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:10:55)
+        at /tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:14:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-f-f8c07-rates-the-Device-row-at-800/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-f-f8c07-rates-the-Device-row-at-800/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-f-f8c07-rates-the-Device-row-at-800/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-f-f8c07-rates-the-Device-row-at-800/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) alive-chain.spec.mjs:5:92 › stacked Clip fits without outer scrolling and separates the Device row at 1280
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m1[39m
+    Received:    [31m5[39m
+
+       8 |   const check=async()=>{
+       9 |     const c=await clip.boundingBox(),d=await device.boundingBox(),divider=await page.locator('#detail-resizer').boundingBox();
+    > 10 |     expect(Math.abs(d.y-c.y-c.height-divider.height)).toBeLessThanOrEqual(1);
+         |                                                       ^
+      11 |     expect(d.height).toBe(190);
+      12 |     expect(await clip.evaluate(e=>e.scrollHeight-e.clientHeight)).toBeLessThanOrEqual(1);
+      13 |   };
+        at check (/tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:10:55)
+        at /tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:14:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-f-e449f-ates-the-Device-row-at-1280/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-f-e449f-ates-the-Device-row-at-1280/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-f-e449f-ates-the-Device-row-at-1280/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-f-e449f-ates-the-Device-row-at-1280/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) alive-chain.spec.mjs:5:92 › stacked Clip fits without outer scrolling and separates the Device row at 1440
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBeLessThanOrEqual[2m([22m[32mexpected[39m[2m)[22m
+
+    Expected: <= [32m1[39m
+    Received:    [31m5[39m
+
+       8 |   const check=async()=>{
+       9 |     const c=await clip.boundingBox(),d=await device.boundingBox(),divider=await page.locator('#detail-resizer').boundingBox();
+    > 10 |     expect(Math.abs(d.y-c.y-c.height-divider.height)).toBeLessThanOrEqual(1);
+         |                                                       ^
+      11 |     expect(d.height).toBe(190);
+      12 |     expect(await clip.evaluate(e=>e.scrollHeight-e.clientHeight)).toBeLessThanOrEqual(1);
+      13 |   };
+        at check (/tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:10:55)
+        at /tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:14:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-f-e174c-ates-the-Device-row-at-1440/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-f-e174c-ates-the-Device-row-at-1440/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-f-e174c-ates-the-Device-row-at-1440/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-f-e174c-ates-the-Device-row-at-1440/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) alive-chain.spec.mjs:23:92 › stacked Clip can cover the upper workspace by dragging and restore at 800
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeHidden[2m([22m[2m)[22m failed
+
+    Locator:  locator('#session-workspace')
+    Expected: hidden
+    Received: visible
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeHidden" with timeout 5000ms[22m
+    [2m  - waiting for locator('#session-workspace')[22m
+    [2m    9 × locator resolved to <section tabindex="-1" class="workspace" id="session-workspace" aria-label="Session workspace" data-help="Session View: launch clips by track and scene; selecting is separate from launching.">…</section>[22m
+    [2m      - unexpected value "visible"[22m
+
+
+      29 |     const h=await handle.boundingBox(),shell=await page.locator('#workspace-shell').boundingBox();
+      30 |     await page.mouse.move(h.x+h.width/2,h.y+h.height/2);await page.mouse.down();await page.mouse.move(h.x+h.width/2,shell.y,{steps:8});await page.mouse.up();
+    > 31 |     await expect(page.locator('#'+view+'-workspace')).toBeHidden();await expect(page.locator('#workspace-browser')).toBeHidden();
+         |                                                       ^
+      32 |     expect((await clip.boundingBox()).y).toBe(shell.y+h.height);
+      33 |     await expect(page.locator('#device-detail')).toBeVisible();await expect(page.locator('#info-view')).toBeVisible();
+      34 |     expect(await clip.evaluate(e=>e.scrollHeight-e.clientHeight)).toBeLessThanOrEqual(1);
+        at /tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:31:55
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-c-fe8f3-dragging-and-restore-at-800/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-c-fe8f3-dragging-and-restore-at-800/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-c-fe8f3-dragging-and-restore-at-800/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-c-fe8f3-dragging-and-restore-at-800/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) alive-chain.spec.mjs:23:92 › stacked Clip can cover the upper workspace by dragging and restore at 1280
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeHidden[2m([22m[2m)[22m failed
+
+    Locator:  locator('#session-workspace')
+    Expected: hidden
+    Received: visible
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeHidden" with timeout 5000ms[22m
+    [2m  - waiting for locator('#session-workspace')[22m
+    [2m    9 × locator resolved to <section tabindex="-1" class="workspace" id="session-workspace" aria-label="Session workspace" data-help="Session View: launch clips by track and scene; selecting is separate from launching.">…</section>[22m
+    [2m      - unexpected value "visible"[22m
+
+
+      29 |     const h=await handle.boundingBox(),shell=await page.locator('#workspace-shell').boundingBox();
+      30 |     await page.mouse.move(h.x+h.width/2,h.y+h.height/2);await page.mouse.down();await page.mouse.move(h.x+h.width/2,shell.y,{steps:8});await page.mouse.up();
+    > 31 |     await expect(page.locator('#'+view+'-workspace')).toBeHidden();await expect(page.locator('#workspace-browser')).toBeHidden();
+         |                                                       ^
+      32 |     expect((await clip.boundingBox()).y).toBe(shell.y+h.height);
+      33 |     await expect(page.locator('#device-detail')).toBeVisible();await expect(page.locator('#info-view')).toBeVisible();
+      34 |     expect(await clip.evaluate(e=>e.scrollHeight-e.clientHeight)).toBeLessThanOrEqual(1);
+        at /tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:31:55
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-c-4186b-ragging-and-restore-at-1280/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-c-4186b-ragging-and-restore-at-1280/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-c-4186b-ragging-and-restore-at-1280/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-c-4186b-ragging-and-restore-at-1280/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  6) alive-chain.spec.mjs:23:92 › stacked Clip can cover the upper workspace by dragging and restore at 1440
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeHidden[2m([22m[2m)[22m failed
+
+    Locator:  locator('#session-workspace')
+    Expected: hidden
+    Received: visible
+    Timeout:  5000ms
+
+    Call log:
+    [2m  - Expect "toBeHidden" with timeout 5000ms[22m
+    [2m  - waiting for locator('#session-workspace')[22m
+    [2m    9 × locator resolved to <section tabindex="-1" class="workspace" id="session-workspace" aria-label="Session workspace" data-help="Session View: launch clips by track and scene; selecting is separate from launching.">…</section>[22m
+    [2m      - unexpected value "visible"[22m
+
+
+      29 |     const h=await handle.boundingBox(),shell=await page.locator('#workspace-shell').boundingBox();
+      30 |     await page.mouse.move(h.x+h.width/2,h.y+h.height/2);await page.mouse.down();await page.mouse.move(h.x+h.width/2,shell.y,{steps:8});await page.mouse.up();
+    > 31 |     await expect(page.locator('#'+view+'-workspace')).toBeHidden();await expect(page.locator('#workspace-browser')).toBeHidden();
+         |                                                       ^
+      32 |     expect((await clip.boundingBox()).y).toBe(shell.y+h.height);
+      33 |     await expect(page.locator('#device-detail')).toBeVisible();await expect(page.locator('#info-view')).toBeVisible();
+      34 |     expect(await clip.evaluate(e=>e.scrollHeight-e.clientHeight)).toBeLessThanOrEqual(1);
+        at /tmp/alive-pr12-native-20261102/apps/ultra/tests/ci/alive-chain.spec.mjs:31:55
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-c-72d96-ragging-and-restore-at-1440/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-c-72d96-ragging-and-restore-at-1440/error-context.md
+
+    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-c-72d96-ragging-and-restore-at-1440/trace.zip
+    Usage:
+
+        npx playwright show-trace ../../../../../alive-clip-divider-red/alive-chain-stacked-Clip-c-72d96-ragging-and-restore-at-1440/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  6 failed
+    alive-chain.spec.mjs:5:92 › stacked Clip fits without outer scrolling and separates the Device row at 800
+    alive-chain.spec.mjs:5:92 › stacked Clip fits without outer scrolling and separates the Device row at 1280
+    alive-chain.spec.mjs:5:92 › stacked Clip fits without outer scrolling and separates the Device row at 1440
+    alive-chain.spec.mjs:23:92 › stacked Clip can cover the upper workspace by dragging and restore at 800
+    alive-chain.spec.mjs:23:92 › stacked Clip can cover the upper workspace by dragging and restore at 1280
+    alive-chain.spec.mjs:23:92 › stacked Clip can cover the upper workspace by dragging and restore at 1440
