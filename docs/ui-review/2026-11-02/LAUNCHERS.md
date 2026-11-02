@@ -1,5 +1,11 @@
 # Local Test Launchers
 
+Current selection: the shell-correction build from
+`f827d1b17c22ed08a1f980cbdacbae9e49476501`, snapshot
+`test-4a416239997e76aeec08`. See [the current shell report](SHELL-CORRECTION.md)
+for its matching hashes and native launcher evidence. The rest of this document
+records the earlier launcher-installation batch and its historical build.
+
 Alive (Test) and Ultra (Latest Build) now select the same matching local test
 build pair. The previous Alive entry selected `1bca10c-clip-8bbbe283de`; the
 previous Ultra entry invoked the unrelated research checkout's `run.sh`.

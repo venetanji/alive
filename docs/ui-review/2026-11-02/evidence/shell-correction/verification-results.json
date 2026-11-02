@@ -1,0 +1,71 @@
+{
+  "production_source_commit": "f827d1b17c22ed08a1f980cbdacbae9e49476501",
+  "checks": [
+    {
+      "check": "chromium",
+      "passed": 325,
+      "failed": 0,
+      "skipped": 0,
+      "local_log": "/tmp/alive-shell-final-gates.log",
+      "log_sha256": "56484df35709b1ef4b47618547c54db689ca91811b0c69cc18c06e5917079361",
+      "command": "ALIVE_TEST_PORT=4200 npx playwright test --workers=2 --reporter=list --output=/tmp/alive-shell-final-gates",
+      "working_directory": "apps/ultra/tests/ci"
+    },
+    {
+      "check": "node",
+      "passed": 668,
+      "failed": 0,
+      "skipped": 0,
+      "local_log": "/tmp/alive-shell-final-node.log",
+      "log_sha256": "3d67240a7f4580c01a8e79f486f1b6bc8345f79bf22f020dd272c3db9b5e025f",
+      "command": "node --test apps/ultra/ui/*.test.mjs apps/ultra/ui/components/*.test.mjs",
+      "working_directory": "."
+    },
+    {
+      "check": "python_helpers",
+      "passed": 144,
+      "failed": 0,
+      "skipped": 0,
+      "local_log": "/tmp/alive-shell-helpers-verified.log",
+      "log_sha256": "7fb600ad327b0beef8b94a3996a31effc2e99b1a574e821c0b7de12ab08380eb",
+      "command": null,
+      "working_directory": "."
+    },
+    {
+      "check": "ultra_debug_build",
+      "exit_code": 0,
+      "local_log": "/tmp/alive-shell-ultra-final-build.log",
+      "log_sha256": "2cc69c526dc6892a1e17da62a1b321abf8ebec69b2b0aa422731ac8e9aef8a07",
+      "command": "env CARGO_HOME=/tmp/alive-pr12-native-20261102/experiments/clockwork-faust/.deps/cargo ULTRA_NATIVE_LIB_DIR=/home/venetanji/.cache/alive-pr12-native-20261102/native cargo build --manifest-path apps/ultra/src-tauri/Cargo.toml --target-dir /home/venetanji/.cache/alive-pr12-native-20261102/target --locked -j 2"
+    },
+    {
+      "check": "alive_debug_build",
+      "exit_code": 0,
+      "local_log": "/tmp/alive-shell-alive-final-build.log",
+      "log_sha256": "3e21dbc68880614739e692658c9d57198176a17ce101f58acb3012bcd516e851",
+      "command": "env CARGO_HOME=/tmp/alive-pr12-native-20261102/experiments/clockwork-faust/.deps/cargo ULTRA_NATIVE_LIB_DIR=/home/venetanji/.cache/alive-pr12-native-20261102/native cargo build --manifest-path apps/alive/src-tauri/Cargo.toml --target-dir /home/venetanji/.cache/alive-pr12-native-20261102/target --locked -j 2"
+    }
+  ],
+  "native_shell": {
+    "exit_code": 0,
+    "results": "native-shell-results.json",
+    "probe_sha256": "4be270a116e0f57be15e9a3a43602b9f8710981378079006923d84410aa5faa6",
+    "local_log": "/tmp/alive-native-shell-verified-20261102.log",
+    "scope": "Private display, software audio service; no audio started or physical device changed"
+  },
+  "latest_ci": {
+    "url": "https://github.com/venetanji/alive/actions/runs/41381006275",
+    "commit": "c8f4cb3091b9754fa5c94e8a40718e72954aab14",
+    "overall": "failed",
+    "current_shell_dispatched": false
+  },
+  "unrun_on_current_build": [
+    "full native desktop and hosted-editor journey",
+    "full Arrangement and Master journeys",
+    "clip observation boundaries and failure isolation",
+    "saved-clip measurements",
+    "editor resource bounds",
+    "CPAL software loopback",
+    "physical hardware qualification"
+  ]
+}

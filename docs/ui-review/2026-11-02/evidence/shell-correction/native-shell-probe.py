@@ -157,7 +157,7 @@ for name, identifier, ready in (('alive', 'org.alive.session.test', 'Start trans
                 ui.click('Show mixer controls')
                 ui.click('Display options')
                 ui.wait_for('Pulse gain fader')
-                ui.wait_for('Search library')
+                ui.wait_for('Search browser')
                 print(f'PASS Alive panels, resizer and repeated display toggles at {width}x{height}', flush=True)
                 checks.append({'size': [width, height], 'device_height': 180,
                                'clip_resize': 'passed', 'device_only_restore': 'passed',
