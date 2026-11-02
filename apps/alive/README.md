@@ -39,8 +39,27 @@ working Arrangement timeline. The populated examples remain available through
 Open. Both workspaces are available immediately.
 
 On the local test machine, open **Alive (Test)** from the desktop app launcher.
-Its desktop entry selects a versioned, locally verified build; it does not
+Its desktop entry selects a versioned local test build; it does not
 rebuild on launch. Existing windows keep their original executable and project.
+
+Successful full local builds update **Alive (Test)** and **Ultra (Latest Build)**
+together. Both use `~/.local/share/alive/current-test` (under `XDG_DATA_HOME`
+when set), selecting a snapshot of both binaries, their native library and
+bundled examples. Selecting a build does not imply its acceptance tests passed.
+Close and reopen existing windows to use the newly selected build.
+
+When testing a direct Cargo build or another checkout, select the matching pair
+before testing:
+
+```sh
+python3 apps/ultra/install-launcher.py --build-dir /absolute/path/to/target/debug
+```
+
+The installer prints the snapshot path. Its `source-build-manifest.json` records
+artifact SHA-256 hashes and checkout context; `--built-from COMMIT` also records
+known, caller-supplied compilation provenance. Old snapshots and changed desktop
+entry backups remain available. CI and `--native-only` builds do not change
+user launchers.
 
 ## Clips, Tracks And Detail Size
 

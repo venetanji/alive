@@ -1,8 +1,12 @@
 # Changed files from the PR 12 audited head
 
 Audited base: `11da097c27627a92629632ab62304d799e50099c`.
-Current code/helper commit: `c8f4cb3091b9754fa5c94e8a40718e72954aab14`.
+Application/acceptance-helper commit: `c8f4cb3091b9754fa5c94e8a40718e72954aab14`.
 Manual CI: https://github.com/venetanji/alive/actions/runs/41381006275 (failed; Arrangement/Master pass, desktop fails; downstream skipped).
+
+The subsequent local launcher/workflow batch and its exact changed-file list
+are recorded in [LAUNCHERS.md](LAUNCHERS.md). That batch keeps the same tested
+application binaries and does not add a CI acceptance pass.
 
 This inventory includes the current audit/evidence working changes. Later
 report updates do not change the application or acceptance helpers.

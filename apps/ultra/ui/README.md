@@ -77,9 +77,18 @@ guard while signal state already advances. New MSP evaluation has no per-path
 
 From the repository root, `bash apps/ultra/run.sh -- path/to/patch.ultra`
 opens a file at startup or sends it to the existing native instance. Multiple
-paths are accepted. `python3 apps/ultra/install-launcher.py` installs the latest
-build's user desktop entry and MIME descriptions for `.ultra`, `.maxpat` and
-`.maxhelp`, so a file manager can offer Open With Ultra.
+paths are accepted. Successful full local builds select both **Ultra (Latest
+Build)** and **Alive (Test)** in the desktop app launcher. To select an existing
+matching pair explicitly, run `python3 apps/ultra/install-launcher.py`
+(`--build-dir /absolute/path/to/target/debug` for a debug build). The installer
+copies both binaries, their native library and bundled resources into one
+versioned snapshot, then atomically switches `~/.local/share/alive/current-test`.
+It records artifact hashes in `source-build-manifest.json`, preserves previous
+builds and desktop-entry backups, and installs MIME descriptions for `.ultra`,
+`.maxpat` and `.maxhelp`, so a file manager can offer Open With Ultra. Existing
+windows retain their original build; reopen them after switching. CI and
+native-only builds leave user launchers unchanged. Selection is not an acceptance
+pass. See `apps/alive/README.md` for provenance and alternate-checkout details.
 
 ### Canvas checks
 
