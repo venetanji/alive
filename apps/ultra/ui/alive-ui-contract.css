@@ -94,8 +94,8 @@
 #clip-detail:not([hidden]){display:flex;flex-direction:column;grid-column:2;grid-row:1;min-height:0;height:100%;overflow:hidden;container:clip-detail / size}
 .detail-both #clip-detail:not([hidden]){grid-column:1 / -1}
 #clip-detail>.clip-section{display:flex;flex-direction:column;flex:1 1 0;min-height:0;border:0}
-#clip-detail>.clip-section>.section-heading{flex:none;padding:0;gap:0;min-height:22px;height:22px;background:#434343;border-bottom:2px solid #292929}
-#clip-detail #clip-controls{flex:1;min-width:0;min-height:20px;height:20px;padding:0 5px;gap:5px;font-size:11px}
+#clip-detail>.clip-section>.section-heading[hidden]{display:none}
+#clip-detail #clip-controls{flex:none;min-width:0;min-height:20px;height:20px;padding:0;gap:0;font-size:11px}
 #clip-detail #add-note{margin:0 5px 0 0;height:18px;min-height:18px;padding:0 5px;font-size:10px}
 #clip-detail .clip-editors{display:flex;flex-direction:column;flex:1;min-height:0}
 #clip-detail .note-table{flex:none}
@@ -160,7 +160,6 @@
 #clip-detail .clip-inspectors>.automation-section[open]{position:absolute;right:0;top:0;width:min(600px,95%);max-height:100%;overflow:auto;background:var(--chrome);z-index:12}
 #clip-detail .clip-inspectors>.automation-section[open]>:not(summary){position:static;width:auto;max-height:none;border:0}
 #clip-detail>.clip-section{position:relative}
-#clip-detail>.clip-section>.section-heading{position:static;overflow:visible;z-index:4}
 .detail-maximized .track-mixer,.detail-maximized #master-session{display:none}
 .detail-maximized #master-arrangement-lane{display:none}
 .detail-maximized .workspace-upper{display:none}
@@ -174,13 +173,12 @@
 .device-card-header>button:not(.chain-select),.device-card-actions button{display:grid;place-items:center;width:23px;min-width:23px;min-height:19px;padding:1px}
 .device-card-header>button:not(.chain-select) svg,.device-card-actions button svg{width:13px;height:13px;margin:0;fill:none;stroke:currentColor;stroke-width:1.4}
 .browser-load svg,.browser-preview button svg,.timeline-return svg{display:block;width:14px;height:14px;margin:auto;fill:none;stroke:currentColor;stroke-width:1.4}
-#clip-detail .clip-area[data-layout=horizontal]{grid-template-columns:min(var(--clip-properties-width,clamp(320px,44%,500px)),calc(100% - 160px)) minmax(0,1fr)}
-#clip-detail .clip-area[data-layout=horizontal] .clip-properties{display:flex;align-items:stretch}
-#clip-detail .clip-area[data-layout=horizontal] .clip-properties>details{flex:1;min-width:0}
-#clip-detail .clip-area[data-layout=vertical] .clip-properties{display:block}
-@container clip-detail (max-height:360px){
-  #clip-detail .clip-area[data-layout=auto]{grid-template-columns:min(var(--clip-properties-width,clamp(320px,44%,500px)),calc(100% - 160px)) minmax(0,1fr)}
-  #clip-detail .clip-area[data-layout=auto] .clip-properties{display:flex;align-items:stretch}
-  #clip-detail .clip-area[data-layout=auto] .clip-properties>details{flex:1;min-width:0}
-}
+#clip-detail .clip-area[data-inspector-layout=horizontal]{grid-template-columns:min(var(--clip-properties-width,clamp(320px,44%,500px)),calc(100% - 160px)) minmax(0,1fr)}
+#clip-detail .clip-area[data-inspector-layout=horizontal] .clip-properties{display:flex;flex-direction:column;overflow:hidden}
+#clip-detail .clip-area[data-inspector-layout=horizontal] .clip-option-tabs{display:flex}
+#clip-detail .clip-area[data-inspector-layout=horizontal] .clip-option-groups{display:flex;flex:1;min-height:0;overflow:auto}
+#clip-detail .clip-area[data-inspector-layout=horizontal] .clip-option-groups>details{flex:1 0 145px;min-width:0;overflow:auto;border-right:1px solid #292929}
+#clip-detail .clip-area[data-inspector-layout=horizontal] .clip-option-groups>details:not([open]){display:none}
+#clip-detail .clip-area[data-inspector-layout=horizontal] .clip-option-groups>details>summary{display:none}
+.lower-drag-collapsed .workspace-lower{display:none}
 @media(max-width:850px){footer{gap:4px;padding:3px 7px}#footer-display-controls{gap:3px}#clip-overview{width:110px}}

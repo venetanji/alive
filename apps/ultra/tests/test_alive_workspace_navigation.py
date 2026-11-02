@@ -11,6 +11,24 @@ import alive_workspace_navigation as navigation
 
 
 class NavigationTest(unittest.TestCase):
+    def test_clip_launch_prepares_the_visible_option_owner_before_selecting(self):
+        for horizontal in (False, True):
+            with self.subTest(horizontal=horizontal):
+                calls = []
+                class Control:
+                    def __init__(self, name): self.name = name
+                    def get_state_set(self): return self
+                    def contains(self, state):
+                        return state == 'visible' and (self.name == 'Source / Clip' or
+                            horizontal and self.name == 'Toggle Launch options')
+                ui = types.SimpleNamespace(click=lambda name: calls.append(('click', name)),
+                    text=lambda *args: None, wait_for=lambda name: Control(name), find=lambda name: Control(name))
+                navigation.install(ui, types.SimpleNamespace(scope='Alive'), None,
+                    lambda name: calls.append(('owned', name)))
+                ui.click('Clip Launch Quantization')
+                self.assertEqual(calls, [('owned', 'Toggle Launch options' if horizontal else 'Launch'),
+                    ('click', 'Clip Launch Quantization')])
+
     def test_save_opens_its_file_menu_before_the_existing_action(self):
         calls = []
         class Control:

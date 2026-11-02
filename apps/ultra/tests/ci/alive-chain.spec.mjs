@@ -2,6 +2,83 @@ import {test,expect} from '@playwright/test';
 import {projectFixturePresentation} from '../presentation-dom.mjs';
 import {readFileSync,mkdirSync} from 'node:fs';
 
+async function showClipOptions(page,key){
+  const section=page.locator(`.clip-option-groups > [data-section=${key}]`);
+  if(await section.getAttribute('open')!==null)return;
+  if(await page.locator('.clip-option-tabs').isVisible())await page.getByRole('button',{name:`Toggle ${key==='launch'?'Launch':'Clip'} options`,exact:true}).click();
+  else await section.locator('summary').click();
+}
+
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`Clip options match the compact tabs and tall accordion reference at ${size.width}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();
+  const resize=page.locator('#detail-resizer'),area=page.locator('.clip-area'),properties=page.locator('.clip-properties');
+  await resize.focus();await resize.press('Home');
+  await expect(area).toHaveAttribute('data-inspector-layout','horizontal');
+  await expect(properties.getByRole('navigation',{name:'Clip option sections'})).toBeVisible();
+  for(const name of ['Clip','Launch','Pitch & Time','Transform','Generate'])await expect(properties.getByRole('button',{name:`Toggle ${name} options`,exact:true})).toBeVisible();
+  await expect(properties.locator('[data-section=clip] > summary')).toBeHidden();
+  await expect(properties.locator('[data-section=pitch]')).toHaveAttribute('open','');
+  await expect(page.locator('#clip-detail > .clip-section > .section-heading')).toBeHidden();
+  const clip=await page.locator('#clip-detail').boundingBox(),title=await properties.locator('.clip-properties-title').boundingBox(),tools=await page.locator('.clip-view-tools').boundingBox();
+  expect(title.y).toBe(clip.y);expect(tools.y).toBe(clip.y);
+  await page.screenshot({path:testInfo.outputPath(`clip-options-short-${size.width}.png`)});
+  const field=page.getByLabel('Clip Start',{exact:true});await field.evaluate(e=>window.retainedStart=e);await field.fill('0.75');
+  const toggle=properties.getByRole('button',{name:'Toggle Clip options',exact:true});await toggle.click();await expect(field).toBeHidden();await toggle.click();await expect(field).toHaveValue('0.75');
+  await toggle.click();
+  await resize.focus();await resize.press('End');await expect(area).toHaveAttribute('data-inspector-layout','vertical');
+  await expect(properties.getByRole('navigation',{name:'Clip option sections'})).toBeHidden();
+  const summaries=properties.locator('.clip-option-groups > details:not([hidden]) > summary');await expect(summaries).toHaveCount(5);
+  await expect(summaries.first()).toBeVisible();
+  const divider=page.getByRole('separator',{name:'Resize Clip properties',exact:true});await divider.focus();await divider.press('End');
+  await expect(area).toHaveAttribute('data-inspector-layout','horizontal');await divider.press('Home');await expect(area).toHaveAttribute('data-inspector-layout','vertical');
+  await properties.locator('[data-section=clip] > summary').click();
+  await expect(field).toHaveValue('0.75');expect(await field.evaluate(e=>e===window.retainedStart)).toBe(true);
+  await page.screenshot({path:testInfo.outputPath(`clip-options-tall-${size.width}.png`)});
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('piano header exposes real modes and honest unavailable tools without the old title band',async({page})=>{
+  await page.setViewportSize({width:1440,height:900});await openSession(page);
+  const header=page.locator('.clip-view-tools');await expect(header.getByRole('button',{name:'Notes',exact:true})).toHaveAttribute('aria-pressed','true');
+  for(const name of ['Search notes unavailable','Fold unavailable','Scale unavailable','MPE unavailable'])await expect(header.getByRole('button',{name,exact:true})).toBeDisabled();
+  await expect(header.getByRole('checkbox',{name:'Highlight Scale unavailable',exact:true})).toBeDisabled();
+  await expect(header.getByRole('combobox',{name:'Piano roll grid',exact:true})).toBeDisabled();
+  await header.getByRole('button',{name:'Envelopes',exact:true}).click();await expect(page.locator('.automation-section')).toHaveAttribute('open','');
+  await header.getByRole('button',{name:'Notes',exact:true}).click();await expect(page.locator('.automation-section')).not.toHaveAttribute('open','');
+  await page.locator('.clip-source-actions > summary').click();await expect(page.getByRole('button',{name:'Duplicate clip',exact:true})).toBeVisible();
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('fixed Devices divider closes with the keyboard and Help reopens independently',async({page})=>{
+  await openSession(page);await page.locator('#detail-devices').click();await page.locator('#detail-clip').click();
+  const handle=page.locator('#detail-resizer');await expect(handle).toHaveAttribute('aria-valuenow','190');await expect(handle).toHaveAttribute('aria-valuemin','190');
+  await handle.focus();await handle.press('ArrowDown');await expect(page.locator('.workspace-lower')).toBeHidden();await expect(page.locator('#toggle-help')).toHaveAttribute('aria-expanded','false');
+  await page.locator('#toggle-help').click();await expect(page.locator('#info-view')).toBeVisible();await expect(page.locator('#clip-detail')).toBeHidden();await expect(page.locator('#device-detail')).toBeHidden();
+  await page.locator('#detail-devices').click();expect((await page.locator('#device-detail').boundingBox()).height).toBe(190);
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+for(const panels of ['clip','devices','both'])test(`lower row drag collapses and restores ${panels} without losing drafts`,async({page},testInfo)=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);
+  if(panels!=='clip')await page.locator('#detail-devices').click();if(panels==='devices')await page.locator('#detail-clip').click();
+  const handle=page.locator('#detail-resizer');await expect(handle).toBeVisible();
+  const field=panels==='devices'?page.getByRole('spinbutton',{name:'Track 1 device 1 Cutoff base',exact:true}):page.getByLabel('Clip Start',{exact:true});
+  if(panels!=='devices')await field.fill('0.75');
+  const initial=(await page.locator('.workspace-lower').boundingBox()).height;
+  const drag=async()=>{const r=await handle.boundingBox();await page.mouse.move(r.x+r.width/2,r.y+r.height/2);await page.mouse.down();await page.mouse.move(r.x+r.width/2,770,{steps:8});};
+  await drag();await expect(page.locator('.workspace-lower')).toBeHidden();await page.keyboard.press('Escape');await page.mouse.up();
+  await expect(page.locator('.workspace-lower')).toBeVisible();expect((await page.locator('.workspace-lower').boundingBox()).height).toBe(initial);
+  await drag();await page.mouse.up();await expect(page.locator('.workspace-lower')).toBeHidden();
+  const upper=await page.locator('.workspace-upper').boundingBox(),shell=await page.locator('#workspace-shell').boundingBox();expect(upper.y+upper.height).toBe(shell.y+shell.height);
+  await page.screenshot({path:testInfo.outputPath(`lower-collapsed-${panels}.png`)});
+  if(panels==='both'){await page.locator('#master-select-session').click();await expect(page.locator('#master-detail')).toBeVisible();await page.getByRole('button',{name:'Select Pulse track',exact:true}).click();await expect(page.locator('.workspace-lower')).toBeHidden();}
+  await page.locator('#toggle-detail').click();await expect(page.locator('.workspace-lower')).toBeVisible();
+  expect((await page.locator('.workspace-lower').boundingBox()).height).toBe(initial);
+  await expect(page.locator('#clip-detail'))[panels==='devices'?'toBeHidden':'toBeVisible']();await expect(page.locator('#device-detail'))[panels==='clip'?'toBeHidden':'toBeVisible']();
+  if(panels!=='devices')await expect(field).toHaveValue('0.75');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
 test('track loop strip follows native phase and installed region without estimated play counts',async({page},testInfo)=>{
   await page.setViewportSize({width:1280,height:800});await openSession(page);
   await page.evaluate(()=>{
@@ -119,7 +196,7 @@ test('Clip layout modes reuse fields and fill the editor without inspector bands
   await page.setViewportSize({width:1440,height:900});await openSession(page);await page.locator('#detail-devices').click();
   const field=page.getByLabel('Clip Start',{exact:true});await field.evaluate(e=>window.retainedClipStart=e);await field.fill('0.5');
   await page.getByRole('button',{name:'Horizontal Clip layout',exact:true}).click();
-  const groups=page.locator('.clip-properties > details:not([hidden])');const horizontal=await groups.evaluateAll(es=>es.map(e=>e.getBoundingClientRect().toJSON()));
+  const groups=page.locator('.clip-option-groups > details:not([hidden])[open]');const horizontal=await groups.evaluateAll(es=>es.map(e=>e.getBoundingClientRect().toJSON()));
   expect(horizontal[1].x).toBeGreaterThan(horizontal[0].x);expect(horizontal[1].y).toBe(horizontal[0].y);
   await page.getByRole('button',{name:'Vertical Clip layout',exact:true}).click();
   const vertical=await groups.evaluateAll(es=>es.map(e=>e.getBoundingClientRect().toJSON()));expect(vertical[1].y).toBeGreaterThan(vertical[0].y);expect(vertical[1].x).toBe(vertical[0].x);
@@ -148,9 +225,9 @@ test('expanded Clip covers track context and mixer presents dB with separate ste
   await page.screenshot({path:testInfo.outputPath('expanded-clip-context.png')});
 });
 
-test('editor and track action buttons use icons with accessible names',async({page})=>{
+test('editor actions use icons while piano mode tabs retain their reference labels',async({page})=>{
   await openSession(page);await page.locator('#detail-devices').click();
-  for(const selector of ['.track-return','#edit-device','#add-note','.clip-view-tools button','#timeline-fit','#timeline-loop-selection']){
+  for(const selector of ['.track-return','#edit-device','#add-note','.clip-view-tools > button','.clip-navigation button','.clip-layout-controls button','#timeline-fit','#timeline-loop-selection']){
     const buttons=page.locator(selector);for(const button of await buttons.all()){
       expect(await button.locator('svg').count(),selector).toBeGreaterThan(0);
       expect(await button.evaluate(e=>{const range=document.createRange();return [...e.childNodes].filter(n=>n.nodeType===Node.TEXT_NODE&&n.textContent.trim()).some(n=>{range.selectNodeContents(n);return range.getBoundingClientRect().width>0;});}),selector).toBe(false);
@@ -265,7 +342,7 @@ for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,he
   await page.locator('#detail-devices').click();await page.locator('#detail-clip').click();
   const baseline=await device.boundingBox();expect(baseline.height).toBe(190);
   expect((await help.boundingBox()).height).toBe(baseline.height);
-  await expect(handle).toBeHidden();await expect(page.locator('#maximize-detail')).toBeDisabled();
+  await expect(handle).toBeVisible();await expect(handle).toHaveAttribute('aria-valuenow','190');await expect(page.locator('#maximize-detail')).toBeDisabled();
   await page.locator('#detail-clip').click();await handle.focus();await handle.press('Home');
   const small=await clip.boundingBox();await handle.press('End');const large=await clip.boundingBox();
   expect(large.height).toBeGreaterThan(small.height);
@@ -284,7 +361,7 @@ test('Device-only mode restores its fixed height without forgetting the Clip hei
   const draft=page.getByLabel('Clip name',{exact:true}),handle=page.locator('#detail-resizer');
   await handle.focus();await handle.press('Home');await handle.press('ArrowUp');
   const clipHeight=await handle.getAttribute('aria-valuenow');
-  await page.getByText('Source / Clip',{exact:true}).click();
+  await page.locator('.clip-source-actions > summary').click();
   await draft.fill('Unfinished clip');
   await page.locator('#detail-devices').click();await page.locator('#detail-clip').click();
   expect((await page.locator('#device-detail').boundingBox()).height).toBe(190);
@@ -355,7 +432,7 @@ test('browser preview disables native-only menu commands and retains local Help'
 });
 
 test('source disclosure remains available when switching workspaces',async({page})=>{
-  await openSession(page);const source=page.getByText('Source / Clip',{exact:true});
+  await openSession(page);const source=page.locator('.clip-source-actions > summary');
   await expect(source).toBeVisible();await page.getByRole('button',{name:'Arrangement workspace',exact:true}).click();await expect(source).toBeVisible();
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
@@ -373,6 +450,7 @@ test('unselected track menu opens its own editor without selecting the track',as
 test('End resize exposes the full Clip Launch Quantization control at 1440',async({page},testInfo)=>{
   await page.setViewportSize({width:1440,height:900});await openSession(page);await page.locator('#detail-devices').click();
   const resize=page.getByRole('separator',{name:'Resize detail area',exact:true});await resize.focus();await resize.press('End');
+  await showClipOptions(page,'launch');
   const rects=await page.evaluate(()=>{const a=document.querySelector('[aria-label="Clip Launch Quantization"]').getBoundingClientRect(),b=document.querySelector('#clip-detail').getBoundingClientRect(),c=document.querySelector('.clip-properties').getBoundingClientRect();return {a:{top:a.top,bottom:a.bottom},b:{top:b.top,bottom:b.bottom},c:{top:c.top,bottom:c.bottom}};});
   expect(rects.a.top).toBeGreaterThanOrEqual(Math.max(rects.b.top,rects.c.top));expect(rects.a.bottom).toBeLessThanOrEqual(Math.min(rects.b.bottom,rects.c.bottom));
   await page.screenshot({path:testInfo.outputPath('inspector-end-1440.png')});
@@ -543,7 +621,7 @@ for(const size of [{width:800,height:600},{width:1440,height:900}])test(`Browser
 
 for(const method of ['mouse','keyboard'])test(`Clip disclosure preserves an unfinished Start through ${method} navigation`,async({page})=>{
   await page.setViewportSize({width:1280,height:800});await openSession(page);await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
-  const field=page.getByRole('spinbutton',{name:'Clip Start',exact:true}),summary=page.locator('.clip-properties > details').first().locator('summary');
+  const field=page.getByRole('spinbutton',{name:'Clip Start',exact:true}),summary=page.locator('.clip-option-groups > details').first().locator('summary');
   await field.fill('1');
   if(method==='mouse')await summary.click();else{await field.press('Shift+Tab');await expect(summary).toBeFocused();await summary.press('Enter');}
   await expect(field).toBeHidden();
@@ -557,7 +635,7 @@ for(const method of ['mouse','keyboard'])test(`Clip disclosure preserves an unfi
 
 test('a parked Clip Start stays with its source through selection changes',async({page})=>{
   await page.setViewportSize({width:1280,height:800});await openSession(page);await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
-  const field=page.getByRole('spinbutton',{name:'Clip Start',exact:true}),summary=page.locator('.clip-properties > details').first().locator('summary');
+  const field=page.getByRole('spinbutton',{name:'Clip Start',exact:true}),summary=page.locator('.clip-option-groups > details').first().locator('summary');
   await field.fill('1');await summary.click();await page.getByRole('button',{name:'Restore detail size',exact:true}).click();
   await page.getByRole('button',{name:'Select Harmony slot 1',exact:true}).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await summary.click();await expect(field).toHaveValue('0');
   await saveSession(page);await expect(page.locator('#notice')).toContainText('Finish Clip Start');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
@@ -572,6 +650,7 @@ for(const size of [{width:1280,height:800},{width:1440,height:900}])test(`defaul
   await testInfo.attach('detail-geometry',{body:JSON.stringify(await page.evaluate(()=>Object.fromEntries(['#clip-detail','.clip-section','.clip-editors','.clip-area','.clip-properties','.clip-view-tools','#piano-roll','.piano-velocity-lane','.note-velocity','.note-table'].map(selector=>{const e=document.querySelector(selector),s=getComputedStyle(e);return[selector,{rect:e.getBoundingClientRect().toJSON(),scrollHeight:e.scrollHeight,flex:s.flex,grid:s.gridTemplateRows,minHeight:s.minHeight}];}))),null,2),contentType:'application/json'});
   const fullyVisible=locator=>locator.evaluate(el=>{const r=el.getBoundingClientRect();for(let p=el.parentElement;p;p=p.parentElement){const s=getComputedStyle(p),b=p.getBoundingClientRect();if(/auto|scroll|hidden|clip/.test(s.overflow+s.overflowY+s.overflowX)&&(r.top<b.top-1||r.bottom>b.bottom+1||r.left<b.left-1||r.right>b.right+1))return false;}return r.top>=0&&r.left>=0&&r.bottom<=innerHeight&&r.right<=innerWidth;});
   for(const label of ['Clip Start','Clip End','Loop Position','Loop Length'])expect(await fullyVisible(page.getByRole('spinbutton',{name:label,exact:true})),label).toBe(true);
+  await showClipOptions(page,'launch');await page.getByRole('combobox',{name:'Clip Launch Quantization',exact:true}).scrollIntoViewIfNeeded();
   expect(await fullyVisible(page.getByRole('combobox',{name:'Clip Launch Quantization',exact:true}))).toBe(true);
   expect(await fullyVisible(page.getByRole('group',{name:'Note velocity lane',exact:true}))).toBe(true);
   const card=page.locator('.chain-device').first();for(const label of ['Attack base','Attack effective ownership'])expect(await fullyVisible(card.getByLabel(label,{exact:true})),label).toBe(true);
@@ -684,7 +763,7 @@ test('Clip properties arrange horizontally when short and as vertical disclosure
   await expect(properties).toBeVisible();expect(await properties.evaluate(el=>getComputedStyle(el).display)).toBe('flex');
   await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
   expect(await properties.evaluate(el=>getComputedStyle(el).display)).toBe('block');
-  await expect(properties.locator('details > summary').first()).toBeVisible();
+  await expect(properties.locator('.clip-option-groups > details > summary').first()).toBeVisible();
 });
 
 test('Clip property divider resizes without issuing musical commands',async({page})=>{
@@ -882,7 +961,7 @@ test('Devices and Master retain the fixed lower row without changing musical sta
   for(const [button,content] of [['#detail-devices','#device-detail'],['#master-select-session','#master-detail']]){
     await page.locator(button).click();await expect(page.getByRole('button',{name:'Maximize detail',exact:true})).toBeDisabled();
     await expect(page.locator(content)).toBeVisible();expect((await page.locator(content).boundingBox()).height).toBe(190);
-    await expect(page.locator('#detail-resizer')).toBeHidden();
+    await expect(page.locator('#detail-resizer'))[content==='#master-detail'?'toBeHidden':'toBeVisible']();
     await expect(page.locator('#stop')).toBeInViewport();await expect(page.locator('#show-audio')).toBeInViewport();
     await expect(page.locator('#session-workspace')).toBeVisible();
   }
@@ -1263,7 +1342,7 @@ test('empty body double-click creates one playable one-bar clip and never launch
   await page.setViewportSize({width:1280,height:800});await openSession(page);
   const body=page.getByRole('button',{name:'Select Pulse slot 2',exact:true});await body.click();
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
-  await body.dblclick();await expect(page.locator('.clip-control-heading')).toHaveText('Clip 2');
+  await body.dblclick();await expect(page.locator('#clip-title')).toHaveText('Pulse / Clip 2');await expect(page.locator('.clip-control-heading')).toHaveCount(0);
   const calls=await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'));expect(calls).toHaveLength(1);expect(calls[0].name).toBe('alive_workspace_edit');expect(calls[0].args.operation).toEqual({kind:'midiClipCreate',trackId:'track-1',slot:1,name:'Clip 2'});
   await expect(page.getByRole('button',{name:'Launch Pulse Clip 2',exact:true})).toBeEnabled();await expect(body).toHaveAttribute('aria-pressed','true');
 });
@@ -1371,7 +1450,9 @@ test('piano body, resize, velocity, cancellation and keyboard gestures are bound
   await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
   const piano=page.locator('#piano-roll'),edits=()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_edit'));
   await piano.scrollIntoViewIfNeeded();
+  await page.locator('.clip-navigation > summary').click();
   for(let i=0;i<6;i++)await page.getByRole('button',{name:'Scroll pitch up',exact:true}).click();
+  await page.locator('.clip-navigation > summary').click();
   const box=await piano.boundingBox(),viewport=await piano.evaluate(e=>({...e.dataset}));
   const pixelsPerBeat=(box.width-Number(viewport.keyboardWidth))/Number(viewport.beatSpan);
   const x=beat=>box.x+Number(viewport.keyboardWidth)+(beat-Number(viewport.beatStart))*pixelsPerBeat;
@@ -1401,6 +1482,7 @@ test('piano navigation and live resize preserve the score and recompute editing 
   await page.setViewportSize({width:1440,height:900});await openSession(page);
   const piano=page.locator('#piano-roll'),initial=await piano.evaluate(e=>({...e.dataset}));
   expect(Number(initial.rowHeight)).toBeGreaterThanOrEqual(10);
+  await page.locator('.clip-navigation > summary').click();
   await page.getByRole('button',{name:'Zoom in time',exact:true}).click();
   await page.getByRole('button',{name:'Scroll time later',exact:true}).click();
   const time=await piano.evaluate(e=>({...e.dataset}));
@@ -1421,6 +1503,7 @@ test('piano navigation and live resize preserve the score and recompute editing 
 
 test('a chord velocity drag edits the selected note when markers overlap',async({page})=>{
   await page.setViewportSize({width:1280,height:800});await openSession(page);
+  await page.locator('.clip-navigation > summary').click();
   await page.getByRole('button',{name:'Fit notes',exact:true}).click();
   await page.locator('#piano-roll [data-note="0"][data-part="body"]').click({position:{x:8,y:3}});
   const marker=page.locator('.piano-velocity-lane [data-note="0"]');await marker.scrollIntoViewIfNeeded();const b=await marker.boundingBox();
@@ -1586,7 +1669,7 @@ test('a parked Clip region draft follows its Arrangement occurrence when placeme
   await openArrangement(page,{width:1280,height:800});
   await page.evaluate(()=>{const s=window.sessionSnapshot,p=s.document.placements[0];s.document.placements.push({...structuredClone(p),id:'p-shared',start:4,region:{...p.region,start:.5}});s.preparedWorkspaces.placements.push({placementId:'p-shared',trackId:p.trackId,sourceId:p.sourceId,startFrame:'102857',durationFrames:'102857'});s.editRevision++;});
   const a=page.getByRole('button',{name:'Select placement p-0',exact:true}),b=page.getByRole('button',{name:'Select placement p-shared',exact:true});await expect(b).toBeVisible();await a.click();
-  const field=page.getByRole('spinbutton',{name:'Clip Start',exact:true}),summary=page.locator('.clip-properties > details').first().locator('summary');
+  const field=page.getByRole('spinbutton',{name:'Clip Start',exact:true}),summary=page.locator('.clip-option-groups > details').first().locator('summary');
   await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await field.fill('1');await summary.click();await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await b.click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await summary.click();
   await expect(field).toHaveValue('0.5');expect(await workspaceEdits(page)).toEqual([]);
   await summary.click();await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await a.click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await summary.click();await expect(field).toHaveValue('1');expect(await workspaceEdits(page)).toEqual([]);
@@ -1834,6 +1917,7 @@ test('pointer-derived track gain remains readable in both mixer and Arrangement 
 for(const size of [{width:1440,height:900},{width:1280,height:800},{width:1024,height:768},{width:800,height:600}])test(`launch quantization remains reachable in both workspaces at ${size.width}x${size.height}`,async({page},testInfo)=>{
   await page.setViewportSize(size);await openSession(page,{launchQuantization:true});
   const global=page.getByLabel('Launch Quantization',{exact:true}),clip=page.getByLabel('Clip Launch Quantization',{exact:true});
+  await showClipOptions(page,'launch');
   await expect(global).toHaveValue('bar1');await expect(clip).toHaveValue('global');
   await global.selectOption('eighth');await clip.selectOption('none');
   await expect(page.getByLabel('Clip launch status',{exact:true})).toContainText('Effective: None');

@@ -23,10 +23,11 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
     layoutButtons.push({mode,control});layouts.append(control);
   }
   heading?.append(layouts);
-  const inspectors=make('div',{class:'clip-inspectors'});
+  const inspectors=make('div',{class:'clip-inspectors'});let automationPanel;
   for(const [selector,label,path]of [['.note-table','Note inspector','M3 3h12v12H3z M3 7h12 M3 11h12 M7 3v12'],['.automation-section','Automation inspector','M2 13h3l4-8 3 5h4']]){
     const panel=doc.querySelector?.('#clip-detail '+selector);if(!panel)continue;
     const summary=panel.querySelector('summary');summary.setAttribute('aria-label',label);summary.setAttribute('data-help',label);
+    if(selector==='.automation-section')automationPanel=panel;
     const icon=make('svg',{viewBox:'0 0 18 18','aria-hidden':true});icon.append(make('path',{d:path}));summary.replaceChildren(icon);
     if(selector==='.note-table'){const scroller=make('div',{class:'clip-note-inspector-content'});scroller.append(...[...panel.children].filter(child=>child!==summary));panel.append(scroller);}
     inspectors.append(panel);
@@ -64,19 +65,37 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
   pitch.append(make('span',{},'Pitch'),button('Scroll pitch down','v',{type:'pitchPan',pitches:-3}),button('Scroll pitch up','^',{type:'pitchPan',pitches:3}),button('Zoom out pitch','-',{type:'pitchZoom',factor:1/1.25}),button('Zoom in pitch','+',{type:'pitchZoom',factor:1.25}));
   waveform.append(make('span',{},'Waveform'),button('Zoom out waveform','-',{type:'waveformZoom',factor:1/1.5}),button('Zoom in waveform','+',{type:'waveformZoom',factor:1.5}));
   const fit=button('Fit notes','Fit',{type:'fit'});
-  toolbar.append(previewButton,time,pitch,waveform,fit,range);
+  function unavailable(tag,label,reason,text){const element=make(tag,{'aria-label':label,'data-help':reason},text);element.disabled=true;return element;}
+  const midiModes=make('div',{class:'piano-editor-modes'});
+  const search=unavailable('button','Search notes unavailable','Unavailable: piano-roll note search is not implemented.');actionIcon(search,'M7 2a5 5 0 1 0 0 10 5 5 0 0 0 0-10 M11 11l5 5');
+  const highlight=make('label',{class:'piano-scale-highlight','data-help':'Unavailable: the session has no scale metadata or highlight contract.'});highlight.append(unavailable('input','Highlight Scale unavailable','Unavailable: scale highlighting is not implemented.'));highlight.children[0].setAttribute('type','checkbox');highlight.append(make('span',{},'Highlight Scale'));
+  const notesMode=make('button',{type:'button','aria-label':'Notes','aria-pressed':'true'},'Notes'),envelopesMode=make('button',{type:'button','aria-label':'Envelopes','aria-pressed':'false'},'Envelopes');
+  function editorMode(envelopes){if(!automationPanel)return;if(envelopes){onPark(area);automationPanel.open=true;}else{onPark(automationPanel);automationPanel.open=false;onRestore(area);}notesMode.setAttribute('aria-pressed',String(!envelopes));envelopesMode.setAttribute('aria-pressed',String(envelopes));}
+  for(const [control,envelopes]of [[notesMode,false],[envelopesMode,true]]){control.addEventListener('pointerdown',event=>event.preventDefault());control.addEventListener('click',()=>editorMode(envelopes));}
+  automationPanel?.addEventListener('toggle',()=>{notesMode.setAttribute('aria-pressed',String(!automationPanel.open));envelopesMode.setAttribute('aria-pressed',String(!!automationPanel.open));});
+  midiModes.append(search,unavailable('button','Fold unavailable','Unavailable: folded note rows are not implemented.','Fold'),unavailable('button','Scale unavailable','Unavailable: scale metadata and note filtering are not implemented.','Scale'),highlight,notesMode,envelopesMode,unavailable('button','MPE unavailable','Unavailable: per-note expression has no native contract.','MPE'));
+  const navigation=make('details',{class:'clip-navigation'}),navigationToggle=make('summary',{'aria-label':'Piano navigation','data-help':'Time and pitch navigation; viewport changes preserve notes and unfinished values.'}),navigationBody=make('div',{class:'clip-navigation-body'});
+  navigationToggle.addEventListener('pointerdown',event=>event.preventDefault());
+  actionIcon(navigationToggle,'M2 7V2h5 M11 2h5v5 M16 11v5h-5 M7 16H2v-5');navigationBody.append(time,pitch,waveform,fit,range);navigation.append(navigationToggle,navigationBody);
+  const gridSelect=unavailable('select','Piano roll grid','Fixed 1/16 grid. Changing the editing grid is not implemented.');gridSelect.append(make('option',{value:'sixteenth'},'1/16'));
+  toolbar.append(midiModes,previewButton,navigation,layouts,inspectors);const addNote=doc.getElementById?.('add-note');if(addNote)toolbar.append(addNote);toolbar.append(gridSelect);
   const empty=make('div',{class:'audio-clip-empty'}),importButton=make('button',{type:'button','aria-label':'Import audio into selected slot'},'Import WAV...');
   actionIcon(importButton,'M3 12v4h12v-4 M9 2v10 M5 8l4 4 4-4');
   importButton.addEventListener('click',onImport);empty.append(make('strong',{},'Audio clip'),make('p',{},'Import a sample to edit its waveform, start point and loop.'),importButton);
   const properties=make('aside',{class:'clip-properties','aria-label':'Clip properties'});
+  const propertiesTitle=make('div',{class:'clip-properties-title'}),optionTabs=make('nav',{class:'clip-option-tabs','aria-label':'Clip option sections'});
+  propertiesTitle.append(make('span',{},'Clip'));const sourceControls=doc.getElementById?.('clip-controls');if(sourceControls)propertiesTitle.append(sourceControls);
+  const propertyGroups=make('div',{class:'clip-option-groups'});properties.append(propertiesTitle,optionTabs,propertyGroups);if(heading)heading.hidden=true;
   const divider=make('div',{class:'clip-properties-resizer',role:'separator',tabindex:0,'aria-label':'Resize Clip properties','aria-orientation':'vertical','aria-valuemin':140,'aria-valuemax':600});
   let propertyResize=null;
   const widthLimit=()=>Math.max(140,Math.min(600,(area.clientWidth||800)-160));
-  function setPropertyWidth(value){const width=Math.round(Math.max(140,Math.min(widthLimit(),value)));area.style.setProperty('--clip-properties-width',`${width}px`);divider.setAttribute('aria-valuenow',width);divider.setAttribute('aria-valuemax',widthLimit());}
-  divider.addEventListener('pointerdown',event=>{if(event.button!==0)return;propertyResize={id:event.pointerId,x:event.clientX,width:properties.getBoundingClientRect().width};divider.setPointerCapture?.(event.pointerId);event.preventDefault();});
+  let requestedPropertyWidth=null;
+  function inspectorLayout(){const mode=area.getAttribute('data-layout'),horizontal=mode==='horizontal'||mode==='auto'&&((area.getBoundingClientRect().height||156)<300||(requestedPropertyWidth??0)>=350);area.setAttribute('data-inspector-layout',horizontal?'horizontal':'vertical');}
+  function setPropertyWidth(value){const width=Math.round(Math.max(140,Math.min(widthLimit(),value)));requestedPropertyWidth=width;area.style.setProperty('--clip-properties-width',`${width}px`);divider.setAttribute('aria-valuenow',width);divider.setAttribute('aria-valuemax',widthLimit());inspectorLayout();}
+  divider.addEventListener('pointerdown',event=>{if(event.button!==0)return;propertyResize={id:event.pointerId,x:event.clientX,width:properties.getBoundingClientRect().width,requestedWidth:requestedPropertyWidth};divider.setPointerCapture?.(event.pointerId);event.preventDefault();});
   divider.addEventListener('pointermove',event=>{if(propertyResize?.id===event.pointerId)setPropertyWidth(propertyResize.width+event.clientX-propertyResize.x);});
   divider.addEventListener('pointerup',event=>{if(propertyResize?.id===event.pointerId){propertyResize=null;divider.releasePointerCapture?.(event.pointerId);}});
-  function cancelPropertyResize(){if(!propertyResize)return;const prior=propertyResize;propertyResize=null;setPropertyWidth(prior.width);if(divider.hasPointerCapture?.(prior.id))divider.releasePointerCapture(prior.id);}
+  function cancelPropertyResize(){if(!propertyResize)return;const prior=propertyResize;propertyResize=null;if(prior.requestedWidth===null){requestedPropertyWidth=null;area.style.removeProperty('--clip-properties-width');inspectorLayout();}else setPropertyWidth(prior.requestedWidth);if(divider.hasPointerCapture?.(prior.id))divider.releasePointerCapture(prior.id);}
   divider.addEventListener('pointercancel',cancelPropertyResize);divider.addEventListener('lostpointercapture',cancelPropertyResize);
   divider.addEventListener('keydown',event=>{if(event.key==='Escape'&&propertyResize){event.preventDefault();event.stopPropagation();cancelPropertyResize();return;}if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();const current=properties.getBoundingClientRect().width;setPropertyWidth(event.key==='Home'?140:event.key==='End'?widthLimit():current+(event.key==='ArrowRight'?20:-20));});
   const regionTools=make('div',{class:'clip-region-tools',role:'toolbar','aria-label':'Clip markers and loop'}),regionInputs={};
@@ -111,16 +130,34 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
     const action=make('button',{type:'button','aria-label':label},factor===.5?'/2':'x2');action.addEventListener('click',()=>stretch(last.source.sourceTempo*factor));stretchTools.append(action);stretchActions.push({action,factor});
   }
   stretchTools.append(make('span',{class:'muted'},'Pitch follows speed; shared sample'));
-  const group=(label,content)=>{
-    const section=make('details',{open:''}),summary=make('summary',{},label);section.append(summary,content);
+  const optionGroups=[];
+  const group=(key,label,content,path,open=true)=>{
+    const section=make('details',{'data-section':key,...open?{open:''}:{}}),summary=make('summary',{},label);section.append(summary,content);
+    const tab=make('button',{type:'button','aria-label':`Toggle ${label} options`,'aria-pressed':String(open),'data-help':`${label} options`});actionIcon(tab,path);
+    tab.addEventListener('pointerdown',event=>event.preventDefault());
+    tab.addEventListener('click',()=>{if(section.open)onPark(section);section.open=!section.open;tab.setAttribute('aria-pressed',String(section.open));if(section.open)onRestore(section);});
     summary.addEventListener('pointerdown',event=>{if(section.open&&section.contains(doc.activeElement)&&doc.activeElement?.matches?.('input,select,textarea')){onPark(section);event.preventDefault();}});
     section.addEventListener('keydown',event=>{if(event.key==='Tab'&&event.shiftKey&&event.target===content.querySelector?.('input,select,textarea,button'))onPark(section);});
-    section.addEventListener('toggle',()=>{if(section.open)onRestore(section);});return section;
+    section.addEventListener('toggle',()=>{tab.setAttribute('aria-pressed',String(section.open));if(section.open)onRestore(section);});optionTabs.append(tab);optionGroups.push({section,tab});return section;
   };
-  const regionGroup=group('Clip',regionTools),stretchGroup=group('Audio',stretchTools);
-  properties.append(regionGroup,stretchGroup);
+  const regionGroup=group('clip','Clip',regionTools,'M3 3h12v12H3z M7 6l5 3-5 3z'),stretchGroup=group('audio','Audio',stretchTools,'M2 9h3l2-5 4 10 2-5h3');
+  propertyGroups.append(regionGroup);
   const launchSettings=doc.getElementById?.('clip-launch-settings');
-  if(launchSettings)properties.append(group('Launch',launchSettings));
+  if(launchSettings)propertyGroups.append(group('launch','Launch',launchSettings,'M4 3v12 M7 4l6 5-6 5 M14 4v10',false));
+  const pitchTools=make('div',{class:'clip-pitch-tools'}),pitchReason='Unavailable: MIDI Pitch & Time operations need defined selection, validation and Undo behavior.';
+  const row=(...children)=>{const element=make('div',{class:'clip-option-row'});element.append(...children);return element;};
+  const disabledAction=label=>unavailable('button',`${label} unavailable`,pitchReason,label);
+  const pitchValue=make('output',{class:'clip-pitch-value'},'---'),pitchActions=make('div',{class:'clip-pitch-actions'});pitchActions.append(disabledAction('Fit to Scale'),disabledAction('Invert'));pitchTools.append(row(pitchValue,pitchActions));
+  pitchTools.append(row(unavailable('input','Pitch interval unavailable',pitchReason),disabledAction('Add Interval')));pitchTools.children[1].children[0].value='0 sd';
+  const stretchDial=unavailable('button','MIDI stretch unavailable',pitchReason);actionIcon(stretchDial,'M4 14a7 7 0 1 1 10 0 M9 9V2');const stretchAmount=make('div',{class:'clip-midi-stretch'});stretchAmount.append(make('span',{},'Stretch'),stretchDial,make('output',{},'x1.0'));
+  const stretchFactors=make('div',{class:'clip-pitch-actions'});stretchFactors.append(disabledAction('x2'),disabledAction('/2'));pitchTools.append(row(stretchAmount,stretchFactors));
+  const lengthGrid=unavailable('select','MIDI length grid unavailable',pitchReason);lengthGrid.append(make('option',{},'Grid'));pitchTools.append(row(lengthGrid,disabledAction('Set Length')));
+  const humanize=unavailable('input','Humanize amount unavailable',pitchReason);humanize.value='10%';pitchTools.append(row(humanize,disabledAction('Humanize')),row(disabledAction('Reverse'),disabledAction('Legato')));
+  const pitchGroup=group('pitch','Pitch & Time',pitchTools,'M2 5h14 M2 13h14 M6 2v6 M12 10v6');propertyGroups.append(pitchGroup,stretchGroup);
+  const midiOnlyGroups=[pitchGroup];
+  for(const [key,label,path]of [['transform','Transform','M9 2a7 7 0 1 0 7 7 M9 2v4 M16 9h-4'],['generate','Generate','M9 2v3 M9 13v3 M2 9h3 M13 9h3 M4 4l2 2 M12 12l2 2 M4 14l2-2 M12 6l2-2']]){
+    const body=make('div',{class:'clip-option-unavailable'});body.append(unavailable('select',`${label} unavailable`,`Unavailable: MIDI ${label.toLowerCase()} has no admitted implementation.`),make('p',{},`${label} is unavailable.`));body.children[0].append(make('option',{},label));const section=group(key,label,body,path,false);midiOnlyGroups.push(section);propertyGroups.append(section);
+  }
   if(area){area.insertBefore(properties,midiSvg);area.insertBefore(divider,midiSvg);area.insertBefore(toolbar,midiSvg);area.insertBefore(velocityLane,midiSvg.nextSibling??null);area.insertBefore(empty,midiSvg);}
 
   function text(parent,x,y,value,attrs={}){
@@ -132,15 +169,18 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
   }
   function draw(){
     if(!last||disposed)return;
+    inspectorLayout();
     const audio=last.kind==='audio',hasSource=!!last.source,emptyAudio=audio&&!hasSource;
     svg=audio?audioSvg:midiSvg;
     midiSvg.hidden=audio||!hasSource;audioSvg.hidden=!audio||emptyAudio;empty.hidden=!emptyAudio;
     if(audio||!hasSource)midiSvg.setAttribute('hidden','');else midiSvg.removeAttribute('hidden');
     if(!audio||emptyAudio)audioSvg.setAttribute('hidden','');else audioSvg.removeAttribute('hidden');
-    properties.hidden=!hasSource;divider.hidden=!hasSource;area?.classList?.toggle('has-source',hasSource);
+    properties.hidden=false;optionTabs.hidden=!hasSource;propertyGroups.hidden=!hasSource;divider.hidden=!hasSource;area?.classList?.toggle('has-source',hasSource);
     if(hasSource&&!divider.getAttribute('aria-valuenow')){divider.setAttribute('aria-valuenow',Math.round(properties.getBoundingClientRect().width));divider.setAttribute('aria-valuemax',widthLimit());}
     toolbar.hidden=!hasSource;regionTools.hidden=!hasSource||!last.region;
     stretchTools.hidden=!audio||emptyAudio;stretchGroup.hidden=!audio||emptyAudio;
+    for(const section of midiOnlyGroups)section.hidden=audio;for(const {section,tab}of optionGroups)tab.hidden=section.hidden;
+    midiModes.hidden=audio;gridSelect.hidden=audio;
     if(audio&&!emptyAudio){
       if(doc.activeElement!==stretchInputs.tempo&&!isDraft(stretchInputs.tempo))stretchInputs.tempo.value=String(Number(last.source.sourceTempo.toFixed(6)));
       if(doc.activeElement!==stretchInputs.length&&!isDraft(stretchInputs.length))stretchInputs.length.value=String(Number(last.length.toFixed(6)));
@@ -244,9 +284,9 @@ export function mountClipView({doc,win,svg:midiSvg,audioSvg,onImport=()=>{},onSt
     else if(event.shiftKey||Math.abs(event.deltaX)>Math.abs(event.deltaY))navigate({type:'timePan',beats:(event.deltaX||event.deltaY)/g.pixelsPerBeat});
     else navigate({type:'pitchPan',pitches:-Math.sign(event.deltaY)*3});
   };
-  const resize=()=>{if(!last?.source||disposed)return;const rect=svg.getBoundingClientRect();if(!rect.width||!rect.height||(rect.width===g.width&&rect.height===g.height))return;onNavigate();draw();};
+  const resize=()=>{if(disposed)return;inspectorLayout();if(!last?.source)return;const rect=svg.getBoundingClientRect();if(!rect.width||!rect.height||(rect.width===g.width&&rect.height===g.height))return;onNavigate();draw();};
   for(const surface of [midiSvg,audioSvg])surface.addEventListener('wheel',wheel,{passive:false});
-  const observer=win?.ResizeObserver?new win.ResizeObserver(resize):null;observer?.observe(midiSvg);observer?.observe(audioSvg);win?.addEventListener('resize',resize);
+  const observer=win?.ResizeObserver?new win.ResizeObserver(resize):null;observer?.observe(midiSvg);observer?.observe(audioSvg);observer?.observe(area);observer?.observe(properties);win?.addEventListener('resize',resize);
   return {
     velocityLane,
     preview({enabled,available,reason}){previewEnabled=enabled;previewButton.disabled=!available;previewButton.setAttribute('aria-pressed',String(enabled));previewButton.title=available?'Preview selected, added and moved notes through the instrument':reason??'Native MIDI Preview is unavailable';},

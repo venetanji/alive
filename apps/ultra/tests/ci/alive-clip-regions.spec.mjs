@@ -68,7 +68,7 @@ test('audio and empty clips do not expose the MIDI Note inspector',async({page})
 
 for(const {method,label,value,tempo} of [{method:'mouse',label:'Audio source BPM',value:'121',tempo:121},{method:'keyboard',label:'Audio source BPM',value:'121',tempo:121},{method:'mouse',label:'Audio length in beats',value:'7',tempo:105}])test(`Audio disclosure preserves unfinished ${label} through ${method} navigation`,async({page})=>{
   await page.setViewportSize({width:1280,height:800});await openRangeStudy(page);await page.getByRole('button',{name:'Select Audio slot 1',exact:true}).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
-  const field=page.getByRole('spinbutton',{name:label,exact:true}),summary=page.locator('.clip-properties > details').filter({has:page.locator('.audio-stretch-tools')}).locator('summary');
+  const field=page.getByRole('spinbutton',{name:label,exact:true}),summary=page.locator('.clip-option-groups > details').filter({has:page.locator('.audio-stretch-tools')}).locator('summary');
   await field.fill(value);if(method==='mouse')await summary.click();else{await field.press('Shift+Tab');await expect(summary).toBeFocused();await summary.press('Enter');}
   await expect(field).toBeHidden();const before=await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length);await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_current').length)).toBeGreaterThan(before+2);
   expect(await mutations(page)).toEqual([]);if(method==='mouse')await summary.click();else await summary.press('Enter');await expect(field).toHaveValue(value);
@@ -78,7 +78,7 @@ for(const {method,label,value,tempo} of [{method:'mouse',label:'Audio source BPM
 
 test('parked audio tempo stays with its sample through clip selection',async({page})=>{
   await page.setViewportSize({width:1280,height:800});await openRangeStudy(page);await page.getByRole('button',{name:'Select Audio slot 1',exact:true}).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
-  const field=page.getByRole('spinbutton',{name:'Audio source BPM',exact:true}),summary=page.locator('.clip-properties > details').filter({has:page.locator('.audio-stretch-tools')}).locator('summary');
+  const field=page.getByRole('spinbutton',{name:'Audio source BPM',exact:true}),summary=page.locator('.clip-option-groups > details').filter({has:page.locator('.audio-stretch-tools')}).locator('summary');
   await field.fill('121');await summary.click();await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await page.getByRole('button',{name:'Select Pulse slot 1',exact:true}).click();
   await page.getByRole('button',{name:'Select Audio slot 1',exact:true}).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await summary.click();
   await expect(field).toHaveValue('121');expect(await mutations(page)).toEqual([]);await field.focus();await field.press('Tab');await expect.poll(async()=>(await mutations(page)).length).toBe(1);
@@ -88,7 +88,7 @@ test('audio tempo draft belongs to the shared source across two Arrangement plac
   await page.setViewportSize({width:1280,height:800});await openRangeStudy(page);
   await page.evaluate(()=>{const s=window.sessionSnapshot,t=s.document.tracks.find(t=>t.id==='audio-track'),region=structuredClone(t.slots[0].region);for(const [id,start]of [['audio-a',0],['audio-b',4]]){s.document.placements.push({id,trackId:t.id,sourceId:'owned-audio',start,duration:4,region:structuredClone(region)});s.preparedWorkspaces.placements.push({trackId:t.id,placementId:id,sourceId:'owned-audio'});}s.editRevision++;});
   await page.locator('#view-arrangement').click();await page.getByRole('button',{name:'Select placement audio-a',exact:true}).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
-  const field=page.getByRole('spinbutton',{name:'Audio source BPM',exact:true}),summary=page.locator('.clip-properties > details').filter({has:page.locator('.audio-stretch-tools')}).locator('summary');await field.fill('121');await summary.click();await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await page.getByRole('button',{name:'Select placement audio-b',exact:true}).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await summary.click();
+  const field=page.getByRole('spinbutton',{name:'Audio source BPM',exact:true}),summary=page.locator('.clip-option-groups > details').filter({has:page.locator('.audio-stretch-tools')}).locator('summary');await field.fill('121');await summary.click();await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await page.getByRole('button',{name:'Select placement audio-b',exact:true}).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await summary.click();
   await expect(field).toHaveValue('121');expect(await mutations(page)).toEqual([]);await field.focus();await field.press('Tab');await expect.poll(async()=>(await mutations(page)).length).toBe(1);expect((await mutations(page))[0].args.operation).toMatchObject({kind:'audioSourceTempo',sourceId:'owned-audio',sourceTempo:121});
 });
 async function selectClipTime(page,start,end){
@@ -139,7 +139,7 @@ for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,he
   await expect(page.getByRole('group',{name:'Selected audio clip waveform',exact:true})).toBeVisible();await expect(page.locator('#piano-roll')).toBeHidden();
   await expect(page.getByRole('button',{name:'Add note',exact:true})).toBeHidden();await expect(page.getByRole('button',{name:'Fit notes',exact:true})).toHaveCount(0);
   await expect(page.getByRole('group',{name:'Note velocity lane',exact:true})).toBeHidden();await selectClipTime(page,2,6);
-  await expect(page.getByLabel('Clip Start',{exact:true})).toHaveValue('2');await expect(page.getByLabel('Clip End',{exact:true})).toHaveValue('8');await expect(page.getByRole('button',{name:'Fit sample',exact:true})).toBeVisible();
+  await expect(page.getByLabel('Clip Start',{exact:true})).toHaveValue('2');await expect(page.getByLabel('Clip End',{exact:true})).toHaveValue('8');await page.locator('.clip-navigation > summary').click();await expect(page.getByRole('button',{name:'Fit sample',exact:true})).toBeVisible();await page.locator('.clip-navigation > summary').click();
   await expect(page.locator('#stop')).toBeInViewport();await expect(page.locator('#show-audio')).toBeInViewport();expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);expect(errors).toEqual([]);
   await page.screenshot({path:testInfo.outputPath(`audio-region-${size.width}x${size.height}.png`)});
 });
@@ -179,10 +179,11 @@ test('waveform zoom and navigation change only the view while marker drags edit 
   await page.setViewportSize({width:1280,height:800});await openRangeStudy(page);await page.getByRole('button',{name:'Select Audio slot 1',exact:true}).click();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
   const svg=page.locator('#audio-waveform'),source=await page.evaluate(()=>structuredClone(window.sessionSnapshot.document.sources.at(-1)));
   const initial=await svg.getAttribute('data-beat-span'),path=await svg.locator('.audio-waveform').getAttribute('d');
+  await page.locator('.clip-navigation > summary').click();
   await page.getByRole('button',{name:'Zoom in waveform',exact:true}).click();expect(await svg.locator('.audio-waveform').getAttribute('d')).not.toBe(path);
   await page.getByRole('button',{name:'Zoom in time',exact:true}).click();expect(Number(await svg.getAttribute('data-beat-span'))).toBeLessThan(Number(initial));
   await svg.hover();await page.mouse.wheel(0,100);expect(Number(await svg.getAttribute('data-beat-start'))).toBeGreaterThan(0);
-  expect(await mutations(page)).toEqual([]);await page.getByRole('button',{name:'Fit sample',exact:true}).click();
+  expect(await mutations(page)).toEqual([]);await page.getByRole('button',{name:'Fit sample',exact:true}).click();await page.locator('.clip-navigation > summary').click();
   await selectClipTime(page,2,6);await expect(page.getByLabel('Loop Length',{exact:true})).toHaveValue('4');
   const handle=svg.locator('[data-region=loopRight]'),box=await handle.boundingBox(),scale=await svg.evaluate(e=>Number(e.dataset.pixelsPerBeat));
   await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2+scale,box.y+box.height/2,{steps:8});await page.mouse.up();
@@ -194,7 +195,7 @@ test('Re-Pitch stretches the shared sample with numeric and drag controls; Escap
   const bpm=page.getByRole('spinbutton',{name:'Audio source BPM',exact:true}),length=page.getByRole('spinbutton',{name:'Audio length in beats',exact:true});
   await expect(bpm).toHaveValue('120');await expect(length).toHaveValue('8');
   await length.fill('12');await length.press('Tab');await expect(bpm).toHaveValue('180');await expect(page.getByLabel('Clip End',{exact:true})).toHaveValue('12');
-  await page.getByRole('button',{name:'Fit sample',exact:true}).click();
+  await page.locator('.clip-navigation > summary').click();await page.getByRole('button',{name:'Fit sample',exact:true}).click();await page.locator('.clip-navigation > summary').click();
   const svg=page.locator('#audio-waveform'),handle=svg.getByLabel('Stretch sample end',{exact:true}),box=await handle.boundingBox(),scale=Number(await svg.getAttribute('data-pixels-per-beat'));
   await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2-4*scale,box.y+box.height/2,{steps:8});await page.keyboard.press('Escape');await page.mouse.up();
   expect((await mutations(page)).filter(c=>c.args.operation.kind==='audioSourceTempo')).toHaveLength(1);await expect(length).toHaveValue('12');

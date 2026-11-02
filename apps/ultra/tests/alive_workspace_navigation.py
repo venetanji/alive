@@ -58,7 +58,8 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
             'Place source in range', 'Assign source to Session', 'Assign source to Session slot',
             'Create clip', 'Clip name', 'Duplicate destination', 'Duplicate clip',
             'Delete clip', 'Make source independent')
-        clip = notes or automation or source_actions or name in (
+        launch_option = name in ('Clip Launch Quantization', 'Clip launch status')
+        clip = notes or automation or source_actions or launch_option or name in (
             'Clip Start', 'Clip End',
             'Loop Position', 'Loop Length', 'Clip Loop',
             'Selected clip piano roll', 'Selected audio clip waveform',
@@ -76,6 +77,17 @@ def install(ui, windows, select_device, activate_disclosure, observe_replace=Non
         if device or clip:
             tab = 'Toggle Device view' if device else 'Toggle Clip view'
             ensure_detail(tab, 'Edit selected device in Ultra' if device else 'Source / Clip')
+            if launch_option:
+                try:
+                    option = ui.find('Toggle Launch options')
+                    horizontal = option.get_state_set().contains(Atspi.StateType.VISIBLE)
+                except (AttributeError, StopIteration):
+                    horizontal = False
+                if horizontal:
+                    if not option.get_state_set().contains(Atspi.StateType.PRESSED):
+                        (activate_disclosure or click)('Toggle Launch options')
+                else:
+                    expand('Launch', activate_disclosure or click)
             if notes:
                 expand('Note inspector')
             if automation:
