@@ -2,6 +2,81 @@ import {test,expect} from '@playwright/test';
 import {projectFixturePresentation} from '../presentation-dom.mjs';
 import {readFileSync,mkdirSync} from 'node:fs';
 
+test('track loop strip follows native phase and installed region without estimated play counts',async({page},testInfo)=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page);
+  await page.evaluate(()=>{
+    const s=window.sessionSnapshot,track=s.runtime.tracks[0],slot=s.preparedWorkspaces.slots[0];
+    s.document.tempo=120;s.state.playing=1;
+    s.preparedWorkspaces.sources[0].lengthFrames='384000';
+    slot.region={startFrame:'0',endFrame:'384000',loopStartFrame:'0',loopEndFrame:'96000',loopEnabled:true};
+    Object.assign(track,{authority:'session',activeSourceId:slot.sourceId,activeSlotId:slot.slotId,phase:'24000'});
+  });
+  const track=page.locator('.track').first(),disc=track.locator('.clip-loop-disc'),beats=track.locator('.clip-loop-beats'),count=track.locator('.clip-loop-count');
+  await expect(track.locator('.clip-playback')).toHaveAttribute('data-state','playing');
+  await expect(disc).toHaveAttribute('data-fraction','0.25');await expect(beats).toHaveText('4');await expect(count).toHaveText('--');
+  await expect(track.locator('.runtime-receipt')).toHaveCount(0);
+  await expect(track.getByRole('button',{name:'Stop Pulse track',exact:true})).toBeVisible();
+  await expect(track.getByRole('button',{name:'Return Pulse to Arrangement',exact:true})).toBeVisible();
+  await page.evaluate(()=>{window.sessionSnapshot.runtime.tracks[0].phase='48000';});await expect(disc).toHaveAttribute('data-fraction','0.5');
+  await page.waitForTimeout(350);await expect(disc).toHaveAttribute('data-fraction','0.5');
+  await page.screenshot({path:testInfo.outputPath('native-loop-strip.png')});
+  await page.evaluate(()=>{window.sessionSnapshot.state.playing=0;});await expect(track.locator('.clip-playback')).toHaveAttribute('data-state','cued');
+  await page.evaluate(()=>{window.sessionSnapshot.preparedWorkspaces.preparationRevision='1';});await expect(track.locator('.clip-playback')).toHaveAttribute('data-state','unavailable');await expect(beats).toHaveText('');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+test('compact transport centers its controls and distinguishes the two nudge icons',async({page})=>{
+  await openSession(page);
+  const down=page.getByRole('button',{name:'Phase Nudge Down unavailable',exact:true}),up=page.getByRole('button',{name:'Phase Nudge Up unavailable',exact:true});
+  expect(await down.locator('path').getAttribute('d')).not.toBe(await up.locator('path').getAttribute('d'));
+  for(const control of [down,up,page.locator('#return-all')]){
+    const b=await control.boundingBox(),s=await control.locator('svg').boundingBox();
+    expect(Math.abs(b.y+b.height/2-s.y-s.height/2)).toBeLessThanOrEqual(1);
+    expect(Math.abs(b.x+b.width/2-s.x-s.width/2)).toBeLessThanOrEqual(1);
+  }
+  const select=page.locator('#launch-quantization');expect(await select.evaluate(e=>getComputedStyle(e).appearance)).toBe('none');
+  await expect(down).toBeDisabled();await expect(up).toBeDisabled();
+});
+
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`stacked Clip fits without outer scrolling and separates the Device row at ${size.width}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();
+  const clip=page.locator('#clip-detail'),device=page.locator('#device-detail');
+  const check=async()=>{
+    const c=await clip.boundingBox(),d=await device.boundingBox(),divider=await page.locator('#detail-resizer').boundingBox();
+    expect(Math.abs(d.y-c.y-c.height-divider.height)).toBeLessThanOrEqual(1);
+    expect(d.height).toBe(190);
+    expect(await clip.evaluate(e=>e.scrollHeight-e.clientHeight)).toBeLessThanOrEqual(1);
+  };
+  await check();await expect(page.locator('.piano-velocity-lane')).toBeInViewport({ratio:1});
+  const piano=await page.locator('#piano-roll').boundingBox(),c=await clip.boundingBox();
+  expect(piano.y+piano.height).toBeLessThanOrEqual(c.y+c.height);
+  await page.screenshot({path:testInfo.outputPath(`stacked-clip-${size.width}.png`)});
+  await page.getByRole('button',{name:'Select Pulse slot 2',exact:true}).click();await check();
+  await page.screenshot({path:testInfo.outputPath(`empty-stacked-clip-${size.width}.png`)});
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`stacked Clip can cover the upper workspace by dragging and restore at ${size.width}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();
+  const handle=page.locator('#detail-resizer'),clip=page.locator('#clip-detail');
+  for(const view of ['session','arrangement']){
+    await page.locator('#view-'+view).click();
+    await handle.focus();await handle.press('Home');const previous=await handle.getAttribute('aria-valuenow');
+    const h=await handle.boundingBox(),shell=await page.locator('#workspace-shell').boundingBox();
+    await page.mouse.move(h.x+h.width/2,h.y+h.height/2);await page.mouse.down();await page.mouse.move(h.x+h.width/2,shell.y,{steps:8});await page.mouse.up();
+    await expect(page.locator('#'+view+'-workspace')).toBeHidden();await expect(page.locator('#workspace-browser')).toBeHidden();
+    expect((await clip.boundingBox()).y).toBe(shell.y+h.height);
+    await expect(page.locator('#device-detail')).toBeVisible();await expect(page.locator('#info-view')).toBeVisible();
+    expect(await clip.evaluate(e=>e.scrollHeight-e.clientHeight)).toBeLessThanOrEqual(1);
+    await page.screenshot({path:testInfo.outputPath(`full-${view}-${size.width}.png`)});
+    await page.getByRole('button',{name:'Restore detail size',exact:true}).click();
+    await expect(handle).toHaveAttribute('aria-valuenow',previous);await expect(page.locator('#'+view+'-workspace')).toBeVisible();
+    await handle.focus();await handle.press('End');await expect(page.locator('#'+view+'-workspace')).toBeHidden();
+    await page.getByRole('button',{name:'Restore detail size',exact:true}).click();
+  }
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+});
+
 for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`upper row and fixed Help are independent at ${size.width}`,async({page},testInfo)=>{
   await page.setViewportSize(size);await openSession(page);
   const help=page.locator('#info-view'),browser=page.locator('#workspace-browser'),handle=page.locator('#browser-resizer');
@@ -55,7 +130,7 @@ test('Clip layout modes reuse fields and fill the editor without inspector bands
   await page.screenshot({path:testInfo.outputPath('clip-fill-vertical.png')});
 });
 
-test('expanded Clip retains track context and mixer presents dB with separate stereo lanes',async({page},testInfo)=>{
+test('expanded Clip covers track context and mixer presents dB with separate stereo lanes',async({page},testInfo)=>{
   await page.setViewportSize({width:1280,height:800});await openSession(page);
   await expect(page.getByLabel('Pulse gain decibels',{exact:true})).toHaveText('-3.1 dB');
   await page.getByLabel('Pulse gain',{exact:true}).fill('0.5');await page.getByLabel('Pulse gain',{exact:true}).press('Tab');
@@ -68,8 +143,8 @@ test('expanded Clip retains track context and mixer presents dB with separate st
   const readout=await page.getByLabel('Pulse gain decibels',{exact:true}).boundingBox(),pan=await page.getByRole('button',{name:'Pulse pan unavailable',exact:true}).boundingBox(),activator=await page.getByRole('button',{name:'Pulse mute',exact:true}).boundingBox();
   expect(readout.y+readout.height).toBeLessThanOrEqual(pan.y);expect(pan.y+pan.height).toBeLessThanOrEqual(activator.y);
   await page.setViewportSize({width:1280,height:800});
-  await page.locator('#maximize-detail').click();await expect(page.locator('#session-workspace')).toBeVisible();await expect(page.getByRole('button',{name:'Select Pulse track',exact:true})).toBeInViewport();
-  expect((await page.locator('#session-workspace').boundingBox()).height).toBeGreaterThanOrEqual(96);
+  await page.locator('#maximize-detail').click();await expect(page.locator('#session-workspace')).toBeHidden();await expect(page.locator('#workspace-browser')).toBeHidden();
+  expect((await page.locator('#detail-panel').boundingBox()).height).toBe((await page.locator('#workspace-shell').boundingBox()).height);
   await page.screenshot({path:testInfo.outputPath('expanded-clip-context.png')});
 });
 
@@ -156,11 +231,11 @@ test('track and Master headers keep their readable identity colours on hover',as
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
 
-test('maximized Clip reserves track context above the lower editor',async({page})=>{
+test('maximized Clip uses the entire workspace below transport',async({page})=>{
   await page.setViewportSize({width:1280,height:800});await openSession(page);
   await page.locator('#maximize-detail').click();
   const clip=await page.locator('#clip-detail').boundingBox(),transport=await page.locator('.transport').boundingBox();
-  expect(clip.y).toBeGreaterThanOrEqual(transport.y+transport.height+96);
+  expect(clip.y).toBe(transport.y+transport.height+5);
   expect(clip.y+clip.height).toBe((await page.locator('footer').boundingBox()).y);
 });
 
@@ -197,7 +272,8 @@ for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,he
   const d=await device.boundingBox(),h=await help.boundingBox();
   expect(d.height).toBe(baseline.height);expect(h.height).toBe(d.height);
   expect(Math.abs(d.y-h.y)).toBeLessThanOrEqual(1);expect(large.y+large.height).toBeLessThanOrEqual(d.y+1);
-  expect(large.x).toBe((await page.locator('#workspace-browser').boundingBox()).x);
+  expect(large.x).toBe((await page.locator('#workspace-shell').boundingBox()).x+7);
+  await expect(page.locator('#workspace-browser')).toBeHidden();
   for(const id of ['detail-clip','detail-devices','maximize-detail','toggle-detail','display-menu-toggle'])await expect(page.locator('#footer-display-controls #'+id)).toBeInViewport({ratio:1});
   await page.screenshot({path:testInfo.outputPath(`fixed-device-row-${size.width}.png`)});
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
@@ -206,7 +282,7 @@ for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,he
 test('Device-only mode restores its fixed height without forgetting the Clip height or drafts',async({page})=>{
   await page.setViewportSize({width:1280,height:800});await openSession(page);
   const draft=page.getByLabel('Clip name',{exact:true}),handle=page.locator('#detail-resizer');
-  await handle.focus();await handle.press('End');
+  await handle.focus();await handle.press('Home');await handle.press('ArrowUp');
   const clipHeight=await handle.getAttribute('aria-valuenow');
   await page.getByText('Source / Clip',{exact:true}).click();
   await draft.fill('Unfinished clip');
@@ -248,7 +324,7 @@ test('detail collapse restores the requested Clip height with either panel combi
   const handle=page.locator('#detail-resizer');
   for(const both of [false,true]){
     if(both)await page.locator('#detail-devices').click();
-    await handle.focus();await handle.press('End');const height=await handle.getAttribute('aria-valuenow');
+    await handle.focus();await handle.press('Home');await handle.press('ArrowUp');const height=await handle.getAttribute('aria-valuenow');
     await page.locator('#toggle-detail').click();await expect(handle).toBeHidden();
     await page.locator('#toggle-detail').click();await expect(handle).toHaveAttribute('aria-valuenow',height);
     await page.setViewportSize({width:800,height:600});await page.setViewportSize({width:1280,height:800});
@@ -316,6 +392,7 @@ for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,he
   await page.getByRole('button',{name:'Toggle Browser',exact:true}).click();await expect(page.locator('#workspace-browser')).toBeHidden();
   await page.getByRole('button',{name:'View menu',exact:true}).click();await expect(page.getByRole('button',{name:'Toggle Browser',exact:true})).toHaveAttribute('aria-pressed','false');await page.keyboard.press('Escape');
   await page.getByRole('button',{name:'Edit menu',exact:true}).click();await expect(page.getByRole('button',{name:'Undo',exact:true}).last()).toBeDisabled();await page.keyboard.press('Escape');
+  await page.locator('#toggle-browser').click();
   await expect(gain).toHaveValue('0.713');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
 
@@ -406,12 +483,12 @@ test('an open Playback menu follows the actual transport enabled state',async({p
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
 
-for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`detail maximum resize preserves useful pinned Session controls at ${size.width}`,async({page},testInfo)=>{
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`detail maximum resize hides Session and restores pinned controls at ${size.width}`,async({page},testInfo)=>{
   await page.setViewportSize(size);await openSession(page,{trackCount:8});await page.locator('#detail-devices').click();const separator=page.getByRole('separator',{name:'Resize detail area',exact:true}),session=page.locator('#session-workspace');
   const check=async()=>{const bounds=await session.boundingBox();for(const locator of [page.getByRole('button',{name:'Select Pulse slot 1',exact:true}),page.getByRole('button',{name:'Pulse mute',exact:true}),page.getByRole('button',{name:'Pulse solo',exact:true}),page.locator('#master-session').getByRole('spinbutton',{name:'Master gain',exact:true})]){const r=await locator.boundingBox();expect(r.y,await locator.getAttribute('aria-label')).toBeGreaterThanOrEqual(bounds.y-1);expect(r.y+r.height,await locator.getAttribute('aria-label')).toBeLessThanOrEqual(bounds.y+bounds.height+1);}};
-  await separator.focus();await separator.press('End');await check();await page.screenshot({path:testInfo.outputPath(`end-resize-${size.width}.png`)});
-  await separator.press('Home');const box=await separator.boundingBox();await page.mouse.move(box.x+box.width/2,box.y+box.height/2);await page.mouse.down();await page.mouse.move(box.x+box.width/2,65,{steps:5});await page.mouse.up();await check();
-  await page.setViewportSize({width:800,height:600});await check();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await expect(session).toBeVisible();await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await check();expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
+  await separator.focus();await separator.press('End');await expect(session).toBeHidden();await page.screenshot({path:testInfo.outputPath(`end-resize-${size.width}.png`)});
+  await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await page.locator('#detail-devices').click();await check();
+  await page.setViewportSize({width:800,height:600});await separator.focus();await separator.press('Home');await check();await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await expect(session).toBeHidden();await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await check();expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
 
 for(const width of [128,72])test(`track action menus stay reachable at ${width}px including horizontal scroll`,async({page},testInfo)=>{
@@ -419,13 +496,13 @@ for(const width of [128,72])test(`track action menus stay reachable at ${width}p
   for(const [id,name]of [['track-1','Pulse'],['track-8','Track 8']]){
     const track=page.locator(`.track[data-track-id="${id}"]`),handle=track.getByRole('separator',{name:`Resize ${name} track`,exact:true});if(id==='track-8')await workspace.evaluate(e=>e.scrollLeft=e.scrollWidth);await handle.focus();if(width===72)await handle.press('Home');
     const inspector=track.locator('.track-inspector'),summary=inspector.locator('summary');await summary.click();
-    for(const label of [`Open ${name} editor`,`Replace ${name} device`,`Remove ${name} track`]){const action=page.getByRole('button',{name:label,exact:true}),rect=await action.boundingBox(),view=await workspace.boundingBox();expect(rect.x,label).toBeGreaterThanOrEqual(view.x-1);expect(rect.x+rect.width,label).toBeLessThanOrEqual(view.x+view.width+1);expect(await action.evaluate(el=>{const r=el.getBoundingClientRect();return el.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));}),label).toBe(true);}
+    for(const label of [`Open ${name} editor`,`Replace ${name} device`,`Remove ${name} track`]){const action=page.getByRole('button',{name:label,exact:true});await action.scrollIntoViewIfNeeded();const rect=await action.boundingBox(),view=await workspace.boundingBox();expect(rect.x,label).toBeGreaterThanOrEqual(view.x-1);expect(rect.x+rect.width,label).toBeLessThanOrEqual(view.x+view.width+1);expect(rect.y,label).toBeGreaterThanOrEqual(view.y-1);expect(rect.y+rect.height,label).toBeLessThanOrEqual(view.y+view.height+1);expect(await action.evaluate(el=>{const r=el.getBoundingClientRect();return el.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));}),label).toBe(true);}
     await page.screenshot({path:testInfo.outputPath(`track-menu-${id}-${width}.png`)});await summary.focus();await summary.press('Escape');await expect(inspector).not.toHaveAttribute('open','');await expect(summary).toBeFocused();
   }expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
 
 test('track menu navigation preserves draft and the chosen track owns the editor action',async({page})=>{
-  await page.setViewportSize({width:800,height:600});await openSession(page);await page.locator('#detail-devices').click();const track=page.locator('.track').first(),menu=track.locator('.track-inspector'),summary=menu.locator('summary'),gain=page.getByRole('spinbutton',{name:'Pulse gain',exact:true});
+  await page.setViewportSize({width:800,height:600});await openSession(page);await page.locator('#detail-devices').click();await page.locator('#detail-clip').click();const track=page.locator('.track').first(),menu=track.locator('.track-inspector'),summary=menu.locator('summary'),gain=page.getByRole('spinbutton',{name:'Pulse gain',exact:true});
   await gain.fill('0.713');await summary.click();await expect(gain).toHaveValue('0.713');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
   await page.getByRole('button',{name:'Select Harmony track',exact:true}).click();await expect(menu).not.toHaveAttribute('open','');await page.getByRole('button',{name:'Select Pulse track',exact:true}).click();await expect(gain).toHaveValue('0.713');
   await summary.click();await page.getByRole('button',{name:'Open Pulse editor',exact:true}).click();await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_editor').length)).toBe(1);expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([{name:'alive_editor',args:{instanceId:'instrument-0',generation:1}}]);
@@ -444,7 +521,7 @@ test('narrow track keeps secondary stereo readout accessible without visual over
 });
 
 for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`Browser device hierarchy remains passive and honest at ${size.width}`,async({page},testInfo)=>{
-  await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();const gain=page.getByRole('spinbutton',{name:'Pulse gain',exact:true});await gain.fill('0.713');
+  await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();await page.locator('#detail-clip').click();const gain=page.getByRole('spinbutton',{name:'Pulse gain',exact:true});await gain.fill('0.713');
   const tree=page.getByRole('tree',{name:'Browser results'}),device=tree.getByRole('treeitem',{name:'Subtractive',exact:true}),search=page.getByRole('searchbox',{name:'Search browser'});await device.click();await expect(gain).toHaveValue('0.713');
   await tree.press('Space');expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
   for(let i=0;i<2;i++){await tree.press('ArrowRight');await expect(device).toHaveAttribute('aria-expanded','true');await expect(tree.getByRole('treeitem',{name:'Preset browsing unavailable',exact:true})).toHaveAttribute('aria-disabled','true');await tree.press('ArrowLeft');await expect(device).toHaveAttribute('aria-expanded','false');}
@@ -506,19 +583,24 @@ test('compact desktop default shows complete device controls and a useful Sessio
   await page.setViewportSize({width:800,height:600});await openSession(page);await page.locator('#detail-devices').click();
   const card=page.locator('.chain-device').first();
   for(const label of ['Attack base','Attack effective ownership'])expect(await card.getByLabel(label,{exact:true}).evaluate(el=>{const r=el.getBoundingClientRect();for(let p=el.parentElement;p;p=p.parentElement){const s=getComputedStyle(p),b=p.getBoundingClientRect();if(/auto|scroll|hidden|clip/.test(s.overflow+s.overflowY+s.overflowX)&&(r.top<b.top-1||r.bottom>b.bottom+1||r.left<b.left-1||r.right>b.right+1))return false;}return r.top>=0&&r.left>=0&&r.bottom<=innerHeight&&r.right<=innerWidth;}),label).toBe(true);
-  expect((await page.locator('#session-workspace').boundingBox()).height).toBeGreaterThanOrEqual(180);
+  await expect(page.getByRole('button',{name:'Select Pulse slot 1',exact:true})).toBeInViewport();
+  await expect(page.locator('#piano-roll')).toBeInViewport();await expect(page.locator('.piano-velocity-lane')).toBeInViewport({ratio:1});
+  await expect(page.locator('.track-mixer').first()).toBeHidden();
   await page.screenshot({path:testInfo.outputPath('default-both-800.png')});
 });
 
-for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`both-open Session keeps Browser results, clip slots and mixer controls visible at ${size.width}`,async({page},testInfo)=>{
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`both-open Session preserves Browser and slots with mixers when room allows at ${size.width}`,async({page},testInfo)=>{
   await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();
   const visible=locator=>locator.evaluate(el=>{const r=el.getBoundingClientRect();for(let p=el.parentElement;p;p=p.parentElement){const s=getComputedStyle(p),b=p.getBoundingClientRect();if(/auto|scroll|hidden|clip/.test(s.overflow+s.overflowY+s.overflowX)&&(r.top<b.top-1||r.bottom>b.bottom+1||r.left<b.left-1||r.right>b.right+1))return false;}return r.width>0&&r.height>0&&r.top>=0&&r.left>=0&&r.bottom<=innerHeight&&r.right<=innerWidth;});
-  for(const locator of [page.getByRole('treeitem',{name:'Subtractive',exact:true}),page.getByRole('button',{name:'Select Pulse slot 1',exact:true}),page.getByRole('button',{name:'Pulse mute',exact:true}),page.getByRole('button',{name:'Pulse solo',exact:true}),page.locator('#master-session').getByRole('spinbutton',{name:'Master gain',exact:true})])expect(await visible(locator),await locator.getAttribute('aria-label')).toBe(true);
+  expect(await visible(page.getByRole('button',{name:'Select Pulse slot 1',exact:true}))).toBe(true);
+  if(size.width===800){await page.locator('#detail-clip').click();}
+  expect(await visible(page.getByRole('treeitem',{name:'Subtractive',exact:true}))).toBe(true);
+  for(const locator of [page.getByRole('button',{name:'Pulse mute',exact:true}),page.getByRole('button',{name:'Pulse solo',exact:true}),page.locator('#master-session').getByRole('spinbutton',{name:'Master gain',exact:true})])expect(await visible(locator),await locator.getAttribute('aria-label')).toBe(true);
   await page.screenshot({path:testInfo.outputPath(`session-both-${size.width}x${size.height}.png`)});
 });
 
 test('Session slot scrolling is synchronized while mixer controls stay pinned',async({page})=>{
-  await page.setViewportSize({width:800,height:600});await openSession(page,{trackCount:8});await page.locator('#detail-devices').click();
+  await page.setViewportSize({width:800,height:600});await openSession(page,{trackCount:8});
   const slots=page.locator('.clip-slots'),scene=page.locator('#scene-controls'),mixer=page.getByRole('button',{name:'Pulse mute',exact:true}),before=await mixer.boundingBox();
   expect(await slots.first().evaluate(e=>e.scrollHeight>e.clientHeight)).toBe(true);await slots.first().hover();await page.mouse.wheel(0,70);await expect.poll(()=>slots.first().evaluate(e=>e.scrollTop)).toBeGreaterThan(0);await expect(slots.first()).toHaveClass(/is-scrolling/);await expect(slots.first()).not.toHaveClass(/is-scrolling/,{timeout:3000});
   const positions=await slots.evaluateAll(es=>es.map(e=>e.scrollTop));expect(new Set(positions).size).toBe(1);expect(await scene.evaluate(e=>e.scrollTop)).toBe(positions[0]);expect(Math.abs((await mixer.boundingBox()).y-before.y)).toBeLessThanOrEqual(1);
@@ -560,7 +642,8 @@ test('MIDI tracks without an instrument do not present invented audio metering o
 for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`corrected panel capture matrix at ${size.width}x${size.height}`,async({page},testInfo)=>{
   await page.setViewportSize(size);await openSession(page);await page.locator('#detail-devices').click();
   const shot=name=>page.screenshot({path:testInfo.outputPath(`${name}-${size.width}x${size.height}.png`)});
-  expect((await page.locator('#session-workspace').boundingBox()).height).toBeGreaterThanOrEqual(180);await shot('both-default');
+  await expect(page.getByRole('button',{name:'Select Pulse slot 1',exact:true})).toBeInViewport();
+  expect((await page.locator('#clip-detail').boundingBox()).height).toBeGreaterThanOrEqual(224);await shot('both-default');
   await page.locator('#toggle-help').click();await shot('help-hidden');
   await page.locator('#detail-clip').click();await page.locator('#detail-devices').click();await shot('all-lower-hidden');
   await page.locator('#detail-clip').click();await page.locator('#toggle-help').click();const resize=page.getByRole('separator',{name:'Resize detail area',exact:true});await resize.focus();await resize.press('Home');for(let i=0;i<3;i++)await resize.press('Shift+ArrowUp');await shot('clip-short');
@@ -754,10 +837,10 @@ for(const size of [{width:1440,height:900},{width:1280,height:800},{width:800,he
   expect(Number(await resize.getAttribute('aria-valuenow'))).toBeGreaterThan(originalHeight);
   expect((await panel.boundingBox()).height).toBeGreaterThan(originalPanel.height+30);
   expect(await visiblePiano()).toBeGreaterThan(originalVisible+30);
-  const previous=await resize.getAttribute('aria-valuenow');await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
-  await expect(page.locator('#session-workspace')).toBeVisible();await expect(page.locator('#arrangement-workspace')).toBeHidden();
-  const upper=await page.locator('#session-workspace').boundingBox(),shell=await page.locator('#workspace-shell').boundingBox();
-  expect(upper.height).toBeGreaterThanOrEqual(96);expect(Math.abs((await panel.boundingBox()).height+upper.height-shell.height)).toBeLessThanOrEqual(1);
+  await page.getByRole('button',{name:'Restore detail size',exact:true}).click();const previous=await resize.getAttribute('aria-valuenow');await page.getByRole('button',{name:'Maximize detail',exact:true}).click();
+  await expect(page.locator('#session-workspace')).toBeHidden();await expect(page.locator('#arrangement-workspace')).toBeHidden();
+  const shell=await page.locator('#workspace-shell').boundingBox();
+  expect(Math.abs((await panel.boundingBox()).height-shell.height)).toBeLessThanOrEqual(1);
   if(size.height>=800)expect((await page.locator('#piano-roll').boundingBox()).height).toBeGreaterThan(originalPiano.height+30);
   else expect(await visiblePiano()).toBeGreaterThan(originalVisible+30);
   await expect(page.locator('#stop')).toBeInViewport();await expect(page.locator('#show-audio')).toBeInViewport();
@@ -813,7 +896,7 @@ test('detail drag cancellation and maximize preserve an unfinished upper mixer f
   expect(Number(await separator.getAttribute('aria-valuenow'))).toBeGreaterThan(Number(before));
   await page.keyboard.press('Escape');await page.mouse.up();await expect(separator).toHaveAttribute('aria-valuenow',before);
   const gain=page.getByLabel('Pulse gain',{exact:true});await gain.fill('1.234');
-  await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await expect(page.locator('#session-workspace')).toBeVisible();
+  await page.getByRole('button',{name:'Maximize detail',exact:true}).click();await expect(page.locator('#session-workspace')).toBeHidden();
   await page.getByRole('button',{name:'Restore detail size',exact:true}).click();await expect(gain).toHaveValue('1.234');
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
@@ -1054,6 +1137,7 @@ test('device drops remain reachable at the minimum window size',async({page})=>{
   await page.setViewportSize({width:800,height:600});await openSession(page,{emptyDevices:true});
   await page.getByRole('treeitem',{name:'Subtractive',exact:true}).dragTo(page.locator('.track[data-track-id="track-1"] .track-name'));
   await expect(page.locator('#device-detail')).toBeVisible();
+  await page.locator('#detail-clip').click();
   await page.getByRole('treeitem',{name:'Stereo Utility',exact:true}).dragTo(page.locator('.chain-drop-tail'));
   await expect(page.locator('.chain-device')).toHaveCount(2);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.documentElement.scrollHeight<=innerHeight)).toBe(true);
@@ -1456,11 +1540,12 @@ for(const kind of ['device','note'])test(`detail navigation preserves an unfinis
   expect(await mutations()).toHaveLength(1);
 });
 
-test('maximum detail resize leaves the entire detail and workspace reachable',async({page})=>{
+test('maximum detail resize covers the workspace and restores its controls',async({page})=>{
   await page.setViewportSize({width:1280,height:800});await openSession(page);
   const handle=page.getByRole('separator',{name:'Resize detail area'});await handle.focus();await page.keyboard.press('End');
   const bounds=await page.evaluate(()=>({detail:document.querySelector('#detail-panel').getBoundingClientRect().bottom,footer:document.querySelector('footer').getBoundingClientRect().top,workspace:document.querySelector('#session-workspace').getBoundingClientRect().height}));
-  expect(bounds.detail).toBeLessThanOrEqual(bounds.footer);expect(bounds.workspace).toBeGreaterThanOrEqual(96);
+  expect(bounds.detail).toBeLessThanOrEqual(bounds.footer);expect(bounds.workspace).toBe(0);
+  await page.getByRole('button',{name:'Restore detail size',exact:true}).click();
   const gain=page.getByLabel('Pulse gain',{exact:true});await gain.scrollIntoViewIfNeeded();await expect(gain).toBeInViewport({ratio:1});
   const master=page.locator('#master-select-session');await master.scrollIntoViewIfNeeded();await expect(master).toBeInViewport({ratio:1});
 });
@@ -1559,6 +1644,7 @@ test('Arrangement blank-lane drag selects the range after a timeline redraw',asy
 for(const size of [{width:1440,height:900},{width:1280,height:800}])test(`Arrangement eight-track scrolling, long names and expanded detail stay bounded at ${size.width}`,async({page})=>{
   await page.setViewportSize(size);await openSession(page,{longNames:true,trackCount:8});await page.evaluate(()=>{const s=window.sessionSnapshot;s.document.lengthBeats=128;s.document.tracks[0].name='Long track name '.repeat(8);s.document.placements=[{id:'long',trackId:s.document.tracks[0].id,sourceId:s.document.sources[0].id,start:0,duration:4,region:{start:0,end:8,loopStart:0,loopEnd:8,loopEnabled:true}}];s.document.sources[0].name='Long MIDI source name '.repeat(5);s.editRevision++;});
   await page.locator('#view-arrangement').click();await page.getByRole('button',{name:'Select placement long',exact:true}).click();await page.getByRole('separator',{name:'Resize detail area'}).focus();await page.keyboard.press('End');
+  await expect(page.locator('#arrangement-workspace')).toBeHidden();await page.getByRole('button',{name:'Restore detail size',exact:true}).click();
   const bounds=await page.evaluate(()=>{const scroll=document.querySelector('#timeline-scroll');return{body:document.body.scrollHeight,viewport:innerHeight,workspace:document.querySelector('#arrangement-workspace').clientHeight,timelineViewport:scroll.clientHeight,detail:document.querySelector('#detail-panel').getBoundingClientRect().bottom,footer:document.querySelector('footer').getBoundingClientRect().top,scrollX:scroll.scrollWidth>scroll.clientWidth,scrollY:scroll.scrollHeight>scroll.clientHeight};});
   expect(bounds.body).toBe(bounds.viewport);expect(bounds.workspace).toBeGreaterThanOrEqual(150);expect(bounds.timelineViewport).toBeGreaterThanOrEqual(96);expect(bounds.detail).toBeLessThanOrEqual(bounds.footer);expect(bounds.scrollX&&bounds.scrollY).toBe(true);
   await expect(page.locator('#master-select-arrangement')).toBeInViewport({ratio:1});

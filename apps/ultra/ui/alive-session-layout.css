@@ -39,11 +39,12 @@
 .clip-bank-actions .track-stop,.clip-bank-actions .track-return{flex:0 0 auto;min-height:0;height:20px;margin:0;padding:1px 3px;border:0;border-radius:0;font-size:10px;background:transparent;color:var(--muted)}
 .clip-bank-actions .track-stop{width:20px}
 .clip-bank-actions .track-stop svg{width:12px;height:12px;margin:0}
-.runtime-receipt{position:relative;flex:1;min-width:0;min-height:0;height:20px;overflow:visible}
-.runtime-receipt>summary{padding:3px 2px;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.runtime-receipt>summary svg{width:12px;height:12px;margin:0;fill:none;stroke:currentColor;stroke-width:1.4}
-.clip-runtime{display:block;padding:7px;font-size:11px;line-height:1.5;color:var(--text);overflow-wrap:anywhere}
-.runtime-receipt[open] .clip-runtime{position:absolute;left:0;top:20px;width:250px;max-height:200px;overflow:auto;background:var(--chrome);border:1px solid #777;z-index:11}
+.clip-playback{display:flex;flex:1;min-width:0;height:20px;align-items:center;justify-content:space-around;gap:1px;color:var(--muted);font-size:10px;font-variant-numeric:tabular-nums}
+.clip-playback[data-state=playing]{color:var(--stereo)}
+.clip-loop-disc{flex:none;width:16px;height:16px;margin:0;fill:currentColor;stroke:#252525;stroke-width:1}
+.clip-loop-needle{fill:none;stroke:#252525;stroke-width:1.5}
+.clip-playback[data-state=unavailable] .clip-loop-disc{visibility:hidden}
+.clip-loop-disc[data-fraction=""] .clip-loop-needle{visibility:hidden}
 /* The study's left activator column and right fader/meter rail. Gain remains
    linear and native-owned; pan and recording are explicitly unavailable. */
 .track-mixer{position:relative;display:block;flex:0 0 151px;min-width:0;min-height:151px;padding:0;background:#414141;border-bottom:4px solid var(--track-color)}
@@ -78,7 +79,7 @@
 .track-inspector>summary::-webkit-details-marker{display:none}
 .track-inspector>summary::after{content:'';position:absolute;top:9px;left:3px;width:2px;height:2px;border-radius:50%;background:#242424;box-shadow:4px 0 #242424,8px 0 #242424}
 .track-actions{display:flex;flex-direction:column;gap:3px}
-.track-inspector[open] .track-actions{position:absolute;top:100%;right:0;width:140px;padding:5px;background:var(--chrome);border:1px solid #777;box-shadow:0 5px 14px #0006}
+.track-inspector[open] .track-actions{position:absolute;top:100%;right:0;width:140px;padding:5px;overflow-y:auto;background:var(--chrome);border:1px solid #777;box-shadow:0 5px 14px #0006}
 .track-actions button{font-size:11px;text-align:left}
 .scene-column{position:sticky;right:0;display:flex;flex-direction:column;flex:0 0 108px;width:108px;min-height:0;background:#3d3d3d;border-left:3px solid #272727;z-index:10}
 .master-heading{flex:none;height:var(--track-head);min-height:var(--track-head);width:100%;padding:2px 5px;border:0;border-radius:0;border-bottom:1px solid #292929;background:#b5bd86;color:#172025;text-align:left;font-weight:bold;font-size:11px}
@@ -128,7 +129,7 @@
   .mixer-toggles{left:7px}.mixer-strip{right:1px;width:32px}.mixer-scale{font-size:7px;left:26px;width:7px}
   .mixer-arm{left:7px}
   .clip-bank-actions .track-return{font-size:0;width:20px}
-  .runtime-receipt>summary{font-size:0}
+  .clip-loop-count{display:none}
 }
 @media(max-height:650px){
   .track-mixer,#master-session{flex-basis:135px;min-height:135px}

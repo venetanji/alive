@@ -90,18 +90,18 @@
 /* Help owns its visibility even when both editors are closed. Clip spans the
    full width only when stacked above the fixed Help / Devices row. */
 #detail-content{display:grid;grid-template-columns:var(--help-width,231px) minmax(0,1fr);grid-template-rows:minmax(0,1fr);overflow:hidden}
-.detail-both #detail-content{grid-template-rows:minmax(0,1fr) var(--device-row-height,190px)}
-#clip-detail:not([hidden]){display:flex;flex-direction:column;grid-column:2;grid-row:1;min-height:0;height:100%;overflow:auto;container:clip-detail / size}
+.detail-both #detail-content{grid-template-rows:minmax(0,1fr) var(--device-row-height,190px);row-gap:var(--detail-row-gap,5px);background:#292929}
+#clip-detail:not([hidden]){display:flex;flex-direction:column;grid-column:2;grid-row:1;min-height:0;height:100%;overflow:hidden;container:clip-detail / size}
 .detail-both #clip-detail:not([hidden]){grid-column:1 / -1}
-#clip-detail>.clip-section{display:flex;flex-direction:column;flex:1 0 260px;min-height:0;border:0}
+#clip-detail>.clip-section{display:flex;flex-direction:column;flex:1 1 0;min-height:0;border:0}
 #clip-detail>.clip-section>.section-heading{flex:none;padding:0;gap:0;min-height:22px;height:22px;background:#434343;border-bottom:2px solid #292929}
 #clip-detail #clip-controls{flex:1;min-width:0;min-height:20px;height:20px;padding:0 5px;gap:5px;font-size:11px}
 #clip-detail #add-note{margin:0 5px 0 0;height:18px;min-height:18px;padding:0 5px;font-size:10px}
 #clip-detail .clip-editors{display:flex;flex-direction:column;flex:1;min-height:0}
 #clip-detail .note-table{flex:none}
 #clip-detail .clip-area{height:auto;flex:1;min-height:0}
-#clip-detail .clip-area.has-source{grid-template-columns:min(var(--clip-properties-width,210px),calc(100% - 160px)) minmax(0,1fr);grid-template-rows:minmax(min-content,auto) minmax(100px,1fr) auto auto}
-#clip-detail :is(#piano-roll,#audio-waveform){min-height:100px}
+#clip-detail .clip-area.has-source{grid-template-columns:min(var(--clip-properties-width,210px),calc(100% - 160px)) minmax(0,1fr);grid-template-rows:minmax(min-content,auto) minmax(0,1fr) auto auto}
+#clip-detail :is(#piano-roll,#audio-waveform){min-height:0}
 #clip-detail .clip-properties-resizer{grid-column:1;grid-row:1 / -1;justify-self:end;width:5px;z-index:2;cursor:ew-resize;touch-action:none;background:#292929}
 #clip-detail .clip-properties-resizer:focus-visible{outline:2px solid var(--selection);outline-offset:-2px}
 #device-detail:not([hidden]),#master-detail:not([hidden]){grid-column:2;grid-row:1;min-height:0;overflow:auto}
@@ -163,6 +163,8 @@
 #clip-detail>.clip-section>.section-heading{position:static;overflow:visible;z-index:4}
 .detail-maximized .track-mixer,.detail-maximized #master-session{display:none}
 .detail-maximized #master-arrangement-lane{display:none}
+.detail-maximized .workspace-upper{display:none}
+.detail-compressed .track-mixer,.detail-compressed #master-session,.detail-compressed #master-arrangement-lane{display:none}
 .clip-layout-controls{display:flex;gap:2px;flex:none}
 .clip-layout-controls button{display:grid;place-items:center;width:20px;height:18px;min-height:18px;padding:1px;border:0;background:#393939}
 .clip-layout-controls button[aria-pressed=true]{color:#222;background:var(--amber)}

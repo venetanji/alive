@@ -5,7 +5,7 @@ import {mountClipView} from './alive-clip-view.mjs';
 import {mountBrowser,deviceAdmissionReason} from './alive-browser.mjs';
 import {mountDeviceDrop} from './alive-device-drop.mjs';
 import {mountTransportOptions,mountDisplayOptions} from './alive-shell.mjs';
-import {createAliveModel,nativeInteger,instrumentOf,actualDevices,sourceLength} from './alive-model.mjs';
+import {createAliveModel,nativeInteger,instrumentOf,actualDevices,sourceLength,clipPlayback} from './alive-model.mjs';
 import {mountAudioSettings} from './audio-settings.mjs';
 import {mountWorkspace} from './alive-workspace.mjs';
 import {mountCommandMenus,shortcutCommand} from './alive-commands.mjs';
@@ -375,7 +375,10 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       cell.dataset.slot=String(slot);cell.append(launch,choose,status);slots.append(cell);slotViews.push({trackId:track.id,slot,clipId:c?.id,cell,choose,launch,status});
     }
     const stop=make('button','track-stop');stop.setAttribute('aria-label',`Stop ${track.name} track`);decorate(stop,'stop','Stop track',{only:true});stop.addEventListener('click',guard(()=>clipAction({kind:'stop',trackId:track.id})));actions.append(stop);{const back=make('button','track-return','Return');back.setAttribute('aria-label',`Return ${track.name} to Arrangement`);decorate(back,'redo','Return to Arrangement',{only:true});back.addEventListener('click',guard(()=>clipAction({kind:'return',trackIds:[track.id]})));actions.append(back);}
-    const receipt=make('details','runtime-receipt'),summary=make('summary'),state=make('output','clip-runtime');summary.append(icon('play'));state.setAttribute('aria-label',`${track.name} clip runtime`);summary.setAttribute('aria-label',`${track.name} runtime details`);receipt.append(summary,state);actions.append(receipt);slotViews.push({trackId:track.id,state,summary});
+    const summary=make('div','clip-playback'),state=make('output','clip-runtime sr-only'),count=make('span','clip-loop-count'),beats=make('span','clip-loop-beats');
+    const disc=svgElement('svg',{class:'clip-loop-disc',viewBox:'0 0 18 18','aria-hidden':'true'}),needle=svgElement('path',{d:'M9 9V2',class:'clip-loop-needle'});
+    disc.append(svgElement('circle',{cx:9,cy:9,r:7}),needle);summary.setAttribute('role','img');summary.setAttribute('aria-label',`${track.name} loop position`);summary.append(count,disc,beats);
+    state.setAttribute('aria-label',`${track.name} clip runtime`);actions.append(summary,state);slotViews.push({trackId:track.id,state,summary,count,beats,disc,needle});
   }
   function renderWorkspaceControls(snapshot,document,track,container){
     const slot=selectedClip(track),source=sourceOf(track,document),prepared=snapshot.preparedWorkspaces;
@@ -386,7 +389,16 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       const observation=snapshot.runtime?.tracks.find(t=>t.trackId===v.trackId),current=document.tracks.find(t=>t.id===v.trackId);
       const active=prepared?.sources.find(s=>s.sourceId===observation?.activeSourceId),activeSlot=prepared?.slots.find(s=>s.slotId===observation?.activeSlotId);
       const authority=observation?.authority==='session'?'Session':observation?.authority==='arrangement'?'Arrangement':'Unavailable';
-      if(v.state){const deleted=activeSlot&&!current?.slots.some(s=>s?.id===activeSlot.slotId),last=snapshot.runtime?.requests.filter(r=>r.members?.some(m=>m.trackId===v.trackId)).at(-1);v.state.textContent=`${authority}: ${active?`${snapshot.state.playing?'Playing':'Cued'} ${activeSlot?.name??active.name}${deleted?' (removed)':''}`:authority==='Session'?'Session silence':authority==='Arrangement'?'Arrangement gap':'observation unavailable'}${observation?.pendingAction?` / pending ${observation.pendingAction} (${observation.pendingAuthority}) at frame ${observation.pendingFrame}`:''}${last?` / ${requestText(last,snapshot)}`:''}`;v.summary.setAttribute('data-authority',authority);v.summary.title=v.state.textContent;continue;}
+      if(v.state){
+        const deleted=activeSlot&&!current?.slots.some(s=>s?.id===activeSlot.slotId),last=snapshot.runtime?.requests.filter(r=>r.members?.some(m=>m.trackId===v.trackId)).at(-1),playback=clipPlayback(snapshot,v.trackId);
+        v.state.textContent=`${authority}: ${active?`${snapshot.state.playing?'Playing':'Cued'} ${activeSlot?.name??active.name}${deleted?' (removed)':''}`:authority==='Session'?'Session silence':authority==='Arrangement'?'Arrangement gap':'observation unavailable'}${observation?.pendingAction?` / pending ${observation.pendingAction} (${observation.pendingAuthority}) at frame ${observation.pendingFrame}`:''}${last?` / ${requestText(last,snapshot)}`:''}`;
+        const length=playback?String(Number(playback.lengthBeats.toFixed(3))):'';
+        v.summary.setAttribute('data-authority',authority);v.summary.setAttribute('data-state',playback?playback.playing?'playing':'cued':'unavailable');
+        v.summary.setAttribute('aria-label',`${current?.name??'Track'} loop position: ${playback?`${playback.playing?'playing':'cued'}, ${length} beats, ${playback.intro?'intro':`${Math.round((playback.fraction??0)*100)} percent`}, play count unavailable`:'unavailable'}`);
+        v.summary.setAttribute('data-help',`${v.state.textContent}${playback?` / ${playback.intro?'Intro before loop':playback.loopEnabled?'Loop':'One-shot'}: ${length} beats. Disc follows native source position. Play count unavailable: native observations do not report completed plays.`:' / Loop position unavailable.'}`);
+        v.count.textContent=playback?'--':'';v.beats.textContent=length;v.disc.setAttribute('data-fraction',playback?.fraction??'');v.needle.setAttribute('transform',`rotate(${(playback?.fraction??0)*360} 9 9)`);
+        continue;
+      }
       const currentSlot=current?.slots[v.slot],installed=prepared?.slots.find(s=>s.slotId===v.clipId),playing=!!v.clipId&&observation?.activeSlotId===v.clipId,pending=!!v.clipId&&observation?.pendingSlotId===v.clipId;
       v.choose.setAttribute('aria-pressed',String(track.id===v.trackId&&!sourceSelection&&slotOf(track)===v.slot));v.launch.disabled=!installed;v.launch.title=installed?`Launch: ${gridLabel(effectiveGrid(v.clipId))}`:'Waiting for the musical edit to reach playback';
       for(const [name,on] of Object.entries({occupied:!!currentSlot,empty:!currentSlot,selected:track.id===v.trackId&&!sourceSelection&&slotOf(track)===v.slot,playing:playing&&!!snapshot.state.playing,cued:playing&&!snapshot.state.playing,pending}))v.cell.classList.toggle(name,on);
@@ -459,7 +471,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       resize.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();const current=row.getBoundingClientRect().width;applyWidth(event.key==='Home'?72:event.key==='End'?280:current+(event.key==='ArrowRight'?1:-1)*(event.shiftKey?20:8));});
       const mixer=make('div','track-mixer'),toggles=make('div','mixer-toggles'),inspector=make('details','track-inspector'),summary=make('summary','','Device / track');
       summary.addEventListener('pointerdown',()=>workspace.preserveFocused());
-      inspector.addEventListener('toggle',()=>{if(!inspector.open)return;const shell=$('session-workspace').getBoundingClientRect(),dock=doc.querySelector('.scene-column').getBoundingClientRect(),anchor=inspector.getBoundingClientRect(),width=actions.getBoundingClientRect().width;const left=Math.max(shell.left,Math.min(anchor.right-width,Math.min(shell.right,dock.left)-width));actions.style.left=`${left-anchor.left}px`;actions.style.right='auto';});
+      inspector.addEventListener('toggle',()=>{if(!inspector.open)return;const shell=$('session-workspace').getBoundingClientRect(),dock=doc.querySelector('.scene-column').getBoundingClientRect(),anchor=inspector.getBoundingClientRect(),width=actions.getBoundingClientRect().width;const left=Math.max(shell.left,Math.min(anchor.right-width,Math.min(shell.right,dock.left)-width));actions.style.left=`${left-anchor.left}px`;actions.style.right='auto';actions.style.maxHeight=`${Math.max(0,shell.bottom-anchor.bottom)}px`;});
       inspector.addEventListener('keydown',event=>{if(event.key==='Escape'&&inspector.open){event.preventDefault();event.stopPropagation();inspector.open=false;summary.focus();}});
       const strip=make('div','mixer-strip'),midiOnly=make('div','midi-only-status','MIDI only');midiOnly.title='MIDI event activity is not available in this build.';
       const scale=make('div','mixer-scale');scale.setAttribute('aria-hidden','true');scale.setAttribute('data-help','Stereo peak scale in dB below full scale.');for(const value of ['0','12','24','36','48','60'])scale.append(make('span','',value));
@@ -467,6 +479,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
       strip.append(fader,meters,scale);toggles.append(mute,solo);mixer.append(gainLabel,pan,strip,midiOnly,toggles,arm);inspector.append(summary,actions);
       row.append(name,resize);const bank=make('div','clip-bank');row.append(bank);buildSlots(bank,track,index);row.append(mixer,inspector);$('tracks').append(row);slotsRestore(bank);trackViews.push({row,name,resize,inspector,detail,gain,gainDb,gainLabel,strip,mixer,midiOnly,fader,faderEditing:()=>faderEditing,mute,solo,bar,readout,actions});
     });
+    workspace.refreshLayout();
   }
   function chainDevices(track=model.document().tracks[selected]){return actualDevices(track);}
   function instanceView(id){return model.snapshot().deviceInstances[id];}

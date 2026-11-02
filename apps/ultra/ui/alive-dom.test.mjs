@@ -163,7 +163,7 @@ test('detail can grow beyond the upper mixer minimum and maximize without musica
   assert.ok(Number(handle.attrs['aria-valuenow'])>=560,'The detail editor should be able to use most of the workspace');
   await handle.fire('keydown',{key:'ArrowDown'});const normal=handle.attrs['aria-valuenow'],snapshot=structuredClone(view.model.snapshot());
   const maximize=page.find('Maximize detail');assert.ok(maximize);await maximize.fire('click');
-  assert.equal(page.ids.get('session-workspace').hidden,false);assert.equal(page.ids.get('arrangement-workspace').hidden,true);
+  assert.equal(page.ids.get('session-workspace').hidden,true);assert.equal(page.ids.get('arrangement-workspace').hidden,true);
   assert.equal(maximize.attrs['aria-label'],'Restore detail size');assert.equal(maximize.attrs['aria-pressed'],'true');
   assert.ok(Number(handle.attrs['aria-valuenow'])>Number(normal));
   await maximize.fire('click');assert.equal(handle.attrs['aria-valuenow'],normal);assert.equal(page.ids.get('session-workspace').hidden,false);
@@ -172,9 +172,9 @@ test('detail can grow beyond the upper mixer minimum and maximize without musica
 test('maximized detail restores after canceled resize and view navigation exposes the selected workspace',async()=>{
   const page=dom('./alive.html'),native=backend(workspaceState()),view=mountAlive({...page,invoke:native.invoke});await settle();
   const handle=page.ids.get('detail-resizer');await handle.fire('dblclick');
-  assert.equal(page.ids.get('session-workspace').hidden,false);const full=handle.attrs['aria-valuenow'];
+  assert.equal(page.ids.get('session-workspace').hidden,true);const full=handle.attrs['aria-valuenow'];
   await handle.fire('pointerdown',{pointerId:1,clientY:100});await handle.fire('pointermove',{pointerId:1,clientY:230});
-  await handle.fire('pointercancel');assert.equal(handle.attrs['aria-valuenow'],full);assert.equal(page.ids.get('session-workspace').hidden,false);
+  await handle.fire('pointercancel');assert.equal(handle.attrs['aria-valuenow'],full);assert.equal(page.ids.get('session-workspace').hidden,true);
   await page.ids.get('view-arrangement').fire('click');assert.equal(page.ids.get('arrangement-workspace').hidden,false);
   assert.equal(page.find('Maximize detail').attrs['aria-pressed'],'false');view.dispose();
 });

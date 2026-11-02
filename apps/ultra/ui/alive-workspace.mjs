@@ -1,10 +1,10 @@
 // Workspace navigation owns only presentation. Native state and editor nodes stay mounted.
 export function mountWorkspace({doc,win,onNavigate=()=>{}}){
   const $=id=>doc.getElementById(id);
-  const deviceHeight=190;
+  const deviceHeight=190,detailGap=5;
   let view='session',detail='clip',previousDetail='clip',expanded=true,browser=true,height=310,resize=null,browserWidth=334,browserResize=null,mixer=true;
   let clipOpen=true,deviceOpen=false,masterOpen=false,previousPanels=null;
-  let requestedHeight=height,maximized=false;
+  let requestedHeight=height,maximized=false,manualHeight=false;
   let requestedBrowserWidth=browserWidth;
   const handle=$('detail-resizer'),shell=$('workspace-shell');
   const parked=new Map(),scopedDrafts=new Map();
@@ -22,11 +22,12 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
     return Math.max(minimum,Math.ceil(header.getBoundingClientRect().height+minHeight(bank)+minHeight(mixer)+Math.max(0,session.offsetHeight-session.clientHeight)));
   };
   const clipVisible=()=>expanded&&clipOpen&&!masterOpen;
-  const minHeight=()=>deviceOpen&&detailBudget()-workspaceMinimum()-deviceHeight<224?96:224;
-  const maxHeight=()=>Math.max(minHeight(),detailBudget()-(maximized?96:workspaceMinimum())-(deviceOpen?deviceHeight:0));
+  const minHeight=()=>224;
+  const maxHeight=()=>Math.max(minHeight(),detailBudget()-(deviceOpen?deviceHeight+detailGap:0));
   const fitHeight=()=>{
     if(!clipVisible()){height=deviceHeight;maximized=false;return;}
-    height=Math.round(Math.max(minHeight(),Math.min(maxHeight(),maximized?Infinity:requestedHeight)));
+    const limit=manualHeight||maximized?maxHeight():Math.max(minHeight(),maxHeight()-workspaceMinimum());
+    height=Math.round(Math.max(minHeight(),Math.min(limit,maximized?Infinity:requestedHeight)));
   };
   function park(root){const element=doc.activeElement;if(root.contains?.(element)&&element.matches?.('input,select,textarea'))parked.set(element,{root,value:element.value,visible:false,changed:parked.get(element)?.changed??false});}
   // Cached rack controls can be detached while another track is selected.
@@ -50,15 +51,18 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
   doc.addEventListener('change',change,true);doc.addEventListener('blur',blur,true);doc.addEventListener('focus',focus,true);
   function paint(){
     const full=maximized&&clipVisible();
-    $('session-workspace').hidden=view!=='session';$('arrangement-workspace').hidden=view!=='arrangement';
+    const compressed=clipVisible()&&!full&&maxHeight()-height<workspaceMinimum();
+    if(compressed&&!shell.classList.contains('detail-compressed'))park($(view+'-workspace'));
+    $('session-workspace').hidden=full||view!=='session';$('arrangement-workspace').hidden=full||view!=='arrangement';
     shell.classList.toggle('detail-maximized',full);
+    shell.classList.toggle('detail-compressed',compressed);
     shell.classList.toggle('detail-both',expanded&&!masterOpen&&clipOpen&&deviceOpen);
     shell.classList.toggle('mixer-hidden',!mixer);
     const maximize=$('maximize-detail'),label=full?'Restore detail size':'Maximize detail';
     maximize.setAttribute('aria-label',label);maximize.setAttribute('aria-pressed',String(full));maximize.title=label;
     maximize.disabled=!clipVisible();
     for(const name of ['session','arrangement'])$('view-'+name).setAttribute('aria-pressed',String(view===name));
-    $('workspace-browser').hidden=!browser;$('browser-resizer').hidden=!browser&&!browserResize;shell.classList.toggle('browser-drag-collapsed',!browser&&!!browserResize);$('toggle-browser').setAttribute('aria-expanded',String(browser));$('timeline-inspector').hidden=view!=='arrangement';
+    $('workspace-browser').hidden=full||!browser;$('browser-resizer').hidden=full||(!browser&&!browserResize);shell.classList.toggle('browser-drag-collapsed',!browser&&!!browserResize);$('toggle-browser').setAttribute('aria-expanded',String(browser));$('timeline-inspector').hidden=view!=='arrangement';
     shell.style.setProperty('--browser-width',`${browserWidth}px`);$('browser-resizer').setAttribute('aria-valuenow',browserWidth);$('browser-resizer').setAttribute('aria-valuemax',maxBrowserWidth());
     shell.classList.toggle('detail-collapsed',!expanded);handle.hidden=!clipVisible();
     $('toggle-detail').setAttribute('aria-expanded',String(expanded));
@@ -66,16 +70,17 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
     $('detail-clip').setAttribute('aria-pressed',String(expanded&&!masterOpen&&clipOpen));$('detail-devices').setAttribute('aria-pressed',String(expanded&&!masterOpen&&deviceOpen));
     $('master-detail').hidden=!expanded||!masterOpen;for(const id of ['master-select-session','master-select-arrangement'])$(id).setAttribute('aria-pressed',String(masterOpen));
     // Clip keeps its own requested height; the rack never borrows from it.
-    const total=clipVisible()?height+(deviceOpen?deviceHeight:0):deviceHeight;
+    const total=clipVisible()?height+(deviceOpen?deviceHeight+detailGap:0):deviceHeight;
     shell.style.setProperty('--device-row-height',`${deviceHeight}px`);
+    shell.style.setProperty('--detail-row-gap',`${detailGap}px`);
     shell.style.setProperty('--detail-height',`${total}px`);handle.setAttribute('aria-valuenow',height);handle.setAttribute('aria-valuemin',minHeight());handle.setAttribute('aria-valuemax',maxHeight());
     $('toggle-mixer').setAttribute('aria-pressed',String(mixer));
-    if(!full)restore($(view+'-workspace'));
+    if(!full&&!compressed)restore($(view+'-workspace'));
     if(expanded){if(clipOpen&&!masterOpen)restore($('clip-detail'));if(deviceOpen&&!masterOpen)restore($('device-detail'));if(masterOpen)restore($('master-detail'));if(view==='arrangement'&&clipOpen&&!masterOpen)restore($('timeline-inspector'));}
   }
-  function setHeight(value){if(!clipVisible())return;maximized=false;requestedHeight=value;fitHeight();paint();}
-  function cancelResize(){if(!resize)return;const old=resize;resize=null;maximized=old.maximized;requestedHeight=old.requestedHeight;fitHeight();paint();if(handle.hasPointerCapture?.(old.id))handle.releasePointerCapture(old.id);}
-  function toggleMaximize(){if(!clipVisible())return;cancelResize();if(!maximized)park($(view+'-workspace'));maximized=!maximized;paint();fitHeight();paint();}
+  function setHeight(value){if(!clipVisible())return;const full=value>=maxHeight();if(full&&!maximized){park($(view+'-workspace'));requestedHeight=resize?.height??height;}manualHeight=true;maximized=full;if(!full)requestedHeight=value;fitHeight();paint();}
+  function cancelResize(){if(!resize)return;const old=resize;resize=null;maximized=old.maximized;manualHeight=old.manualHeight;requestedHeight=old.requestedHeight;fitHeight();paint();if(handle.hasPointerCapture?.(old.id))handle.releasePointerCapture(old.id);}
+  function toggleMaximize(){if(!clipVisible())return;cancelResize();if(!maximized){park($(view+'-workspace'));requestedHeight=height;}maximized=!maximized;paint();fitHeight();paint();}
   function navigate(name){cancelResize();if(maximized){maximized=false;fitHeight();}const changed=name!==view;if(changed){park($(view+'-workspace'));if(view==='arrangement')park($('timeline-inspector'));}view=name;paint();fitHeight();paint();if(changed)onNavigate(name);}
   for(const name of ['session','arrangement'])$('view-'+name).addEventListener('click',()=>navigate(name));
   // A pointer navigation must not blur an unfinished field and publish its change.
@@ -92,7 +97,7 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
   $('toggle-mixer').addEventListener('click',()=>{preserveFocused();mixer=!mixer;paint();fitHeight();paint();});
   $('toggle-detail').addEventListener('click',()=>{cancelResize();if(expanded){if(clipOpen)park($('clip-detail'));if(deviceOpen)park($('device-detail'));if(masterOpen)park($('master-detail'));}expanded=!expanded;if(expanded&&!clipOpen&&!deviceOpen&&!masterOpen)clipOpen=true;if(!expanded)maximized=false;paint();fitHeight();paint();});
   $('maximize-detail').addEventListener('click',toggleMaximize);handle.addEventListener('dblclick',toggleMaximize);handle.title='Drag to resize; double-click to maximize or restore';
-  handle.addEventListener('pointerdown',event=>{if(event.button!==0||resize||!clipVisible())return;resize={id:event.pointerId,y:event.clientY,height,requestedHeight,maximized};handle.setPointerCapture?.(event.pointerId);event.preventDefault();});
+  handle.addEventListener('pointerdown',event=>{if(event.button!==0||resize||!clipVisible())return;resize={id:event.pointerId,y:event.clientY,height,requestedHeight,maximized,manualHeight};handle.setPointerCapture?.(event.pointerId);event.preventDefault();});
   handle.addEventListener('pointermove',event=>{if(resize?.id===event.pointerId)setHeight(resize.height+resize.y-event.clientY);});
   handle.addEventListener('pointerup',event=>{if(resize?.id!==event.pointerId)return;resize=null;handle.releasePointerCapture?.(event.pointerId);});
   handle.addEventListener('pointercancel',cancelResize);handle.addEventListener('lostpointercapture',cancelResize);
@@ -118,5 +123,5 @@ export function mountWorkspace({doc,win,onNavigate=()=>{}}){
     $(view+'-workspace').focus();
   };
   const fit=()=>{cancelResize();cancelBrowserResize();browserWidth=Math.min(requestedBrowserWidth,maxBrowserWidth());fitHeight();paint();};doc.addEventListener('keydown',keydown);win?.addEventListener('blur',cancelResize);win?.addEventListener('resize',fit);paint();if(win?.innerHeight)fit();
-  return{preserves:element=>parked.has(element),uncommitted,discardPreserved,resetPreserved,stashPreserved,recallPreserved,park,restore,preserveFocused,openMaster(){if(!masterOpen){previousDetail=detail;previousPanels={clip:clipOpen,devices:deviceOpen,expanded};if(expanded){park($('clip-detail'));park($('device-detail'));}}masterOpen=true;detail='master';expanded=true;paint();},returnMusic(){if(masterOpen){park($('master-detail'));masterOpen=false;clipOpen=previousPanels?.clip??true;deviceOpen=previousPanels?.devices??false;detail=previousDetail;expanded=previousPanels?.expanded??true;paint();fitHeight();paint();}},openDevices(){masterOpen=false;deviceOpen=true;detail='devices';expanded=true;paint();fitHeight();paint();},openClip(){masterOpen=false;clipOpen=true;detail='clip';expanded=true;paint();fitHeight();paint();},dispose(){doc.removeEventListener('keydown',keydown);doc.removeEventListener('change',change,true);doc.removeEventListener('blur',blur,true);doc.removeEventListener('focus',focus,true);resetPreserved();win?.removeEventListener('blur',cancelResize);win?.removeEventListener('resize',fit);}};
+  return{refreshLayout:fit,preserves:element=>parked.has(element),uncommitted,discardPreserved,resetPreserved,stashPreserved,recallPreserved,park,restore,preserveFocused,openMaster(){if(!masterOpen){previousDetail=detail;previousPanels={clip:clipOpen,devices:deviceOpen,expanded};if(expanded){park($('clip-detail'));park($('device-detail'));}}masterOpen=true;detail='master';expanded=true;paint();},returnMusic(){if(masterOpen){park($('master-detail'));masterOpen=false;clipOpen=previousPanels?.clip??true;deviceOpen=previousPanels?.devices??false;detail=previousDetail;expanded=previousPanels?.expanded??true;paint();fitHeight();paint();}},openDevices(){masterOpen=false;deviceOpen=true;detail='devices';expanded=true;paint();fitHeight();paint();},openClip(){masterOpen=false;clipOpen=true;detail='clip';expanded=true;paint();fitHeight();paint();},dispose(){doc.removeEventListener('keydown',keydown);doc.removeEventListener('change',change,true);doc.removeEventListener('blur',blur,true);doc.removeEventListener('focus',focus,true);resetPreserved();win?.removeEventListener('blur',cancelResize);win?.removeEventListener('resize',fit);}};
 }

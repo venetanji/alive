@@ -9,7 +9,7 @@ body{min-height:0;height:100dvh}
 .transport-tempo,.transport-playback,.workspace-tools,.transport-group{display:flex;align-items:center;gap:3px;min-width:0;flex:none}
 .transport label{display:flex;align-items:center;gap:3px}
 .transport :is(button,input,select),.transport .time-signature,.transport .readout{height:22px;min-height:22px;border:0;border-radius:0;background:#3b3b3b;padding:2px 6px;line-height:18px}
-.transport button{font-size:11px}
+.transport button{display:inline-flex;align-items:center;justify-content:center;font-size:11px}
 .transport svg{display:block;width:16px;height:16px;margin:0;stroke-width:1.4}
 .transport .toolbar-icon{width:25px;padding:2px 4px}
 .transport .transport-unavailable:disabled{opacity:.48}
@@ -24,6 +24,7 @@ body{min-height:0;height:100dvh}
 .transport button:hover:not(:disabled){background:#555}
 .transport #toggle-browser{width:25px;padding:3px 4px;background:transparent}
 #toggle-browser>span,.workspace-tools button>span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.transport select{appearance:none;padding:1px 19px 1px 5px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath d='M1 1 4 4 7 1' fill='none' stroke='%23dededb'/%3E%3C/svg%3E");background-position:right 6px center;background-repeat:no-repeat}
 .launch-control select{width:70px}
 .transport .scale-root{width:48px}.transport .scale-mode{width:81px}
 .launch-control>span{display:none}
@@ -94,14 +95,14 @@ footer button{flex:none;height:20px;min-height:20px;padding:0 5px;font-size:10px
   #browser-resizer:not([hidden]){flex:0 0 5px;z-index:2}
   .browser-drag-collapsed #browser-resizer{position:absolute;left:0;top:0;bottom:0}
 }
-@media(max-width:1200px){.transport-optional{display:none}.workspace-authority{max-width:95px}}
-@media(max-width:850px){.document-bar{gap:7px}.transport{gap:3px}.transport-secondary{display:none}#diagnostics{grid-template-columns:repeat(2,minmax(0,1fr))}.timeline-tools>.muted{display:none}.workspace-authority{display:none}}
+@media(max-width:1200px){.transport .transport-optional{display:none}.workspace-authority{max-width:95px}}
+@media(max-width:850px){.document-bar{gap:7px}.transport{gap:3px}.transport .transport-secondary{display:none}#diagnostics{grid-template-columns:repeat(2,minmax(0,1fr))}.timeline-tools>.muted{display:none}.workspace-authority{display:none}}
 @media(max-width:620px){
   .document-bar #session-title{display:none}
   #workspace-shell{padding:0 4px}
   .workspace-upper{overflow:visible}
   #workspace-shell #workspace-browser:not([hidden]){position:absolute;top:0;left:0;bottom:0;width:min(290px,75vw);z-index:7;border-right:1px solid #737373}
-  #browser-resizer{display:none}.time-signature,.transport-small{display:none}
+  #browser-resizer{display:none}.time-signature,.transport .transport-small{display:none}
   .transport{padding:5px}.transport #position{width:78px;min-width:78px;letter-spacing:1px}
   #diagnostics{grid-template-columns:minmax(0,1fr)}
 }
