@@ -99,8 +99,9 @@ after the final native run. Preliminary red runs are retained in `/tmp`:
   enlarged the piano grid beyond the default both-open Clip viewport. SVG size
   containment leaves the grid in charge of height; the default-visible velocity
   requirement and the compact scroll-to-slider regression both remain intact.
-- `/tmp/alive-html-native-option-red.log`: WebKitGTK rendered only four rows of
-  the compact Clip dropdown's option text, against nine for the same plain text.
+- `/tmp/alive-html-native-option-calibrated-red.log`: WebKitGTK rendered only
+  nine rows of compact Clip dropdown option text, against thirteen for the same
+  plain text after accounting for the snapshot's pixel scale.
   Removing themed select padding retains its 20 px height and native selection
   behavior. `check_alive_select_webkit.py` compares actual rendered glyph rows.
 

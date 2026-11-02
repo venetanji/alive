@@ -29,7 +29,7 @@ class AliveSelectWebKitTest(unittest.TestCase):
         window.show_all()
         self.addCleanup(window.destroy)
         loop = GLib.MainLoop()
-        failures, result = [], {}
+        failures, result, geometry = [], {}, {}
 
         def guard(callback):
             def guarded(*args):
@@ -46,11 +46,12 @@ class AliveSelectWebKitTest(unittest.TestCase):
             surface = webview.get_snapshot_finish(response)
             surface.flush()
             pixels, stride = surface.get_data(), surface.get_stride()
+            scale = surface.get_width() / geometry['viewportWidth']
             for key, rect in result.items():
                 rows = []
                 # Exclude the select border and arrow; inspect only its label.
-                for y in range(round(rect['y']) + 2, round(rect['bottom']) - 2):
-                    for x in range(round(rect['x']) + 7, round(rect['x']) + 40):
+                for y in range(round((rect['y'] + 2) * scale), round((rect['bottom'] - 2) * scale)):
+                    for x in range(round((rect['x'] + 7) * scale), round((rect['x'] + 40) * scale)):
                         offset = y * stride + x * 4
                         argb = int.from_bytes(pixels[offset:offset + 4], sys.byteorder)
                         if min((argb >> 16) & 255, (argb >> 8) & 255, argb & 255) > 150:
@@ -61,13 +62,14 @@ class AliveSelectWebKitTest(unittest.TestCase):
 
         @guard
         def evaluated(webview, response, _data):
-            result.update(json.loads(webview.evaluate_javascript_finish(response).to_string()))
+            geometry.update(json.loads(webview.evaluate_javascript_finish(response).to_string()))
+            result.update(geometry['rects'])
             view.get_snapshot(WebKit2.SnapshotRegion.VISIBLE, WebKit2.SnapshotOptions.NONE,
                               None, snapshot_done, None)
 
         @guard
         def inspect():
-            view.evaluate_javascript("JSON.stringify(Object.fromEntries(['option-control','reference'].map(id=>[id,document.getElementById(id).getBoundingClientRect().toJSON()])))",
+            view.evaluate_javascript("JSON.stringify({viewportWidth:innerWidth,rects:Object.fromEntries(['option-control','reference'].map(id=>[id,document.getElementById(id).getBoundingClientRect().toJSON()]))})",
                                      -1, None, None, None, evaluated, None)
             return False
 
