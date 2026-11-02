@@ -2,11 +2,33 @@ import {createParameterGestures} from './canvas-parameter-gestures.mjs';
 import {CanvasDocument, createHelpViewState, nodeSpec, parseMessage, parsePatch, serializePatch,structuralParameter} from './canvas-model.mjs';
 import {mergeMessageDisplays, parseMessageTemplate} from './canvas-message-ui.mjs';
 import {mergePrintPopups} from './canvas-print-ui.mjs';
+import {validateLiveDeviceState} from './live-device-profile.mjs';
 
 const copy=value=>value===undefined?undefined:JSON.parse(JSON.stringify(value));
 const equal=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 const empty=()=>({version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[],edges:[]});
 const treeNodes=scope=>scope.nodes.flatMap(node=>[node,...(node.type==='patcher'?treeNodes(node.patcher):[])]);
+const sourceFields=['version','profile','dllSha256','guiSha256','graphicsSha256','values'];
+const sourceIdentity=sourceFields.filter(key=>key!=='values');
+const sameSource=(a,b)=>!!a&&!!b&&sourceIdentity.every(key=>a[key]===b[key])&&
+  a.values.length===b.values.length&&a.values.every((value,index)=>value===b.values[index]);
+function validateExactSource(device,state) {
+  if(!state||![Object.prototype,null].includes(Object.getPrototypeOf(state))||
+    Reflect.ownKeys(state).length!==sourceFields.length||sourceFields.some(key=>!Object.hasOwn(state,key)))
+    throw Error('Live source requires a complete plain state record.');
+  if(!Array.isArray(state.values)||Object.getPrototypeOf(state.values)!==Array.prototype)
+    throw Error('Live source requires a plain native value array.');
+  // Profile validation checks the fixed count before traversing values. Own
+  // indices then close its sparse-array gap without unbounded allocation.
+  validateLiveDeviceState(device,state);
+  if(Reflect.ownKeys(state.values).length!==state.values.length+1)
+    throw Error('Live source requires every native value without extra fields.');
+  for(let index=0;index<state.values.length;index++)if(!Object.hasOwn(state.values,index))
+    throw Error('Live source requires every own native value.');
+}
+function validateExactSources(patch) {
+  for(const node of treeNodes(patch))if(node.type==='live_device')validateExactSource(node.params.device,node.params.state);
+}
 
 // Merge individual fields and stable node IDs. Ordered cable edits conflict when
 // both authors change them, because fan-out order has execution meaning.
@@ -28,7 +50,7 @@ function rebase(base,local,remote,key='') {
 export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
   if(typeof invoke!=='function')throw Error('Shared canvas requires native document IPC.');
   let parameterGestures;
-  let document=new CanvasDocument(empty()),descriptor=null,prepareTask=null,drainTask=null,pollTask=null;
+  let document=new CanvasDocument(empty()),descriptor=null,rawCanonical=null,sourceUnavailable=false,prepareTask=null,drainTask=null,pollTask=null;
   const helpView=createHelpViewState();
   let status={},observations={},messageBoxes={},printPopups={},consoleRecords=[],consoleDropped=0,consoleBaseline=0,consoleEpoch=0;
   let notice='Preparing shared native patch...',faulted=false,panicked=false,disposed=false,detaching=false,epoch=0;
@@ -37,11 +59,11 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
   let activeItem=null;
   const getState=()=>({patch:copy(document.patch),document:copy(document.document),path:[...document.path],...helpView.getState(),
     native:true,shared:true,ownerId:descriptor?.ownerLabel,parameterPreviews:[...(descriptor?.parameterPreviews??[]),...(parameterGestures?.snapshots()??[])],revision:descriptor?.runtimeRevision??null,
-    desiredRevision:(descriptor?.authoringRevision??0)+queue.filter(item=>item.kind==='edit').length,
+    desiredRevision:(descriptor?.authoringRevision??0)+queue.filter(item=>['edit','liveSource'].includes(item.kind)).length,
     activeDocumentRevision:descriptor?.authoringRevision??0,
     status:{...status},observations:copy(observations),messageBoxes:copy(messageBoxes),printPopups:copy(printPopups),console:copy(consoleRecords),
     consoleDropped:Math.max(0,consoleDropped-consoleBaseline),notice,faulted:faulted||panicked,
-    busy:queue.some(item=>item.kind!=='edit'),applying:queue.some(item=>item.kind==='edit'),
+    busy:queue.some(item=>item.kind!=='edit'),applying:queue.some(item=>['edit','liveSource'].includes(item.kind)),
     closing:closeBarriers.size>0,
     ready:!!descriptor&&!queue.length&&!faulted&&!panicked&&!disposed&&!detaching&&!closeBarriers.size&&!status.fault&&!status.server_lost,
     canUndo:!!descriptor?.canUndo,canRedo:!!descriptor?.canRedo});
@@ -55,10 +77,18 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
     const next=new CanvasDocument(patch);reconcileHelp(next,true);
     next.nextId=Math.max(next.nextId,document.nextId);document=next;
   }
-  function rebuild() {
+  function rebuild({isolateConflicts=false}={}) {
     if(!descriptor)return;
     let patch=descriptor.patch;
-    for(const item of queue)if(item.kind==='edit')patch=rebase(item.base,item.patch,patch);
+    for(const item of [...queue])if(item.kind==='edit'){
+      try{patch=rebase(item.base,item.patch,patch);}
+      catch(error){
+        if(!isolateConflicts)throw error;
+        queue.splice(queue.indexOf(item),1);item.resolve(false);epoch++;
+        for(const barrier of closeBarriers.values())barrier.error=error;
+        report(error);
+      }
+    }
     setDocument(patch);
   }
   function acceptDescriptor(value) {
@@ -68,11 +98,13 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
     if(descriptor&&(value.ownerLabel!==descriptor.ownerLabel||value.authoringRevision<descriptor.authoringRevision))return false;
     if(descriptor&&Number.isSafeInteger(descriptor.descriptorRevision)&&
       (!Number.isSafeInteger(value.descriptorRevision)||value.descriptorRevision<descriptor.descriptorRevision))return false;
+    validateExactSources(value.patch);
     const valid=new CanvasDocument(value.patch);
     valid.path=[...(value.viewPath||[])];valid.repairPath();
     if(descriptor?.runtimeRevision!==value.runtimeRevision){observations={};printPopups={};}
     if(descriptor?.runtimeRevision!==value.runtimeRevision||descriptor?.messageTextSerial!==value.messageTextSerial)messageBoxes={};
-    const first=!descriptor;descriptor={...copy(value),patch:copy(valid.document)};
+    const first=!descriptor;rawCanonical=copy(value.patch);sourceUnavailable=false;
+    descriptor={...copy(value),patch:copy(valid.document)};
     if(first)setDocument(valid.document);
     else if(!queue.length)setDocument(valid.document);
     else {try{rebuild();}catch{/* In-flight CAS resolves a conflicting broadcast before recovery. */}}
@@ -108,11 +140,111 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
       let patch;
       try{patch=new CanvasDocument(rebase(item.base,item.patch,descriptor.patch)).document;}
       catch(error){throw Error(`Edit conflict: ${error.message} The authoritative document was retained.`);}
+      // Generic model validation narrows native values. Restore only sources
+      // this edit left untouched, using the latest exact canonical numbers.
+      const maps=[item.base,item.patch,descriptor.patch,rawCanonical].map(root=>new Map(treeNodes(root).map(node=>[node.id,node])));
+      for(const node of treeNodes(patch))if(node.type==='live_device'){
+        const [base,local,remote,raw]=maps.map(map=>map.get(node.id));
+        if([base,local,remote,raw].every(part=>part?.type==='live_device'&&part.params.device===node.params.device)&&
+          sameSource(base.params.state,local.params.state)&&sameSource(node.params.state,remote.params.state))
+          node.params.state=copy(raw.params.state);
+      }
       const result=await invoke('document_commit',{baseRevision:descriptor.authoringRevision,patch,
         ...(item.parameter?{parameter:{...item.parameter,hot:item.parameter.hot&&item.epoch===epoch}}:{}),...(item.messageText?{messageText:item.messageText}:{}),history:item.history, ...(item.force?{force:true}:{})});
       if(acceptResult(result))return true;
     }
     throw Error('Edit conflict: the document is changing in another view. The authoritative document was retained.');
+  }
+  function sourceAvailability() {
+    if(disposed||detaching)return 'This patcher view is detached.';
+    if(!descriptor||!rawCanonical)return 'Wait for the shared document to prepare.';
+    if(sourceUnavailable)return 'Canonical source state is unavailable. Read the shared document again.';
+    if(faulted||panicked||status.fault||status.server_lost)return 'Native document is faulted.';
+    return null;
+  }
+  function readLiveSource(node) {
+    const reason=sourceAvailability();if(reason)return {available:false,reason};
+    const source=treeNodes(rawCanonical).find(part=>part.id===node);
+    if(source?.type!=='live_device')return {available:false,reason:'Native source is unavailable at this node.'};
+    return {available:true,expected:{ownerLabel:descriptor.ownerLabel,runtimeRevision:descriptor.runtimeRevision,
+      node,device:source.params.device,state:copy(source.params.state)}};
+  }
+  function sourceCanonical(node) {
+    if(!descriptor||!rawCanonical||sourceUnavailable||!Number.isSafeInteger(node))return null;
+    const source=treeNodes(rawCanonical).find(part=>part.id===node);
+    return {ownerLabel:descriptor.ownerLabel,runtimeRevision:descriptor.runtimeRevision,
+      authoringRevision:descriptor.authoringRevision,node,
+      source:source?.type==='live_device'?copy(source.params):null};
+  }
+  function sourceResult(outcome,node,reason,canonical=sourceCanonical(node)) {
+    return {outcome,...(reason?{reason}:{}),canonical:copy(canonical),native:{status:'unobserved'}};
+  }
+  async function reconcileSource(error,node) {
+    try {
+      if(!acceptDescriptor(await invoke('document_current')))throw Error('Canonical source reply was out of order.');
+      return sourceResult('unknown',node,String(error?.message||error));
+    } catch {
+      sourceUnavailable=true;
+      return sourceResult('unknown',node,String(error?.message||error),null);
+    }
+  }
+  async function commitSource(item) {
+    const {expected,nextState}=item;
+    for(let attempt=0;attempt<8;attempt++) {
+      const unavailable=sourceAvailability();
+      if(unavailable)return sourceResult('unavailable',expected.node,unavailable);
+      const current=sourceCanonical(expected.node);
+      if(current.ownerLabel!==expected.ownerLabel||current.runtimeRevision!==expected.runtimeRevision||
+        current.source?.device!==expected.device||!sameSource(current.source?.state,expected.state))
+        return sourceResult('conflict',expected.node,'The complete native source or its runtime scope changed.');
+      if(sameSource(expected.state,nextState))return sourceResult('unchanged',expected.node);
+      const patch=copy(rawCanonical);
+      treeNodes(patch).find(node=>node.id===expected.node).params.state=copy(nextState);
+      try {
+        validateExactSources(patch);new CanvasDocument(patch);
+        const result=await invoke('document_commit',{baseRevision:descriptor.authoringRevision,patch,history:true,
+          expectedScope:{ownerLabel:expected.ownerLabel,runtimeRevision:expected.runtimeRevision}});
+        if(typeof result?.accepted!=='boolean'||!result.document?.shared||result.document.ownerLabel!==descriptor.ownerLabel)
+          throw Error('Native source operation did not return the authoritative document.');
+        // Validate even an older reply before trusting its acceptance receipt.
+        validateExactSources(result.document.patch);new CanvasDocument(result.document.patch);
+        if(!Number.isSafeInteger(result.document.authoringRevision)||result.document.authoringRevision<0||
+          !Number.isSafeInteger(result.document.runtimeRevision)||result.document.runtimeRevision<1)
+          throw Error('Invalid native document revision.');
+        if(result.accepted){
+          const source=treeNodes(result.document.patch).find(node=>node.id===expected.node);
+          if(result.document.runtimeRevision!==expected.runtimeRevision||source?.type!=='live_device'||
+            source.params.device!==expected.device||!sameSource(source.params.state,nextState))
+            throw Error('Native source acceptance returned a different source.');
+        }
+        if(!acceptDescriptor(result.document))throw Error('Native source reply was out of order.');
+        if(result.accepted)return sourceResult('accepted',expected.node);
+      } catch(error) {
+        // An IPC failure can follow successful admission. Reconcile once and
+        // leave later queued edits intact; this write must never be replayed.
+        return reconcileSource(error,expected.node);
+      }
+    }
+    return sourceResult('conflict',expected.node,'The document kept changing during native source admission.');
+  }
+  function commitLiveSource(request) {
+    const unavailable=sourceAvailability();
+    if(unavailable)return Promise.resolve(sourceResult('unavailable',request?.expected?.node,unavailable));
+    if(closeBarriers.size||queue.some(item=>item.kind==='history'))return Promise.resolve(sourceResult('unavailable',request?.expected?.node,
+      closeBarriers.size?'This patcher is closing.':'Native history is pending. Wait before editing.'));
+    try {
+      const {expected,nextState}=request??{};
+      if(!expected||typeof expected.ownerLabel!=='string'||!expected.ownerLabel||
+        !Number.isSafeInteger(expected.runtimeRevision)||expected.runtimeRevision<1||
+        !Number.isSafeInteger(expected.node)||expected.node<1||expected.node>100000)
+        throw Error('Invalid native source expectation.');
+      validateExactSource(expected.device,expected.state);validateExactSource(expected.device,nextState);
+      if(sourceIdentity.some(key=>expected.state[key]!==nextState[key]))throw Error('Native source identity cannot change.');
+      if(queue.filter(item=>['edit','liveSource'].includes(item.kind)).length>=MAX_PENDING_EDITS)
+        throw Error('Edit queue full. Wait for native admission before editing.');
+      return enqueue({kind:'liveSource',expected:{ownerLabel:expected.ownerLabel,runtimeRevision:expected.runtimeRevision,
+        node:expected.node,device:expected.device,state:copy(expected.state)},nextState:copy(nextState)});
+    } catch(error) {return Promise.resolve(sourceResult('rejected',request?.expected?.node,String(error?.message||error)));}
   }
   function pump() {
     if(drainTask)return drainTask;
@@ -122,6 +254,14 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
         try {
           let result;
           if(item.kind==='edit')result=await commit(item);
+          else if(item.kind==='liveSource') {
+            result=await commitSource(item);
+            if(!['accepted','unchanged'].includes(result.outcome)){
+              const error=Error(result.reason||'Native source commit failed.');
+              for(const barrier of closeBarriers.values())barrier.error=error;
+              report(error);
+            }
+          }
           else if(item.kind==='history') {
             const response=await invoke('document_history',{direction:item.direction,baseRevision:descriptor.authoringRevision});
             result=acceptResult(response);
@@ -139,9 +279,16 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
             }
           } else result=await item.run();
           if(queue[0]===item)queue.shift();
-          item.resolve(result);rebuild();emit();
+          if(item.kind==='liveSource')rebuild({isolateConflicts:true});
+          item.resolve(result);if(item.kind!=='liveSource')rebuild();emit();
         } catch(error) {
-          if(item.kind==='edit') {
+          if(item.kind==='liveSource') {
+            const result=await reconcileSource(error,item.expected.node);
+            if(queue[0]===item)queue.shift();
+            for(const barrier of closeBarriers.values())barrier.error=error;
+            try{rebuild({isolateConflicts:true});}catch{/* Retain unrelated queued edits for their own admission. */}
+            item.resolve(result);report(error);
+          } else if(item.kind==='edit') {
             // A failed IPC may have reached native admission. Read canonical state
             // before removing optimistic edits, never publish a guessed rollback.
             try{acceptDescriptor(await invoke('document_current'));}catch{}
@@ -174,7 +321,7 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
     const coalesce=history===false&&coalesceKey&&tail?.kind==='edit'&&tail!==activeItem&&tail.coalesceKey===coalesceKey&&tail.epoch===epoch;
     // Refuse before mutating the optimistic document; discrete undo boundaries
     // and event/history ordering are never silently merged or discarded.
-    if(!coalesce&&queue.filter(item=>item.kind==='edit').length>=MAX_PENDING_EDITS)
+    if(!coalesce&&queue.filter(item=>['edit','liveSource'].includes(item.kind)).length>=MAX_PENDING_EDITS)
       throw Error('Edit queue full. Wait for native admission before editing.');
     const base=copy(document.document),result=method(...args);
     reconcileHelp();
@@ -273,7 +420,7 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
     if(disposed)return;
     await settleParameterGestures();detaching=true;epoch++;await flush();disposed=true;observations={};
   }
-  return {beginParameterGesture:parameterGestures.begin,writeParameterGesture:parameterGestures.write,settleParameterGestures,getState,prepare,adoptDescriptor,acceptDescriptor,flush,flushBeforeClose,cancelClose,poll,dispose,disposeDocument:dispose,parameter,event,tab,stop,
+  return {beginParameterGesture:parameterGestures.begin,writeParameterGesture:parameterGestures.write,settleParameterGestures,readLiveSource,commitLiveSource,getState,prepare,adoptDescriptor,acceptDescriptor,flush,flushBeforeClose,cancelClose,poll,dispose,disposeDocument:dispose,parameter,event,tab,stop,
     deviceParameter:(id,key,value,options)=>parameter(id,key,value,{...options,root:true}),
     deviceEvent:(node,inlet,value)=>event(node,inlet,value,undefined,true),
     startAudio:()=>{const token=epoch;return operation(async()=>{if(token!==epoch)return false;if(panicked){report('Panic is latched. Stop audio, then Start audio to recover.');return false;}

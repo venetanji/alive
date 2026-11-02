@@ -144,7 +144,16 @@ impl Registry {
 
     pub fn commit(&mut self, label: &str, base: u64, patch: Value, history: bool,
         admit: impl FnOnce(&Document, &Value) -> Result<Admission, String>) -> Result<CommitResult, String> {
+        self.commit_scoped(label, base, patch, history, None, admit)
+    }
+
+    pub fn commit_scoped(&mut self, label: &str, base: u64, patch: Value, history: bool,
+        expected_scope: Option<(&str, u64)>,
+        admit: impl FnOnce(&Document, &Value) -> Result<Admission, String>) -> Result<CommitResult, String> {
         let owner = self.get_open(label)?;
+        if expected_scope.is_some_and(|(label, revision)| owner.label != label || revision == 0 || owner.runtime_revision != revision) {
+            return Ok(CommitResult { accepted: false, document: self.descriptor(label)? });
+        }
         if owner.authoring_revision != base { return Ok(CommitResult { accepted: false, document: self.descriptor(label)? }); }
         crate::canvas::prepare(patch.clone())?;
         let next = base.checked_add(1).ok_or("Authoring revision exhausted")?;

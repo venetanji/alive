@@ -546,6 +546,126 @@ fn descriptor_revision_orders_runtime_and_save_publications_without_authoring_co
 }
 
 #[test]
+fn scoped_commit_refuses_replaced_runtime_and_foreign_owner_before_validation_or_admission() {
+    let mut registry = Registry::default();
+    let root = registry.add("Owner".into(), Kind::Patch, Some(hierarchy()), None, None).unwrap();
+    let child = registry.open_view(&root.label, 1).unwrap().0;
+    registry.prepare_runtime(&root.label, |_| Ok(10.into())).unwrap();
+    let reapplied = registry.commit(&root.label, 0, hierarchy(), false, |_,_| Ok(11.into())).unwrap().document;
+    for expected in [(&root.label[..], 10), ("foreign-owner", 11), (&child.label[..], 11), (&root.label[..], 0)] {
+        let result = registry.commit_scoped(&child.label, 0, serde_json::json!({"invalid":"patch"}), true,
+            Some(expected), |_,_| panic!("stale scope must not reach admission")).unwrap();
+        assert!(!result.accepted);
+        assert_eq!(result.document.owner_label, root.label);
+        assert_eq!(result.document.patch, reapplied.patch);
+        assert_eq!(result.document.authoring_revision, 0);
+        assert_eq!(result.document.runtime_revision, 11);
+        assert_eq!(result.document.descriptor_revision, reapplied.descriptor_revision);
+        assert!(!result.document.dirty && !result.document.can_undo && !result.document.can_redo);
+    }
+}
+
+#[test]
+fn scoped_commit_requires_prepared_runtime_but_legacy_commit_can_install() {
+    let mut registry = Registry::default();
+    let root = registry.add("Owner".into(), Kind::Patch, Some(patch()), None, None).unwrap();
+    let result = registry.commit_scoped(&root.label, 0, patch(), true, Some((&root.label, 0)),
+        |_,_| panic!("unprepared scope must not reach admission")).unwrap();
+    assert!(!result.accepted);
+    assert_eq!(result.document.runtime_revision, 0);
+    let legacy = registry.commit(&root.label, 0, patch(), true, |_,_| Ok(10.into())).unwrap();
+    assert!(legacy.accepted);
+    assert_eq!(legacy.document.runtime_revision, 10);
+    assert!(!legacy.document.can_undo);
+}
+
+#[test]
+fn scoped_commit_reuses_authoring_cas_admission_and_single_history_transaction() {
+    let mut registry = Registry::default();
+    let root = registry.add("Owner".into(), Kind::Patch, Some(hierarchy()), None, None).unwrap();
+    let child = registry.open_view(&root.label, 1).unwrap().0;
+    registry.prepare_runtime(&root.label, |_| Ok(10.into())).unwrap();
+    let mut edited = hierarchy();
+    edited["nodes"][0]["patcher"]["nodes"][0]["params"]["value"] = serde_json::json!(42);
+    let scope = Some((&root.label[..], 10));
+    assert!(registry.commit_scoped(&child.label, 0, edited.clone(), true, scope,
+        |_,_| Err("admission refused".into())).is_err());
+    assert_eq!(registry.descriptor(&root.label).unwrap().patch, Some(hierarchy()));
+    assert!(!registry.descriptor(&root.label).unwrap().can_undo);
+    let accepted = registry.commit_scoped(&child.label, 0, edited.clone(), true, scope, |owner, candidate| {
+        assert_eq!(owner.runtime_revision, 10);
+        assert_eq!(candidate, &edited);
+        Ok(10.into())
+    }).unwrap();
+    assert!(accepted.accepted);
+    assert_eq!(accepted.document.authoring_revision, 1);
+    assert_eq!(accepted.document.runtime_revision, 10);
+    assert_eq!(registry.get(&root.label).unwrap().undo.len(), 1);
+    let stale = registry.commit_scoped(&child.label, 0, patch(), true, scope,
+        |_,_| panic!("stale authoring CAS must not reach admission")).unwrap();
+    assert!(!stale.accepted);
+    let equal = registry.commit_scoped(&child.label, 1, edited.clone(), true, scope, |_,_| Ok(10.into())).unwrap();
+    assert!(equal.accepted);
+    assert_eq!(registry.get(&root.label).unwrap().undo.len(), 1);
+    let undone = registry.history(&child.label, 1, "undo", |_,_| Ok(10.into())).unwrap();
+    assert_eq!(undone.document.patch, Some(hierarchy()));
+    assert!(!undone.document.can_undo && undone.document.can_redo);
+    assert_eq!(registry.history(&child.label, 2, "redo", |_,_| Ok(10.into())).unwrap().document.patch, Some(edited));
+}
+
+#[test]
+fn scoped_commit_payload_requires_exact_camel_case_scope_fields() {
+    use crate::document_windows::commands::ExpectedScope;
+    let valid: ExpectedScope = serde_json::from_str(r#"{"ownerLabel":"main","runtimeRevision":10}"#).unwrap();
+    assert_eq!(valid.owner_label, "main");
+    assert_eq!(valid.runtime_revision, 10);
+    for invalid in [
+        r#"{"owner_label":"main","runtime_revision":10}"#,
+        r#"{"ownerLabel":"main"}"#,
+        r#"{"ownerLabel":"main","runtimeRevision":"10"}"#,
+        r#"{"ownerLabel":"main","runtimeRevision":10,"extra":true}"#,
+        r#"{"ownerLabel":"main","runtimeRevision":10,"runtimeRevision":11}"#,
+    ] {
+        assert!(serde_json::from_str::<ExpectedScope>(invalid).is_err());
+    }
+}
+
+#[test]
+fn scoped_source_commit_retains_raw_values_and_existing_scalar_gesture_refusal() {
+    let mut values = vec![serde_json::json!(0); 203];
+    values[194] = serde_json::json!(12.1);
+    let original = serde_json::json!({"version":1,"profile":"ultra-canvas-v1","presentation":null,"nodes":[
+        {"id":1,"type":"live_device","x":0,"y":0,"params":{"device":"Analog","state":{
+            "version":1,"profile":"live12-analog-v1",
+            "dllSha256":"4528afb1fbc78d49ed92161ed13ae1df50606e2e2b2c4f28caeca0cbc1476133",
+            "guiSha256":"5ec872d673fd5f4f5f05787e4245c56e172ff2663c2d4493e94d598b883114e6",
+            "graphicsSha256":"a0b8aa480aa3d21f093b416ea59b3f200d2e2466936f95d886a554bffe875cb7","values":values}}},
+        {"id":2,"type":"number","x":0,"y":0,"params":{"value":1}}],"edges":[]});
+    let mut registry = Registry::default();
+    let root = registry.add("Source".into(), Kind::Patch, Some(original.clone()), None, None).unwrap();
+    registry.prepare_runtime(&root.label, |_| Ok(10.into())).unwrap();
+    let token = registry.begin_parameter_gesture(&root.label, &root.label, 10, 2, "value").unwrap();
+    let mut edited = original.clone();
+    edited["nodes"][0]["params"]["state"]["values"][26] = serde_json::json!(0.875);
+    let refused = registry.commit_scoped(&root.label, 0, edited.clone(), true, Some((&root.label, 10)),
+        |_,_| panic!("source change during an active scalar gesture must not reach admission"));
+    assert!(refused.is_err());
+    assert_eq!(registry.descriptor(&root.label).unwrap().patch, Some(original.clone()));
+    assert!(registry.parameter_gesture(&root.label, &root.label, 10, token).is_ok());
+    registry.finish_parameter_gesture(&root.label, &root.label, 10, token, false, |_,_| panic!("cancel has no admission")).unwrap();
+    let accepted = registry.commit_scoped(&root.label, 0, edited.clone(), true, Some((&root.label, 10)), |_, candidate| {
+        assert_eq!(candidate["nodes"][0]["params"]["state"]["values"][194].as_f64(), Some(12.1));
+        Ok(10.into())
+    }).unwrap();
+    assert!(accepted.accepted);
+    assert_eq!(accepted.document.patch, Some(edited.clone()));
+    assert_eq!(accepted.document.runtime_revision, 10);
+    assert_eq!(registry.get(&root.label).unwrap().undo.len(), 1);
+    assert_eq!(registry.history(&root.label, 1, "undo", |_,_| Ok(10.into())).unwrap().document.patch, Some(original));
+    assert_eq!(registry.history(&root.label, 2, "redo", |_,_| Ok(10.into())).unwrap().document.patch, Some(edited));
+}
+
+#[test]
 fn child_becoming_ready_during_owner_flush_adds_an_acknowledgement_obligation() {
     let mut registry = Registry::default();
     let root = registry.add("Owner".into(), Kind::Patch, Some(hierarchy()), None, None).unwrap();
