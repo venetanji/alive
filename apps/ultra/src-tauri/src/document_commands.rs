@@ -63,24 +63,54 @@ pub(crate) fn canvas_parameter(registry: &mut Registry, audio: &mut crate::Audio
 pub fn admit_owned(io: &mut crate::audio::Driver, control: &mut canvas::CanvasState, owner: &Document, patch: &Value,
     parameter: Option<&Parameter>, message_text: Option<&MessageText>, force: bool) -> Result<documents::Admission, String> {
     io.reject_retiring()?;
-    admit_message(control, owner, patch, parameter, message_text, force)
+    admit_message_inner(control, owner, patch, parameter, message_text, force, Some(io))
 }
 
 pub fn close_owned(io: &mut crate::audio::Driver, document: u32) -> Result<(), String> {
     io.reject_retiring()?;
-    if unsafe { crate::ultra_canvas_close_document(document) } == 0 { return Err("Patch is busy. Try closing the window again.".into()); }
+    let external = crate::live_device::count(document) != 0;
+    let resume = external && io.snapshot().running;
+    if external { io.stop()?; io.require_quiescent()?; }
+    let closed = unsafe { crate::ultra_canvas_close_document(document) } != 0;
+    if resume { let _ = io.start(); }
+    if !closed { return Err("Patch is busy. Try closing the window again.".into()); }
     Ok(())
+}
+
+pub(crate) fn stop_owned(io: &mut crate::audio::Driver, document: u32) -> Result<bool, String> {
+    io.reject_retiring()?;
+    let external = crate::live_device::count(document) != 0;
+    let resume = external && io.snapshot().running;
+    if external { io.stop()?; io.require_quiescent()?; }
+    let stopped = unsafe { crate::ultra_canvas_stop_document(document) } != 0;
+    // Reconstruct source state before callbacks resume; ResetA is not a hard clear.
+    if resume { let _ = io.start(); }
+    if !stopped { return Err("Patch stop was not admitted. Try again.".into()); }
+    Ok(true)
 }
 
 pub fn admit(control: &mut canvas::CanvasState, owner: &Document, patch: &Value, parameter: Option<&Parameter>, force: bool) -> Result<documents::Admission, String> {
     admit_message(control,owner,patch,parameter,None,force)
 }
 pub fn admit_message(control: &mut canvas::CanvasState, owner: &Document, patch: &Value, parameter: Option<&Parameter>, message_text: Option<&MessageText>, force: bool) -> Result<documents::Admission, String> {
+    admit_message_inner(control, owner, patch, parameter, message_text, force, None)
+}
+fn admit_message_inner(control: &mut canvas::CanvasState, owner: &Document, patch: &Value, parameter: Option<&Parameter>, message_text: Option<&MessageText>, force: bool,
+    io: Option<&mut crate::audio::Driver>) -> Result<documents::Admission, String> {
     if parameter.is_some() && message_text.is_some() { return Err("Numeric and message text hints cannot be combined".into()); }
     let plan = canvas::prepare(patch.clone())?;
     let force = force || owner.runtime_revision == 0;
     if force { owner.require_settled_parameter_gestures()?; }
     if force && message_text.is_some() { return Err("Message text hints require an active graph and cannot accompany a forced installation".into()); }
+    if !force {
+        if let Some(changes) = control.live_state_changes(&plan).filter(|changes| !changes.is_empty()) {
+            if parameter.is_some() || message_text.is_some() { return Err("Live source state edits cannot accompany numeric or message text hints".into()); }
+            let updates: Vec<_> = changes.into_iter().cloned().collect();
+            crate::live_device::publish(owner.id, control.revision(), &updates)?;
+            control.accept_live_state(plan);
+            return Ok(documents::Admission { revision: control.revision(), message_text_serial: control.message_text_serial() });
+        }
+    }
     let inferred_text = if !force && parameter.is_none() && message_text.is_none() {
         control.single_message_text_change(&plan).map(|(node,text)| MessageText { node,text })
     } else { None };
@@ -115,7 +145,23 @@ pub fn admit_message(control: &mut canvas::CanvasState, owner: &Document, patch:
         }
         return Err("Numeric parameter hint does not match the complete executable change".into());
     }
-    let revision=control.install(plan, |graph| unsafe { crate::ultra_canvas_install_document(owner.id, graph) != 0 })?;
+    let revision = if control.has_live_devices() || !plan.live_devices.is_empty() {
+        let io = io.ok_or("live.device~ structural changes require the audio driver's callback fence")?;
+        let resume = io.snapshot().running;
+        io.stop()?;
+        io.require_quiescent()?;
+        let sources = plan.live_devices.clone();
+        let mut detail = None;
+        let installed = control.install(plan, |graph| match crate::live_device::install(owner.id, graph, &sources) {
+            Ok(()) => true,
+            Err(error) => { detail = Some(error); false }
+        });
+        // Native admission has committed; output restart failure must not undo source state.
+        if resume { let _ = io.start(); }
+        installed.map_err(|error| detail.unwrap_or(error))?
+    } else {
+        control.install(plan, |graph| unsafe { crate::ultra_canvas_install_document(owner.id, graph) != 0 })?
+    };
     Ok(documents::Admission {revision,message_text_serial:control.message_text_serial()})
 }
 

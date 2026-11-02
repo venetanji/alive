@@ -20,6 +20,8 @@ mod hierarchy;
 mod presentation;
 #[path = "canvas_device.rs"]
 pub(crate) mod device;
+#[path = "canvas_live_device.rs"]
+pub(crate) mod live_device;
 
 // Keep these C-layout types in sync with native/patch_graph.h. Tests pin sizes.
 #[repr(C)]
@@ -315,6 +317,7 @@ where
 #[derive(Clone, Debug)]
 pub struct Prepared {
     pub native: NativeGraph,
+    pub(crate) live_devices: Vec<live_device::Source>,
 }
 impl Prepared {
     pub fn parameter_hot(&self,id:u32,key:&str)->bool{key=="value"&&self.native.nodes[..self.native.node_count as usize].iter().any(|n|n.id==id&&matches!(n.kind,2|3|15..=18|52))}
@@ -401,6 +404,7 @@ fn inlet(node: &NativeNode, port: u32) -> Option<Port> {
         64 if port <= 1 => Some(Port::Voice4),
         67 if port <= 1 => Some(Port::Mono),
         67 if port <= 3 => Some(Port::Control),
+        68 if port == 0 => Some(Port::Control),
         _ => None,
     }
 }
@@ -423,6 +427,7 @@ fn outlet(node: &NativeNode, port: u32) -> Option<Port> {
         61..=64 if port == 0 => Some(Port::Voice4),
         65 if port == 0 => Some(Port::Mono),
         66..=67 if port <= 1 => Some(Port::Mono),
+        68 if port <= 1 => Some(Port::Mono),
         _ => None,
     }
 }
@@ -450,7 +455,7 @@ fn kind(name: &str) -> Option<u32> {
         "inlet", "outlet", "number_int", "message_box",
         "subtract", "divide", "modulo", "reverse_subtract", "reverse_divide", "abs",
         "poly_note", "saw_voice", "filter_voice", "adsr_voice", "multiply_voice", "mix_voice",
-        "audio_in", "filter_stereo",
+        "audio_in", "filter_stereo", "live_device",
     ]
     .iter()
     .position(|candidate| *candidate == name)
@@ -843,6 +848,7 @@ fn prepare_flat(doc: Document, allow_relays: bool) -> Result<Prepared, String> {
     let mut ids = HashMap::new();
     let mut devices = HashSet::new();
     let mut singletons = HashSet::new();
+    let mut live_devices = Vec::new();
     for (index, node) in doc.nodes.iter().enumerate() {
         if node.id == 0 || ids.insert(node.id, index).is_some() {
             return Err("Node IDs must be unique positive u32 integers".into());
@@ -860,7 +866,9 @@ fn prepare_flat(doc: Document, allow_relays: bool) -> Result<Prepared, String> {
             kind,
             ..NativeNode::default()
         };
-        if kind == 1 || kind == 53 {
+        if kind == 68 {
+            live_devices.push(live_device::Source::parse(node.id, &node.params)?);
+        } else if kind == 1 || kind == 53 {
             if node.params.keys().any(|key| key != "text") {
                 return Err("Unknown message parameter".into());
             }
@@ -1016,7 +1024,7 @@ fn prepare_flat(doc: Document, allow_relays: bool) -> Result<Prepared, String> {
         }
     }
     device::validate(doc.device.as_ref(), &graph)?;
-    Ok(Prepared { native: graph })
+    Ok(Prepared { native: graph, live_devices })
 }
 
 #[derive(Clone, Default)]
@@ -1046,7 +1054,36 @@ impl CanvasState {
         self.graph.as_ref().is_some_and(|current| {
             let a = &current.native; let b = &plan.native;
             a.node_count == b.node_count && a.edge_count == b.edge_count && a.nodes == b.nodes && a.edges == b.edges
+                && current.live_devices == plan.live_devices
         })
+    }
+
+    pub(crate) fn has_live_devices(&self) -> bool {
+        self.graph.as_ref().is_some_and(|plan| !plan.live_devices.is_empty())
+    }
+
+    pub(crate) fn live_source(&self, revision: u64, node: u32) -> Result<&live_device::Source, String> {
+        self.node_index(revision, node)?;
+        self.graph.as_ref().unwrap().live_devices.iter().find(|source| source.node == node)
+            .ok_or_else(|| "The canvas object is not a qualified live.device~ source".into())
+    }
+
+    pub(crate) fn live_state_changes<'a>(&self, plan: &'a Prepared) -> Option<Vec<&'a live_device::Source>> {
+        let current = self.graph.as_ref()?;
+        let (a,b) = (&current.native, &plan.native);
+        if a.node_count != b.node_count || a.edge_count != b.edge_count || a.nodes != b.nodes || a.edges != b.edges
+            || current.live_devices.len() != plan.live_devices.len() { return None; }
+        let mut changes = Vec::new();
+        for (before,after) in current.live_devices.iter().zip(&plan.live_devices) {
+            if !before.same_identity(after) { return None; }
+            if before != after { changes.push(after); }
+        }
+        Some(changes)
+    }
+
+    pub(crate) fn accept_live_state(&mut self, mut plan: Prepared) {
+        plan.native.revision = self.revision;
+        self.graph = Some(plan);
     }
 
     pub fn parameter_matches(&self, plan: &Prepared, node: u32, key: &str, value: f64) -> Result<bool, String> {

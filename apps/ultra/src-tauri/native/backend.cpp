@@ -4,6 +4,10 @@
 #include "alive_session.hpp"
 #include "alive-master-v1.h"
 #include "../../core/engine.hpp"
+#include "external_device/live_device.h"
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+#include "external_device/live_device.hpp"
+#endif
 #include <atomic>
 #include <array>
 #include <algorithm>
@@ -75,6 +79,9 @@ struct Control {
  ultra::CanvasMessageTemplate message_template{};uint64_t text_edit_serial=0,stop_epoch=0;
 };
 constexpr unsigned MaxDocuments=ultra::CanvasWorkspace::MaxDocuments;
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+std::array<std::unique_ptr<ultra::LiveDeviceBank>,MaxDocuments> live_devices{};
+#endif
 std::array<ultra::CanvasPlan,MaxDocuments> admitted_canvas{}; // Serialized control-thread ownership.
 std::array<uint64_t,MaxDocuments> admitted_message_serial{};
 // Out-of-band, coalescing safety mailbox. Never competes with the edit FIFO.
@@ -217,6 +224,19 @@ void configure_canvas_audio(){
   canvas.runtime(d).configure_voices(0,emit);
  }
 }
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+bool rearm_live_devices(){
+ for(unsigned d=0;d<MaxDocuments;++d)if(live_devices[d]&&requested_documents[d].load()&&canvas.live(d)){
+  char detail[256]{};
+  if(!live_devices[d]->rearm(canvas.runtime(d),detail,sizeof detail)){error="Cannot reconstruct an installed Live device; audio remains stopped.";return false;}
+ }
+ return true;
+}
+bool apply_live_device_states(){
+ for(unsigned d=0;d<MaxDocuments;++d)if(live_devices[d]&&canvas.live(d)&&!live_devices[d]->apply_pending())return false;
+ return true;
+}
+#endif
 void tick_canvas_idle(){
  if(session.configured())return;
  if(running.load()||engine.status().ready||!canvas_requested.load()||!callback_canvas){reset_canvas_idle_clock();return;}
@@ -225,6 +245,9 @@ void tick_canvas_idle(){
  const double frames=std::min(elapsed,.1)*48000.+canvas_idle_fraction;
  const auto count=static_cast<unsigned>(frames);canvas_idle_fraction=frames-count;
  auto discard=[](alive::Event){return true;};
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+ if(!apply_live_device_states()){canvas.clear_timers();return;}
+#endif
  for(unsigned i=0;i<count&&!canvas.failed();++i){if(i%1024==0)canvas.begin_callback();canvas.sample(0,discard);}
  publish_canvas();
 }
@@ -304,6 +327,9 @@ int render_audio(Frames n,float* l,float* r,bool with_midi){
  // cleanup was already emitted by the mailbox before draining this FIFO.
  auto stopped_edit=[](alive::Event){return true;};
  canvas.begin_callback();
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+ if(!apply_live_device_states()){engine.panic();std::fill_n(l,n,0.f);std::fill_n(r,n,0.f);return 0;}
+#endif
  session.begin(canvas);
  auto leave_canvas=[&]{if(callback_canvas){for(unsigned d=0;d<MaxDocuments;++d)canvas.close(d,0,emit);canvas_silence=64;callback_canvas=false;for(unsigned d=0;d<2;++d)emit({0,uint8_t(d),alive::Kind::Reset,0,0});}};
  auto manual=[&](alive::Event e){
@@ -566,6 +592,9 @@ return 0;}
  if(!engine.init(48000)){ultra_audio_stop();error="Clockwork/Faust guest initialization was refused.";return 0;}
  callback_routes=routes.load();
  synchronize_canvas_runtime(false);canvas_silence=64;
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+ if(!rearm_live_devices()){engine.shutdown();return 0;}
+#endif
  if(callback_canvas)configure_canvas_audio();
  publish_canvas();
  jack.l=jack.port_register(jack.client,"audio_out_l","32 bit float mono audio",2,0);jack.r=jack.port_register(jack.client,"audio_out_r","32 bit float mono audio",2,0);jack.midi=jack.port_register(jack.client,"midi_in","8 bit raw midi",1,0);
@@ -584,6 +613,9 @@ int ultra_external_start(){
   stop_audio_impl(false);
   if(!engine.init(48000)){error="Clockwork/Faust guest initialization was refused.";return 0;}
   callback_routes=routes.load();synchronize_canvas_runtime(false);canvas_silence=64;
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+  if(!rearm_live_devices()){engine.shutdown();return 0;}
+#endif
   if(callback_canvas)configure_canvas_audio();
   publish_canvas();fault_reason=0;lost=false;xruns=0;period=0;running=true;
   error="Rust audio output is running.";return 1;
@@ -630,14 +662,19 @@ static bool canvas_release_message(unsigned document,unsigned node,unsigned inle
  const bool pedal=message.count==1&&ultra::canvas_numeric_message(message)&&message.values[0]<64;
  const bool panic=!message.count&&ultra::canvas_named(message,"panic");
  const auto kind=plan.graph.nodes[unsigned(start)].kind;
+ const auto note_source=[](unsigned k){return k==ultra::Voice||k==ultra::PolyNote
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+  ||k==ultra::ExternalInstrument
+#endif
+  ;};
  // A direct gate-on cannot hide an authored release transform.
- if((kind==ultra::Voice||kind==ultra::PolyNote)&&!inlet&&message.count==2&&ultra::canvas_numeric_message(message)&&message.values[1]>0)return false;
+ if(note_source(kind)&&!inlet&&message.count==2&&ultra::canvas_numeric_message(message)&&message.values[1]>0)return false;
  if((kind==ultra::Voice&&inlet)||(kind==ultra::PolyNote&&inlet&&message.count==1&&ultra::canvas_numeric_message(message)&&message.values[0]>=64))return false;
  constexpr unsigned Slots=32,Nodes=MaxDocuments*Slots;
  std::array<bool,MaxDocuments> live{};for(unsigned d=0;d<MaxDocuments;++d)live[d]=requested_documents[d].load();
  std::array<bool,Nodes> reached{},targets{};std::array<unsigned,Nodes> pending{};unsigned head=0,tail=0;
  auto push=[&](unsigned d,unsigned slot){const unsigned index=d*Slots+slot;if(!reached[index]){reached[index]=true;pending[head++]=index;}};
- auto target=[&](unsigned d,unsigned slot,unsigned port){const auto k=admitted_canvas[d].graph.nodes[slot].kind;if(k==ultra::PolyNote||(k==ultra::Voice&&!port))targets[d*Slots+slot]=true;};
+ auto target=[&](unsigned d,unsigned slot,unsigned port){const auto k=admitted_canvas[d].graph.nodes[slot].kind;if(k==ultra::PolyNote||(note_source(k)&&!port))targets[d*Slots+slot]=true;};
  auto named_link=[](const UltraCanvasNode& sender,const UltraCanvasNode& receiver){return !receiver.text[0]||!std::strcmp(sender.text,receiver.text);};
  target(document,unsigned(start),inlet);push(document,unsigned(start));
  // Treat control transforms conservatively. A bang may emit a stored note-off.
@@ -672,6 +709,10 @@ static bool canvas_release_message(unsigned document,unsigned node,unsigned inle
 int ultra_canvas_install_document(uint32_t document,const UltraCanvasGraph* graph){
  if(session.configured())return 0;
  if(document>=MaxDocuments||!graph||graph->revision<=admitted_canvas[document].graph.revision)return 0;
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+ if(live_devices[document])return 0;
+ for(unsigned i=0;i<graph->node_count&&i<32;++i)if(graph->nodes[i].kind==ultra::ExternalInstrument)return 0;
+#endif
  ultra::CanvasPlan next{};if(!ultra::compile_canvas(*graph,next))return 0;
  const bool was_running=running.load();
  if(was_running){
@@ -681,6 +722,62 @@ int ultra_canvas_install_document(uint32_t document,const UltraCanvasGraph* grap
  admitted_canvas[document]=next;admitted_message_serial[document]=0;requested_documents[document]=true;update_canvas_requested();sequence_requested=false;
  if(!was_running){auto discard=[](alive::Event){return true;};canvas.begin_callback();canvas.install(document,next,0,discard);callback_canvas=canvas.any();publish_canvas();}
  return 1;
+}
+static int live_device_failure(char* output,size_t capacity,const char* message){if(output&&capacity)std::snprintf(output,capacity,"%s",message);return 0;}
+int ultra_canvas_install_live_devices_document(uint32_t document,const UltraCanvasGraph* graph,const UltraLiveDeviceSource* sources,uint32_t count,char* output,size_t capacity){
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+ if(document>=MaxDocuments||!graph||session.configured()||running.load()||engine.status().ready)
+  return live_device_failure(output,capacity,"Live device graph installation requires a quiescent audio driver.");
+ if(graph->revision<=admitted_canvas[document].graph.revision)return live_device_failure(output,capacity,"Stale Live device graph revision.");
+ ultra::CanvasPlan next{};if(!ultra::compile_canvas(*graph,next))return live_device_failure(output,capacity,"Invalid Live device graph.");
+ auto bank=ultra::LiveDeviceBank::prepare(*graph,sources,count,output,capacity);if(!bank)return 0;
+ auto discard=[](alive::Event){return true;};canvas.begin_callback();
+ const auto previous=admitted_canvas[document];const bool was_live=canvas.live(document);
+ if(!canvas.install(document,next,0,discard)||!bank->bind(canvas.runtime(document))){
+  if(was_live){canvas.install(document,previous,0,discard);if(live_devices[document])live_devices[document]->bind(canvas.runtime(document));}
+  else canvas.close(document,0,discard);
+  return live_device_failure(output,capacity,"Cannot bind prepared Live device graph.");
+ }
+ live_devices[document]=count?std::move(bank):nullptr;
+ admitted_canvas[document]=next;admitted_message_serial[document]=0;requested_documents[document]=true;update_canvas_requested();sequence_requested=false;
+ callback_canvas=canvas.any();document_silence[document]=64;publish_canvas();if(output&&capacity)output[0]=0;return 1;
+#else
+ (void)document;(void)graph;(void)sources;(void)count;
+ return live_device_failure(output,capacity,"This Ultra build does not include the native Live device adapter.");
+#endif
+}
+uint32_t ultra_canvas_live_devices_count_document(uint32_t document){
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+ return document<MaxDocuments&&live_devices[document]?live_devices[document]->count():0;
+#else
+ (void)document;return 0;
+#endif
+}
+int ultra_canvas_live_devices_rearm_document(uint32_t document,char* output,size_t capacity){
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+ if(document>=MaxDocuments||running.load()||engine.status().ready||!requested_documents[document].load()||!canvas.live(document)||!live_devices[document])return live_device_failure(output,capacity,"Live device rearm requires a stopped, installed document.");
+ return live_devices[document]->rearm(canvas.runtime(document),output,capacity);
+#else
+ (void)document;return live_device_failure(output,capacity,"This Ultra build does not include the native Live device adapter.");
+#endif
+}
+int ultra_canvas_live_devices_set_states_document(uint32_t document,uint64_t revision,const UltraLiveDeviceStateUpdate* updates,uint32_t count,char* output,size_t capacity){
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+ if(document>=MaxDocuments||session.configured()||!requested_documents[document].load()||revision!=admitted_canvas[document].graph.revision||!live_devices[document])return live_device_failure(output,capacity,"Stale or missing Live device document.");
+ if(!live_devices[document]->set_states(updates,count,output,capacity))return 0;
+ return 1;
+#else
+ (void)document;(void)revision;(void)updates;(void)count;
+ return live_device_failure(output,capacity,"This Ultra build does not include the native Live device adapter.");
+#endif
+}
+uint32_t ultra_canvas_live_device_parameters_document(uint32_t document,uint64_t revision,uint32_t node,UltraLiveDeviceParameterState* states,uint32_t capacity){
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+ if(document>=MaxDocuments||!requested_documents[document].load()||revision!=admitted_canvas[document].graph.revision||!live_devices[document])return 0;
+ return live_devices[document]->parameters(node,states,capacity);
+#else
+ (void)document;(void)revision;(void)node;(void)states;(void)capacity;return 0;
+#endif
 }
 int ultra_canvas_event_document(uint32_t document,uint64_t revision,uint32_t node,uint32_t inlet,uint32_t count,const double* values){
  if(count>8||(count&&!values))return 0;
@@ -784,6 +881,14 @@ int ultra_canvas_stop_document(uint32_t document){
 int ultra_canvas_close_document(uint32_t document){
  if(session.hosted(document))return 0;
  if(document>=MaxDocuments)return 0;
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+ if(live_devices[document]){
+  if(running.load()||engine.status().ready)return 0;
+  auto discard=[](alive::Event){return true;};canvas.close(document,0,discard);
+  for(unsigned i=0;i<admitted_canvas[document].graph.node_count;++i)if(admitted_canvas[document].graph.nodes[i].kind==ultra::ExternalInstrument)canvas.runtime(document).unbind_external(admitted_canvas[document].graph.nodes[i].id);
+  live_devices[document].reset();
+ }
+#endif
  if(!requested_documents[document].load()){discard_canvas_console(document);return 1;}
  const bool was_running=running.load();
  if(was_running){Control c{};c.kind=ControlKind::CanvasClose;c.document=document;if(!queue_control(c,false))return 0;}

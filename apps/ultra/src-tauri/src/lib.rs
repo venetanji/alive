@@ -1,4 +1,5 @@
 mod canvas;
+mod live_device;
 #[cfg(target_os = "linux")]
 mod canvas_pinch;
 mod help_reference;
@@ -471,10 +472,10 @@ fn canvas_param(
     Ok(true)
 }
 #[tauri::command]
-fn canvas_stop(window: tauri::WebviewWindow, documents: tauri::State<document_windows::Documents>, state: tauri::State<Audio>) -> Result<bool, String> {
+fn canvas_stop(window: tauri::WebviewWindow, documents: tauri::State<document_windows::Documents>, state: tauri::State<Audio>, io: tauri::State<AudioIo>) -> Result<bool, String> {
     with_canvas(&window, &documents, &state, |id, _| {
-        if unsafe { ultra_canvas_stop_document(id) } == 0 { return Err("Patch stop was not admitted. Try again.".into()); }
-        Ok(true)
+        let mut io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
+        document_windows::commands::stop_owned(&mut io, id)
     })
 }
 #[tauri::command]
@@ -560,7 +561,7 @@ mod tests {
         unsafe { ultra_canvas_status_document(RECEIVE_DOCUMENT,&mut status); }
         assert_eq!(status.nodes[..status.node_count as usize].iter().find(|node|node.id==2).unwrap().pulses,pulses,"another window's open/close reset this graph");
         let mut decoder = canvas::CanvasState::default();
-        let decoding_revision = decoder.install(canvas::Prepared { native: source.clone() }, |_| true).unwrap();
+        let decoding_revision = decoder.install(canvas::Prepared { native: source.clone(), live_devices: Vec::new() }, |_| true).unwrap();
         let text = decoder.event(decoding_revision,2,0,serde_json::json!("notice hello 2.25")).unwrap();
         assert_eq!(unsafe { ultra_canvas_message_document(SOURCE_DOCUMENT,source.revision,2,0,&text) },1);
         let mut records = [canvas::NativeConsoleRecord::default();128]; let mut dropped=0;
@@ -910,6 +911,9 @@ pub fn run_ultra(context: fn() -> tauri::Context<tauri::Wry>) {
             canvas_status,
             help_reference::help_shell_probe,
             help_reference::help_reference,
+            live_device::live_device_parameters,
+            live_device::live_device_resource_pack,
+            live_device::live_device_default_preset,
             document_windows::document_current,
             document_windows::commands::document_commit,
             document_windows::commands::document_parameter_gesture,

@@ -64,7 +64,10 @@ files before changes. Use the private immutable source snapshot for the port.
 - [x] Prove rollback, coherent state batches, revision rejection, two independent
       instances, driver fences, stop/rearm and no-adapter refusals.
 - [x] Run real Analog/Electric lower-level checks separately from mocked bank tests.
-- [ ] Commit the reviewed host batch before broadening Alive admission.
+- [x] Independently review host ownership and reject all qualified descriptor
+      signature drift before restoring any candidate state; verify the failing
+      regression, partial-write fault and stopped reconstruction.
+- [x] Commit the reviewed host batch before broadening Alive admission.
 
 ## 4. Parallel Device Profiles And Original Panels
 
@@ -130,7 +133,11 @@ Ordinary host port: 79 standalone Rust canvas tests, native bank/shim/graph/
 no-adapter/ASan/UBSan, real Analog/Electric probes and real two-source canonical
 state/history/save/reopen test pass. Desktop Rust suite: 304 pass, 1 pre-existing
 CPAL instrumentation failure (reproduced on untouched ca161c4), 5 ignored.
-Independent host review is pending. Current launchers still select the previously
+Independent host review found one descriptor-identity gap, now fixed: all seven
+signature mutations reject before writes and retain the installed bank. Root
+independently reran bank, shim, real Analog backend, ASan/UBSan and default-build
+refusal checks successfully. Driver-retirement failure cases and continuous
+musical reset remain subsequent work. Current launchers still select the previously
 verified UI source `8bcddd4`; native changes are not installed or presented as
 accepted.
 

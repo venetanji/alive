@@ -33,6 +33,28 @@ fn empty_document_is_a_valid_silent_graph() {
     let p = prepare(patch(vec![], vec![])).unwrap();
     assert_eq!(p.native.node_count, 0);
 }
+
+#[test]
+fn live_device_retains_complete_source_state_and_routes_stereo_notes() {
+    let params = json!({"device":"Analog","state":{
+        "version":1,"profile":"live12-analog-v1",
+        "dllSha256":"4528afb1fbc78d49ed92161ed13ae1df50606e2e2b2c4f28caeca0cbc1476133",
+        "guiSha256":"5ec872d673fd5f4f5f05787e4245c56e172ff2663c2d4493e94d598b883114e6",
+        "graphicsSha256":"a0b8aa480aa3d21f093b416ea59b3f200d2e2466936f95d886a554bffe875cb7",
+        "values":vec![0.;203]
+    }});
+    let source = patch(vec![node(1,"live_device",params),
+        node(2,"signal_dac",json!({"channels":"1 2"}))],
+        vec![edge(1,0,2,0),edge(1,1,2,1)]);
+    let prepared = prepare(source.clone()).expect("qualified complete native source must prepare");
+    let mut state = CanvasState::default();
+    let revision = state.install(prepared, |_|true).unwrap();
+    assert!(state.event(revision,1,0,json!([60,100])).is_ok());
+    assert!(state.event(revision,1,1,json!([60,100])).is_err());
+    let mut edited = source;
+    edited["nodes"][0]["params"]["state"]["values"][34] = json!(0.25);
+    assert!(!state.matches(&prepare(edited).unwrap()),"full native state must participate in executable equality");
+}
 #[test]
 fn authored_voice_objects_compile_with_exact_discrete_lanes_and_live_parameters() {
     let source = patch(vec![node(1,"poly_note",json!({})), node(2,"saw_voice",json!({})),
@@ -1605,4 +1627,109 @@ fn empty_surfaces_zero_exposed_parameters_and_nested_unmounted_controls_are_curr
     assert!(device::host_manifest(&nested,&graph).is_ok(),"unmounted child presentation needs no Alive capability");
     source["nodes"].as_array_mut().unwrap().push(node(9,"live_device",json!({"device":"Analog","state":{"profile":"live12-analog-v1"}})));
     assert!(prepare(source).is_err(),"schema support cannot admit an unavailable executable");
+}
+
+fn live_device_params() -> Value {
+    json!({"device":"Analog","state":{
+        "version":1,"profile":"live12-analog-v1",
+        "dllSha256":"4528afb1fbc78d49ed92161ed13ae1df50606e2e2b2c4f28caeca0cbc1476133",
+        "guiSha256":"5ec872d673fd5f4f5f05787e4245c56e172ff2663c2d4493e94d598b883114e6",
+        "graphicsSha256":"a0b8aa480aa3d21f093b416ea59b3f200d2e2466936f95d886a554bffe875cb7",
+        "values":live_device::ANALOG_DESCRIPTORS.iter().map(|&(_,_,_,minimum,_)|minimum).collect::<Vec<_>>()
+    }})
+}
+
+#[test]
+fn live_device_prepares_independent_stereo_sources_and_note_ingress() {
+    let source=patch(vec![node(1,"live_device",live_device_params()),
+        node(2,"live_device",live_device_params()),node(3,"signal_dac",json!({"channels":"1 2"}))],
+        vec![edge(1,0,3,0),edge(1,1,3,1),edge(2,0,3,0),edge(2,1,3,1)]);
+    let prepared=prepare(source).expect("qualified full source states prepare");
+    assert_eq!(prepared.native.nodes[0].kind,68);
+    let mut state=CanvasState::default();let revision=state.install(prepared,|_|true).unwrap();
+    assert!(state.event(revision,1,0,json!([60,100])).is_ok());
+    assert!(state.event(revision,2,0,json!([60,0])).is_ok());
+    assert!(state.event(revision,1,1,json!([60,100])).is_err());
+}
+
+#[test]
+fn live_device_state_identity_and_full_values_are_required() {
+    for (key,value) in [("version",json!(2)),("profile",json!("unknown")),
+        ("dllSha256",json!("bad")),("guiSha256",json!("bad")),
+        ("graphicsSha256",json!("bad")),("values",json!(vec![0.;202])),
+        ("extra",json!(1))] {
+        let mut params=live_device_params();params["state"][key]=value;
+        assert!(prepare(patch(vec![node(1,"live_device",params)],vec![])).is_err(),"accepted invalid source field {key}");
+    }
+    for value in [json!(null),json!("0"),json!(1e39)] {
+        let mut params=live_device_params();params["state"]["values"][0]=value;
+        assert!(prepare(patch(vec![node(1,"live_device",params)],vec![])).is_err());
+    }
+    for field in ["version","profile","dllSha256","guiSha256","graphicsSha256","values"] {
+        let mut params=live_device_params();params["state"].as_object_mut().unwrap().remove(field);
+        assert!(prepare(patch(vec![node(1,"live_device",params)],vec![])).is_err());
+    }
+    let mut params=live_device_params();params["device"]=json!("Electric");
+    assert!(prepare(patch(vec![node(1,"live_device",params)],vec![])).is_err());
+}
+
+#[test]
+fn live_device_rejects_invalid_raw_numbers_before_float_narrowing() {
+    for (index,value) in [(0,4.00000001),(0,8.00000001),(0,-0.00000001),(2,1.00000001)] {
+        let mut params=live_device_params();params["state"]["values"][index]=json!(value);
+        assert!(prepare(patch(vec![node(1,"live_device",params)],vec![])).is_err(),
+            "accepted raw native value {value} at index {index}");
+    }
+}
+
+#[test]
+fn live_device_enforces_all_qualified_bounds_and_integer_lanes() {
+    for (index,&(_,_,kind,min,max)) in live_device::ANALOG_DESCRIPTORS.iter().enumerate() {
+        for value in [min,max] {
+            let mut params=live_device_params();params["state"]["values"][index]=json!(value);
+            assert!(prepare(patch(vec![node(1,"live_device",params)],vec![])).is_ok(),
+                "rejected qualified boundary {value} at index {index}");
+        }
+        let epsilon=f64::EPSILON*min.abs().max(max.abs()).max(1.)*8.;
+        let mut invalid=vec![min-epsilon,max+epsilon];
+        if kind==3 { invalid.push(min+0.25); }
+        for value in invalid {
+            let mut params=live_device_params();params["state"]["values"][index]=json!(value);
+            assert!(prepare(patch(vec![node(1,"live_device",params)],vec![])).is_err(),
+                "accepted invalid native value {value} at index {index}");
+        }
+    }
+    let mut params=live_device_params();params["state"]["values"][2]=json!(0.123456789);
+    assert_eq!(prepare(patch(vec![node(1,"live_device",params)],vec![])).unwrap()
+        .live_devices[0].state.values[2],0.123456789_f32);
+}
+
+#[test]
+fn live_device_full_state_participates_in_executable_equality() {
+    let source=patch(vec![node(1,"live_device",live_device_params())],vec![]);
+    let mut state=CanvasState::default();state.install(prepare(source.clone()).unwrap(),|_|true).unwrap();
+    let mut geometry=source.clone();geometry["nodes"][0]["x"]=json!(100);
+    assert!(state.matches(&prepare(geometry).unwrap()));
+    let mut changed=source;changed["nodes"][0]["params"]["state"]["values"][34]=json!(0.25);
+    assert!(!state.matches(&prepare(changed).unwrap()),"source edits must reach native admission before save");
+}
+
+#[test]
+fn live_device_multi_source_changes_preserve_runtime_revision_and_structural_boundary() {
+    let source=patch(vec![node(1,"live_device",live_device_params()),node(2,"live_device",live_device_params())],vec![]);
+    let mut state=CanvasState::default();
+    let revision=state.install(prepare(source.clone()).unwrap(),|_|true).unwrap();
+    let mut edited=source.clone();
+    edited["nodes"][0]["params"]["state"]["values"][34]=json!(0.25);
+    edited["nodes"][1]["params"]["state"]["values"][117]=json!(0.75);
+    let plan=prepare(edited.clone()).unwrap();
+    assert_eq!(state.live_state_changes(&plan).unwrap().iter().map(|source|source.node).collect::<Vec<_>>(),vec![1,2]);
+    assert_eq!(state.live_source(revision,1).unwrap().state.values[34],0.,"candidate state must not publish before native acceptance");
+    state.accept_live_state(plan);
+    assert_eq!(state.revision(),revision);
+    assert_eq!(state.live_source(revision,1).unwrap().state.values[34],0.25);
+    assert_eq!(state.live_source(revision,2).unwrap().state.values[117],0.75);
+    assert!(state.live_source(revision+1,1).is_err(),"stale snapshots must not address a new graph");
+    let mut structural=edited;structural["nodes"].as_array_mut().unwrap().push(node(3,"number",json!({"value":2})));
+    assert!(state.live_state_changes(&prepare(structural).unwrap()).is_none(),"graph changes need the structural transaction and callback fence");
 }
