@@ -14,6 +14,10 @@ profile has passed all ten publication stages; the importer registry is empty.
 - Rust session installation through retained-owner transactions: `00fa6b9`.
 - Original Electric widgets and embedded detail visibility: `34d5118`.
 - Explicit tagged note-input metadata, with native admission closed: `d27843e`.
+- Bounded verified raster decoder/owner: `35c771b`; manual browser selection:
+  `a527c22`. Production schematic integration remains a separate slice.
+- Accessible Audio disclosure name and expanded state: `88ff3b4`, `2c8043c`.
+- Independently reviewed closed C/Rust note companion ABI: `abb28aa`.
 
 Native work uses `feat/alive-native-library-20261102` in the isolated checkout
 `/tmp/alive-pr12-native-20261102`. The original PR branch and both dirty research
@@ -53,15 +57,22 @@ Private evidence root:
 Installed binaries, presets, XML/artwork, disassembly, captures and raw probe
 output stay there. Only authored interoperability facts/adapters/tests enter Git.
 
-- Full JavaScript/component/profile run: 766 passed, zero failed/skipped
-  (`frontend-full-r8.log`). All 35 importer tests also pass.
-- Expanded configured browser suite: 402 passed, zero failed/skipped
-  (`frontend-browser-full-r3.log`), including the explicitly selected profile,
-  resource, border, widget and geometry specs with private installed fixtures.
+- Full JavaScript/component/profile run: 778 passed, zero failed/skipped
+  (`frontend-full-r10.log`), with exact installed resource/raster fixtures.
+  All 35 importer tests also pass at their prior checkpoint.
+- Configured browser run before raster registration: 402 passed, one skipped
+  (`frontend-browser-full-r4.log`). The private border comparison lacked its XML
+  fixture variable; it was not passed in this run. The earlier r3 run passed all
+  402 configured tests. Separately, the integrated raster/resource checks pass
+  13 Node and eight Chromium tests with exact private fixtures. These separate
+  executions are not one full configured browser run after registration.
+- Audio disclosure regression fails before the expanded-state fix, then passes
+  both focused Chromium checks and 109 adjacent Node checks. The native smoke
+  reads four consecutive diagnostics without closing the disclosure.
 - Native-enabled adjacent Rust session suite: 132 passed
   (`host-batch-native-on-session-r2.log`).
-- Integrated tagged-input native-enabled Rust suite: 316 passed, five ignored,
-  one excluded (`integrated-note-input-full-rust.log`). The excluded CPAL instrumentation failure
+- Integrated companion native-enabled Rust suite: 318 passed, five ignored,
+  one excluded (`integrated-companion-full-rust.log`). The excluded CPAL instrumentation failure
   `audio::instrumentation::cpal_owned_error_destruction_is_separate_from_the_typed_action`
   was independently reproduced on the untouched UI checkpoint. It remains open.
 - Explicit ordinary Ultra native source/history test: one passed
@@ -119,6 +130,13 @@ Rust, desktop and downstream loopback gates therefore remain unrun in that run;
 the later Arrangement/Master steps also fail because the desktop binaries were
 not built. This is not Arrangement or Master runtime evidence.
 
+The subsequent manual CI run
+[41487101812](https://github.com/venetanji/alive/actions/runs/41487101812) at
+`60ba107` passes UI/reference, Chromium, native adapter and Rust/build steps.
+Desktop, Arrangement and Master fail finding the Audio details accessible
+target. This run predates both accessible-disclosure fixes. Downstream clip,
+resource and loopback gates are skipped, not passed.
+
 The compile regression reproduces locally under C++17 with strict warnings.
 The helper now uses C++17 population counting and separates conditional writes
 from unconditional returns/deletion. Its transaction test also rejects excessive
@@ -130,23 +148,55 @@ queued-edit Stop regressions. The old private build directory was found stale;
 the local test-build symlink now selects the new private native build. Prior
 artifacts and launcher snapshots remain intact.
 
-Both launchers currently select the paired `07ae615` dev desktop binaries with
-Release native DSP, snapshot `test-045051be41ae8931b1b7`. All 18 snapshot hashes
-and both launcher targets verify. Software-only Alive session and Ultra
+After companion integration, the complete manual native script passes again
+(`integrated-companion-native-ci.log`), including the new actual-library exports,
+strict C++17 metadata/refusal and synthetic installed-binding checks. Full Rust
+results are recorded above; the known baseline exclusion remains explicit.
+
+Both launchers currently select paired `2c8043c7896b25e8d0f5dd37af8b23e241f6f7f4`
+dev desktop binaries with Release native DSP, snapshot
+`test-805a384ad7595aef5435`. All 18 snapshot hashes and both launcher targets
+verify. Collection provenance is read directly from Git; the unchanged native
+sources last changed at `60ba107`. Software-only Alive session and Ultra
 instrument probes pass. Actual Tauri/WebKit native smoke checks pass at 800x600,
-1280x800 and 1440x900, with repeated independent Clip/Device toggles and inspected
-captures in `paired-native-smoke-07ae615/`. These checks do not qualify native
-instrument playback, physical hardware, or full desktop acceptance. Existing
-windows retain their original builds.
+1280x800 and 1440x900, including consecutive accessible diagnostic reads and
+repeated Clip/Device toggles, with inspected captures in
+`paired-native-smoke-2c8043c/`. This does not qualify native instrument playback,
+physical hardware, or full desktop acceptance. Existing windows retain their
+original builds.
+
+An attempted concurrent full/Arrangement/Master local run is invalid acceptance
+evidence: the installed xvfb-run -a can race display allocation, and Arrangement's
+owned-input guard observed another test window covering its target. All three
+attempts failed; no UI or playback conclusion is drawn from them. Native journeys
+are now serialized. The original Return/gap question and all downstream gates
+remain open until a clean run produces their actual evidence.
+
+A clean serialized Arrangement retry at `2c8043c` fails earlier at the Source /
+Clip disclosure. The owned X11 window is correct, but the accessible center hit
+stops at Clip properties: its vertical scrollbar overlaps the header edit icon.
+The guard sends zero presses. This is a UI reachability blocker, not new Return
+or engine evidence; the proposed correction pins the header above the existing
+scrolling option groups. Native verification of that correction remains open.
+
+The closed companion retains the existing ABI and adds strict prospective source
+and installed bank/binding identity proofs. Pure refusals preserve global score
+and diagnostics, including reset-retained preparation freshness. Independent
+OFF/ON adversarial, reordered two-root built-in, synthetic binding and ASan/UBSan
+checks pass; retained core archives were not instrumented. Native feature masks
+and max_native_roots remain zero. Mixed native candidates still return
+FEATURE_DISABLED after common bounded checks; this is not measured native
+playback qualification. Host wiring, release accounting and state transactions
+remain separate prerequisites. C++17 companion regressions are selected by the
+existing manual native script, with no automatic workflow changes.
 
 ## Next Gates
 
 1. Finish reviewed profile facts and original editor geometry, keeping unresolved
    controls unavailable. Retain captures at 800x600, 1280x800 and 1440x900.
-2. Add an explicit native note capability through saved manifests and a versioned
-   companion ABI. Evolve current development manifests directly; preserve ABI
-   sizes and closed measured
-   admission while validating identities and first-policy restrictions.
+2. Preserve the reviewed tagged manifests and closed companion ABI while defining
+   the remaining measured native/mixed admission and first-policy restrictions.
+   No native Host configuration path is enabled by the companion foundation.
 3. Account for native releases in every scheduled/optional/emergency work ledger;
    qualify Start/Stop/seek/loop/clip transitions against actual native owners.
 4. Add stopped instance-authorized native state commands/history, connect the

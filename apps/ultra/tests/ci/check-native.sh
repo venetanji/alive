@@ -66,6 +66,21 @@ c++ -std=c++17 -O2 -Wall -Wextra -Werror \
 c++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread -DULTRA_ALIVE_SESSION_TEST_TRACE \
   -c apps/ultra/src-tauri/native/backend.cpp -o "$TEST_DIR/alive-v3-backend.o"
 python3 apps/ultra/tests/alive_session_v3_fixtures.py "$TEST_DIR/saved_graphs.hpp"
+python3 apps/ultra/tests/check_note_companion_exports.py "$NATIVE_BUILD/libultra_native.so"
+note_flags=()
+if grep -q '^ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL:BOOL=ON$' "$NATIVE_BUILD/CMakeCache.txt"; then
+  note_flags=(-DULTRA_EXTERNAL_DEVICE_EXPERIMENTAL)
+fi
+c++ -std=c++17 -O2 -Wall -Wextra -Werror -UNDEBUG "${note_flags[@]}" -I"$TEST_DIR" \
+  apps/ultra/tests/alive_session_note_inputs_test.cpp \
+  -L"$NATIVE_BUILD" -lultra_native -Wl,-rpath,"$NATIVE_BUILD" -o "$TEST_DIR/alive-note-inputs"
+"$TEST_DIR/alive-note-inputs"
+if [[ ${#note_flags[@]} -gt 0 ]]; then
+  c++ -std=c++17 -O2 -Wall -Wextra -Werror -UNDEBUG "${note_flags[@]}" -rdynamic \
+    apps/ultra/tests/alive_session_note_bank_test.cpp \
+    -L"$NATIVE_BUILD" -lultra_native -Wl,-rpath,"$NATIVE_BUILD" -o "$TEST_DIR/alive-note-bank"
+  "$TEST_DIR/alive-note-bank"
+fi
 c++ -std=c++17 -O2 -Wall -Wextra -Werror -I"$TEST_DIR" \
   apps/ultra/tests/alive_session_v4_shipping_test.cpp \
   -L"$NATIVE_BUILD" -lultra_native -Wl,-rpath,"$NATIVE_BUILD" -o "$TEST_DIR/alive-v4-shipping"
