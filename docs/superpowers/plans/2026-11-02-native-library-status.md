@@ -989,8 +989,11 @@ oracle consumes the actual emitted 203-row Rust JSON through the real adapter,
 preserves raw slot194 `12.1`, and still rejects distinct adjacent native floats,
 wrong generations and invalid receipt versions. This candidate is NOT yet
 integrated, rebuilt, selected or accepted by actual desktop acquisition.
-Independent review was requested against the frozen commit; inspect its final
-report before integration. Candidate report:
+Independent review completed against the frozen commit: spec PASS, quality
+PASS, zero findings. Its report is
+`workers/native-parameter-wire-precision-review-r1/report.md`, SHA-256
+`289c1de0551dcb58505187f5737f65685d5c903ab21606ba0980cfce109b9c90`.
+Actual post-fix desktop acceptance is still pending. Candidate report:
 `workers/native-parameter-wire-precision-r1/report.md`, SHA-256
 `a1c39a96b008fbea47e284d3e419ac6c35df7037da00ac9d0fdc9e4698709f4a`.
 
