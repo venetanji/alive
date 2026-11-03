@@ -1052,6 +1052,17 @@ test('a delayed close barrier rejection completes the retained focus lease as fa
   const reject=p.pauseRejectedCommit(),closing=p.documents.session.flushBeforeClose({requestLabel:'owner',token:138});await settle();
   assert.deepEqual(phases,[['barrier']]);reject();await assert.rejects(closing);assert.deepEqual(phases,[['barrier'],['finish',true]]);await p.dispose();
 });
+for(const oldOutcome of ['resolve','reject'])for(const newerFirst of [false,true])test(`superseded close ${oldOutcome} is neutral when newer close finishes ${newerFirst?'first':'last'}`,async()=>{
+  const p=await mountHistoryControl(),gates=[],finishes=[];let serial=0;
+  p.devicePanel.freezeEdits=()=>{const id=++serial,finish=failed=>finishes.push([id,failed]);finish.forBarrier=()=>{};return finish;};
+  p.devicePanel.settleDrafts=()=>new Promise((resolve,reject)=>gates.push({resolve,reject}));
+  const first=p.documents.session.flushBeforeClose({requestLabel:'owner',token:201});await settle();
+  const second=p.documents.session.flushBeforeClose({requestLabel:'owner',token:202});await settle();
+  if(newerFirst){gates[1].resolve();await second;}
+  if(oldOutcome==='reject')gates[0].reject(Error('superseded source failure'));else gates[0].resolve();
+  await first;if(!newerFirst){gates[1].resolve();await second;}
+  assert.deepEqual(finishes,newerFirst?[[2,false],[1,false]]:[[1,false],[2,false]]);await p.dispose();
+});
 for(const action of ['close','save'])test(`${action} rejects when a panel is replaced during acquisition`,async()=>{
   let release;const node={...makeNode('live_device',1),params:{device:'Analog',state:createLiveDeviceState()}};
   const presentation={version:1,openOnLoad:false,size:{width:300,height:140},items:[{id:'p',kind:'livePanel',target:{node:1,profile:'live12-analog-v1'},rect:{x:0,y:0,width:300,height:140},included:true,visible:true,style:{accent:'default'}}]};

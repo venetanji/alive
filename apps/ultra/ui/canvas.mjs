@@ -663,7 +663,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
         if(controller.flushBeforeClose){const draining=controller.flushBeforeClose(request);release.forBarrier();await draining;}
         else await controller.flush();
         failed=false;
-      }finally{release(failed);}
+      }finally{release(failed&&closeRequests.get(request.requestLabel)===token);}
     },onCloseCancelled:request=>{
       const token=closeRequests.get(request.requestLabel);if(token?.request.token===request.token)closeRequests.delete(request.requestLabel);
       controller.cancelClose?.(request);

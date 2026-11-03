@@ -60,3 +60,8 @@ test('a newer request prevents an older rejected barrier from restoring focus',a
   const focused=await page.evaluate(()=>{const old=view.freezeEdits();setClosing(true);old.forBarrier();const newer=view.freezeEdits();old(true);newer(false);return document.activeElement===document.querySelector('#root input');});
   expect(focused).toBe(false);
 });
+test('a superseded locked freeze is neutral when the newer close succeeds',async({page})=>{
+  const input=page.locator('#root input');await input.focus();await input.fill('bad');
+  const focused=await page.evaluate(()=>{const old=view.freezeEdits(),newer=view.freezeEdits();old(false);setClosing(true);newer.forBarrier();newer(false);return document.activeElement===document.querySelector('#root input');});
+  expect(focused).toBe(false);
+});
