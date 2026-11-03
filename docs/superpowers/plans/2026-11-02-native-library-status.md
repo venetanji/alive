@@ -6,6 +6,60 @@ profile has passed all ten publication stages; the importer registry is empty.
 
 ## Current Goal State - Resumed 3 November 2026
 
+The active goal now points to the owner's attached Analog acceptance checklist
+(`pasted-text-1.txt`, attachment `c3916faa-a338-4b58-9ad3-a94de0df46fa`).
+Its immediate milestone is one actual installed Analog device completing a
+desktop edit, acknowledgement, Undo/Redo, Save, close and reopen cycle through
+ordinary Ultra and its existing document/history owner. Finish this before
+expanding devices or enabling native devices in Alive. Implementation workers
+are requested as `gpt-6.1-terra`; the controller coordinates and reviews.
+
+Last built exact checkpoint is `f6734b77f940b949b8ee6514b5d15b1a26de71ff`.
+The reviewed IPC precision fix is integrated and both launchers select matching
+snapshot `test-0339b4105ab6f9bf3298`. The actual Analog panel acquires state after
+using Perform instrument. Fresh diagnostic r5 confirms a distinct Export JSON
+defect: raw index194 `12.1` becomes `12.100000381469727`; all other 202 values and
+metadata match. Preserve the exact-state assertion and fix the export path
+before claiming the subsequent desktop checks. This observation does not prove
+native canonical or disk-save corruption.
+
+The retained corrected Alive visibility/restoration run completed all three
+sizes (800x600, 1280x800, 1440x900), 24 independent transitions, six both-open
+states and six restored cycles. Independent evidence/provenance review passes
+for that scope, with all 671 retained source hashes and 18 artifact hashes
+matching. It does not cover lower-row drag or toggle-detail collapse/restore;
+the maintained test's three-size coverage is a separate worker task. This run
+tests stock-session panel behavior, not Analog or audio.
+
+Durable Rust-to-Tauri-to-JavaScript regression is integrated as `5b87cf7` from
+independently reviewed `787e085894741220a6e506942d600565a1c12c40`. The actual
+Tauri response body reaches the production Analog adapter: precision-reversion
+RED fails at index1; restored GREEN passes two focused Rust and seven adapter
+tests. This test requires Node on PATH (including structuredClone support);
+the worker used Node26.13.0 and pinned Rust1.85.1. Full Rust was not repeated
+for this test-only addition. Existing unused-import warning remains deferred.
+Actual native acquisition remains a separate gate.
+
+Exact export correction is under independent review in a separate worktree.
+After independent review, rebuild/select the matching
+pair and complete actual desktop acceptance, then proceed with the reviewed
+source-gesture/draft settlement plan and qualify one bounded control only.
+
+Timing/admission and lifecycle stay separate gates. Prior callback budget
+exceedances and the existing development allocator failure remain unresolved;
+green optimized software CI does not clear them. Native admission stays closed.
+
+Ruling: keep the export repair focused on exact sources retained by the existing
+canonical owner and supported U1 source edits. Preserve existing optimistic
+generic changes without repairing pre-existing load/duplicate/configure
+normalization in this batch. Cost: those generic source creation paths remain
+unqualified for exact raw-number preservation and need a separate correction.
+
+Ruling: explicitly unavailable canonical source authority must block
+source-bearing export until recovery; ordinary non-native export remains
+available. Cost: an affected user must recover authority before exporting that
+source-bearing document. Do not substitute stale or normalized apparent success.
+
 The owner explicitly resumed the long-term native-instrument goal after the
 shutdown checkpoint. Continue the existing objective: inventory the installed
 Live DLLs, qualify a few faithful ordinary Ultra devices, and publish only
@@ -48,11 +102,9 @@ Bounded next batch, in order:
    alone before enabling it. Continue original initialization, measured
    lifecycle/admission and Alive hosting prerequisites in dependency order.
 
-Ruling: resume work and maintain this durable goal ledger on the owner's explicit
-instruction. The available goal-service API exposes only paused/blocked/complete
-status updates and cannot edit or resume the existing paused objective; no
-replacement unfinished goal or false completion is created. Its paused service
-flag is distinct from the owner's resumed work instruction recorded here.
+The owner replaced the earlier paused goal and activated the attachment-backed
+goal. The goal-service state is active. The earlier API limitation does not
+describe the current goal; this ledger records its implementation state.
 
 ## Checkpoints
 
