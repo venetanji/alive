@@ -27,7 +27,7 @@ import check_canvas_desktop as ui
 import check_documents_desktop as windows
 from gi.repository import Atspi, GLib
 from alive_workspace_navigation import install as install_workspace_navigation
-from chooser_observation import find_web_ancestor, planned_hit_path, hit_path_owns
+from chooser_observation import find_unique_showing_web, find_web_ancestor, planned_hit_path, hit_path_owns
 from native_tooltip_geometry import covering_hover_plan
 from alive_diagnostics import scan_named_controls, scan_scoped_frames
 
@@ -510,14 +510,26 @@ def native_control_click(name, kind, record=None, require_accessible_hit=False):
                         path = native_hit_path(*current)
                         sample['rect'], sample['hit_path'] = rect, path
                         admitted = owner in path
-                        fresh = planned_hit_path(frames[0], lambda node: Atspi.Component.get_accessible_at_point(
-                            node, *current, Atspi.CoordType.SCREEN))
+                        fresh_web, search = find_unique_showing_web(frames[0], Atspi.StateType.SHOWING, name)
+                        fresh = (planned_hit_path(fresh_web, lambda node: Atspi.Component.get_accessible_at_point(
+                            node, *current, Atspi.CoordType.SCREEN)) if fresh_web is not None else
+                            {'status': 'unavailable', 'path': []})
                         nodes = fresh.get('path', [])
                         if (fresh.get('status') == 'complete' and nodes
                                 and any(item.get('role') == 'document web' for item in nodes)
                                 and nodes[-1].get('name') == name and nodes[-1].get('role') in ('button', 'push button')):
-                            accessible = fresh
+                            final_frames = [frame for frame in windows.app_frames()
+                                            if frame.get_process_id() == ui.pid
+                                            and frame.get_name().removeprefix('* ') == windows.scope
+                                            and frame.get_state_set().contains(Atspi.StateType.SHOWING)]
+                            final_rect, final_point = reorder_point(ui.find(name))
+                            final_path = native_hit_path(*final_point)
+                            if (len(final_frames) == 1 and final_frames[0] == frames[0]
+                                    and owned_frame_window() == owner and final_rect == rect
+                                    and final_point == current and owner in final_path):
+                                accessible = fresh
                         sample['fresh_frame_hit'] = fresh
+                        sample['fresh_web_search'] = search
                 sample['accessible_hit'] = accessible
                 sample['web_ancestor'] = ancestry
                 admitted = admitted and hit_path_owns(accessible, name)
