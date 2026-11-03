@@ -2,10 +2,18 @@ import {test} from '@playwright/test';
 import {readFile} from 'node:fs/promises';
 
 async function routeResources(page,{writable=false}={}){
-  test.skip(!process.env.ALIVE_RESOURCE_PACK_FIXTURES,'Requires private qualified installed resource pack fixtures.');
-  const fixtures=JSON.parse(await readFile(process.env.ALIVE_RESOURCE_PACK_FIXTURES,'utf8'));
+  const fixturePath=process.env.ALIVE_RESOURCE_PACK_FIXTURES;
+  test.skip(fixturePath===undefined,'Requires ALIVE_RESOURCE_PACK_FIXTURES with private installed GUI and Graphics packs.');
+  let fixtures;
+  try{fixtures=JSON.parse(await readFile(fixturePath,'utf8'));}
+  catch(error){throw Error(`Invalid ALIVE_RESOURCE_PACK_FIXTURES manifest: ${error.message}`);}
+  const current=fixtures?.['current-20261102'];
+  if(!current||['GUI','Graphics'].some(kind=>typeof current[kind]!=='string'||!current[kind].trim()))
+    throw Error('Invalid ALIVE_RESOURCE_PACK_FIXTURES: current-20261102 requires both GUI and Graphics pack paths.');
   for(const kind of ['GUI','Graphics']){
-    const body=await readFile(fixtures['current-20261102'][kind]);
+    let body;
+    try{body=await readFile(current[kind]);}
+    catch(error){throw Error(`Invalid ALIVE_RESOURCE_PACK_FIXTURES ${kind} pack: ${error.message}`);}
     await page.route(`**/ordinary-pack-${kind}`,route=>route.fulfill({body,contentType:'application/octet-stream'}));
   }
   if(writable)await page.route('**/live-profiles/analog/panel-bindings.mjs',async route=>{

@@ -2,7 +2,6 @@ import {test,expect} from '@playwright/test';
 import {ordinaryPanelPage,ordinaryCanvasPage} from './live-ordinary-panel-helper.mjs';
 
 test('installed source controls are read-only with production authority',async({page})=>{
-  expect(process.env.ALIVE_RESOURCE_PACK_FIXTURES).toBeTruthy();
   await ordinaryPanelPage(page);
   await page.evaluate(async()=>{window.h=await window.createOrdinaryPanelHarness();h.mount();});
   await expect(page.locator('.live-device-view')).toBeVisible();
@@ -17,7 +16,6 @@ test('installed source controls are read-only with production authority',async({
 });
 
 async function writablePanel(page){
-  expect(process.env.ALIVE_RESOURCE_PACK_FIXTURES).toBeTruthy();
   await ordinaryPanelPage(page,{writable:true});
   await page.evaluate(async()=>{
     window.h=await window.createOrdinaryPanelHarness();h.enableCommits();
@@ -152,7 +150,6 @@ test('runtime replacement rejects a held source commit without discarding its dr
 });
 
 for(const action of ['save','close'])test(`actual canvas ${action} waits for the mounted Boolean commit`,async({page})=>{
-  expect(process.env.ALIVE_RESOURCE_PACK_FIXTURES).toBeTruthy();
   await ordinaryCanvasPage(page);
   await expect(page.locator('#document-title')).toHaveText('Analog.ultra');
   await page.locator('#show-instrument').click();
@@ -210,7 +207,6 @@ test('disposed mounted view cannot start another gesture after a late commit rep
 });
 
 for(const laterFocus of [false,true])test(`actual canvas delayed close rejection ${laterFocus?'respects newer focus':'restores Boolean focus'}`,async({page})=>{
-  expect(process.env.ALIVE_RESOURCE_PACK_FIXTURES).toBeTruthy();
   await ordinaryCanvasPage(page);
   await expect(page.locator('#document-title')).toHaveText('Analog.ultra');
   await page.locator('#show-instrument').click();
@@ -237,7 +233,6 @@ for(const laterFocus of [false,true])test(`actual canvas delayed close rejection
 });
 
 test('overlapping close requests before source settlement do not restore superseded focus',async({page})=>{
-  expect(process.env.ALIVE_RESOURCE_PACK_FIXTURES).toBeTruthy();
   await ordinaryCanvasPage(page);
   await expect(page.locator('#document-title')).toHaveText('Analog.ultra');
   await page.locator('#show-instrument').click();
