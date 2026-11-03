@@ -40,8 +40,23 @@ the worker used Node26.13.0 and pinned Rust1.85.1. Full Rust was not repeated
 for this test-only addition. Existing unused-import warning remains deferred.
 Actual native acquisition remains a separate gate.
 
-Exact export correction is under independent review in a separate worktree.
-After independent review, rebuild/select the matching
+Exact export correction is independently approved and integrated as `968fcbb`,
+`5f57f61` and `9dca6f3`. Source-bearing export preserves validated canonical raw
+numbers and optimistic unrelated changes. Lost Undo/Redo replies reconcile once
+without replay; unavailable authority blocks exact source export. Final exact
+hierarchy, lowered execution and reader bounds are checked. Shared/source tests
+pass 78 cases after meaningful REDs and one review-fix round; no native edit or
+disk roundtrip follows from these simulated IPC tests.
+
+Maintained browser restoration tests are independently approved at worker
+`92c3e2cf2b6797d8867470710ccf1a28ee647b01`: 12 cases pass at all three sizes,
+covering drag/toggle-detail restoration, independent toggles, height/drafts and
+mounted Clip/Device content intersection. Controlled offscreen instrumentation
+fails as intended. This uses a transformed stock score with simulated Tauri;
+actual native lower-row drag remains unrun. Existing Node deprecation and color
+environment warnings are retained as minor issues, not product failures.
+
+Next rebuild/select the matching
 pair and complete actual desktop acceptance, then proceed with the reviewed
 source-gesture/draft settlement plan and qualify one bounded control only.
 
@@ -59,6 +74,23 @@ Ruling: explicitly unavailable canonical source authority must block
 source-bearing export until recovery; ordinary non-native export remains
 available. Cost: an affected user must recover authority before exporting that
 source-bearing document. Do not substitute stale or normalized apparent success.
+
+Ruling: a horizontal chain's trailing drop target need not initially intersect
+the viewport. The restoration observer must check the first expected device's
+actual mounted presentation surface, identity and retained draft. Cost: this
+does not test visibility of the trailing target; it tests restored instrument
+content while preserving the approved horizontal chain. The intermediate
+offscreen-tail run (two passed, three failed, seven unrun) exposed an invalid
+oracle, not a demonstrated missing Device-content defect.
+
+Original NoiseToggle widget behavior is still unqualified. The immutable Analog
+packet verifies, but OnlySetActiveWhen=2 alone does not establish interaction
+semantics. A fresh original Live reference attempt opened a blank Untitled set;
+no instrument, notes, transport, recording or widget change occurred. A guarded
+pointer attempt stopped before a button press, then calibration confirmed X11
+physical coordinates. Further desktop input stopped after unrelated desktop
+activity appeared. The blank Live window was left intact; no successful widget
+transition or saved reference set is claimed. Continue software gates first.
 
 The owner explicitly resumed the long-term native-instrument goal after the
 shutdown checkpoint. Continue the existing objective: inventory the installed
