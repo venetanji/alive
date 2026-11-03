@@ -108,19 +108,32 @@ or complete Analog timing qualification. Endurance was explicitly skipped
 (off/zero seconds); physical hardware and physical underruns remain unrun.
 The retained debug allocator failure remains open despite release passes.
 
-Next source-gesture infrastructure is isolated at worker893412691e485cd756f17491a7d03f919b78d243,
-independently approved with minor coverage/seam limits and not integrated. Focused worker
-results:106 passed,19 existing DOMParser skips,zero failed. Production writable
-authority is empty and all175 mapped model fields remain disabled. Real U1 and
-host mechanics are exercised with fake resource/IPC boundaries only. The panel
-view's source-gesture/async draft/save-close adaptation is isolated at1cca062,
-under review-fix round1. Its focused results were220 passed/19 DOMParser skips;
-review found replacement during asynchronous preflight could bypass the new
-surface, and disabling a focused source control could lose focus on rejection.
-Both require regressions and correction before integration. A separate numeric
-raw/caret preservation RED is retained; no generic numeric-control production
-extension is authorized by the Boolean-first slice. One real native
-edit-and-reopen cycle remains the immediate milestone.
+Reviewed source-gesture and panel draft infrastructure is integrated at
+`fdce46c`, `a55ff5b`, `d0c6c28`, `16db60b` and `c51f8ee`, from worker commits
+`8934126`, `1cca062`, `5a655fd`, `f73d03c` and `5d64b22` respectively.
+Reviewed browser tests are integrated at `226f946` and `5b93c84`, from
+`5cf2a84` and `286afae`. The source and reviewed patch hashes match. Production
+writable authority remains empty and all175 mapped fields remain disabled.
+The focus ruling treats distinct request labels independently: a genuine failure
+may restore its still-mounted original focus after overlapping freezes end if no
+later user activity or revocation occurred, even if another independent request
+succeeded. Same-label superseded or canceled requests are neutral.
+
+At frozen test head `5b93c849f491a0b737073ab9db2e013c1c9bc00a`, the maintained
+Node suite ran 921 tests: 900 passed, zero failed, 21 skipped. Nineteen host
+resource cases were gated on fixtures and DOMParser; two other private-fixture
+cases subsequently passed in a separate focused run, not in the full run.
+The full maintained Chromium suite passed 460, with zero skipped or failed;
+tracked hashes matched before and after. Six fixture variables were configured;
+42 fixture files hashed during the run matched after it, but were not separately
+hashed before launch. Resource identity assertions and packet checks execute in
+the suite. Browser tests use simulated authority and IPC, not native editing.
+Private evidence is under `workers/analog-source-integrator-terra-r1/`.
+
+A separate numeric raw/caret preservation RED remains unresolved; no generic
+numeric-control production extension is authorized by the Boolean-first slice.
+One real native edit, acknowledgement, Undo/Redo, save, close and reopen cycle
+remains the immediate milestone.
 
 Timing/admission and lifecycle stay separate gates. Prior callback budget
 exceedances and the existing development allocator failure remain unresolved;
@@ -152,7 +165,8 @@ slice and requires covering regression and independent review before integration
 
 Original NoiseToggle widget behavior is still unqualified. The immutable Analog
 packet verifies, but OnlySetActiveWhen=2 alone does not establish interaction
-semantics. A fresh original Live reference attempt opened a blank Untitled set;
+semantics. The original black prompt remains unresolved. A fresh original Live
+reference attempt opened a blank Untitled set;
 no instrument, notes, transport, recording or widget change occurred. A guarded
 pointer attempt stopped before a button press, then calibration confirmed X11
 physical coordinates. Further desktop input stopped after unrelated desktop
@@ -183,7 +197,8 @@ evidence for that exact source; it is not a new post-reboot execution.
 Frontend source is unchanged from the configured 847-pass/19-skip Node and
 426-pass/zero-skip Chromium checkpoint. Native acquisition is still pending.
 
-Bounded next batch, in order:
+Earlier bounded batch (historical; the current goal and gates above supersede
+its sequencing):
 
 1. Build exact integrated source, select matching Alive/Ultra/native artifacts
    in both launchers, and verify the complete snapshot and native mappings.
