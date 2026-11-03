@@ -140,6 +140,7 @@ for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,he
   await page.setViewportSize(size);await openSession(page);
   if(panels!=='clip')await page.locator('#detail-devices').click();if(panels==='devices')await page.locator('#detail-clip').click();
   const handle=page.locator('#detail-resizer');await expect(handle).toBeVisible();
+  const deviceSurface=page.locator('#chain .chain-device[data-instance-id="instrument-0"] .presentation-surface');
   const field=panels==='devices'?page.locator('.chain-device[data-instance-id="instrument-0"]').getByRole('spinbutton',{name:'Cutoff base',exact:true}):page.getByLabel('Clip Start',{exact:true});
   await field.fill(panels==='devices'?'1777':'0.75');
   const initial=(await page.locator('.workspace-lower').boundingBox()).height;
@@ -155,7 +156,8 @@ for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,he
   await expect(page.getByRole('group',{name:'Selected clip piano roll',exact:true}))[panels==='devices'?'toBeHidden':'toBeVisible']();
   await expect(page.getByRole('group',{name:'Device chain drop area',exact:true}))[panels==='clip'?'toBeHidden':'toBeVisible']();
   if(panels!=='devices')await expect(page.locator('#piano-roll')).toBeInViewport();
-  if(panels!=='clip')await expect(page.getByRole('group',{name:'Device chain drop area',exact:true})).toBeInViewport();
+  await expect(deviceSurface)[panels==='clip'?'toBeHidden':'toBeVisible']();
+  if(panels!=='clip')await expect(deviceSurface).toBeInViewport();
   await expect(field).toHaveValue(panels==='devices'?'1777':'0.75');
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
@@ -499,7 +501,7 @@ test('footer display menu owns passive visibility controls with honest unavailab
 
 for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`detail collapse restores visible panels and requested Clip height at ${size.width}x${size.height}`,async({page})=>{
   await page.setViewportSize(size);await openSession(page);
-  const handle=page.locator('#detail-resizer');
+  const handle=page.locator('#detail-resizer'),deviceSurface=page.locator('#chain .chain-device[data-instance-id="instrument-0"] .presentation-surface');
   for(const both of [false,true]){
     if(both)await page.locator('#detail-devices').click();
     await handle.focus();await handle.press('Home');await handle.press('ArrowUp');const height=await handle.getAttribute('aria-valuenow');
@@ -508,7 +510,8 @@ for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,he
     await expect(page.getByRole('group',{name:'Selected clip piano roll',exact:true})).toBeVisible();
     await expect(page.getByRole('group',{name:'Device chain drop area',exact:true}))[both?'toBeVisible':'toBeHidden']();
     await expect(page.getByRole('group',{name:'Selected clip piano roll',exact:true})).toBeInViewport();
-    if(both)await expect(page.getByRole('group',{name:'Device chain drop area',exact:true})).toBeInViewport();
+    await expect(deviceSurface)[both?'toBeVisible':'toBeHidden']();
+    if(both)await expect(deviceSurface).toBeInViewport();
     if(size.width===1280){await page.setViewportSize({width:800,height:600});await page.setViewportSize(size);await expect(handle).toHaveAttribute('aria-valuenow',height);}
   }
   for(let cycle=0;cycle<2;cycle++)for(const [control,clip,device] of [['#detail-clip',false,true],['#detail-devices',false,false],['#detail-clip',true,false],['#detail-devices',true,true]]){
@@ -516,7 +519,8 @@ for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,he
     await expect(page.getByRole('group',{name:'Selected clip piano roll',exact:true}))[clip?'toBeVisible':'toBeHidden']();
     await expect(page.getByRole('group',{name:'Device chain drop area',exact:true}))[device?'toBeVisible':'toBeHidden']();
     if(clip)await expect(page.locator('#piano-roll')).toBeInViewport();
-    if(device)await expect(page.getByRole('group',{name:'Device chain drop area',exact:true})).toBeInViewport();
+    await expect(deviceSurface)[device?'toBeVisible':'toBeHidden']();
+    if(device)await expect(deviceSurface).toBeInViewport();
   }
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
