@@ -18,6 +18,8 @@ const catalog=expected=>({generation:String(expected.runtimeRevision),parameters
 }))});
 const connection=(expression,scope=[])=>({expression,scope,resource:'Devices/UltraAnalog/Contents.xml'});
 const bind=(bindings,key,scope=[])=>bindings.resolveBinding(connection(key,scope),{});
+const noiseNode=()=>({className:'LoadableCheckControlText',id:'',resource:'Devices/UltraAnalog/Noise.xml',scope:['doc'],
+  properties:{OnlySetActiveWhen:{tag:'EnumProperty',attributes:{Name:'OnlySetActiveWhen',Value:'2'}}}});
 function setup({dormantValues=new Map(),onChange=()=>{}}={}){
   assert.equal(typeof adapter.createAnalogPanelBindings,'function','the current read-only Analog adapter must exist');
   const expected=source();
@@ -61,7 +63,7 @@ test('unrepresentable groups and off gates stay individually unknown with bounde
   assert.throws(()=>setup({dormantValues:new Map([['Volume',0]])}),/dormant/i);
 });
 
-test('all bindings withhold display and edit authority even for known source and applied cells',()=>{
+test('numeric and unverified widgets withhold display and edit authority for known cells',()=>{
   const {bindings}=setup(),numeric=bind(bindings,'NoiseBalance'),state=numeric.getState();
   assert.equal(state.enabled,false);assert.equal(state.known,true);assert.equal(state.value,.75);
   assert.equal(state.applied,.75);assert.equal(state.initial,.75);
@@ -124,6 +126,8 @@ test('native observation refuses malformed catalogs and raw-source mismatches wi
     assert.equal(bindings.observe({expected,catalog:bad}),false);
     assert.equal(bindings.snapshot().nativeStatus,'unavailable');
     assert.equal(bindings.snapshot().values.NoiseBalance,.75);
+    const noise=bindings.resolveBinding({expression:'NoiseToggle',scope:['doc'],resource:'Devices/UltraAnalog/Noise.xml'},noiseNode());
+    assert.equal(noise.getState().enabled,false);
   }
   for(const field of ['ownerLabel','runtimeRevision','node','device']){
     const {bindings,expected}=setup(),foreign=clone(expected);foreign[field]=field==='node'?8:field==='runtimeRevision'?11:'foreign';
@@ -145,10 +149,39 @@ test('resource expressions use scoped current keys and their own bound IsActive 
   assert.equal(bindings.resolveBinding(connection('NoiseBalance'),{},{stateExpressions:[{...expression,value:'missing'}]}).handlesExpressions,false);
 });
 
-test('production writable authority keeps every mapped model field disabled',()=>{
+test('production writable authority excludes every other mapped model field and unverified widget',()=>{
   const {bindings,expected}=setup();
   for(const row of analogCurrentMappings)for(const key of [row.model,row.secondary].filter(Boolean)){
-    assert.equal(adapter.analogWritableKey(expected,key),false,key);
+    assert.equal(adapter.analogWritableKey(expected,key),key==='NoiseToggle',key);
     const binding=bind(bindings,key);if(binding){assert.equal(binding.verified,false,key);assert.equal(binding.getState().enabled,false,key);}
   }
+});
+
+test('production authority admits only the verified Noise widget and exact source identity',()=>{
+  const {bindings,expected}=setup(),conn={expression:'NoiseToggle',scope:['doc'],resource:'Devices/UltraAnalog/Noise.xml'};
+  const widget=noiseNode(),qualified=bindings.resolveBinding(conn,widget);
+  assert.equal(adapter.analogWritableKey(expected,'NoiseToggle'),true);
+  assert.equal(qualified.verified,true);assert.equal(qualified.getState().enabled,true);
+  for(const mutate of [
+    n=>{n.className='LoadableDisplayCheckControl';},n=>{n.id='other';},
+    n=>{n.resource='Devices/UltraAnalog/Other.xml';},n=>{n.scope=[];},
+    n=>{n.properties.OnlySetActiveWhen.attributes.Value='1';},n=>{delete n.properties.OnlySetActiveWhen;},
+  ]){
+    const other=noiseNode();mutate(other);
+    const binding=bindings.resolveBinding(conn,other);assert.equal(binding.verified,false);assert.equal(binding.getState().enabled,false);
+  }
+  for(const other of [{...conn,resource:'Devices/UltraAnalog/Other.xml'},{...conn,scope:[]},
+    {...conn,expression:'doc.NoiseToggle'}]){
+    const binding=bindings.resolveBinding(other,noiseNode());if(binding){assert.equal(binding.verified,false);assert.equal(binding.getState().enabled,false);}
+  }
+  for(const field of ['version','profile','dllSha256','guiSha256','graphicsSha256']){
+    const other=clone(expected);other.state[field]=field==='version'?2:'other';
+    assert.equal(adapter.analogWritableKey(other,'NoiseToggle'),false,field);
+  }
+  for(const [field,value] of [['device','Electric'],['ownerLabel',''],['runtimeRevision',0],['node',0]]){
+    const other=clone(expected);other[field]=value;assert.equal(adapter.analogWritableKey(other,'NoiseToggle'),false,field);
+  }
+  assert.equal(adapter.analogWritableKey(expected,'NoiseBalance'),false);
+  bindings.observe({expected,catalog:null});assert.equal(qualified.getState().enabled,false);
+  bindings.disconnect();assert.equal(qualified.getState().enabled,false);
 });

@@ -1,9 +1,9 @@
 import {test,expect} from '@playwright/test';
 import {ordinaryPanelPage,ordinaryCanvasPage} from './live-ordinary-panel-helper.mjs';
 
-test('installed source controls are read-only with production authority',async({page})=>{
+test('production authority enables only the installed Noise control',async({page})=>{
   await ordinaryPanelPage(page);
-  await page.evaluate(async()=>{window.h=await window.createOrdinaryPanelHarness();h.mount();});
+  await page.evaluate(async()=>{window.h=await window.createOrdinaryPanelHarness();h.enableCommits();window.before=h.patch;h.mount();});
   await expect(page.locator('.live-device-view')).toBeVisible();
   const counts=await page.evaluate(()=>{
     const e=document.querySelector('.live-device-view');
@@ -11,8 +11,31 @@ test('installed source controls are read-only with production authority',async({
     const handles=[...e.querySelectorAll('.live-envelope-editor [role=slider]')];
     return {total:controls.length,enabled:controls.filter(x=>!x.disabled).length,handles:handles.filter(x=>x.getAttribute('aria-disabled')!=='true').length};
   });
-  expect(counts.total).toBeGreaterThan(100);expect(counts.enabled).toBe(0);expect(counts.handles).toBe(0);
+  expect(counts.total).toBeGreaterThan(100);expect(counts.enabled).toBe(1);expect(counts.handles).toBe(0);
+  const enabled=page.locator('.live-device-control :is(input,select,button):enabled');
+  await expect(enabled).toHaveCount(1);await expect(enabled).toHaveText('Noise');
+  await enabled.hover();await enabled.focus();
+  expect(await page.evaluate(()=>h.calls.filter(call=>call.name==='document_commit').length)).toBe(0);
+  await enabled.click();
+  await expect.poll(()=>page.evaluate(()=>h.history.length)).toBe(1);
+  const after=await page.evaluate(()=>h.patch);const before=await page.evaluate(()=>window.before);
+  before.nodes[0].params.state.values[24]=1;expect(after).toEqual(before);
   await page.evaluate(()=>h.dispose());
+});
+
+for(const key of ['Enter','Space'])test(`production Noise ${key} activation makes one source transaction without transport commands`,async({page})=>{
+  await ordinaryCanvasPage(page,{writable:false});
+  await page.locator('#show-instrument').click();
+  const noise=page.locator('#instrument-controls').getByRole('button',{name:'Noise',exact:true});
+  await expect(noise).toBeEnabled();const start=await page.evaluate(()=>owner.calls.length);
+  await noise.hover();await noise.focus();
+  expect(await page.evaluate(start=>owner.calls.slice(start).filter(call=>/^(audio_(?!status|devices)|device_event|document_(commit|save|undo|redo|close))/.test(call.name)).map(call=>call.name),start)).toEqual([]);
+  await page.keyboard.press(key);
+  await expect.poll(()=>page.evaluate(()=>owner.history.length)).toBe(1);
+  const calls=await page.evaluate(start=>owner.calls.slice(start).map(call=>call.name),start);
+  expect(calls.filter(name=>name==='document_commit')).toHaveLength(1);
+  expect(calls.filter(name=>/^(audio_(?!status|devices)|device_event|document_(save|undo|redo|close))/.test(name))).toEqual([]);
+  expect(await page.evaluate(()=>owner.patch.nodes[0].params.state.values[24])).toBe(1);
 });
 
 async function writablePanel(page){

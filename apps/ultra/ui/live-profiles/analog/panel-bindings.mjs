@@ -13,8 +13,16 @@ const sameValues=(a,b)=>a.length===b.length&&a.every((value,index)=>Object.is(va
 const fail=message=>{throw Error(`Analog panel: ${message}`);};
 const unqualifiedDisplay=Object.freeze({format:()=>'--',parse:()=>fail('physical input conversion is unqualified (read-only).')});
 
-// Runtime and original-widget qualification are required before admitting any key.
-export function analogWritableKey(_expected,_key){return false;}
+// This permits one source-editor transaction, not DSP readback or full mapping qualification.
+export function analogWritableKey(expected,key){if(key!=='NoiseToggle')return false;try{validateExpected(expected);return true;}catch{return false;}}
+
+function qualifiedNoiseWidget(connection,node){
+  const resource='Devices/UltraAnalog/Noise.xml';
+  const scope=value=>Array.isArray(value)&&value.length===1&&value[0]==='doc';
+  return connection?.expression==='NoiseToggle'&&connection.resource===resource&&scope(connection.scope)&&
+    node?.className==='LoadableCheckControlText'&&node.id===''&&node.resource===resource&&scope(node.scope)&&
+    node.properties?.OnlySetActiveWhen?.tag==='EnumProperty'&&node.properties.OnlySetActiveWhen.attributes?.Value==='2';
+}
 
 function validateExpected(expected){
   if(!expected||expected.device!=='Analog'||typeof expected.ownerLabel!=='string'||!expected.ownerLabel.length||
@@ -77,14 +85,15 @@ export function createAnalogPanelBindings({expected,catalog,dormantValues=new Ma
   function resolveBinding(connection,node,{stateExpressions=[]}={}){
     const key=analogCurrentConnectionStatus(connection).key,row=mappings.get(key);
     if(!row)return null;
-    return{bindingId:key,verified:analogWritableKey(current,key),
+    const qualified=qualifiedNoiseWidget(connection,node);
+    return{bindingId:key,verified:qualified&&analogWritableKey(current,key),
       get handlesExpressions(){return stateExpressions.every(expression=>evaluateExpression(expression,{connection})!==undefined);},
       min:row.secondary===key?0:row.min,max:row.secondary===key?1:row.max,
       step:row.secondary===key||['enum','int','gated','bool'].includes(row.source.type)?1:'any',display:unqualifiedDisplay,
       getState(){
         const known=Object.hasOwn(model.values,key),parts=observed?row.indices.map(index=>observed.parameters[index]):null;
         const applied=appliedModel?.values[key];
-        return{enabled:!disconnected&&nativeStatus==='observed'&&known&&analogWritableKey(current,key),known,value:known?model.values[key]:undefined,initial:initial[key],applied,
+        return{enabled:!disconnected&&nativeStatus==='observed'&&known&&qualified&&analogWritableKey(current,key),known,value:known?model.values[key]:undefined,initial:initial[key],applied,
           generation:String(current.runtimeRevision),nativeStatus,
           revisions:parts?.map(part=>part.revision),applied_revisions:parts?.map(part=>part.applied_revision),
           pending:parts?parts.some(part=>part.revision!==part.applied_revision||part.value!==part.applied):undefined,

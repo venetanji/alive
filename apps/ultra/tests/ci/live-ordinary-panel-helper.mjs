@@ -18,7 +18,7 @@ async function routeResources(page,{writable=false}={}){
   }
   if(writable)await page.route('**/live-profiles/analog/panel-bindings.mjs',async route=>{
     const response=await route.fetch(),body=await response.text();
-    const original='export function analogWritableKey(_expected,_key){return false;}';
+    const original="export function analogWritableKey(expected,key){if(key!=='NoiseToggle')return false;try{validateExpected(expected);return true;}catch{return false;}}";
     if(!body.includes(original))throw Error('Test-only authority seam changed.');
     await route.fulfill({response,body:body.replace(original,"export function analogWritableKey(_expected,_key){return _key==='NoiseToggle';}")});
   });
@@ -88,8 +88,8 @@ export async function ordinaryPanelPage(page,options={}){
 
 
 // One boot-time owner backs the actual canvas, its panel, and native event bridge.
-export async function ordinaryCanvasPage(page){
-  await routeResources(page,{writable:true});
+export async function ordinaryCanvasPage(page,{writable=true}={}){
+  await routeResources(page,{writable});
   await page.addInitScript(()=>{
     const listeners=new Map(),calls=[],history=[];let patch,revision=1,gate=null,previews=[];
     const ready=(async()=>{
