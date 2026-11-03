@@ -225,6 +225,18 @@ mod tests {
         rows[26].applied_version = u32::MAX;
         let body = parameter_json(&rows, "10");
         println!("ANALOG_IPC_JSON={body}");
+        // Exercise JSON.parse and the production adapter on the actual Tauri body.
+        use std::io::Write;
+        use std::process::{Command, Stdio};
+        let script = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("../ui/live-profiles/analog/parameter-ipc-oracle.mjs");
+        let mut node = Command::new("node").arg(script)
+            .stdin(Stdio::piped()).stdout(Stdio::piped()).stderr(Stdio::piped())
+            .spawn().expect("Node is required for the Analog IPC regression");
+        node.stdin.take().unwrap().write_all(body.as_bytes()).unwrap();
+        let result = node.wait_with_output().unwrap();
+        assert!(result.status.success(), "Analog IPC adapter failed:\n{}\n{}",
+            String::from_utf8_lossy(&result.stdout), String::from_utf8_lossy(&result.stderr));
         assert_eq!(rows.len(), PARAMETER_COUNT);
         assert_parameter_json_floats(&body, &rows);
     }
