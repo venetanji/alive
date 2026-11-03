@@ -932,14 +932,14 @@ test('unchanged stopped status polls preserve cable paths while cable inputs inv
 // Delayed history still runs through the real shared controller and node views.
 async function mountHistoryControl(type='number') {
   let patch=new CanvasDocument({version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[makeNode(type,1,40,50,{value:150})],edges:[]}).document;
-  let revision=1,hold=false,release,holdCommit=false,releaseCommit,cancelSave=false;
+  let revision=1,hold=false,release,holdCommit=false,releaseCommit,rejectCommit,cancelSave=false;
   const operations=[],past=[],future=[],descriptor=()=>({shared:true,id:1,label:'owner',ownerLabel:'owner',title:'Numeric',kind:'patch',viewPath:[],
     patch:structuredClone(patch),authoringRevision:revision,runtimeRevision:revision,canUndo:past.length>0,canRedo:future.length>0});
   const p=await mount(true,{documentCurrent:descriptor(),invokeOverride:async(name,args,fallback)=>{
     operations.push({name,args});
     if(name==='document_current')return descriptor();
     if(name==='document_commit'){
-      if(holdCommit)await new Promise(resolve=>releaseCommit=resolve);
+      if(holdCommit)await new Promise((resolve,reject)=>{releaseCommit=resolve;rejectCommit=reject;});
       assert.equal(args.baseRevision,revision);past.push(structuredClone(patch));future.length=0;
       patch=new CanvasDocument(args.patch).document;revision++;
       return{accepted:true,document:descriptor()};
@@ -956,7 +956,7 @@ async function mountHistoryControl(type='number') {
     return fallback(name,args);
   }});
   p.controller.parameter(1,'value',20);await p.controller.flush();
-  return{...p,operations,get canonical(){return patch;},get ownerRevision(){return revision;},pauseCommit(){holdCommit=true;return()=>{holdCommit=false;releaseCommit();};},cancelNextSave(){cancelSave=true;},async holdHistory(direction){
+  return{...p,operations,get canonical(){return patch;},get ownerRevision(){return revision;},pauseCommit(){holdCommit=true;return()=>{holdCommit=false;releaseCommit();};},pauseRejectedCommit(){holdCommit=true;return()=>{holdCommit=false;rejectCommit(Error('delayed rejection'));};},cancelNextSave(){cancelSave=true;},async holdHistory(direction){
     hold=true;const promise=p.controller[direction]();await settle();
     return{promise,release(){hold=false;release();}};
   }};
@@ -1030,7 +1030,7 @@ test('close waits for panel settlement and cancellation cannot install a late ba
   const listeners=new Map(),tauri={webviewWindow:{getCurrentWebviewWindow:()=>({label:'main'})},event:{listen:async(name,handler)=>{listeners.set(name,handler);return()=>{};}}};
   const descriptor={shared:true,id:0,label:'main',ownerLabel:'main',title:'Owner',kind:'patch',patch:{version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[],edges:[]},dirty:false,viewPath:[],authoringRevision:0,runtimeRevision:1};
   const p=await mount(true,{documentCurrent:descriptor,tauri});const releases=[];let freezes=0;
-  p.devicePanel.freezeEdits=()=>{freezes++;let done=false;return()=>{if(!done){done=true;freezes--;}};};
+  p.devicePanel.freezeEdits=()=>{freezes++;let done=false;const release=()=>{if(!done){done=true;freezes--;}};release.forBarrier=release;return release;};
   p.devicePanel.settleDrafts=()=>new Promise(resolve=>releases.push(resolve));
   const request={requestLabel:'main',token:134},closing=p.documents.session.flushBeforeClose(request);await settle();
   assert.equal(freezes,1);assert.equal(p.controller.getState().closing,false);await listeners.get('document-close-cancelled')({payload:request});
@@ -1044,6 +1044,13 @@ test('a rejected panel settlement blocks close acknowledgement',async()=>{
   const start=p.operations.length;await assert.rejects(p.documents.session.flushBeforeClose({requestLabel:'owner',token:136}),/source conflict/);
   const acknowledgement=p.operations.slice(start).find(call=>call.name==='document_close_flushed');
   assert.match(acknowledgement.args.error,/source conflict/);assert.equal(p.controller.getState().closing,false);await p.dispose();
+});
+test('a delayed close barrier rejection completes the retained focus lease as failed',async()=>{
+  const p=await mountHistoryControl();await p.ids.get('lock-patch').fire('click');const phases=[];
+  p.devicePanel.freezeEdits=()=>{const release=failed=>phases.push(['finish',failed]);release.forBarrier=()=>phases.push(['barrier']);return release;};
+  const input=p.all('objects').find(e=>e.dataset.parameter==='value');p.document.activeElement=input;input.value='42';await input.fire('input');
+  const reject=p.pauseRejectedCommit(),closing=p.documents.session.flushBeforeClose({requestLabel:'owner',token:138});await settle();
+  assert.deepEqual(phases,[['barrier']]);reject();await assert.rejects(closing);assert.deepEqual(phases,[['barrier'],['finish',true]]);await p.dispose();
 });
 for(const action of ['close','save'])test(`${action} rejects when a panel is replaced during acquisition`,async()=>{
   let release;const node={...makeNode('live_device',1),params:{device:'Analog',state:createLiveDeviceState()}};

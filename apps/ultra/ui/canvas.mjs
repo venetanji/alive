@@ -660,7 +660,7 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
         devicePanel.captureDrafts(captureFocusedDraft);token.scope=devicePanel.captureScope();await devicePanel.settleDrafts();
         if(closeRequests.get(request.requestLabel)!==token)return;
         devicePanel.assertScope(token.scope);
-        if(controller.flushBeforeClose){const draining=controller.flushBeforeClose(request);release(false);await draining;}
+        if(controller.flushBeforeClose){const draining=controller.flushBeforeClose(request);release.forBarrier();await draining;}
         else await controller.flush();
         failed=false;
       }finally{release(failed);}

@@ -6,7 +6,7 @@ const factories={dial:createDial,slider:createSlider,number:createNumber,toggle:
 
 export function mountPresentation({doc,root,presentation,host,mode='preview',onError=()=>{},onControlsChanged=()=>{},onDraftsCancelled=()=>{},onInvalidated=()=>{}}){
   const scope=Object.freeze({...host.scope}),key=scopeKey(scope),views=[],cleanup=[];
-  let disposed=false,replaced=null,current=presentation,freezes=0,capturing=0,revoked=false,freezeFocus=null,retainedFocus=null;
+  let disposed=false,replaced=null,current=presentation,freezes=0,capturing=0,revoked=false,freezeFocus=null,retainedFocus=null,focusHolds=0;
   const active=()=>!disposed&&!revoked&&scopeKey(host.scope)===key;
   const make=(tag,cls,text)=>{const e=doc.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e;};
   const viewport=make('div','presentation-viewport'),surface=make('div','presentation-surface');
@@ -126,7 +126,7 @@ export function mountPresentation({doc,root,presentation,host,mode='preview',onE
       if(!resources?.identity||!resources.layout||!bindings?.snapshot||!bindings.resolveBinding)throw Error('Device panel resources or bindings are unavailable.');
       body=createLiveDeviceView(doc,{layout:resources.layout,gui:resources.gui,graphics:resources.graphics,isCurrent:authorized,resolveBinding:(connection,node,options)=>{
         const binding=bindings.resolveBinding(connection,node,options);if(!binding)return null;const bindingId=binding.bindingId;
-        return{...binding,getState:()=>{const state=binding.getState();return{...state,enabled:authorized()&&(!freezes||capturing)&&pendingPhase!=='commit'&&((!failure&&state.enabled)||(failure&&retainedFocus?.binding===JSON.stringify([connection?.scope??[],connection?.expression??'']))),value:candidate&&Object.hasOwn(candidate,bindingId)?candidate[bindingId]:state.value};},onInput:v=>edit(binding,v,'preview'),onChange:v=>edit(binding,v,'commit'),onCancel:v=>edit(binding,v,'cancel')};
+        return{...binding,getState:()=>{const state=binding.getState(),focused=retainedFocus?.binding===JSON.stringify([connection?.scope??[],connection?.expression??'']);if(focused&&!failure&&state.enabled){retainedFocus.input.readOnly=retainedFocus.readOnly;retainedFocus=null;}return{...state,enabled:authorized()&&(!freezes||capturing)&&pendingPhase!=='commit'&&((!failure&&state.enabled)||focused),value:candidate&&Object.hasOwn(candidate,bindingId)?candidate[bindingId]:state.value};},onInput:v=>edit(binding,v,'preview'),onChange:v=>edit(binding,v,'commit'),onCancel:v=>edit(binding,v,'cancel')};
       },evaluateExpression:(...args)=>bindings.evaluateExpression?.(...args),onError:e=>report(e,status)});
       box.replaceChildren(body.element,status,cancel);status.hidden=true;onControlsChanged();
     }).catch(error=>{if(authorized()){status.setAttribute('role','alert');report(error,status);}});
@@ -142,7 +142,8 @@ export function mountPresentation({doc,root,presentation,host,mode='preview',onE
   const hasDraft=()=>replaced?replaced.hasDraft():views.some(view=>view.hasDraft());
   function dispose(){if(replaced){replaced.dispose();replaced=null;}if(disposed)return;disposed=true;freezeFocus?.stop();freezeFocus=null;if(retainedFocus){retainedFocus.input.readOnly=retainedFocus.readOnly;retainedFocus=null;}for(const unsubscribe of cleanup)unsubscribe();for(const view of views)view.dispose();}
   return{hasDraft,dispose,captureDrafts(fn){capturing++;refresh();try{return fn();}finally{capturing--;refresh();}},revoke(){revoked=true;refresh();},async cancelDrafts(){if(replaced)return replaced.cancelDrafts();for(const view of views)await view.cancelDrafts?.();},async settleDrafts(){if(replaced)return replaced.settleDrafts();for(const view of views)await view.settleDrafts?.();},freezeEdits(){
-    if(freezes===0){
+    if(focusHolds>0&&freezes===0&&freezeFocus)freezeFocus.changed=true;
+    if(focusHolds===0){
       const input=doc.activeElement;
       if(input&&root.contains?.(input)){
         const snapshot={input,value:input.value,start:input.selectionStart,end:input.selectionEnd,direction:input.selectionDirection,binding:input.closest?.('[data-binding]')?.dataset.binding,readOnly:input.readOnly,changed:false,restore:false};
@@ -151,18 +152,22 @@ export function mountPresentation({doc,root,presentation,host,mode='preview',onE
         snapshot.stop=()=>{for(const type of ['focusin','pointerdown','keydown'])doc.removeEventListener?.(type,onFocus,true);};freezeFocus=snapshot;
       }
     }
-    freezes++;refresh();let released=false;return(failed=false)=>{
-      if(released)return;released=true;if(failed&&freezeFocus)freezeFocus.restore=true;freezes--;
-      if(freezes===0&&freezeFocus?.restore&&!freezeFocus.changed&&freezeFocus.input.isConnected!==false&&views.some(view=>view.failed?.())){retainedFocus=freezeFocus;retainedFocus.input.readOnly=true;}
-      refresh();
-      if(freezes===0&&freezeFocus){
+    focusHolds++;freezes++;refresh();let locked=true,finished=false;
+    const unlock=()=>{if(!locked)return;locked=false;freezes--;refresh();};
+    const finish=(failed=false)=>{
+      if(finished)return;finished=true;if(failed&&freezeFocus)freezeFocus.restore=true;unlock();focusHolds--;
+      if(focusHolds===0&&freezeFocus){
         const saved=freezeFocus;freezeFocus=null;saved.stop();
-        if(saved.restore&&!saved.changed&&saved.input.isConnected!==false&&!saved.input.disabled){
-          saved.input.focus();
-          if(saved.input.value===saved.value&&saved.start!==null&&saved.start!==undefined)try{saved.input.setSelectionRange(saved.start,saved.end,saved.direction);}catch{}
+        if(saved.restore&&!saved.changed&&saved.input.isConnected!==false){
+          if(saved.input.disabled&&saved.binding){retainedFocus=saved;retainedFocus.input.readOnly=true;refresh();}
+          if(!saved.input.disabled){
+            saved.input.focus();
+            if(saved.input.value===saved.value&&saved.start!==null&&saved.start!==undefined)try{saved.input.setSelectionRange(saved.start,saved.end,saved.direction);}catch{}
+          }
         }
       }
     };
+    finish.forBarrier=unlock;return finish;
   },update(next=current){
     if(replaced)return replaced.update(next);
     if(disposed)return false;
