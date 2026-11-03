@@ -19,7 +19,8 @@ from `8afb3a689e94114a76048dae60781edcfa43887f`. The paired build took 89.78
 seconds with tracked build inputs unchanged; all 18 selected artifact hashes
 and both launcher targets verify. Desktop binaries use pinned Rust 1.85.1 dev
 profile; native is Release with the experimental adapter compiled and Alive
-admission closed. Native smoke on this pair is in progress, not yet a pass.
+admission closed. A bounded native read-only smoke on this pair passed as
+described below; it does not qualify native editing.
 The reviewed IPC precision fix is integrated. The actual Analog panel acquires state
 after using Perform instrument. Earlier diagnostic r5 confirmed an Export JSON
 defect: raw index194 `12.1` becomes `12.100000381469727`; all other 202 values and
@@ -130,6 +131,30 @@ tracked hashes matched before and after. Six fixture variables were configured;
 hashed before launch. Resource identity assertions and packet checks execute in
 the suite. Browser tests use simulated authority and IPC, not native editing.
 Private evidence is under `workers/analog-source-integrator-terra-r1/`.
+
+Manual CI run 41612002151 at `fdb5649` has a failed hosted Chromium job: 425
+passed, 19 skipped and 16 failed because the new source tests asserted the
+private `ALIVE_RESOURCE_PACK_FIXTURES` variable before the fixture skip. No
+panel gesture assertion ran in those 16 cases. The native job is still pending
+at this checkpoint. Reviewed test-only commit `cc75d6a` corrects this fixture
+contract: an absent variable skips explicitly; empty, invalid or incomplete
+declared fixtures fail, and the configured source tests retain their assertions.
+The independent review records 16 absent-fixture skips and 16 configured passes,
+plus partial and unreadable fixture failures. The local 460-pass run remains
+separate from the failed hosted run. No private resources are uploaded to CI.
+
+The selected-pair native smoke r2 passes its read-only Ultra and Alive checks
+with stable before/after hashes for 9,477 files. Ultra checked three sizes, six
+close/open cycles and seven exact 203-value exports with raw194=12.1. The
+fixture has one node and no edges; unrelated populated sources and connections
+are not established. The Alive visibility observer checks the actual showing
+Pulse instrument and Attack content intersecting the window. Its offscreen
+trailing drop area remains a negative visibility guard, not a reachability pass.
+Analog is horizontally clipped at all sizes and vertically clipped at 800x600;
+the Alive instrument strip also extends beyond the right edge at 800x600.
+The r1 wrapper remains failed because the checkout changed during its run; r2
+does not retroactively change it. Neither run establishes native edit, Undo/Redo,
+save/reopen, audio, or hardware behavior.
 
 A separate numeric raw/caret preservation RED remains unresolved; no generic
 numeric-control production extension is authorized by the Boolean-first slice.
