@@ -650,8 +650,22 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     render(controller.getState());
     if(!accepted)throw Error('Finish or cancel the invalid focused edit before saving or closing.');
   }
-  documents=mountDocuments({doc,win,invoke,getPatch:()=>controller.getState().document,adopt:adoptDocument,beforeSave:async()=>{captureFocusedDraft();await controller.settleParameterGestures?.();return controller.flush();},
-    beforeClose:request=>{captureFocusedDraft();return controller.flushBeforeClose?.(request)??controller.flush();},onCloseCancelled:request=>controller.cancelClose?.(request),
+  const closeRequests=new Map();
+  documents=mountDocuments({doc,win,invoke,getPatch:()=>controller.getState().document,adopt:adoptDocument,beforeSave:async()=>{
+    const release=devicePanel.freezeEdits();try{devicePanel.captureDrafts(captureFocusedDraft);await devicePanel.settleDrafts();await controller.settleParameterGestures?.();return await controller.flush();}finally{release();}
+  },
+    beforeClose:async request=>{
+      const token={request},release=devicePanel.freezeEdits();closeRequests.set(request.requestLabel,token);
+      try{
+        devicePanel.captureDrafts(captureFocusedDraft);await devicePanel.settleDrafts();
+        if(closeRequests.get(request.requestLabel)!==token)return;
+        if(controller.flushBeforeClose){const draining=controller.flushBeforeClose(request);release();await draining;}
+        else await controller.flush();
+      }finally{release();}
+    },onCloseCancelled:request=>{
+      const token=closeRequests.get(request.requestLabel);if(token?.request.token===request.token)closeRequests.delete(request.requestLabel);
+      controller.cancelClose?.(request);
+    },
     onDescriptor:descriptor=>controller.acceptDescriptor?.(descriptor),onReveal:acceptReveal,
     notice:error=>controller.notice(error),inspect:(source,name)=>{dialog('open');$('patch-json').value=source;return maxDialog.inspect(source,name);}});
   $('object-profile-note').textContent=`${Object.keys(OBJECTS).length} supported objects. Names and arguments belong to Ultra's bounded profile.`;

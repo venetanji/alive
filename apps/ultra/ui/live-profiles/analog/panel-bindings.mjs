@@ -102,7 +102,7 @@ export function createAnalogPanelBindings({expected,catalog,dormantValues=new Ma
     catch{nativeStatus='unavailable';accepted=false;}
     notify?.();return accepted;
   }
-  return{snapshot:()=>({values:{...model.values},unknownKeys:[...model.unknown],expected:clone(current),nativeStatus}),
+  return{snapshot:()=>({values:{...model.values},unknownKeys:[...model.unknown],expected:clone(current),nativeStatus,disconnected}),
     resolveBinding,evaluateExpression,observe,
     disconnect(){if(disconnected)return;disconnected=true;nativeStatus='unavailable';observed=null;appliedModel=null;expressions.clear();notify?.();notify=null;}};
 }

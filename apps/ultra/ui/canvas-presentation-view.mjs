@@ -4,10 +4,10 @@ import {createLiveDeviceView} from './live-device-view.mjs';
 const scopeKey=scope=>JSON.stringify([scope?.ownerId,scope?.generation,scope?.instanceId,scope?.sourceRevision]);
 const factories={dial:createDial,slider:createSlider,number:createNumber,toggle:createToggle,menu:createMenu,radio:createRadioGroup,button:createButton};
 
-export function mountPresentation({doc,root,presentation,host,mode='preview',onError=()=>{}}){
+export function mountPresentation({doc,root,presentation,host,mode='preview',onError=()=>{},onControlsChanged=()=>{},onDraftsCancelled=()=>{},onInvalidated=()=>{}}){
   const scope=Object.freeze({...host.scope}),key=scopeKey(scope),views=[],cleanup=[];
-  let disposed=false,replaced=null,current=presentation;
-  const active=()=>!disposed&&scopeKey(host.scope)===key;
+  let disposed=false,replaced=null,current=presentation,freezes=0,capturing=0,revoked=false;
+  const active=()=>!disposed&&!revoked&&scopeKey(host.scope)===key;
   const make=(tag,cls,text)=>{const e=doc.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e;};
   const viewport=make('div','presentation-viewport'),surface=make('div','presentation-surface');
   surface.dataset.mode=mode;surface.style.width=presentation.size.width+'px';surface.style.height=presentation.size.height+'px';viewport.append(surface);root.replaceChildren(viewport);
@@ -69,38 +69,65 @@ export function mountPresentation({doc,root,presentation,host,mode='preview',onE
     views.push({refresh,hasDraft:()=>gesture!==null||!!control.hasDraft?.(),dispose:()=>{serial++;control.dispose?.();}});refresh();
   }
   function mountPanel(item,box){
-    const status=make('div','presentation-panel-status','Loading device panel…');status.setAttribute('role','status');box.append(status);
-    let body=null,bindings=null,candidate=null,original=null,gesture=null,queued=null,scheduled=false,serial=0,revoked=false,inFlight=0;
-    const authorized=()=>active()&&!revoked;
+    const status=make('div','presentation-panel-status','Loading device panel…'),cancel=make('button','presentation-panel-cancel','Cancel draft');status.setAttribute('role','status');cancel.hidden=true;box.append(status,cancel);
+    let body=null,bindings=null,candidate=null,original=null,gesture=null,queued=null,scheduled=false,serial=0,revoked=false,pending=null,pendingPhase=null,failure=null,ready,cancelling=false,touched=new Set(),invalidated=false;
+    const authorized=()=>active()&&!revoked&&!bindings?.snapshot().disconnected;
     const snapshot=()=>structuredClone(bindings.snapshot().values);
-    function edit(binding,value,phase){
-      if(!authorized()||binding.getState().enabled!==true||!gesture&&inFlight)return false;
+    const changes=()=>Object.fromEntries([...touched].map(key=>[key,candidate[key]]));
+    function edit(binding,value,phase,internal=false){
+      if(!authorized()||(!internal&&freezes&&!capturing)||binding.getState().enabled!==true||pendingPhase==='commit'||failure)return false;
       const bindingId=binding.bindingId;
-      if(!gesture){original=snapshot();candidate=structuredClone(original);gesture=host.beginGesture(`panel:${item.target.node}`);}
+      if(!gesture){original=snapshot();candidate=structuredClone(original);gesture=host.beginSourceGesture(item.target.node);}
       if(!Object.hasOwn(candidate,bindingId))throw Error(`Panel binding ${bindingId} is absent from complete source state.`);
-      candidate[bindingId]=value;if(phase==='cancel')candidate=structuredClone(original);
-      queued={scope,sourceNode:item.target.node,gestureId:gesture,phase,values:structuredClone(candidate)};
+      candidate[bindingId]=value;touched.add(bindingId);
+      queued={scope,sourceNode:item.target.node,gestureId:gesture,phase,values:phase==='cancel'?{}:changes(),serial:++serial};
       if(!scheduled){scheduled=true;queueMicrotask(flush);}
       return true;
     }
     function flush(){
-      scheduled=false;if(!authorized()||!queued)return;const request=queued;queued=null;const ticket=++serial;inFlight++;
-      if(request.phase!=='preview'){gesture=null;original=null;}
-      Promise.resolve().then(()=>{if(authorized())return host.writeBatch(request);}).then(accepted=>{
-        if(!authorized()||ticket!==serial||!accepted)return;
-        bindings.observe?.(accepted);if(!gesture&&!queued)candidate=null;status.hidden=true;body?.refresh();
-      },error=>{if(authorized()&&ticket===serial){candidate=null;gesture=null;original=null;report(error,status);body?.refresh();}}).finally(()=>{inFlight--;});
+      scheduled=false;if(!authorized()||!queued||pending)return pending;
+      const request=queued;queued=null;const {serial:ticket,...write}=request;
+      pendingPhase=request.phase;body?.refresh();pending=Promise.resolve().then(()=>host.writeBatch(write)).then(reply=>{
+        if(!authorized())throw Error('Device panel scope changed during settlement.');
+        if(request.phase==='preview'&&reply?.phase==='preview')return;
+        if(request.phase==='cancel'&&reply?.phase==='cancel'){
+          if(ticket===serial){gesture=null;original=null;candidate=null;failure=null;touched.clear();}return;
+        }
+        if(request.phase==='commit'&&['accepted','unchanged'].includes(reply?.outcome)){
+          if(ticket===serial){gesture=null;original=null;candidate=null;failure=null;touched.clear();}status.hidden=true;return;
+        }
+        throw Error(reply?.reason??`Device panel commit ${reply?.outcome??'returned an unknown outcome'}.`);
+      }).catch(error=>{failure=error;cancel.hidden=false;if(authorized())report(error,status);throw error;}).finally(()=>{pending=null;pendingPhase=null;body?.refresh();if(queued&&!failure&&!cancelling)flush();});
+      pending.catch(()=>{});return pending;
     }
-    const view={refresh:()=>body?.refresh(),hasDraft:()=>!!gesture||!!queued||!!inFlight||!!body?.hasDraft(),dispose(){revoked=true;serial++;queued=null;bindings?.disconnect();body?.dispose();}};views.push(view);
-    Promise.resolve().then(()=>{if(authorized())return host.acquirePanel({scope,sourceNode:item.target.node,profile:item.target.profile});}).then(result=>{
+    async function settleDrafts(){
+      await ready;await Promise.resolve();
+      if(!authorized()&&(gesture||queued||failure||body?.hasDraft()))throw Error('Device panel scope changed with a retained draft.');
+      while(pending)await pending;
+      if(failure)throw failure;
+      if(queued)await flush();
+      if(gesture){queued={scope,sourceNode:item.target.node,gestureId:gesture,phase:'commit',values:changes(),serial:++serial};await flush();}
+      if(failure)throw failure;
+    }
+    async function cancelDrafts(){
+      cancelling=true;queued=null;
+      if(pending)try{await pending;}catch{}
+      if(authorized()&&gesture){try{await host.writeBatch({scope,sourceNode:item.target.node,gestureId:gesture,phase:'cancel',values:{}});}catch{}}
+      serial++;queued=null;gesture=null;original=null;candidate=null;failure=null;touched.clear();
+      for(const input of box.querySelectorAll('input'))input.cancelDraft?.();
+      cancelling=false;status.hidden=true;cancel.hidden=true;body?.refresh();onDraftsCancelled();
+    }
+    cancel.addEventListener('click',()=>{cancelDrafts().catch(error=>report(error,status));});
+    const view={refresh:()=>{if(bindings?.snapshot().disconnected&&!invalidated){invalidated=true;queueMicrotask(onInvalidated);}if(!authorized()&&(gesture||queued||failure||body?.hasDraft())){status.textContent='Device panel changed. Cancel the retained draft to continue.';status.hidden=false;cancel.hidden=false;for(const control of body?.element.querySelectorAll('input,select,button')??[])control.disabled=true;}body?.refresh();},hasDraft:()=>!!gesture||!!queued||!!pending||!!failure||!!body?.hasDraft(),settleDrafts,cancelDrafts,dispose(){revoked=true;serial++;queued=null;bindings?.disconnect();body?.dispose();onControlsChanged();}};views.push(view);
+    ready=Promise.resolve().then(()=>{if(authorized())return host.acquirePanel({scope,sourceNode:item.target.node,profile:item.target.profile});}).then(result=>{
       if(!result)return;if(!authorized()){result.bindings?.disconnect();return;}
       const resources=result.resources;bindings=result.bindings;
       if(!resources?.identity||!resources.layout||!bindings?.snapshot||!bindings.resolveBinding)throw Error('Device panel resources or bindings are unavailable.');
       body=createLiveDeviceView(doc,{layout:resources.layout,gui:resources.gui,graphics:resources.graphics,isCurrent:authorized,resolveBinding:(connection,node,options)=>{
         const binding=bindings.resolveBinding(connection,node,options);if(!binding)return null;const bindingId=binding.bindingId;
-        return{...binding,getState:()=>{const state=binding.getState();return{...state,enabled:authorized()&&state.enabled,value:candidate&&Object.hasOwn(candidate,bindingId)?candidate[bindingId]:state.value};},onInput:v=>edit(binding,v,'preview'),onChange:v=>edit(binding,v,'commit'),onCancel:v=>edit(binding,v,'cancel')};
+        return{...binding,getState:()=>{const state=binding.getState();return{...state,enabled:authorized()&&(!freezes||capturing)&&pendingPhase!=='commit'&&!failure&&state.enabled,value:candidate&&Object.hasOwn(candidate,bindingId)?candidate[bindingId]:state.value};},onInput:v=>edit(binding,v,'preview'),onChange:v=>edit(binding,v,'commit'),onCancel:v=>edit(binding,v,'cancel')};
       },evaluateExpression:(...args)=>bindings.evaluateExpression?.(...args),onError:e=>report(e,status)});
-      box.replaceChildren(body.element,status);status.hidden=true;
+      box.replaceChildren(body.element,status,cancel);status.hidden=true;onControlsChanged();
     }).catch(error=>{if(authorized()){status.setAttribute('role','alert');report(error,status);}});
   }
   for(const item of presentation.items){
@@ -113,10 +140,10 @@ export function mountPresentation({doc,root,presentation,host,mode='preview',onE
   cleanup.push(host.subscribe(refresh));
   const hasDraft=()=>replaced?replaced.hasDraft():views.some(view=>view.hasDraft());
   function dispose(){if(replaced){replaced.dispose();replaced=null;}if(disposed)return;disposed=true;for(const unsubscribe of cleanup)unsubscribe();for(const view of views)view.dispose();}
-  return{hasDraft,dispose,update(next=current){
+  return{hasDraft,dispose,captureDrafts(fn){capturing++;refresh();try{return fn();}finally{capturing--;refresh();}},revoke(){revoked=true;refresh();},async cancelDrafts(){if(replaced)return replaced.cancelDrafts();for(const view of views)await view.cancelDrafts?.();},async settleDrafts(){if(replaced)return replaced.settleDrafts();for(const view of views)await view.settleDrafts?.();},freezeEdits(){freezes++;refresh();let released=false;return()=>{if(released)return;released=true;freezes--;refresh();};},update(next=current){
     if(replaced)return replaced.update(next);
     if(disposed)return false;
-    if(JSON.stringify(next)!==JSON.stringify(current)){if(hasDraft())return false;dispose();current=next;replaced=mountPresentation({doc,root,presentation:next,host,mode,onError});return true;}
+    if(JSON.stringify(next)!==JSON.stringify(current)){if(hasDraft())return false;dispose();current=next;replaced=mountPresentation({doc,root,presentation:next,host,mode,onError,onControlsChanged,onDraftsCancelled,onInvalidated});return true;}
     refresh();return true;
   }};
 }

@@ -54,17 +54,92 @@ function panelHost(instanceId){
   let state={a:.2,b:.3,undisplayed:.9},enabled=true,disconnected=0,show=true;
   const batches=[];
   h.host.acquirePanel=async()=>({resources,bindings:{resolveBinding:connection=>({bindingId:connection.expression,verified:true,handlesExpressions:true,min:0,max:1,getState:()=>({enabled,known:true,value:state[connection.expression],initial:state[connection.expression],generation:1})}),evaluateExpression:()=>show,snapshot:()=>({values:{...state}}),observe:accepted=>{state={...accepted.values};},disconnect(){enabled=false;disconnected++;}}});
-  h.host.writeBatch=async request=>{batches.push(request);state={...request.values};return{values:{...state}};};
+  h.host.beginSourceGesture=()=>1;h.host.writeBatch=async request=>{batches.push(request);if(request.phase==='commit')state={...state,...request.values};return request.phase==='commit'?{outcome:'accepted'}:{phase:request.phase};};
   return{...h,resources,batches,get state(){return state;},get disconnected(){return disconnected;},hide(){show=false;h.change({});}};
 }
 const panelLayout={...layout,items:[{id:'panel',kind:'livePanel',target:{node:7,profile:'fixture'},rect:{x:8,y:8,width:300,height:140},included:true,visible:true,style:{accent:'default'}}]};
+test('a rejected Boolean source commit retains its candidate and reports the outcome',async()=>{
+  const page=dom(),h=fake(),gate=deferred(),batches=[];let observations=0;
+  h.host.acquirePanel=async()=>({resources:{identity:'bool',layout:{root:resourceNode('LoadableCheckControlText',{expression:'flag'}),warnings:[]}},bindings:{snapshot:()=>({values:{flag:false}}),resolveBinding:()=>({bindingId:'flag',verified:true,getState:()=>({enabled:true,known:true,value:false})}),observe:()=>observations++,disconnect(){}}});
+  h.host.beginSourceGesture=()=>42;h.host.writeBatch=request=>{batches.push(request);return gate.promise;};
+  const view=mountPresentation({...page,presentation:panelLayout,host:h.host});await settle();
+  all(page.root).find(e=>e.tagName==='BUTTON').fire('click');await settle();
+  assert.deepEqual(batches[0].values,{flag:true});gate.resolve({outcome:'rejected',reason:'Source rejected'});await settle();
+  assert.equal(observations,0);assert.equal(view.hasDraft(),true);assert.match(all(page.root).find(e=>e.getAttribute('role')==='status').textContent,/Source rejected/);
+  view.dispose();
+});
+test('a pending Boolean commit blocks another click and an overtaking canonical value wins',async()=>{
+  const page=dom(),h=fake(),gate=deferred();let value=false,writes=0;
+  h.host.acquirePanel=async()=>({resources:{identity:'bool',layout:{root:resourceNode('LoadableCheckControlText',{expression:'flag'}),warnings:[]}},bindings:{snapshot:()=>({values:{flag:value}}),resolveBinding:()=>({bindingId:'flag',verified:true,getState:()=>({enabled:true,known:true,value})}),disconnect(){}}});
+  h.host.beginSourceGesture=()=>1;h.host.writeBatch=()=>{writes++;return gate.promise;};
+  const view=mountPresentation({...page,presentation:panelLayout,host:h.host});await settle();const button=all(page.root).find(e=>e.tagName==='BUTTON');
+  button.fire('click');await settle();assert.equal(button.disabled,true);button.fire('click');assert.equal(writes,1);
+  value=false;h.change({});gate.resolve({outcome:'accepted'});await settle();assert.equal(button.getAttribute('aria-pressed'),'false');assert.equal(view.hasDraft(),false);view.dispose();
+});
+test('a commit waits for an outstanding preview and submits its changed fields',async()=>{
+  const page=dom(),h=panelHost('one'),gate=deferred(),requests=[];
+  h.resources.layout.root.children[2].children[0].children[0].className='LoadableCombiSliderSmall';
+  h.host.writeBatch=request=>{requests.push(request);return requests.length===1?gate.promise:Promise.resolve({outcome:'accepted'});};
+  const view=mountPresentation({...page,presentation:panelLayout,host:h.host});await settle();
+  const input=all(page.root).find(e=>e.type==='range');input.value='.6';input.fire('input');await settle();input.fire('change');
+  gate.resolve({phase:'preview'});await settle();
+  assert.equal(requests.length,2);assert.equal(requests[1].phase,'commit');assert.deepEqual(requests[1].values,{a:.6});view.dispose();
+});
+test('cancel while a preview is pending does not submit a queued commit',async()=>{
+  const page=dom(),h=panelHost('one'),gate=deferred(),requests=[];
+  h.resources.layout.root.children[2].children[0].children[0].className='LoadableCombiSliderSmall';
+  h.host.writeBatch=request=>{requests.push(request);return requests.length===1?gate.promise:Promise.resolve({phase:'cancel'});};
+  const view=mountPresentation({...page,presentation:panelLayout,host:h.host});await settle();
+  const input=all(page.root).find(e=>e.type==='range');input.value='.6';input.fire('input');await settle();input.fire('change');
+  const cancelled=view.cancelDrafts();gate.resolve({phase:'preview'});await cancelled;await settle();
+  assert.deepEqual(requests.map(request=>request.phase),['preview','cancel']);assert.equal(view.hasDraft(),false);view.dispose();
+});
+test('a reverted preview sends its original value so the host can recognize a no-op',async()=>{
+  const page=dom(),h=panelHost('one'),requests=[];
+  h.resources.layout.root.children[2].children[0].children[0].className='LoadableCombiSliderSmall';
+  h.host.writeBatch=async request=>{requests.push(request);return request.phase==='commit'?{outcome:'unchanged'}:{phase:request.phase};};
+  const view=mountPresentation({...page,presentation:panelLayout,host:h.host});await settle();
+  const input=all(page.root).find(e=>e.type==='range');input.value='.6';input.fire('input');await settle();input.value='.2';input.fire('input');input.fire('change');await settle();
+  assert.deepEqual(requests.at(-1).values,{a:.2});assert.equal(requests.at(-1).phase,'commit');view.dispose();
+});
+test('settlement waits for an asynchronously acquired panel and its commit',async()=>{
+  const page=dom(),h=panelHost('one'),acquire=deferred(),commit=deferred(),realAcquire=h.host.acquirePanel;let mounted=0,settled=false;
+  h.host.acquirePanel=()=>acquire.promise;h.host.writeBatch=()=>commit.promise;
+  const view=mountPresentation({...page,presentation:panelLayout,host:h.host,onControlsChanged:()=>mounted++});
+  const pending=view.settleDrafts().then(()=>settled=true);await settle();assert.equal(settled,false);
+  acquire.resolve(await realAcquire());await pending;assert.equal(mounted,1);
+  const input=number(page.root);input.value='.6';input.fire('input');input.fire('change');
+  const saving=view.settleDrafts().then(()=>settled=true);settled=false;await settle();assert.equal(settled,false);
+  commit.resolve({outcome:'accepted'});await saving;assert.equal(settled,true);view.dispose();
+});
+test('scope replacement retains a disabled draft until explicit cancellation',async()=>{
+  const page=dom(),h=panelHost('one'),view=mountPresentation({...page,presentation:panelLayout,host:h.host});await settle();
+  const input=number(page.root);input.value='.6';input.fire('input');input.fire('change');
+  view.revoke();await settle();assert.equal(view.hasDraft(),true);assert.equal(number(page.root),input);assert.equal(input.disabled,true);
+  await assert.rejects(view.settleDrafts(),/changed|scope/i);
+  await view.cancelDrafts();assert.equal(view.hasDraft(),false);view.dispose();
+});
+test('disconnected bindings retain a draft and report a replaced panel',async()=>{
+  const page=dom(),h=panelHost('one'),acquire=h.host.acquirePanel;let disconnected=false;
+  h.host.acquirePanel=async request=>{const result=await acquire(request),snapshot=result.bindings.snapshot;result.bindings.snapshot=()=>({...snapshot(),disconnected});return result;};
+  const view=mountPresentation({...page,presentation:panelLayout,host:h.host});await settle();
+  const input=number(page.root);input.value='.6';input.fire('input');input.fire('change');disconnected=true;h.change({});
+  assert.equal(input.disabled,true);assert.match(all(page.root).find(e=>e.getAttribute('role')==='status').textContent,/changed/i);
+  await assert.rejects(view.settleDrafts(),/changed|scope/i);await view.cancelDrafts();view.dispose();
+});
+test('frozen panel can validate an existing numeric draft during settlement',async()=>{
+  const page=dom(),h=panelHost('one'),view=mountPresentation({...page,presentation:panelLayout,host:h.host});await settle();
+  const input=number(page.root);input.value='.6';input.fire('input');const release=view.freezeEdits();assert.equal(input.disabled,true);
+  assert.equal(view.captureDrafts(()=>input.commitDraft()),true);await view.settleDrafts();assert.deepEqual(h.batches.at(-1).values,{a:.6});
+  assert.equal(input.disabled,true);release();view.dispose();
+});
 test('same-source resource panels keep independent drafts and conditional pages and write complete atomic state',async()=>{
   const a=dom(),b=dom(),ha=panelHost('one'),hb=panelHost('two');
   const va=mountPresentation({...a,presentation:panelLayout,host:ha.host}),vb=mountPresentation({...b,presentation:panelLayout,host:hb.host});await settle();
   const inputs=all(a.root).filter(e=>e.type==='number');inputs[0].value='.6';inputs[0].fire('input');inputs[1].value='.7';inputs[1].fire('input');
   assert.equal(va.hasDraft(),true);assert.equal(vb.hasDraft(),false);
   inputs[0].fire('change');inputs[1].fire('change');await settle();
-  assert.equal(ha.batches.length,1);assert.deepEqual(ha.batches[0].values,{a:.6,b:.7,undisplayed:.9});assert.equal(hb.batches.length,0);assert.equal(number(b.root).value,'0.2');
+  assert.equal(ha.batches.length,1);assert.deepEqual(ha.batches[0].values,{a:.6,b:.7});assert.equal(hb.batches.length,0);assert.equal(number(b.root).value,'0.2');
   ha.hide();assert.equal(all(a.root).find(e=>e.dataset.binding?.includes('"b"')).hidden,true);assert.equal(all(b.root).find(e=>e.dataset.binding?.includes('"b"')).hidden,false);
   all(a.root).find(e=>e.dataset.viewId==='second').fire('pointerdown');assert.equal(inputs[0].parentElement.parentElement.hidden,true);assert.equal(number(b.root).parentElement.parentElement.hidden,false);
   const retained=inputs[0],before=ha.batches.length;va.dispose();retained.value='.8';retained.fire('input');retained.fire('change');await settle();assert.equal(ha.batches.length,before);assert.equal(ha.disconnected,1);vb.dispose();
@@ -73,11 +148,11 @@ test('two-axis envelope edits are complete atomic batches and disposal cannot re
   const page=dom(),h=fake(),names=['AttackTime','DecayTime','SustainLevel','SustainTime','ReleaseTime','ExponentialSlope','Loop','FreeRun'];let state=Object.fromEntries(names.map(name=>[name,.5])),enabled=true;
   const batches=[],resources=Object.freeze({identity:'envelope:qualified-fixture',layout:{root:resourceNode('AnalogAdsrEnvelopeDisplay',{expression:'env'}),warnings:[]}});
   h.host.acquirePanel=async()=>({resources,bindings:{snapshot:()=>({values:{...state}}),resolveBinding:connection=>({bindingId:connection.expression,verified:true,min:0,max:1,getState:()=>({enabled,known:true,value:state[connection.expression],initial:.5,generation:1})}),observe:accepted=>{state={...accepted.values};},disconnect(){enabled=false;}}});
-  h.host.writeBatch=async request=>{batches.push(request);state={...request.values};return{values:state};};
+  h.host.beginSourceGesture=()=>1;h.host.writeBatch=async request=>{batches.push(request);return request.phase==='commit'?{outcome:'accepted'}:{phase:request.phase};};
   const view=mountPresentation({...page,presentation:panelLayout,host:h.host});await settle();const handle=all(page.root).find(e=>e.getAttribute('data-handle')==='sustain');
   handle.fire('pointerdown',{pointerId:1,clientX:80,clientY:30});handle.fire('pointermove',{pointerId:1,clientX:85,clientY:25});await settle();
-  assert.equal(batches.length,1);assert.equal(Object.keys(batches[0].values).length,8);assert.notEqual(batches[0].values.DecayTime,.5);assert.notEqual(batches[0].values.SustainLevel,.5);assert.equal(view.hasDraft(),true);
-  handle.fire('keydown',{key:'Escape'});await settle();assert.equal(batches.at(-1).phase,'cancel');assert.ok(Object.values(batches.at(-1).values).every(value=>value===.5));
+  assert.equal(batches.length,1);assert.equal(Object.keys(batches[0].values).length,2);assert.notEqual(batches[0].values.DecayTime,.5);assert.notEqual(batches[0].values.SustainLevel,.5);assert.equal(view.hasDraft(),true);
+  handle.fire('keydown',{key:'Escape'});await settle();assert.equal(batches.at(-1).phase,'cancel');assert.deepEqual(batches.at(-1).values,{});
   handle.fire('pointerdown',{pointerId:2,clientX:80,clientY:30});handle.fire('pointermove',{pointerId:2,clientX:86,clientY:24});await settle();
   const before=batches.length;view.dispose();await settle();assert.equal(batches.length,before);assert.equal(h.writes.length,0);
 });

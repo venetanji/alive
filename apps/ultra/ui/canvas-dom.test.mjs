@@ -1025,6 +1025,25 @@ test('close acknowledgement waits for delayed owner admission and advances exact
   const calls=p.operations.slice(start);assert.equal(calls.filter(c=>c.name==='document_commit').length,1);
   assert.ok(calls.findIndex(c=>c.name==='document_commit')<calls.findIndex(c=>c.name==='document_close_flushed'));await p.dispose();
 });
+test('close waits for panel settlement and cancellation cannot install a late barrier',async()=>{
+  const listeners=new Map(),tauri={webviewWindow:{getCurrentWebviewWindow:()=>({label:'main'})},event:{listen:async(name,handler)=>{listeners.set(name,handler);return()=>{};}}};
+  const descriptor={shared:true,id:0,label:'main',ownerLabel:'main',title:'Owner',kind:'patch',patch:{version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[],edges:[]},dirty:false,viewPath:[],authoringRevision:0,runtimeRevision:1};
+  const p=await mount(true,{documentCurrent:descriptor,tauri});const releases=[];let freezes=0;
+  p.devicePanel.freezeEdits=()=>{freezes++;let done=false;return()=>{if(!done){done=true;freezes--;}};};
+  p.devicePanel.settleDrafts=()=>new Promise(resolve=>releases.push(resolve));
+  const request={requestLabel:'main',token:134},closing=p.documents.session.flushBeforeClose(request);await settle();
+  assert.equal(freezes,1);assert.equal(p.controller.getState().closing,false);await listeners.get('document-close-cancelled')({payload:request});
+  const newer={...request,token:135},next=p.documents.session.flushBeforeClose(newer);await settle();assert.equal(freezes,2);
+  releases[0]();await closing;assert.equal(freezes,1);assert.equal(p.controller.getState().closing,false);
+  releases[1]();await next;assert.equal(freezes,0);assert.equal(p.controller.getState().closing,true);
+  await listeners.get('document-close-cancelled')({payload:newer});assert.equal(p.controller.getState().closing,false);await p.dispose();
+});
+test('a rejected panel settlement blocks close acknowledgement',async()=>{
+  const p=await mountHistoryControl();p.devicePanel.settleDrafts=async()=>{throw Error('source conflict');};
+  const start=p.operations.length;await assert.rejects(p.documents.session.flushBeforeClose({requestLabel:'owner',token:136}),/source conflict/);
+  const acknowledgement=p.operations.slice(start).find(call=>call.name==='document_close_flushed');
+  assert.match(acknowledgement.args.error,/source conflict/);assert.equal(p.controller.getState().closing,false);await p.dispose();
+});
 test('cancelled Save As retains the committed focused draft in the owner',async()=>{
   const p=await mountHistoryControl();await p.ids.get('lock-patch').fire('click');
   const input=p.all('objects').find(e=>e.dataset.parameter==='value');p.document.activeElement=input;input.value='42';await input.fire('input');
