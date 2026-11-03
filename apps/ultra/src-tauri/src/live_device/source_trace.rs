@@ -29,12 +29,16 @@ impl Trace {
 
 pub(crate) fn enabled() -> bool { std::env::var_os("ULTRA_TRACE_SOURCE_ACCEPTANCE").is_some() }
 
+fn write_line(writer: &mut impl std::io::Write, line: &str) {
+    let _ = writeln!(writer, "ultra-source-acceptance {line}");
+}
+
 // Called only by command boundaries after releasing the document and audio locks.
 pub(crate) fn emit(key: Option<(u32,u64,u32)>, make: impl FnOnce() -> Value) {
     if !enabled() { return; }
     static TRACE: OnceLock<Mutex<Trace>> = OnceLock::new();
     if let Ok(mut trace) = TRACE.get_or_init(|| Mutex::new(Trace::default())).lock() {
-        if let Some(line) = trace.record(true, key, make) { eprintln!("ultra-source-acceptance {line}"); }
+        if let Some(line) = trace.record(true, key, make) { write_line(&mut std::io::stderr().lock(), &line); }
     }
 }
 
@@ -42,6 +46,34 @@ pub(crate) fn emit(key: Option<(u32,u64,u32)>, make: impl FnOnce() -> Value) {
 mod tests {
     use super::*;
     use serde_json::json;
+
+    #[test]
+    fn failed_trace_write_preserves_reply_and_recorder_remains_usable() {
+        struct Broken;
+        impl std::io::Write for Broken {
+            fn write(&mut self, _: &[u8]) -> std::io::Result<usize> { Err(std::io::ErrorKind::BrokenPipe.into()) }
+            fn flush(&mut self) -> std::io::Result<()> { Ok(()) }
+        }
+        let mut trace = Trace::default();
+        let mut registry = crate::documents::Registry::default();
+        let patch = json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,
+            "nodes":[{"id":1,"type":"number","x":0,"y":0,"params":{"value":1}}],"edges":[]});
+        let root = registry.add("test".into(), crate::documents::Kind::Patch, Some(patch.clone()), None, None).unwrap();
+        let mut edited = patch;
+        edited["nodes"][0]["params"]["value"] = json!(2);
+        let reply = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            let result = registry.commit(&root.label, 0, edited, true, |_, _| Ok(1.into()));
+            if let Some(line) = trace.record(true, None, || json!({"event":"rust_document_reply"})) {
+                write_line(&mut Broken, &line);
+            }
+            result
+        }));
+        let reply = reply.unwrap().unwrap();
+        assert!(reply.accepted);
+        assert_eq!(reply.document.authoring_revision, 1);
+        assert_eq!(registry.descriptor(&root.label).unwrap().authoring_revision, 1);
+        assert!(trace.record(true, None, || json!({"event":"later"})).is_some());
+    }
 
     #[test]
     fn disabled_trace_never_builds_or_remembers_events() {

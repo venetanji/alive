@@ -299,20 +299,21 @@ pub fn document_close_flushed(window: WebviewWindow, state: tauri::State<Documen
 pub fn document_commit(window: WebviewWindow, state: tauri::State<Documents>, audio: tauri::State<Audio>, io: tauri::State<crate::AudioIo>, base_revision: u64,
     patch: Value, force: Option<bool>, parameter: Option<Parameter>, message_text: Option<MessageText>, history: Option<bool>, expected_scope: Option<ExpectedScope>) -> Result<CommitResult, String> {
     let tracing = crate::live_device::source_trace::enabled();
-    let mut receipt = None;
-    let mut registry = state.0.lock().map_err(|_| "Document lock poisoned")?;
-    let mut audio = audio.0.lock().map_err(|_| "Audio control lock poisoned")?;
-    let mut io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
-    let scope = expected_scope.as_ref().map(|scope| (scope.owner_label.as_str(), scope.runtime_revision));
-    let result = registry.commit_scoped(window.label(), base_revision, patch, history.unwrap_or(true), scope, |owner, patch| {
-        admit_owned_traced(&mut io, &mut audio.graphs[owner.id as usize], owner, patch, parameter.as_ref(), message_text.as_ref(), force.unwrap_or(false), if tracing { Some(&mut receipt) } else { None })
-    });
-    if let Ok(result) = &result { trace_document("commit", &result.document, base_revision, u8::from(result.accepted)); }
-    drop(io);
-    drop(audio);
-    let obsolete = if let Ok(result) = &result { if result.accepted { changed(window.app_handle(), &mut registry, &result.document.owner_label) } else { vec![] } } else { vec![] };
-    drop(registry);
-    trace_source_reply("commit", base_revision, receipt, &result);
+    let mut obsolete = vec![];
+    let result = run_observed(|receipt| {
+        let mut registry = state.0.lock().map_err(|_| "Document lock poisoned")?;
+        let mut audio = audio.0.lock().map_err(|_| "Audio control lock poisoned")?;
+        let mut io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
+        let scope = expected_scope.as_ref().map(|scope| (scope.owner_label.as_str(), scope.runtime_revision));
+        let result = registry.commit_scoped(window.label(), base_revision, patch, history.unwrap_or(true), scope, |owner, patch| {
+            admit_owned_traced(&mut io, &mut audio.graphs[owner.id as usize], owner, patch, parameter.as_ref(), message_text.as_ref(), force.unwrap_or(false), if tracing { Some(receipt) } else { None })
+        });
+        if let Ok(result) = &result { trace_document("commit", &result.document, base_revision, u8::from(result.accepted)); }
+        drop(io);
+        drop(audio);
+        obsolete = if let Ok(result) = &result { if result.accepted { changed(window.app_handle(), &mut registry, &result.document.owner_label) } else { vec![] } } else { vec![] };
+        result
+    }, |receipt, result| trace_source_reply("commit", base_revision, receipt, result));
     close_views(window.app_handle(), obsolete);
     result
 }
@@ -320,19 +321,27 @@ pub fn document_commit(window: WebviewWindow, state: tauri::State<Documents>, au
 #[tauri::command]
 pub fn document_history(window: WebviewWindow, state: tauri::State<Documents>, audio: tauri::State<Audio>, io: tauri::State<crate::AudioIo>, base_revision: u64, direction: String) -> Result<CommitResult, String> {
     let tracing = crate::live_device::source_trace::enabled();
-    let mut receipt = None;
-    let mut registry = state.0.lock().map_err(|_| "Document lock poisoned")?;
-    let mut audio = audio.0.lock().map_err(|_| "Audio control lock poisoned")?;
-    let mut io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
-    let result = registry.history(window.label(), base_revision, &direction, |owner, patch| {
-        admit_owned_traced(&mut io, &mut audio.graphs[owner.id as usize], owner, patch, None, None, false, if tracing { Some(&mut receipt) } else { None })
-    });
-    drop(io);
-    drop(audio);
-    let obsolete = if let Ok(result) = &result { if result.accepted { changed(window.app_handle(), &mut registry, &result.document.owner_label) } else { vec![] } } else { vec![] };
-    drop(registry);
-    trace_source_reply(match direction.as_str() { "undo" => "undo", "redo" => "redo", _ => "invalid_history" }, base_revision, receipt, &result);
+    let mut obsolete = vec![];
+    let result = run_observed(|receipt| {
+        let mut registry = state.0.lock().map_err(|_| "Document lock poisoned")?;
+        let mut audio = audio.0.lock().map_err(|_| "Audio control lock poisoned")?;
+        let mut io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
+        let result = registry.history(window.label(), base_revision, &direction, |owner, patch| {
+            admit_owned_traced(&mut io, &mut audio.graphs[owner.id as usize], owner, patch, None, None, false, if tracing { Some(receipt) } else { None })
+        });
+        drop(io);
+        drop(audio);
+        obsolete = if let Ok(result) = &result { if result.accepted { changed(window.app_handle(), &mut registry, &result.document.owner_label) } else { vec![] } } else { vec![] };
+        result
+    }, |receipt, result| trace_source_reply(match direction.as_str() { "undo" => "undo", "redo" => "redo", _ => "invalid_history" }, base_revision, receipt, result));
     close_views(window.app_handle(), obsolete);
+    result
+}
+
+fn run_observed<T>(run: impl FnOnce(&mut Option<SourceReceipt>) -> Result<T, String>, observe: impl FnOnce(Option<SourceReceipt>, &Result<T, String>)) -> Result<T, String> {
+    let mut receipt = None;
+    let result = run(&mut receipt);
+    observe(receipt, &result);
     result
 }
 
@@ -363,6 +372,32 @@ fn document_line(operation: &str, base: u64, result: &Result<CommitResult, Strin
 mod source_reply_tests {
     use super::*;
     use serde_json::json;
+
+    #[test]
+    fn trace_poisoned_lock_reply_is_observed_after_prior_guards_drop() {
+        use std::sync::Mutex;
+        let errors = ["Document lock poisoned", "Audio control lock poisoned", "Audio device lock poisoned"];
+        for poisoned in 0..3 {
+            let locks = [Mutex::new(()), Mutex::new(()), Mutex::new(())];
+            std::thread::scope(|scope| { let lock = &locks[poisoned]; let _ = scope.spawn(move || { let _guard = lock.lock().unwrap(); panic!("poison"); }).join(); });
+            let mut observed = false;
+            let result: Result<CommitResult, String> = run_observed(|_| {
+                let _document = locks[0].lock().map_err(|_| errors[0].to_string())?;
+                let _audio = locks[1].lock().map_err(|_| errors[1].to_string())?;
+                let _io = locks[2].lock().map_err(|_| errors[2].to_string())?;
+                unreachable!()
+            }, |receipt, result| {
+                assert!(receipt.is_none());
+                for lock in &locks[..poisoned] { assert!(lock.try_lock().is_ok()); }
+                assert_eq!(result.as_ref().err().unwrap(), errors[poisoned]);
+                let reply = document_line("undo", 4, result);
+                assert_eq!(reply, json!({"event":"rust_document_reply", "operation":"undo", "base_revision":"4", "status":"error"}));
+                observed = true;
+            });
+            assert_eq!(result.err().unwrap(), errors[poisoned]);
+            assert!(observed);
+        }
+    }
 
     #[test]
     fn trace_reports_native_refusal_and_actual_document_rejection_separately() {
