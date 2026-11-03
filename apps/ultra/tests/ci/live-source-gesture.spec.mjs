@@ -47,6 +47,7 @@ test('mounted Boolean commits one complete source and preserves the other source
   expect(result.replies.at(-1).reply).toMatchObject({outcome:'accepted',native:{status:'unobserved'}});
   expect(result.after.nodes[0].params.state.values[24]).toBe(1);
   expect(result.before.nodes[0].params.state.values[24]).toBe(0);
+  expect(result.after.nodes[0].params.state.values).toHaveLength(203);
   for(const key of ['version','profile','dllSha256','guiSha256','graphicsSha256'])expect(result.after.nodes[0].params.state[key]).toBe(result.before.nodes[0].params.state[key]);
   for(let index=0;index<203;index++)if(index!==24)expect(result.after.nodes[0].params.state.values[index]).toBe(result.before.nodes[0].params.state.values[index]);
   expect(result.after.nodes[0].params.state.values[194]).toBe(12.1);
