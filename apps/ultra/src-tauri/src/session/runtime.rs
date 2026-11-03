@@ -11,6 +11,10 @@ pub struct Runtime {
     pub master_observation:Option<super::native_master::State>,
 }
 impl Runtime {
+    pub(super) fn request_serial(&self)->u64{self.serial}
+    pub(super) fn workspace_request_diagnostic(&mut self,host:&Host,action:super::runtime_workspaces::Action,status:&mut Option<i32>)->Result<super::runtime_workspaces::RequestResult,String>{
+        self.workspace.request_diagnostic(host,action,&mut self.serial,status)
+    }
     pub fn workspace_request(&mut self,host:&Host,action:super::runtime_workspaces::Action)->Result<super::runtime_workspaces::RequestResult,String>{
         self.workspace.request(host,action,&mut self.serial)
     }

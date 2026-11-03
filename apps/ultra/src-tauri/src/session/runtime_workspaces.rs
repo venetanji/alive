@@ -51,11 +51,16 @@ impl Runtime {
         }
     }
     pub fn poll(&mut self,host:&Host)->Result<(serde_json::Value,serde_json::Value),String>{
+        self.poll_with(host,|raw,master|{
+            let capability=n::master_capability().ok_or("Current native Master support is required")?;
+            Ok(unsafe{(capability.snapshot_v4)((raw as *mut n::StateV4).cast(),master)})
+        })
+    }
+    fn poll_with(&mut self,host:&Host,snapshot:impl FnOnce(&mut n::StateV4,&mut super::native_master::State)->Result<i32,String>)->Result<(serde_json::Value,serde_json::Value),String>{
         let p=host.prepared.as_ref().ok_or("No session")?;let w=workspace(p)?;
         let mut raw=Box::<n::StateV4>::default();
-        let capability=n::master_capability().ok_or("Current native Master support is required")?;
         let mut master=super::native_master::State::output();
-        if unsafe{(capability.snapshot_v4)((&mut *raw as *mut n::StateV4).cast(),&mut master)}!=1{return Err("Workspace state is temporarily unavailable".into());}
+        if snapshot(&mut raw,&mut master)?!=1{return Err("Workspace state is temporarily unavailable".into());}
         self.master_observation=Some(master);
         if raw.preparation_revision!=host.preparation_revision{return Err("Native workspace preparation publication is temporarily unavailable".into());}
         if raw.bank_revision!=host.bank_revision{return Err("Native music publication is awaiting document acknowledgment".into());}
@@ -68,14 +73,27 @@ impl Runtime {
         Ok((state,serde_json::to_value(view).map_err(|e|e.to_string())?))
     }
     pub(super) fn request(&mut self,host:&Host,action:Action,serial:&mut u64)->Result<RequestResult,String>{
+        self.request_diagnostic(host,action,serial,&mut None)
+    }
+    pub(super) fn request_diagnostic(&mut self,host:&Host,action:Action,serial:&mut u64,snapshot_status:&mut Option<i32>)->Result<RequestResult,String>{
+        self.request_with(host,action,serial,snapshot_status,|raw,master|{
+            let capability=n::master_capability().ok_or("Current native Master support is required")?;
+            Ok(unsafe{(capability.snapshot_v4)((raw as *mut n::StateV4).cast(),master)})
+        },|request,q,receipt|{
+            if let Some(q)=q {super::native_launch::submit_v4(request,q,receipt)?;}else{unsafe{n::alive_session_request_v4(request,receipt);}}
+            Ok(())
+        })
+    }
+    fn request_with(&mut self,host:&Host,action:Action,serial:&mut u64,snapshot_status:&mut Option<i32>,snapshot:impl FnOnce(&mut n::StateV4,&mut super::native_master::State)->Result<i32,String>,submit:impl FnOnce(&n::RequestV4,Option<super::launch::Quantization>,&mut n::ReceiptV4)->Result<(),String>)->Result<RequestResult,String>{
+        *snapshot_status=None;
         let p=host.prepared.as_ref().ok_or("No session")?;let (mut request,mut result)=request(p,action)?;
-        self.poll(host)?;
+        self.poll_with(host,|raw,master|{let status=snapshot(raw,master)?;*snapshot_status=Some(status);Ok(status)})?;
         while self.requests.len()>=128 {if let Some(i)=self.requests.iter().position(|r|!matches!(r.status.as_str(),"queued"|"pending")){self.requests.remove(i);}else{return Err("128 workspace requests remain outstanding. Let audio advance before retrying.".into());}}
         *serial=serial.checked_add(1).ok_or("Request identity exhausted")?;
         request.request_serial=*serial;request.preparation_revision=host.preparation_revision;
         result.quantization=(request.kind==n::V4_TRACK_ACTIONS).then(||p.saved.launch.effective(if result.kind=="launch"{result.slot_id.as_deref()}else{None}));
         let mut receipt=n::ReceiptV4::default();
-        if let Some(q)=result.quantization {super::native_launch::submit_v4(&request,q,&mut receipt)?;}else{unsafe{n::alive_session_request_v4(&request,&mut receipt);}}
+        submit(&request,result.quantization,&mut receipt)?;
         result.preparation_revision=host.preparation_revision.to_string();result.request_serial=serial.to_string();result.observe(&receipt);self.requests.push(result.clone());Ok(result)
     }
 }
@@ -122,6 +140,47 @@ mod tests {
         let old=super::super::read(&path).unwrap();
         let project=old.saved.score.clone();
         super::super::prepare(&old.saved.with_score(project),&path).unwrap()
+    }
+    #[test]
+    fn invalid_workspace_request_does_not_allocate_a_serial() {
+        let mut host=Host::default();host.prepared=Some(prepared());
+        let mut runtime=Runtime::default();let mut serial=17;
+        let error=runtime.request(&host,Action::Launch{track_id:"missing".into(),slot_id:"missing".into()},&mut serial).err().unwrap();
+        assert_eq!(error,"Unknown prepared track 'missing'");assert_eq!(serial,17);assert!(runtime.requests.is_empty());
+    }
+    #[test]
+    fn pre_submit_snapshot_failure_reports_current_status_without_submission() {
+        for code in [-3,-2,-1,0] {
+            let mut host=Host::default();host.prepared=Some(prepared());host.preparation_revision=9;
+            let mut runtime=Runtime::default();let mut serial=42;let mut observed=None;let mut submissions=0;
+            let error=runtime.request_with(&host,Action::Start{},&mut serial,&mut observed,|_,_|Ok(code),|_,_,_|{submissions+=1;Ok(())}).err().unwrap();
+            assert_eq!(error,"Workspace state is temporarily unavailable");
+            assert_eq!(serial,42);assert_eq!(submissions,0);assert!(runtime.requests.is_empty());assert_eq!(observed,Some(code));
+        }
+    }
+    #[test]
+    fn invalid_action_clears_prior_snapshot_status_without_reading() {
+        let mut host=Host::default();host.prepared=Some(prepared());
+        let mut runtime=Runtime::default();let mut serial=17;let mut observed=Some(-3);
+        let error=runtime.request_with(&host,Action::Launch{track_id:"missing".into(),slot_id:"missing".into()},&mut serial,&mut observed,|_,_|panic!("invalid action must not poll"),|_,_,_|panic!("invalid action must not submit")).err().unwrap();
+        assert_eq!(error,"Unknown prepared track 'missing'");assert_eq!(serial,17);assert_eq!(observed,None);
+    }
+    #[test]
+    fn successful_launch_keeps_one_serial_one_submit_and_quantization() {
+        let mut host=Host::default();host.prepared=Some(prepared());host.preparation_revision=9;
+        let p=host.prepared.as_ref().unwrap();let track_id=p.saved.score.tracks()[0].id().to_owned();
+        let slot_id=p.schedule.slots[0].id.clone();let expected=p.saved.launch.effective(Some(&slot_id));
+        let mut runtime=Runtime::default();let mut serial=42;let mut observed=None;let mut submissions=0;
+        let result=runtime.request_with(&host,Action::Launch{track_id,slot_id},&mut serial,&mut observed,|raw,_|{
+            raw.preparation_revision=9;
+            for t in &mut raw.tracks {t.authority=n::V4_ARRANGEMENT_AUTHORITY;t.active_source=n::V4_NONE;t.active_slot=n::V4_NONE;t.active_placement=n::V4_NONE;t.pending_slot=n::V4_NONE;t.pending_frame=n::V4_NO_FRAME;}
+            Ok(1)
+        },|request,q,receipt|{
+            submissions+=1;assert_eq!(request.request_serial,43);assert_eq!(request.preparation_revision,9);assert_eq!(q,Some(expected));
+            receipt.status=n::V4_QUEUED;Ok(())
+        }).unwrap();
+        assert_eq!(observed,Some(1));assert_eq!(serial,43);assert_eq!(submissions,1);
+        assert_eq!(result.request_serial,"43");assert_eq!(result.preparation_revision,"9");assert_eq!(result.quantization,Some(expected));assert_eq!(result.status,"queued");
     }
     #[test]
     fn gaps_and_session_silence_keep_null_sources_and_pending_return_is_not_predicted(){

@@ -209,10 +209,11 @@ impl Control {
         if runtime::decimal(preparation_revision)?!=self.host.preparation_revision{return Err("Prepared workspace changed. Refresh before playback".into());}
 
         if !self.driver.snapshot().running{return Err("Start Audio before workspace playback".into());}
-        let result=self.runtime.workspace_request(&self.host,action);
+        let before=self.runtime.request_serial();let mut snapshot_status=None;
+        let result=self.runtime.workspace_request_diagnostic(&self.host,action,&mut snapshot_status);
         trace_arrangement(||match &result {
             Ok(receipt)=>serde_json::json!({"kind":"receipt","generation":generation,"receipt":receipt}),
-            Err(error)=>serde_json::json!({"kind":"requestError","generation":generation,"error":error}),
+            Err(error)=>serde_json::json!({"kind":"requestError","generation":generation,"error":error,"hostPreparationRevision":self.host.preparation_revision.to_string(),"requestSerialBefore":before.to_string(),"requestSerialAfter":self.runtime.request_serial().to_string(),"preSubmitSnapshotStatus":snapshot_status}),
         });
         result
     }
