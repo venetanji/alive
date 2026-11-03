@@ -4,6 +4,77 @@ This is the current stage ledger for the autonomous native-library work. The
 implementation plan contains earlier checkpoints as historical evidence. No
 profile has passed all ten publication stages; the importer registry is empty.
 
+## Current Checkpoint - 3 November 2026
+
+This checkpoint supersedes the older current-state and shutdown entries below;
+those entries remain as historical evidence. The selected runtime pair is
+`test-a35c18a8554b4b29dc8c`, compiled from
+`2c649b8d6f0228726599684de2a319375f66b95f`. Both launchers select that pair and
+all 18 manifest artifacts match. The CI and acceptance test revision is
+`6ca6816bbacc04ee0866490c03981e815ba77586`; its only changes from the compiled
+source are four Python desktop-test files. It is not a new runtime build.
+
+Three separate ordinary Ultra runs at 800x600, 1280x800 and 1440x900 exercised
+the one qualified Analog Noise switch, owner acknowledgement, Undo/Redo, UI
+Save As, actual Quit and same-pair reopen. The complete 203-value comparison
+confirmed that only the intended Noise value changed; the other 202 values,
+including exact raw slot 194 `12.1`, the second source and graph were
+preserved. Fresh post-reply host-cached catalogs were recorded separately from
+Rust replies and C ABI admission. The initial app's parent-owned wait and reopened app's wait
+both returned zero in each run. The r13 focused probe also observed an invalid
+inline draft and node1 selection retained across Save refusal, Noise
+acknowledgement and late refresh; after Escape, node1 identity and full state
+held through Undo/Redo. Its actual Discard/Quit had parent wait zero. Independent
+review passed for the focused r13 native evidence. Earlier r9-r12 failures are
+retained; they are not upgraded by the later probe.
+
+The coordinator inspected all three reopened captures and four r13 captures.
+Noise's accessible pressed state was true after acknowledgement; its dark
+hovered fill became orange after a verified pointer-only move away. No CSS or
+product change was made. The 1100px panel remains horizontally clipped at all
+three sizes and the sidebar is vertically clipped at 800x600. Internal pending-draft membership
+and the original IPC expected-scope payload are not directly observable in
+this evidence. Cached native values and receipts are not DSP-internal readback,
+an applied-frame receipt, audible causality or physical-hardware qualification.
+
+At this checkpoint [manual CI 41643987413](https://github.com/venetanji/alive/actions/runs/41643987413)
+at `6ca6816` failed. Contracts passed, including the hosted main Node suite
+with 923 total, 889 passed and 34 skipped; Chromium passed 425 with 38 skipped;
+Rust passed 339 with five ignored; desktop/hosted editor and Master passed.
+The Arrangement check failed at `check_alive_arrangement.py:234`, waiting for
+initial Session authority after `Launch Pulse Clip 1`, before the three view
+toggles, Stop or Return. The trace records a generation-1/preparation-1 launch
+request followed by `requestError: Workspace state is temporarily unavailable`;
+it contains no accepted launch receipt, serial or target. Return recovery was
+not exercised and is not qualified by this run. The cause is under read-only
+investigation; no engine or UI cause is concluded.
+
+The next bounded diagnostic batch targets the raw `snapshot_v4` status that is
+collapsed before launch serial, quantization and native submission. BUSY is a
+plausible but unproven explanation. The assigned worker is preparing opt-in
+status tracing and deterministic pre-submit regressions in a separate
+worktree. This is diagnostic-only: musical behavior remains unchanged, with no
+retries or engine API expansion. No controlled-source or tested-build changes
+have been made for it yet.
+
+All four downstream clip-observation, saved-clip epochs, editor-resource and
+software CPAL checks were skipped; an upload step succeeding with no files is
+not a pass. This run provides no fresh downstream loopback or timing proof. The
+older `41631360191` also failed with downstream jobs skipped. Historical
+`41617865012` timing overruns and the debug allocator failure remain open;
+endurance was off and physical hardware remains unrun. Retained configured
+frontend evidence for matching UI source is 904 Node passes with 19 skips and
+463 Chromium passes; it is not a new full run. At `2c649b8`, Rust recorded 339
+passes and five ignored, IPC two passes and Alive one pass.
+
+Alive native admission remains closed, aggregate `runtimeQualified` remains
+false, and Electric remains unavailable. The native captures, installed DLL and
+resource evidence remain private outside Git. Durable private reports and
+captures are under
+`/home/venetanji/.cache/alive-ultra-evidence/native-library-20261102/workers/`.
+The narrow local Analog gate has independent evidence review; the final CI
+failure requires investigation and the overall goal remains open.
+
 ## Shutdown Checkpoint - 3 November 2026
 
 The owner requested a clean pause for laptop shutdown. All workers have finished.
