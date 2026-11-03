@@ -4,6 +4,70 @@ This is the current stage ledger for the autonomous native-library work. The
 implementation plan contains earlier checkpoints as historical evidence. No
 profile has passed all ten publication stages; the importer registry is empty.
 
+## Shutdown Checkpoint - 3 November 2026
+
+The owner requested a clean pause for laptop shutdown. All workers have finished.
+The active checkout has moved from `/tmp/alive-pr12-native-20261102` to
+`/home/venetanji/Work/alive-pr12-native-20261102`, with Git worktree metadata
+repaired. All 11,036 checkout entries matched after the move. A complete archive,
+verified file by file, and copies of the other surviving Alive scratch captures
+are retained under
+`/home/venetanji/.local/state/alive/checkpoints/shutdown-20261103T105121Z`.
+The two private dependency links into the old temporary checkout now point to
+the durable checkout. Historical evidence paths are retained as recorded.
+
+The approved one-widget Noise grant and contextual Help fixes are integrated at
+`7de22ac60508e5c7994282703b8a0fe3fd90f338`. The full maintained runs at that source
+passed 904 Node tests with 19 DOMParser/resource skips, and 463 Chromium tests
+with zero skips or failures. Tracked source and 42 private fixture hashes matched
+before and after both runs. The grant is restricted to the verified source key
+and exact installed Noise widget; aggregate static mapping qualification stays
+false and Alive native admission remains closed.
+
+The original installed control now has verified saved `false -> true -> false`
+evidence in private packet revision 3, digest
+`970b41ac11069127fc4a1e5b46e4531c7d39a4cada7b0ae6474ce0e1a39728a0`.
+Each saved set has one Analog and 38 direct Manual fields; the other 37 fields
+remain unchanged. This qualifies the observed pointer context, not general enum
+semantics, original keyboard parity, internal DSP readback, audio or Alive.
+
+Both launchers still select `test-15d7dfbca423c7e9ad8f`, built from
+`8afb3a689e94114a76048dae60781edcfa43887f`. That build remains read-only: the new
+Noise grant has not been built or selected. The corrected native read-only smoke
+and its independent review passed; the earlier wrapper failure remains retained.
+Clipping, full control reachability and full original editor fidelity remain open.
+
+The bounded opt-in app-host trace candidate is committed separately at
+`d3160c0355df5c9caa930535605ee50bd120f9f6`, following `bf059dc`. Its focused Rust
+run passed 34 tests with one native-DLL test ignored. Follow-up review of the
+stderr-failure and lock-poison fixes, integration and full Rust validation are
+pending. It adds diagnostics at existing boundaries; no native engine or ABI
+expansion is included. Native cached observations remain distinct from DSP
+readback.
+
+The private two-Analog fixture and independent two-edge graph validate and
+export exactly on the selected read-only pair. Actual edit and file lifecycle
+acceptance remain incomplete: the Save As helper stopped before input because
+the focused X window and the chooser's native hit path did not match. No file
+save, graceful Quit or reopen received acceptance credit. The failing attempts,
+locator diagnostics and draft helper are retained privately.
+
+Manual CI `41617865012`, attempt 1, completed with all three jobs successful at
+exact `eaf9024cc56d86fdc3c5adb43b8f28e7544ab4c8`, which precedes the latest Noise
+grant. Its browser job passed 425 tests and skipped 35, including the 16 cases
+whose installed private resource manifest was absent. Detailed final artifact
+audit remains pending. Run `41612002151` remains an overall failure from the
+earlier fixture precondition bug; its native and contracts jobs passed. Preserve
+the earlier callback overrun and unresolved debug allocator failure separately;
+endurance and physical hardware remain unrun.
+
+Resume by reviewing the trace fix, integrating it if accepted, validating the
+full relevant Rust suite and building/selecting a new matching pair for both
+launchers. Then resolve the picker ownership observation and complete actual
+Noise edit, document/native acknowledgement, cached native observations,
+Undo/Redo, Save, graceful close and reopen with exact state preservation. Do not
+expand devices or enable Alive admission before this gate passes.
+
 ## Current Goal State - Resumed 3 November 2026
 
 The active goal now points to the owner's attached Analog acceptance checklist
