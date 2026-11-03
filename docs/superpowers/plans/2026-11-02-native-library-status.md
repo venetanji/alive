@@ -81,18 +81,46 @@ reconnect, disposal and some stale replies, not every skipped Graphics/native
 boundary or multi-mount case. Browser IPC is simulated. Do not credit skipped
 cases as passed or claim browser tests validate real native IPC.
 
-Manual CI41598403973 is running at exact a40c0a7 with endurance off:
-https://github.com/venetanji/alive/actions/runs/41598403973 . UI/protocol and
-Chromium jobs passed; actual native/hosted editor and downstream gates are
-being audited against the same live run. No automatic CI was enabled.
+Manual CI41598403973 completed successfully on attempt1 at exact a40c0a7:
+https://github.com/venetanji/alive/actions/runs/41598403973 . All three jobs
+passed; the audit inspected artifacts for actual native desktop/hosted editor,
+Arrangement, Master save/Quit/restart, four clip observation cases, saved clips
+and six stream epochs, eight editor resource cycles and software CPAL. Rust
+release reported331 passed/five ignored. No automatic CI was enabled.
+
+Return request7/revision1 captured bar1 quantization. Its pending target was
+absolute2583549; the applied receipt retained that target. The later applied
+snapshot was absolute2585600/position207765, inside compiled gap[205714,244286),
+with track1 Arrangement authority and null active source/placement/slot. Track2
+kept its Session source/slot. The snapshot does not independently witness the
+exact transition frame; target and observation frames are kept distinct.
+
+The Arrangement snapshot recorded one callback budget exceedance in10780
+samples, max11623211ns against512/48k budget10666667ns. Its CPAL errors/xruns and
+native failures were zero. Six saved-clip epochs had20411 measured callbacks,
+zero exceedances/errors/xruns/native failures and no coverage gap/eviction;
+their maxima were8935268,10651269,9530748,9197243,8866601,5374488ns.
+Software CPAL captured153088 finite stereo48k frames,272 measured512-frame
+callbacks,max195315ns,zero budget exceedances/errors/xruns/native failures;
+Stop/Start and config reload passed. Timing omits the final clock read and
+publication tail. These are separate observations, not regression attribution
+or complete Analog timing qualification. Endurance was explicitly skipped
+(off/zero seconds); physical hardware and physical underruns remain unrun.
+The retained debug allocator failure remains open despite release passes.
 
 Next source-gesture infrastructure is isolated at worker893412691e485cd756f17491a7d03f919b78d243,
-awaiting independent spec/quality review and not integrated. Focused worker
+independently approved with minor coverage/seam limits and not integrated. Focused worker
 results:106 passed,19 existing DOMParser skips,zero failed. Production writable
 authority is empty and all175 mapped model fields remain disabled. Real U1 and
 host mechanics are exercised with fake resource/IPC boundaries only. The panel
-view still requires its planned source-gesture/async draft/save-close adaptation;
-one real native edit-and-reopen cycle remains the immediate milestone.
+view's source-gesture/async draft/save-close adaptation is isolated at1cca062,
+under review-fix round1. Its focused results were220 passed/19 DOMParser skips;
+review found replacement during asynchronous preflight could bypass the new
+surface, and disabling a focused source control could lose focus on rejection.
+Both require regressions and correction before integration. A separate numeric
+raw/caret preservation RED is retained; no generic numeric-control production
+extension is authorized by the Boolean-first slice. One real native
+edit-and-reopen cycle remains the immediate milestone.
 
 Timing/admission and lifecycle stay separate gates. Prior callback budget
 exceedances and the existing development allocator failure remain unresolved;
