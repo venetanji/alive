@@ -119,7 +119,7 @@ test('current read-only Analog adapter mounts disabled inputs and refuses synthe
     input.fire('pointerdown',{pointerId:1,clientX:0,clientY:0});input.fire('pointermove',{pointerId:1,clientX:80,clientY:0});input.fire('pointerup',{pointerId:1});
   }
   for(const button of all(page.root).filter(element=>element.tagName==='BUTTON'&&element.disabled))button.fire('click');
-  await settle();assert.equal(h.gestures,0);assert.equal(h.batches.length,0);assert.deepEqual(h.bindings.snapshot(),before);
+  await settle();assert.equal(view.hasDraft(),false);assert.equal(h.gestures,0);assert.equal(h.batches.length,0);assert.deepEqual(h.bindings.snapshot(),before);
   view.dispose();
 });
 test('current read-only source/native refresh preserves the mounted controls and selected navigation page',async()=>{

@@ -112,7 +112,7 @@ export function createNumber(doc,{label,value=0,min,max,step='any',display,disab
     paint();return true;
   }
   const listeners=[],on=(type,handler)=>{input.addEventListener(type,handler);listeners.push(()=>input.removeEventListener(type,handler));};
-  on('input',()=>{dirty=true;input.removeAttribute('aria-invalid');});
+  on('input',()=>{if(input.disabled)return;dirty=true;input.removeAttribute('aria-invalid');});
   on('change',commit);on('blur',commit);
   on('keydown',event=>{
     if(event.key==='Escape'){event.preventDefault();event.stopPropagation();dirty=false;paint();input.removeAttribute('aria-invalid');}
