@@ -948,6 +948,87 @@ frontend source hashes remain unchanged. Actual post-fix native acquisition,
 paired rebuild/selection and Alive three-size smoke are the next required
 checks, not reported as passed here.
 
+## Shutdown Checkpoint - 3 November 2026
+
+The owner explicitly requested a clean pause before shutting down the laptop.
+No new build, native run, original-device input, or CI dispatch starts after
+that request. Existing unrelated worktrees and untracked build/cache links are
+preserved. The active integration checkout is
+`/tmp/alive-pr12-native-20261102`, branch
+`feat/alive-native-library-20261102`; the original dirty checkout remains alone.
+
+Both launchers select exact built source `f0e78352378d989e58602e63be25cbd291167d9e`,
+immutable snapshot `test-902ffc2aadb7e5bf6bea`. The paired build completed in
+70.38 seconds with source-input hashes unchanged; all 18 snapshot artifacts
+and both desktop targets verified. Alive SHA-256 is
+`30cced39dfe17fdd6280355e520e8a6848e7b2ef2f11e5cad63f43d27575087a`,
+Ultra is `12d6586becde89d001b5cc50e10c2d6e7b382f8acafabbee284b3017cfaf1f1d`,
+and the native library is
+`5042befdb2e531d22b3b097601b5edc8c5de07404b4d3b90d3cc302114fec871`.
+The launchers retain this matching pair during the pause. No instrument is
+newly admitted into Alive; the qualification registry remains empty.
+
+Actual Ultra attempt `u2a-native-panel-r2` opens the controlled patch and
+prepares the native source, resolving r1's validation refusal. Acquisition
+then correctly refuses `native observation does not match saved source at
+index 1`. Root retained and inspected the actual desktop failure. Rust's
+float32 shortest decimal serialization produces `0.16666667`, while the saved
+source's exact widened native float is `0.1666666716337204`; browser mock IPC
+catalogs did not reproduce that serialization boundary.
+
+A separate committed candidate fixes only the JSON response boundary:
+`909c095b340744fe7971106ddf78218dc9a82e66`, branch
+`fix/native-parameter-wire-precision-r1`, worktree
+`/tmp/alive-native-parameter-wire-precision-r1`. `live_device.rs` explicitly
+widens cached float32 descriptor/value fields to float64 before Tauri chooses
+decimal wire precision. The native ABI/state and strict frontend comparisons
+are unchanged. Final RED fails both real Tauri response regressions; GREEN
+passes both. Full pinned release/locked Rust passes 331 tests, zero failures,
+five existing ignores. Seven existing binding tests pass. A private Node
+oracle consumes the actual emitted 203-row Rust JSON through the real adapter,
+preserves raw slot194 `12.1`, and still rejects distinct adjacent native floats,
+wrong generations and invalid receipt versions. This candidate is NOT yet
+integrated, rebuilt, selected or accepted by actual desktop acquisition.
+Independent review was requested against the frozen commit; inspect its final
+report before integration. Candidate report:
+`workers/native-parameter-wire-precision-r1/report.md`, SHA-256
+`a1c39a96b008fbea47e284d3e419ac6c35df7037da00ac9d0fdc9e4698709f4a`.
+
+Alive smoke verification needs correction and must not receive restoration
+pass credit. `paired-native-smoke-f0e7835-r1` incorrectly launched the empty
+default while expecting Pulse; r2 explicitly opened the intended two-instrument
+example and exited zero, but inspection of all six screenshots showed the
+final 1440x900 panel state differed from its initial state. R3 added actual
+native/accessibility target checks and state assertions, but discovered this
+WebKit accessibility snapshot omits PRESSED even for initially visible Clip.
+The first visible-sentinel harness attempt then failed because it did not yet
+catch `StopIteration` for an intentionally hidden Device panel. Preserve every
+attempt. Resume by using actual visible sentinel presence/positive geometry,
+handling absent nodes, and asserting each independent transition and final
+restoration; do not weaken expectations or infer a product bug from the
+incomplete harness. Private scripts: `checkpoint-native-visible-smoke.py` and
+`run-alive-visible-smoke.py`.
+
+Original reference work made no device/model/settings change in this turn.
+The exact owned stalled grim process was terminated; a bounded explicit-window
+ImageMagick capture succeeded, and prior focus was restored. The saved original
+window remains `corpus-default-reference - Ableton Live 12 Suite`, PID1303608
+at capture time. Its fresh image/context are in
+`workers/analog-noise-original-ui-r1/`; revalidate all process/window identities
+after reboot. A new private guarded input helper was only compiled, never run;
+its exact-title guard needs deliberate handling of dirty-title transitions
+before any original toggle observation. User's tune remains saved separately.
+
+Resume in dependency order: finish frozen precision review, integrate if clean,
+build/select a new exact matching pair, rerun actual Ultra acquisition and
+corrected Alive three-size restoration checks, inspect screenshots, then push
+and manually dispatch Ultra CI with endurance off. Keep the latest completed
+CI `41537054387` at `4420871` distinct from these unrun checks and its remaining
+callback deadline exceedances. Only then continue U2b's bounded source-gesture,
+draft/settlement and single-switch qualification slices. Numeric controls,
+original initialization, native timing/lifecycle and Alive hosting stay
+unqualified; software probes do not qualify physical hardware.
+
 ## Next Gates
 
 1. Finish reviewed profile facts and original editor geometry, keeping unresolved
