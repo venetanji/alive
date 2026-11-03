@@ -136,14 +136,14 @@ test('fixed Devices divider closes with the keyboard and Help reopens independen
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
 
-for(const panels of ['clip','devices','both'])test(`lower row drag collapses and restores ${panels} without losing drafts`,async({page},testInfo)=>{
-  await page.setViewportSize({width:1280,height:800});await openSession(page);
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])for(const panels of ['clip','devices','both'])test(`lower row drag collapses and restores ${panels} without losing drafts at ${size.width}x${size.height}`,async({page},testInfo)=>{
+  await page.setViewportSize(size);await openSession(page);
   if(panels!=='clip')await page.locator('#detail-devices').click();if(panels==='devices')await page.locator('#detail-clip').click();
   const handle=page.locator('#detail-resizer');await expect(handle).toBeVisible();
-  const field=panels==='devices'?page.getByRole('spinbutton',{name:'Track 1 device 1 Cutoff base',exact:true}):page.getByLabel('Clip Start',{exact:true});
-  if(panels!=='devices')await field.fill('0.75');
+  const field=panels==='devices'?page.locator('.chain-device[data-instance-id="instrument-0"]').getByRole('spinbutton',{name:'Cutoff base',exact:true}):page.getByLabel('Clip Start',{exact:true});
+  await field.fill(panels==='devices'?'1777':'0.75');
   const initial=(await page.locator('.workspace-lower').boundingBox()).height;
-  const drag=async()=>{const r=await handle.boundingBox();await page.mouse.move(r.x+r.width/2,r.y+r.height/2);await page.mouse.down();await page.mouse.move(r.x+r.width/2,770,{steps:8});};
+  const drag=async()=>{const r=await handle.boundingBox(),footer=await page.locator('footer').boundingBox();await page.mouse.move(r.x+r.width/2,r.y+r.height/2);await page.mouse.down();await page.mouse.move(r.x+r.width/2,footer.y-1,{steps:8});};
   await drag();await expectLowerClosed(page);await page.keyboard.press('Escape');await page.mouse.up();
   await expect(page.locator('.workspace-lower')).toBeVisible();expect((await page.locator('.workspace-lower').boundingBox()).height).toBe(initial);
   await drag();await page.mouse.up();await expectLowerClosed(page);
@@ -152,7 +152,11 @@ for(const panels of ['clip','devices','both'])test(`lower row drag collapses and
   await page.locator('#toggle-detail').click();await expect(page.locator('.workspace-lower')).toBeVisible();
   expect((await page.locator('.workspace-lower').boundingBox()).height).toBe(initial);
   await expect(page.locator('#clip-detail'))[panels==='devices'?'toBeHidden':'toBeVisible']();await expect(page.locator('#device-detail'))[panels==='clip'?'toBeHidden':'toBeVisible']();
-  if(panels!=='devices')await expect(field).toHaveValue('0.75');
+  await expect(page.getByRole('group',{name:'Selected clip piano roll',exact:true}))[panels==='devices'?'toBeHidden':'toBeVisible']();
+  await expect(page.getByRole('group',{name:'Device chain drop area',exact:true}))[panels==='clip'?'toBeHidden':'toBeVisible']();
+  if(panels!=='devices')await expect(page.locator('#piano-roll')).toBeInViewport();
+  if(panels!=='clip')await expect(page.locator('#device-detail')).toBeInViewport();
+  await expect(field).toHaveValue(panels==='devices'?'1777':'0.75');
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
 
@@ -493,16 +497,24 @@ test('footer display menu owns passive visibility controls with honest unavailab
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
 
-test('detail collapse restores the requested Clip height with either panel combination',async({page})=>{
-  await page.setViewportSize({width:1280,height:800});await openSession(page);
+for(const size of [{width:800,height:600},{width:1280,height:800},{width:1440,height:900}])test(`detail collapse restores visible panels and requested Clip height at ${size.width}x${size.height}`,async({page})=>{
+  await page.setViewportSize(size);await openSession(page);
   const handle=page.locator('#detail-resizer');
   for(const both of [false,true]){
     if(both)await page.locator('#detail-devices').click();
     await handle.focus();await handle.press('Home');await handle.press('ArrowUp');const height=await handle.getAttribute('aria-valuenow');
     await page.locator('#toggle-detail').click();await expectLowerClosed(page);
     await page.locator('#toggle-detail').click();await expect(handle).toHaveAttribute('aria-valuenow',height);
-    await page.setViewportSize({width:800,height:600});await page.setViewportSize({width:1280,height:800});
-    await expect(handle).toHaveAttribute('aria-valuenow',height);
+    await expect(page.getByRole('group',{name:'Selected clip piano roll',exact:true})).toBeVisible();
+    await expect(page.getByRole('group',{name:'Device chain drop area',exact:true}))[both?'toBeVisible':'toBeHidden']();
+    if(size.width===1280){await page.setViewportSize({width:800,height:600});await page.setViewportSize(size);await expect(handle).toHaveAttribute('aria-valuenow',height);}
+  }
+  for(let cycle=0;cycle<2;cycle++)for(const [control,clip,device] of [['#detail-clip',false,true],['#detail-devices',false,false],['#detail-clip',true,false],['#detail-devices',true,true]]){
+    await page.locator(control).click();
+    await expect(page.getByRole('group',{name:'Selected clip piano roll',exact:true}))[clip?'toBeVisible':'toBeHidden']();
+    await expect(page.getByRole('group',{name:'Device chain drop area',exact:true}))[device?'toBeVisible':'toBeHidden']();
+    if(clip)await expect(page.locator('#piano-roll')).toBeInViewport();
+    if(device)await expect(page.locator('#device-detail')).toBeInViewport();
   }
   expect(await page.evaluate(()=>window.calls.filter(c=>c.name!=='alive_current'))).toEqual([]);
 });
