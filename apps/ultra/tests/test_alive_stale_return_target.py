@@ -25,8 +25,11 @@ class StaleReturnTargetTests(unittest.TestCase):
             def __init__(self, name, role): self.name, self.role = name, role
             def get_name(self): return self.name
             def get_role_name(self): return self.role
-        web=Node('Alive document', 'other' if outcome == 'no_web' else 'document web')
-        leaf=Node('Wrong control' if outcome == 'wrong_target' else NAME, 'push button')
+        # This web/leaf pair is the retained local Return-all AT-SPI hit path.
+        web=Node('MIDI Arrangement - Alive', 'other' if outcome == 'no_web' else 'document web')
+        role = {'local_button': 'button', 'wrong_toggle': 'toggle button',
+                'wrong_menu': 'menu item'}.get(outcome, 'push button')
+        leaf=Node('Wrong control' if outcome == 'wrong_target' else NAME, role)
         def child_at_point(node, *args):
             events.append(('hit',node))
             if outcome == 'incomplete': raise GError('stale hit')
@@ -67,8 +70,12 @@ class StaleReturnTargetTests(unittest.TestCase):
         self.assertIsNotNone(result)
         self.assertEqual([e for e in events if e[0]=='button'], [('button',1),('button',0)])
         self.assertTrue(all(event[0]=='hit' for event in events[:events.index(('button',1))]))
+    def test_retained_local_button_role_is_accepted(self):
+        result, events, _ = self.exercise('local_button')
+        self.assertIsNotNone(result)
+        self.assertEqual([e for e in events if e[0]=='button'], [('button',1),('button',0)])
     def test_wrong_target_owner_process_and_offscreen_are_blocked(self):
-        for outcome in ('wrong_target','wrong_owner','wrong_process','offscreen','no_web','incomplete','other_error'):
+        for outcome in ('wrong_target','wrong_owner','wrong_process','offscreen','no_web','incomplete','other_error','wrong_toggle','wrong_menu'):
             with self.subTest(outcome=outcome):
                 result,events,records=self.exercise(outcome)
                 self.assertIsNone(result)

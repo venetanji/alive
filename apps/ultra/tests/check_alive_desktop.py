@@ -515,7 +515,7 @@ def native_control_click(name, kind, record=None, require_accessible_hit=False):
                         nodes = fresh.get('path', [])
                         if (fresh.get('status') == 'complete' and nodes
                                 and any(item.get('role') == 'document web' for item in nodes)
-                                and nodes[-1].get('name') == name and nodes[-1].get('role') == 'push button'):
+                                and nodes[-1].get('name') == name and nodes[-1].get('role') in ('button', 'push button')):
                             accessible = fresh
                         sample['fresh_frame_hit'] = fresh
                 sample['accessible_hit'] = accessible
