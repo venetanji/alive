@@ -4,6 +4,7 @@ import {readFileSync} from 'node:fs';
 import {OBJECTS} from './canvas-catalog.mjs';
 import {CanvasDocument,makeNode} from './canvas-model.mjs';
 import {subtractivePatch} from './canvas-instrument.mjs';
+import {createLiveDeviceState} from './live-device-profile.mjs';
 
 // This executes the real page module with a small DOM adapter. It does not prove rendered geometry or native sound.
 class Element {
@@ -1043,6 +1044,31 @@ test('a rejected panel settlement blocks close acknowledgement',async()=>{
   const start=p.operations.length;await assert.rejects(p.documents.session.flushBeforeClose({requestLabel:'owner',token:136}),/source conflict/);
   const acknowledgement=p.operations.slice(start).find(call=>call.name==='document_close_flushed');
   assert.match(acknowledgement.args.error,/source conflict/);assert.equal(p.controller.getState().closing,false);await p.dispose();
+});
+for(const action of ['close','save'])test(`${action} rejects when a panel is replaced during acquisition`,async()=>{
+  let release;const node={...makeNode('live_device',1),params:{device:'Analog',state:createLiveDeviceState()}};
+  const presentation={version:1,openOnLoad:false,size:{width:300,height:140},items:[{id:'p',kind:'livePanel',target:{node:1,profile:'live12-analog-v1'},rect:{x:0,y:0,width:300,height:140},included:true,visible:true,style:{accent:'default'}}]};
+  const patch={version:2,profile:'ultra-patcher-v2',presentation,nodes:[node],edges:[]};
+  const descriptor={shared:true,id:0,label:'main',ownerLabel:'main',title:'Owner',kind:'patch',patch,dirty:false,viewPath:[],authoringRevision:0,runtimeRevision:1};
+  const p=await mount(true,{documentCurrent:descriptor,invokeOverride:(name,args,fallback)=>name==='live_device_resource_pack'?new Promise(resolve=>release=resolve):fallback(name,args)});
+  assert.equal(typeof release,'function');const start=p.calls.length;
+  const pending=action==='close'?p.documents.session.flushBeforeClose({requestLabel:'main',token:137}):p.documents.session.save();await settle();
+  p.devicePanel.update({...p.controller.getState(),revision:2});release([1]);
+  await assert.rejects(pending,/changed|replaced|scope/i);
+  assert.equal(p.calls.slice(start).some(call=>call.name==='document_save'||call.name==='document_close_flushed'&&!call.args.error),false);
+  assert.equal(p.controller.getState().closing,false);await p.dispose();
+});
+test('save accepts a same-runtime source broadcast while panel settlement waits',async()=>{
+  const node={...makeNode('live_device',1),params:{device:'Analog',state:createLiveDeviceState()}};
+  const presentation={version:1,openOnLoad:false,size:{width:300,height:140},items:[{id:'p',kind:'livePanel',target:{node:1,profile:'live12-analog-v1'},rect:{x:0,y:0,width:300,height:140},included:true,visible:true,style:{accent:'default'}}]};
+  const patch={version:2,profile:'ultra-patcher-v2',presentation,nodes:[node],edges:[]};
+  const descriptor={shared:true,id:0,label:'main',ownerLabel:'main',title:'Owner',kind:'patch',patch,dirty:false,viewPath:[],authoringRevision:0,runtimeRevision:1};
+  const p=await mount(true,{documentCurrent:descriptor,invokeOverride:(name,args,fallback)=>name==='live_device_resource_pack'?new Promise(()=>{}):fallback(name,args)});
+  const root=p.ids.get('instrument-controls').children[0];let release;p.devicePanel.settleDrafts=()=>new Promise(resolve=>release=resolve);
+  const saving=p.documents.session.save();await settle();const next=structuredClone(descriptor);next.authoringRevision=1;next.patch.nodes[0].params.state.values[24]=1;
+  p.controller.acceptDescriptor(next);assert.equal(p.controller.getState().document.nodes[0].params.state.values[24],1);
+  release();assert.equal(await saving,true);assert.equal(p.ids.get('instrument-controls').children[0],root);
+  assert.equal(p.calls.filter(call=>call.name==='document_save').length,1);await p.dispose();
 });
 test('cancelled Save As retains the committed focused draft in the owner',async()=>{
   const p=await mountHistoryControl();await p.ids.get('lock-patch').fire('click');

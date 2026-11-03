@@ -652,16 +652,18 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
   }
   const closeRequests=new Map();
   documents=mountDocuments({doc,win,invoke,getPatch:()=>controller.getState().document,adopt:adoptDocument,beforeSave:async()=>{
-    const release=devicePanel.freezeEdits();try{devicePanel.captureDrafts(captureFocusedDraft);await devicePanel.settleDrafts();await controller.settleParameterGestures?.();return await controller.flush();}finally{release();}
+    const release=devicePanel.freezeEdits();let failed=true;try{devicePanel.captureDrafts(captureFocusedDraft);const scope=devicePanel.captureScope();await devicePanel.settleDrafts();devicePanel.assertScope(scope);await controller.settleParameterGestures?.();devicePanel.assertScope(scope);const result=await controller.flush();failed=false;return result;}finally{release(failed);}
   },
     beforeClose:async request=>{
-      const token={request},release=devicePanel.freezeEdits();closeRequests.set(request.requestLabel,token);
+      const token={request},release=devicePanel.freezeEdits();let failed=true;closeRequests.set(request.requestLabel,token);
       try{
-        devicePanel.captureDrafts(captureFocusedDraft);await devicePanel.settleDrafts();
+        devicePanel.captureDrafts(captureFocusedDraft);token.scope=devicePanel.captureScope();await devicePanel.settleDrafts();
         if(closeRequests.get(request.requestLabel)!==token)return;
-        if(controller.flushBeforeClose){const draining=controller.flushBeforeClose(request);release();await draining;}
+        devicePanel.assertScope(token.scope);
+        if(controller.flushBeforeClose){const draining=controller.flushBeforeClose(request);release(false);await draining;}
         else await controller.flush();
-      }finally{release();}
+        failed=false;
+      }finally{release(failed);}
     },onCloseCancelled:request=>{
       const token=closeRequests.get(request.requestLabel);if(token?.request.token===request.token)closeRequests.delete(request.requestLabel);
       controller.cancelClose?.(request);

@@ -15,6 +15,12 @@ function fixture(){
 test('same shared source retains mounted controls and registration until disposal',()=>{
   const {state,elements,watched,forgotten,panel}=fixture();panel.update(state);
   const input=all(elements.get('instrument-controls')).find(item=>item.type==='number');assert.ok(watched.has(input));
-  state.authoringRevision=2;panel.update(state);assert.equal(all(elements.get('instrument-controls')).find(item=>item.type==='number'),input);
+  const scope=panel.captureScope();state.authoringRevision=2;state.document.nodes[0].params.value=.5;panel.update(state);
+  assert.doesNotThrow(()=>panel.assertScope(scope));assert.equal(all(elements.get('instrument-controls')).find(item=>item.type==='number'),input);
   panel.dispose();assert.ok(forgotten.has(input));
+});
+test('a replaced draft surface cannot become current again when its scope returns',()=>{
+  const {state,elements,panel}=fixture();panel.update(state);const input=all(elements.get('instrument-controls')).find(item=>item.type==='number');
+  input.value='.5';input.fire('input');const scope=panel.captureScope();state.revision=2;panel.update(state);state.revision=1;panel.update(state);
+  assert.throws(()=>panel.assertScope(scope),/changed/i);panel.dispose();
 });

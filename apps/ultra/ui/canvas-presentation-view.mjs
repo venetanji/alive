@@ -6,7 +6,7 @@ const factories={dial:createDial,slider:createSlider,number:createNumber,toggle:
 
 export function mountPresentation({doc,root,presentation,host,mode='preview',onError=()=>{},onControlsChanged=()=>{},onDraftsCancelled=()=>{},onInvalidated=()=>{}}){
   const scope=Object.freeze({...host.scope}),key=scopeKey(scope),views=[],cleanup=[];
-  let disposed=false,replaced=null,current=presentation,freezes=0,capturing=0,revoked=false;
+  let disposed=false,replaced=null,current=presentation,freezes=0,capturing=0,revoked=false,freezeFocus=null,retainedFocus=null;
   const active=()=>!disposed&&!revoked&&scopeKey(host.scope)===key;
   const make=(tag,cls,text)=>{const e=doc.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e;};
   const viewport=make('div','presentation-viewport'),surface=make('div','presentation-surface');
@@ -114,18 +114,19 @@ export function mountPresentation({doc,root,presentation,host,mode='preview',onE
       if(pending)try{await pending;}catch{}
       if(authorized()&&gesture){try{await host.writeBatch({scope,sourceNode:item.target.node,gestureId:gesture,phase:'cancel',values:{}});}catch{}}
       serial++;queued=null;gesture=null;original=null;candidate=null;failure=null;touched.clear();
+      if(retainedFocus){retainedFocus.input.readOnly=retainedFocus.readOnly;retainedFocus=null;}
       for(const input of box.querySelectorAll('input'))input.cancelDraft?.();
       cancelling=false;status.hidden=true;cancel.hidden=true;body?.refresh();onDraftsCancelled();
     }
     cancel.addEventListener('click',()=>{cancelDrafts().catch(error=>report(error,status));});
-    const view={refresh:()=>{if(bindings?.snapshot().disconnected&&!invalidated){invalidated=true;queueMicrotask(onInvalidated);}if(!authorized()&&(gesture||queued||failure||body?.hasDraft())){status.textContent='Device panel changed. Cancel the retained draft to continue.';status.hidden=false;cancel.hidden=false;for(const control of body?.element.querySelectorAll('input,select,button')??[])control.disabled=true;}body?.refresh();},hasDraft:()=>!!gesture||!!queued||!!pending||!!failure||!!body?.hasDraft(),settleDrafts,cancelDrafts,dispose(){revoked=true;serial++;queued=null;bindings?.disconnect();body?.dispose();onControlsChanged();}};views.push(view);
+    const view={refresh:()=>{if(bindings?.snapshot().disconnected&&!invalidated){invalidated=true;queueMicrotask(onInvalidated);}if(!authorized()&&(gesture||queued||failure||body?.hasDraft())){status.textContent='Device panel changed. Cancel the retained draft to continue.';status.hidden=false;cancel.hidden=false;for(const control of body?.element.querySelectorAll('input,select,button')??[])control.disabled=true;}body?.refresh();},hasDraft:()=>!!gesture||!!queued||!!pending||!!failure||!!body?.hasDraft(),failed:()=>!!failure,settleDrafts,cancelDrafts,dispose(){revoked=true;serial++;queued=null;bindings?.disconnect();body?.dispose();onControlsChanged();}};views.push(view);
     ready=Promise.resolve().then(()=>{if(authorized())return host.acquirePanel({scope,sourceNode:item.target.node,profile:item.target.profile});}).then(result=>{
       if(!result)return;if(!authorized()){result.bindings?.disconnect();return;}
       const resources=result.resources;bindings=result.bindings;
       if(!resources?.identity||!resources.layout||!bindings?.snapshot||!bindings.resolveBinding)throw Error('Device panel resources or bindings are unavailable.');
       body=createLiveDeviceView(doc,{layout:resources.layout,gui:resources.gui,graphics:resources.graphics,isCurrent:authorized,resolveBinding:(connection,node,options)=>{
         const binding=bindings.resolveBinding(connection,node,options);if(!binding)return null;const bindingId=binding.bindingId;
-        return{...binding,getState:()=>{const state=binding.getState();return{...state,enabled:authorized()&&(!freezes||capturing)&&pendingPhase!=='commit'&&!failure&&state.enabled,value:candidate&&Object.hasOwn(candidate,bindingId)?candidate[bindingId]:state.value};},onInput:v=>edit(binding,v,'preview'),onChange:v=>edit(binding,v,'commit'),onCancel:v=>edit(binding,v,'cancel')};
+        return{...binding,getState:()=>{const state=binding.getState();return{...state,enabled:authorized()&&(!freezes||capturing)&&pendingPhase!=='commit'&&((!failure&&state.enabled)||(failure&&retainedFocus?.binding===JSON.stringify([connection?.scope??[],connection?.expression??'']))),value:candidate&&Object.hasOwn(candidate,bindingId)?candidate[bindingId]:state.value};},onInput:v=>edit(binding,v,'preview'),onChange:v=>edit(binding,v,'commit'),onCancel:v=>edit(binding,v,'cancel')};
       },evaluateExpression:(...args)=>bindings.evaluateExpression?.(...args),onError:e=>report(e,status)});
       box.replaceChildren(body.element,status,cancel);status.hidden=true;onControlsChanged();
     }).catch(error=>{if(authorized()){status.setAttribute('role','alert');report(error,status);}});
@@ -139,8 +140,30 @@ export function mountPresentation({doc,root,presentation,host,mode='preview',onE
   const refresh=()=>{if(!disposed)for(const view of views)view.refresh();};
   cleanup.push(host.subscribe(refresh));
   const hasDraft=()=>replaced?replaced.hasDraft():views.some(view=>view.hasDraft());
-  function dispose(){if(replaced){replaced.dispose();replaced=null;}if(disposed)return;disposed=true;for(const unsubscribe of cleanup)unsubscribe();for(const view of views)view.dispose();}
-  return{hasDraft,dispose,captureDrafts(fn){capturing++;refresh();try{return fn();}finally{capturing--;refresh();}},revoke(){revoked=true;refresh();},async cancelDrafts(){if(replaced)return replaced.cancelDrafts();for(const view of views)await view.cancelDrafts?.();},async settleDrafts(){if(replaced)return replaced.settleDrafts();for(const view of views)await view.settleDrafts?.();},freezeEdits(){freezes++;refresh();let released=false;return()=>{if(released)return;released=true;freezes--;refresh();};},update(next=current){
+  function dispose(){if(replaced){replaced.dispose();replaced=null;}if(disposed)return;disposed=true;freezeFocus?.stop();freezeFocus=null;if(retainedFocus){retainedFocus.input.readOnly=retainedFocus.readOnly;retainedFocus=null;}for(const unsubscribe of cleanup)unsubscribe();for(const view of views)view.dispose();}
+  return{hasDraft,dispose,captureDrafts(fn){capturing++;refresh();try{return fn();}finally{capturing--;refresh();}},revoke(){revoked=true;refresh();},async cancelDrafts(){if(replaced)return replaced.cancelDrafts();for(const view of views)await view.cancelDrafts?.();},async settleDrafts(){if(replaced)return replaced.settleDrafts();for(const view of views)await view.settleDrafts?.();},freezeEdits(){
+    if(freezes===0){
+      const input=doc.activeElement;
+      if(input&&root.contains?.(input)){
+        const snapshot={input,value:input.value,start:input.selectionStart,end:input.selectionEnd,direction:input.selectionDirection,binding:input.closest?.('[data-binding]')?.dataset.binding,readOnly:input.readOnly,changed:false,restore:false};
+        const onFocus=event=>{if(event.target!==input)snapshot.changed=true;};
+        for(const type of ['focusin','pointerdown','keydown'])doc.addEventListener?.(type,onFocus,true);
+        snapshot.stop=()=>{for(const type of ['focusin','pointerdown','keydown'])doc.removeEventListener?.(type,onFocus,true);};freezeFocus=snapshot;
+      }
+    }
+    freezes++;refresh();let released=false;return(failed=false)=>{
+      if(released)return;released=true;if(failed&&freezeFocus)freezeFocus.restore=true;freezes--;
+      if(freezes===0&&freezeFocus?.restore&&!freezeFocus.changed&&freezeFocus.input.isConnected!==false&&views.some(view=>view.failed?.())){retainedFocus=freezeFocus;retainedFocus.input.readOnly=true;}
+      refresh();
+      if(freezes===0&&freezeFocus){
+        const saved=freezeFocus;freezeFocus=null;saved.stop();
+        if(saved.restore&&!saved.changed&&saved.input.isConnected!==false&&!saved.input.disabled){
+          saved.input.focus();
+          if(saved.input.value===saved.value&&saved.start!==null&&saved.start!==undefined)try{saved.input.setSelectionRange(saved.start,saved.end,saved.direction);}catch{}
+        }
+      }
+    };
+  },update(next=current){
     if(replaced)return replaced.update(next);
     if(disposed)return false;
     if(JSON.stringify(next)!==JSON.stringify(current)){if(hasDraft())return false;dispose();current=next;replaced=mountPresentation({doc,root,presentation:next,host,mode,onError,onControlsChanged,onDraftsCancelled,onInvalidated});return true;}

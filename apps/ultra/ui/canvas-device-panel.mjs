@@ -9,7 +9,7 @@ export function mountDevicePanel({doc,win,controller,invoke,beforeOpen=()=>{},dr
   const guard=fn=>(...args)=>{try{return Promise.resolve(fn(...args)).catch(error=>controller.notice(error));}catch(error){controller.notice(error);return Promise.resolve();}};
   const current=()=>controller.getState().document??controller.getState().patch;
   const surfaceIdentity=state=>JSON.stringify([state.ownerId,state.revision,state.shared?state.revision:state.desiredRevision,(state.document??state.patch).presentation]);
-  let identity='',presetsKey='',opened=false,surface=null,host=null,watched=[],freezes=new Set(),invalidated=false,disposed=false,buildVersion=0;
+  let identity='',presetsKey='',opened=false,surface=null,host=null,watched=[],freezes=new Set(),invalidated=false,disposed=false,buildVersion=0,staleSurface=false;
   function watchInputs(){
     const inputs=[...$('instrument-controls').querySelectorAll('input')].filter(input=>input.commitDraft);
     for(const input of watched)if(!inputs.includes(input))drafts?.forget(input);
@@ -19,7 +19,7 @@ export function mountDevicePanel({doc,win,controller,invoke,beforeOpen=()=>{},dr
   function close(){opened=false;panel.hidden=true;$('show-instrument').setAttribute('aria-pressed','false');}
   function open(){beforeOpen();opened=true;panel.hidden=false;$('show-instrument').setAttribute('aria-pressed','true');update(controller.getState());}
   function build(state){
-    const version=++buildVersion;surface?.dispose();host?.dispose();for(const input of watched)drafts?.forget(input);watched=[];
+    const version=++buildVersion;staleSurface=false;surface?.dispose();host?.dispose();for(const input of watched)drafts?.forget(input);watched=[];
     surface=null;host=null;$('instrument-controls').replaceChildren();
     const presentation=(state.document??state.patch).presentation;if(!presentation)return;
     host=createUltraPresentationHost({controller,invoke});surface=mountPresentation({doc,root:$('instrument-controls'),presentation,host,mode:'preview',onError:error=>controller.notice(error),onControlsChanged:watchInputs,onDraftsCancelled:()=>update(controller.getState()),onInvalidated:()=>{if(!disposed&&version===buildVersion){invalidated=true;update(controller.getState());}}});
@@ -27,7 +27,7 @@ export function mountDevicePanel({doc,win,controller,invoke,beforeOpen=()=>{},dr
   }
   function update(state){
     const patch=state.document??state.patch,device=patch.device,next=surfaceIdentity(state);
-    if(identity!==next||invalidated){if(surface?.hasDraft())surface.revoke();else{invalidated=false;identity=next;build(state);presetsKey='';}}
+    if(identity!==next||invalidated){if(surface?.hasDraft()){staleSurface=true;surface.revoke();}else{invalidated=false;identity=next;build(state);presetsKey='';}}
     host?.publish();
     if(!opened)return;
     $('instrument-title').textContent=device?.name??'Presentation';
@@ -56,5 +56,5 @@ export function mountDevicePanel({doc,win,controller,invoke,beforeOpen=()=>{},dr
     $('instrument-preset').value=name;controller.notice(`Stored ${name}. Save the patch to keep this preset.`);
   }));
   $('instrument-instance').addEventListener('click',guard(async()=>{await controller.flush();await invoke('document_instantiate');}));
-  return{open,close,update,captureDrafts:fn=>surface?surface.captureDrafts(fn):fn(),hasDraft:()=>!!surface?.hasDraft(),settleDrafts:async()=>{await surface?.settleDrafts();},freezeEdits(){const token={release:surface?.freezeEdits()};freezes.add(token);return()=>{if(!freezes.delete(token))return;token.release?.();};},wouldRebuild:state=>identity!==surfaceIdentity(state)&&!surface?.hasDraft(),isOpen:()=>opened,dispose(){disposed=true;surface?.dispose();host?.dispose();for(const input of watched)drafts?.forget(input);}};
+  return{open,close,update,captureScope(){return{surface,owner:controller.getState().ownerId,identity:surfaceIdentity(controller.getState()),version:buildVersion};},assertScope(token){if(!disposed&&!token.surface&&!surface&&token.owner===controller.getState().ownerId&&!(controller.getState().document??controller.getState().patch).presentation)return;if(disposed||invalidated||staleSurface||token.surface!==surface||token.version!==buildVersion||token.identity!==surfaceIdentity(controller.getState()))throw Error('Device panel scope changed during preflight.');},captureDrafts:fn=>surface?surface.captureDrafts(fn):fn(),hasDraft:()=>!!surface?.hasDraft(),settleDrafts:async()=>{await surface?.settleDrafts();},freezeEdits(){const token={release:surface?.freezeEdits()};freezes.add(token);return failed=>{if(!freezes.delete(token))return;token.release?.(failed);};},wouldRebuild:state=>identity!==surfaceIdentity(state)&&!surface?.hasDraft(),isOpen:()=>opened,dispose(){disposed=true;surface?.dispose();host?.dispose();for(const input of watched)drafts?.forget(input);}};
 }
