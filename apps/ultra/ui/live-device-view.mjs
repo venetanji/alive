@@ -249,7 +249,10 @@ export function createLiveDeviceView(doc,{layout,gui=null,graphics=null,electric
         if(control.setDisabled)control.setDisabled(!enabled);else (control.input??control.element).disabled=!enabled;
         e.classList.toggle('live-device-unresolved',!state.known);
         e.classList.toggle('live-device-pending',!!state.pending);
-        e.title=!verified?`${title}: mapping or conversion is unresolved.`:!state.known?`${title}: start audio to connect.`:binding?.display?.format?`${title}: ${binding.display.format(state.value)}`:binding?.unit?title:`${title}: native parameter scale ${binding.min} to ${binding.max}.`;
+        if(binding?.contextualHelp===true){
+          e.removeAttribute('title');
+          control.element.setAttribute('data-help',state.known?`${title}: ${binding.display.format(state.value)}.`:`${title}: state unavailable.`);
+        }else e.title=!verified?`${title}: mapping or conversion is unresolved.`:!state.known?`${title}: start audio to connect.`:binding?.display?.format?`${title}: ${binding.display.format(state.value)}`:binding?.unit?title:`${title}: native parameter scale ${binding.min} to ${binding.max}.`;
         if(state.known){control.update(state.value);control.setDefaultValue?.(state.initial);}
         else{
           if(control.number&&!control.hasDraft?.())control.number.value='';

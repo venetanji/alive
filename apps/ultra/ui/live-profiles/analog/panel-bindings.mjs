@@ -12,6 +12,7 @@ const sameIdentity=(a,b)=>identity.every(key=>a?.[key]===b?.[key])&&sourceFields
 const sameValues=(a,b)=>a.length===b.length&&a.every((value,index)=>Object.is(value,b[index]));
 const fail=message=>{throw Error(`Analog panel: ${message}`);};
 const unqualifiedDisplay=Object.freeze({format:()=>'--',parse:()=>fail('physical input conversion is unqualified (read-only).')});
+const booleanDisplay=Object.freeze({format:value=>value?'On':'Off',parse:unqualifiedDisplay.parse});
 
 // This permits one source-editor transaction, not DSP readback or full mapping qualification.
 export function analogWritableKey(expected,key){if(key!=='NoiseToggle')return false;try{validateExpected(expected);return true;}catch{return false;}}
@@ -58,7 +59,7 @@ function decode(values,dormant){
   return{values:known,unknown};
 }
 
-// Model/native knowledge grants no physical display, dial position or write authority.
+// Static model/native knowledge alone grants no physical display or dial authority.
 export function createAnalogPanelBindings({expected,catalog,dormantValues=new Map(),onChange=()=>{}}={}){
   validateExpected(expected);validateCatalog(expected,catalog);
   if(!(dormantValues instanceof Map)||dormantValues.size>3)fail('expected bounded dormant selections.');
@@ -89,15 +90,15 @@ export function createAnalogPanelBindings({expected,catalog,dormantValues=new Ma
     return{bindingId:key,verified:qualified&&analogWritableKey(current,key),
       get handlesExpressions(){return stateExpressions.every(expression=>evaluateExpression(expression,{connection})!==undefined);},
       min:row.secondary===key?0:row.min,max:row.secondary===key?1:row.max,
-      step:row.secondary===key||['enum','int','gated','bool'].includes(row.source.type)?1:'any',display:unqualifiedDisplay,
+      step:row.secondary===key||['enum','int','gated','bool'].includes(row.source.type)?1:'any',display:qualified?booleanDisplay:unqualifiedDisplay,contextualHelp:qualified,
       getState(){
         const known=Object.hasOwn(model.values,key),parts=observed?row.indices.map(index=>observed.parameters[index]):null;
-        const applied=appliedModel?.values[key];
-        return{enabled:!disconnected&&nativeStatus==='observed'&&known&&qualified&&analogWritableKey(current,key),known,value:known?model.values[key]:undefined,initial:initial[key],applied,
+        const applied=appliedModel?.values[key],enabled=!disconnected&&nativeStatus==='observed'&&known&&qualified&&analogWritableKey(current,key);
+        return{enabled,known,value:known?model.values[key]:undefined,initial:initial[key],applied,
           generation:String(current.runtimeRevision),nativeStatus,
           revisions:parts?.map(part=>part.revision),applied_revisions:parts?.map(part=>part.applied_revision),
           pending:parts?parts.some(part=>part.revision!==part.applied_revision||part.value!==part.applied):undefined,
-          unavailableReason:disconnected?'Panel bindings are disconnected.':nativeStatus==='unavailable'?'Native cached observation is unavailable.':!known?'Current model group is unknown.':'Physical display and editing are unqualified (read-only).'};
+          unavailableReason:enabled?undefined:disconnected?'Panel bindings are disconnected.':nativeStatus==='unavailable'?'Native cached observation is unavailable.':!known?'Current model group is unknown.':'Physical display and editing are unqualified (read-only).'};
       }};
   }
   function observe(next){

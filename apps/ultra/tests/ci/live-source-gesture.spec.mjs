@@ -14,10 +14,15 @@ test('production authority enables only the installed Noise control',async({page
   expect(counts.total).toBeGreaterThan(100);expect(counts.enabled).toBe(1);expect(counts.handles).toBe(0);
   const enabled=page.locator('.live-device-control :is(input,select,button):enabled');
   await expect(enabled).toHaveCount(1);await expect(enabled).toHaveText('Noise');
+  const wrapper=enabled.locator('xpath=..');
+  await expect(wrapper).not.toHaveAttribute('title');await expect(enabled).not.toHaveAttribute('title');
+  await expect(enabled).toHaveAttribute('data-help',/Noise.*Off/);await expect(enabled).toHaveAttribute('aria-pressed','false');
   await enabled.hover();await enabled.focus();
   expect(await page.evaluate(()=>h.calls.filter(call=>call.name==='document_commit').length)).toBe(0);
   await enabled.click();
   await expect.poll(()=>page.evaluate(()=>h.history.length)).toBe(1);
+  await expect(enabled).toHaveText('Noise');await expect(enabled).toHaveAttribute('aria-pressed','true');
+  await expect(enabled).toHaveAttribute('data-help',/Noise.*On/);await expect(wrapper).not.toHaveAttribute('title');
   const after=await page.evaluate(()=>h.patch);const before=await page.evaluate(()=>window.before);
   before.nodes[0].params.state.values[24]=1;expect(after).toEqual(before);
   await page.evaluate(()=>h.dispose());
@@ -29,6 +34,7 @@ for(const key of ['Enter','Space'])test(`production Noise ${key} activation make
   const noise=page.locator('#instrument-controls').getByRole('button',{name:'Noise',exact:true});
   await expect(noise).toBeEnabled();const start=await page.evaluate(()=>owner.calls.length);
   await noise.hover();await noise.focus();
+  await expect(page.locator('#ultra-info-text')).toHaveText(/Noise.*Off/);
   expect(await page.evaluate(start=>owner.calls.slice(start).filter(call=>/^(audio_(?!status|devices)|device_event|document_(commit|save|undo|redo|close))/.test(call.name)).map(call=>call.name),start)).toEqual([]);
   await page.keyboard.press(key);
   await expect.poll(()=>page.evaluate(()=>owner.history.length)).toBe(1);

@@ -162,6 +162,8 @@ test('production authority admits only the verified Noise widget and exact sourc
   const widget=noiseNode(),qualified=bindings.resolveBinding(conn,widget);
   assert.equal(adapter.analogWritableKey(expected,'NoiseToggle'),true);
   assert.equal(qualified.verified,true);assert.equal(qualified.getState().enabled,true);
+  assert.equal(qualified.display.format(false),'Off');assert.equal(qualified.display.format(true),'On');
+  assert.equal(qualified.getState().unavailableReason,undefined);
   for(const mutate of [
     n=>{n.className='LoadableDisplayCheckControl';},n=>{n.id='other';},
     n=>{n.resource='Devices/UltraAnalog/Other.xml';},n=>{n.scope=[];},
@@ -183,5 +185,7 @@ test('production authority admits only the verified Noise widget and exact sourc
   }
   assert.equal(adapter.analogWritableKey(expected,'NoiseBalance'),false);
   bindings.observe({expected,catalog:null});assert.equal(qualified.getState().enabled,false);
+  assert.match(qualified.getState().unavailableReason,/unavailable/i);
   bindings.disconnect();assert.equal(qualified.getState().enabled,false);
+  assert.match(qualified.getState().unavailableReason,/disconnect/i);
 });
