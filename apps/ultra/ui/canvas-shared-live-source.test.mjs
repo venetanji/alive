@@ -1,9 +1,11 @@
 import assert from 'node:assert/strict';
 import {test} from 'node:test';
-import {CanvasDocument, makeNode} from './canvas-model.mjs';
+import {CanvasDocument, makeNode, parsePatch, serializePatch, validatePatch} from './canvas-model.mjs';
+import {HIERARCHY_LIMITS, lowerHierarchy} from './canvas-hierarchy.mjs';
 import {createSharedCanvasController} from './canvas-shared.mjs';
 import {createLiveDeviceState, liveDeviceCatalog} from './live-device-profile.mjs';
 import {planAnalogCurrentParameters} from './live-profiles/analog/parameter-mapping.mjs';
+import {analogDescriptors} from './live-profiles/analog/facts.mjs';
 
 const clone = value => structuredClone(value);
 const tick = () => new Promise(resolve=>setImmediate(resolve));
@@ -502,4 +504,80 @@ test('failed generic edit reconciliation also withholds canonical source export'
   assert.throws(()=>a.export(),/canonical source state is unavailable/i);
   host.failReads(false);a.acceptDescriptor(await host.invoke('document_current'));
   assert.equal(JSON.parse(a.export()).nodes[0].params.state.values[194],12.1);
+});
+
+
+test('lost history replies reconcile once or withhold source export until a fresh descriptor',async()=>{
+  for(const direction of ['undo','redo'])for(const failRead of [false,true]){
+    const host=service();let lost=false,armed=false;
+    const a=createSharedCanvasController({invoke:async(name,args)=>{
+      const result=await host.invoke(name,args);
+      if(name==='document_history'&&armed&&!lost){lost=true;if(failRead)host.failReads();throw Error('history reply lost');}
+      return result;
+    }});
+    await a.prepare();await a.commitLiveSource(request(a,194,12.2));
+    if(direction==='redo')await a.undo();
+    armed=true;assert.equal(await a[direction](),false);
+    assert.equal(host.calls.filter(call=>call.name==='document_history').length,direction==='redo'?2:1);
+    const expected=direction==='undo'?12.1:12.2;
+    assert.equal(host.patch.nodes[0].params.state.values[194],expected);
+    if(failRead){
+      assert.throws(()=>a.export(),/canonical source state is unavailable/i);
+      host.failReads(false);a.acceptDescriptor(await host.invoke('document_current'));
+    }
+    assert.equal(JSON.parse(a.export()).nodes[0].params.state.values[194],expected);
+  }
+});
+
+test('exact restored hierarchy enforces the compact hierarchy bound',async()=>{
+  const patch=initial();for(const node of patch.nodes.slice(0,2))node.params.state.values[194]=1.0000000000000002;
+  while(true){
+    const node=makeNode('comment',patch.nodes.length+1,0,0,{text:'x'.repeat(4096)});
+    patch.nodes.push(node);
+    try{if(Buffer.byteLength(JSON.stringify(validatePatch(patch)))<=HIERARCHY_LIMITS.bytes-5)continue;}catch{}
+    patch.nodes.pop();break;
+  }
+  const last=makeNode('comment',patch.nodes.length+1,0,0,{text:''});patch.nodes.push(last);
+  const normalizedSize=Buffer.byteLength(JSON.stringify(validatePatch(patch)));
+  last.params.text='x'.repeat(HIERARCHY_LIMITS.bytes-normalizedSize-5);
+  assert.ok(Buffer.byteLength(JSON.stringify(validatePatch(patch)))<=HIERARCHY_LIMITS.bytes);
+  assert.ok(Buffer.byteLength(JSON.stringify(patch))>HIERARCHY_LIMITS.bytes);
+  assert.ok(Buffer.byteLength(JSON.stringify(lowerHierarchy(patch)))<=65536);
+  const {a}=await setup({patch});
+  assert.throws(()=>a.export(),/hierarchy exceeds 1 MiB/i);
+});
+
+
+test('exact restored source enforces the lowered execution bound',async()=>{
+  const patch={version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[],edges:[]};
+  for(let id=1;id<=32;id++)patch.nodes.push({...makeNode('live_device',id),params:{device:'Analog',state:state()}});
+  for(const node of patch.nodes)node.params.state.values[194]=1;
+  patch.nodes[0].params.state.values[194]=0.5000000000000001;
+  const eligible=analogDescriptors.filter(({kind,min,max,index})=>kind!==3&&min<=0.1234567890123456&&max>=0.1234567890123456&&index!==194);
+  let normalized=validatePatch(patch),size=Buffer.byteLength(JSON.stringify(lowerHierarchy(normalized)));
+  outer:for(const node of patch.nodes)for(const {index} of eligible){
+    const old=node.params.state.values[index];node.params.state.values[index]=Math.fround(0.1234567890123456);
+    try{normalized=validatePatch(patch);}catch{node.params.state.values[index]=old;continue;}
+    size=Buffer.byteLength(JSON.stringify(lowerHierarchy(normalized)));
+    if(size>65536-12)break outer;
+  }
+  assert.ok(size<=65536&&size>65536-12,`normalized lowered size ${size}`);
+  assert.ok(Buffer.byteLength(JSON.stringify(lowerHierarchy(patch)))>65536);
+  const {a}=await setup({patch});assert.throws(()=>a.export(),/patch exceeds 64 KiB/i);
+});
+
+
+test('format-specific reader bounds retain valid flat and large hierarchical exports',async()=>{
+  const flat={version:1,profile:'ultra-canvas-v1',presentation:null,nodes:[],edges:[]};
+  for(let id=1;id<=32;id++)flat.nodes.push({...makeNode('live_device',id),params:{device:'Analog',state:state()}});
+  assert.ok(Buffer.byteLength(serializePatch(flat))>65536);
+  const {a}=await setup({patch:flat}),text=a.export();
+  assert.ok(Buffer.byteLength(text)<=65536);assert.equal(JSON.parse(text).nodes[0].params.state.values[194],12.1);
+  assert.equal(parsePatch(text).version,1);
+  const hierarchy=initial();
+  for(let id=4;id<=22;id++)hierarchy.nodes.push(makeNode('comment',id,0,0,{text:'x'.repeat(4096)}));
+  const second=await setup({patch:hierarchy}),expanded=second.a.export();
+  assert.ok(Buffer.byteLength(expanded)>65536);assert.equal(parsePatch(expanded).version,2);
+  hierarchy.nodes=hierarchy.nodes.filter(node=>node.type==='comment');
+  const third=await setup({patch:hierarchy});assert.equal(third.a.export(),serializePatch(hierarchy));
 });

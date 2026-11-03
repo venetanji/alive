@@ -1,5 +1,6 @@
 import {createParameterGestures} from './canvas-parameter-gestures.mjs';
 import {CanvasDocument, createHelpViewState, nodeSpec, parseMessage, parsePatch, serializePatch,structuralParameter} from './canvas-model.mjs';
+import {HIERARCHY_LIMITS, lowerHierarchy} from './canvas-hierarchy.mjs';
 import {mergeMessageDisplays, parseMessageTemplate} from './canvas-message-ui.mjs';
 import {mergePrintPopups} from './canvas-print-ui.mjs';
 import {validateLiveDeviceState} from './live-device-profile.mjs';
@@ -301,7 +302,12 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
             try{if(!acceptDescriptor(await invoke('document_current')))sourceUnavailable=true;}catch{sourceUnavailable=true;}
             recover(error);
           } else {
-            if(item.kind==='history')for(const barrier of closeBarriers.values())barrier.error=error;
+            if(item.kind==='history'){
+              for(const barrier of closeBarriers.values())barrier.error=error;
+              // The owner may have applied history before its reply was lost.
+              // Reconcile once, without replaying the history request.
+              try{if(!acceptDescriptor(await invoke('document_current')))sourceUnavailable=true;}catch{sourceUnavailable=true;}
+            }
             if(queue[0]===item)queue.shift();
             if(item.kind==='event')faulted=true;
             item.resolve(false);report(error);
@@ -381,6 +387,17 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
         validateExactSource(exact.params.device,exact.params.state);
         node.params.state=copy(exact.params.state);
       }
+    }
+    if(sources.length){
+      const bytes=value=>new TextEncoder().encode(value).length;
+      const compact=JSON.stringify(result);
+      if(result.version===2){
+        if(bytes(compact)>HIERARCHY_LIMITS.bytes)throw Error('Hierarchy exceeds 1 MiB JSON.');
+        if(bytes(JSON.stringify(lowerHierarchy(result)))>65536)throw Error('Patch exceeds 64 KiB.');
+      } else if(bytes(compact)>65536)throw Error('Patch exceeds 64 KiB.');
+      const pretty=JSON.stringify(result,null,2);
+      // The reader permits 8 MiB for v2 text and 64 KiB for v1 text.
+      return bytes(pretty)<=(result.version===2?8*HIERARCHY_LIMITS.bytes:65536)?pretty:compact;
     }
     return JSON.stringify(result,null,2);
   }
