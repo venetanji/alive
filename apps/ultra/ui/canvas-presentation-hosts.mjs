@@ -1,9 +1,10 @@
 import {REGISTRY,nodeSpec} from './canvas-model.mjs';
 import {treeNodes} from './canvas-hierarchy.mjs';
 import {actualDevices,parameterReading} from './alive-model.mjs';
-import {liveDeviceProfile,validateLiveDeviceState} from './live-device-profile.mjs';
+import {liveDeviceProfile,validateLiveDeviceState,liveDeviceCatalog} from './live-device-profile.mjs';
 import {readLiveDeviceResources} from './live-device-resources.mjs';
-import {createAnalogPanelBindings} from './live-profiles/analog/panel-bindings.mjs';
+import {createAnalogPanelBindings,analogWritableKey} from './live-profiles/analog/panel-bindings.mjs';
+import {planAnalogCurrentParameters} from './live-profiles/analog/parameter-mapping.mjs';
 
 const equalScope=(a,b)=>['ownerId','generation','instanceId','sourceRevision'].every(key=>a?.[key]===b?.[key]);
 const endedGesture=(gestureId,message)=>Object.assign(Error(message),{code:'PRESENTATION_GESTURE_ENDED',gestureId});
@@ -19,7 +20,7 @@ export function createUltraPresentationHost({controller,invoke,ownerId='ultra-do
   const state=()=>controller.getState(),document=()=>state().document??state().patch;
   const scope=()=>{const s=state();return{ownerId:s.ownerId??ownerId,generation:s.revision??0,instanceId:'root',sourceRevision:s.shared?s.revision:s.desiredRevision};};
   const life=lifetime(scope),targets=new Map();
-  const resources=new Map(),panels=new Map();let disposed=false;
+  const resources=new Map(),panels=new Map();let disposed=false,sourceSerial=0;
   const sameSource=(a,b)=>['ownerLabel','runtimeRevision','node','device'].every(key=>a?.[key]===b?.[key])&&
     ['version','profile','dllSha256','guiSha256','graphicsSha256'].every(key=>a?.state?.[key]===b?.state?.[key])&&
     a.state.values.length===b.state.values.length&&a.state.values.every((value,index)=>Object.is(value,b.state.values[index]));
@@ -74,7 +75,7 @@ export function createUltraPresentationHost({controller,invoke,ownerId='ultra-do
       try{
         const expected=readPanelSource(member.request);
         if(!samePanel(expected,member.expected))throw Error('Installed device panel identity changed.');
-        if(!sameSource(expected,member.expected)){member.expected=expected;member.bindings.observe({expected,catalog:null});}
+        if(!sameSource(expected,member.expected)){if(member.gesture)member.gesture.stale=true;member.expected=expected;member.bindings.observe({expected,catalog:null});}
       }catch{member.bindings.disconnect();}
     }
   }
@@ -126,7 +127,7 @@ export function createUltraPresentationHost({controller,invoke,ownerId='ultra-do
       const catalog=await nativeObservation(entry,request,expected);assertSource(request,expected);
       bindings=createAnalogPanelBindings({expected,catalog,onChange:life.publish});assertSource(request,expected);
       const member={request:{...request,scope:{...request.scope}},expected,bindings},disconnect=bindings.disconnect;
-      bindings.disconnect=()=>{if(!entry.members.delete(member))return;disconnect();releasePanel(entry);};
+      bindings.disconnect=()=>{if(!entry.members.delete(member))return;member.gesture=null;disconnect();releasePanel(entry);};
       entry.members.add(member);scheduleObservation(entry);
       return{resources:packs,bindings};
     }catch(error){bindings?.disconnect();throw error;}
@@ -137,6 +138,57 @@ export function createUltraPresentationHost({controller,invoke,ownerId='ultra-do
     for(const member of [...entry.members])member.bindings.disconnect();clearTimeout(entry.timer);entry.last=null;
     for(const waiter of entry.waiters){clearTimeout(waiter.timer);waiter.reject(Error('Installed device panel disconnected during acquisition.'));}entry.waiters.clear();
   }panels.clear();resources.clear();life.dispose();}
+  function beginSourceGesture(sourceNode){
+    const members=[...panels.values()].flatMap(entry=>[...entry.members]).filter(member=>member.request.sourceNode===sourceNode);
+    const member=members.find(part=>!part.gesture&&part.bindings.snapshot().nativeStatus==='observed');
+    if(!member)throw Error('An acquired available panel is required for a source gesture.');
+    const s=state();if(s.closing||s.faulted)unavailable();
+    const expected=readPanelSource(member.request),snapshot=member.bindings.snapshot();
+    if(!sameSource(expected,snapshot.expected))throw Error('Installed device panel source changed.');
+    const gesture={id:`source-${++sourceSerial}`,expected,baseline:snapshot.values,candidate:{},pending:null};
+    member.gesture=gesture;return gesture.id;
+  }
+  function writeBatch(request){
+    if(!request?.scope)unavailable();
+    const member=[...panels.values()].flatMap(entry=>[...entry.members]).find(part=>part.gesture?.id===request.gestureId);
+    try{life.assert(request.scope);}catch(error){if(member)member.gesture=null;throw error;}
+    if(!member||member.request.sourceNode!==request.sourceNode||!equalScope(member.request.scope,request.scope))throw endedGesture(request.gestureId,'Panel gesture is no longer authorized.');
+    const gesture=member.gesture;
+    if(!['preview','commit','cancel'].includes(request.phase))throw Error('Invalid panel gesture phase.');
+    const values=request.values;
+    if(!values||typeof values!=='object'||Array.isArray(values)||![Object.prototype,null].includes(Object.getPrototypeOf(values)))throw Error('Panel values must be an explicit plain record.');
+    const keys=Reflect.ownKeys(values);
+    if(keys.length>256||keys.some(key=>typeof key!=='string'||!Object.hasOwn(Object.getOwnPropertyDescriptor(values,key),'value')))throw Error('Invalid panel values.');
+    for(const key of keys){
+      if(!analogWritableKey(gesture.expected,key)||!Object.hasOwn(gesture.baseline,key))throw Error('Panel value is not qualified for writing.');
+      if(typeof values[key]!=='boolean'&&!Number.isFinite(values[key]))throw Error('Invalid panel value.');
+    }
+    if(gesture.pending){
+      if(request.phase==='commit'&&JSON.stringify(values)===gesture.submitted)return gesture.pending;
+      throw Error('Panel gesture commit is already pending.');
+    }
+    const s=state();if(s.closing||s.faulted){member.gesture=null;unavailable();}
+    let current;try{current=readPanelSource(member.request);}catch(error){member.gesture=null;throw error;}
+    if(gesture.stale||!sameSource(gesture.expected,current)){
+      member.gesture=null;return Promise.resolve({outcome:'conflict',reason:'The complete native source changed.',canonical:null,native:{status:'unobserved'}});
+    }
+    if(member.bindings.snapshot().nativeStatus!=='observed'){member.gesture=null;unavailable();}
+    if(request.phase==='cancel'){member.gesture=null;return Promise.resolve({phase:'cancel'});}
+    const candidate={...gesture.candidate,...values},changed=new Map(Object.entries(candidate).filter(([key,value])=>!Object.is(value,gesture.baseline[key])));
+    const plan=planAnalogCurrentParameters(changed,liveDeviceCatalog(gesture.expected.state));
+    if(plan.unknownValues.size)throw Error('Unknown panel value.');
+    gesture.candidate=candidate;
+    if(request.phase==='preview')return Promise.resolve({phase:'preview'});
+    const nextState=structuredClone(gesture.expected.state);
+    for(const update of plan.updates)nextState.values[update.index]=update.value;
+    gesture.submitted=JSON.stringify(request.values);
+    gesture.pending=controller.commitLiveSource({expected:gesture.expected,nextState}).then(result=>{
+      if(member.gesture===gesture)member.gesture=null;
+      if(['accepted','unchanged'].includes(result.outcome))refreshPanelSources([...panels.values()].find(entry=>entry.members.has(member))??{members:[]});
+      return result;
+    });
+    return gesture.pending;
+  }
   function resolve(target){
     const node=treeNodes(document()).find(node=>node.id===target.node);if(!node)throw Error('Presentation target is missing.');
     if(target.kind==='text')return{text:node.params[target.param]??REGISTRY[node.type]?.params[target.param]?.value??'',style:node.style??{},capabilities:{text:true}};
@@ -159,7 +211,7 @@ export function createUltraPresentationHost({controller,invoke,ownerId='ultra-do
     await controller.writeParameterGesture(gesture.ownerGesture,request.phase,request.value);life.assert(request.scope);
     if(request.phase!=='preview')life.gestures.delete(request.gestureId);
     life.publish();return snapshot(request.bindingId);
-  },async sendEvent(request){life.assert(request.scope);if(request.action!=='bang'||request.target.kind!=='event'||!resolve(request.target).capabilities.event)throw Error('Unsupported presentation event.');const accepted=await controller.deviceEvent(request.target.node,request.target.inlet,null);life.assert(request.scope);if(!accepted)throw Error('Presentation event was refused by the current graph.');return accepted;},writeBatch:unavailable,acquirePanel,dispose};
+  },async sendEvent(request){life.assert(request.scope);if(request.action!=='bang'||request.target.kind!=='event'||!resolve(request.target).capabilities.event)throw Error('Unsupported presentation event.');const accepted=await controller.deviceEvent(request.target.node,request.target.inlet,null);life.assert(request.scope);if(!accepted)throw Error('Presentation event was refused by the current graph.');return accepted;},beginSourceGesture,writeBatch,acquirePanel,dispose};
 }
 
 export function createAlivePresentationHost({instanceId,getSnapshot,writeBase}={}){

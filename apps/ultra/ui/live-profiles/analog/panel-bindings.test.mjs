@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {analogDescriptors,analogIdentity} from './facts.mjs';
+import {analogCurrentMappings} from './parameter-mapping.mjs';
 
 const adapter=await import('./panel-bindings.mjs').catch(error=>{
   if(error.code!=='ERR_MODULE_NOT_FOUND')throw error;
@@ -142,4 +143,12 @@ test('resource expressions use scoped current keys and their own bound IsActive 
   assert.equal(bindings.evaluateExpression({...expression,value:'OscillatorEnvAmount < 0',scope:['SignalChain1']}),true);
   assert.equal(bind(bindings,'NoiseBalance').handlesExpressions,true);
   assert.equal(bindings.resolveBinding(connection('NoiseBalance'),{},{stateExpressions:[{...expression,value:'missing'}]}).handlesExpressions,false);
+});
+
+test('production writable authority keeps every mapped model field disabled',()=>{
+  const {bindings,expected}=setup();
+  for(const row of analogCurrentMappings)for(const key of [row.model,row.secondary].filter(Boolean)){
+    assert.equal(adapter.analogWritableKey(expected,key),false,key);
+    const binding=bind(bindings,key);if(binding){assert.equal(binding.verified,false,key);assert.equal(binding.getState().enabled,false,key);}
+  }
 });

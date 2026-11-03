@@ -13,6 +13,9 @@ const sameValues=(a,b)=>a.length===b.length&&a.every((value,index)=>Object.is(va
 const fail=message=>{throw Error(`Analog panel: ${message}`);};
 const unqualifiedDisplay=Object.freeze({format:()=>'--',parse:()=>fail('physical input conversion is unqualified (read-only).')});
 
+// Runtime and original-widget qualification are required before admitting any key.
+export function analogWritableKey(_expected,_key){return false;}
+
 function validateExpected(expected){
   if(!expected||expected.device!=='Analog'||typeof expected.ownerLabel!=='string'||!expected.ownerLabel.length||
     !Number.isSafeInteger(expected.runtimeRevision)||expected.runtimeRevision<=0||!Number.isSafeInteger(expected.node)||expected.node<=0)
@@ -74,14 +77,14 @@ export function createAnalogPanelBindings({expected,catalog,dormantValues=new Ma
   function resolveBinding(connection,node,{stateExpressions=[]}={}){
     const key=analogCurrentConnectionStatus(connection).key,row=mappings.get(key);
     if(!row)return null;
-    return{bindingId:key,verified:false,
+    return{bindingId:key,verified:analogWritableKey(current,key),
       get handlesExpressions(){return stateExpressions.every(expression=>evaluateExpression(expression,{connection})!==undefined);},
       min:row.secondary===key?0:row.min,max:row.secondary===key?1:row.max,
       step:row.secondary===key||['enum','int','gated','bool'].includes(row.source.type)?1:'any',display:unqualifiedDisplay,
       getState(){
         const known=Object.hasOwn(model.values,key),parts=observed?row.indices.map(index=>observed.parameters[index]):null;
         const applied=appliedModel?.values[key];
-        return{enabled:false,known,value:known?model.values[key]:undefined,initial:initial[key],applied,
+        return{enabled:!disconnected&&nativeStatus==='observed'&&known&&analogWritableKey(current,key),known,value:known?model.values[key]:undefined,initial:initial[key],applied,
           generation:String(current.runtimeRevision),nativeStatus,
           revisions:parts?.map(part=>part.revision),applied_revisions:parts?.map(part=>part.applied_revision),
           pending:parts?parts.some(part=>part.revision!==part.applied_revision||part.value!==part.applied):undefined,
