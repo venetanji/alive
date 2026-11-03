@@ -804,6 +804,110 @@ The full configured Chromium run and final paired rebuild/desktop smoke are
 still pending at this source checkpoint. Their subsequent private result
 manifests must be consulted before claiming acceptance or build selection.
 
+## Exact 4420871 Acceptance And Read-Only Panel Followup
+
+Manual CI [41537054387](https://github.com/venetanji/alive/actions/runs/41537054387)
+completes successfully at exact head
+`44208715b29ccdb192ca111790eb68b4e6977978`. All exercised functional gates
+execute: native desktop/hosted editor, Arrangement, actual Master save/Quit/
+restart, all four clip-observation modes, six finalized saved-clip epochs,
+eight editor resource cycles and private software CPAL loopback. Main Node
+reports 811 passed/15 skipped, Chromium 407 passed/13 skipped, release Rust
+324 passed/five ignored and desktop helpers 160 passed across 17 modules.
+The 28 U1 cases, five scoped Rust tests, seven synthetic horizon modes and
+16 pure reservation groups all execute. Local configured runs additionally
+pass all 826 Node and 420 Chromium cases with the private fixtures; exact-head
+release Rust passes 324 with five ignored. The known development-build allocator
+instrumentation failure remains separately open, not excluded or explained by
+the release pass. Native software CPAL separately passes 151,040 finite stereo
+frames locally; this CI capture independently contains 153,088 finite frames.
+
+Timing qualification is still open. CI's saved epochs record seven callback
+processing-budget exceedances across all 21,093 measured callbacks, distributed
+`(0,6,0,1,0,0)`. Maximum measured fill duration is 14,369,621 ns against the
+unchanged 512-frame/48-kHz budget of approximately 10,666,667 ns. Native render,
+shape and CPAL error/xrun counters are zero. The existing measurement gate
+checks finality, coverage and playback credit; it records timing without a
+zero-exceedance assertion. Workflow success therefore does not establish
+deadline compliance. No cause is attributed and no threshold is weakened. The
+preceding run 41530372161 at 8be296d independently retained 16 exceedances;
+neither run resolves the other. Endurance was off in both runs. The exact-head
+independent audit is `workers/ci-41537054387-independent-review/report.md`,
+SHA-256 `07f798d2495bf90d1a6407bc439264a9ce0e1f6116021000f82f8d3551411365`.
+
+The correlated Arrangement Return packet has serial 7, preparation revision 1,
+and bar1 quantization. Pending absolute/song frames are `2577920/141205`, target
+`2642429/205714`, and applied observation `2643456/206741`. That observation is
+1,027 frames after target, inside the compiled gap `[205714,244286)`, with
+Arrangement authority and null active source/placement/slot. Its sibling keeps
+Session authority and the expected source/slot. The current journey passes;
+the historical short-gap failure's cause remains unresolved. This evidence
+does not justify an Arrangement engine change.
+
+The paired 4420871 build is selected in both launchers as immutable snapshot
+`test-d7733933e18749b82d98`; all 18 artifact hashes and both desktop targets
+verify. Actual Tauri/WebKit smoke passes at 800x600, 1280x800 and 1440x900 with
+repeated independent Clip/Device toggles, and all six captures were inspected.
+Private results: `paired-build-4420871/selection-verification.json`,
+`paired-native-smoke-4420871-r1/` and
+`checkpoint-4420871-coordinator-validation.json`. Existing windows keep their
+previous immutable builds. This is a foundation checkpoint; Electric cannot
+yet be loaded into Alive and native-profile publication remains zero.
+
+U2a now implements only read-only ordinary Ultra Analog acquisition. Preparing
+the controlled fixture exposed an existing frontend prerequisite: presentation
+validation requires `REGISTRY.live_device.profiles`, which the registry lacked.
+Ruling: add the minimum immutable Analog declaration and covering real
+`CanvasDocument` regression as part of U2a; this declares the existing ordinary
+profile and does not widen native construction or Alive admission. Synthetic
+cancel testing also exposed an unchecked disabled-panel event path. Ruling:
+guard panel edit dispatch before creating any draft/gesture, preserving all
+enabled generic-panel cases. These small prerequisites extend the original
+six-file allowlist; independent review and actual browser/native UI verification
+remain required before integration.
+
+U2a is now integrated in `9c42e50`, `aeeb59b` and `a8a16c9`. Twelve paths change:
+the ordinary presentation host/device-panel wiring, current Analog adapter and
+tests, the existing model/profile declaration and test, presentation dispatch
+and test, shared numeric control and its new focused tests, and the existing
+fixture-aware Chromium resource test. Inputs remain disabled, physical display/
+position authority remains empty and Alive acquisition/grouped writes remain
+unavailable. Exact raw source numbers are preserved; cached requested/applied
+native observations are not internal DSP readback. No native/Rust engine,
+history owner, driver policy, admission, dependency or resource limit changes.
+
+Task U2a: fix round 2/5, zero open findings. Independent review accepts both
+spec compliance and code quality. Reproduced corrections retain unknown
+pending/applied state after source edits without a fresh observation, enforce
+the 250-ms observation interval across disconnect/reacquire, and prevent
+disabled synthetic numeric input from creating drafts while preserving an
+existing legitimate draft across disable/re-enable. All controls and envelope
+handles refuse synthetic musical events before any draft/gesture or write.
+The durable real-Chromium regressions cover the actual installed packs/XML,
+ordinary shared controller and real adapter with an explicitly simulated IPC
+boundary; absence of private fixtures remains an explicit skip.
+
+Worker verification passes 847 Node cases with 19 explicit real-XML skips
+(Node has no XML DOM), all seven focused Chromium resource cases, and all
+38 private browser cases. Those real browser cases exercise actual installed
+resources, source/owner/runtime races, two sources/multiple mounts, malformed
+observations, pending/wrap semantics, throttle/disposal, navigation retention
+and disabled changed-value input without Escape cleanup. Full screenshots at
+800x600, 1280x800 and 1440x900 were inspected. The independent reviewer reruns
+91 portable cases with 19 XML skips, four adversarial adapter checks and three
+reproduction/preservation probes. Review report:
+`workers/analog-u2a-independent-review-r1/report.md`, SHA-256
+`2f697e893bdf604eeea62c96b23481ce2ca154bb9a8e66cc28196092b181f4e8`.
+Browser report: `workers/analog-u2a-browser-r1/report.md`, SHA-256
+`fff5df4879f8f0f187bf78d7528830a3a8b37399828f0bba56731a4d2239a868`.
+
+Coordinator full configured suites, the matched paired rebuild, actual native
+WebKit acquisition and final launcher selection follow this source checkpoint;
+consult their subsequent private result manifests before claiming completion.
+Original initialization, missing/approximate drawings, current physical display
+curves/knob angles, editable native controls, musical timing/lifecycle and Alive
+hosting remain separate. No device qualification stage is promoted by U2a.
+
 ## Next Gates
 
 1. Finish reviewed profile facts and original editor geometry, keeping unresolved
