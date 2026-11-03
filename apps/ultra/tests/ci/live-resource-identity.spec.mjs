@@ -1,5 +1,6 @@
 import {test,expect} from '@playwright/test';
 import {readFile} from 'node:fs/promises';
+import {ordinaryPanelPage} from './live-ordinary-panel-helper.mjs';
 
 test('combined installed panel resources retain the exact source resource pair',async({page})=>{
   test.skip(!process.env.ALIVE_RESOURCE_PACK_FIXTURES,'Requires private qualified installed resource pack fixtures.');
@@ -23,56 +24,6 @@ test('combined installed panel resources retain the exact source resource pair',
   expect(result).toEqual({identity:{guiSha256:'75940fa314699a5fe0f37a6b0ee904bd7cc2ee87fc42acce2c8cea61df55563f',graphicsSha256:'ec6ed560b42b1497fd976beff38d86424aa0c2ef59e4995e3d10ba9b68535c9d',resourceRelease:'current-20261102'},resources:17,nodes:719,wrongSource:true,missingGraphics:true});
 });
 
-async function ordinaryPanelPage(page){
-  test.skip(!process.env.ALIVE_RESOURCE_PACK_FIXTURES,'Requires private qualified installed resource pack fixtures.');
-  const fixtures=JSON.parse(await readFile(process.env.ALIVE_RESOURCE_PACK_FIXTURES,'utf8'));
-  for(const kind of ['GUI','Graphics']){
-    const body=await readFile(fixtures['current-20261102'][kind]);
-    await page.route(`**/ordinary-pack-${kind}`,route=>route.fulfill({body,contentType:'application/octet-stream'}));
-  }
-  await page.route('**/ordinary-panel-test-host',route=>route.fulfill({contentType:'text/html',body:'<!doctype html><link rel="stylesheet" href="/canvas-presentation-view.css"><main id="panel"></main>'}));
-  await page.goto('/ordinary-panel-test-host');
-  await page.evaluate(async()=>{
-    const {createSharedCanvasController}=await import('/canvas-shared.mjs');
-    const {createUltraPresentationHost}=await import('/canvas-presentation-hosts.mjs');
-    const {mountPresentation}=await import('/canvas-presentation-view.mjs');
-    const {analogDescriptors,analogIdentity}=await import('/live-profiles/analog/facts.mjs');
-    const packs=Object.fromEntries(await Promise.all(['GUI','Graphics'].map(async kind=>[kind,new Uint8Array(await(await fetch(`/ordinary-pack-${kind}`)).arrayBuffer())])));
-    window.createOrdinaryPanelHarness=async()=>{
-      // Explicit controlled values, not original defaults or native readback.
-      const {version,profile,dllSha256,guiSha256,graphicsSha256}=analogIdentity;
-      const state={version,profile,dllSha256,guiSha256,graphicsSha256,values:analogDescriptors.map(row=>row.min)};
-      state.values[194]=12.1;
-      const presentation={version:1,openOnLoad:true,size:{width:1100,height:220},items:[{
-        id:'analog',kind:'livePanel',target:{node:7,profile},included:true,visible:true,
-        rect:{x:0,y:0,width:1100,height:220},style:{accent:'default'},
-      }]};
-      const patch={version:2,profile:'ultra-patcher-v2',presentation,nodes:[{id:7,type:'live_device',x:0,y:0,params:{device:'Analog',state}}],edges:[]};
-      const calls=[],errors=[];let authoringRevision=1,hook=null,view=null;
-      const descriptor=()=>({shared:true,id:1,label:'ordinary-panel-test',ownerLabel:'ordinary-panel-test',viewPath:[],patch:structuredClone(patch),runtimeRevision:10,authoringRevision,descriptorRevision:authoringRevision});
-      const catalog=()=>({generation:'10',parameters:analogDescriptors.map(row=>({...row,
-        value:Math.fround(state.values[row.index]),applied:Math.fround(state.values[row.index]),revision:1,applied_revision:1,
-      }))});
-      const invoke=async(name,args={})=>{
-        calls.push({name,args,at:performance.now()});
-        if(hook){const result=hook(name,args);if(result!==undefined)return await result;}
-        if(name==='document_current')return descriptor();
-        if(name==='live_device_resource_pack')return packs[args.kind];
-        if(name==='live_device_parameters')return catalog();
-        throw Error(`Unexpected panel write or IPC: ${name}`);
-      };
-      const controller=createSharedCanvasController({invoke});
-      if(!await controller.prepare())throw Error(`Panel descriptor rejected: ${controller.getState().notice}`);
-      const host=createUltraPresentationHost({controller,invoke});
-      return{host,controller,calls,errors,catalog,set hook(value){hook=value;},
-        acquire:()=>host.acquirePanel({scope:host.scope,sourceNode:7,profile}),
-        publish(change=()=>{}){change(patch);authoringRevision++;if(!controller.acceptDescriptor(descriptor()))throw Error('Descriptor refused');host.publish();},
-        mount(){view=mountPresentation({doc:document,root:document.getElementById('panel'),presentation,host,onError:error=>errors.push(error.message)});return view;},
-        async dispose(){view?.dispose();host.dispose();await controller.dispose();},
-      };
-    };
-  });
-}
 
 test('ordinary shared host mounts the installed read-only panel and preserves source and pages',async({page})=>{
   await ordinaryPanelPage(page);
