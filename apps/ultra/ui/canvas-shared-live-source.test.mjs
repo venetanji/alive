@@ -495,3 +495,11 @@ test('source acknowledgement retains a later optimistic layout edit in export',a
   exported=JSON.parse(a.export());
   assert.equal(exported.nodes[2].x,420);assert.equal(exported.nodes[0].params.state.values[194],12.2);
 });
+
+test('failed generic edit reconciliation also withholds canonical source export',async()=>{
+  const {host,a}=await setup({broadcast:false}),release=host.hold();host.fail('reject');
+  a.move(3,500,510);await tick();host.failReads();release();await a.flush();
+  assert.throws(()=>a.export(),/canonical source state is unavailable/i);
+  host.failReads(false);a.acceptDescriptor(await host.invoke('document_current'));
+  assert.equal(JSON.parse(a.export()).nodes[0].params.state.values[194],12.1);
+});
