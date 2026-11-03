@@ -6,6 +6,103 @@ profile has passed all ten publication stages; the importer registry is empty.
 
 ## Current Checkpoint - 3 November 2026
 
+This checkpoint supersedes older current-state and shutdown entries below; those
+entries remain historical. The tested runtime and CI source is
+`a277d22667c01fab8135ade49734b74910c632d7`. Both launchers select the matching
+pair `test-cf4f82709d04f6ec934a`; root verified both launcher targets and all 18
+artifact hashes and sizes against manifest SHA-256
+`9f30963e59f412a2d86c83bd44183b05af800238e305f44f997a4ff4bc753eb8`.
+Tracked source was clean with four expected untracked links. The selected runtime
+pair remains frozen; older binaries are not relabeled as a277 builds.
+
+On this a277 pair one actual 1280x800 Ultra Analog Noise lifecycle completed:
+desktop acquisition, a guarded UI click and acknowledgement, Undo, Redo, UI Save
+As, ordinary Quit, same-pair reopen, reacquisition and second Quit. Twenty-two
+retained helper tests passed. Root's independent audit compared ten whole
+documents, all 203 requested and applied f32 values and versions, the second
+source and graph. Only node 1 slot 24 changed as intended; raw slot 194 remained
+`12.1`. The first app's observer and parent wait were both zero before cleanup;
+the reopened child's wait was zero. Frozen hashes and launcher selection were
+stable. Root inspected the before and reopened screenshots: Noise changed from
+dark to orange-filled, with horizontal panel clipping. Evidence:
+`workers/final-a277-noise-terra-r1-run/actual-1280-r1/report.md` and
+`workers/resume-20261103-r1/a277-noise-cached-applied-audit.json`.
+
+The earlier three-size ordinary Save/reopen cycles and focused r13 visible
+draft, selection, history and Discard/Quit evidence are at runtime source
+`2c649b8d6f0228726599684de2a319375f66b95f`, not a277. No new a277 draft probe
+was performed. The maintained restoration regression covers 800x600, 1280x800
+and 1440x900; old-pair actual captures show horizontal panel clipping at all
+three sizes and vertical sidebar clipping at 800x600. The component diff from
+2c to a277 changes Session Rust, test files and this status document, not the
+frontend or native device implementation. That does not make the old GUI runs
+new a277 observations. Internal draft-manager state and the original IPC
+expected-scope payload are untraced; host cache is not DSP-internal readback,
+an applied-frame receipt, sound or physical-hardware evidence.
+
+The private a277 R4 Arrangement diagnostic reached the maintained journey's
+PASS marker, including same-artifact restart/replay, but the wrapper returned
+incomplete because descendants survived runner exit. Its original numeric
+runner status and exact survivors were not recorded. The later R6 diagnostic
+also stopped after one journey with wrapper incomplete; it retained raw runner
+exit 0 and one live-at-decision identity, PID 572926/start time 1405292. A
+separately sampled process tree correlates that exact identity with the private
+`dbus-daemon` child of the harness's `dbus-run-session`. Its final sampled
+cleanup receipt was zero known live and zero unknown; sampled discovery does
+not prove exhaustive cleanup. This correlation does not reconstruct R4's
+missing identities or make either wrapper a pass. Neither journey reproduced
+the earlier availability error; the prior CI snapshot raw code remains unknown.
+
+Timing remains separate from lifecycle. R4's active nonfinal software stream
+had one over-budget callback in 5,705 samples, maximum 30,503,460 ns. R6 had
+four in 5,748, maximum 32,877,875 ns; both use a 512-frame/48 kHz buffer.
+Earlier Arrangement and saved-clip overruns and the existing debug allocator
+failure remain unresolved. Zero reported CPAL errors, xruns or native render
+failures in these snapshots does not qualify timing or physical hardware.
+Endurance remains unqualified. Alive native admission remains closed,
+aggregate `runtimeQualified` false, importer registry empty and Electric
+unavailable.
+
+Manual CI [41661508873](https://github.com/venetanji/alive/actions/runs/41661508873),
+attempt 1, workflow_dispatch at exact a277 with endurance off, completed with
+all three jobs successful. Main Node recorded 889 passes and 34 skips;
+Chromium 425 passes and 38 skips; Rust 343 passes and five ignored. The actual
+desktop, hosted editor, Arrangement, Master, clip-observation, saved-clips,
+resources and software CPAL gates passed; none of those downstream required
+checks was skipped. A separately ignored private Rust CPAL test was explicitly
+executed. Skipped and ignored cases are not counted as passes. Root independently
+audited the retained artifacts; the detailed report is
+`workers/current-source-ci-resume-terra-r3/report.md`.
+
+The CI Arrangement Return receipt at serial 7/revision 1 targeted absolute
+frame 2,039,805; a later applied snapshot at 2,041,856 had position 207,765
+inside gap `[205714,244286)`, with track 1 Arrangement authority and null active
+identity fields while the sibling retained Session authority. Its live timing
+snapshot recorded one over-budget callback in 8,356, maximum 12,128,619 ns.
+Six final saved-clip epochs recorded 15,588 budget callbacks with zero over,
+maximum 10,064,848 ns, 7.614752579 seconds playing and 37.234384734 seconds
+excluded. The independent software CPAL gate recorded 152,064 finite stereo
+frames at 48 kHz, 272 callbacks, zero over budget, maximum 137,637 ns and zero
+errors. These distinct results do not erase the other reported overruns.
+
+The resource gate passed its bounds across eight close cycles and idle with ten
+samples. Worker coverage is sampled: the initial sample marks a coverage gap,
+and sampling may miss transient or reparented workers. This does not qualify
+CPU or physical hardware. Historical CI
+41643987413 at `6ca6816` remains failed at the initial Session launch
+availability check, with downstream clip observation, saved clips, resources
+and software CPAL checks skipped; its missing raw status and cause remain
+unknown. Earlier skips and ignored cases remain accurately reported.
+
+The user's checkpoint request pauses broader work; the overall native goal
+remains incomplete and Alive admission closed. The a277 runtime pair stays
+selected: a status-document commit does not rebuild or relabel the binary.
+Evidence and private diagnostic material are durable under
+`/home/venetanji/.cache/alive-ultra-evidence/native-library-20261102/workers/`;
+the controlled checkout is `/home/venetanji/Work/alive-pr12-native-20261102`.
+
+## Earlier Checkpoint - 3 November 2026 (2c Build)
+
 This checkpoint supersedes the older current-state and shutdown entries below;
 those entries remain as historical evidence. The selected runtime pair is
 `test-a35c18a8554b4b29dc8c`, compiled from
