@@ -119,8 +119,18 @@ pub(crate) async fn live_device_default_preset(device: String) -> Result<tauri::
 
 #[derive(Serialize)]
 pub(crate) struct Parameter {
-    index: u32, module: i32, property: i32, kind: i32, min: f32, max: f32,
-    value: f32, applied: f32, revision: u32, applied_revision: u32,
+    index: u32, module: i32, property: i32, kind: i32, min: f64, max: f64,
+    value: f64, applied: f64, revision: u32, applied_revision: u32,
+}
+impl From<NativeParameter> for Parameter {
+    fn from(p: NativeParameter) -> Self {
+        let d = p.descriptor;
+        // JSON consumers use binary64; widen before choosing decimal wire precision.
+        Self { index: d.index, module: d.module, property: d.property, kind: d.kind,
+            min: f64::from(d.min), max: f64::from(d.max),
+            value: f64::from(p.requested), applied: f64::from(p.applied),
+            revision: p.request_version, applied_revision: p.applied_version }
+    }
 }
 #[derive(Serialize)]
 pub(crate) struct Parameters { generation: String, parameters: Vec<Parameter> }
@@ -134,12 +144,7 @@ pub(crate) fn live_device_parameters(window: tauri::WebviewWindow,
         let mut rows = vec![NativeParameter::default(); PARAMETER_COUNT];
         let count = unsafe { ultra_canvas_live_device_parameters_document(document, revision, node, rows.as_mut_ptr(), rows.len() as u32) };
         if count as usize != PARAMETER_COUNT { return Err("Native live.device~ parameter snapshot is unavailable or stale".into()); }
-        let parameters = rows.into_iter().filter(|p| p.descriptor.initialized != 0).map(|p| {
-            let d = p.descriptor;
-            Parameter { index: d.index, module: d.module, property: d.property, kind: d.kind,
-                min: d.min, max: d.max, value: p.requested, applied: p.applied,
-                revision: p.request_version, applied_revision: p.applied_version }
-        }).collect();
+        let parameters = rows.into_iter().filter(|p| p.descriptor.initialized != 0).map(Parameter::from).collect();
         Ok(Parameters { generation: revision.to_string(), parameters })
     })
 }
@@ -149,6 +154,80 @@ mod tests {
     use super::*;
     use crate::{document_windows::commands, documents::{Kind, Registry}};
     use serde_json::json;
+
+    fn parameter_json(rows: &[NativeParameter], generation: &str) -> String {
+        use tauri::ipc::{InvokeResponseBody, IpcResponse};
+        let response = Parameters { generation: generation.into(),
+            parameters: rows.iter().copied().map(Parameter::from).collect() };
+        match response.body().unwrap() {
+            InvokeResponseBody::Json(body) => body,
+            _ => panic!("parameter command must return JSON"),
+        }
+    }
+
+    fn assert_parameter_json_floats(body: &str, rows: &[NativeParameter]) {
+        #[derive(serde::Deserialize)]
+        struct Wire {
+            parameters: Vec<std::collections::BTreeMap<String, Box<serde_json::value::RawValue>>>,
+        }
+        let parsed: Wire = serde_json::from_str(body).unwrap();
+        assert_eq!(parsed.parameters.len(), rows.len());
+        for (native, row) in rows.iter().zip(parsed.parameters) {
+            for (field, value) in [("min", native.descriptor.min), ("max", native.descriptor.max),
+                ("value", native.requested), ("applied", native.applied)] {
+                // Rust's correctly rounded parser matches JavaScript's binary64 conversion.
+                let number: f64 = row[field].get().parse().unwrap();
+                assert_eq!(number, f64::from(value), "{} {field}", native.descriptor.index);
+            }
+        }
+    }
+
+    #[test]
+    fn parameter_ipc_json_preserves_native_float_values_and_receipts() {
+        let rows: Vec<_> = [0.16666667_f32, 0.65, -0.1, 12.1, -10.0, 10.0].into_iter()
+            .enumerate().map(|(index, requested)| NativeParameter {
+                descriptor: NativeDescriptor { index: index as u32, initialized: 1,
+                    module: 3502, property: 7, kind: 2, min: -10.1, max: 24.1, auxiliary: 0.0 },
+                requested, applied: f32::from_bits(requested.to_bits() + 1),
+                request_version: 1, applied_version: u32::MAX,
+            }).collect();
+        let body = parameter_json(&rows, "18446744073709551615");
+        println!("PARAMETER_IPC_JSON={body}");
+        assert_parameter_json_floats(&body, &rows);
+        let parsed: serde_json::Value = serde_json::from_str(&body).unwrap();
+        assert_eq!(parsed["generation"], "18446744073709551615");
+        for (native, row) in rows.iter().zip(parsed["parameters"].as_array().unwrap()) {
+            assert_eq!(row["index"], native.descriptor.index);
+            assert_eq!(row["module"], 3502);
+            assert_eq!(row["property"], 7);
+            assert_eq!(row["kind"], 2);
+            assert_eq!(row["revision"], 1);
+            assert_eq!(row["applied_revision"], u32::MAX);
+            assert_ne!(row["value"], row["applied"]);
+        }
+    }
+
+    #[test]
+    fn analog_parameter_ipc_json_preserves_complete_source_observation() {
+        let mut rows: Vec<_> = crate::canvas::live_device::ANALOG_DESCRIPTORS.iter().enumerate()
+            .map(|(index, &(module, property, kind, min, max))| NativeParameter {
+                descriptor: NativeDescriptor { index: index as u32, initialized: 1,
+                    module: module as i32, property: property as i32, kind: kind as i32,
+                    min: min as f32, max: max as f32, auxiliary: 0.0 },
+                requested: min as f32, applied: min as f32, request_version: 1, applied_version: 1,
+            }).collect();
+        for (index, value) in [(1, 0.16666667), (2, 0.65), (194, 12.1), (196, -0.1)] {
+            rows[index].requested = value;
+            rows[index].applied = value;
+        }
+        rows[26].requested = 0.25;
+        rows[26].applied = 0.75;
+        rows[26].applied_version = u32::MAX;
+        let body = parameter_json(&rows, "10");
+        println!("ANALOG_IPC_JSON={body}");
+        assert_eq!(rows.len(), PARAMETER_COUNT);
+        assert_parameter_json_floats(&body, &rows);
+    }
 
     #[test]
     #[ignore = "requires the opt-in native adapter and qualified local Analog DLL"]
