@@ -23,6 +23,19 @@ test('registry exposes exclusively top inlet / bottom outlet descriptors', () =>
     assert.ok(spec.outlets.every(p => p.side === 'bottom'));
   }
 });
+test('ordinary saved Analog panels validate through the real registry and keep exact target identity',()=>{
+  const patch={version:2,profile:'ultra-patcher-v2',nodes:[{id:7,type:'live_device',x:0,y:0,params:{device:'Analog',state:clone(REGISTRY.live_device.params.state.value)}}],edges:[],
+    presentation:{version:1,openOnLoad:true,size:{width:640,height:220},items:[{id:'analog',kind:'livePanel',target:{node:7,profile:'live12-analog-v1'},
+      rect:{x:0,y:0,width:640,height:220},included:true,visible:true,style:{accent:'default'}}]}};
+  patch.nodes[0].params.state.values[194]=12.1;
+  const document=new CanvasDocument(patch);
+  assert.deepEqual(document.document.presentation,patch.presentation);
+  assert.equal(patch.nodes[0].params.state.values[194],12.1);
+  for(const target of [{node:7,profile:'foreign'},{node:8,profile:'live12-analog-v1'}]){
+    const invalid=clone(patch);invalid.presentation.items[0].target=target;
+    assert.throws(()=>new CanvasDocument(invalid),/profile|target/i);
+  }
+});
 test('starter is a valid real editable graph, including independent MIDI voice and explicit stereo join', () => {
   const patch = validatePatch(starterPatch());
   assert.equal(patch.nodes.filter(n=>n.type==='voice').length,2);

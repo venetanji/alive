@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {mountPresentation} from './canvas-presentation-view.mjs';
 import {dom,all,settle,deferred} from '../tests/presentation-dom.mjs';
+import {createAnalogPanelBindings} from './live-profiles/analog/panel-bindings.mjs';
+import {analogDescriptors,analogIdentity} from './live-profiles/analog/facts.mjs';
 
 const layout={version:1,openOnLoad:false,size:{width:640,height:220},items:[{id:'level',kind:'control',target:{kind:'parameter',node:1,param:'value'},widget:'dial',label:'Level',rect:{x:8,y:8,width:88,height:112},included:true,visible:true,style:{accent:'cyan',labelPosition:'above'}}]};
 function fake(instanceId='one'){
@@ -83,4 +85,53 @@ test('panel replies and resource acquisition are revoked before disposal',async(
   const a=dom(),h=panelHost('one'),gate=deferred(),acquire=h.host.acquirePanel;h.host.acquirePanel=()=>gate.promise;
   const view=mountPresentation({...a,presentation:panelLayout,host:h.host});await settle();view.dispose();gate.resolve(await acquire());await settle();
   assert.equal(h.disconnected,1);assert.equal(all(a.root).some(e=>e.type==='number'),false);assert.equal(h.batches.length,0);
+});
+
+function currentAnalogPanel(){
+  const h=fake('ordinary'),prop=value=>({attributes:{Value:String(value)}}),batches=[];let gestures=0;
+  const expected={ownerLabel:'owner',runtimeRevision:1,node:7,device:'Analog',state:{version:1,profile:analogIdentity.profile,
+    dllSha256:analogIdentity.dllSha256,guiSha256:analogIdentity.guiSha256,graphicsSha256:analogIdentity.graphicsSha256,
+    values:analogDescriptors.map(row=>row.min)}};
+  expected.state.values[26]=.25;expected.state.values[24]=1;
+  const catalog=()=>({generation:'1',parameters:analogDescriptors.map(row=>({...row,value:Math.fround(expected.state.values[row.index]),applied:Math.fround(expected.state.values[row.index]),revision:1,applied_revision:1}))});
+  const bindings=createAnalogPanelBindings({expected,catalog:catalog(),onChange:()=>h.change({})});
+  const resources={identity:{guiSha256:analogIdentity.guiSha256,graphicsSha256:analogIdentity.graphicsSha256},layout:{root:resourceNode('VertBoxView',{children:[
+    resourceNode('FingerView',{expression:'SelectedFinger',properties:{IndexExpression:prop(0),ViewId:prop('first')},children:[resourceNode('TextField',{text:'First'})]}),
+    resourceNode('FingerView',{expression:'SelectedFinger',properties:{IndexExpression:prop(1),ViewId:prop('second')},children:[resourceNode('TextField',{text:'Second'})]}),
+    resourceNode('CardView',{expression:'SelectedFinger',children:[resourceNode('VertBoxView',{children:[
+      resourceNode('LoadableCombiSliderSmall',{expression:'NoiseBalance'}),
+      resourceNode('LoadableCheckControlText',{expression:'NoiseToggle'}),
+      resourceNode('LoadableChooserControl',{expression:'KeyboardPriority'}),
+    ]}),resourceNode('TextField',{text:'Second page'})]})]}),warnings:[]}};
+  h.host.acquirePanel=async()=>({resources,bindings});
+  h.host.beginGesture=()=>{gestures++;return 'must-not-start';};h.host.writeBatch=async request=>{batches.push(request);return null;};
+  return{...h,bindings,expected,batches,get gestures(){return gestures;},refresh(value,native=true){expected.state.values[26]=value;bindings.observe({expected,catalog:native?catalog():null});}};
+}
+test('current read-only Analog adapter mounts disabled inputs and refuses synthetic events at the panel boundary',async()=>{
+  const page=dom(),h=currentAnalogPanel(),view=mountPresentation({...page,presentation:panelLayout,host:h.host});await settle();
+  const inputs=all(page.root).filter(element=>['INPUT','SELECT'].includes(element.tagName));
+  assert.ok(inputs.length>=3);assert.ok(inputs.every(input=>input.disabled));
+  assert.equal(inputs.find(input=>input.type==='text').value,'--');
+  const before=h.bindings.snapshot();
+  for(const input of inputs){
+    input.value='.9';input.fire('input');input.fire('change');input.fire('live-cancel');
+    input.fire('keydown',{key:'ArrowUp'});input.fire('dblclick');
+    input.fire('pointerdown',{pointerId:1,clientX:0,clientY:0});input.fire('pointermove',{pointerId:1,clientX:80,clientY:0});input.fire('pointerup',{pointerId:1});
+  }
+  for(const button of all(page.root).filter(element=>element.tagName==='BUTTON'&&element.disabled))button.fire('click');
+  await settle();assert.equal(h.gestures,0);assert.equal(h.batches.length,0);assert.deepEqual(h.bindings.snapshot(),before);
+  view.dispose();
+});
+test('current read-only source/native refresh preserves the mounted controls and selected navigation page',async()=>{
+  const page=dom(),h=currentAnalogPanel(),view=mountPresentation({...page,presentation:panelLayout,host:h.host});await settle();
+  const input=all(page.root).find(element=>element.type==='range');let firstPage=input;
+  while(!Object.hasOwn(firstPage.dataset,'cardSelected'))firstPage=firstPage.parentElement;
+  all(page.root).find(element=>element.dataset.viewId==='second').fire('pointerdown');
+  assert.equal(firstPage.hidden,true);
+  h.refresh(.75,false);assert.equal(h.bindings.snapshot().nativeStatus,'unavailable');
+  assert.equal(h.bindings.snapshot().values.NoiseBalance,.25);assert.equal(firstPage.hidden,true);
+  assert.equal(all(page.root).find(element=>element.type==='range'),input);assert.equal(input.disabled,true);
+  h.refresh(.5);assert.equal(h.bindings.snapshot().values.NoiseBalance,.5);assert.equal(firstPage.hidden,true);
+  all(page.root).find(element=>element.dataset.viewId==='first').fire('pointerdown');assert.equal(firstPage.hidden,false);
+  assert.equal(input.value,'0.5');assert.equal(h.batches.length,0);view.dispose();
 });

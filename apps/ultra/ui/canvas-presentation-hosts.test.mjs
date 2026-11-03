@@ -5,6 +5,9 @@ import {createCanvasController} from './canvas-model.mjs';
 import {deferred} from '../tests/presentation-dom.mjs';
 import {dom,all,settle} from '../tests/presentation-dom.mjs';
 import {mountPresentation} from './canvas-presentation-view.mjs';
+import {createSharedCanvasController} from './canvas-shared.mjs';
+import {analogDescriptors,analogIdentity} from './live-profiles/analog/facts.mjs';
+import {readFile} from 'node:fs/promises';
 
 test('Ultra resolves authored numeric event and text targets with one canonical commit',async()=>{
   const calls=[],patch={version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[{id:1,type:'number_int',x:0,y:0,params:{value:3}},{id:2,type:'bang',x:0,y:0,params:{}},{id:3,type:'comment',x:0,y:0,params:{text:'Saved text'}}],edges:[]};
@@ -70,4 +73,136 @@ test('disposing a surface during preview writes nothing and owner settlement per
   const view=mountPresentation({...page,presentation,host}),range=all(page.root).find(e=>e.type==='range');range.value='7';range.fire('input');await settle();
   const before=calls.length;view.dispose();host.dispose();range.fire('change');await settle();assert.equal(calls.length,before);assert.equal(controller.getState().parameterPreviews[0].value,7);assert.equal(controller.getState().document.nodes[0].params.value,.4);
   await controller.settleParameterGestures();assert.equal(controller.getState().document.nodes[0].params.value,7);assert.equal(calls.at(-1).args.request.phase,'commit');await controller.dispose();
+});
+
+const panelSource=()=>({version:1,profile:analogIdentity.profile,dllSha256:analogIdentity.dllSha256,
+  guiSha256:analogIdentity.guiSha256,graphicsSha256:analogIdentity.graphicsSha256,values:analogDescriptors.map(row=>row.min)});
+const panelPresentation={version:1,openOnLoad:false,size:{width:640,height:240},items:[7,8].map((node,index)=>({
+  id:`native-${node}`,kind:'livePanel',target:{node,profile:'live12-analog-v1'},included:true,visible:true,
+  rect:{x:index*300,y:0,width:300,height:240},style:{accent:'default'},
+}))};
+async function nativePanelSetup(){
+  let runtimeRevision=10,authoringRevision=1,ownerLabel='owner',hook=null,ownerChanged=false;
+  let patch={version:2,profile:'ultra-patcher-v2',presentation:structuredClone(panelPresentation),nodes:[7,8].map(id=>({id,type:'live_device',x:0,y:0,params:{device:'Analog',state:panelSource()}})),edges:[]};
+  patch.nodes[0].params.state.values[194]=12.1;
+  const calls=[],descriptor=()=>({shared:true,id:1,label:'owner',ownerLabel,viewPath:[],patch:structuredClone(patch),runtimeRevision,authoringRevision,descriptorRevision:authoringRevision});
+  const invoke=async(name,args={})=>{
+    calls.push({name,args:structuredClone(args),at:performance.now()});
+    if(hook){const response=hook(name,args);if(response!==undefined)return await response;}
+    if(name==='document_current')return descriptor();
+    if(name==='live_device_resource_pack'){
+      const fixtures=JSON.parse(await readFile(process.env.ALIVE_RESOURCE_PACK_FIXTURES,'utf8'));
+      return new Uint8Array(await readFile(fixtures['current-20261102'][args.kind]));
+    }
+    if(name==='live_device_parameters'){
+      const state=patch.nodes.find(node=>node.id===args.node)?.params.state;
+      if(!state)throw Error('Source removed');
+      return{generation:String(runtimeRevision),parameters:analogDescriptors.map(row=>({...row,value:Math.fround(state.values[row.index]),applied:Math.fround(state.values[row.index]),revision:1,applied_revision:1}))};
+    }
+    throw Error(`Unexpected panel IPC ${name}`);
+  };
+  const controller=createSharedCanvasController({invoke});assert.equal(await controller.prepare(),true,controller.getState().notice);
+  const host=createUltraPresentationHost({controller:{...controller,getState:()=>ownerChanged?{...controller.getState(),ownerId:'replacement'}:controller.getState()},invoke});
+  return{host,controller,calls,descriptor,get patch(){return patch;},
+    publish(change=()=>{}){change(patch);authoringRevision++;controller.acceptDescriptor(descriptor());host.publish();},
+    reapply(){runtimeRevision++;authoringRevision++;controller.acceptDescriptor(descriptor());host.publish();},
+    owner(){ownerChanged=true;host.publish();},
+    hook(fn){hook=fn;},async dispose(){host.dispose();await controller.dispose();}};
+}
+const acquire=(host,node=7)=>host.acquirePanel({scope:host.scope,sourceNode:node,profile:'live12-analog-v1'});
+const resourceTests={skip:!process.env.ALIVE_RESOURCE_PACK_FIXTURES||typeof globalThis.DOMParser!=='function'};
+
+test('ordinary panel acquisition requires native shared raw-source capability and refuses every panel write',async()=>{
+  const local=createCanvasController({patch:{version:2,profile:'ultra-patcher-v2',presentation:null,nodes:[],edges:[]}}),calls=[];
+  const host=createUltraPresentationHost({controller:local,invoke:async(...args)=>calls.push(args)});
+  await assert.rejects(Promise.resolve().then(()=>acquire(host)),/unavailable|shared/i);
+  assert.equal(calls.length,0);assert.throws(()=>host.writeBatch({}),/unavailable/i);host.dispose();await local.dispose();
+  const h=await nativePanelSetup();
+  h.hook(name=>name==='live_device_resource_pack'?Promise.reject(Error('bounded resource read reached')):undefined);
+  await assert.rejects(acquire(h.host),/bounded resource read reached/);
+  assert.equal(h.calls.filter(call=>call.name==='live_device_resource_pack').length,1);
+  await assert.rejects(h.host.acquirePanel({scope:h.host.scope,sourceNode:7,profile:'foreign'}),/profile|unavailable/i);
+  assert.throws(()=>h.host.writeBatch({sourceNode:7,values:{NoiseBalance:.5}}),/unavailable/i);
+  await h.dispose();
+});
+
+test('real ordinary host acquires exact installed packs and native cached cells without source writes',resourceTests,async()=>{
+  const h=await nativePanelSetup(),raw=h.controller.readLiveSource(7).expected;
+  try{
+    const result=await acquire(h.host),snapshot=result.bindings.snapshot();
+    assert.equal(result.resources.identity.guiSha256,analogIdentity.guiSha256);
+    assert.equal(result.resources.identity.graphicsSha256,analogIdentity.graphicsSha256);
+    assert.ok(result.resources.layout.nodeCount>100);
+    assert.deepEqual(snapshot.expected,raw);assert.equal(snapshot.expected.state.values[194],12.1);
+    assert.equal(snapshot.nativeStatus,'observed');
+    assert.equal(result.bindings.resolveBinding({scope:[],expression:'NoiseBalance'},{}).getState().enabled,false);
+    assert.deepEqual(h.calls.filter(call=>call.name==='live_device_parameters').map(({args})=>args),[{revision:10,node:7}]);
+    assert.equal(h.calls.some(call=>/commit|set_parameter|apply/.test(call.name)),false);
+    result.bindings.disconnect();
+  }finally{await h.dispose();}
+});
+
+for(const boundary of ['GUI','Graphics','native'])for(const change of ['source','remove','runtime','owner','hash','profile','presentation','dispose'])
+  test(`ordinary acquisition discards ${boundary} replies after ${change} changes`,boundary==='GUI'?{}:resourceTests,async()=>{
+    const h=await nativePanelSetup(),gate=deferred();let reached=false;
+    h.hook((name,args)=>{
+      if(!reached&&(boundary==='native'?name==='live_device_parameters':name==='live_device_resource_pack'&&args.kind===boundary)){
+        reached=true;return gate.promise;
+      }
+    });
+    const pending=acquire(h.host);
+    while(!reached)await settle();
+    if(change==='runtime')h.reapply();else if(change==='owner')h.owner();else if(change==='dispose')h.host.dispose();
+    else h.publish(patch=>{
+      if(change==='source')patch.nodes[0].params.state.values[194]=12.2;
+      if(change==='remove'){patch.nodes.shift();patch.presentation.items.shift();}
+      if(change==='hash'){
+        patch.nodes[0].params.state.guiSha256='5ec872d673fd5f4f5f05787e4245c56e172ff2663c2d4493e94d598b883114e6';
+        patch.nodes[0].params.state.graphicsSha256='a0b8aa480aa3d21f093b416ea59b3f200d2e2466936f95d886a554bffe875cb7';
+      }
+      if(change==='profile'){patch.nodes[0]={...patch.nodes[0],type:'number',params:{value:0}};patch.presentation.items.shift();}
+      if(change==='presentation')patch.presentation=null;
+    });
+    gate.resolve(null);await assert.rejects(pending,/changed|unavailable|disconnect/i);await h.dispose();
+  });
+
+test('multiple ordinary mounts share bounded node observations and refresh raw source in place',resourceTests,async()=>{
+  const h=await nativePanelSetup();
+  try{
+    const [a,b,other]=await Promise.all([acquire(h.host),acquire(h.host),acquire(h.host,8)]);
+    assert.equal(a.resources,b.resources);assert.notEqual(a.bindings,b.bindings);
+    const reads=()=>h.calls.filter(call=>call.name==='live_device_parameters');
+    assert.equal(reads().filter(call=>call.args.node===7).length,1);
+    h.publish(patch=>{patch.nodes[0].params.state.values[26]=.75;});
+    assert.equal(a.bindings.snapshot().values.NoiseBalance,.25);
+    assert.equal(b.bindings.snapshot().values.NoiseBalance,.25);
+    assert.equal(other.bindings.snapshot().values.NoiseBalance,1);
+    const gate=deferred();let started=false;
+    h.hook((name,args)=>name==='live_device_parameters'&&args.node===7?(started=true,gate.promise):undefined);
+    await new Promise(resolve=>setTimeout(resolve,275));
+    assert.equal(started,true);
+    for(let i=0;i<10;i++)h.host.publish();
+    assert.equal(reads().filter(call=>call.args.node===7).length,2);
+    h.publish(patch=>{patch.nodes[0].params.state.values[26]=.5;});
+    gate.resolve({generation:'10',parameters:analogDescriptors.map(row=>({...row,value:row.min,applied:row.min,revision:1,applied_revision:1}))});
+    await settle();assert.equal(a.bindings.snapshot().values.NoiseBalance,.5);
+    assert.equal(a.bindings.snapshot().nativeStatus,'unavailable');
+    const nodeReads=reads().filter(call=>call.args.node===7);assert.ok(nodeReads[1].at-nodeReads[0].at>=250);
+    a.bindings.disconnect();b.bindings.disconnect();other.bindings.disconnect();const before=reads().length;
+    await new Promise(resolve=>setTimeout(resolve,275));assert.equal(reads().length,before);
+  }finally{await h.dispose();}
+});
+
+test('disconnect and fresh acquisition retain the per-node interval and disposal cancels a waiting acquisition',resourceTests,async()=>{
+  const h=await nativePanelSetup();
+  try{
+    const first=await acquire(h.host);first.bindings.disconnect();
+    const second=await acquire(h.host);second.bindings.disconnect();
+    const reads=h.calls.filter(call=>call.name==='live_device_parameters');
+    assert.equal(reads.length,2);assert.ok(reads[1].at-reads[0].at>=250);
+    h.publish(patch=>{patch.nodes[0].params.state.values[26]=.75;});
+    const pending=acquire(h.host);await settle();h.host.dispose();
+    await assert.rejects(pending,/disconnect|scope changed/i);
+    assert.equal(h.calls.filter(call=>call.name==='live_device_parameters').length,2);
+  }finally{await h.dispose();}
 });

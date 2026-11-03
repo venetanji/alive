@@ -73,8 +73,9 @@ export function mountPresentation({doc,root,presentation,host,mode='preview',onE
     let body=null,bindings=null,candidate=null,original=null,gesture=null,queued=null,scheduled=false,serial=0,revoked=false,inFlight=0;
     const authorized=()=>active()&&!revoked;
     const snapshot=()=>structuredClone(bindings.snapshot().values);
-    function edit(bindingId,value,phase){
-      if(!authorized()||!gesture&&inFlight)return false;
+    function edit(binding,value,phase){
+      if(!authorized()||binding.getState().enabled!==true||!gesture&&inFlight)return false;
+      const bindingId=binding.bindingId;
       if(!gesture){original=snapshot();candidate=structuredClone(original);gesture=host.beginGesture(`panel:${item.target.node}`);}
       if(!Object.hasOwn(candidate,bindingId))throw Error(`Panel binding ${bindingId} is absent from complete source state.`);
       candidate[bindingId]=value;if(phase==='cancel')candidate=structuredClone(original);
@@ -97,7 +98,7 @@ export function mountPresentation({doc,root,presentation,host,mode='preview',onE
       if(!resources?.identity||!resources.layout||!bindings?.snapshot||!bindings.resolveBinding)throw Error('Device panel resources or bindings are unavailable.');
       body=createLiveDeviceView(doc,{layout:resources.layout,gui:resources.gui,graphics:resources.graphics,isCurrent:authorized,resolveBinding:(connection,node,options)=>{
         const binding=bindings.resolveBinding(connection,node,options);if(!binding)return null;const bindingId=binding.bindingId;
-        return{...binding,getState:()=>{const state=binding.getState();return{...state,enabled:authorized()&&state.enabled,value:candidate&&Object.hasOwn(candidate,bindingId)?candidate[bindingId]:state.value};},onInput:v=>edit(bindingId,v,'preview'),onChange:v=>edit(bindingId,v,'commit'),onCancel:v=>edit(bindingId,v,'cancel')};
+        return{...binding,getState:()=>{const state=binding.getState();return{...state,enabled:authorized()&&state.enabled,value:candidate&&Object.hasOwn(candidate,bindingId)?candidate[bindingId]:state.value};},onInput:v=>edit(binding,v,'preview'),onChange:v=>edit(binding,v,'commit'),onCancel:v=>edit(binding,v,'cancel')};
       },evaluateExpression:(...args)=>bindings.evaluateExpression?.(...args),onError:e=>report(e,status)});
       box.replaceChildren(body.element,status);status.hidden=true;
     }).catch(error=>{if(authorized()){status.setAttribute('role','alert');report(error,status);}});

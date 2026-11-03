@@ -16,7 +16,7 @@ export function mountDevicePanel({doc,win,controller,invoke,beforeOpen=()=>{},dr
     surface?.dispose();host?.dispose();for(const input of watched)drafts?.forget(input);watched=[];
     surface=null;host=null;$('instrument-controls').replaceChildren();
     const presentation=(state.document??state.patch).presentation;if(!presentation)return;
-    host=createUltraPresentationHost({controller});surface=mountPresentation({doc,root:$('instrument-controls'),presentation,host,mode:'preview',onError:error=>controller.notice(error)});
+    host=createUltraPresentationHost({controller,invoke});surface=mountPresentation({doc,root:$('instrument-controls'),presentation,host,mode:'preview',onError:error=>controller.notice(error)});
     watched=[...$('instrument-controls').querySelectorAll('input')].filter(input=>input.commitDraft);
     for(const input of watched)drafts?.watch(input,()=>input.hasDraft());
   }

@@ -1,6 +1,9 @@
 import {REGISTRY,nodeSpec} from './canvas-model.mjs';
 import {treeNodes} from './canvas-hierarchy.mjs';
 import {actualDevices,parameterReading} from './alive-model.mjs';
+import {liveDeviceProfile,validateLiveDeviceState} from './live-device-profile.mjs';
+import {readLiveDeviceResources} from './live-device-resources.mjs';
+import {createAnalogPanelBindings} from './live-profiles/analog/panel-bindings.mjs';
 
 const equalScope=(a,b)=>['ownerId','generation','instanceId','sourceRevision'].every(key=>a?.[key]===b?.[key]);
 const endedGesture=(gestureId,message)=>Object.assign(Error(message),{code:'PRESENTATION_GESTURE_ENDED',gestureId});
@@ -12,10 +15,128 @@ function lifetime(readScope){
 }
 function validate(value,descriptor){if(!Number.isFinite(value)||value<descriptor.min||value>descriptor.max||descriptor.integral&&!Number.isInteger(value))throw Error(`Parameter requires a value from ${descriptor.min} to ${descriptor.max}.`);}
 
-export function createUltraPresentationHost({controller,ownerId='ultra-document'}={}){
+export function createUltraPresentationHost({controller,invoke,ownerId='ultra-document'}={}){
   const state=()=>controller.getState(),document=()=>state().document??state().patch;
   const scope=()=>{const s=state();return{ownerId:s.ownerId??ownerId,generation:s.revision??0,instanceId:'root',sourceRevision:s.shared?s.revision:s.desiredRevision};};
   const life=lifetime(scope),targets=new Map();
+  const resources=new Map(),panels=new Map();let disposed=false;
+  const sameSource=(a,b)=>['ownerLabel','runtimeRevision','node','device'].every(key=>a?.[key]===b?.[key])&&
+    ['version','profile','dllSha256','guiSha256','graphicsSha256'].every(key=>a?.state?.[key]===b?.state?.[key])&&
+    a.state.values.length===b.state.values.length&&a.state.values.every((value,index)=>Object.is(value,b.state.values[index]));
+  const samePanel=(a,b)=>sameSource({...a,state:{...a.state,values:[]}},{...b,state:{...b.state,values:[]}});
+  function readPanelSource(request){
+    life.assert(request.scope);
+    const s=state();
+    if(disposed||!s.native||!s.shared||typeof invoke!=='function'||typeof controller.readLiveSource!=='function')unavailable();
+    const read=controller.readLiveSource(request.sourceNode),expected=read?.expected;
+    if(!read?.available||!expected||expected.ownerLabel!==request.scope.ownerId||expected.runtimeRevision!==request.scope.generation||
+      expected.node!==request.sourceNode||expected.device!=='Analog'||request.profile!=='live12-analog-v1'||expected.state?.profile!==request.profile)
+      throw Error('Installed device panel source or profile is unavailable.');
+    validateLiveDeviceState(expected.device,expected.state);
+    if(Reflect.ownKeys(expected.state.values).length!==204||!Array.from({length:203},(_,index)=>Object.hasOwn(expected.state.values,index)).every(Boolean))
+      throw Error('Installed device panel source is incomplete.');
+    if(!document().presentation?.items.some(item=>item.kind==='livePanel'&&item.included&&item.target.node===request.sourceNode&&item.target.profile===request.profile))
+      throw Error('Installed device panel target changed. Select the device again.');
+    return structuredClone(expected);
+  }
+  function assertSource(request,expected){
+    if(!sameSource(expected,readPanelSource(request)))throw Error('Installed device panel source changed during acquisition.');
+  }
+  function packBytes(value){
+    const length=value instanceof ArrayBuffer?value.byteLength:value?.length;
+    if(!Number.isSafeInteger(length)||length<=0||length>64*1024*1024||
+      !(value instanceof ArrayBuffer||value instanceof Uint8Array||Array.isArray(value)))throw Error('Installed device resource bytes are unavailable or exceed bounds.');
+    if(Array.isArray(value)&&!value.every(byte=>Number.isInteger(byte)&&byte>=0&&byte<=255))throw Error('Installed device resource bytes are invalid.');
+    return value instanceof ArrayBuffer?new Uint8Array(value.slice(0)):new Uint8Array(value);
+  }
+  async function panelResources(request,expected){
+    const path=liveDeviceProfile(expected.device).entrypoint,key=JSON.stringify([expected.state.guiSha256,expected.state.graphicsSha256,path]);
+    let load=resources.get(key);
+    if(!load){
+      load=(async()=>{
+        const gui=await invoke('live_device_resource_pack',{kind:'GUI'});assertSource(request,expected);
+        const guiBytes=packBytes(gui),graphics=await invoke('live_device_resource_pack',{kind:'Graphics'});assertSource(request,expected);
+        const result=await readLiveDeviceResources({guiBytes,graphicsBytes:packBytes(graphics),path,identity:expected.state});assertSource(request,expected);
+        return result;
+      })();
+      resources.set(key,load);load.catch(()=>{if(resources.get(key)===load)resources.delete(key);});
+    }
+    const result=await load;assertSource(request,expected);return result;
+  }
+  function releasePanel(entry){
+    if(entry.members.size||entry.acquiring)return;
+    clearTimeout(entry.timer);entry.timer=null;entry.last=null;
+    // Retain only the last-start timestamp until its throttle interval expires.
+    if(!entry.flight&&entry.started+250<=performance.now()&&panels.get(entry.key)===entry)panels.delete(entry.key);
+  }
+  function refreshPanelSources(entry){
+    for(const member of [...entry.members]){
+      try{
+        const expected=readPanelSource(member.request);
+        if(!samePanel(expected,member.expected))throw Error('Installed device panel identity changed.');
+        if(!sameSource(expected,member.expected)){member.expected=expected;member.bindings.observe({expected,catalog:null});}
+      }catch{member.bindings.disconnect();}
+    }
+  }
+  async function nativeObservation(entry,request,expected){
+    assertSource(request,expected);
+    if(entry.flight){const result=await entry.flight;assertSource(request,expected);if(!sameSource(expected,result.expected))throw Error('Native panel observation source changed.');return result.catalog;}
+    const remaining=entry.started+250-performance.now();
+    if(remaining>0&&entry.last&&sameSource(expected,entry.last.expected))return entry.last.catalog;
+    if(remaining>0){
+      await new Promise((resolve,reject)=>{
+        const waiter={reject,timer:setTimeout(()=>{entry.waiters.delete(waiter);resolve();},Math.ceil(remaining))};entry.waiters.add(waiter);
+      });assertSource(request,expected);
+      return nativeObservation(entry,request,expected);
+    }
+    entry.started=performance.now();
+    const flight=(async()=>{
+      const catalog=await invoke('live_device_parameters',{revision:expected.runtimeRevision,node:expected.node});assertSource(request,expected);
+      return{expected,catalog};
+    })();entry.flight=flight;
+    try{entry.last=await flight;assertSource(request,expected);return entry.last.catalog;}
+    catch(error){entry.last=null;throw error;}
+    finally{if(entry.flight===flight)entry.flight=null;}
+  }
+  function scheduleObservation(entry){
+    if(disposed||!entry.members.size||entry.timer||entry.flight)return;
+    entry.timer=setTimeout(async()=>{
+      entry.timer=null;refreshPanelSources(entry);
+      const member=entry.members.values().next().value;if(!member)return;
+      const {request,expected}=member;
+      // The reply is always checked against this capture, never a later source.
+      try{
+        entry.last=null;
+        const catalog=await nativeObservation(entry,request,expected);assertSource(request,expected);
+        for(const current of entry.members)if(sameSource(current.expected,expected))current.bindings.observe({expected,catalog});
+      }catch{
+        for(const current of entry.members)try{assertSource(current.request,expected);current.bindings.observe({expected,catalog:null});}catch{}
+      }finally{scheduleObservation(entry);releasePanel(entry);}
+    },Math.max(0,Math.ceil(entry.started+250-performance.now())));
+    entry.timer.unref?.();
+  }
+  async function acquirePanel(request){
+    const expected=readPanelSource(request),key=JSON.stringify([expected.ownerLabel,expected.runtimeRevision,expected.node]);
+    for(const previous of [...panels.values()])releasePanel(previous);
+    let entry=panels.get(key);
+    if(!entry){entry={key,members:new Set(),acquiring:0,started:-Infinity,flight:null,last:null,timer:null,waiters:new Set()};panels.set(key,entry);}
+    entry.acquiring++;let bindings=null;
+    try{
+      const packs=await panelResources(request,expected);assertSource(request,expected);
+      const catalog=await nativeObservation(entry,request,expected);assertSource(request,expected);
+      bindings=createAnalogPanelBindings({expected,catalog,onChange:life.publish});assertSource(request,expected);
+      const member={request:{...request,scope:{...request.scope}},expected,bindings},disconnect=bindings.disconnect;
+      bindings.disconnect=()=>{if(!entry.members.delete(member))return;disconnect();releasePanel(entry);};
+      entry.members.add(member);scheduleObservation(entry);
+      return{resources:packs,bindings};
+    }catch(error){bindings?.disconnect();throw error;}
+    finally{entry.acquiring--;releasePanel(entry);}
+  }
+  function publish(){for(const entry of [...panels.values()]){refreshPanelSources(entry);scheduleObservation(entry);releasePanel(entry);}life.publish();}
+  function dispose(){if(disposed)return;disposed=true;for(const entry of [...panels.values()]){
+    for(const member of [...entry.members])member.bindings.disconnect();clearTimeout(entry.timer);entry.last=null;
+    for(const waiter of entry.waiters){clearTimeout(waiter.timer);waiter.reject(Error('Installed device panel disconnected during acquisition.'));}entry.waiters.clear();
+  }panels.clear();resources.clear();life.dispose();}
   function resolve(target){
     const node=treeNodes(document()).find(node=>node.id===target.node);if(!node)throw Error('Presentation target is missing.');
     if(target.kind==='text')return{text:node.params[target.param]??REGISTRY[node.type]?.params[target.param]?.value??'',style:node.style??{},capabilities:{text:true}};
@@ -33,12 +154,12 @@ export function createUltraPresentationHost({controller,ownerId='ultra-document'
     const applied=target.param==='value'?(s.observations?.[node.id]?.value??commanded):commanded;
     return{commanded,applied,effective:applied,owner:'Base',enabled:!s.closing&&!s.faulted,revision:s.activeDocumentRevision??0};
   }
-  return{get scope(){return life.scope;},resolve,snapshot,subscribe:life.subscribe,publish:life.publish,beginGesture(bindingId){const id=life.beginGesture(bindingId,snapshot(bindingId)?.commanded),target=targets.get(bindingId);life.gestures.get(id).ownerGesture=controller.beginParameterGesture(target.node,target.param);return id;},async write(request){
+  return{get scope(){return life.scope;},resolve,snapshot,subscribe:life.subscribe,publish,beginGesture(bindingId){const id=life.beginGesture(bindingId,snapshot(bindingId)?.commanded),target=targets.get(bindingId);life.gestures.get(id).ownerGesture=controller.beginParameterGesture(target.node,target.param);return id;},async write(request){
     const gesture=life.gesture(request),target=targets.get(request.bindingId);if(!target)throw Error('Unknown presentation binding.');validate(request.value,target.descriptor);
     await controller.writeParameterGesture(gesture.ownerGesture,request.phase,request.value);life.assert(request.scope);
     if(request.phase!=='preview')life.gestures.delete(request.gestureId);
     life.publish();return snapshot(request.bindingId);
-  },async sendEvent(request){life.assert(request.scope);if(request.action!=='bang'||request.target.kind!=='event'||!resolve(request.target).capabilities.event)throw Error('Unsupported presentation event.');const accepted=await controller.deviceEvent(request.target.node,request.target.inlet,null);life.assert(request.scope);if(!accepted)throw Error('Presentation event was refused by the current graph.');return accepted;},writeBatch:unavailable,acquirePanel:unavailable,dispose:life.dispose};
+  },async sendEvent(request){life.assert(request.scope);if(request.action!=='bang'||request.target.kind!=='event'||!resolve(request.target).capabilities.event)throw Error('Unsupported presentation event.');const accepted=await controller.deviceEvent(request.target.node,request.target.inlet,null);life.assert(request.scope);if(!accepted)throw Error('Presentation event was refused by the current graph.');return accepted;},writeBatch:unavailable,acquirePanel,dispose};
 }
 
 export function createAlivePresentationHost({instanceId,getSnapshot,writeBase}={}){
