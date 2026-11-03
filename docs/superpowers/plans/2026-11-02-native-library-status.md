@@ -14,14 +14,16 @@ ordinary Ultra and its existing document/history owner. Finish this before
 expanding devices or enabling native devices in Alive. Implementation workers
 are requested as `gpt-6.1-terra`; the controller coordinates and reviews.
 
-Last built exact checkpoint is `f6734b77f940b949b8ee6514b5d15b1a26de71ff`.
+Last built exact checkpoint is `a40c0a7ccdabc3939a6830fe636f4476df0e70cf`.
 The reviewed IPC precision fix is integrated and both launchers select matching
-snapshot `test-0339b4105ab6f9bf3298`. The actual Analog panel acquires state after
-using Perform instrument. Fresh diagnostic r5 confirms a distinct Export JSON
+snapshot `test-383ff39d42566446fa36`. The paired build completed in 374.46 seconds
+with source hashes unchanged; all 18 selected artifact hashes verify. Desktop
+binaries use pinned Rust1.85.1; native is Release with experimental adapter
+compiled and Alive admission closed. The actual Analog panel acquires state
+after using Perform instrument. Earlier diagnostic r5 confirmed an Export JSON
 defect: raw index194 `12.1` becomes `12.100000381469727`; all other 202 values and
-metadata match. Preserve the exact-state assertion and fix the export path
-before claiming the subsequent desktop checks. This observation does not prove
-native canonical or disk-save corruption.
+metadata matched. The reviewed export repair now passes the unchanged exact
+assertion on desktop; no native canonical or disk-save corruption was inferred.
 
 The retained corrected Alive visibility/restoration run completed all three
 sizes (800x600, 1280x800, 1440x900), 24 independent transitions, six both-open
@@ -29,7 +31,12 @@ states and six restored cycles. Independent evidence/provenance review passes
 for that scope, with all 671 retained source hashes and 18 artifact hashes
 matching. It does not cover lower-row drag or toggle-detail collapse/restore;
 the maintained test's three-size coverage is a separate worker task. This run
-tests stock-session panel behavior, not Analog or audio.
+tests stock-session panel behavior, not Analog or audio. The same helper was
+rerun on the new selected a40c0a7 pair: 148.22 seconds, exit0, 24 transitions,
+six both-open states and cycle restorations, three final restorations and 25
+verified native/accessibility targets. All 30 captures were inspected; recorded
+source, fixture, helper and artifact hashes are stable. Native lower-row drag
+and toggle-detail collapse are still not established by this footer-only run.
 
 Durable Rust-to-Tauri-to-JavaScript regression is integrated as `5b87cf7` from
 independently reviewed `787e085894741220a6e506942d600565a1c12c40`. The actual
@@ -38,7 +45,7 @@ RED fails at index1; restored GREEN passes two focused Rust and seven adapter
 tests. This test requires Node on PATH (including structuredClone support);
 the worker used Node26.13.0 and pinned Rust1.85.1. Full Rust was not repeated
 for this test-only addition. Existing unused-import warning remains deferred.
-Actual native acquisition remains a separate gate.
+Actual native acquisition has now passed its separate read-only gate.
 
 Exact export correction is independently approved and integrated as `968fcbb`,
 `5f57f61` and `9dca6f3`. Source-bearing export preserves validated canonical raw
@@ -56,9 +63,36 @@ fails as intended. This uses a transformed stock score with simulated Tauri;
 actual native lower-row drag remains unrun. Existing Node deprecation and color
 environment warnings are retained as minor issues, not product failures.
 
-Next rebuild/select the matching
-pair and complete actual desktop acceptance, then proceed with the reviewed
-source-gesture/draft settlement plan and qualify one bounded control only.
+Actual ordinary Ultra native read-only acceptance on a40c0a7 passes all three
+window sizes: six close/open cycles, 13 verified native/accessibility targets,
+seven exact full-state exports (203 values, raw194=12.1) and zero graph edges.
+Independent review rechecked 9,467 recorded hashes and all six screenshots.
+The narrow sidebar clips horizontally at all sizes and lower content at800x600;
+scrolling/reachability and full original-UI fidelity remain unverified. This is
+acquisition/export/panel restoration, not edit, acknowledgement, Undo/Redo,
+native Save/reopen, sound, timing or lifecycle acceptance.
+
+Complete configured frontend verification on frozen a40c0a7: Node859 passed,
+19 skipped, zero failed; Chromium434 passed, zero skipped/failed. All tracked
+source hashes match before/after and across both runs. The19 Node skips are
+resourceTests in canvas-presentation-hosts.test.mjs because Node lacks DOMParser,
+with fixture variables present. Configured browser cases cover acquisition,
+reconnect, disposal and some stale replies, not every skipped Graphics/native
+boundary or multi-mount case. Browser IPC is simulated. Do not credit skipped
+cases as passed or claim browser tests validate real native IPC.
+
+Manual CI41598403973 is running at exact a40c0a7 with endurance off:
+https://github.com/venetanji/alive/actions/runs/41598403973 . UI/protocol and
+Chromium jobs passed; actual native/hosted editor and downstream gates are
+being audited against the same live run. No automatic CI was enabled.
+
+Next source-gesture infrastructure is isolated at worker893412691e485cd756f17491a7d03f919b78d243,
+awaiting independent spec/quality review and not integrated. Focused worker
+results:106 passed,19 existing DOMParser skips,zero failed. Production writable
+authority is empty and all175 mapped model fields remain disabled. Real U1 and
+host mechanics are exercised with fake resource/IPC boundaries only. The panel
+view still requires its planned source-gesture/async draft/save-close adaptation;
+one real native edit-and-reopen cycle remains the immediate milestone.
 
 Timing/admission and lifecycle stay separate gates. Prior callback budget
 exceedances and the existing development allocator failure remain unresolved;
@@ -83,6 +117,11 @@ content while preserving the approved horizontal chain. The intermediate
 offscreen-tail run (two passed, three failed, seven unrun) exposed an invalid
 oracle, not a demonstrated missing Device-content defect.
 
+Ruling: share the empty writable authority through the existing Analog bindings
+module, used by both host and adapter. No document, constructor or renderer flag
+can qualify a control. Cost: adapter gating joins this bounded infrastructure
+slice and requires covering regression and independent review before integration.
+
 Original NoiseToggle widget behavior is still unqualified. The immutable Analog
 packet verifies, but OnlySetActiveWhen=2 alone does not establish interaction
 semantics. A fresh original Live reference attempt opened a blank Untitled set;
@@ -91,6 +130,8 @@ pointer attempt stopped before a button press, then calibration confirmed X11
 physical coordinates. Further desktop input stopped after unrelated desktop
 activity appeared. The blank Live window was left intact; no successful widget
 transition or saved reference set is claimed. Continue software gates first.
+
+## Earlier Resume Record
 
 The owner explicitly resumed the long-term native-instrument goal after the
 shutdown checkpoint. Continue the existing objective: inventory the installed
