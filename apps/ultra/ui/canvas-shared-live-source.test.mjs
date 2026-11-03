@@ -408,3 +408,90 @@ test('descriptor ordering protects the raw source and running audio does not ref
   assert.equal(a.readLiveSource(1).expected.state.values[26],.875);
   assert.equal(a.readLiveSource(1).expected.state.values[194],12.1);
 });
+
+test('export retains exact canonical source through optimistic layout and source history',async()=>{
+  const {host,a}=await setup(),source=()=>JSON.parse(a.export()).nodes[0].params.state;
+  assert.deepEqual(source(),host.patch.nodes[0].params.state);
+  const release=host.hold();a.move(3,170,180);await tick();
+  assert.equal(JSON.parse(a.export()).nodes[2].x,170);
+  assert.equal(source().values[194],12.1);release();await a.flush();
+  assert.equal(source().values[194],12.1);
+  assert.equal((await a.commitLiveSource(request(a,194,12.2))).outcome,'accepted');
+  assert.equal(source().values[194],12.2);
+  await a.undo();assert.equal(source().values[194],12.1);
+  await a.redo();assert.equal(source().values[194],12.2);
+});
+
+
+test('export respects exact same-f32 source intent after U1 acknowledgement and history',async()=>{
+  const {host,a}=await setup(),release=host.hold();
+  const source=()=>JSON.parse(a.export()).nodes[0].params.state.values[194];
+  const next=12.1000001;
+  assert.equal(Math.fround(next),Math.fround(12.1));
+  const pending=a.commitLiveSource(request(a,194,next));await tick();
+  assert.equal(source(),12.1);
+  release();assert.equal((await pending).outcome,'accepted');
+  assert.equal(source(),next);
+  await a.undo();assert.equal(source(),12.1);
+  await a.redo();assert.equal(source(),next);
+});
+
+
+test('duplicate and load export their actual optimistic normalized sources without stale overlay',async()=>{
+  const {host,a}=await setup(),release=host.hold();
+  const [id]=a.duplicateMany([1]);await tick();
+  const exported=JSON.parse(a.export());
+  assert.equal(exported.nodes[0].params.state.values[194],12.1);
+  assert.equal(exported.nodes.find(node=>node.id===id).params.state.values[194],Math.fround(12.1));
+  release();await a.flush();
+  assert.equal(host.patch.nodes.find(node=>node.id===id).params.state.values[194],Math.fround(12.1));
+  const replacement=initial();replacement.nodes[0].params.state.values[194]=12.1000001;
+  replacement.nodes[2].x=333;a.load(replacement);
+  assert.equal(JSON.parse(a.export()).nodes[0].params.state.values[194],Math.fround(12.1));
+  await a.flush();
+});
+
+test('nested canonical source survives optimistic edits and removal or replacement does not resurrect it',async()=>{
+  const patch=initial(),child=patch.nodes.shift();
+  patch.nodes.push({...makeNode('patcher',4),patcher:{presentation:null,nodes:[child],edges:[]}});
+  const {host,a}=await setup({patch}),release=host.hold();
+  a.move(3,220,230);await tick();
+  assert.equal(JSON.parse(a.export()).nodes.find(node=>node.id===4).patcher.nodes[0].params.state.values[194],12.1);
+  a.enter(4);a.remove(1);
+  assert.deepEqual(JSON.parse(a.export()).nodes.find(node=>node.id===4).patcher.nodes,[]);
+  release();await a.flush();assert.equal(host.patch.nodes.find(node=>node.id===4).patcher.nodes.length,0);
+  const next=initial(),second=await setup({patch:next}),release2=second.host.hold();
+  second.a.configure(1,'number',{});await tick();
+  assert.equal(JSON.parse(second.a.export()).nodes[0].type,'number');
+  release2();await second.a.flush();
+});
+
+test('failed source reconciliation refuses source-bearing export until a fresh descriptor',async()=>{
+  const {host,a}=await setup({broadcast:false}),release=host.hold();host.fail('throw');
+  const pending=a.commitLiveSource(request(a));await tick();host.failReads();release();
+  assert.equal((await pending).outcome,'unknown');
+  assert.throws(()=>a.export(),/canonical source state is unavailable/i);
+  host.failReads(false);a.acceptDescriptor(await host.invoke('document_current'));
+  assert.equal(JSON.parse(a.export()).nodes[0].params.state.values[194],12.1);
+});
+
+test('conflicting queued source edit is never overlaid with stale canonical source',async()=>{
+  const {host,a,b}=await setup({broadcast:false}),release=host.hold();
+  const source=clone(a.getState().document.nodes[0].params.state);source.values[194]=13;
+  a.deviceParameter(1,'state',source);await tick();
+  await b.commitLiveSource(request(b,194,14));
+  assert.equal(JSON.parse(a.export()).nodes[0].params.state.values[194],13);
+  release();await a.flush();
+  assert.equal(JSON.parse(a.export()).nodes[0].params.state.values[194],14);
+});
+
+test('source acknowledgement retains a later optimistic layout edit in export',async()=>{
+  const {host,a}=await setup(),release=host.hold();
+  const pending=a.commitLiveSource(request(a,194,12.2));await tick();
+  a.move(3,420,430);
+  let exported=JSON.parse(a.export());
+  assert.equal(exported.nodes[2].x,420);assert.equal(exported.nodes[0].params.state.values[194],12.1);
+  release();assert.equal((await pending).outcome,'accepted');await a.flush();
+  exported=JSON.parse(a.export());
+  assert.equal(exported.nodes[2].x,420);assert.equal(exported.nodes[0].params.state.values[194],12.2);
+});

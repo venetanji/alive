@@ -298,7 +298,7 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
           } else if(item.kind==='edit') {
             // A failed IPC may have reached native admission. Read canonical state
             // before removing optimistic edits, never publish a guessed rollback.
-            try{acceptDescriptor(await invoke('document_current'));}catch{}
+            try{if(!acceptDescriptor(await invoke('document_current')))sourceUnavailable=true;}catch{sourceUnavailable=true;}
             recover(error);
           } else {
             if(item.kind==='history')for(const barrier of closeBarriers.values())barrier.error=error;
@@ -316,7 +316,7 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
     if(priority){item.safety=true;let index=activeItem?1:0;while(queue[index]?.safety)index++;queue.splice(index,0,item);}else queue.push(item);
     emit();pump();return promise;
   }
-  function edit(method,args,{history=true,parameter,messageText,force=false,coalesceKey}={}) {
+  function edit(method,args,{history=true,parameter,messageText,force=false,coalesceKey,sourceTouches=[]}={}) {
     if(disposed||detaching)throw Error('This patcher view is detached.');
     if(closeBarriers.size)throw Error('This patcher is closing. Cancel closing before editing.');
     if(!descriptor)throw Error('Wait for the shared document to prepare.');
@@ -336,8 +336,8 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
     // only live state. Native must admit that action even with an unchanged tree.
     if(messageText)delete messageBoxes[messageText.node];
     if(force||messageText||parameter?.hot||!equal(base,document.document)) {
-      if(coalesce){tail.patch=copy(document.document);tail.parameter=parameter;emit();}
-      else enqueue({kind:'edit',base,patch:copy(document.document),history,parameter,messageText,force,coalesceKey,epoch});
+      if(coalesce){tail.patch=copy(document.document);tail.parameter=parameter;tail.sourceTouches.push(...sourceTouches);emit();}
+      else enqueue({kind:'edit',base,patch:copy(document.document),history,parameter,messageText,force,coalesceKey,epoch,sourceTouches});
     }
     return result;
   }
@@ -349,7 +349,40 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
     const parameter=typeof value==='number'&&!structural&&!['comment','patcher','help_helper'].includes(node.type)?
       {node:id,key,value,hot:key==='value'&&['number','number_int','toggle','int','float','flonum','slider'].includes(node.type)}:undefined;
     const messageText=node.type==='message_box'&&key==='text'?{node:id,text:value}:undefined;
-    return edit((...args)=>root?document.parameterRoot(...args):document.parameter(...args),[id,key,value,{history}],{history,parameter,messageText});
+    return edit((...args)=>root?document.parameterRoot(...args):document.parameter(...args),[id,key,value,{history}],{history,parameter,messageText,
+      sourceTouches:node.type==='live_device'&&['device','state'].includes(key)?[id]:[]});
+  }
+  function exportDocument() {
+    // Serialization validates and bounds the optimistic tree before exact,
+    // independently validated canonical sources are restored.
+    const result=JSON.parse(serializePatch(document.document));
+    const sources=treeNodes(result).filter(node=>node.type==='live_device');
+    if(sources.length&&sourceUnavailable)throw Error('Canonical source state is unavailable. Read the shared document again.');
+    if(!descriptor||!rawCanonical)return JSON.stringify(result,null,2);
+    const normalized=new Map(treeNodes(descriptor.patch).map(node=>[node.id,node]));
+    const raw=new Map(treeNodes(rawCanonical).map(node=>[node.id,node]));
+    const edits=queue.filter(item=>item.kind==='edit');
+    const touched=new Set(edits.flatMap(item=>item.sourceTouches));
+    const allTouched=touched.has('*');
+    for(const item of edits) {
+      const before=new Map(treeNodes(item.base).map(node=>[node.id,node]));
+      const after=new Map(treeNodes(item.patch).map(node=>[node.id,node]));
+      for(const id of new Set([...before.keys(),...after.keys()])) {
+        const a=before.get(id),b=after.get(id);
+        if((a?.type==='live_device'||b?.type==='live_device')&&
+          (a?.type!==b?.type||!equal(a?.params,b?.params)))touched.add(id);
+      }
+    }
+    for(const node of sources) {
+      const canonical=normalized.get(node.id),exact=raw.get(node.id);
+      if(!allTouched&&!touched.has(node.id)&&canonical?.type==='live_device'&&exact?.type==='live_device'&&
+        node.params.device===canonical.params.device&&node.params.device===exact.params.device&&
+        sameSource(node.params.state,canonical.params.state)) {
+        validateExactSource(exact.params.device,exact.params.state);
+        node.params.state=copy(exact.params.state);
+      }
+    }
+    return JSON.stringify(result,null,2);
   }
   function event(node,inlet=0,value=null,action,root=false) {
     const releasingDeviceNote=closeBarriers.size&&root&&inlet===0&&Array.isArray(value)&&value.length===2&&value[1]===0&&
@@ -441,14 +474,14 @@ export function createSharedCanvasController({invoke,onState=()=>{}}={}) {
     ...Object.fromEntries(['add','configure','remove','removeMany','connect','disconnect','move','moveMany','resize','style','setPresentation','updatePresentationItem','duplicateMany']
       .map(method=>[method,(...args)=>edit((...values)=>document[method](...values),args,{history:args.at(-1)?.history!==false,coalesceKey:`${method}:${JSON.stringify(args[0])}`})])),
     configure:(id,type,params)=>type==='message_box'&&document.patch.nodes.find(node=>node.id===id)?.type===type?
-      parameter(id,'text',params.text):edit((...args)=>document.configure(...args),[id,type,params]),
+      parameter(id,'text',params.text):edit((...args)=>document.configure(...args),[id,type,params],{sourceTouches:[id]}),
     undo:()=>operationHistory('undo'),redo:()=>operationHistory('redo'),
     load:value=>edit(patch=>{
       const changed=document.replace(patch);
       reconcileHelp(document,true);return changed;
-    },[typeof value==='string'?parsePatch(value):value]),
+    },[typeof value==='string'?parsePatch(value):value],{sourceTouches:['*']}),
     reapply:()=>{faulted=false;panicked=false;return edit(()=>true,[],{force:true,history:false});},
-    export:()=>serializePatch(document.document),notice:report};
+    export:exportDocument,notice:report};
 
   function operationHistory(direction) {
     if(disposed||detaching||closeBarriers.size||!descriptor)return Promise.resolve(false);
