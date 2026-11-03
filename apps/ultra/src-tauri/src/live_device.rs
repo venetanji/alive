@@ -5,6 +5,7 @@ use crate::canvas::live_device::{Source, PROFILE, PARAMETER_COUNT};
 use std::{ffi::{c_char, CStr, CString}, io::Read, path::{Path, PathBuf}};
 
 pub(crate) mod document_batch;
+pub(crate) mod source_trace;
 
 #[repr(C)]
 struct NativeSource {
@@ -139,14 +140,19 @@ pub(crate) struct Parameters { generation: String, parameters: Vec<Parameter> }
 pub(crate) fn live_device_parameters(window: tauri::WebviewWindow,
     documents: tauri::State<crate::document_windows::Documents>, state: tauri::State<Audio>,
     revision: u64, node: u32) -> Result<Parameters, String> {
-    crate::with_canvas(&window, &documents, &state, |document, control| {
+    let (document, result) = crate::with_canvas(&window, &documents, &state, |document, control| {
         control.live_source(revision, node)?;
         let mut rows = vec![NativeParameter::default(); PARAMETER_COUNT];
         let count = unsafe { ultra_canvas_live_device_parameters_document(document, revision, node, rows.as_mut_ptr(), rows.len() as u32) };
         if count as usize != PARAMETER_COUNT { return Err("Native live.device~ parameter snapshot is unavailable or stale".into()); }
         let parameters = rows.into_iter().filter(|p| p.descriptor.initialized != 0).map(Parameter::from).collect();
-        Ok(Parameters { generation: revision.to_string(), parameters })
-    })
+        Ok((document, Parameters { generation: revision.to_string(), parameters }))
+    })?;
+    source_trace::emit(Some((document, revision, node)), || serde_json::json!({
+        "event":"host_cached_catalog", "owner":document, "runtime_revision":revision.to_string(),
+        "node":node, "catalog":&result
+    }));
+    Ok(result)
 }
 
 #[cfg(test)]

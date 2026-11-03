@@ -66,8 +66,15 @@ pub(crate) fn canvas_parameter(registry: &mut Registry, audio: &mut crate::Audio
 
 pub fn admit_owned(io: &mut crate::audio::Driver, control: &mut canvas::CanvasState, owner: &Document, patch: &Value,
     parameter: Option<&Parameter>, message_text: Option<&MessageText>, force: bool) -> Result<documents::Admission, String> {
+    admit_owned_traced(io, control, owner, patch, parameter, message_text, force, None)
+}
+
+struct SourceReceipt { owner: u32, runtime: u64, nodes: Vec<u32>, omitted_nodes: usize, result: Result<(), String> }
+
+fn admit_owned_traced(io: &mut crate::audio::Driver, control: &mut canvas::CanvasState, owner: &Document, patch: &Value,
+    parameter: Option<&Parameter>, message_text: Option<&MessageText>, force: bool, receipt: Option<&mut Option<SourceReceipt>>) -> Result<documents::Admission, String> {
     io.reject_retiring()?;
-    admit_message_inner(control, owner, patch, parameter, message_text, force, Some(io))
+    admit_message_inner(control, owner, patch, parameter, message_text, force, Some(io), receipt)
 }
 
 pub fn close_owned(io: &mut crate::audio::Driver, document: u32) -> Result<(), String> {
@@ -97,10 +104,10 @@ pub fn admit(control: &mut canvas::CanvasState, owner: &Document, patch: &Value,
     admit_message(control,owner,patch,parameter,None,force)
 }
 pub fn admit_message(control: &mut canvas::CanvasState, owner: &Document, patch: &Value, parameter: Option<&Parameter>, message_text: Option<&MessageText>, force: bool) -> Result<documents::Admission, String> {
-    admit_message_inner(control, owner, patch, parameter, message_text, force, None)
+    admit_message_inner(control, owner, patch, parameter, message_text, force, None, None)
 }
 fn admit_message_inner(control: &mut canvas::CanvasState, owner: &Document, patch: &Value, parameter: Option<&Parameter>, message_text: Option<&MessageText>, force: bool,
-    io: Option<&mut crate::audio::Driver>) -> Result<documents::Admission, String> {
+    io: Option<&mut crate::audio::Driver>, receipt: Option<&mut Option<SourceReceipt>>) -> Result<documents::Admission, String> {
     if parameter.is_some() && message_text.is_some() { return Err("Numeric and message text hints cannot be combined".into()); }
     let plan = canvas::prepare(patch.clone())?;
     let force = force || owner.runtime_revision == 0;
@@ -110,7 +117,13 @@ fn admit_message_inner(control: &mut canvas::CanvasState, owner: &Document, patc
         if let Some(changes) = control.live_state_changes(&plan).filter(|changes| !changes.is_empty()) {
             if parameter.is_some() || message_text.is_some() { return Err("Live source state edits cannot accompany numeric or message text hints".into()); }
             let updates: Vec<_> = changes.into_iter().cloned().collect();
-            crate::live_device::publish(owner.id, control.revision(), &updates)?;
+            let result = crate::live_device::publish(owner.id, control.revision(), &updates);
+            if let Some(receipt) = receipt {
+                *receipt = Some(SourceReceipt { owner: owner.id, runtime: control.revision(),
+                    nodes: updates.iter().take(16).map(|source| source.node).collect(),
+                    omitted_nodes: updates.len().saturating_sub(16), result: result.clone() });
+            }
+            result?;
             control.accept_live_state(plan);
             return Ok(documents::Admission { revision: control.revision(), message_text_serial: control.message_text_serial() });
         }
@@ -285,36 +298,93 @@ pub fn document_close_flushed(window: WebviewWindow, state: tauri::State<Documen
 #[tauri::command]
 pub fn document_commit(window: WebviewWindow, state: tauri::State<Documents>, audio: tauri::State<Audio>, io: tauri::State<crate::AudioIo>, base_revision: u64,
     patch: Value, force: Option<bool>, parameter: Option<Parameter>, message_text: Option<MessageText>, history: Option<bool>, expected_scope: Option<ExpectedScope>) -> Result<CommitResult, String> {
+    let tracing = crate::live_device::source_trace::enabled();
+    let mut receipt = None;
     let mut registry = state.0.lock().map_err(|_| "Document lock poisoned")?;
     let mut audio = audio.0.lock().map_err(|_| "Audio control lock poisoned")?;
     let mut io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
     let scope = expected_scope.as_ref().map(|scope| (scope.owner_label.as_str(), scope.runtime_revision));
     let result = registry.commit_scoped(window.label(), base_revision, patch, history.unwrap_or(true), scope, |owner, patch| {
-        admit_owned(&mut io, &mut audio.graphs[owner.id as usize], owner, patch, parameter.as_ref(), message_text.as_ref(), force.unwrap_or(false))
-    })?;
-    trace_document("commit", &result.document, base_revision, u8::from(result.accepted));
+        admit_owned_traced(&mut io, &mut audio.graphs[owner.id as usize], owner, patch, parameter.as_ref(), message_text.as_ref(), force.unwrap_or(false), if tracing { Some(&mut receipt) } else { None })
+    });
+    if let Ok(result) = &result { trace_document("commit", &result.document, base_revision, u8::from(result.accepted)); }
     drop(io);
     drop(audio);
-    let obsolete = if result.accepted { changed(window.app_handle(), &mut registry, &result.document.owner_label) } else { vec![] };
+    let obsolete = if let Ok(result) = &result { if result.accepted { changed(window.app_handle(), &mut registry, &result.document.owner_label) } else { vec![] } } else { vec![] };
     drop(registry);
+    trace_source_reply("commit", base_revision, receipt, &result);
     close_views(window.app_handle(), obsolete);
-    Ok(result)
+    result
 }
 
 #[tauri::command]
 pub fn document_history(window: WebviewWindow, state: tauri::State<Documents>, audio: tauri::State<Audio>, io: tauri::State<crate::AudioIo>, base_revision: u64, direction: String) -> Result<CommitResult, String> {
+    let tracing = crate::live_device::source_trace::enabled();
+    let mut receipt = None;
     let mut registry = state.0.lock().map_err(|_| "Document lock poisoned")?;
     let mut audio = audio.0.lock().map_err(|_| "Audio control lock poisoned")?;
     let mut io = io.0.lock().map_err(|_| "Audio device lock poisoned")?;
     let result = registry.history(window.label(), base_revision, &direction, |owner, patch| {
-        admit_owned(&mut io, &mut audio.graphs[owner.id as usize], owner, patch, None, None, false)
-    })?;
+        admit_owned_traced(&mut io, &mut audio.graphs[owner.id as usize], owner, patch, None, None, false, if tracing { Some(&mut receipt) } else { None })
+    });
     drop(io);
     drop(audio);
-    let obsolete = if result.accepted { changed(window.app_handle(), &mut registry, &result.document.owner_label) } else { vec![] };
+    let obsolete = if let Ok(result) = &result { if result.accepted { changed(window.app_handle(), &mut registry, &result.document.owner_label) } else { vec![] } } else { vec![] };
     drop(registry);
+    trace_source_reply(match direction.as_str() { "undo" => "undo", "redo" => "redo", _ => "invalid_history" }, base_revision, receipt, &result);
     close_views(window.app_handle(), obsolete);
-    Ok(result)
+    result
+}
+
+fn trace_source_reply(operation: &str, base: u64, receipt: Option<SourceReceipt>, result: &Result<CommitResult, String>) {
+    use crate::live_device::source_trace;
+    if let Some(receipt) = receipt {
+        source_trace::emit(None, || native_line(&receipt));
+    }
+    source_trace::emit(None, || document_line(operation, base, result));
+}
+
+fn native_line(receipt: &SourceReceipt) -> Value {
+    serde_json::json!({"event":"u1_c_abi_admission", "owner":receipt.owner,
+        "runtime_revision":receipt.runtime.to_string(), "nodes":receipt.nodes, "omitted_nodes":receipt.omitted_nodes,
+        "success":receipt.result.is_ok(), "error":receipt.result.as_ref().err()})
+}
+
+fn document_line(operation: &str, base: u64, result: &Result<CommitResult, String>) -> Value {
+    match result {
+        Ok(reply) => serde_json::json!({"event":"rust_document_reply", "operation":operation, "base_revision":base.to_string(),
+            "owner":reply.document.id, "accepted":reply.accepted, "authoring_revision":reply.document.authoring_revision.to_string(),
+            "runtime_revision":reply.document.runtime_revision.to_string()}),
+        Err(_) => serde_json::json!({"event":"rust_document_reply", "operation":operation, "base_revision":base.to_string(), "status":"error"}),
+    }
+}
+
+#[cfg(test)]
+mod source_reply_tests {
+    use super::*;
+    use serde_json::json;
+
+    #[test]
+    fn trace_reports_native_refusal_and_actual_document_rejection_separately() {
+        let receipt = SourceReceipt { owner: 7, runtime: 42, nodes: vec![1,2], omitted_nodes: 0,
+            result: Err("native \"refused\"\nrequest".into()) };
+        let native = native_line(&receipt);
+        assert_eq!(native["event"], "u1_c_abi_admission");
+        assert_eq!(native["owner"], 7);
+        assert_eq!(native["runtime_revision"], "42");
+        assert_eq!(native["nodes"], json!([1,2]));
+        assert_eq!(native["success"], false);
+        assert_eq!(native["error"], "native \"refused\"\nrequest");
+        assert!(native.get("applied").is_none());
+        let mut registry = Registry::default();
+        let document = registry.add("test".into(), documents::Kind::Patch, Some(json!({})), None, None).unwrap();
+        let reply = Ok(CommitResult { accepted: false, document });
+        let doc = document_line("undo", 5, &reply);
+        assert_eq!(doc["event"], "rust_document_reply");
+        assert_eq!(doc["accepted"], false);
+        assert_eq!(doc["authoring_revision"], "0");
+        assert!(doc.get("success").is_none());
+    }
 }
 
 #[tauri::command]
