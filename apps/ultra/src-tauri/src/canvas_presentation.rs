@@ -47,7 +47,7 @@ fn collect_at<'a>(
             return Err("Presentation: hierarchy exceeds 512 nodes".into());
         }
         if nodes.insert(id, node).is_some() {
-            return Err("Presentation: duplicate authored node identity".into());
+            return Err("Presentation: duplicate authored node identity; node IDs must be unique".into());
         }
         if node["type"] == "patcher" {
             collect_at(&node["patcher"], nodes, depth + 1)?;
@@ -76,8 +76,7 @@ struct Bounds {
     bytes: usize,
 }
 
-/// Qualified source facts are injectable for schema tests; the executable registry
-/// deliberately contains no live_device node in this delivery.
+/// Qualified source facts are injectable for pure presentation schema tests.
 pub(super) fn validate_with_profiles(
     document: &Value,
     profiles: &HashMap<u64, (String, String)>,
@@ -308,7 +307,21 @@ pub(super) fn validate_with_profiles(
     scope(document, profiles, &mut Bounds::default(), 0)
 }
 pub(super) fn validate(document: &Value) -> Result<(), String> {
-    validate_with_profiles(document, &HashMap::new())
+    let mut nodes = HashMap::new();
+    collect(document, &mut nodes)?;
+    let mut profiles = HashMap::new();
+    for (id, node) in nodes {
+        if node["type"] != "live_device" {
+            continue;
+        }
+        let params = node["params"]
+            .as_object()
+            .ok_or("Presentation: invalid installed source parameters")?;
+        // Source parsing validates the complete identity and raw values before narrowing.
+        let source = super::live_device::Source::parse(id as u32, params)?;
+        profiles.insert(id, ("Analog".into(), source.state.profile));
+    }
+    validate_with_profiles(document, &profiles)
 }
 
 /// Preserve the authored root record and attach immutable resolved control data.

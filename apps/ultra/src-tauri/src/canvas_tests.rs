@@ -1709,6 +1709,175 @@ fn live_device_params() -> Value {
     }})
 }
 
+fn native_panel_source() -> Value {
+    if let Some(path) = std::env::var_os("ALIVE_NATIVE_ANALOG_PANEL_FIXTURE") {
+        let raw = std::fs::read_to_string(path).expect("read controlled Analog panel fixture");
+        return serde_json::from_str(&raw).expect("parse controlled Analog panel fixture");
+    }
+    let mut source = patch(vec![node(1, "live_device", live_device_params())], vec![]);
+    source["nodes"][0]["params"]["state"]["guiSha256"] =
+        json!("75940fa314699a5fe0f37a6b0ee904bd7cc2ee87fc42acce2c8cea61df55563f");
+    source["nodes"][0]["params"]["state"]["graphicsSha256"] =
+        json!("ec6ed560b42b1497fd976beff38d86424aa0c2ef59e4995e3d10ba9b68535c9d");
+    source["nodes"][0]["params"]["state"]["values"][194] = json!(12.1);
+    source["presentation"] = json!({"version":1,"openOnLoad":true,
+        "size":{"width":1100,"height":220},"items":[{
+            "id":"analog_panel","kind":"livePanel",
+            "target":{"node":1,"profile":"live12-analog-v1"},
+            "rect":{"x":0,"y":0,"width":1100,"height":220},
+            "included":true,"visible":true,"style":{"accent":"default"}
+        }]});
+    source
+}
+
+fn native_panel_nested(mut source: Value) -> Value {
+    json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,
+        "nodes":[{"id":10,"type":"patcher","x":0,"y":0,
+            "params":{"name":"Analog"},"patcher":{
+                "presentation":source["presentation"].take(),
+                "nodes":source["nodes"].take(),"edges":source["edges"].take()
+            }}],"edges":[]})
+}
+
+#[test]
+fn native_panel_prepares_complete_current_analog_root_without_normalizing_source() {
+    let source = native_panel_source();
+    for (version, retained) in [(1, false), (2, false), (2, true)] {
+        let mut candidate = source.clone();
+        candidate["version"] = json!(version);
+        candidate["profile"] = json!(if version == 1 { "ultra-canvas-v1" } else { "ultra-patcher-v2" });
+        if retained {
+            candidate["nodes"][0]["params"]["state"]["guiSha256"] =
+                json!("5ec872d673fd5f4f5f05787e4245c56e172ff2663c2d4493e94d598b883114e6");
+            candidate["nodes"][0]["params"]["state"]["graphicsSha256"] =
+                json!("a0b8aa480aa3d21f093b416ea59b3f200d2e2466936f95d886a554bffe875cb7");
+        }
+        let prepared = prepare(candidate).expect("complete qualified Analog root panel must prepare");
+        assert_eq!(prepared.native.nodes[0].kind, 68);
+        assert_eq!(prepared.live_devices.len(), 1);
+        assert_eq!(prepared.live_devices[0].node, 1);
+        assert_eq!(prepared.live_devices[0].state.values.len(), 203);
+        assert_eq!(prepared.live_devices[0].state.values[194], 12.1_f32);
+    }
+    assert_eq!(source["nodes"][0]["params"]["state"]["values"][194], json!(12.1));
+}
+
+#[test]
+fn native_panel_prepares_child_and_ancestor_surfaces_for_the_same_qualified_source() {
+    let mut source = native_panel_nested(native_panel_source());
+    let child = prepare(source.clone()).expect("qualified child Analog panel must prepare");
+    assert_eq!(child.live_devices[0].node, 1);
+    source["presentation"] = source["nodes"][0]["patcher"]["presentation"].take();
+    source["nodes"][0]["patcher"]["presentation"] = Value::Null;
+    let ancestor = prepare(source).expect("root panel may target its authored descendant source");
+    assert_eq!(ancestor.live_devices, child.live_devices);
+}
+
+#[test]
+fn native_panel_rejects_unqualified_or_incomplete_source_facts_even_when_unmounted() {
+    let source = native_panel_source();
+    for (path, value) in [
+        ("/presentation/items/0/target/profile", json!("live12-electric-v1")),
+        ("/presentation/items/0/target/node", json!(2)),
+        ("/nodes/0/type", json!("number")),
+        ("/nodes/0/params/device", json!("Electric")),
+        ("/nodes/0/params/state", Value::Null),
+        ("/nodes/0/params/state/profile", json!("live12-electric-v1")),
+        ("/nodes/0/params/state/version", json!(2)),
+        ("/nodes/0/params/state/dllSha256", json!("0".repeat(64))),
+        ("/nodes/0/params/state/guiSha256", json!("5ec872d673fd5f4f5f05787e4245c56e172ff2663c2d4493e94d598b883114e6")),
+        ("/nodes/0/params/state/values", json!(vec![0.;202])),
+        ("/nodes/0/params/state/values/0", json!(0.25)),
+        ("/nodes/0/params/state/values/2", json!(1.00000001)),
+    ] {
+        let mut invalid = source.clone();
+        *invalid.pointer_mut(path).unwrap() = value;
+        for excluded in [false, true] {
+            invalid["presentation"]["items"][0]["included"] = json!(!excluded);
+            assert!(prepare(invalid.clone()).is_err(), "accepted {path}, excluded={excluded}");
+            assert!(prepare(native_panel_nested(invalid.clone())).is_err(), "accepted unmounted {path}");
+        }
+    }
+    for field in ["state", "device"] {
+        let mut invalid = source.clone();
+        invalid["nodes"][0]["params"].as_object_mut().unwrap().remove(field);
+        assert!(prepare(invalid).is_err(), "accepted missing {field}");
+    }
+    for field in ["version", "profile", "dllSha256", "guiSha256", "graphicsSha256", "values"] {
+        let mut invalid = source.clone();
+        invalid["nodes"][0]["params"]["state"].as_object_mut().unwrap().remove(field);
+        assert!(prepare(invalid).is_err(), "accepted missing source state {field}");
+    }
+}
+
+#[test]
+fn native_panel_keeps_authored_subtree_identity_and_presentation_limits() {
+    let source = native_panel_source();
+    let mut sibling = native_panel_nested(source.clone());
+    let live = sibling["nodes"][0]["patcher"]["nodes"][0].take();
+    sibling["nodes"][0]["patcher"]["nodes"] = json!([]);
+    sibling["nodes"].as_array_mut().unwrap().push(live);
+    assert!(prepare(sibling).unwrap_err().contains("target outside authored subtree"));
+
+    let mut duplicate = native_panel_nested(source.clone());
+    duplicate["nodes"].as_array_mut().unwrap().push(node(1, "number", json!({})));
+    assert!(prepare(duplicate).is_err(), "source facts cannot hide duplicate node identity");
+
+    let mut panels = source.clone();
+    panels["presentation"]["items"] = json!((0..9).map(|index| {
+        let mut item = source["presentation"]["items"][0].clone();
+        item["id"] = json!(format!("panel_{index}"));
+        item
+    }).collect::<Vec<_>>());
+    assert!(prepare(panels).unwrap_err().contains("more than 8 panels"));
+
+    let mut deep = source.clone();
+    for id in 10..27 {
+        deep = json!({"version":2,"profile":"ultra-patcher-v2","presentation":null,
+            "nodes":[{"id":id,"type":"patcher","x":0,"y":0,"params":{"name":"nested"},
+                "patcher":{"presentation":deep["presentation"].take(),
+                    "nodes":deep["nodes"].take(),"edges":[]}}],"edges":[]});
+    }
+    assert!(prepare(deep).is_err(), "source fact discovery must keep the 16-level bound");
+
+    let mut large = source;
+    large["version"] = json!(2);
+    large["profile"] = json!("ultra-patcher-v2");
+    large["nodes"].as_array_mut().unwrap().extend((2..=513).map(|id| node(id, "comment", json!({"text":""}))));
+    assert!(prepare(large).is_err(), "source fact discovery must keep the 512-node bound");
+}
+
+#[test]
+fn native_panel_keeps_alive_projection_refusal_and_unmounted_capabilities_unresolved() {
+    let panel = native_panel_source();
+    let mut source = native_note_device_patch();
+    source["nodes"][0]["params"] = panel["nodes"][0]["params"].clone();
+    source["presentation"] = panel["presentation"].clone();
+    let prepared = prepare(source.clone()).expect("ordinary panel preparation is independent of Alive capability");
+    for visible in [true, false] {
+        source["presentation"]["items"][0]["visible"] = json!(visible);
+        assert!(device::host_manifest(&source, &prepared.native, &prepared.live_devices)
+            .unwrap_err().contains("Unsupported Alive presentation capability: livePanel"));
+    }
+
+    source["presentation"]["items"][0]["included"] = json!(false);
+    let manifest = device::host_manifest(&source, &prepared.native, &prepared.live_devices).unwrap();
+    assert!(manifest.presentation["items"][0].get("resolved").is_none());
+    assert!(manifest.parameters.is_empty());
+    assert!(manifest.note_input.unwrap().built_in_node().is_err());
+
+    let mut nested = native_panel_nested(source.clone());
+    nested["device"] = source["device"].clone();
+    nested["presentation"] = source["presentation"].clone();
+    nested["presentation"]["items"] = json!([]);
+    nested["nodes"][0]["patcher"]["presentation"]["items"][0]["included"] = json!(true);
+    let prepared = prepare(nested.clone()).expect("unmounted child panel remains valid authoring metadata");
+    let manifest = device::host_manifest(&nested, &prepared.native, &prepared.live_devices).unwrap();
+    assert_eq!(manifest.presentation["items"], json!([]));
+    assert!(manifest.parameters.is_empty());
+    assert!(manifest.note_input.unwrap().built_in_node().is_err());
+}
+
 #[test]
 fn live_device_prepares_independent_stereo_sources_and_note_ingress() {
     let source=patch(vec![node(1,"live_device",live_device_params()),
