@@ -497,6 +497,27 @@ def native_control_click(name, kind, record=None, require_accessible_hit=False):
                 accessible = (planned_hit_path(web, lambda node: Atspi.Component.get_accessible_at_point(
                     node, *current, Atspi.CoordType.SCREEN)) if web is not None else
                     {'status': 'unavailable', 'path': []})
+                if (name == 'Return all tracks to Arrangement' and web is None
+                        and ancestry.get('operation') == 'get_role_name'
+                        and 'Object does not exist at path' in ancestry.get('error_message', '')):
+                    # Reacquire from the current owned frame after stale ancestry, before any button event.
+                    frames = [frame for frame in windows.app_frames()
+                              if frame.get_process_id() == ui.pid
+                              and frame.get_name().removeprefix('* ') == windows.scope
+                              and frame.get_state_set().contains(Atspi.StateType.SHOWING)]
+                    if len(frames) == 1 and owned_frame_window() == owner:
+                        control = ui.find(name); rect, current = reorder_point(control)
+                        path = native_hit_path(*current)
+                        sample['rect'], sample['hit_path'] = rect, path
+                        admitted = owner in path
+                        fresh = planned_hit_path(frames[0], lambda node: Atspi.Component.get_accessible_at_point(
+                            node, *current, Atspi.CoordType.SCREEN))
+                        nodes = fresh.get('path', [])
+                        if (fresh.get('status') == 'complete' and nodes
+                                and any(item.get('role') == 'document web' for item in nodes)
+                                and nodes[-1].get('name') == name and nodes[-1].get('role') == 'push button'):
+                            accessible = fresh
+                        sample['fresh_frame_hit'] = fresh
                 sample['accessible_hit'] = accessible
                 sample['web_ancestor'] = ancestry
                 admitted = admitted and hit_path_owns(accessible, name)
