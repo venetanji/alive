@@ -908,6 +908,46 @@ Original initialization, missing/approximate drawings, current physical display
 curves/knob angles, editable native controls, musical timing/lifecycle and Alive
 hosting remain separate. No device qualification stage is promoted by U2a.
 
+The coordinator's exact `a689cd7` configured frontend verification completed:
+847 Node passes with 19 explicit real-XML skips, and 426 Chromium passes with
+zero skips. The matching pair built successfully and both desktop launchers
+selected immutable snapshot `test-d3a57d9626e100bcffb0`; all 18 artifact hashes
+and both launcher targets verified. These results do not establish native
+panel acceptance.
+
+Actual Tauri/WebKit attempt `u2a-native-panel-r1` failed before acquisition:
+`Cannot Open Patch: Presentation: unsupported installed source capability`.
+The production presentation validator still supplied an empty profile map even
+though ordinary Analog source parsing already existed. Ruling: connect source
+facts only after the existing complete `live_device::Source::parse` succeeds,
+using the existing bounded authored-node collector. This connects validation
+for already admitted ordinary sources; it does not expand the engine, source
+admission, Alive projection, or resource limits. Preserve the failed attempt.
+
+The two-file fix is integrated as `c3fd99e` from reviewed worker `d177bd5`.
+Five regressions reproduce the original refusal and cover both admitted
+resource pairs, root/descendant/ancestor scope, invalid complete source state,
+raw precision, excluded/unmounted malformed sources, duplicate/sibling
+identity, existing hierarchy/panel/node limits and Alive included-panel
+refusal. The initial broader run also exposed duplicate-error ordering; the
+existing assertion is preserved and the diagnostic retains `unique`.
+Final pinned Rust 1.85.1 release verification passes 329 tests, with zero
+failures and five existing ignored cases. Generated-fixture focused tests
+pass 5/5. No ignored case receives pass credit. The controlled private fixture
+remains unchanged, including raw slot194 `12.1`.
+
+Independent native-validation review accepts spec compliance and code quality,
+with no unresolved findings. Report:
+`workers/analog-u2a-native-validation-review-r1/report.md`, SHA-256
+`4b345e67b3c722d87ba3dd3fa26d00968c2f03fe62a2f02b136ad69a4c74f133`.
+Implementation report:
+`workers/analog-u2a-native-validation-r1/report.md`, SHA-256
+`f25a6dba66f935c8a5624184a0638916d2111cf5009a2492bc0cfd49620d6421`.
+The integrated fix changes only Rust validation and its tests, so the verified
+frontend source hashes remain unchanged. Actual post-fix native acquisition,
+paired rebuild/selection and Alive three-size smoke are the next required
+checks, not reported as passed here.
+
 ## Next Gates
 
 1. Finish reviewed profile facts and original editor geometry, keeping unresolved
