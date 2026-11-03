@@ -251,7 +251,9 @@ export function createLiveDeviceView(doc,{layout,gui=null,graphics=null,electric
         e.classList.toggle('live-device-pending',!!state.pending);
         if(binding?.contextualHelp===true){
           e.removeAttribute('title');
-          control.element.setAttribute('data-help',state.known?`${title}: ${binding.display.format(state.value)}.`:`${title}: state unavailable.`);
+          control.element.setAttribute('data-help-live','');
+          const help=state.known?`${title}: ${binding.display.format(state.value)}.`:`${title}: state unavailable.`;
+          if(control.element.getAttribute('data-help')!==help)control.element.setAttribute('data-help',help);
         }else e.title=!verified?`${title}: mapping or conversion is unresolved.`:!state.known?`${title}: start audio to connect.`:binding?.display?.format?`${title}: ${binding.display.format(state.value)}`:binding?.unit?title:`${title}: native parameter scale ${binding.min} to ${binding.max}.`;
         if(state.known){control.update(state.value);control.setDefaultValue?.(state.initial);}
         else{

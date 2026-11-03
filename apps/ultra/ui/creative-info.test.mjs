@@ -51,3 +51,17 @@ test('Info can keep descriptions in its output without recreating a tooltip',()=
   handlers.get('pointerover')({target:element({'data-help':'Stop transport'})});
   assert.equal(output.textContent,'Stop transport');assert.equal(output.title,'');
 });
+
+test('Info refreshes only the current opted-in help target and stops observing on exit',()=>{
+  const handlers=new Map(),output={textContent:'',title:''},attrs={'data-help':'Noise: Off.','data-help-live':''};
+  let observer;
+  class Observer{constructor(callback){this.callback=callback;observer=this;}observe(target,options){this.target=target;this.options=options;}disconnect(){this.target=null;}}
+  const doc={defaultView:{MutationObserver:Observer},getElementById:()=>output,addEventListener:(type,fn)=>handlers.set(type,fn),removeEventListener:()=>{}};
+  const noise=element(attrs),other=element({'data-help':'Save'}),mounted=mountContextInfo({doc,tooltip:false});
+  handlers.get('pointerover')({target:noise});assert.equal(output.textContent,'Noise: Off.');
+  assert.ok(observer,'the current live-help target is observed');assert.equal(observer.target,noise);assert.deepEqual(observer.options,{attributes:true,attributeFilter:['data-help']});
+  attrs['data-help']='Noise: On.';observer.callback();assert.equal(output.textContent,'Noise: On.');
+  handlers.get('focusin')({target:other});assert.equal(output.textContent,'Save');assert.equal(observer.target,null);
+  attrs['data-help']='Noise: Off.';observer.callback();assert.equal(output.textContent,'Save');
+  mounted.dispose();assert.equal(observer.target,null);
+});

@@ -30,8 +30,19 @@ export function describeContextTarget(target,regions=[],fallback=DEFAULT_CONTEXT
 export function mountContextInfo({doc=globalThis.document,outputId='info-text',regions=[],fallback=DEFAULT_CONTEXT_INFO,tooltip=true}={}){
   const output=doc?.getElementById?.(outputId);
   if(!output)return{dispose(){}};
-  let previous=output.textContent??fallback;
+  let previous=output.textContent??fallback,currentTarget=null,observedControl=null,observer=null;
   function show(target){
+    currentTarget=target;
+    const control=target?.closest?.(CONTROL_SELECTOR)??null;
+    const live=control?.getAttribute?.('data-help-live')!=null?control:null;
+    // Observe only the currently described control when it opts into live help.
+    if(live!==observedControl){
+      observer?.disconnect();observedControl=live;
+      if(live&&doc.defaultView?.MutationObserver){
+        observer??=new doc.defaultView.MutationObserver(()=>show(currentTarget));
+        observer.observe(live,{attributes:true,attributeFilter:['data-help']});
+      }
+    }
     const next=describeContextTarget(target,regions,fallback);
     if(previous===next)return;
     output.textContent=next;
@@ -45,6 +56,7 @@ export function mountContextInfo({doc=globalThis.document,outputId='info-text',r
   doc.addEventListener('pointerout',pointerout);
   doc.addEventListener('focusin',focusin);
   return{dispose(){
+    currentTarget=null;observedControl=null;observer?.disconnect();
     doc.removeEventListener('pointerover',pointerover);
     doc.removeEventListener('pointerout',pointerout);
     doc.removeEventListener('focusin',focusin);

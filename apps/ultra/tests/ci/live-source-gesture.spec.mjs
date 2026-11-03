@@ -28,6 +28,19 @@ test('production authority enables only the installed Noise control',async({page
   await page.evaluate(()=>h.dispose());
 });
 
+test('contextual Info follows Noise state changes without another pointer or focus event',async({page})=>{
+  await ordinaryCanvasPage(page,{writable:false});
+  await page.locator('#show-instrument').click();
+  const noise=page.locator('#instrument-controls').getByRole('button',{name:'Noise',exact:true}),info=page.locator('#ultra-info-text');
+  await expect(noise).toBeEnabled();await noise.hover();await expect(info).toHaveText(/Noise.*Off/);
+  await noise.click();await expect(info).toHaveText(/Noise.*On/);
+  await expect(noise).toHaveAttribute('aria-pressed','true');await expect(noise).toBeEnabled();
+  await noise.click();await expect(info).toHaveText(/Noise.*Off/);
+  await expect(noise).toHaveAttribute('aria-pressed','false');await expect(noise).toHaveText('Noise');
+  await expect(noise).not.toHaveAttribute('title');await expect(noise.locator('xpath=..')).not.toHaveAttribute('title');
+  expect(await page.evaluate(()=>owner.history.length)).toBe(2);
+});
+
 for(const key of ['Enter','Space'])test(`production Noise ${key} activation makes one source transaction without transport commands`,async({page})=>{
   await ordinaryCanvasPage(page,{writable:false});
   await page.locator('#show-instrument').click();
@@ -38,6 +51,7 @@ for(const key of ['Enter','Space'])test(`production Noise ${key} activation make
   expect(await page.evaluate(start=>owner.calls.slice(start).filter(call=>/^(audio_(?!status|devices)|device_event|document_(commit|save|undo|redo|close))/.test(call.name)).map(call=>call.name),start)).toEqual([]);
   await page.keyboard.press(key);
   await expect.poll(()=>page.evaluate(()=>owner.history.length)).toBe(1);
+  await expect(page.locator('#ultra-info-text')).toHaveText(/Noise.*On/);
   const calls=await page.evaluate(start=>owner.calls.slice(start).map(call=>call.name),start);
   expect(calls.filter(name=>name==='document_commit')).toHaveLength(1);
   expect(calls.filter(name=>/^(audio_(?!status|devices)|device_event|document_(save|undo|redo|close))/.test(name))).toEqual([]);
