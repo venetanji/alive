@@ -4,6 +4,56 @@ This is the current stage ledger for the autonomous native-library work. The
 implementation plan contains earlier checkpoints as historical evidence. No
 profile has passed all ten publication stages; the importer registry is empty.
 
+## Current Goal State - Resumed 3 November 2026
+
+The owner explicitly resumed the long-term native-instrument goal after the
+shutdown checkpoint. Continue the existing objective: inventory the installed
+Live DLLs, qualify a few faithful ordinary Ultra devices, and publish only
+all-passed devices into Alive. The import pipeline and inventory exist;
+qualification and actual native editing/hosting remain the critical path.
+No native instrument, including Electric, is newly playable in Alive.
+
+Recovery verified the saved archive SHA-256 and restored the cleared main
+worktree at exact pushed `add085ac8a83408e30688479339d4e6bc23d81df`, preserving
+the original dirty checkout and all unrelated worktree metadata. The restored
+tracked tree is clean; four recorded build/dependency links are restored.
+Both existing launcher targets and all 18 selected snapshot artifact hashes
+also verify. Private evidence and immutable snapshots survived the reboot.
+
+The independently reviewed precision candidate is now integrated as
+`e486858` from `909c095b340744fe7971106ddf78218dc9a82e66`. Its frozen source,
+implementation/review reports and controlled fixture hashes verify against the
+shutdown record. The prior 331-pass/five-ignored release run remains retained
+evidence for that exact source; it is not a new post-reboot execution.
+Frontend source is unchanged from the configured 847-pass/19-skip Node and
+426-pass/zero-skip Chromium checkpoint. Native acquisition is still pending.
+
+Bounded next batch, in order:
+
+1. Build exact integrated source, select matching Alive/Ultra/native artifacts
+   in both launchers, and verify the complete snapshot and native mappings.
+2. Rerun the actual ordinary Ultra read-only Analog panel with the unchanged
+   controlled fixture. Verify raw state preservation, disabled inputs, native
+   target identity, repeated close/open and all three supported dimensions.
+3. Correct the private Alive smoke observer's missing hidden-node handling;
+   require real native/accessibility targets, every independent panel-state
+   transition, both-open behavior and final restoration at all three sizes.
+   Retain the earlier failed/incomplete attempts without pass credit.
+4. Inspect native screenshots, record exact results, push the checkpoint and
+   manually dispatch Ultra CI with endurance off. Audit actual downstream
+   native/clip/resource/CPAL execution and timing counters, keeping skips,
+   unrun endurance and physical hardware separate.
+5. After these gates, execute U2b in reviewed slices: source gestures/grouped
+   commits, durable drafts/save-close settlement, then qualify NoiseToggle
+   alone before enabling it. Continue original initialization, measured
+   lifecycle/admission and Alive hosting prerequisites in dependency order.
+
+Ruling: resume work and maintain this durable goal ledger on the owner's explicit
+instruction. The available goal-service API exposes only paused/blocked/complete
+status updates and cannot edit or resume the existing paused objective; no
+replacement unfinished goal or false completion is created. Its paused service
+flag is distinct from the owner's resumed work instruction recorded here.
+
 ## Checkpoints
 
 - Approved UI: `ca161c488ee2dcb0c6ba1efa1c43c7b1e36da4af`, pushed on
