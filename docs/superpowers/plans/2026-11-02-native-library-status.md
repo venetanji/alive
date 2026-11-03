@@ -14,12 +14,13 @@ ordinary Ultra and its existing document/history owner. Finish this before
 expanding devices or enabling native devices in Alive. Implementation workers
 are requested as `gpt-6.1-terra`; the controller coordinates and reviews.
 
-Last built exact checkpoint is `a40c0a7ccdabc3939a6830fe636f4476df0e70cf`.
-The reviewed IPC precision fix is integrated and both launchers select matching
-snapshot `test-383ff39d42566446fa36`. The paired build completed in 374.46 seconds
-with source hashes unchanged; all 18 selected artifact hashes verify. Desktop
-binaries use pinned Rust1.85.1; native is Release with experimental adapter
-compiled and Alive admission closed. The actual Analog panel acquires state
+Both launchers now select matching snapshot `test-15d7dfbca423c7e9ad8f`, built
+from `8afb3a689e94114a76048dae60781edcfa43887f`. The paired build took 89.78
+seconds with tracked build inputs unchanged; all 18 selected artifact hashes
+and both launcher targets verify. Desktop binaries use pinned Rust 1.85.1 dev
+profile; native is Release with the experimental adapter compiled and Alive
+admission closed. Native smoke on this pair is in progress, not yet a pass.
+The reviewed IPC precision fix is integrated. The actual Analog panel acquires state
 after using Perform instrument. Earlier diagnostic r5 confirmed an Export JSON
 defect: raw index194 `12.1` becomes `12.100000381469727`; all other 202 values and
 metadata matched. The reviewed export repair now passes the unchanged exact
@@ -172,6 +173,9 @@ pointer attempt stopped before a button press, then calibration confirmed X11
 physical coordinates. Further desktop input stopped after unrelated desktop
 activity appeared. The blank Live window was left intact; no successful widget
 transition or saved reference set is claimed. Continue software gates first.
+The latest dwell likewise produced no observed history or saved change. A
+missing PipeASIO backend is under isolated software diagnosis; physical audio
+settings remain unchanged. No first native edit is qualified.
 
 ## Earlier Resume Record
 
