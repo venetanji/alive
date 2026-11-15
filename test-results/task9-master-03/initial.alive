@@ -1,0 +1,289 @@
+{
+  "format": "alive-session-v4",
+  "title": "MIDI Arrangement",
+  "tempo": 112.0,
+  "lengthBeats": 16,
+  "loopEnabled": true,
+  "loopStartBeats": 0.0,
+  "loopEndBeats": 8.0,
+  "tracks": [
+    {
+      "id": "track-1",
+      "name": "Pulse",
+      "color": "#c77b61",
+      "chain": {
+        "kind": "midi",
+        "instrument": {
+          "instanceId": "legacy-90953515094fab847573782b7d46a84c",
+          "sourceSha256": "723822d4ca7b721b5495b76644ca4a06e9c4ebdf7074086542fd35ed2aa004d7",
+          "bypassed": false,
+          "path": "/home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/examples/subtractive.ultra",
+          "id": "org.alive.subtractive",
+          "version": 1,
+          "parameters": {
+            "attack": 10.0,
+            "cutoff": 2400.0,
+            "decay": 150.0,
+            "level": 55.0,
+            "release": 300.0,
+            "resonance": 0.7,
+            "sustain": 0.65
+          }
+        }
+      },
+      "effects": [
+        {
+          "instanceId": "workspace-utility",
+          "sourceSha256": "a1d4a9c5e3c474979108ca42e53bc5fe1c58c28c8c18ad3681f5652dc1de30f8",
+          "bypassed": false,
+          "path": "/home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/examples/utility.ultra",
+          "id": "org.alive.utility",
+          "version": 2,
+          "parameters": {
+            "gain": 1.0
+          }
+        }
+      ],
+      "slots": [
+        {
+          "id": "clip-8254b7a92a82cb008365518183971131",
+          "name": "Clip 1",
+          "sourceId": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
+          "sourceOffset": {
+            "kind": "beats",
+            "value": 0.0
+          },
+          "loopEnabled": true
+        },
+        null,
+        null,
+        null
+      ],
+      "gain": 0.7,
+      "mute": false,
+      "solo": false
+    },
+    {
+      "id": "track-2",
+      "name": "Harmony",
+      "color": "#86a59c",
+      "chain": {
+        "kind": "midi",
+        "instrument": {
+          "instanceId": "legacy-ee709dea523cc99d8c7dbbb3bbb7c80d",
+          "sourceSha256": "723822d4ca7b721b5495b76644ca4a06e9c4ebdf7074086542fd35ed2aa004d7",
+          "bypassed": false,
+          "path": "/home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/examples/subtractive.ultra",
+          "id": "org.alive.subtractive",
+          "version": 1,
+          "parameters": {
+            "attack": 10.0,
+            "cutoff": 2400.0,
+            "decay": 150.0,
+            "level": 43.0,
+            "release": 300.0,
+            "resonance": 0.7,
+            "sustain": 0.65
+          }
+        }
+      },
+      "effects": [],
+      "slots": [
+        {
+          "id": "clip-74455c81c6f6a3d38bfd0c64d85d0fd5",
+          "name": "Clip 1",
+          "sourceId": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+          "sourceOffset": {
+            "kind": "beats",
+            "value": 0.0
+          },
+          "loopEnabled": true
+        },
+        null,
+        null,
+        null
+      ],
+      "gain": 0.7,
+      "mute": false,
+      "solo": false
+    }
+  ],
+  "sources": [
+    {
+      "kind": "midi",
+      "id": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
+      "trackId": "track-1",
+      "name": "Clip 1",
+      "lengthBeats": 8.0,
+      "notes": [
+        {
+          "id": "note-b81cb31228756f6d8c9d9d538eceec38",
+          "beat": 0.0,
+          "duration": 1.5,
+          "pitch": 60,
+          "velocity": 76
+        },
+        {
+          "id": "note-47673d12b251c87a97897ac52a9b4018",
+          "beat": 0.0,
+          "duration": 1.5,
+          "pitch": 64,
+          "velocity": 76
+        },
+        {
+          "id": "note-09ebafbfe0f12a9b7b4443663b201aef",
+          "beat": 2.0,
+          "duration": 1.5,
+          "pitch": 65,
+          "velocity": 76
+        },
+        {
+          "id": "note-55343a41fa821dc5a7a9b7969755141f",
+          "beat": 2.0,
+          "duration": 1.5,
+          "pitch": 69,
+          "velocity": 76
+        },
+        {
+          "id": "note-5160b0b0aa121071571035dbf6617718",
+          "beat": 4.0,
+          "duration": 1.5,
+          "pitch": 67,
+          "velocity": 76
+        },
+        {
+          "id": "note-35eb18044fb0b8a8a652437ebe16b797",
+          "beat": 4.0,
+          "duration": 1.5,
+          "pitch": 71,
+          "velocity": 76
+        },
+        {
+          "id": "note-81739570f6f029f60ed4a3e4af2451e3",
+          "beat": 6.0,
+          "duration": 1.5,
+          "pitch": 60,
+          "velocity": 76
+        },
+        {
+          "id": "note-4f43dc88821a4733f36d0c1e40c2916d",
+          "beat": 6.0,
+          "duration": 1.5,
+          "pitch": 64,
+          "velocity": 76
+        }
+      ],
+      "automation": [
+        {
+          "instanceId": "workspace-utility",
+          "key": "gain",
+          "enabled": true,
+          "points": [
+            {
+              "beat": 0.0,
+              "value": 0.7
+            },
+            {
+              "beat": 4.0,
+              "value": 0.9
+            }
+          ]
+        },
+        {
+          "instanceId": "legacy-90953515094fab847573782b7d46a84c",
+          "key": "cutoff",
+          "enabled": true,
+          "points": [
+            {
+              "beat": 0.0,
+              "value": 1800.0
+            },
+            {
+              "beat": 4.0,
+              "value": 3200.0
+            }
+          ]
+        },
+        {
+          "instanceId": "legacy-90953515094fab847573782b7d46a84c",
+          "key": "level",
+          "enabled": true,
+          "points": [
+            {
+              "beat": 0.0,
+              "value": 70.0
+            },
+            {
+              "beat": 4.0,
+              "value": 90.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "midi",
+      "id": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+      "trackId": "track-2",
+      "name": "Clip 1",
+      "lengthBeats": 8.0,
+      "notes": [
+        {
+          "id": "note-abb29a0ac2369905dcf231525a7e6ab3",
+          "beat": 0.0,
+          "duration": 1.5,
+          "pitch": 55,
+          "velocity": 90
+        },
+        {
+          "id": "note-a09e579ffd95933419f75bae2358f4dc",
+          "beat": 2.0,
+          "duration": 1.5,
+          "pitch": 60,
+          "velocity": 90
+        },
+        {
+          "id": "note-c431948b907b45e6e598846ad29c4dbf",
+          "beat": 4.0,
+          "duration": 1.5,
+          "pitch": 62,
+          "velocity": 90
+        },
+        {
+          "id": "note-e2b7d2f6a1bf889da8e0d17724f46b39",
+          "beat": 6.0,
+          "duration": 1.5,
+          "pitch": 55,
+          "velocity": 90
+        }
+      ],
+      "automation": []
+    }
+  ],
+  "placements": [
+    {
+      "id": "placement-c532c9612459d4c4de79a3c4caaaa690",
+      "trackId": "track-1",
+      "sourceId": "source-c14c8a2f75fe0bac19a1b7a73302e9e6",
+      "start": 0.0,
+      "duration": 8.0,
+      "sourceOffset": {
+        "kind": "beats",
+        "value": 0.0
+      },
+      "loopEnabled": true
+    },
+    {
+      "id": "placement-0b6c0afb776c2e33414692d8e5e893d0",
+      "trackId": "track-2",
+      "sourceId": "source-a0de1fac7a0ed3b42ea3c20edd91e7a0",
+      "start": 0.0,
+      "duration": 8.0,
+      "sourceOffset": {
+        "kind": "beats",
+        "value": 0.0
+      },
+      "loopEnabled": true
+    }
+  ]
+}

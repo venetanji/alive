@@ -1,0 +1,52 @@
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Activating service name='org.freedesktop.portal.Desktop' requested by ':1.0' (uid=1000 pid=432961 comm="/home/venetanji/.codex/worktrees/bb01/alive/apps/u")
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Activating service name='org.freedesktop.impl.portal.PermissionStore' requested by ':1.1' (uid=1000 pid=432968 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.PermissionStore'
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Activating service name='org.freedesktop.portal.Documents' requested by ':1.1' (uid=1000 pid=432968 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Successfully activated service 'org.freedesktop.portal.Documents'
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=432968 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Activating service name='org.a11y.Bus' requested by ':1.4' (uid=1000 pid=432990 comm="/usr/lib/xdg-desktop-portal-gtk")
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Successfully activated service 'org.a11y.Bus'
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=433003 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=433003 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.gtk'
+
+** (xdg-desktop-portal-gtk:432990): WARNING **: 19:47:55.312: AT-SPI: Could not obtain desktop path or name
+
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=433003 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+
+** (xdg-desktop-portal-gtk:432990): WARNING **: 19:47:55.314: atk-bridge: GetRegisteredEvents returned message with unknown signature
+
+** (xdg-desktop-portal-gtk:432990): WARNING **: 19:47:55.314: atk-bridge: get_device_events_reply: unknown signature
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=432968 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=432968 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=432968 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=432968 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Successfully activated service 'org.freedesktop.portal.Desktop'
+PASS secondary file delivery during initialization preserves main and opens its own window
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Activating service name='ca.desrt.dconf' requested by ':1.113' (uid=1000 pid=433579 comm="/home/venetanji/.codex/worktrees/bb01/alive/apps/u")
+dbus-daemon[432884]: [session uid=1000 pid=432884 pidfd=5] Successfully activated service 'ca.desrt.dconf'
+Traceback (most recent call last):
+  File "/home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/tests/check_ultra_drafts.py", line 106, in <module>
+    {'save-as': run_save_as, 'child': run_child}[scenario]()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/tests/check_ultra_drafts.py", line 59, in run_save_as
+    wait_until(lambda: any(record.get('event') == 'save_cancel' for record in records()), 'Save As did not cancel')
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/tests/check_ultra_drafts.py", line 26, in wait_until
+    raise AssertionError(message)
+AssertionError: Save As did not cancel

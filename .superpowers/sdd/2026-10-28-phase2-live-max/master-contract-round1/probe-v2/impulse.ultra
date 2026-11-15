@@ -1,0 +1,102 @@
+{
+  "device": {
+    "audio": {
+      "inputs": 0,
+      "layout": "stereo",
+      "outputs": 2
+    },
+    "id": "org.alive.probe-impulse",
+    "midi": {
+      "inlet": 0,
+      "node": 1
+    },
+    "name": "Probe Impulse",
+    "parameters": [
+      {
+        "key": "level",
+        "label": "Level",
+        "max": 127,
+        "min": 0,
+        "node": 3,
+        "param": "value"
+      }
+    ],
+    "presets": [],
+    "version": 1
+  },
+  "edges": [
+    {
+      "from": 1,
+      "inlet": 0,
+      "outlet": 1,
+      "to": 2
+    },
+    {
+      "from": 2,
+      "inlet": 0,
+      "outlet": 0,
+      "to": 3
+    },
+    {
+      "from": 3,
+      "inlet": 0,
+      "outlet": 0,
+      "to": 4
+    },
+    {
+      "from": 3,
+      "inlet": 1,
+      "outlet": 0,
+      "to": 4
+    },
+    {
+      "from": 4,
+      "inlet": 0,
+      "outlet": 0,
+      "to": 5
+    }
+  ],
+  "nodes": [
+    {
+      "id": 1,
+      "params": {
+        "voices": 4
+      },
+      "type": "poly_note",
+      "x": 0,
+      "y": 0
+    },
+    {
+      "id": 2,
+      "params": {},
+      "type": "mix_voice",
+      "x": 0,
+      "y": 80
+    },
+    {
+      "id": 3,
+      "params": {
+        "value": 127
+      },
+      "type": "gain",
+      "x": 0,
+      "y": 160
+    },
+    {
+      "id": 4,
+      "params": {},
+      "type": "join",
+      "x": 0,
+      "y": 240
+    },
+    {
+      "id": 5,
+      "params": {},
+      "type": "dac",
+      "x": 0,
+      "y": 320
+    }
+  ],
+  "profile": "ultra-canvas-v1",
+  "version": 1
+}

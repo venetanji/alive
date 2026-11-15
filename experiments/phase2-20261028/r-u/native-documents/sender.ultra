@@ -1,0 +1,52 @@
+{
+  "edges": [
+    {
+      "from": 1,
+      "inlet": 0,
+      "outlet": 0,
+      "to": 2
+    }
+  ],
+  "nodes": [
+    {
+      "id": 1,
+      "params": {
+        "text": "orbit 60 100"
+      },
+      "type": "message",
+      "x": 70,
+      "y": 70
+    },
+    {
+      "id": 2,
+      "params": {
+        "name": "desktop-notes"
+      },
+      "type": "send",
+      "x": 70,
+      "y": 155
+    },
+    {
+      "id": 3,
+      "params": {
+        "numericmode": 1,
+        "rhs": 7
+      },
+      "type": "add",
+      "x": 121,
+      "y": 82
+    },
+    {
+      "id": 4,
+      "params": {
+        "numericmode": 1,
+        "rhs": 9
+      },
+      "type": "add",
+      "x": 121,
+      "y": 82
+    }
+  ],
+  "profile": "ultra-canvas-v1",
+  "version": 1
+}

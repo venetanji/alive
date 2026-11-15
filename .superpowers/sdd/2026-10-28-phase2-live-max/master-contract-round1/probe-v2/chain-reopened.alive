@@ -1,0 +1,61 @@
+{
+  "format": "alive-session-v2",
+  "title": "Saved chain proof",
+  "tempo": 120.0,
+  "lengthBeats": 1.0,
+  "loopEnabled": false,
+  "tracks": [
+    {
+      "id": "probe-track",
+      "name": "Saved impulse chain",
+      "device": {
+        "instanceId": "probe-instrument",
+        "sourceSha256": "2b2305714236372babce2d0ef2031a960dbe94cc8a0f4d35fdf0bcab7b291064",
+        "bypassed": false,
+        "path": "impulse.ultra",
+        "id": "org.alive.probe-impulse",
+        "version": 1,
+        "parameters": {
+          "level": 127.0
+        }
+      },
+      "effects": [
+        {
+          "instanceId": "probe-utility",
+          "sourceSha256": "a1d4a9c5e3c474979108ca42e53bc5fe1c58c28c8c18ad3681f5652dc1de30f8",
+          "bypassed": false,
+          "path": "../../../../../apps/ultra/examples/utility.ultra",
+          "id": "org.alive.utility",
+          "version": 2,
+          "parameters": {
+            "gain": 1.0
+          }
+        },
+        {
+          "instanceId": "probe-filter",
+          "sourceSha256": "582bcdd1db059cf142acb963fc4124aca594a22d00c52d1251681714720bf787",
+          "bypassed": false,
+          "path": "../../../../../apps/ultra/examples/stereo-lowpass.ultra",
+          "id": "org.alive.stereo-lowpass",
+          "version": 2,
+          "parameters": {
+            "cutoff": 2400.0,
+            "resonance": 0.7
+          }
+        }
+      ],
+      "notes": [
+        {
+          "beat": 0.0,
+          "duration": 0.000041666666666666665,
+          "pitch": 60,
+          "velocity": 127
+        }
+      ],
+      "automation": [],
+      "gain": 1.0,
+      "mute": false,
+      "solo": false
+    }
+  ]
+}

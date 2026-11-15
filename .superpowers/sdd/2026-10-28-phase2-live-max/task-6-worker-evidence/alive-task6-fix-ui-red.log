@@ -1,0 +1,28 @@
+✖ workspace conversion feedback does not misidentify a v5 envelope as a v4 file (58.034475ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 268.142817
+
+✖ failing tests:
+
+test at apps/ultra/ui/alive-dom.test.mjs:367:1
+✖ workspace conversion feedback does not misidentify a v5 envelope as a v4 file (58.034475ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /Save writes v4/. Input:
+  
+  'MIDI workspaces prepared. Arrangement starts at zero; Save writes v4.'
+  
+      at TestContext.<anonymous> (file:///home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/ui/alive-dom.test.mjs:374:58)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'MIDI workspaces prepared. Arrangement starts at zero; Save writes v4.',
+    expected: /Save writes v4/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }

@@ -1,0 +1,150 @@
+{
+  "edges": [],
+  "helpShell": {
+    "adapter": "max-help-four-v1",
+    "basicNode": 3,
+    "object": "append",
+    "questionNode": 4
+  },
+  "nodes": [
+    {
+      "id": 1,
+      "params": {
+        "role": "starter"
+      },
+      "type": "help_helper",
+      "x": 10,
+      "y": 20
+    },
+    {
+      "id": 2,
+      "params": {
+        "role": "name"
+      },
+      "type": "help_helper",
+      "x": 20,
+      "y": 20
+    },
+    {
+      "id": 3,
+      "params": {
+        "name": "basic"
+      },
+      "patcher": {
+        "edges": [
+          {
+            "from": 7,
+            "inlet": 0,
+            "outlet": 0,
+            "to": 8
+          },
+          {
+            "from": 10,
+            "inlet": 0,
+            "outlet": 0,
+            "to": 9
+          },
+          {
+            "from": 11,
+            "inlet": 0,
+            "outlet": 0,
+            "to": 7
+          }
+        ],
+        "nodes": [
+          {
+            "id": 5,
+            "params": {
+              "role": "details"
+            },
+            "style": {
+              "height": 130,
+              "width": 520
+            },
+            "type": "help_helper",
+            "x": 40,
+            "y": 35
+          },
+          {
+            "id": 6,
+            "params": {
+              "role": "arguments"
+            },
+            "style": {
+              "height": 85,
+              "width": 520
+            },
+            "type": "help_helper",
+            "x": 40,
+            "y": 190
+          },
+          {
+            "id": 7,
+            "params": {
+              "text": "17"
+            },
+            "type": "message_box",
+            "x": 80,
+            "y": 325
+          },
+          {
+            "id": 8,
+            "params": {
+              "label": "shell-source",
+              "level": 0,
+              "popup": 0
+            },
+            "type": "print",
+            "x": 80,
+            "y": 375
+          },
+          {
+            "id": 9,
+            "params": {
+              "value": 0
+            },
+            "type": "number",
+            "x": 320,
+            "y": 375
+          },
+          {
+            "id": 10,
+            "params": {
+              "text": "77"
+            },
+            "type": "message",
+            "x": 320,
+            "y": 325
+          },
+          {
+            "id": 11,
+            "params": {
+              "text": "set fresh"
+            },
+            "type": "message",
+            "x": 500,
+            "y": 325
+          }
+        ]
+      },
+      "type": "patcher",
+      "x": 30,
+      "y": 20
+    },
+    {
+      "id": 4,
+      "params": {
+        "name": "?"
+      },
+      "patcher": {
+        "edges": [],
+        "nodes": []
+      },
+      "type": "patcher",
+      "x": 40,
+      "y": 20
+    }
+  ],
+  "profile": "ultra-patcher-v2",
+  "version": 2
+}

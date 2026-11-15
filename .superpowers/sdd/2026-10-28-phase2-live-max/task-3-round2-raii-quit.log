@@ -1,0 +1,55 @@
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Activating service name='org.freedesktop.portal.Desktop' requested by ':1.0' (uid=1000 pid=498709 comm="/home/venetanji/.codex/worktrees/bb01/alive/apps/u")
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Activating service name='org.freedesktop.impl.portal.PermissionStore' requested by ':1.1' (uid=1000 pid=498716 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.PermissionStore'
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Activating service name='org.freedesktop.portal.Documents' requested by ':1.1' (uid=1000 pid=498716 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Successfully activated service 'org.freedesktop.portal.Documents'
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=498716 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Activating service name='org.a11y.Bus' requested by ':1.4' (uid=1000 pid=498738 comm="/usr/lib/xdg-desktop-portal-gtk")
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Successfully activated service 'org.a11y.Bus'
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=498748 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=498748 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.gtk'
+
+** (xdg-desktop-portal-gtk:498738): WARNING **: 20:27:01.776: AT-SPI: Could not obtain desktop path or name
+
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Activating service name='org.freedesktop.systemd1' requested by ':1.6' (uid=1000 pid=498748 comm="/usr/bin/dbus-broker-launch --config-file=/usr/sha")
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Activated service 'org.freedesktop.systemd1' failed: Process org.freedesktop.systemd1 exited with status 1
+
+** (xdg-desktop-portal-gtk:498738): WARNING **: 20:27:01.778: atk-bridge: GetRegisteredEvents returned message with unknown signature
+
+** (xdg-desktop-portal-gtk:498738): WARNING **: 20:27:01.778: atk-bridge: get_device_events_reply: unknown signature
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=498716 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=498716 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=498716 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=498716 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[498656]: [session uid=1000 pid=498656 pidfd=5] Successfully activated service 'org.freedesktop.portal.Desktop'
+PASS secondary file delivery during initialization preserves main and opens its own window
+Traceback (most recent call last):
+  File "/home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/tests/check_ultra_drafts.py", line 326, in <module>
+    {'save-as': run_save_as, 'child': run_child, 'linked': run_linked, 'peer-invalid':run_peer_invalid,
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ...<2 lines>...
+     'quit-discard': run_quit_discard, 'close': run_close, 'close-discard': lambda:run_close(True), 'reopen':run_reopen,
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     'os-close':run_os_close, 'os-close-invalid':lambda:run_os_close(True)}[scenario]()
+     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/tests/check_ultra_drafts.py", line 255, in run_quit
+    wait_until(exited,'Quit did not exit the application')
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/tests/check_ultra_drafts.py", line 26, in wait_until
+    raise AssertionError(message)
+AssertionError: Quit did not exit the application

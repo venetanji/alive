@@ -1,0 +1,6 @@
+canonical: exit 0: fixture identities, exact duplicate paths, dependencies and boundaries verified; application decoder not invoked
+gain-1.json boolean: exit 1
+gain-0.json boolean: exit 1
+nested duplicate in second master: exit 1
+gain-4.json replaced by gain-1: exit 1
+invalid-over.json replaced by gain-1: exit 1

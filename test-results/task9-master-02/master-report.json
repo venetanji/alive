@@ -1,0 +1,25 @@
+{
+  "kind": "native Tauri on private software PipeWire",
+  "physical_audio": false,
+  "actions": [
+    {
+      "action": "viewport",
+      "monotonic": 65059.465427966,
+      "view": "session",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "action": "viewport",
+      "monotonic": 65060.663662989,
+      "view": "session",
+      "width": 1280,
+      "height": 800
+    },
+    {
+      "action": "failure",
+      "monotonic": 65085.625898757,
+      "error": "AssertionError('Missing native control: Master gain fader')"
+    }
+  ]
+}

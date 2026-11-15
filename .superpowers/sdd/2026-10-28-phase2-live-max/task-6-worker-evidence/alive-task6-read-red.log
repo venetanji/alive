@@ -1,0 +1,93 @@
+    Blocking waiting for file lock on build directory
+warning: unused import: `SaveSnapshot`
+  --> src/documents.rs:14:28
+   |
+14 | pub use save::{SaveNotice, SaveSnapshot};
+   |                            ^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` on by default
+
+warning: method `reserve_native` is never used
+  --> src/document_windows.rs:47:8
+   |
+36 | impl QuitSession {
+   | ---------------- method in this implementation
+...
+47 |     fn reserve_native(&mut self) -> Option<u64> {
+   |        ^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` on by default
+
+warning: variant `Audio` is never constructed
+  --> src/session/prepare.rs:20:59
+   |
+20 | pub enum PreparedTrackInput { Midi { instrument: usize }, Audio }
+   |          ------------------ variant in this enum          ^^^^^
+   |
+   = note: `PreparedTrackInput` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+
+warning: method `format` is never used
+  --> src/session/document.rs:19:12
+   |
+16 | impl Document {
+   | ------------- method in this implementation
+...
+19 |     pub fn format(&self) -> &str {match self {Self::LegacyV2(s)=>&s.format,Self::ClipsV3(s)=>&s.common.format,Self::WorkspacesV4(s)=>&s.f...
+   |            ^^^^^^
+
+warning: function `encode` is never used
+   --> src/session/workspaces.rs:278:8
+    |
+278 | pub fn encode(project: &ProjectV4) -> Result<String, String> {
+    |        ^^^^^^
+
+warning: function `decode_edit` is never used
+   --> src/session/workspaces.rs:284:8
+    |
+284 | pub fn decode_edit(text: &str) -> Result<WorkspaceEditV4, String> {
+    |        ^^^^^^^^^^^
+
+warning: function `prospective_from_legacy_text` is never used
+   --> src/session/workspaces.rs:915:8
+    |
+915 | pub fn prospective_from_legacy_text(
+    |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: field `format` is never read
+   --> src/session/workspaces.rs:924:9
+    |
+923 |     struct Format {
+    |            ------ field in this struct
+924 |         format: String,
+    |         ^^^^^^
+
+   Compiling ultra v0.1.0-rc.1 (/home/venetanji/.codex/worktrees/bb01/alive/apps/ultra/src-tauri)
+warning: `ultra` (lib) generated 8 warnings (run `cargo fix --lib -p ultra` to apply 1 suggestion)
+warning: variant `Audio` is never constructed
+  --> src/session/prepare.rs:20:59
+   |
+20 | pub enum PreparedTrackInput { Midi { instrument: usize }, Audio }
+   |          ------------------ variant in this enum          ^^^^^
+   |
+   = note: `PreparedTrackInput` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+   = note: `#[warn(dead_code)]` on by default
+
+warning: `ultra` (lib test) generated 3 warnings (2 duplicates)
+    Finished `release` profile [optimized] target(s) in 34.32s
+     Running unittests src/lib.rs (apps/ultra/src-tauri/target/release/deps/ultra_desktop-9e1feeb9c9029f98)
+
+running 1 test
+
+thread 'session::tests::master_read_checks_byte_limit_before_utf8_decoding' panicked at src/session/tests.rs:112:5:
+Cannot read session as UTF-8: stream did not contain valid UTF-8
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test session::tests::master_read_checks_byte_limit_before_utf8_decoding ... FAILED
+
+failures:
+
+failures:
+    session::tests::master_read_checks_byte_limit_before_utf8_decoding
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 275 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `--lib`

@@ -1,0 +1,53 @@
+warning: unused import: `SaveSnapshot`
+  --> src/documents.rs:14:28
+   |
+14 | pub use save::{SaveNotice, SaveSnapshot};
+   |                            ^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` on by default
+
+warning: variant `Audio` is never constructed
+  --> src/session/prepare.rs:20:59
+   |
+20 | pub enum PreparedTrackInput { Midi { instrument: usize }, Audio }
+   |          ------------------ variant in this enum          ^^^^^
+   |
+   = note: `PreparedTrackInput` has derived impls for the traits `Debug` and `Clone`, but these are intentionally ignored during dead code analysis
+   = note: `#[warn(dead_code)]` on by default
+
+warning: method `format` is never used
+  --> src/session/document.rs:19:12
+   |
+16 | impl Document {
+   | ------------- method in this implementation
+...
+19 |     pub fn format(&self) -> &str {match self {Self::LegacyV2(s)=>&s.format,Self::ClipsV3(s)=>&s.common.format,Self::WorkspacesV4(s)=>&s.f...
+   |            ^^^^^^
+
+warning: `ultra` (lib test) generated 3 warnings (run `cargo fix --lib -p ultra --tests` to apply 1 suggestion)
+    Finished `release` profile [optimized] target(s) in 0.33s
+     Running unittests src/lib.rs (apps/ultra/src-tauri/target/release/deps/ultra_desktop-9e1feeb9c9029f98)
+
+running 19 tests
+test document_windows::lifecycle_tests::last_unrelated_save_resumes_the_current_quit_generation ... ok
+test document_windows::lifecycle_tests::quit_repeated_requests_pending_save_and_stale_approvals_are_inert ... ok
+test documents::tests::admitted_close_blocks_late_graph_and_save_commands_before_destroy ... ok
+test documents::tests::aborted_save_releases_members_and_stale_tokens_cannot_affect_the_next_request ... ok
+test document_windows::lifecycle_tests::quit_save_retains_owner_until_save_and_final_close ... ok
+test documents::tests::descriptor_revision_orders_runtime_and_save_publications_without_authoring_conflicts ... ok
+test document_windows::lifecycle_tests::worker_owns_and_drops_the_complete_save_lease_after_marking_clean ... ok
+test documents::tests::save_as_rejects_another_open_documents_path_and_dirty_is_local ... ok
+test documents::tests::owner_cas_history_admission_and_save_race_are_atomic ... ok
+test documents::tests::imported_max_json_cannot_save_over_its_own_source_path ... ok
+test documents::tests::save_cannot_overwrite_max_source_through_an_ultra_symlink ... ok
+test documents::tests::save_preflight_waits_for_all_views_and_rejects_stale_or_foreign_acknowledgements ... ok
+test documents::tests::save_preflight_includes_newly_ready_views_and_refuses_disappearing_or_invalid_peers ... ok
+test documents::tests::save_snapshot_keeps_later_owner_edits_dirty_during_picker ... ok
+test documents::tests::save_is_atomic_and_imported_sources_are_not_overwritten ... ok
+test session::tests::v3_save_as_preserves_bank_ids_beats_defaults_and_source_hashes ... ok
+test session::tests::save_cannot_replace_source_device_or_accept_oversized_file ... ok
+test session::tests::save_as_rebases_references_and_failed_save_retains_file ... ok
+test session::tests::save_as_relocates_every_effect_and_cannot_overwrite_any_dependency ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 243 filtered out; finished in 0.02s
+
