@@ -1,0 +1,430 @@
+{
+  "accepted_float_close": {
+    "accepted_history_replay_validated": true,
+    "ack": {
+      "bytes": 106316,
+      "closed_owner_absence_validated": true,
+      "sha256": "df29ff9f7871bc7f81a38849d6d884c8b1383bab632993c6c4e25571c77d3d44",
+      "success": true
+    },
+    "closed_owner_inlets": [
+      2
+    ],
+    "dispose_result_status": "returned",
+    "dispose_result_type": "function",
+    "document": "float",
+    "first_joint_invalid_attempt": 1,
+    "independent_archived_nonretaining_revalidation": true,
+    "nonthrowing_dispose": true,
+    "observer_event_after_dispatch_return": true,
+    "observer_event_count": 1,
+    "observer_event_seq": 4,
+    "observer_failure_count": 0,
+    "observer_sealed": false,
+    "observer_seq": 5,
+    "observer_transition_count": 4,
+    "public_positive_close_requests": [
+      125
+    ],
+    "request_id": 125,
+    "revision": 1,
+    "root": {
+      "bytes": 1721,
+      "current_and_retained_bytes_equal": true,
+      "sha256": "424195cd11ba540c012d86767adf686c72bc5a90e9655da65c9d4b2b548c7597"
+    },
+    "root_freebang_witness_observed": true,
+    "sample_count": 31,
+    "step_id": "close-float",
+    "validation_metadata": {
+      "bytes": 389,
+      "sha256": "77c0dff848c3a5649d5c382fae4a0d025d09861509dc0b4c62ad9284723f531c"
+    }
+  },
+  "audit_mode": "historically-bound-retained-evidence",
+  "binding": {
+    "all_sealed_files_match": true,
+    "archived_preparation_manifest": {
+      "bytes": 13525,
+      "sha256": "e1da4b1dc824f16d8c196ea3cd56838b5788df58ab21c9c0a8c92887b4422994"
+    },
+    "archived_preparation_verification": {
+      "bytes": 2814,
+      "sha256": "18b5fe1e8008d9e3a2328ab874177ba556cbdce7f913926bb4bc0c1b0c2ab846"
+    },
+    "controller_sha256": "5fe9d39423215a0eab2c7da778bcdc45e812908fed6c11b303031a2443ce9c46",
+    "helper_metadata_bindings_match": true,
+    "historical_package_matches_session_config_and_archived_verification": true,
+    "historical_package_sha256": "e363eb10def858f7b6d4bb9dcccd39566c9617b9d7efc6ccc4f9767ee1de58e4",
+    "historical_script_count": 24,
+    "lifecycle_helper_sha256": "b1cca880849a5a8b533b454e96caa0873fd11e5cd08f6987314808806b6fc9c4",
+    "private_config": {
+      "bytes": 228155,
+      "sha256": "94bde07ac86a3522d3b1ea9a8f34b04e52384d24a38014fbd9ad7c718b709753"
+    },
+    "private_seal": {
+      "bytes": 1979,
+      "sha256": "891eb1e3559dbf866a570502bb2ad86071fa5959e353eb0ae256798a19a2205a"
+    },
+    "rea_record": {
+      "bytes": 32712,
+      "sha256": "30f7e5a8d18d234ca30c8bf2290e7f51c8dee03a8e8a229dd003eb3b51a7ee9d"
+    },
+    "root_reader_sha256": "11c77b01ff7a99dd7c3bfd2626a1bdc06522ecfa66cf0b70d4a1700186ddf2f9",
+    "score_bindings_match": true,
+    "sealed_file_count": 18,
+    "shared_safety_file_count": 2,
+    "shared_safety_files_match": true,
+    "source_metadata_bindings_match": true
+  },
+  "capture": "int-float-011",
+  "cleanup": {
+    "copied_prefix_absent": true,
+    "display_only_attribution": false,
+    "launch_identities_verified": true,
+    "marker_scan_empty": true,
+    "ordinary_quit_requested": false,
+    "owned_scan_empty": true,
+    "prefix_removed_recorded": true,
+    "prefix_scan_empty": true,
+    "unreadable_process_environments": {
+      "marker_scan": 317,
+      "owned_scan": 319,
+      "prefix_scan": 317
+    },
+    "xvfb_exited_recorded": true
+  },
+  "comparison_performed": false,
+  "evidence_id": "ev_13bd7f7b963b41075f7a757d559fcc3b39be9272173c7c29190338b0e3ab50b6",
+  "failed_int_close": {
+    "ack": {
+      "bytes": 833,
+      "current_and_exclusively_retained_bytes_equal": true,
+      "error_code": "numeric-controller-refused",
+      "public_request_hash_size_matches": true,
+      "sha256": "1b72c4199e9b256f1c6da3c55a97b6c7c84b4a9eb7f4a394a5f9eedf67c99ad7",
+      "success": false
+    },
+    "close_completion_retained": false,
+    "command_binding_matches": true,
+    "diagnostic_bindings_match": true,
+    "dispose_diagnostic_present": false,
+    "document": "int",
+    "lifecycle_evidence_present": false,
+    "request_id": 141,
+    "revision": 1,
+    "root_freebang_witness_observed": false,
+    "root_result": {
+      "bytes": 4486,
+      "error_code": "lifecycle-root-proof-refused",
+      "request_id": 141,
+      "sha256": "47640466c30bc3a8cf8de40c4de9ca27fcd2aa01f3f4656028601229cf268545",
+      "success": false
+    },
+    "sample_count": 0,
+    "step_id": "close-int",
+    "validated_close_metadata_present": false
+  },
+  "failure": {
+    "cause_limits": "Recorded original predicate refusal; complete metadata identifies two int-root V8 jpatcher class mismatches with matching unique names and geometry. Original-handle validity and historical009 cause are not established.",
+    "journal_failure_sha256": "dc6cf97e0b1a3cd201df2e1fbd3d1a75546b8a80132548865ee0851e84a17636",
+    "session_failure_matches_controller_refusal": true,
+    "session_failure_sha256": "6d8bf3bb5ba4145f22c2d48cae211c17564ed8e5057fbfcb683f04272a2b2322",
+    "stage": "int-close-root-proof-original-class-check-before-arming-disposal-and-sampling",
+    "terminal_failure_matches_outer_runner_refusal": true,
+    "terminal_failure_sha256": "0a9d3172b634e79cda409ea4d41750f952b04d11d57b44a3e508ec0984fbdde7"
+  },
+  "final_barrier_present": false,
+  "kind": "startup-or-close-diagnosis",
+  "latest_lifecycle_snapshot": {
+    "control": "close-validated",
+    "driver_inventory_matches_sealed_config": true,
+    "driver_route_multisets_match": true,
+    "int_owner_monitoring_without_witness": true,
+    "observer_matches_accepted_float_report": true,
+    "request_id": 125,
+    "step_id": "close-float"
+  },
+  "limitations": [
+    "Only four public after-files have direct REA filesystem snapshots; private bytes bind through session, sealed config, archived manifest, retained metadata, and this audit.",
+    "REA process trees are sampled, twelve ownership checks were unavailable, and runner scans had 319/317/317 unreadable environments.",
+    "The int root diagnostic records positive primitive validity for the four harness objects, not validity of original Basic handles.",
+    "Exactly one float-r1 root close is independently revalidated; int close, final completion barrier, numeric semantic/native comparison, and qualification remain unestablished.",
+    "Capture009 remains historically unexplained."
+  ],
+  "prefix_integrity": {
+    "ack_hash_size_bindings_checked": 141,
+    "checkpoint_raw_retained_public_hash_size_bindings_checked": 92,
+    "checkpoint_sidecar_bindings_checked": 92,
+    "getter_journal_boundaries_equal": 92,
+    "journal_public_projection_rows_checked": 250,
+    "numeric_semantic_comparison_performed": false,
+    "public_positive_close_requests": [
+      125
+    ]
+  },
+  "preservation": {
+    "current_preferences_match_capture_after": true,
+    "helper_checks_match": true,
+    "preference_file_counts": {
+      "original": 33,
+      "source": 1081
+    },
+    "preference_snapshot_sha256": "5444dc994f5d2dcd50cc9fedd6ed2984e34308f750888b4760e2345f79ee33cd",
+    "preference_snapshots_byte_identical": true,
+    "private_directories_mode": "0700",
+    "private_directory_count": 5,
+    "private_file_count_after_retention": 452,
+    "private_file_count_before_retention": 447,
+    "private_files_mode": "0600",
+    "private_files_single_link": true,
+    "private_tree_symlink_free": true,
+    "runtime_helper_copies_match": 4,
+    "shell_helper_count": 4,
+    "shell_helper_digest_checks": 8,
+    "source_checks_match": true,
+    "source_digest_checks": 12,
+    "source_max_digest_matches_session": true,
+    "source_revision_count": 4
+  },
+  "progress": {
+    "checkpoints": 92,
+    "clipboard_actions": 0,
+    "command_requests": 141,
+    "completed_closes": 1,
+    "completed_events": 44,
+    "completed_installs": 3,
+    "completed_operations": 48,
+    "destination_order_failures_retained": 0,
+    "destination_order_witnesses_retained": 20,
+    "float_checkpoints": 44,
+    "int_checkpoints": 48,
+    "private_journal_rows": 250,
+    "public_rows": 250,
+    "retained_numeric_values": 552,
+    "runtime_invocations": 1,
+    "screenshot_count": 0,
+    "session_validation_flags": {
+      "initial_message_prototypes_validated": false,
+      "initial_numeric_readback_validated": false,
+      "numeric_getters_silent_validated": false,
+      "numeric_readback_validated": false,
+      "runtime_endpoint_readback_validated": false,
+      "synchronous_destination_outputs_validated": false,
+      "typed_float_dispatch_validated": true
+    },
+    "validated_closes": 1
+  },
+  "qualification_passes_added": 0,
+  "rea": {
+    "after_files": [
+      {
+        "bytes": 93411,
+        "name": "receipts.jsonl",
+        "sha256": "cc22b7f93ee4c7823790c9410631d05e1edfab4bf1dbef3f6c8f35abc755c396"
+      },
+      {
+        "bytes": 146449,
+        "name": "session.json",
+        "sha256": "1f6f3d6152b2576dae12ffde6b55ea4088c517ae9a23ee6b335537ce840b6f04"
+      },
+      {
+        "bytes": 2132,
+        "name": "cleanup.json",
+        "sha256": "a591e05c07bd9dd8e4ed934aa566f4bd69a611a5b953f8b9926705477263a197"
+      },
+      {
+        "bytes": 289672,
+        "name": "display-states.json",
+        "sha256": "ff0803e17200c9c6e3b45be13ab27d949802e25ca886ae8d382ba1a4518beeaa"
+      }
+    ],
+    "all_after_file_hashes_sizes_modes_match": true,
+    "exit": {
+      "code": 1,
+      "reason": "exited",
+      "signal": 0
+    },
+    "settlement": {
+      "cleanup_outcome": "not_required",
+      "elapsed_ms": 97,
+      "state": "quiesced"
+    },
+    "truncated": false,
+    "unverified_process_count": 12
+  },
+  "retained_raw": {
+    "command.json": {
+      "bytes": 224,
+      "exact_raw_bytes": true,
+      "exclusive_copy": true,
+      "mode": "0600",
+      "retained_file": "retained-close-command-request-141.json",
+      "sha256": "773318078113dd6b25aaf6de1b196dee1b42ce9b0a68425a74e7fc199f54e964"
+    },
+    "lifecycle-report.json": {
+      "bytes": 3562,
+      "exact_raw_bytes": true,
+      "exclusive_copy": true,
+      "mode": "0600",
+      "retained_file": "retained-lifecycle-report-float-close-request-125.json",
+      "sha256": "3ddfd9f63f7e960e2df57131755be70c31e9e2277e7f0688dba8d5f2d5aacd1b"
+    },
+    "lifecycle-root-int-r1.json": {
+      "bytes": 4486,
+      "exact_raw_bytes": true,
+      "exclusive_copy": true,
+      "mode": "0600",
+      "retained_file": "retained-lifecycle-root-refusal-int-r1-request-141.json",
+      "sha256": "47640466c30bc3a8cf8de40c4de9ca27fcd2aa01f3f4656028601229cf268545"
+    },
+    "ready.json": {
+      "bytes": 56,
+      "exact_raw_bytes": true,
+      "exclusive_copy": true,
+      "mode": "0600",
+      "retained_file": "retained-startup-ready.json",
+      "sha256": "84695a0a3a387d0b45ed4ea53fed28b05b2b9865df88b22c30d34eb51bc83d8a"
+    },
+    "validated-close-125.json": {
+      "bytes": 389,
+      "exact_raw_bytes": true,
+      "exclusive_copy": true,
+      "mode": "0600",
+      "retained_file": "retained-validated-close-request-125.json",
+      "sha256": "77c0dff848c3a5649d5c382fae4a0d025d09861509dc0b4c62ad9284723f531c"
+    }
+  },
+  "root_diagnostic": {
+    "all_harness_validity_reads_numeric_one": true,
+    "capture009_underlying_cause": "historically-unknown",
+    "complete_ascii_json": true,
+    "declared_bounds": {
+      "array_depth": 1,
+      "array_items": 16,
+      "ascii_json_bytes": 24000,
+      "objects": 16,
+      "string_characters": 256
+    },
+    "error": "lifecycle-root-original",
+    "harness_comparisons": [
+      {
+        "boxtext_expected_comparison": "exact",
+        "boxtext_primitive_returned_untruncated": true,
+        "maxclass": "send",
+        "object": "__alive_numeric_lifecycle_send",
+        "rectangle_matches": true,
+        "validity_type": "number",
+        "validity_value": 1
+      },
+      {
+        "boxtext_expected_comparison": "exact",
+        "boxtext_primitive_returned_untruncated": true,
+        "maxclass": "freebang",
+        "object": "__alive_numeric_freebang",
+        "rectangle_matches": true,
+        "validity_type": "number",
+        "validity_value": 1
+      },
+      {
+        "boxtext_expected_comparison": "not-independently-reconstructed",
+        "boxtext_primitive_returned_untruncated": true,
+        "maxclass": "thispatcher",
+        "object": "__alive_numeric_disposer",
+        "rectangle_matches": true,
+        "validity_type": "number",
+        "validity_value": 1
+      },
+      {
+        "boxtext_expected_comparison": "not-independently-reconstructed",
+        "boxtext_primitive_returned_untruncated": true,
+        "maxclass": "v8",
+        "object": "__alive_numeric_reader",
+        "rectangle_matches": true,
+        "validity_type": "number",
+        "validity_value": 1
+      }
+    ],
+    "harness_geometry_mismatch_count": 0,
+    "harness_object_count": 4,
+    "int_v8_class_disposition_present": false,
+    "omitted_objects": 0,
+    "original_class_mismatch_count": 2,
+    "original_comparisons": [
+      {
+        "actual_class": "jpatcher",
+        "anchor": "root/obj-3",
+        "boxtext_recorded": false,
+        "class_matches": false,
+        "expected_classes": [
+          "patcher",
+          "p"
+        ],
+        "rectangle_matches": true,
+        "unique_name_rectangle_binding": true,
+        "validity_recorded": false,
+        "varname_matches": true
+      },
+      {
+        "actual_class": "jsui",
+        "anchor": "root/obj-4",
+        "boxtext_recorded": false,
+        "class_matches": true,
+        "expected_classes": [
+          "jsui"
+        ],
+        "rectangle_matches": true,
+        "unique_name_rectangle_binding": true,
+        "validity_recorded": false,
+        "varname_matches": true
+      },
+      {
+        "actual_class": "jpatcher",
+        "anchor": "root/obj-2",
+        "boxtext_recorded": false,
+        "class_matches": false,
+        "expected_classes": [
+          "patcher",
+          "p"
+        ],
+        "rectangle_matches": true,
+        "unique_name_rectangle_binding": true,
+        "validity_recorded": false,
+        "varname_matches": true
+      },
+      {
+        "actual_class": "js",
+        "anchor": "root/obj-1",
+        "boxtext_recorded": false,
+        "class_matches": true,
+        "expected_classes": [
+          "js"
+        ],
+        "rectangle_matches": true,
+        "unique_name_rectangle_binding": true,
+        "validity_recorded": false,
+        "varname_matches": true
+      }
+    ],
+    "original_object_count": 4,
+    "original_validity_recorded": false,
+    "root_object_count": 8,
+    "scan_complete": true,
+    "stage": "original",
+    "truncated_fields": 0,
+    "typed_exception_status": "threw",
+    "typed_exception_type": "object"
+  },
+  "runtime_log": {
+    "bytes": 551,
+    "lines": 9,
+    "sha256": "381f9f1cc4ee4f8304e19ee02f88754617fcad0c440dde3a9109f374072c4108"
+  },
+  "schema_version": 1,
+  "startup": {
+    "live_owner_count": 0,
+    "ready": true,
+    "source_roots_opened": 0
+  },
+  "verdict": "FAILED_INT_CLOSE_ROOT_ORIGINAL_WITH_ONE_ACCEPTED_FLOAT_CLOSE_NONQUALIFYING"
+}

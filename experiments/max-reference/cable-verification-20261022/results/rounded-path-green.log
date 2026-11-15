@@ -1,0 +1,52 @@
+TAP version 13
+# Subtest: saved cable corners are rounded while joining actual ports vertically
+ok 1 - saved cable corners are rounded while joining actual ports vertically
+  ---
+  duration_ms: 1.086533
+  type: 'test'
+  ...
+# Subtest: stale endpoint x coordinates render against current ports without rewriting source
+ok 2 - stale endpoint x coordinates render against current ports without rewriting source
+  ---
+  duration_ms: 0.796759
+  type: 'test'
+  ...
+# Subtest: single and repeated saved points render an endpoint-aligned dogleg
+ok 3 - single and repeated saved points render an endpoint-aligned dogleg
+  ---
+  duration_ms: 1.135074
+  type: 'test'
+  ...
+# Subtest: short segments limit corner rounding without overshoot
+ok 4 - short segments limit corner rounding without overshoot
+  ---
+  duration_ms: 0.265191
+  type: 'test'
+  ...
+# Subtest: coincident ports and collinear or reversing points never produce invalid curves
+ok 5 - coincident ports and collinear or reversing points never produce invalid curves
+  ---
+  duration_ms: 0.271895
+  type: 'test'
+  ...
+# Subtest: unrouted and explicitly empty cables keep automatic curves
+ok 6 - unrouted and explicitly empty cables keep automatic curves
+  ---
+  duration_ms: 0.243469
+  type: 'test'
+  ...
+# Subtest: camera bounds include every saved bend and ignore automatic routes
+ok 7 - camera bounds include every saved bend and ignore automatic routes
+  ---
+  duration_ms: 0.261908
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 73.563971

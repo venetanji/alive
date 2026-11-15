@@ -1,0 +1,1946 @@
+{
+  "fixture": "message-ui",
+  "labels": [
+    "template:0",
+    "empty:0",
+    "literal:0",
+    "integer:0",
+    "integer:1",
+    "bounded:0",
+    "bounded:1",
+    "fractional:0",
+    "fractional:1",
+    "intstore:0",
+    "floatstore:0",
+    "receiver_a:0",
+    "receiver_b:0"
+  ],
+  "targets": [
+    {
+      "key": "template",
+      "maxclass": "message",
+      "text": "saved $1 $2",
+      "inlets": 2,
+      "outlets": 1
+    },
+    {
+      "key": "empty",
+      "maxclass": "message",
+      "text": "",
+      "inlets": 2,
+      "outlets": 1
+    },
+    {
+      "key": "literal",
+      "maxclass": "message",
+      "text": "fixed 7 pear",
+      "inlets": 2,
+      "outlets": 1
+    },
+    {
+      "key": "integer",
+      "maxclass": "number",
+      "text": null,
+      "inlets": 1,
+      "outlets": 2
+    },
+    {
+      "key": "bounded",
+      "maxclass": "number",
+      "text": null,
+      "inlets": 1,
+      "outlets": 2
+    },
+    {
+      "key": "fractional",
+      "maxclass": "flonum",
+      "text": null,
+      "inlets": 1,
+      "outlets": 2
+    },
+    {
+      "key": "intstore",
+      "maxclass": "newobj",
+      "text": "int 3",
+      "inlets": 2,
+      "outlets": 1
+    },
+    {
+      "key": "floatstore",
+      "maxclass": "newobj",
+      "text": "float 3.5",
+      "inlets": 2,
+      "outlets": 1
+    },
+    {
+      "key": "receiver_a",
+      "maxclass": "newobj",
+      "text": "receive message_ui_probe",
+      "inlets": 0,
+      "outlets": 1
+    },
+    {
+      "key": "receiver_b",
+      "maxclass": "newobj",
+      "text": "receive message_ui_probe",
+      "inlets": 0,
+      "outlets": 1
+    }
+  ],
+  "events": [
+    {
+      "id": "event_0",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "bang",
+      "atoms": [],
+      "case": "initial hot"
+    },
+    {
+      "id": "event_1",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "int",
+      "atoms": [
+        4
+      ],
+      "case": "initial hot"
+    },
+    {
+      "id": "event_2",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "float",
+      "atoms": [
+        3.75
+      ],
+      "case": "initial hot"
+    },
+    {
+      "id": "event_3",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "list",
+      "atoms": [
+        8,
+        9
+      ],
+      "case": "initial hot"
+    },
+    {
+      "id": "event_4",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "list",
+      "atoms": [
+        "pear",
+        6
+      ],
+      "case": "initial hot"
+    },
+    {
+      "id": "event_5",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "symbol",
+      "atoms": [
+        "apple"
+      ],
+      "case": "initial hot"
+    },
+    {
+      "id": "event_6",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "other",
+      "atoms": [
+        2
+      ],
+      "case": "initial hot"
+    },
+    {
+      "id": "event_7",
+      "target": "template",
+      "inlet": 1,
+      "lane": 1,
+      "selector": "new",
+      "atoms": [
+        "$1",
+        "$2"
+      ],
+      "case": "cold replacement"
+    },
+    {
+      "id": "event_8",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "int",
+      "atoms": [
+        9
+      ],
+      "case": "hot after cold replacement"
+    },
+    {
+      "id": "event_9",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after cold replacement"
+    },
+    {
+      "id": "event_10",
+      "target": "template",
+      "inlet": 1,
+      "lane": 1,
+      "selector": "list",
+      "atoms": [
+        5,
+        "pear",
+        2.25
+      ],
+      "case": "cold replacement"
+    },
+    {
+      "id": "event_11",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "int",
+      "atoms": [
+        9
+      ],
+      "case": "hot after cold replacement"
+    },
+    {
+      "id": "event_12",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after cold replacement"
+    },
+    {
+      "id": "event_13",
+      "target": "template",
+      "inlet": 1,
+      "lane": 1,
+      "selector": "float",
+      "atoms": [
+        6.25
+      ],
+      "case": "cold replacement"
+    },
+    {
+      "id": "event_14",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "int",
+      "atoms": [
+        9
+      ],
+      "case": "hot after cold replacement"
+    },
+    {
+      "id": "event_15",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after cold replacement"
+    },
+    {
+      "id": "event_16",
+      "target": "template",
+      "inlet": 1,
+      "lane": 1,
+      "selector": "symbol",
+      "atoms": [
+        "kiwi"
+      ],
+      "case": "cold replacement"
+    },
+    {
+      "id": "event_17",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "int",
+      "atoms": [
+        9
+      ],
+      "case": "hot after cold replacement"
+    },
+    {
+      "id": "event_18",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after cold replacement"
+    },
+    {
+      "id": "event_19",
+      "target": "template",
+      "inlet": 1,
+      "lane": 1,
+      "selector": "bang",
+      "atoms": [],
+      "case": "cold replacement"
+    },
+    {
+      "id": "event_20",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "int",
+      "atoms": [
+        9
+      ],
+      "case": "hot after cold replacement"
+    },
+    {
+      "id": "event_21",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after cold replacement"
+    },
+    {
+      "id": "event_22",
+      "target": "template",
+      "inlet": 1,
+      "lane": 1,
+      "selector": "list",
+      "atoms": [],
+      "case": "cold replacement"
+    },
+    {
+      "id": "event_23",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "int",
+      "atoms": [
+        9
+      ],
+      "case": "hot after cold replacement"
+    },
+    {
+      "id": "event_24",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after cold replacement"
+    },
+    {
+      "id": "event_25",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "set",
+      "atoms": [
+        "fresh",
+        "$1",
+        "$2"
+      ],
+      "case": "silent set"
+    },
+    {
+      "id": "event_26",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "list",
+      "atoms": [
+        11,
+        12
+      ],
+      "case": "hot after set"
+    },
+    {
+      "id": "event_27",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after set"
+    },
+    {
+      "id": "event_28",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "set",
+      "atoms": [
+        1,
+        "apple"
+      ],
+      "case": "silent set"
+    },
+    {
+      "id": "event_29",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "list",
+      "atoms": [
+        11,
+        12
+      ],
+      "case": "hot after set"
+    },
+    {
+      "id": "event_30",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after set"
+    },
+    {
+      "id": "event_31",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "set",
+      "atoms": [],
+      "case": "silent set"
+    },
+    {
+      "id": "event_32",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "list",
+      "atoms": [
+        11,
+        12
+      ],
+      "case": "hot after set"
+    },
+    {
+      "id": "event_33",
+      "target": "template",
+      "inlet": 0,
+      "lane": 0,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after set"
+    },
+    {
+      "id": "event_34",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "bang",
+      "atoms": [],
+      "case": "initial hot"
+    },
+    {
+      "id": "event_35",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "int",
+      "atoms": [
+        4
+      ],
+      "case": "initial hot"
+    },
+    {
+      "id": "event_36",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "float",
+      "atoms": [
+        3.75
+      ],
+      "case": "initial hot"
+    },
+    {
+      "id": "event_37",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "list",
+      "atoms": [
+        8,
+        9
+      ],
+      "case": "initial hot"
+    },
+    {
+      "id": "event_38",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "list",
+      "atoms": [
+        "pear",
+        6
+      ],
+      "case": "initial hot"
+    },
+    {
+      "id": "event_39",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "symbol",
+      "atoms": [
+        "apple"
+      ],
+      "case": "initial hot"
+    },
+    {
+      "id": "event_40",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "other",
+      "atoms": [
+        2
+      ],
+      "case": "initial hot"
+    },
+    {
+      "id": "event_41",
+      "target": "empty",
+      "inlet": 1,
+      "lane": 3,
+      "selector": "new",
+      "atoms": [
+        "$1",
+        "$2"
+      ],
+      "case": "cold replacement"
+    },
+    {
+      "id": "event_42",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "int",
+      "atoms": [
+        9
+      ],
+      "case": "hot after cold replacement"
+    },
+    {
+      "id": "event_43",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after cold replacement"
+    },
+    {
+      "id": "event_44",
+      "target": "empty",
+      "inlet": 1,
+      "lane": 3,
+      "selector": "list",
+      "atoms": [
+        5,
+        "pear",
+        2.25
+      ],
+      "case": "cold replacement"
+    },
+    {
+      "id": "event_45",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "int",
+      "atoms": [
+        9
+      ],
+      "case": "hot after cold replacement"
+    },
+    {
+      "id": "event_46",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after cold replacement"
+    },
+    {
+      "id": "event_47",
+      "target": "empty",
+      "inlet": 1,
+      "lane": 3,
+      "selector": "float",
+      "atoms": [
+        6.25
+      ],
+      "case": "cold replacement"
+    },
+    {
+      "id": "event_48",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "int",
+      "atoms": [
+        9
+      ],
+      "case": "hot after cold replacement"
+    },
+    {
+      "id": "event_49",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after cold replacement"
+    },
+    {
+      "id": "event_50",
+      "target": "empty",
+      "inlet": 1,
+      "lane": 3,
+      "selector": "symbol",
+      "atoms": [
+        "kiwi"
+      ],
+      "case": "cold replacement"
+    },
+    {
+      "id": "event_51",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "int",
+      "atoms": [
+        9
+      ],
+      "case": "hot after cold replacement"
+    },
+    {
+      "id": "event_52",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after cold replacement"
+    },
+    {
+      "id": "event_53",
+      "target": "empty",
+      "inlet": 1,
+      "lane": 3,
+      "selector": "bang",
+      "atoms": [],
+      "case": "cold replacement"
+    },
+    {
+      "id": "event_54",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "int",
+      "atoms": [
+        9
+      ],
+      "case": "hot after cold replacement"
+    },
+    {
+      "id": "event_55",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after cold replacement"
+    },
+    {
+      "id": "event_56",
+      "target": "empty",
+      "inlet": 1,
+      "lane": 3,
+      "selector": "list",
+      "atoms": [],
+      "case": "cold replacement"
+    },
+    {
+      "id": "event_57",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "int",
+      "atoms": [
+        9
+      ],
+      "case": "hot after cold replacement"
+    },
+    {
+      "id": "event_58",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after cold replacement"
+    },
+    {
+      "id": "event_59",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "set",
+      "atoms": [
+        "fresh",
+        "$1",
+        "$2"
+      ],
+      "case": "silent set"
+    },
+    {
+      "id": "event_60",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "list",
+      "atoms": [
+        11,
+        12
+      ],
+      "case": "hot after set"
+    },
+    {
+      "id": "event_61",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after set"
+    },
+    {
+      "id": "event_62",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "set",
+      "atoms": [
+        1,
+        "apple"
+      ],
+      "case": "silent set"
+    },
+    {
+      "id": "event_63",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "list",
+      "atoms": [
+        11,
+        12
+      ],
+      "case": "hot after set"
+    },
+    {
+      "id": "event_64",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after set"
+    },
+    {
+      "id": "event_65",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "set",
+      "atoms": [],
+      "case": "silent set"
+    },
+    {
+      "id": "event_66",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "list",
+      "atoms": [
+        11,
+        12
+      ],
+      "case": "hot after set"
+    },
+    {
+      "id": "event_67",
+      "target": "empty",
+      "inlet": 0,
+      "lane": 2,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after set"
+    },
+    {
+      "id": "event_68",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "bang",
+      "atoms": [],
+      "case": "initial hot"
+    },
+    {
+      "id": "event_69",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "int",
+      "atoms": [
+        4
+      ],
+      "case": "initial hot"
+    },
+    {
+      "id": "event_70",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "float",
+      "atoms": [
+        3.75
+      ],
+      "case": "initial hot"
+    },
+    {
+      "id": "event_71",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "list",
+      "atoms": [
+        8,
+        9
+      ],
+      "case": "initial hot"
+    },
+    {
+      "id": "event_72",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "list",
+      "atoms": [
+        "pear",
+        6
+      ],
+      "case": "initial hot"
+    },
+    {
+      "id": "event_73",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "symbol",
+      "atoms": [
+        "apple"
+      ],
+      "case": "initial hot"
+    },
+    {
+      "id": "event_74",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "other",
+      "atoms": [
+        2
+      ],
+      "case": "initial hot"
+    },
+    {
+      "id": "event_75",
+      "target": "literal",
+      "inlet": 1,
+      "lane": 5,
+      "selector": "new",
+      "atoms": [
+        "$1",
+        "$2"
+      ],
+      "case": "cold replacement"
+    },
+    {
+      "id": "event_76",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "int",
+      "atoms": [
+        9
+      ],
+      "case": "hot after cold replacement"
+    },
+    {
+      "id": "event_77",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after cold replacement"
+    },
+    {
+      "id": "event_78",
+      "target": "literal",
+      "inlet": 1,
+      "lane": 5,
+      "selector": "list",
+      "atoms": [
+        5,
+        "pear",
+        2.25
+      ],
+      "case": "cold replacement"
+    },
+    {
+      "id": "event_79",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "int",
+      "atoms": [
+        9
+      ],
+      "case": "hot after cold replacement"
+    },
+    {
+      "id": "event_80",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after cold replacement"
+    },
+    {
+      "id": "event_81",
+      "target": "literal",
+      "inlet": 1,
+      "lane": 5,
+      "selector": "float",
+      "atoms": [
+        6.25
+      ],
+      "case": "cold replacement"
+    },
+    {
+      "id": "event_82",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "int",
+      "atoms": [
+        9
+      ],
+      "case": "hot after cold replacement"
+    },
+    {
+      "id": "event_83",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after cold replacement"
+    },
+    {
+      "id": "event_84",
+      "target": "literal",
+      "inlet": 1,
+      "lane": 5,
+      "selector": "symbol",
+      "atoms": [
+        "kiwi"
+      ],
+      "case": "cold replacement"
+    },
+    {
+      "id": "event_85",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "int",
+      "atoms": [
+        9
+      ],
+      "case": "hot after cold replacement"
+    },
+    {
+      "id": "event_86",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after cold replacement"
+    },
+    {
+      "id": "event_87",
+      "target": "literal",
+      "inlet": 1,
+      "lane": 5,
+      "selector": "bang",
+      "atoms": [],
+      "case": "cold replacement"
+    },
+    {
+      "id": "event_88",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "int",
+      "atoms": [
+        9
+      ],
+      "case": "hot after cold replacement"
+    },
+    {
+      "id": "event_89",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after cold replacement"
+    },
+    {
+      "id": "event_90",
+      "target": "literal",
+      "inlet": 1,
+      "lane": 5,
+      "selector": "list",
+      "atoms": [],
+      "case": "cold replacement"
+    },
+    {
+      "id": "event_91",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "int",
+      "atoms": [
+        9
+      ],
+      "case": "hot after cold replacement"
+    },
+    {
+      "id": "event_92",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after cold replacement"
+    },
+    {
+      "id": "event_93",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "set",
+      "atoms": [
+        "fresh",
+        "$1",
+        "$2"
+      ],
+      "case": "silent set"
+    },
+    {
+      "id": "event_94",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "list",
+      "atoms": [
+        11,
+        12
+      ],
+      "case": "hot after set"
+    },
+    {
+      "id": "event_95",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after set"
+    },
+    {
+      "id": "event_96",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "set",
+      "atoms": [
+        1,
+        "apple"
+      ],
+      "case": "silent set"
+    },
+    {
+      "id": "event_97",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "list",
+      "atoms": [
+        11,
+        12
+      ],
+      "case": "hot after set"
+    },
+    {
+      "id": "event_98",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after set"
+    },
+    {
+      "id": "event_99",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "set",
+      "atoms": [],
+      "case": "silent set"
+    },
+    {
+      "id": "event_100",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "list",
+      "atoms": [
+        11,
+        12
+      ],
+      "case": "hot after set"
+    },
+    {
+      "id": "event_101",
+      "target": "literal",
+      "inlet": 0,
+      "lane": 4,
+      "selector": "bang",
+      "atoms": [],
+      "case": "bang after set"
+    },
+    {
+      "id": "event_102",
+      "target": "integer",
+      "inlet": 0,
+      "lane": 6,
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "id": "event_103",
+      "target": "integer",
+      "inlet": 0,
+      "lane": 6,
+      "selector": "float",
+      "atoms": [
+        3.9
+      ]
+    },
+    {
+      "id": "event_104",
+      "target": "integer",
+      "inlet": 0,
+      "lane": 6,
+      "selector": "float",
+      "atoms": [
+        -3.9
+      ]
+    },
+    {
+      "id": "event_105",
+      "target": "integer",
+      "inlet": 0,
+      "lane": 6,
+      "selector": "list",
+      "atoms": [
+        4,
+        5
+      ]
+    },
+    {
+      "id": "event_106",
+      "target": "integer",
+      "inlet": 0,
+      "lane": 6,
+      "selector": "list",
+      "atoms": [
+        6.75,
+        "kiwi"
+      ]
+    },
+    {
+      "id": "event_107",
+      "target": "integer",
+      "inlet": 0,
+      "lane": 6,
+      "selector": "symbol",
+      "atoms": [
+        "kiwi"
+      ]
+    },
+    {
+      "id": "event_108",
+      "target": "integer",
+      "inlet": 0,
+      "lane": 6,
+      "selector": "set",
+      "atoms": [
+        12
+      ]
+    },
+    {
+      "id": "event_109",
+      "target": "integer",
+      "inlet": 0,
+      "lane": 6,
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "id": "event_110",
+      "target": "integer",
+      "inlet": 0,
+      "lane": 6,
+      "selector": "min",
+      "atoms": [
+        -2
+      ]
+    },
+    {
+      "id": "event_111",
+      "target": "integer",
+      "inlet": 0,
+      "lane": 6,
+      "selector": "max",
+      "atoms": [
+        2
+      ]
+    },
+    {
+      "id": "event_112",
+      "target": "integer",
+      "inlet": 0,
+      "lane": 6,
+      "selector": "float",
+      "atoms": [
+        9.9
+      ]
+    },
+    {
+      "id": "event_113",
+      "target": "integer",
+      "inlet": 0,
+      "lane": 6,
+      "selector": "float",
+      "atoms": [
+        -9.9
+      ]
+    },
+    {
+      "id": "event_114",
+      "target": "integer",
+      "inlet": 0,
+      "lane": 6,
+      "selector": "set",
+      "atoms": [
+        8.9
+      ]
+    },
+    {
+      "id": "event_115",
+      "target": "integer",
+      "inlet": 0,
+      "lane": 6,
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "id": "event_116",
+      "target": "integer",
+      "inlet": 0,
+      "lane": 6,
+      "selector": "min",
+      "atoms": []
+    },
+    {
+      "id": "event_117",
+      "target": "integer",
+      "inlet": 0,
+      "lane": 6,
+      "selector": "max",
+      "atoms": []
+    },
+    {
+      "id": "event_118",
+      "target": "integer",
+      "inlet": 0,
+      "lane": 6,
+      "selector": "float",
+      "atoms": [
+        9.9
+      ]
+    },
+    {
+      "id": "event_119",
+      "target": "integer",
+      "inlet": 0,
+      "lane": 6,
+      "selector": "tab",
+      "atoms": []
+    },
+    {
+      "id": "event_120",
+      "target": "integer",
+      "inlet": 0,
+      "lane": 6,
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "id": "event_121",
+      "target": "bounded",
+      "inlet": 0,
+      "lane": 7,
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "id": "event_122",
+      "target": "bounded",
+      "inlet": 0,
+      "lane": 7,
+      "selector": "float",
+      "atoms": [
+        3.9
+      ]
+    },
+    {
+      "id": "event_123",
+      "target": "bounded",
+      "inlet": 0,
+      "lane": 7,
+      "selector": "float",
+      "atoms": [
+        -3.9
+      ]
+    },
+    {
+      "id": "event_124",
+      "target": "bounded",
+      "inlet": 0,
+      "lane": 7,
+      "selector": "list",
+      "atoms": [
+        4,
+        5
+      ]
+    },
+    {
+      "id": "event_125",
+      "target": "bounded",
+      "inlet": 0,
+      "lane": 7,
+      "selector": "list",
+      "atoms": [
+        6.75,
+        "kiwi"
+      ]
+    },
+    {
+      "id": "event_126",
+      "target": "bounded",
+      "inlet": 0,
+      "lane": 7,
+      "selector": "symbol",
+      "atoms": [
+        "kiwi"
+      ]
+    },
+    {
+      "id": "event_127",
+      "target": "bounded",
+      "inlet": 0,
+      "lane": 7,
+      "selector": "set",
+      "atoms": [
+        12
+      ]
+    },
+    {
+      "id": "event_128",
+      "target": "bounded",
+      "inlet": 0,
+      "lane": 7,
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "id": "event_129",
+      "target": "bounded",
+      "inlet": 0,
+      "lane": 7,
+      "selector": "min",
+      "atoms": [
+        -2
+      ]
+    },
+    {
+      "id": "event_130",
+      "target": "bounded",
+      "inlet": 0,
+      "lane": 7,
+      "selector": "max",
+      "atoms": [
+        2
+      ]
+    },
+    {
+      "id": "event_131",
+      "target": "bounded",
+      "inlet": 0,
+      "lane": 7,
+      "selector": "float",
+      "atoms": [
+        9.9
+      ]
+    },
+    {
+      "id": "event_132",
+      "target": "bounded",
+      "inlet": 0,
+      "lane": 7,
+      "selector": "float",
+      "atoms": [
+        -9.9
+      ]
+    },
+    {
+      "id": "event_133",
+      "target": "bounded",
+      "inlet": 0,
+      "lane": 7,
+      "selector": "set",
+      "atoms": [
+        8.9
+      ]
+    },
+    {
+      "id": "event_134",
+      "target": "bounded",
+      "inlet": 0,
+      "lane": 7,
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "id": "event_135",
+      "target": "bounded",
+      "inlet": 0,
+      "lane": 7,
+      "selector": "min",
+      "atoms": []
+    },
+    {
+      "id": "event_136",
+      "target": "bounded",
+      "inlet": 0,
+      "lane": 7,
+      "selector": "max",
+      "atoms": []
+    },
+    {
+      "id": "event_137",
+      "target": "bounded",
+      "inlet": 0,
+      "lane": 7,
+      "selector": "float",
+      "atoms": [
+        9.9
+      ]
+    },
+    {
+      "id": "event_138",
+      "target": "bounded",
+      "inlet": 0,
+      "lane": 7,
+      "selector": "tab",
+      "atoms": []
+    },
+    {
+      "id": "event_139",
+      "target": "bounded",
+      "inlet": 0,
+      "lane": 7,
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "id": "event_140",
+      "target": "fractional",
+      "inlet": 0,
+      "lane": 8,
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "id": "event_141",
+      "target": "fractional",
+      "inlet": 0,
+      "lane": 8,
+      "selector": "float",
+      "atoms": [
+        3.9
+      ]
+    },
+    {
+      "id": "event_142",
+      "target": "fractional",
+      "inlet": 0,
+      "lane": 8,
+      "selector": "float",
+      "atoms": [
+        -3.9
+      ]
+    },
+    {
+      "id": "event_143",
+      "target": "fractional",
+      "inlet": 0,
+      "lane": 8,
+      "selector": "list",
+      "atoms": [
+        4,
+        5
+      ]
+    },
+    {
+      "id": "event_144",
+      "target": "fractional",
+      "inlet": 0,
+      "lane": 8,
+      "selector": "list",
+      "atoms": [
+        6.75,
+        "kiwi"
+      ]
+    },
+    {
+      "id": "event_145",
+      "target": "fractional",
+      "inlet": 0,
+      "lane": 8,
+      "selector": "symbol",
+      "atoms": [
+        "kiwi"
+      ]
+    },
+    {
+      "id": "event_146",
+      "target": "fractional",
+      "inlet": 0,
+      "lane": 8,
+      "selector": "set",
+      "atoms": [
+        12
+      ]
+    },
+    {
+      "id": "event_147",
+      "target": "fractional",
+      "inlet": 0,
+      "lane": 8,
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "id": "event_148",
+      "target": "fractional",
+      "inlet": 0,
+      "lane": 8,
+      "selector": "min",
+      "atoms": [
+        -2
+      ]
+    },
+    {
+      "id": "event_149",
+      "target": "fractional",
+      "inlet": 0,
+      "lane": 8,
+      "selector": "max",
+      "atoms": [
+        2
+      ]
+    },
+    {
+      "id": "event_150",
+      "target": "fractional",
+      "inlet": 0,
+      "lane": 8,
+      "selector": "float",
+      "atoms": [
+        9.9
+      ]
+    },
+    {
+      "id": "event_151",
+      "target": "fractional",
+      "inlet": 0,
+      "lane": 8,
+      "selector": "float",
+      "atoms": [
+        -9.9
+      ]
+    },
+    {
+      "id": "event_152",
+      "target": "fractional",
+      "inlet": 0,
+      "lane": 8,
+      "selector": "set",
+      "atoms": [
+        8.9
+      ]
+    },
+    {
+      "id": "event_153",
+      "target": "fractional",
+      "inlet": 0,
+      "lane": 8,
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "id": "event_154",
+      "target": "fractional",
+      "inlet": 0,
+      "lane": 8,
+      "selector": "min",
+      "atoms": []
+    },
+    {
+      "id": "event_155",
+      "target": "fractional",
+      "inlet": 0,
+      "lane": 8,
+      "selector": "max",
+      "atoms": []
+    },
+    {
+      "id": "event_156",
+      "target": "fractional",
+      "inlet": 0,
+      "lane": 8,
+      "selector": "float",
+      "atoms": [
+        9.9
+      ]
+    },
+    {
+      "id": "event_157",
+      "target": "fractional",
+      "inlet": 0,
+      "lane": 8,
+      "selector": "tab",
+      "atoms": []
+    },
+    {
+      "id": "event_158",
+      "target": "fractional",
+      "inlet": 0,
+      "lane": 8,
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "id": "event_159",
+      "target": "intstore",
+      "inlet": 0,
+      "lane": 9,
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "id": "event_160",
+      "target": "intstore",
+      "inlet": 1,
+      "lane": 10,
+      "selector": "float",
+      "atoms": [
+        8.75
+      ]
+    },
+    {
+      "id": "event_161",
+      "target": "intstore",
+      "inlet": 0,
+      "lane": 9,
+      "selector": "send",
+      "atoms": [
+        "message_ui_probe"
+      ]
+    },
+    {
+      "id": "event_162",
+      "target": "intstore",
+      "inlet": 0,
+      "lane": 9,
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "id": "event_163",
+      "target": "intstore",
+      "inlet": 0,
+      "lane": 9,
+      "selector": "set",
+      "atoms": [
+        -4.75
+      ]
+    },
+    {
+      "id": "event_164",
+      "target": "intstore",
+      "inlet": 0,
+      "lane": 9,
+      "selector": "send",
+      "atoms": [
+        "message_ui_probe"
+      ]
+    },
+    {
+      "id": "event_165",
+      "target": "intstore",
+      "inlet": 1,
+      "lane": 10,
+      "selector": "send",
+      "atoms": [
+        "message_ui_probe"
+      ]
+    },
+    {
+      "id": "event_166",
+      "target": "intstore",
+      "inlet": 0,
+      "lane": 9,
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "id": "event_167",
+      "target": "intstore",
+      "inlet": 0,
+      "lane": 9,
+      "selector": "send",
+      "atoms": []
+    },
+    {
+      "id": "event_168",
+      "target": "intstore",
+      "inlet": 0,
+      "lane": 9,
+      "selector": "send",
+      "atoms": [
+        42
+      ]
+    },
+    {
+      "id": "event_169",
+      "target": "intstore",
+      "inlet": 0,
+      "lane": 9,
+      "selector": "send",
+      "atoms": [
+        "missing_message_ui_probe"
+      ]
+    },
+    {
+      "id": "event_170",
+      "target": "intstore",
+      "inlet": 0,
+      "lane": 9,
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "id": "event_171",
+      "target": "floatstore",
+      "inlet": 0,
+      "lane": 11,
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "id": "event_172",
+      "target": "floatstore",
+      "inlet": 1,
+      "lane": 12,
+      "selector": "float",
+      "atoms": [
+        8.75
+      ]
+    },
+    {
+      "id": "event_173",
+      "target": "floatstore",
+      "inlet": 0,
+      "lane": 11,
+      "selector": "send",
+      "atoms": [
+        "message_ui_probe"
+      ]
+    },
+    {
+      "id": "event_174",
+      "target": "floatstore",
+      "inlet": 0,
+      "lane": 11,
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "id": "event_175",
+      "target": "floatstore",
+      "inlet": 0,
+      "lane": 11,
+      "selector": "set",
+      "atoms": [
+        -4.75
+      ]
+    },
+    {
+      "id": "event_176",
+      "target": "floatstore",
+      "inlet": 0,
+      "lane": 11,
+      "selector": "send",
+      "atoms": [
+        "message_ui_probe"
+      ]
+    },
+    {
+      "id": "event_177",
+      "target": "floatstore",
+      "inlet": 1,
+      "lane": 12,
+      "selector": "send",
+      "atoms": [
+        "message_ui_probe"
+      ]
+    },
+    {
+      "id": "event_178",
+      "target": "floatstore",
+      "inlet": 0,
+      "lane": 11,
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "id": "event_179",
+      "target": "floatstore",
+      "inlet": 0,
+      "lane": 11,
+      "selector": "send",
+      "atoms": []
+    },
+    {
+      "id": "event_180",
+      "target": "floatstore",
+      "inlet": 0,
+      "lane": 11,
+      "selector": "send",
+      "atoms": [
+        42
+      ]
+    },
+    {
+      "id": "event_181",
+      "target": "floatstore",
+      "inlet": 0,
+      "lane": 11,
+      "selector": "send",
+      "atoms": [
+        "missing_message_ui_probe"
+      ]
+    },
+    {
+      "id": "event_182",
+      "target": "floatstore",
+      "inlet": 0,
+      "lane": 11,
+      "selector": "bang",
+      "atoms": []
+    },
+    {
+      "id": "event_183",
+      "target": "integer",
+      "inlet": 0,
+      "lane": 6,
+      "selector": "select",
+      "atoms": [],
+      "keyboard": "Tab",
+      "wait_after_ms": 1200,
+      "case": "physical selected Tab"
+    },
+    {
+      "id": "event_184",
+      "target": "fractional",
+      "inlet": 0,
+      "lane": 8,
+      "selector": "select",
+      "atoms": [],
+      "keyboard": "Tab",
+      "wait_after_ms": 1200,
+      "case": "physical selected Tab"
+    }
+  ],
+  "drain_ms": 150
+}

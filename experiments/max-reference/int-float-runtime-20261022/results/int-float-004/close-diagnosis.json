@@ -1,0 +1,216 @@
+{
+  "artifact_type": "derived-audit-metadata",
+  "bindings": {
+    "cleanup_sha256": "a3cd858b815ab0c68dc0c32d2b1678b0de13c9c9a27debdb283782a3eb1fddf8",
+    "display_states_sha256": "d7c3639f57bfb7ab03136b7a846a060876c88d9ae1115253cf6fe507846d00f9",
+    "historical_package_sha256": "cf8982850acd8fbd275e2fe1a4e9a737c9c447861a1de74bbd0f2ec1db4d3c2b",
+    "partial_comparison_sha256": "49371f8b43a062c33c3f0f2ae2ffa117fb415ce01097aee4ab5b33b26e1770a2",
+    "private_config_sha256": "7456c4248226da42466738321050f6b3c6ac55c547d84626ce2ea098296be68e",
+    "private_journal_bytes": 75646,
+    "private_journal_sha256": "558c3f60167613433905a469247f40ba89d320cbdbb6fe676864e35095bd21ab",
+    "private_log_sha256": "0bb10d46229f0ef422407144f67dc23ef4de70ea872162c2596313c30a4e8cfe",
+    "private_observation_file_count": 371,
+    "private_observation_ledger_sha256": "0c1ce9ab0f14a441b64f31439b01f3d2dfde43ffcff274aa2920c359a11f8f7c",
+    "private_seal_sha256": "95481e77951206d7b8905a1462638a21c2f4c3d6e0a44275734561a88d538649",
+    "public_receipts_sha256": "76eb289ddb68bf0a49cc894d1428dd36939f37fad01f1bd58a1f62d39a51a419",
+    "rea_sha256": "317bc2e5901e18547d42b91e71d785fd6b9c038ea558a738c3624ccedde3e321",
+    "session_sha256": "2a2ef5eda66d2303bdd70fd075dc1db1d3ad0c7e01b4b2735040408a2d1e4a3b"
+  },
+  "bounded_counts": {
+    "checkpoint_documents": {
+      "float": 40,
+      "int": 42
+    },
+    "checkpoint_geometry_dispositions": 204,
+    "checkpoint_sidecars": 82,
+    "checkpoints": 82,
+    "completed_closes": 0,
+    "completed_events": 40,
+    "completed_installs": 2,
+    "completed_operations": 42,
+    "controller_numeric_mode_reads": 4,
+    "destination_output_pairs": 19,
+    "destination_pair_documents": {
+      "float": 9,
+      "int": 10
+    },
+    "distinct_recorded_numeric_mode_reads": 164,
+    "failed_acknowledgements": 1,
+    "input_endpoint_entries": 2620,
+    "journal_kinds": {
+      "harness-error": 1,
+      "receipt": 140,
+      "step-complete": 42,
+      "stimulus": 40
+    },
+    "journal_rows": 223,
+    "message_prototype_observations": 82,
+    "native_only_input_trace_events": 138,
+    "native_output_trace_events": 140,
+    "numeric_getter_silent_batches": 82,
+    "numeric_ui_classes": [
+      {
+        "count": 168,
+        "document": "int",
+        "source_class": "number"
+      },
+      {
+        "count": 84,
+        "document": "int",
+        "source_class": "slider"
+      },
+      {
+        "count": 160,
+        "document": "float",
+        "source_class": "flonum"
+      },
+      {
+        "count": 80,
+        "document": "float",
+        "source_class": "slider"
+      }
+    ],
+    "numeric_ui_values": 492,
+    "outlet_documents": {
+      "float": 70,
+      "int": 70
+    },
+    "outlet_receipts": 140,
+    "outlet_selectors": {
+      "bang": 33,
+      "float": 47,
+      "hashed-other-selector": 7,
+      "int": 53
+    },
+    "output_endpoint_entries": 2620,
+    "raw_numeric_mode_reads": 160,
+    "raw_readbacks": 82,
+    "retained_raw_copies": 82,
+    "sidecar_mode_mirrors": 160,
+    "stimuli": 40,
+    "stimulus_documents": {
+      "float": 20,
+      "int": 20
+    },
+    "stimulus_selectors": {
+      "bang": 19,
+      "float": 7,
+      "int": 14
+    },
+    "successful_acknowledgements": 124,
+    "unknown_numeric_tag_comparisons": 0
+  },
+  "capabilities": {
+    "completed_destination_output_pairs_match_retained_native": true,
+    "completed_endpoint_values_match_retained_native": true,
+    "completed_ui_values_match_retained_native": true,
+    "full_reference_validation_performed": false,
+    "saved_order_observed": false,
+    "typed_float_dispatch_E05_observed": true,
+    "whole_numeric_comparison_performed": false
+  },
+  "capture_name": "int-float-004",
+  "close_observation_limits": {
+    "actual_poll_count_retained": false,
+    "configured_poll_interval_ms": 100,
+    "configured_poll_limit": 30,
+    "disposer_validity_retained": false,
+    "historical_controller_sha256": "d34c134386a79193386a17f293e8ab6204ef0972400710c37bb3dd991115fc60",
+    "later_reopen_or_reset_observed": false,
+    "reader_validity_retained": false,
+    "root_validity_retained": false,
+    "which_absence_condition_failed": "unobserved"
+  },
+  "complete": false,
+  "evidence_id": "ev_48ebd9fe0fee8f36d81cc44f2129450cf5299dba25d4b82ef26981204a919222",
+  "failed_command": {
+    "ack_error_code": "numeric-controller-refused",
+    "action": "close",
+    "anchor_diagnostics_count": 0,
+    "closed_owner_absence_validated": false,
+    "completed": false,
+    "controller_failure_code": "closed-owner-absence-unproven",
+    "document": "float",
+    "geometry_dispositions_count": 0,
+    "journal_sequence": 223,
+    "numeric_mode_observations_count": 0,
+    "post_close_checkpoints": 0,
+    "private_error_sha256": "e8f930d8f39f3b5b90c89d9ddcc2fab0ee96315b921bf14df129bf516ba420da",
+    "raw_ack_bytes": 160,
+    "raw_ack_sha256": "e59070be118087cfad8d13a0bf6c09c6ed9045beae98696dc9736d1e0e1b6fb1",
+    "raw_command_bytes": 228,
+    "raw_command_sha256": "ab33b55fdabe0a6521df41df0c7f90b9c07ece4c05defb275a3db26a5a904bb3",
+    "request_id": 125,
+    "revision": 1,
+    "source_sha256": "c5e9bd4e89ebc5808d2faf76400031705c35195c32b363b890787a37bbdec15c",
+    "step_id": "close-float"
+  },
+  "float_source_mode_observations": [
+    {
+      "anchor": "root/obj-2/obj-16",
+      "attribute": "format",
+      "controller_ack_observations": 1,
+      "getter_method": "getattr",
+      "getter_representation": "scalar-number",
+      "getter_value": 6,
+      "raw_checkpoint_observations": 40,
+      "runtime_class": "number",
+      "sidecar_mirrors": 40,
+      "source_class": "flonum"
+    },
+    {
+      "anchor": "root/obj-2/obj-17",
+      "attribute": "format",
+      "controller_ack_observations": 1,
+      "getter_method": "getattr",
+      "getter_representation": "scalar-number",
+      "getter_value": 6,
+      "raw_checkpoint_observations": 40,
+      "runtime_class": "number",
+      "sidecar_mirrors": 40,
+      "source_class": "flonum"
+    },
+    {
+      "anchor": "root/obj-2/obj-21",
+      "attribute": "format",
+      "controller_ack_observations": 1,
+      "getter_method": "getattr",
+      "getter_representation": "scalar-number",
+      "getter_value": 6,
+      "raw_checkpoint_observations": 40,
+      "runtime_class": "number",
+      "sidecar_mirrors": 40,
+      "source_class": "flonum"
+    },
+    {
+      "anchor": "root/obj-2/obj-33",
+      "attribute": "format",
+      "controller_ack_observations": 1,
+      "getter_method": "getattr",
+      "getter_representation": "scalar-number",
+      "getter_value": 6,
+      "raw_checkpoint_observations": 40,
+      "runtime_class": "number",
+      "sidecar_mirrors": 40,
+      "source_class": "flonum"
+    }
+  ],
+  "helper_sha256": {
+    "helpargs.js": "04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469",
+    "helpdetails.js": "31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1",
+    "helpname.js": "49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa",
+    "helpstarter.js": "a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8"
+  },
+  "is_rea_runtime_output": false,
+  "limitations": [
+    "The close failure is bound to request 125 and the controller timeout error. No per-handle validity snapshot or actual poll count was retained; which absence condition failed remains unobserved.",
+    "All counts and comparisons concern the completed prefix through E40 only. The failed close, owner absence, subsequent events, reopen/reset, and full 54-operation/102-checkpoint score are not established.",
+    "The 164 mode reads comprise four controller ACK observations plus 160 raw checkpoint observations; 160 sidecar mirrors are duplicate retention, not additional independent measurements.",
+    "The 138 input-phase native trace events are native-only. Max reference input evidence consists of 40 controlled stimuli, while 140 outlet receipts are measured outputs. No portable interdocument receiver or saved cable order is claimed.",
+    "Private raw and sidecar artifacts are bound through the public session/config and derived ledger, rather than direct REA filesystem observations.",
+    "Observed cleanup covers readable ownership scopes; 316 process environments per runner scan were unreadable and seven REA PIDs were left unverified and untouched."
+  ],
+  "qualification_passes_added": 0,
+  "schema_version": 1,
+  "status": "PARTIAL_CAPTURE_CLOSE_ABSENCE_UNPROVEN"
+}

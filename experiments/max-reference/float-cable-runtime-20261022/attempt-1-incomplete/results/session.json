@@ -1,0 +1,795 @@
+{
+  "prefix": "/home/venetanji/.cache/alive-max-float-cable-20261022-wine-disposable",
+  "display": ":0",
+  "xvfb_pid": 3458711,
+  "fixture": "/home/venetanji/Work/alive/experiments/max-reference/float-cable-runtime-20261022/fixtures/float-cable.maxpat",
+  "max_sha256": "7a881318209a10d33c982db482297ab870327d5d2cb90aee6e4e01a13e279d8b",
+  "screenshot_directory": "/tmp/alive-max-float-cable-20261022",
+  "events": [
+    {
+      "kind": "command",
+      "wall_ms": 1792610812319,
+      "request": {
+        "id": 1,
+        "op": "score",
+        "label": "scalar-score"
+      }
+    },
+    {
+      "kind": "focus",
+      "wall_ms": 1792610812621,
+      "window": {
+        "id": 14680075,
+        "name": "float-cable (unlocked | saving disabled)",
+        "rect": [
+          160,
+          126,
+          1552,
+          1146
+        ]
+      }
+    },
+    {
+      "kind": "capture",
+      "wall_ms": 1792610813015,
+      "stage": "initial",
+      "path": "/tmp/alive-max-float-cable-20261022/initial.png",
+      "windows": [
+        {
+          "id": 8388611,
+          "name": "Default IME",
+          "rect": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        {
+          "id": 14680066,
+          "name": "Default IME",
+          "rect": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        {
+          "id": 14680065,
+          "name": "JUCEWindow",
+          "rect": [
+            3,
+            44,
+            187,
+            4
+          ]
+        },
+        {
+          "id": 14680071,
+          "name": "DXGI device window",
+          "rect": [
+            3,
+            44,
+            187,
+            4
+          ]
+        },
+        {
+          "id": 14680072,
+          "name": "midi_mme",
+          "rect": [
+            3,
+            44,
+            187,
+            4
+          ]
+        },
+        {
+          "id": 14680073,
+          "name": "Max Console",
+          "rect": [
+            513,
+            206,
+            922,
+            788
+          ]
+        },
+        {
+          "id": 14680075,
+          "name": "float-cable (unlocked | saving disabled)",
+          "rect": [
+            160,
+            126,
+            1552,
+            1146
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "focus",
+      "wall_ms": 1792610813017,
+      "window": {
+        "id": 14680075,
+        "name": "float-cable (unlocked | saving disabled)",
+        "rect": [
+          160,
+          126,
+          1552,
+          1146
+        ]
+      }
+    },
+    {
+      "kind": "clipboard",
+      "wall_ms": 1792610814053,
+      "stage": "initial",
+      "returncode": 1,
+      "length": 0,
+      "stderr": "MESA-EGL: warning: DRI3 error: Could not get DRI3 device\nMESA-EGL: warning: Ensure your X server supports DRI3 to get accelerated rendering\n<string>:1: PyGIWarning: Gtk was imported without specifying a version first. Use gi.require_version('Gtk', '4.0') before import to ensure that the right version gets loaded.\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    from gi.repository import Gtk,Gdk; print(Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD).wait_for_text() or \"\")\n                                             ^^^^^^^^^^^^^\n  File \"/usr/lib/python3.14/site-packages/gi/overrides/__init__.py\", line 36, in __getattr__\n    return getattr(self._introspection_module, name)\n  File \"/usr/lib/python3.14/site-packages/gi/module.py\", line 123, in __getattr__\n    raise AttributeError(f\"{self.__name__!r} object has no attribute {name!r}\")\nAttributeError: 'gi.repository.Gtk' object has no attribute 'Clipboard'\n"
+    },
+    {
+      "kind": "command",
+      "wall_ms": 1792610814325,
+      "request": {
+        "id": 2,
+        "op": "move",
+        "label": "one-endpoint",
+        "objects": [
+          "source0",
+          "source1",
+          "source2",
+          "source3"
+        ],
+        "dx": 30,
+        "dy": 20
+      }
+    },
+    {
+      "kind": "capture",
+      "wall_ms": 1792610814848,
+      "stage": "one-endpoint",
+      "path": "/tmp/alive-max-float-cable-20261022/one-endpoint.png",
+      "windows": [
+        {
+          "id": 8388611,
+          "name": "Default IME",
+          "rect": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        {
+          "id": 14680066,
+          "name": "Default IME",
+          "rect": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        {
+          "id": 14680065,
+          "name": "JUCEWindow",
+          "rect": [
+            3,
+            44,
+            187,
+            4
+          ]
+        },
+        {
+          "id": 14680071,
+          "name": "DXGI device window",
+          "rect": [
+            3,
+            44,
+            187,
+            4
+          ]
+        },
+        {
+          "id": 14680072,
+          "name": "midi_mme",
+          "rect": [
+            3,
+            44,
+            187,
+            4
+          ]
+        },
+        {
+          "id": 14680073,
+          "name": "Max Console",
+          "rect": [
+            513,
+            206,
+            922,
+            788
+          ]
+        },
+        {
+          "id": 14680075,
+          "name": "float-cable (unlocked | saving disabled)",
+          "rect": [
+            160,
+            126,
+            1552,
+            1146
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "focus",
+      "wall_ms": 1792610814849,
+      "window": {
+        "id": 14680075,
+        "name": "float-cable (unlocked | saving disabled)",
+        "rect": [
+          160,
+          126,
+          1552,
+          1146
+        ]
+      }
+    },
+    {
+      "kind": "clipboard",
+      "wall_ms": 1792610815882,
+      "stage": "one-endpoint",
+      "returncode": 1,
+      "length": 0,
+      "stderr": "MESA-EGL: warning: DRI3 error: Could not get DRI3 device\nMESA-EGL: warning: Ensure your X server supports DRI3 to get accelerated rendering\n<string>:1: PyGIWarning: Gtk was imported without specifying a version first. Use gi.require_version('Gtk', '4.0') before import to ensure that the right version gets loaded.\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    from gi.repository import Gtk,Gdk; print(Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD).wait_for_text() or \"\")\n                                             ^^^^^^^^^^^^^\n  File \"/usr/lib/python3.14/site-packages/gi/overrides/__init__.py\", line 36, in __getattr__\n    return getattr(self._introspection_module, name)\n  File \"/usr/lib/python3.14/site-packages/gi/module.py\", line 123, in __getattr__\n    raise AttributeError(f\"{self.__name__!r} object has no attribute {name!r}\")\nAttributeError: 'gi.repository.Gtk' object has no attribute 'Clipboard'\n"
+    },
+    {
+      "kind": "command",
+      "wall_ms": 1792610816093,
+      "request": {
+        "id": 3,
+        "op": "move",
+        "label": "both-script",
+        "objects": [
+          "source0",
+          "sink0",
+          "source1",
+          "sink1",
+          "source2",
+          "sink2",
+          "source3",
+          "sink3"
+        ],
+        "dx": 30,
+        "dy": 20
+      }
+    },
+    {
+      "kind": "capture",
+      "wall_ms": 1792610816642,
+      "stage": "both-script",
+      "path": "/tmp/alive-max-float-cable-20261022/both-script.png",
+      "windows": [
+        {
+          "id": 8388611,
+          "name": "Default IME",
+          "rect": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        {
+          "id": 14680066,
+          "name": "Default IME",
+          "rect": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        {
+          "id": 14680065,
+          "name": "JUCEWindow",
+          "rect": [
+            3,
+            44,
+            187,
+            4
+          ]
+        },
+        {
+          "id": 14680071,
+          "name": "DXGI device window",
+          "rect": [
+            3,
+            44,
+            187,
+            4
+          ]
+        },
+        {
+          "id": 14680072,
+          "name": "midi_mme",
+          "rect": [
+            3,
+            44,
+            187,
+            4
+          ]
+        },
+        {
+          "id": 14680073,
+          "name": "Max Console",
+          "rect": [
+            513,
+            206,
+            922,
+            788
+          ]
+        },
+        {
+          "id": 14680075,
+          "name": "float-cable (unlocked | saving disabled)",
+          "rect": [
+            160,
+            126,
+            1552,
+            1146
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "focus",
+      "wall_ms": 1792610816643,
+      "window": {
+        "id": 14680075,
+        "name": "float-cable (unlocked | saving disabled)",
+        "rect": [
+          160,
+          126,
+          1552,
+          1146
+        ]
+      }
+    },
+    {
+      "kind": "clipboard",
+      "wall_ms": 1792610817677,
+      "stage": "both-script",
+      "returncode": 1,
+      "length": 0,
+      "stderr": "MESA-EGL: warning: DRI3 error: Could not get DRI3 device\nMESA-EGL: warning: Ensure your X server supports DRI3 to get accelerated rendering\n<string>:1: PyGIWarning: Gtk was imported without specifying a version first. Use gi.require_version('Gtk', '4.0') before import to ensure that the right version gets loaded.\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    from gi.repository import Gtk,Gdk; print(Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD).wait_for_text() or \"\")\n                                             ^^^^^^^^^^^^^\n  File \"/usr/lib/python3.14/site-packages/gi/overrides/__init__.py\", line 36, in __getattr__\n    return getattr(self._introspection_module, name)\n  File \"/usr/lib/python3.14/site-packages/gi/module.py\", line 123, in __getattr__\n    raise AttributeError(f\"{self.__name__!r} object has no attribute {name!r}\")\nAttributeError: 'gi.repository.Gtk' object has no attribute 'Clipboard'\n"
+    },
+    {
+      "kind": "focus",
+      "wall_ms": 1792610817829,
+      "window": {
+        "id": 14680075,
+        "name": "float-cable (unlocked | saving disabled)",
+        "rect": [
+          160,
+          126,
+          1552,
+          1146
+        ]
+      }
+    },
+    {
+      "kind": "command",
+      "wall_ms": 1792610820492,
+      "request": {
+        "id": 4,
+        "op": "snapshot",
+        "label": "physical-group"
+      }
+    },
+    {
+      "kind": "capture",
+      "wall_ms": 1792610821010,
+      "stage": "physical-group",
+      "path": "/tmp/alive-max-float-cable-20261022/physical-group.png",
+      "windows": [
+        {
+          "id": 8388611,
+          "name": "Default IME",
+          "rect": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        {
+          "id": 14680066,
+          "name": "Default IME",
+          "rect": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        {
+          "id": 14680065,
+          "name": "JUCEWindow",
+          "rect": [
+            3,
+            44,
+            187,
+            4
+          ]
+        },
+        {
+          "id": 14680071,
+          "name": "DXGI device window",
+          "rect": [
+            3,
+            44,
+            187,
+            4
+          ]
+        },
+        {
+          "id": 14680072,
+          "name": "midi_mme",
+          "rect": [
+            3,
+            44,
+            187,
+            4
+          ]
+        },
+        {
+          "id": 14680073,
+          "name": "Max Console",
+          "rect": [
+            513,
+            206,
+            922,
+            788
+          ]
+        },
+        {
+          "id": 14680075,
+          "name": "float-cable (unlocked | saving disabled)*",
+          "rect": [
+            160,
+            126,
+            1552,
+            1146
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "focus",
+      "wall_ms": 1792610821011,
+      "window": {
+        "id": 14680075,
+        "name": "float-cable (unlocked | saving disabled)*",
+        "rect": [
+          160,
+          126,
+          1552,
+          1146
+        ]
+      }
+    },
+    {
+      "kind": "clipboard",
+      "wall_ms": 1792610822048,
+      "stage": "physical-group",
+      "returncode": 1,
+      "length": 0,
+      "stderr": "MESA-EGL: warning: DRI3 error: Could not get DRI3 device\nMESA-EGL: warning: Ensure your X server supports DRI3 to get accelerated rendering\n<string>:1: PyGIWarning: Gtk was imported without specifying a version first. Use gi.require_version('Gtk', '4.0') before import to ensure that the right version gets loaded.\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    from gi.repository import Gtk,Gdk; print(Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD).wait_for_text() or \"\")\n                                             ^^^^^^^^^^^^^\n  File \"/usr/lib/python3.14/site-packages/gi/overrides/__init__.py\", line 36, in __getattr__\n    return getattr(self._introspection_module, name)\n  File \"/usr/lib/python3.14/site-packages/gi/module.py\", line 123, in __getattr__\n    raise AttributeError(f\"{self.__name__!r} object has no attribute {name!r}\")\nAttributeError: 'gi.repository.Gtk' object has no attribute 'Clipboard'\n"
+    },
+    {
+      "kind": "command",
+      "wall_ms": 1792610824849,
+      "request": {
+        "id": 5,
+        "op": "lock",
+        "label": "locked-for-entry",
+        "value": 1
+      }
+    },
+    {
+      "kind": "command",
+      "wall_ms": 1792610825270,
+      "request": {
+        "id": 6,
+        "op": "select-number",
+        "label": "entry-selected",
+        "target": "entry"
+      }
+    },
+    {
+      "kind": "focus",
+      "wall_ms": 1792610825571,
+      "window": {
+        "id": 14680075,
+        "name": "float-cable (saving disabled)*",
+        "rect": [
+          160,
+          126,
+          1552,
+          1146
+        ]
+      }
+    },
+    {
+      "kind": "capture",
+      "wall_ms": 1792610827867,
+      "stage": "entry-active",
+      "path": "/tmp/alive-max-float-cable-20261022/entry-active.png",
+      "windows": [
+        {
+          "id": 8388611,
+          "name": "Default IME",
+          "rect": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        {
+          "id": 14680066,
+          "name": "Default IME",
+          "rect": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        {
+          "id": 14680065,
+          "name": "JUCEWindow",
+          "rect": [
+            3,
+            44,
+            187,
+            4
+          ]
+        },
+        {
+          "id": 14680071,
+          "name": "DXGI device window",
+          "rect": [
+            3,
+            44,
+            187,
+            4
+          ]
+        },
+        {
+          "id": 14680072,
+          "name": "midi_mme",
+          "rect": [
+            3,
+            44,
+            187,
+            4
+          ]
+        },
+        {
+          "id": 14680073,
+          "name": "Max Console",
+          "rect": [
+            513,
+            206,
+            922,
+            788
+          ]
+        },
+        {
+          "id": 14680075,
+          "name": "float-cable (saving disabled)*",
+          "rect": [
+            160,
+            126,
+            1552,
+            1146
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "command",
+      "wall_ms": 1792610828139,
+      "request": {
+        "id": 7,
+        "op": "snapshot",
+        "label": "entry-committed"
+      }
+    },
+    {
+      "kind": "capture",
+      "wall_ms": 1792610828582,
+      "stage": "entry-committed",
+      "path": "/tmp/alive-max-float-cable-20261022/entry-committed.png",
+      "windows": [
+        {
+          "id": 8388611,
+          "name": "Default IME",
+          "rect": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        {
+          "id": 14680066,
+          "name": "Default IME",
+          "rect": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        {
+          "id": 14680065,
+          "name": "JUCEWindow",
+          "rect": [
+            3,
+            44,
+            187,
+            4
+          ]
+        },
+        {
+          "id": 14680071,
+          "name": "DXGI device window",
+          "rect": [
+            3,
+            44,
+            187,
+            4
+          ]
+        },
+        {
+          "id": 14680072,
+          "name": "midi_mme",
+          "rect": [
+            3,
+            44,
+            187,
+            4
+          ]
+        },
+        {
+          "id": 14680073,
+          "name": "Max Console",
+          "rect": [
+            513,
+            206,
+            922,
+            788
+          ]
+        },
+        {
+          "id": 14680075,
+          "name": "float-cable (saving disabled)*",
+          "rect": [
+            160,
+            126,
+            1552,
+            1146
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "command",
+      "wall_ms": 1792610828643,
+      "request": {
+        "id": 8,
+        "op": "select-number",
+        "label": "tab-entry-selected",
+        "target": "entry"
+      }
+    },
+    {
+      "kind": "command",
+      "wall_ms": 1792610829162,
+      "request": {
+        "id": 9,
+        "op": "snapshot",
+        "label": "after-tab"
+      }
+    },
+    {
+      "kind": "capture",
+      "wall_ms": 1792610829606,
+      "stage": "after-tab",
+      "path": "/tmp/alive-max-float-cable-20261022/after-tab.png",
+      "windows": [
+        {
+          "id": 8388611,
+          "name": "Default IME",
+          "rect": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        {
+          "id": 14680066,
+          "name": "Default IME",
+          "rect": [
+            0,
+            0,
+            1,
+            1
+          ]
+        },
+        {
+          "id": 14680065,
+          "name": "JUCEWindow",
+          "rect": [
+            3,
+            44,
+            187,
+            4
+          ]
+        },
+        {
+          "id": 14680071,
+          "name": "DXGI device window",
+          "rect": [
+            3,
+            44,
+            187,
+            4
+          ]
+        },
+        {
+          "id": 14680072,
+          "name": "midi_mme",
+          "rect": [
+            3,
+            44,
+            187,
+            4
+          ]
+        },
+        {
+          "id": 14680073,
+          "name": "Max Console",
+          "rect": [
+            513,
+            206,
+            922,
+            788
+          ]
+        },
+        {
+          "id": 14680075,
+          "name": "float-cable (saving disabled)*",
+          "rect": [
+            160,
+            126,
+            1552,
+            1146
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "completed",
+      "wall_ms": 1792610829606,
+      "stages": 7
+    }
+  ]
+}

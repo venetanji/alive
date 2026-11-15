@@ -1,0 +1,252 @@
+{
+  "audit_mode": "read-only-retained-evidence",
+  "binding": {
+    "all_sealed_files_match": true,
+    "all_shared_safety_files_match": true,
+    "archived_preparation_manifest": {
+      "bytes": 13525,
+      "sha256": "09bba88c71f030617a554c858ee0c6ee7547330a74526e67fb7b83b71f9b7b00"
+    },
+    "helper_metadata_bindings_match": true,
+    "historical_package_sha256": "66e2e0daff2d21776c441f9c2bbe8ab6e21e65f1c821318d26f598891dacfa1f",
+    "historical_script_count": 24,
+    "historical_scripts_match_session_and_config": true,
+    "private_config": {
+      "bytes": 228163,
+      "sha256": "ebcd0c1a9b460b50e9f82335361c4cb7af319511421df6719bdf5544d6dc2509"
+    },
+    "private_seal": {
+      "bytes": 1979,
+      "sha256": "7b0a3621aafc68c9bc238ba3c369a7d12bb9c4e01688b7333f4920f76b590894"
+    },
+    "rea_record": {
+      "bytes": 30268,
+      "sha256": "be13e27bab1c407464ddbadc8c14db2f6fe2b71c994c0bb57c5236dd8d20b76f"
+    },
+    "score_bindings_match": true,
+    "score_operations": 54,
+    "score_sha256": "0ea52e269e960d64f7a55f137a1925d2186119cd6d960afabc21730e3c2fad30",
+    "sealed_file_count": 18,
+    "shared_safety_file_count": 2,
+    "source_metadata_bindings_match": true
+  },
+  "capture": "int-float-007",
+  "cleanup": {
+    "copied_prefix_absent": true,
+    "display_only_attribution": false,
+    "launch_identities_verified": true,
+    "marker_scan_empty": true,
+    "ordinary_quit_requested": false,
+    "owned_scan_empty": true,
+    "prefix_removed_recorded": true,
+    "prefix_scan_empty": true,
+    "unreadable_process_environments": {
+      "marker_scan": 316,
+      "owned_scan": 318,
+      "prefix_scan": 316
+    },
+    "xvfb_exited_recorded": true
+  },
+  "comparison_performed": false,
+  "evidence_id": "ev_d54bb2d47d54e88599849f63fee4427e2e212736e9ae4bce83687df9a1de6978",
+  "failure": {
+    "root_cause": "unresolved",
+    "session_failure_matches_readiness_timeout": true,
+    "session_failure_sha256": "789c6bbf8394cc12430e61850cac52a4ca449e3e13f71ed48b4351c61d5c97db",
+    "stage": "waiting-for-initial-driver-readiness",
+    "startup_wait_seconds": 30,
+    "terminal_failure_matches_outer_runner_refusal": true,
+    "terminal_failure_sha256": "0a9d3172b634e79cda409ea4d41750f952b04d11d57b44a3e508ec0984fbdde7",
+    "underlying_js_v8_console_error_available": false
+  },
+  "kind": "startup-diagnosis",
+  "lifecycle_witness_observed": false,
+  "limitations": [
+    "REA observed four public after-files; private files are linked through the session, sealed config, archived manifest, and this audit rather than direct REA snapshots.",
+    "Process trees are sampled; six REA process ownership checks and 316-318 runner environment reads were unavailable.",
+    "Wine and Max-named process samples prove sampled launch activity, not successful driver loading, JS/V8 execution, or Max image liveness at the readiness deadline.",
+    "The final launcher PID sample has no command identity; no screenshots, window enumeration, clipboard access, or new runtime observation was used.",
+    "The retained runtime log contains no selected JS/V8 error signature; the Max JS/V8 startup console was not captured, so the startup cause remains unresolved.",
+    "Executable digests are prelaunch samples with unchanged path metadata, not atomic operating-system image binding.",
+    "Inherited environment and network activity are unobserved; filesystem observations are snapshots.",
+    "No numeric comparison, freebang witness, close validation, capture completion, or qualification pass is established."
+  ],
+  "preservation": {
+    "current_preferences_match_capture_after": true,
+    "helper_checks_match": true,
+    "preference_file_counts": {
+      "original": 33,
+      "source": 1081
+    },
+    "preference_snapshot_sha256": "5444dc994f5d2dcd50cc9fedd6ed2984e34308f750888b4760e2345f79ee33cd",
+    "preference_snapshots_byte_identical": true,
+    "private_directories_mode": "0700",
+    "private_directory_count": 5,
+    "private_file_count": 24,
+    "private_files_mode": "0600",
+    "private_files_single_link": true,
+    "private_tree_symlink_free": true,
+    "runtime_helper_copies_match": 4,
+    "shell_helper_count": 4,
+    "shell_helper_digest_checks": 8,
+    "source_checks_match": true,
+    "source_digest_checks": 12,
+    "source_max_digest_matches_session": true,
+    "source_revision_count": 4
+  },
+  "progress": {
+    "all_session_validation_flags_false": true,
+    "checkpoints": 0,
+    "clipboard_actions": 0,
+    "command_requests": 0,
+    "completed_operations": 0,
+    "display_states": 0,
+    "lifecycle_events_retained": 0,
+    "public_rows": 0,
+    "runtime_invocations": 1,
+    "screenshot_count": 0,
+    "validated_closes": 0
+  },
+  "qualification_passes_added": 0,
+  "raw": {
+    "command_file_present": false,
+    "files": {
+      "ack.json": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "private-journal.jsonl": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "ready.json": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "lifecycle_report_present": false,
+    "observations_file_count": 0
+  },
+  "rea": {
+    "after_files": [
+      {
+        "bytes": 0,
+        "name": "receipts.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 19068,
+        "name": "session.json",
+        "sha256": "35a3a68cc2ae530487b122dc08037a3506449b849340d9c91126936426c97973"
+      },
+      {
+        "bytes": 2132,
+        "name": "cleanup.json",
+        "sha256": "ef0ca712775ae19b8be5594d20e9fdbcc8576f7ec2d341050893e3e17d509a91"
+      },
+      {
+        "bytes": 3,
+        "name": "display-states.json",
+        "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+      }
+    ],
+    "all_after_file_hashes_sizes_modes_match": true,
+    "driver_readiness_established": false,
+    "exit": {
+      "code": 1,
+      "reason": "exited",
+      "signal": 0
+    },
+    "max_image_alive_at_timeout_established": false,
+    "max_named_process_sample_at_ms": [
+      7160,
+      12920
+    ],
+    "near_deadline_command_identity_available": false,
+    "near_deadline_launcher_sample_at_ms": 35700,
+    "process_launch_observed": true,
+    "process_samples": [
+      {
+        "at_ms": 10,
+        "command_identity_available": true,
+        "parent_pid": 7662,
+        "pid": 15795,
+        "process_group_id": 15795,
+        "role": "runner"
+      },
+      {
+        "at_ms": 750,
+        "command_identity_available": true,
+        "parent_pid": 15795,
+        "pid": 15818,
+        "process_group_id": 15795,
+        "role": "prefix-copy"
+      },
+      {
+        "at_ms": 5660,
+        "command_identity_available": true,
+        "parent_pid": 15795,
+        "pid": 15837,
+        "process_group_id": 15795,
+        "role": "xvfb"
+      },
+      {
+        "at_ms": 5660,
+        "command_identity_available": true,
+        "parent_pid": 15795,
+        "pid": 15838,
+        "process_group_id": 15795,
+        "role": "wine-then-max-launcher"
+      },
+      {
+        "at_ms": 7160,
+        "command_identity_available": true,
+        "parent_pid": 15795,
+        "pid": 15838,
+        "process_group_id": 15795,
+        "role": "wine-then-max-launcher"
+      },
+      {
+        "at_ms": 12920,
+        "command_identity_available": true,
+        "parent_pid": 15838,
+        "pid": 16068,
+        "process_group_id": 15795,
+        "role": "max-child"
+      },
+      {
+        "at_ms": 35700,
+        "command_identity_available": false,
+        "parent_pid": 15795,
+        "pid": 15837,
+        "process_group_id": 15795,
+        "role": "xvfb"
+      },
+      {
+        "at_ms": 35700,
+        "command_identity_available": false,
+        "parent_pid": 15795,
+        "pid": 15838,
+        "process_group_id": 15795,
+        "role": "wine-then-max-launcher"
+      }
+    ],
+    "settlement": {
+      "cleanup_outcome": "not_required",
+      "elapsed_ms": 96,
+      "state": "quiesced"
+    },
+    "truncated": false,
+    "unverified_process_count": 6
+  },
+  "runtime_log": {
+    "bytes": 551,
+    "lines": 9,
+    "negative_search_scope": "retained-9-line-runtime-log-only",
+    "selected_js_v8_error_lines": 0,
+    "sha256": "2ef5aa5aec935da42c7652b4c276561479dd40468e150c644246b52a92e7f324",
+    "xkb_token_present": true
+  },
+  "schema_version": 1,
+  "verdict": "FAILED_STARTUP_NONQUALIFYING"
+}

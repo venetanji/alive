@@ -1,0 +1,18 @@
+Command: cargo test --manifest-path apps/ultra/src-tauri/Cargo.toml --locked cable_midpoints
+CARGO_HOME=/home/venetanji/Work/alive/experiments/clockwork-faust/.deps/cargo
+ULTRA_NATIVE_LIB_DIR=/home/venetanji/Work/alive/apps/ultra/build
+LD_LIBRARY_PATH=/home/venetanji/Work/alive/apps/ultra/build
+PATH prefix=/home/venetanji/Work/alive/experiments/clockwork-faust/.deps/rust/bin
+
+   Compiling ultra v0.1.0 (/home/venetanji/Work/alive/apps/ultra/src-tauri)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 8.26s
+     Running unittests src/main.rs (apps/ultra/src-tauri/target/debug/deps/ultra-efa75696e3a5196e)
+
+running 2 tests
+test canvas::tests::cable_midpoints_are_bounded_authoring_only_in_flat_and_nested_documents ... ok
+test document_windows::commands::tests::cable_midpoints_owner_commits_and_history_preserve_fresh_native_recall ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 110 filtered out; finished in 0.01s
+
+
+Exit code: 0

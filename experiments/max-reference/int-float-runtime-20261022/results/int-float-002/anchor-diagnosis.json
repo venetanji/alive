@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "artifact_type": "derived-audit-metadata",
+  "evidence_id": "ev_f6e7d88556e4b143f57958fc9cf04e4c00952239647ae8f96ec925b300259e4b",
+  "status": "STRICT_BASIC_ANNOTATION_GEOMETRY_REFUSED",
+  "source_sha256": "bbb8fc3b458eb168fe69b8709ba343808d23b6d55e2c59cc3086d01976c5ac61",
+  "document": "int",
+  "revision": 1,
+  "step_id": "install-int",
+  "request_id": 1,
+  "raw_ack_sha256": "bc19b50c88016863749c5cc5efcb1fff1a10cd197780c996b14ccbef403a6e10",
+  "raw_ack_bytes": 2384,
+  "diagnostics": [
+    {
+      "anchor": "root/obj-2/obj-23",
+      "saved_rect": [
+        11,
+        186.5,
+        143,
+        54
+      ],
+      "observed_rect": [
+        11,
+        186.5,
+        143,
+        55
+      ],
+      "saved_class": "comment",
+      "runtime_class": "comment",
+      "delta": [
+        0,
+        0.0,
+        0,
+        1
+      ],
+      "full_match_count": 0
+    },
+    {
+      "anchor": "root/obj-2/obj-4",
+      "saved_rect": [
+        291,
+        296,
+        208.315216,
+        39
+      ],
+      "observed_rect": [
+        291,
+        296,
+        208.19552612304688,
+        39
+      ],
+      "saved_class": "jsui",
+      "runtime_class": "jsui",
+      "delta": [
+        0,
+        0,
+        -0.11968987695311739,
+        0
+      ],
+      "full_match_count": 0
+    }
+  ],
+  "diagnostic_count": 2,
+  "completed_operations": 0,
+  "checkpoints": 0,
+  "qualification_passes_added": 0,
+  "limits": [
+    "Complete read-only hierarchy sweep retained these two strict refusals; no observer mutation, score or getter completed.",
+    "Source mechanism and annotation layout equivalence remain unmeasured; no float disposition follows."
+  ]
+}

@@ -1,0 +1,25 @@
+F...
+======================================================================
+FAIL: test_explicit_symbol_selector_is_preserved_as_a_named_message (__main__.ReplayContracts.test_explicit_symbol_selector_is_preserved_as_a_named_message)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/venetanji/Work/alive/experiments/max-reference/help-roots-native-20261022/test-replay.py", line 72, in test_explicit_symbol_selector_is_preserved_as_a_named_message
+    self.assertEqual(fields, ['symbol'.encode().hex(), '1', '2', '0', 'original'.encode().hex()])
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Lists differ: ['-', '1', '2', '0', '6f726967696e616c'] != ['73796d626f6c', '1', '2', '0', '6f726967696e616c']
+
+First differing element 0:
+'-'
+'73796d626f6c'
+
+- ['-', '1', '2', '0', '6f726967696e616c']
+?   ^
+
++ ['73796d626f6c', '1', '2', '0', '6f726967696e616c']
+?   ^^^^^^^^^^^^
+
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.007s
+
+FAILED (failures=1)

@@ -1,0 +1,264 @@
+{
+  "audit_mode": "historically-bound-retained-evidence",
+  "binding": {
+    "all_sealed_files_match": true,
+    "archived_preparation_manifest": {
+      "bytes": 13525,
+      "sha256": "ad2b8e10432193149f6f723a36c5a00b470d10b8fbed1a63ca017e527bed86de"
+    },
+    "archived_preparation_verification": {
+      "bytes": 2814,
+      "sha256": "c2796fd13d80df45b1ba2fea89911740285411bcaad02c8551587bfe46335061"
+    },
+    "controller_sha256": "dd98f2c01afb095aeb2c87ff8301a4531a5590ab65e23e81f079fc936024507e",
+    "helper_metadata_bindings_match": true,
+    "historical_package_matches_session_config_and_archived_verification": true,
+    "historical_package_sha256": "bcbbfbffc10e0c4667bd5979db73cbc8bfe333318e936ae2a2158aa68ed26d7c",
+    "historical_script_count": 24,
+    "lifecycle_helper_sha256": "97e549c5a3b439fdf245cf9a578cb07e4b525f6492f8b103fa4df6363bb307d6",
+    "private_config": {
+      "bytes": 228155,
+      "sha256": "c073d7a3b208986c7c1c1d88059a4b899773581ee76b5a7eb74a0c56700fbfd9"
+    },
+    "private_seal": {
+      "bytes": 1979,
+      "sha256": "acbca60aa2be401899e11ee85a3f91b26acccd003f69e0f744f54c5cc7bf8bc5"
+    },
+    "rea_record": {
+      "bytes": 33220,
+      "sha256": "71a89222229f3bcb621e38d1ce38738a38d3dbef5ec496e214942546351e5181"
+    },
+    "root_reader_sha256": "99f9ab7e4462149db4f1be26fe8827f03fbe52ddcf5ae79c325c3dee1dac817a",
+    "score_bindings_match": true,
+    "sealed_file_count": 18,
+    "shared_safety_file_count": 2,
+    "shared_safety_files_match": true,
+    "source_metadata_bindings_match": true
+  },
+  "capture": "int-float-009",
+  "cleanup": {
+    "copied_prefix_absent": true,
+    "display_only_attribution": false,
+    "launch_identities_verified": true,
+    "marker_scan_empty": true,
+    "ordinary_quit_requested": false,
+    "owned_scan_empty": true,
+    "prefix_removed_recorded": true,
+    "prefix_scan_empty": true,
+    "unreadable_process_environments": {
+      "marker_scan": 320,
+      "owned_scan": 322,
+      "prefix_scan": 320
+    },
+    "xvfb_exited_recorded": true
+  },
+  "close": {
+    "ack": {
+      "bytes": 839,
+      "current_and_exclusively_retained_bytes_equal": true,
+      "error_code": "numeric-controller-refused",
+      "public_request_hash_size_matches": true,
+      "sha256": "4b29a9b5ec633be2d11f7492d2e7561b97b492dfceb532cbb9a4217bf0b067da",
+      "success": false
+    },
+    "close_completion_retained": false,
+    "command_binding_matches": true,
+    "diagnostic_bindings_match": true,
+    "dispose_diagnostic_present": false,
+    "document": "float",
+    "final_barrier_present": false,
+    "journal_error_sha256": "dc6cf97e0b1a3cd201df2e1fbd3d1a75546b8a80132548865ee0851e84a17636",
+    "lifecycle_evidence_present": false,
+    "request_id": 125,
+    "revision": 1,
+    "root_result": {
+      "bytes": 80,
+      "error_code": "lifecycle-root-proof-refused",
+      "request_id": 125,
+      "sha256": "64b4b4431f230284791a7aa1e18ab6b73d126a06d4bcd290ea3266ff268fc1f4",
+      "success": false
+    },
+    "sample_count": 0,
+    "step_id": "close-float",
+    "validated_close_metadata_present": false
+  },
+  "comparison_performed": false,
+  "evidence_id": "ev_8a11cd59b81d92c0cb6a11e074be1c72356e0737cb54998f18988ac063c2c0b1",
+  "failure": {
+    "cause_limit": "The historical root reader catches errors and writes a generic refusal without preserving the underlying exception; no geometry, text, API, binding, or topology cause is established.",
+    "session_failure_matches_controller_refusal": true,
+    "session_failure_sha256": "6d8bf3bb5ba4145f22c2d48cae211c17564ed8e5057fbfcb683f04272a2b2322",
+    "stage": "close-root-proof-acquisition-before-arming-disposal-and-sampling",
+    "terminal_failure_matches_outer_runner_refusal": true,
+    "terminal_failure_sha256": "0a9d3172b634e79cda409ea4d41750f952b04d11d57b44a3e508ec0984fbdde7",
+    "underlying_root_proof_predicate": "unknown"
+  },
+  "kind": "startup-or-close-diagnosis",
+  "limitations": [
+    "The generic root-reader refusal does not retain the exception or identify the failed proof predicate.",
+    "The lifecycle report is the successful startup snapshot; it is not a request125 attestation, witness, or final barrier.",
+    "Only four public after-files have direct REA filesystem snapshots; private raw bytes bind through the session, sealed config, archived manifest, and this audit.",
+    "REA process trees are sampled, thirteen ownership checks were unavailable, and runner scans had 322/320/320 unreadable environments.",
+    "Inherited environment and network activity are unobserved; filesystem observations are snapshots.",
+    "This audit verifies retained prefix integrity and counts; it does not perform a numeric semantic/native comparison or add qualification passes."
+  ],
+  "prefix_integrity": {
+    "ack_hash_size_bindings_checked": 125,
+    "checkpoint_raw_retained_public_hash_size_bindings_checked": 82,
+    "checkpoint_sidecar_bindings_checked": 82,
+    "getter_journal_boundaries_equal": 82,
+    "journal_public_projection_rows_checked": 223,
+    "numeric_semantic_comparison_performed": false,
+    "public_close_claim_count": 0
+  },
+  "preservation": {
+    "current_preferences_match_capture_after": true,
+    "helper_checks_match": true,
+    "preference_file_counts": {
+      "original": 33,
+      "source": 1081
+    },
+    "preference_snapshot_sha256": "5444dc994f5d2dcd50cc9fedd6ed2984e34308f750888b4760e2345f79ee33cd",
+    "preference_snapshots_byte_identical": true,
+    "private_directories_mode": "0700",
+    "private_directory_count": 5,
+    "private_file_count_after_retention": 402,
+    "private_file_count_before_retention": 398,
+    "private_files_mode": "0600",
+    "private_files_single_link": true,
+    "private_tree_symlink_free": true,
+    "runtime_helper_copies_match": 4,
+    "shell_helper_count": 4,
+    "shell_helper_digest_checks": 8,
+    "source_checks_match": true,
+    "source_digest_checks": 12,
+    "source_max_digest_matches_session": true,
+    "source_revision_count": 4
+  },
+  "progress": {
+    "checkpoints": 82,
+    "clipboard_actions": 0,
+    "command_requests": 125,
+    "completed_events": 40,
+    "completed_installs": 2,
+    "completed_operations": 42,
+    "destination_order_failures_retained": 0,
+    "destination_order_witnesses_retained": 19,
+    "float_checkpoints": 40,
+    "int_checkpoints": 42,
+    "private_journal_rows": 223,
+    "public_rows": 223,
+    "retained_numeric_values": 492,
+    "runtime_invocations": 1,
+    "screenshot_count": 0,
+    "session_validation_flags": {
+      "initial_message_prototypes_validated": false,
+      "initial_numeric_readback_validated": false,
+      "numeric_getters_silent_validated": false,
+      "numeric_readback_validated": false,
+      "runtime_endpoint_readback_validated": false,
+      "synchronous_destination_outputs_validated": false,
+      "typed_float_dispatch_validated": true
+    },
+    "validated_closes": 0
+  },
+  "qualification_passes_added": 0,
+  "rea": {
+    "after_files": [
+      {
+        "bytes": 83011,
+        "name": "receipts.jsonl",
+        "sha256": "8eb18cbf568690df5e053d4712535dfd70487cb8d80f2448b4012c98c3e8ceff"
+      },
+      {
+        "bytes": 132183,
+        "name": "session.json",
+        "sha256": "3ffc9fcd544370e54caa9cdcbc9a52b3de17b155e15ff7f57f650e95299086dc"
+      },
+      {
+        "bytes": 2132,
+        "name": "cleanup.json",
+        "sha256": "bcd9dbb7c755f046479b65071a7ab1cbd471d672c706ba5f513422456c705143"
+      },
+      {
+        "bytes": 258180,
+        "name": "display-states.json",
+        "sha256": "3df598cb441731a5a11a4e5f45f913ff0adc258b12366f651938447ebdf91197"
+      }
+    ],
+    "all_after_file_hashes_sizes_modes_match": true,
+    "exit": {
+      "code": 1,
+      "reason": "exited",
+      "signal": 0
+    },
+    "settlement": {
+      "cleanup_outcome": "not_required",
+      "elapsed_ms": 98,
+      "state": "quiesced"
+    },
+    "truncated": false,
+    "unverified_process_count": 13
+  },
+  "retained_raw": {
+    "command.json": {
+      "bytes": 228,
+      "exact_raw_bytes": true,
+      "exclusive_copy": true,
+      "mode": "0600",
+      "retained_file": "retained-close-command-request-125.json",
+      "sha256": "ab33b55fdabe0a6521df41df0c7f90b9c07ece4c05defb275a3db26a5a904bb3"
+    },
+    "lifecycle-report.json": {
+      "bytes": 3126,
+      "exact_raw_bytes": true,
+      "exclusive_copy": true,
+      "mode": "0600",
+      "retained_file": "retained-startup-lifecycle-report.json",
+      "sha256": "e3d842df67a7905c1685dd9d27c3b0257ed897a228fb8d542aa8bc121bc0e19f"
+    },
+    "lifecycle-root-float-r1.json": {
+      "bytes": 80,
+      "exact_raw_bytes": true,
+      "exclusive_copy": true,
+      "mode": "0600",
+      "retained_file": "retained-lifecycle-root-refusal-float-r1-request-125.json",
+      "sha256": "64b4b4431f230284791a7aa1e18ab6b73d126a06d4bcd290ea3266ff268fc1f4"
+    },
+    "ready.json": {
+      "bytes": 56,
+      "exact_raw_bytes": true,
+      "exclusive_copy": true,
+      "mode": "0600",
+      "retained_file": "retained-startup-ready.json",
+      "sha256": "84695a0a3a387d0b45ed4ea53fed28b05b2b9865df88b22c30d34eb51bc83d8a"
+    }
+  },
+  "root_freebang_witness_observed": false,
+  "runtime_log": {
+    "bytes": 616,
+    "lines": 10,
+    "sha256": "75e6e6794aa8b8203de7d380ee8beaaddc443e3cc177a2f5d96956e58f347073"
+  },
+  "schema_version": 1,
+  "startup": {
+    "all_owners_monitoring": true,
+    "declared_inlets": 5,
+    "declared_outlets": 0,
+    "driver_inventory_matches_sealed_config": true,
+    "driver_route_multisets_match": true,
+    "lifecycle_report_control": "attest",
+    "lifecycle_report_request_id": 0,
+    "lifecycle_report_step_id": "startup",
+    "live_owner_count_at_ready": 0,
+    "monitor_epoch_matches_config": true,
+    "observer_event_count": 0,
+    "observer_failures": [],
+    "observer_sealed": false,
+    "observer_seq": 0,
+    "observer_transition_count": 0,
+    "ready": true,
+    "source_roots_opened_at_ready": 0
+  },
+  "verdict": "FAILED_CLOSE_ROOT_PROOF_ACQUISITION_NONQUALIFYING"
+}

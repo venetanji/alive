@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-22T04:20:42.519026+00:00",
+  "scope": "scorer fidelity corrections only; no production headers changed in this round",
+  "fixes": [
+    "Target/inlet production admission validates Message placeholder syntax after bounded transport parsing.",
+    "Admitted graph plans are retained separately from runtime-mutated graph plans across installs and accepted parameter updates.",
+    "Optional hot trigger acceptance matches backend parameter semantics."
+  ],
+  "observed_red_states": [
+    {
+      "case": "contextual Message replacement",
+      "before_fix": "old runner aborted with exit 10"
+    },
+    {
+      "case": "admitted/runtime parameter separation",
+      "before_fix": "old runner accepted bounds rejected by the backend admitted plan"
+    }
+  ],
+  "checks": [
+    {
+      "command": "python experiments/max-reference/help-roots-native-20261022/test-runner.py",
+      "exit": 0,
+      "results": [
+        "production trace self-tests",
+        "8-step original transport fixture",
+        "7-step contextual Message replacement fixture",
+        "9-step admitted/runtime bounds fixture",
+        "all three fixtures match a separately compiled observer-free binary"
+      ]
+    },
+    {
+      "command": "c++ -std=c++17 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=undefined -fno-sanitize-recover=all apps/ultra/tests/help_root_runtime_test.cpp -o /tmp/ultra-help-root-native-ubsan.next",
+      "exit": 0
+    },
+    {
+      "command": "python experiments/max-reference/help-roots-native-20261022/test-runner.py --binary /tmp/ultra-help-root-native-ubsan.next",
+      "exit": 0,
+      "sanitizer_diagnostics": 0
+    }
+  ],
+  "source_sha256": {
+    "apps/ultra/tests/help_root_runtime_test.cpp": "a1b4b31c2221bb6d1d67de002fa78ce274c0a047a42a58e404bd16b8e949d5fc",
+    "experiments/max-reference/help-roots-native-20261022/test-runner.py": "c70cee0a021b9c9169595ad1a9a7fd2e6c183620514cd63c020297a413f9dc69",
+    "apps/ultra/src-tauri/native/patch_graph.hpp": "855a13fb791a80808e6757c0712f4ba731d9d9386bb1dfa2a3542a6ff9121292",
+    "apps/ultra/src-tauri/native/canvas_workspace.hpp": "0f9a388b4dfa1ea3eeb0a37845b3db75d59d479e3e33fae8baec191aa73b1458"
+  },
+  "binary": {
+    "path": "/tmp/ultra-help-root-native-ubsan",
+    "sha256": "31b5647c5c70c9f2da7a55b033f90dfe5aae8b13abcde5c7ae39a4ad9a124945",
+    "replaced_atomically_after_tests": true
+  },
+  "max_executed": false,
+  "desktop_executed": false,
+  "complete_installed_help_qualification_passes_added": 0
+}

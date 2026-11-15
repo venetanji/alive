@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/home/venetanji/Work/alive/experiments/max-reference/arithmetic-runtime-20261022/verify.py", line 236, in <module>
+    main()
+    ~~~~^^
+  File "/home/venetanji/Work/alive/experiments/max-reference/arithmetic-runtime-20261022/verify.py", line 231, in main
+    result['machine_check'] = machine_check(session, read('results/preferences-before.json'))
+                              ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/venetanji/Work/alive/experiments/max-reference/arithmetic-runtime-20261022/verify.py", line 57, in machine_check
+    assert rows == preserved[name], name+' preferences changed since capture'
+           ^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: original preferences changed since capture

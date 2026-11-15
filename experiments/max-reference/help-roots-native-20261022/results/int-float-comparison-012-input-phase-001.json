@@ -1,0 +1,7798 @@
+{
+  "schema_version": 1,
+  "status": "FINITE_NUMERIC_COMPARISON",
+  "readback_method": "v8-numeric-getvalueof",
+  "source_identities": {
+    "int": "bbb8fc3b458eb168fe69b8709ba343808d23b6d55e2c59cc3086d01976c5ac61",
+    "float": "c5e9bd4e89ebc5808d2faf76400031705c35195c32b363b890787a37bbdec15c"
+  },
+  "operation_count": 54,
+  "checkpoint_count": 102,
+  "numeric_state_count": 612,
+  "message_prototype_count": 102,
+  "steps": [
+    {
+      "step_id": "install-int",
+      "action": "install",
+      "document": "int",
+      "match": true,
+      "endpoints": [],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E01",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-29",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-32",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "install-float",
+      "action": "install",
+      "document": "float",
+      "match": true,
+      "endpoints": [],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E02",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-29",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-32",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-32",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E03",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-28",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-35",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E04",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-32",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-29",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-32",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E05",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-28",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-35",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E06",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-29",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-32",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-32",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E07",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-29",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-32",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-32",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E08",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-16",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-20",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-21",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-22",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-24",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E09",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-16",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-20",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-21",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-22",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-24",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E10",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-16",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-20",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-21",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-22",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-24",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E11",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-16",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-20",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-21",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-22",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-24",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E12",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-17",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-18",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E13",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-21",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-22",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-24",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-30",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E14",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-21",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-22",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-24",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-30",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E15",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-17",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E16",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-21",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-22",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-24",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-30",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E17",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-16",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-21",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-22",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-24",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E18",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-16",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-21",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-22",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-24",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E19",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-16",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-20",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-21",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-22",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-23",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-24",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E20",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-16",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-20",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-21",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-22",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-23",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-24",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E21",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-16",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-20",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-21",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-22",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-23",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-24",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E22",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-16",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-20",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-21",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-22",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-23",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-24",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E23",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-17",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-18",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-19",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E24",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-21",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-22",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-24",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-30",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E25",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-21",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-22",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-24",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-30",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E26",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-17",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E27",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-21",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-22",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-24",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-30",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E28",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-16",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-21",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-22",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-24",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E29",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-21",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E30",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-21",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-22",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-24",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-30",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E31",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-21",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E32",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-21",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-22",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-24",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-30",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E33",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E34",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-29",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-32",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-32",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E35",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E36",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-32",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-29",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-32",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E37",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-24",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E38",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-24",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E39",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-35",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E40",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-35",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "close-float",
+      "action": "close",
+      "document": "float",
+      "match": true,
+      "endpoints": [],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E41",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-29",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-32",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "reinstall-float",
+      "action": "install",
+      "document": "float",
+      "match": true,
+      "endpoints": [],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E42",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-32",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-29",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-32",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E43",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-21",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-22",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-24",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-30",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E44",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-29",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-32",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-32",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "close-int",
+      "action": "close",
+      "document": "int",
+      "match": true,
+      "endpoints": [],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E45",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-29",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-32",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "reinstall-int",
+      "action": "install",
+      "document": "int",
+      "match": true,
+      "endpoints": [],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E46",
+      "action": "event",
+      "document": "float",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-29",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-32",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-32",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E47",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-21",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-22",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-24",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-30",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    },
+    {
+      "step_id": "E48",
+      "action": "event",
+      "document": "int",
+      "match": true,
+      "endpoints": [
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-32",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "float",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-29",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-32",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        },
+        {
+          "document": "int",
+          "anchor": "root/obj-2/obj-33",
+          "port": 0,
+          "reference_count": 1,
+          "native_count": 1,
+          "match": true,
+          "unknown_numeric_tags": 0
+        }
+      ],
+      "unknown_numeric_tags": 0
+    }
+  ],
+  "numeric_states": [
+    {
+      "step_id": "install-int",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "install-int",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "install-int",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "install-int",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "install-int",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "install-int",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E01",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E01",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E01",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E01",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E01",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E01",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "install-float",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "install-float",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "install-float",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "install-float",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "install-float",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "install-float",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "install-float",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "install-float",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "install-float",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "install-float",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "install-float",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "install-float",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E02",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E02",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E02",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E02",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E02",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E02",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E02",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E02",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E02",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E02",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E02",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E02",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E03",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E03",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E03",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E03",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E03",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E03",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E03",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E03",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E03",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E03",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E03",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E03",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E04",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E04",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E04",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E04",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E04",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E04",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E04",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E04",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E04",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E04",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E04",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E04",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E05",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E05",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E05",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E05",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E05",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E05",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E05",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E05",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E05",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E05",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E05",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E05",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E06",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E06",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E06",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E06",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E06",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E06",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E06",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E06",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E06",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E06",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E06",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E06",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E07",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E07",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E07",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E07",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E07",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E07",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E07",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E07",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E07",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E07",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E07",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E07",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E08",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E08",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E08",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E08",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E08",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E08",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E08",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E08",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E08",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E08",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E08",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E08",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E09",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E09",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E09",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E09",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E09",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E09",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E09",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E09",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E09",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E09",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E09",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E09",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E10",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E10",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E10",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E10",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E10",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E10",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E10",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E10",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E10",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E10",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E10",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E10",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E11",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E11",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E11",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E11",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E11",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E11",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E11",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E11",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E11",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E11",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E11",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E11",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E12",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E12",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E12",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E12",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E12",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E12",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E12",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E12",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E12",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E12",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E12",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E12",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E13",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E13",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E13",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E13",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E13",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E13",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E13",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E13",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E13",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E13",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E13",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E13",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E14",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E14",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E14",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E14",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E14",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E14",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E14",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E14",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E14",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E14",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E14",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E14",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E15",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E15",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E15",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E15",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E15",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E15",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E15",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E15",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E15",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E15",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E15",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E15",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E16",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E16",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E16",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E16",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E16",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E16",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E16",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E16",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E16",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E16",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E16",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E16",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E17",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E17",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E17",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E17",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E17",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E17",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E17",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E17",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E17",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E17",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E17",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E17",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E18",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E18",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E18",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E18",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E18",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E18",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E18",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E18",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E18",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E18",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E18",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E18",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E19",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E19",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E19",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E19",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E19",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E19",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E19",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E19",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E19",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E19",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E19",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E19",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E20",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E20",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E20",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E20",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E20",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E20",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E20",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E20",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E20",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E20",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E20",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E20",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E21",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E21",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E21",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E21",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E21",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E21",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E21",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E21",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E21",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E21",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E21",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E21",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E22",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E22",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E22",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E22",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E22",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E22",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E22",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E22",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E22",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E22",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E22",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E22",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E23",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E23",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E23",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E23",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E23",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E23",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E23",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E23",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E23",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E23",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E23",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E23",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E24",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E24",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E24",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E24",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E24",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E24",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E24",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E24",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E24",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E24",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E24",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E24",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E25",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E25",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E25",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E25",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E25",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E25",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E25",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E25",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E25",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E25",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E25",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E25",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E26",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E26",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E26",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E26",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E26",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E26",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E26",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E26",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E26",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E26",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E26",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E26",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E27",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E27",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E27",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E27",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E27",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E27",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E27",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E27",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E27",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E27",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E27",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E27",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E28",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E28",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E28",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E28",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E28",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E28",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E28",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E28",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E28",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E28",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E28",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E28",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E29",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E29",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E29",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E29",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E29",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E29",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E29",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E29",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E29",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E29",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E29",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E29",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E30",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E30",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E30",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E30",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E30",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E30",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E30",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E30",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E30",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E30",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E30",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E30",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E31",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E31",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E31",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E31",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E31",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E31",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E31",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E31",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E31",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E31",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E31",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E31",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E32",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E32",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E32",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E32",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E32",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E32",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E32",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E32",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E32",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E32",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E32",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E32",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E33",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E33",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E33",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E33",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E33",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E33",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E33",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E33",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E33",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E33",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E33",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E33",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E34",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E34",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E34",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E34",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E34",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E34",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E34",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E34",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E34",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E34",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E34",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E34",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E35",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E35",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E35",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E35",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E35",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E35",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E35",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E35",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E35",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E35",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E35",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E35",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E36",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E36",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E36",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E36",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E36",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E36",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E36",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E36",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E36",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E36",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E36",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E36",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E37",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E37",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E37",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E37",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E37",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E37",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E37",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E37",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E37",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E37",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E37",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E37",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E38",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E38",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E38",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E38",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E38",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E38",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E38",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E38",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E38",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E38",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E38",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E38",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E39",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E39",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E39",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E39",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E39",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E39",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E39",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E39",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E39",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E39",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E39",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E39",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E40",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E40",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E40",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E40",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E40",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E40",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E40",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E40",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E40",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E40",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E40",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E40",
+      "document": "float",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "close-float",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "close-float",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "close-float",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "close-float",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "close-float",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "close-float",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E41",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E41",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E41",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E41",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E41",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E41",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-float",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-float",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-float",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-float",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-float",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-float",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-float",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-float",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-float",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-float",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-float",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-float",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E42",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E42",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E42",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E42",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E42",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E42",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E42",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E42",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E42",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E42",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E42",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E42",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E43",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E43",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E43",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E43",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E43",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E43",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E43",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E43",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E43",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E43",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E43",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E43",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E44",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E44",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E44",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E44",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E44",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E44",
+      "document": "int",
+      "revision": 1,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E44",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E44",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E44",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E44",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E44",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E44",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "close-int",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "close-int",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "close-int",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "close-int",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "close-int",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "close-int",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E45",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E45",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E45",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E45",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E45",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E45",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-int",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-int",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-int",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-int",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-int",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-int",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-int",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-int",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-int",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-int",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-int",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "reinstall-int",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E46",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E46",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E46",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E46",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E46",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E46",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E46",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E46",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E46",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E46",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E46",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E46",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E47",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E47",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E47",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E47",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E47",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E47",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E47",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E47",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E47",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E47",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E47",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E47",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E48",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E48",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E48",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E48",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E48",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E48",
+      "document": "float",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "float",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E48",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-16",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E48",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-17",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E48",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-18",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E48",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-20",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E48",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-21",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    },
+    {
+      "step_id": "E48",
+      "document": "int",
+      "revision": 2,
+      "anchor": "root/obj-2/obj-33",
+      "match": true,
+      "semantic_tag": "int",
+      "receipt_tag_observed": false
+    }
+  ],
+  "destination_outputs": [
+    {
+      "step_id": "E08",
+      "document": "int",
+      "revision": 1,
+      "native_output_order": true,
+      "reference_output_order": true,
+      "native_only_input_order": true,
+      "match": true
+    },
+    {
+      "step_id": "E09",
+      "document": "int",
+      "revision": 1,
+      "native_output_order": true,
+      "reference_output_order": true,
+      "native_only_input_order": true,
+      "match": true
+    },
+    {
+      "step_id": "E10",
+      "document": "int",
+      "revision": 1,
+      "native_output_order": true,
+      "reference_output_order": true,
+      "native_only_input_order": true,
+      "match": true
+    },
+    {
+      "step_id": "E11",
+      "document": "int",
+      "revision": 1,
+      "native_output_order": true,
+      "reference_output_order": true,
+      "native_only_input_order": true,
+      "match": true
+    },
+    {
+      "step_id": "E13",
+      "document": "int",
+      "revision": 1,
+      "native_output_order": true,
+      "reference_output_order": true,
+      "native_only_input_order": true,
+      "match": true
+    },
+    {
+      "step_id": "E14",
+      "document": "int",
+      "revision": 1,
+      "native_output_order": true,
+      "reference_output_order": true,
+      "native_only_input_order": true,
+      "match": true
+    },
+    {
+      "step_id": "E16",
+      "document": "int",
+      "revision": 1,
+      "native_output_order": true,
+      "reference_output_order": true,
+      "native_only_input_order": true,
+      "match": true
+    },
+    {
+      "step_id": "E17",
+      "document": "int",
+      "revision": 1,
+      "native_output_order": true,
+      "reference_output_order": true,
+      "native_only_input_order": true,
+      "match": true
+    },
+    {
+      "step_id": "E18",
+      "document": "int",
+      "revision": 1,
+      "native_output_order": true,
+      "reference_output_order": true,
+      "native_only_input_order": true,
+      "match": true
+    },
+    {
+      "step_id": "E19",
+      "document": "float",
+      "revision": 1,
+      "native_output_order": true,
+      "reference_output_order": true,
+      "native_only_input_order": true,
+      "match": true
+    },
+    {
+      "step_id": "E20",
+      "document": "float",
+      "revision": 1,
+      "native_output_order": true,
+      "reference_output_order": true,
+      "native_only_input_order": true,
+      "match": true
+    },
+    {
+      "step_id": "E21",
+      "document": "float",
+      "revision": 1,
+      "native_output_order": true,
+      "reference_output_order": true,
+      "native_only_input_order": true,
+      "match": true
+    },
+    {
+      "step_id": "E22",
+      "document": "float",
+      "revision": 1,
+      "native_output_order": true,
+      "reference_output_order": true,
+      "native_only_input_order": true,
+      "match": true
+    },
+    {
+      "step_id": "E24",
+      "document": "float",
+      "revision": 1,
+      "native_output_order": true,
+      "reference_output_order": true,
+      "native_only_input_order": true,
+      "match": true
+    },
+    {
+      "step_id": "E25",
+      "document": "float",
+      "revision": 1,
+      "native_output_order": true,
+      "reference_output_order": true,
+      "native_only_input_order": true,
+      "match": true
+    },
+    {
+      "step_id": "E27",
+      "document": "float",
+      "revision": 1,
+      "native_output_order": true,
+      "reference_output_order": true,
+      "native_only_input_order": true,
+      "match": true
+    },
+    {
+      "step_id": "E28",
+      "document": "float",
+      "revision": 1,
+      "native_output_order": true,
+      "reference_output_order": true,
+      "native_only_input_order": true,
+      "match": true
+    },
+    {
+      "step_id": "E30",
+      "document": "int",
+      "revision": 1,
+      "native_output_order": true,
+      "reference_output_order": true,
+      "native_only_input_order": true,
+      "match": true
+    },
+    {
+      "step_id": "E32",
+      "document": "float",
+      "revision": 1,
+      "native_output_order": true,
+      "reference_output_order": true,
+      "native_only_input_order": true,
+      "match": true
+    },
+    {
+      "step_id": "E43",
+      "document": "float",
+      "revision": 2,
+      "native_output_order": true,
+      "reference_output_order": true,
+      "native_only_input_order": true,
+      "match": true
+    },
+    {
+      "step_id": "E47",
+      "document": "int",
+      "revision": 2,
+      "native_output_order": true,
+      "reference_output_order": true,
+      "native_only_input_order": true,
+      "match": true
+    }
+  ],
+  "all_endpoint_values_match": true,
+  "all_numeric_states_match": true,
+  "all_message_prototypes_unchanged": true,
+  "all_destination_outputs_ordered": true,
+  "native_only_destination_inputs_ordered": true,
+  "unknown_numeric_tag_comparisons": 0,
+  "runtime_retention": {
+    "method": "runtime-object-and-endpoint-inventory",
+    "checkpoint_count": 102,
+    "input_endpoint_multisets_verified": true,
+    "output_endpoint_multisets_verified": true,
+    "all_revision_working_files_unchanged": true
+  },
+  "saved_order_observed": false,
+  "all_serialized_message_states_match": null,
+  "complete_installed_help_qualification_passes_added": 0,
+  "limitations": [
+    "Numeric getter semantic tags come from classes; receipt tags are measured separately.",
+    "Unknown numeric list tags remain unknown even when endpoint values match.",
+    "Direct destination output order applies only to the 21 scored immediate-control pairs.",
+    "Native destination input order is native-only; no portable interdocument named-receiver order is claimed.",
+    "Runtime endpoint inventory does not expose saved cable order; saved_order_observed=false.",
+    "Message prototype hashes establish content retention, not serialized state or rendering.",
+    "Saved authoring, physical entry/drag/Tab, shared views, fonts/layout, metadata and whole-help qualification remain unresolved."
+  ],
+  "input_bindings": {
+    "score_sha256": "0ea52e269e960d64f7a55f137a1925d2186119cd6d960afabc21730e3c2fad30",
+    "native_sha256": "5fc133b2909ec845150541068a16b3ec391435142eeabfb8e4cb924b63df0726",
+    "reference_files": {
+      "session.json": "b50a6afe31c422e507ac08c356f18b349bfd7b308fc09479638a5fdb1131cbde",
+      "receipts.jsonl": "86c6ecf7005ab5334a988876ac1f34892348f98ecc808fad25280d2db78275a6",
+      "display-states.json": "7012e5dbf6779c77b7e5beeab41a6d70c71426068b970470d9fcac0c25d61efa",
+      "cleanup.json": "740ebf9518f20c3364d61af1e1a04ad9310ecb6fe0660878e3e37cd3e8bc02b1"
+    }
+  },
+  "all_comparison_gates_pass": true
+}

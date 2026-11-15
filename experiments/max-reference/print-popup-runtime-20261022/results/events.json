@@ -1,0 +1,1731 @@
+[
+  {
+    "stage": "initial",
+    "elapsed_ms": 13161,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680073,
+        "name": "Max Console"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 1,
+      "name": "PointerRoot"
+    }
+  },
+  {
+    "action": {
+      "id": 1,
+      "op": "command",
+      "stage": "quiet-message",
+      "command": {
+        "id": 1,
+        "op": "message",
+        "target": "quiet",
+        "selector": "int",
+        "atoms": [
+          17
+        ]
+      }
+    }
+  },
+  {
+    "stage": "quiet-message",
+    "elapsed_ms": 20864,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680073,
+        "name": "Max Console"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 1,
+      "name": "PointerRoot"
+    }
+  },
+  {
+    "action": {
+      "id": 2,
+      "op": "command",
+      "stage": "default-message",
+      "command": {
+        "id": 2,
+        "op": "message",
+        "target": "default",
+        "selector": "int",
+        "atoms": [
+          29
+        ]
+      }
+    }
+  },
+  {
+    "stage": "default-message",
+    "elapsed_ms": 21775,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680073,
+        "name": "Max Console"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 1,
+      "name": "PointerRoot"
+    }
+  },
+  {
+    "action": {
+      "id": 3,
+      "op": "command",
+      "stage": "popup-message",
+      "command": {
+        "id": 3,
+        "op": "message",
+        "target": "popup",
+        "selector": "int",
+        "atoms": [
+          31
+        ]
+      }
+    }
+  },
+  {
+    "stage": "popup-message",
+    "elapsed_ms": 22703,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680073,
+        "name": "Max Console"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 1,
+      "name": "PointerRoot"
+    }
+  },
+  {
+    "action": {
+      "id": 4,
+      "op": "command",
+      "stage": "popup-selector-zero",
+      "command": {
+        "id": 4,
+        "op": "message",
+        "target": "popup",
+        "selector": "popup",
+        "atoms": [
+          0
+        ]
+      }
+    }
+  },
+  {
+    "stage": "popup-selector-zero",
+    "elapsed_ms": 44374,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680073,
+        "name": "Max Console"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 1,
+      "name": "PointerRoot"
+    }
+  },
+  {
+    "action": {
+      "id": 5,
+      "op": "command",
+      "stage": "popup-disabled-message",
+      "command": {
+        "id": 5,
+        "op": "message",
+        "target": "popup",
+        "selector": "int",
+        "atoms": [
+          41
+        ]
+      }
+    }
+  },
+  {
+    "stage": "popup-disabled-message",
+    "elapsed_ms": 45278,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680073,
+        "name": "Max Console"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 1,
+      "name": "PointerRoot"
+    }
+  },
+  {
+    "action": {
+      "id": 6,
+      "op": "command",
+      "stage": "popup-setattr-one",
+      "command": {
+        "id": 6,
+        "op": "setattr",
+        "target": "popup",
+        "value": 1
+      }
+    }
+  },
+  {
+    "stage": "popup-setattr-one",
+    "elapsed_ms": 46214,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680073,
+        "name": "Max Console"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 1,
+      "name": "PointerRoot"
+    }
+  },
+  {
+    "action": {
+      "id": 7,
+      "op": "command",
+      "stage": "popup-bang",
+      "command": {
+        "id": 7,
+        "op": "message",
+        "target": "popup",
+        "selector": "bang",
+        "atoms": []
+      }
+    }
+  },
+  {
+    "stage": "popup-bang",
+    "elapsed_ms": 47217,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680073,
+        "name": "Max Console"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 1,
+      "name": "PointerRoot"
+    }
+  },
+  {
+    "action": {
+      "id": 8,
+      "op": "click",
+      "stage": "quiet-doubleclick",
+      "x": 420,
+      "y": 565,
+      "count": 2
+    }
+  },
+  {
+    "stage": "quiet-doubleclick",
+    "elapsed_ms": 48231,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680073,
+        "name": "Max Console"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 1,
+      "name": "PointerRoot"
+    }
+  },
+  {
+    "action": {
+      "id": 9,
+      "op": "command",
+      "stage": "popup-setattr-zero",
+      "command": {
+        "id": 9,
+        "op": "setattr",
+        "target": "popup",
+        "value": 0
+      }
+    }
+  },
+  {
+    "stage": "popup-setattr-zero",
+    "elapsed_ms": 63565,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680073,
+        "name": "Max Console"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 1,
+      "name": "PointerRoot"
+    }
+  },
+  {
+    "action": {
+      "id": 10,
+      "op": "command",
+      "stage": "popup-after-setattr-zero",
+      "command": {
+        "id": 10,
+        "op": "message",
+        "target": "popup",
+        "selector": "int",
+        "atoms": [
+          47
+        ]
+      }
+    }
+  },
+  {
+    "stage": "popup-after-setattr-zero",
+    "elapsed_ms": 64465,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680073,
+        "name": "Max Console"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 1,
+      "name": "PointerRoot"
+    }
+  },
+  {
+    "action": {
+      "id": 11,
+      "op": "focus",
+      "stage": "console-forced-focus",
+      "window": "Max Console"
+    }
+  },
+  {
+    "stage": "console-forced-focus",
+    "elapsed_ms": 65324,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      },
+      {
+        "id": 14680073,
+        "name": "Max Console"
+      }
+    ],
+    "focus": {
+      "id": 14680073,
+      "name": "Max Console"
+    }
+  },
+  {
+    "action": {
+      "id": 12,
+      "op": "keys",
+      "stage": "console-close",
+      "keys": [
+        [
+          "Control_L",
+          1
+        ],
+        [
+          "w",
+          1
+        ],
+        [
+          "w",
+          0
+        ],
+        [
+          "Control_L",
+          0
+        ]
+      ]
+    }
+  },
+  {
+    "stage": "console-close",
+    "elapsed_ms": 86230,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 927,
+      "name": ""
+    }
+  },
+  {
+    "action": {
+      "id": 13,
+      "op": "focus",
+      "stage": "patch-focused",
+      "window": "print-popup (saving disabled)"
+    }
+  },
+  {
+    "stage": "patch-focused",
+    "elapsed_ms": 87085,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 14680075,
+      "name": "print-popup (saving disabled)"
+    }
+  },
+  {
+    "action": {
+      "id": 14,
+      "op": "command",
+      "stage": "popup-reenabled",
+      "command": {
+        "id": 14,
+        "op": "setattr",
+        "target": "popup",
+        "value": 1
+      }
+    }
+  },
+  {
+    "stage": "popup-reenabled",
+    "elapsed_ms": 87984,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 14680075,
+      "name": "print-popup (saving disabled)"
+    }
+  },
+  {
+    "action": {
+      "id": 15,
+      "op": "command",
+      "stage": "popup-new-value",
+      "command": {
+        "id": 15,
+        "op": "message",
+        "target": "popup",
+        "selector": "list",
+        "atoms": [
+          53,
+          "alpha"
+        ]
+      }
+    }
+  },
+  {
+    "stage": "popup-new-value",
+    "elapsed_ms": 88902,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 14680075,
+      "name": "print-popup (saving disabled)"
+    }
+  },
+  {
+    "action": {
+      "id": 16,
+      "op": "click",
+      "stage": "blank-click",
+      "x": 850,
+      "y": 430
+    }
+  },
+  {
+    "stage": "blank-click",
+    "elapsed_ms": 91762,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 14680075,
+      "name": "print-popup (saving disabled)"
+    }
+  },
+  {
+    "action": {
+      "id": 17,
+      "op": "command",
+      "stage": "second-popup-enabled",
+      "command": {
+        "id": 17,
+        "op": "setattr",
+        "target": "quiet",
+        "value": 1
+      }
+    }
+  },
+  {
+    "stage": "second-popup-enabled",
+    "elapsed_ms": 92668,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 14680075,
+      "name": "print-popup (saving disabled)"
+    }
+  },
+  {
+    "action": {
+      "id": 18,
+      "op": "command",
+      "stage": "two-popups",
+      "command": {
+        "id": 18,
+        "op": "message",
+        "target": "quiet",
+        "selector": "int",
+        "atoms": [
+          59
+        ]
+      }
+    }
+  },
+  {
+    "stage": "two-popups",
+    "elapsed_ms": 93679,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 14680075,
+      "name": "print-popup (saving disabled)"
+    }
+  },
+  {
+    "action": {
+      "id": 19,
+      "op": "command",
+      "stage": "two-active-popups",
+      "command": {
+        "id": 19,
+        "op": "message",
+        "target": "popup",
+        "selector": "int",
+        "atoms": [
+          61
+        ]
+      }
+    }
+  },
+  {
+    "stage": "two-active-popups",
+    "elapsed_ms": 109001,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 14680075,
+      "name": "print-popup (saving disabled)"
+    }
+  },
+  {
+    "action": {
+      "id": 20,
+      "op": "command",
+      "stage": "popups-after-two-seconds",
+      "command": {
+        "id": 20,
+        "op": "snapshot"
+      }
+    }
+  },
+  {
+    "stage": "popups-after-two-seconds",
+    "elapsed_ms": 112027,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 14680075,
+      "name": "print-popup (saving disabled)"
+    }
+  },
+  {
+    "action": {
+      "id": 21,
+      "op": "click",
+      "stage": "popups-after-pointer-move",
+      "x": 1200,
+      "y": 700,
+      "count": 0
+    }
+  },
+  {
+    "stage": "popups-after-pointer-move",
+    "elapsed_ms": 112884,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 14680075,
+      "name": "print-popup (saving disabled)"
+    }
+  },
+  {
+    "action": {
+      "id": 22,
+      "op": "click",
+      "stage": "popups-after-blank-click",
+      "x": 1200,
+      "y": 700
+    }
+  },
+  {
+    "stage": "popups-after-blank-click",
+    "elapsed_ms": 113865,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 14680075,
+      "name": "print-popup (saving disabled)"
+    }
+  },
+  {
+    "action": {
+      "id": 23,
+      "op": "command",
+      "stage": "popup-before-disabled",
+      "command": {
+        "id": 23,
+        "op": "message",
+        "target": "popup",
+        "selector": "int",
+        "atoms": [
+          67
+        ]
+      }
+    }
+  },
+  {
+    "stage": "popup-before-disabled",
+    "elapsed_ms": 114817,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 14680075,
+      "name": "print-popup (saving disabled)"
+    }
+  },
+  {
+    "action": {
+      "id": 24,
+      "op": "command",
+      "stage": "popup-immediately-disabled",
+      "command": {
+        "id": 24,
+        "op": "setattr",
+        "target": "popup",
+        "value": 0
+      }
+    }
+  },
+  {
+    "stage": "popup-immediately-disabled",
+    "elapsed_ms": 115718,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 14680075,
+      "name": "print-popup (saving disabled)"
+    }
+  },
+  {
+    "action": {
+      "id": 25,
+      "op": "click",
+      "stage": "quiet-doubleclick-focused",
+      "x": 420,
+      "y": 565,
+      "count": 2
+    }
+  },
+  {
+    "stage": "quiet-doubleclick-focused",
+    "elapsed_ms": 116769,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      },
+      {
+        "id": 14680115,
+        "name": "Max Console"
+      }
+    ],
+    "focus": {
+      "id": 14680075,
+      "name": "print-popup (saving disabled)"
+    }
+  },
+  {
+    "action": {
+      "id": 26,
+      "op": "focus",
+      "stage": "patch-front-again",
+      "window": "print-popup (saving disabled)"
+    }
+  },
+  {
+    "stage": "patch-front-again",
+    "elapsed_ms": 155164,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680115,
+        "name": "Max Console"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 14680075,
+      "name": "print-popup (saving disabled)"
+    }
+  },
+  {
+    "action": {
+      "id": 27,
+      "op": "command",
+      "stage": "popup-final-enable",
+      "command": {
+        "id": 27,
+        "op": "setattr",
+        "target": "popup",
+        "value": 1
+      }
+    }
+  },
+  {
+    "stage": "popup-final-enable",
+    "elapsed_ms": 156072,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680115,
+        "name": "Max Console"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 14680075,
+      "name": "print-popup (saving disabled)"
+    }
+  },
+  {
+    "action": {
+      "id": 28,
+      "op": "command",
+      "stage": "quiet-71",
+      "command": {
+        "id": 28,
+        "op": "message",
+        "target": "quiet",
+        "selector": "int",
+        "atoms": [
+          71
+        ]
+      }
+    }
+  },
+  {
+    "stage": "quiet-71",
+    "elapsed_ms": 156974,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680115,
+        "name": "Max Console"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 14680075,
+      "name": "print-popup (saving disabled)"
+    }
+  },
+  {
+    "action": {
+      "id": 29,
+      "op": "command",
+      "stage": "two-recent-values",
+      "command": {
+        "id": 29,
+        "op": "message",
+        "target": "popup",
+        "selector": "int",
+        "atoms": [
+          73
+        ]
+      }
+    }
+  },
+  {
+    "stage": "two-recent-values",
+    "elapsed_ms": 157977,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680115,
+        "name": "Max Console"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 14680075,
+      "name": "print-popup (saving disabled)"
+    }
+  },
+  {
+    "action": {
+      "id": 30,
+      "op": "click",
+      "stage": "recent-pointer-move",
+      "x": 1300,
+      "y": 750,
+      "count": 0
+    }
+  },
+  {
+    "stage": "recent-pointer-move",
+    "elapsed_ms": 158828,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680115,
+        "name": "Max Console"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 14680075,
+      "name": "print-popup (saving disabled)"
+    }
+  },
+  {
+    "action": {
+      "id": 31,
+      "op": "command",
+      "stage": "popup-before-blank",
+      "command": {
+        "id": 31,
+        "op": "message",
+        "target": "popup",
+        "selector": "int",
+        "atoms": [
+          79
+        ]
+      }
+    }
+  },
+  {
+    "stage": "popup-before-blank",
+    "elapsed_ms": 159784,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680115,
+        "name": "Max Console"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 14680075,
+      "name": "print-popup (saving disabled)"
+    }
+  },
+  {
+    "action": {
+      "id": 32,
+      "op": "click",
+      "stage": "recent-blank-click",
+      "x": 1300,
+      "y": 750
+    }
+  },
+  {
+    "stage": "recent-blank-click",
+    "elapsed_ms": 160749,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680115,
+        "name": "Max Console"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 14680075,
+      "name": "print-popup (saving disabled)"
+    }
+  },
+  {
+    "action": {
+      "id": 33,
+      "op": "command",
+      "stage": "quiet-disable-for-doubleclick",
+      "command": {
+        "id": 33,
+        "op": "setattr",
+        "target": "quiet",
+        "value": 0
+      }
+    }
+  },
+  {
+    "stage": "quiet-disable-for-doubleclick",
+    "elapsed_ms": 161647,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680115,
+        "name": "Max Console"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 14680075,
+      "name": "print-popup (saving disabled)"
+    }
+  },
+  {
+    "action": {
+      "id": 34,
+      "op": "click",
+      "stage": "popup0-doubleclick-fronts-existing",
+      "x": 420,
+      "y": 565,
+      "count": 2
+    }
+  },
+  {
+    "stage": "popup0-doubleclick-fronts-existing",
+    "elapsed_ms": 162658,
+    "windows": [
+      {
+        "id": 8388611,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680066,
+        "name": "Default IME"
+      },
+      {
+        "id": 14680065,
+        "name": "JUCEWindow"
+      },
+      {
+        "id": 14680071,
+        "name": "DXGI device window"
+      },
+      {
+        "id": 14680072,
+        "name": "midi_mme"
+      },
+      {
+        "id": 14680115,
+        "name": "Max Console"
+      },
+      {
+        "id": 14680075,
+        "name": "print-popup (saving disabled)"
+      }
+    ],
+    "focus": {
+      "id": 14680075,
+      "name": "print-popup (saving disabled)"
+    }
+  }
+]

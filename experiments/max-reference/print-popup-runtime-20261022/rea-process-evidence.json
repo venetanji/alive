@@ -1,0 +1,1670 @@
+{
+  "evidence_id": "ev_e9fd3346c216c892ea204f47825a4a88e4b949dbe2095c8e975e8f341365c22a",
+  "subject": null,
+  "provider": {
+    "id": "rea-process",
+    "name": "REA process capture",
+    "version": "3"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.process-capture",
+  "operation": "capture_process_scenario",
+  "parameters": {
+    "executable_name": "python3",
+    "argument_count": 1,
+    "event_count": 0,
+    "filesystem_observation_path_count": 0,
+    "normalization": {
+      "paths": false,
+      "pids": true,
+      "ports": true,
+      "time_bucket_ms": 10,
+      "patterns": []
+    }
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "manifest": {
+      "rea_version": "6.4.0",
+      "provider_version": "3",
+      "platform": "linux",
+      "architecture": "x64",
+      "pty_backend": "node-pty",
+      "started_at": "2026-10-21T17:39:48.867Z",
+      "completed_at": "2026-10-21T17:42:47.280Z",
+      "scenario": {
+        "executable": "/usr/bin/python3",
+        "arguments": [
+          "experiments/max-reference/print-popup-runtime-20261022/run-runtime.py"
+        ],
+        "working_directory": "/home/venetanji/Work/alive",
+        "environment": {},
+        "filesystem_observation_paths": [],
+        "terminal": {
+          "columns": 140,
+          "rows": 24,
+          "scrollback": 200
+        },
+        "events": [],
+        "timeout_ms": 290000,
+        "idle_timeout_ms": 270000,
+        "settle_ms": 100,
+        "limits": {
+          "output_bytes": 50000,
+          "files": 20,
+          "file_bytes": 100000,
+          "processes": 128,
+          "filesystem_depth": 1
+        },
+        "normalization": {
+          "paths": false,
+          "pids": true,
+          "ports": true,
+          "time_bucket_ms": 10,
+          "patterns": []
+        },
+        "finalization_ms": 10000,
+        "executable_sha256": "375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b"
+      },
+      "comparison_contract": {
+        "working_directory": "/home/venetanji/Work/alive",
+        "environment": {},
+        "ambient_environment": "unknown",
+        "filesystem_observation_paths": [],
+        "terminal": {
+          "columns": 140,
+          "rows": 24,
+          "scrollback": 200
+        },
+        "events": [],
+        "timeout_ms": 290000,
+        "idle_timeout_ms": 270000,
+        "settle_ms": 100,
+        "finalization_ms": 10000,
+        "limits": {
+          "output_bytes": 50000,
+          "files": 20,
+          "file_bytes": 100000,
+          "processes": 128,
+          "filesystem_depth": 1
+        },
+        "normalization": {
+          "paths": false,
+          "pids": true,
+          "ports": true,
+          "time_bucket_ms": 10,
+          "patterns": []
+        },
+        "port_normalization_version": "contextual-endpoints-v2",
+        "rendered_line_format": "trailing-spaces-trimmed-v1"
+      },
+      "full_scenario_sha256": "47b724088c24832478a75ff0a070689d5fed7ab84d41e2e0c4dc1300d9264572",
+      "comparison_contract_sha256": "3ca34d58d413911f6f18fd9d42857328a05f749853180f27b77c2464a2e6a42d",
+      "selected_executable_sha256": "375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b",
+      "executable_sha256": "375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b",
+      "executable_identity": {
+        "state": "path_metadata_unchanged",
+        "reason": null
+      },
+      "normalization_sha256": "5c58aa1aa890197f15f9c59ef755d01120e6e07f356fa1ef2f20787e63b6fa87"
+    },
+    "normalization": {
+      "paths": false,
+      "pids": true,
+      "ports": true,
+      "time_bucket_ms": 10,
+      "patterns": []
+    },
+    "frames": [
+      {
+        "sequence": 0,
+        "at_ms": 140,
+        "data": "{\"display\": \":0\", \"xvfb_pid\": 2759427, \"launcher_pid\": 2759442, \"prefix\": \"/home/venetanji/.cache/alive-max-print-popup-20261022-attempt2-wine-disposable\"}\r\n"
+      },
+      {
+        "sequence": 1,
+        "at_ms": 13300,
+        "data": "{\"stage\": \"initial\", \"elapsed_ms\": 13161, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n"
+      },
+      {
+        "sequence": 2,
+        "at_ms": 21010,
+        "data": "{\"stage\": \"quiet-message\", \"elapsed_ms\": 20864, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n"
+      },
+      {
+        "sequence": 3,
+        "at_ms": 21920,
+        "data": "{\"stage\": \"default-message\", \"elapsed_ms\": 21775, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n"
+      },
+      {
+        "sequence": 4,
+        "at_ms": 22850,
+        "data": "{\"stage\": \"popup-message\", \"elapsed_ms\": 22703, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n"
+      },
+      {
+        "sequence": 5,
+        "at_ms": 44520,
+        "data": "{\"stage\": \"popup-selector-zero\", \"elapsed_ms\": 44374, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n"
+      },
+      {
+        "sequence": 6,
+        "at_ms": 45420,
+        "data": "{\"stage\": \"popup-disabled-message\", \"elapsed_ms\": 45278, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n"
+      },
+      {
+        "sequence": 7,
+        "at_ms": 46360,
+        "data": "{\"stage\": \"popup-setattr-one\", \"elapsed_ms\": 46214, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n"
+      },
+      {
+        "sequence": 8,
+        "at_ms": 47360,
+        "data": "{\"stage\": \"popup-bang\", \"elapsed_ms\": 47217, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n"
+      },
+      {
+        "sequence": 9,
+        "at_ms": 48370,
+        "data": "{\"stage\": \"quiet-doubleclick\", \"elapsed_ms\": 48231, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n"
+      },
+      {
+        "sequence": 10,
+        "at_ms": 63710,
+        "data": "{\"stage\": \"popup-setattr-zero\", \"elapsed_ms\": 63565, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n"
+      },
+      {
+        "sequence": 11,
+        "at_ms": 64610,
+        "data": "{\"stage\": \"popup-after-setattr-zero\", \"elapsed_ms\": 64465, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n"
+      },
+      {
+        "sequence": 12,
+        "at_ms": 65470,
+        "data": "{\"stage\": \"console-forced-focus\", \"elapsed_ms\": 65324, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}, {\"id\": 14680073, \"name\": \"Max Console\"}], \"focus\": {\"id\": 14680073, \"name\": \"Max Console\"}}\r\n"
+      },
+      {
+        "sequence": 13,
+        "at_ms": 86370,
+        "data": "{\"stage\": \"console-close\", \"elapsed_ms\": 86230, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 927, \"name\": \"\"}}\r\n"
+      },
+      {
+        "sequence": 14,
+        "at_ms": 87230,
+        "data": "{\"stage\": \"patch-focused\", \"elapsed_ms\": 87085, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}}\r\n"
+      },
+      {
+        "sequence": 15,
+        "at_ms": 88130,
+        "data": "{\"stage\": \"popup-reenabled\", \"elapsed_ms\": 87984, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}}\r\n"
+      },
+      {
+        "sequence": 16,
+        "at_ms": 89050,
+        "data": "{\"stage\": \"popup-new-value\", \"elapsed_ms\": 88902, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}}\r\n"
+      },
+      {
+        "sequence": 17,
+        "at_ms": 91910,
+        "data": "{\"stage\": \"blank-click\", \"elapsed_ms\": 91762, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}}\r\n"
+      },
+      {
+        "sequence": 18,
+        "at_ms": 92810,
+        "data": "{\"stage\": \"second-popup-enabled\", \"elapsed_ms\": 92668, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}}\r\n"
+      },
+      {
+        "sequence": 19,
+        "at_ms": 93820,
+        "data": "{\"stage\": \"two-popups\", \"elapsed_ms\": 93679, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}}\r\n"
+      },
+      {
+        "sequence": 20,
+        "at_ms": 109140,
+        "data": "{\"stage\": \"two-active-popups\", \"elapsed_ms\": 109001, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}}\r\n"
+      },
+      {
+        "sequence": 21,
+        "at_ms": 112170,
+        "data": "{\"stage\": \"popups-after-two-seconds\", \"elapsed_ms\": 112027, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}}\r\n"
+      },
+      {
+        "sequence": 22,
+        "at_ms": 113030,
+        "data": "{\"stage\": \"popups-after-pointer-move\", \"elapsed_ms\": 112884, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}}\r\n"
+      },
+      {
+        "sequence": 23,
+        "at_ms": 114010,
+        "data": "{\"stage\": \"popups-after-blank-click\", \"elapsed_ms\": 113865, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}}\r\n"
+      },
+      {
+        "sequence": 24,
+        "at_ms": 114960,
+        "data": "{\"stage\": \"popup-before-disabled\", \"elapsed_ms\": 114817, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}}\r\n"
+      },
+      {
+        "sequence": 25,
+        "at_ms": 115860,
+        "data": "{\"stage\": \"popup-immediately-disabled\", \"elapsed_ms\": 115718, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}}\r\n"
+      },
+      {
+        "sequence": 26,
+        "at_ms": 116910,
+        "data": "{\"stage\": \"quiet-doubleclick-focused\", \"elapsed_ms\": 116769, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}, {\"id\": 14680115, \"name\": \"Max Console\"}], \"focus\": {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}}\r\n"
+      },
+      {
+        "sequence": 27,
+        "at_ms": 155310,
+        "data": "{\"stage\": \"patch-front-again\", \"elapsed_ms\": 155164, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680115, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}}\r\n"
+      },
+      {
+        "sequence": 28,
+        "at_ms": 156220,
+        "data": "{\"stage\": \"popup-final-enable\", \"elapsed_ms\": 156072, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680115, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}}\r\n"
+      },
+      {
+        "sequence": 29,
+        "at_ms": 157120,
+        "data": "{\"stage\": \"quiet-71\", \"elapsed_ms\": 156974, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680115, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}}\r\n"
+      },
+      {
+        "sequence": 30,
+        "at_ms": 158120,
+        "data": "{\"stage\": \"two-recent-values\", \"elapsed_ms\": 157977, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680115, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}}\r\n"
+      },
+      {
+        "sequence": 31,
+        "at_ms": 158970,
+        "data": "{\"stage\": \"recent-pointer-move\", \"elapsed_ms\": 158828, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680115, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}}\r\n"
+      },
+      {
+        "sequence": 32,
+        "at_ms": 159930,
+        "data": "{\"stage\": \"popup-before-blank\", \"elapsed_ms\": 159784, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680115, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}}\r\n"
+      },
+      {
+        "sequence": 33,
+        "at_ms": 160890,
+        "data": "{\"stage\": \"recent-blank-click\", \"elapsed_ms\": 160749, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680115, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}}\r\n"
+      },
+      {
+        "sequence": 34,
+        "at_ms": 161790,
+        "data": "{\"stage\": \"quiet-disable-for-doubleclick\", \"elapsed_ms\": 161647, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680115, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}}\r\n"
+      },
+      {
+        "sequence": 35,
+        "at_ms": 162800,
+        "data": "{\"stage\": \"popup0-doubleclick-fronts-existing\", \"elapsed_ms\": 162658, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680115, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}}\r\n"
+      },
+      {
+        "sequence": 36,
+        "at_ms": 178250,
+        "data": "{\"max_exit\": -9, \"stages\": 35}\r\n"
+      }
+    ],
+    "rendered_frames": [
+      {
+        "sequence": 0,
+        "at_ms": 140,
+        "columns": 140,
+        "rows": 24,
+        "cursor_x": 0,
+        "cursor_y": 2,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"display\": \":0\", \"xvfb_pid\": 2759427, \"launcher_pid\": 2759442, \"prefix\": \"/home/venetanji/.cache/alive-max-print-popup-20261022-attempt2-wi",
+          "ne-disposable\"}",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"display\": \":0\", \"xvfb_pid\": 2759427, \"launcher_pid\": 2759442, \"prefix\": \"/home/venetanji/.cache/alive-max-print-popup-20261022-attempt2-wine-disposable\"}\u001b[1B\u001b[15D"
+      },
+      {
+        "sequence": 1,
+        "at_ms": 13300,
+        "columns": 140,
+        "rows": 24,
+        "cursor_x": 0,
+        "cursor_y": 5,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"display\": \":0\", \"xvfb_pid\": 2759427, \"launcher_pid\": 2759442, \"prefix\": \"/home/venetanji/.cache/alive-max-print-popup-20261022-attempt2-wi",
+          "ne-disposable\"}",
+          "{\"stage\": \"initial\", \"elapsed_ms\": 13161, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\"",
+          ": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"n",
+          "ame\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"display\": \":0\", \"xvfb_pid\": 2759427, \"launcher_pid\": 2759442, \"prefix\": \"/home/venetanji/.cache/alive-max-print-popup-20261022-attempt2-wine-disposable\"}\r\n{\"stage\": \"initial\", \"elapsed_ms\": 13161, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\u001b[1B\u001b[124D"
+      },
+      {
+        "sequence": 2,
+        "at_ms": 21010,
+        "columns": 140,
+        "rows": 24,
+        "cursor_x": 0,
+        "cursor_y": 8,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"display\": \":0\", \"xvfb_pid\": 2759427, \"launcher_pid\": 2759442, \"prefix\": \"/home/venetanji/.cache/alive-max-print-popup-20261022-attempt2-wi",
+          "ne-disposable\"}",
+          "{\"stage\": \"initial\", \"elapsed_ms\": 13161, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\"",
+          ": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"n",
+          "ame\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"quiet-message\", \"elapsed_ms\": 20864, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"},",
+          " {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 146800",
+          "73, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"display\": \":0\", \"xvfb_pid\": 2759427, \"launcher_pid\": 2759442, \"prefix\": \"/home/venetanji/.cache/alive-max-print-popup-20261022-attempt2-wine-disposable\"}\r\n{\"stage\": \"initial\", \"elapsed_ms\": 13161, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"quiet-message\", \"elapsed_ms\": 20864, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\u001b[1B\u001b[130D"
+      },
+      {
+        "sequence": 3,
+        "at_ms": 21920,
+        "columns": 140,
+        "rows": 24,
+        "cursor_x": 0,
+        "cursor_y": 11,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"display\": \":0\", \"xvfb_pid\": 2759427, \"launcher_pid\": 2759442, \"prefix\": \"/home/venetanji/.cache/alive-max-print-popup-20261022-attempt2-wi",
+          "ne-disposable\"}",
+          "{\"stage\": \"initial\", \"elapsed_ms\": 13161, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\"",
+          ": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"n",
+          "ame\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"quiet-message\", \"elapsed_ms\": 20864, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"},",
+          " {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 146800",
+          "73, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"default-message\", \"elapsed_ms\": 21775, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"",
+          "}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 1468",
+          "0073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"display\": \":0\", \"xvfb_pid\": 2759427, \"launcher_pid\": 2759442, \"prefix\": \"/home/venetanji/.cache/alive-max-print-popup-20261022-attempt2-wine-disposable\"}\r\n{\"stage\": \"initial\", \"elapsed_ms\": 13161, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"quiet-message\", \"elapsed_ms\": 20864, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"default-message\", \"elapsed_ms\": 21775, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\u001b[1B\u001b[132D"
+      },
+      {
+        "sequence": 4,
+        "at_ms": 22850,
+        "columns": 140,
+        "rows": 24,
+        "cursor_x": 0,
+        "cursor_y": 14,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"display\": \":0\", \"xvfb_pid\": 2759427, \"launcher_pid\": 2759442, \"prefix\": \"/home/venetanji/.cache/alive-max-print-popup-20261022-attempt2-wi",
+          "ne-disposable\"}",
+          "{\"stage\": \"initial\", \"elapsed_ms\": 13161, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\"",
+          ": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"n",
+          "ame\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"quiet-message\", \"elapsed_ms\": 20864, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"},",
+          " {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 146800",
+          "73, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"default-message\", \"elapsed_ms\": 21775, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"",
+          "}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 1468",
+          "0073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-message\", \"elapsed_ms\": 22703, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"},",
+          " {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 146800",
+          "73, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"display\": \":0\", \"xvfb_pid\": 2759427, \"launcher_pid\": 2759442, \"prefix\": \"/home/venetanji/.cache/alive-max-print-popup-20261022-attempt2-wine-disposable\"}\r\n{\"stage\": \"initial\", \"elapsed_ms\": 13161, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"quiet-message\", \"elapsed_ms\": 20864, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"default-message\", \"elapsed_ms\": 21775, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-message\", \"elapsed_ms\": 22703, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\u001b[1B\u001b[130D"
+      },
+      {
+        "sequence": 5,
+        "at_ms": 44520,
+        "columns": 140,
+        "rows": 24,
+        "cursor_x": 0,
+        "cursor_y": 17,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"display\": \":0\", \"xvfb_pid\": 2759427, \"launcher_pid\": 2759442, \"prefix\": \"/home/venetanji/.cache/alive-max-print-popup-20261022-attempt2-wi",
+          "ne-disposable\"}",
+          "{\"stage\": \"initial\", \"elapsed_ms\": 13161, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\"",
+          ": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"n",
+          "ame\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"quiet-message\", \"elapsed_ms\": 20864, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"},",
+          " {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 146800",
+          "73, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"default-message\", \"elapsed_ms\": 21775, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"",
+          "}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 1468",
+          "0073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-message\", \"elapsed_ms\": 22703, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"},",
+          " {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 146800",
+          "73, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-selector-zero\", \"elapsed_ms\": 44374, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default",
+          "IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\":",
+          "14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"display\": \":0\", \"xvfb_pid\": 2759427, \"launcher_pid\": 2759442, \"prefix\": \"/home/venetanji/.cache/alive-max-print-popup-20261022-attempt2-wine-disposable\"}\r\n{\"stage\": \"initial\", \"elapsed_ms\": 13161, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"quiet-message\", \"elapsed_ms\": 20864, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"default-message\", \"elapsed_ms\": 21775, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-message\", \"elapsed_ms\": 22703, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-selector-zero\", \"elapsed_ms\": 44374, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\u001b[1B\u001b[136D"
+      },
+      {
+        "sequence": 6,
+        "at_ms": 45420,
+        "columns": 140,
+        "rows": 24,
+        "cursor_x": 0,
+        "cursor_y": 20,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"display\": \":0\", \"xvfb_pid\": 2759427, \"launcher_pid\": 2759442, \"prefix\": \"/home/venetanji/.cache/alive-max-print-popup-20261022-attempt2-wi",
+          "ne-disposable\"}",
+          "{\"stage\": \"initial\", \"elapsed_ms\": 13161, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\"",
+          ": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"n",
+          "ame\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"quiet-message\", \"elapsed_ms\": 20864, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"},",
+          " {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 146800",
+          "73, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"default-message\", \"elapsed_ms\": 21775, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"",
+          "}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 1468",
+          "0073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-message\", \"elapsed_ms\": 22703, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"},",
+          " {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 146800",
+          "73, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-selector-zero\", \"elapsed_ms\": 44374, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default",
+          "IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\":",
+          "14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-disabled-message\", \"elapsed_ms\": 45278, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Defau",
+          "lt IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id",
+          "\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"display\": \":0\", \"xvfb_pid\": 2759427, \"launcher_pid\": 2759442, \"prefix\": \"/home/venetanji/.cache/alive-max-print-popup-20261022-attempt2-wine-disposable\"}\r\n{\"stage\": \"initial\", \"elapsed_ms\": 13161, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"quiet-message\", \"elapsed_ms\": 20864, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"default-message\", \"elapsed_ms\": 21775, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-message\", \"elapsed_ms\": 22703, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-selector-zero\", \"elapsed_ms\": 44374, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-disabled-message\", \"elapsed_ms\": 45278, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\u001b[1B\u001b[139D"
+      },
+      {
+        "sequence": 7,
+        "at_ms": 46360,
+        "columns": 140,
+        "rows": 24,
+        "cursor_x": 0,
+        "cursor_y": 23,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"display\": \":0\", \"xvfb_pid\": 2759427, \"launcher_pid\": 2759442, \"prefix\": \"/home/venetanji/.cache/alive-max-print-popup-20261022-attempt2-wi",
+          "ne-disposable\"}",
+          "{\"stage\": \"initial\", \"elapsed_ms\": 13161, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\"",
+          ": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"n",
+          "ame\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"quiet-message\", \"elapsed_ms\": 20864, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"},",
+          " {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 146800",
+          "73, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"default-message\", \"elapsed_ms\": 21775, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"",
+          "}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 1468",
+          "0073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-message\", \"elapsed_ms\": 22703, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"},",
+          " {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 146800",
+          "73, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-selector-zero\", \"elapsed_ms\": 44374, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default",
+          "IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\":",
+          "14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-disabled-message\", \"elapsed_ms\": 45278, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Defau",
+          "lt IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id",
+          "\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-setattr-one\", \"elapsed_ms\": 46214, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IM",
+          "E\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14",
+          "680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          ""
+        ],
+        "serialized_state": "{\"display\": \":0\", \"xvfb_pid\": 2759427, \"launcher_pid\": 2759442, \"prefix\": \"/home/venetanji/.cache/alive-max-print-popup-20261022-attempt2-wine-disposable\"}\r\n{\"stage\": \"initial\", \"elapsed_ms\": 13161, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"quiet-message\", \"elapsed_ms\": 20864, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"default-message\", \"elapsed_ms\": 21775, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-message\", \"elapsed_ms\": 22703, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-selector-zero\", \"elapsed_ms\": 44374, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-disabled-message\", \"elapsed_ms\": 45278, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-setattr-one\", \"elapsed_ms\": 46214, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\u001b[1B\u001b[134D"
+      },
+      {
+        "sequence": 8,
+        "at_ms": 47360,
+        "columns": 140,
+        "rows": 24,
+        "cursor_x": 0,
+        "cursor_y": 23,
+        "active_buffer": "normal",
+        "lines": [
+          ": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"n",
+          "ame\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"quiet-message\", \"elapsed_ms\": 20864, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"},",
+          " {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 146800",
+          "73, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"default-message\", \"elapsed_ms\": 21775, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"",
+          "}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 1468",
+          "0073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-message\", \"elapsed_ms\": 22703, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"},",
+          " {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 146800",
+          "73, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-selector-zero\", \"elapsed_ms\": 44374, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default",
+          "IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\":",
+          "14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-disabled-message\", \"elapsed_ms\": 45278, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Defau",
+          "lt IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id",
+          "\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-setattr-one\", \"elapsed_ms\": 46214, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IM",
+          "E\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14",
+          "680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-bang\", \"elapsed_ms\": 47217, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"",
+          "id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073,",
+          " \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          ""
+        ],
+        "serialized_state": "{\"display\": \":0\", \"xvfb_pid\": 2759427, \"launcher_pid\": 2759442, \"prefix\": \"/home/venetanji/.cache/alive-max-print-popup-20261022-attempt2-wine-disposable\"}\r\n{\"stage\": \"initial\", \"elapsed_ms\": 13161, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"quiet-message\", \"elapsed_ms\": 20864, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"default-message\", \"elapsed_ms\": 21775, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-message\", \"elapsed_ms\": 22703, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-selector-zero\", \"elapsed_ms\": 44374, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-disabled-message\", \"elapsed_ms\": 45278, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-setattr-one\", \"elapsed_ms\": 46214, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-bang\", \"elapsed_ms\": 47217, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n"
+      },
+      {
+        "sequence": 9,
+        "at_ms": 48370,
+        "columns": 140,
+        "rows": 24,
+        "cursor_x": 0,
+        "cursor_y": 23,
+        "active_buffer": "normal",
+        "lines": [
+          " {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 146800",
+          "73, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"default-message\", \"elapsed_ms\": 21775, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"",
+          "}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 1468",
+          "0073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-message\", \"elapsed_ms\": 22703, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"},",
+          " {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 146800",
+          "73, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-selector-zero\", \"elapsed_ms\": 44374, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default",
+          "IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\":",
+          "14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-disabled-message\", \"elapsed_ms\": 45278, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Defau",
+          "lt IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id",
+          "\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-setattr-one\", \"elapsed_ms\": 46214, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IM",
+          "E\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14",
+          "680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-bang\", \"elapsed_ms\": 47217, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"",
+          "id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073,",
+          " \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"quiet-doubleclick\", \"elapsed_ms\": 48231, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IM",
+          "E\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14",
+          "680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          ""
+        ],
+        "serialized_state": "{\"display\": \":0\", \"xvfb_pid\": 2759427, \"launcher_pid\": 2759442, \"prefix\": \"/home/venetanji/.cache/alive-max-print-popup-20261022-attempt2-wine-disposable\"}\r\n{\"stage\": \"initial\", \"elapsed_ms\": 13161, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"quiet-message\", \"elapsed_ms\": 20864, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"default-message\", \"elapsed_ms\": 21775, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-message\", \"elapsed_ms\": 22703, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-selector-zero\", \"elapsed_ms\": 44374, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-disabled-message\", \"elapsed_ms\": 45278, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-setattr-one\", \"elapsed_ms\": 46214, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-bang\", \"elapsed_ms\": 47217, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"quiet-doubleclick\", \"elapsed_ms\": 48231, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n"
+      },
+      {
+        "sequence": 10,
+        "at_ms": 63710,
+        "columns": 140,
+        "rows": 24,
+        "cursor_x": 0,
+        "cursor_y": 23,
+        "active_buffer": "normal",
+        "lines": [
+          "}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 1468",
+          "0073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-message\", \"elapsed_ms\": 22703, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"},",
+          " {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 146800",
+          "73, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-selector-zero\", \"elapsed_ms\": 44374, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default",
+          "IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\":",
+          "14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-disabled-message\", \"elapsed_ms\": 45278, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Defau",
+          "lt IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id",
+          "\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-setattr-one\", \"elapsed_ms\": 46214, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IM",
+          "E\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14",
+          "680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-bang\", \"elapsed_ms\": 47217, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"",
+          "id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073,",
+          " \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"quiet-doubleclick\", \"elapsed_ms\": 48231, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IM",
+          "E\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14",
+          "680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          "{\"stage\": \"popup-setattr-zero\", \"elapsed_ms\": 63565, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default I",
+          "ME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 1",
+          "4680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}",
+          ""
+        ],
+        "serialized_state": "{\"display\": \":0\", \"xvfb_pid\": 2759427, \"launcher_pid\": 2759442, \"prefix\": \"/home/venetanji/.cache/alive-max-print-popup-20261022-attempt2-wine-disposable\"}\r\n{\"stage\": \"initial\", \"elapsed_ms\": 13161, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"quiet-message\", \"elapsed_ms\": 20864, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"default-message\", \"elapsed_ms\": 21775, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-message\", \"elapsed_ms\": 22703, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-selector-zero\", \"elapsed_ms\": 44374, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-disabled-message\", \"elapsed_ms\": 45278, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-setattr-one\", \"elapsed_ms\": 46214, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-bang\", \"elapsed_ms\": 47217, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"quiet-doubleclick\", \"elapsed_ms\": 48231, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n{\"stage\": \"popup-setattr-zero\", \"elapsed_ms\": 63565, \"windows\": [{\"id\": 8388611, \"name\": \"Default IME\"}, {\"id\": 14680066, \"name\": \"Default IME\"}, {\"id\": 14680065, \"name\": \"JUCEWindow\"}, {\"id\": 14680071, \"name\": \"DXGI device window\"}, {\"id\": 14680072, \"name\": \"midi_mme\"}, {\"id\": 14680073, \"name\": \"Max Console\"}, {\"id\": 14680075, \"name\": \"print-popup (saving disabled)\"}], \"focus\": {\"id\": 1, \"name\": \"PointerRoot\"}}\r\n"
+      }
+    ],
+    "interaction_events": [],
+    "exit": {
+      "code": 0,
+      "signal": 0,
+      "reason": "exited"
+    },
+    "settlement": {
+      "state": "quiesced",
+      "elapsed_ms": 115,
+      "cleanup_outcome": "not_required"
+    },
+    "process_samples": [
+      {
+        "at_ms": 10,
+        "pid": 1,
+        "parent_pid": 2,
+        "command": "/usr/bin/python3 experiments/max-reference/print-popup-runtime-20261022/run-runtime.py",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 100,
+        "pid": 3,
+        "parent_pid": 1,
+        "command": "Xvfb -displayfd 1 -screen 0 1600x1100x24 -nolisten tcp",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 150,
+        "pid": 4,
+        "parent_pid": 1,
+        "command": "/home/venetanji/.local/opt/wine-d2d1-nspa-11.13/lib/wine/x86_64-unix/wine C:\\ProgramData\\Ableton\\Live 12 Suite\\Resources\\Max\\Max.exe Z:\\home\\venetanji\\Work\\alive\\experiments\\max-reference\\print-popup-runtime-20261022\\fixtures\\print-popup.maxpat",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 1280,
+        "pid": 4,
+        "parent_pid": 1,
+        "command": "C:\\ProgramData\\Ableton\\Live 12 Suite\\Resources\\Max\\Max.exe Z:\\home\\venetanji\\Work\\alive\\experiments\\max-reference\\print-popup-runtime-20261022\\fixtures\\print-popup.maxpat",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 7380,
+        "pid": 5,
+        "parent_pid": 4,
+        "command": "C:\\ProgramData\\Ableton\\Live 12 Suite\\Resources\\Max\\Max.exe Z:\\home\\venetanji\\Work\\alive\\experiments\\max-reference\\print-popup-runtime-20261022\\fixtures\\print-popup.maxpat",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 13150,
+        "pid": 6,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/initial.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 20900,
+        "pid": 7,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/quiet-message.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 21800,
+        "pid": 8,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/default-message.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 22700,
+        "pid": 9,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/popup-message.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 44370,
+        "pid": 10,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/popup-selector-zero.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 45270,
+        "pid": 11,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/popup-disabled-message.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 46210,
+        "pid": 12,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/popup-setattr-one.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 47210,
+        "pid": 13,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/popup-bang.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 48260,
+        "pid": 14,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/quiet-doubleclick.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 63560,
+        "pid": 15,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/popup-setattr-zero.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 64460,
+        "pid": 16,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/popup-after-setattr-zero.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 65340,
+        "pid": 17,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/console-forced-focus.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 86210,
+        "pid": 18,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/console-close.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 87110,
+        "pid": 19,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/patch-focused.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 88010,
+        "pid": 20,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/popup-reenabled.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 88890,
+        "pid": 21,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/popup-new-value.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 91770,
+        "pid": 22,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/blank-click.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 92700,
+        "pid": 23,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/second-popup-enabled.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 93700,
+        "pid": 24,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/two-popups.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 109030,
+        "pid": 25,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/two-active-popups.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 112070,
+        "pid": 26,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/popups-after-two-seconds.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 112920,
+        "pid": 27,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/popups-after-pointer-move.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 113850,
+        "pid": 28,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/popups-after-blank-click.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 114860,
+        "pid": 29,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/popup-before-disabled.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 115760,
+        "pid": 30,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/popup-immediately-disabled.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 116760,
+        "pid": 31,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/quiet-doubleclick-focused.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 155160,
+        "pid": 32,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/patch-front-again.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 156060,
+        "pid": 33,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/popup-final-enable.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 157010,
+        "pid": 34,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/quiet-71.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 158010,
+        "pid": 35,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/two-recent-values.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 158820,
+        "pid": 36,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/recent-pointer-move.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 159780,
+        "pid": 37,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/popup-before-blank.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 160730,
+        "pid": 38,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/recent-blank-click.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 161680,
+        "pid": 39,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/quiet-disable-for-doubleclick.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 162680,
+        "pid": 40,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/print-popup-runtime-20261022/results/popup0-doubleclick-fronts-existing.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 178120,
+        "pid": 4,
+        "parent_pid": 1,
+        "command": "",
+        "process_group_id": 1,
+        "session_id": 1
+      }
+    ],
+    "filesystem_checkpoints": [
+      {
+        "name": "before",
+        "at_ms": 0,
+        "files": [],
+        "effects": [],
+        "truncated": false
+      },
+      {
+        "name": "after_settlement",
+        "at_ms": 178413,
+        "files": [],
+        "effects": [],
+        "truncated": false
+      }
+    ],
+    "event_journal": [
+      {
+        "capture_order": 0,
+        "collection": "filesystem_checkpoints",
+        "index": 0
+      },
+      {
+        "capture_order": 1,
+        "collection": "process_samples",
+        "index": 0
+      },
+      {
+        "capture_order": 2,
+        "collection": "process_samples",
+        "index": 1
+      },
+      {
+        "capture_order": 3,
+        "collection": "frames",
+        "index": 0
+      },
+      {
+        "capture_order": 4,
+        "collection": "rendered_frames",
+        "index": 0
+      },
+      {
+        "capture_order": 5,
+        "collection": "process_samples",
+        "index": 2
+      },
+      {
+        "capture_order": 6,
+        "collection": "process_samples",
+        "index": 3
+      },
+      {
+        "capture_order": 7,
+        "collection": "process_samples",
+        "index": 4
+      },
+      {
+        "capture_order": 8,
+        "collection": "process_samples",
+        "index": 5
+      },
+      {
+        "capture_order": 9,
+        "collection": "frames",
+        "index": 1
+      },
+      {
+        "capture_order": 10,
+        "collection": "rendered_frames",
+        "index": 1
+      },
+      {
+        "capture_order": 11,
+        "collection": "process_samples",
+        "index": 6
+      },
+      {
+        "capture_order": 12,
+        "collection": "frames",
+        "index": 2
+      },
+      {
+        "capture_order": 13,
+        "collection": "rendered_frames",
+        "index": 2
+      },
+      {
+        "capture_order": 14,
+        "collection": "process_samples",
+        "index": 7
+      },
+      {
+        "capture_order": 15,
+        "collection": "frames",
+        "index": 3
+      },
+      {
+        "capture_order": 16,
+        "collection": "rendered_frames",
+        "index": 3
+      },
+      {
+        "capture_order": 17,
+        "collection": "process_samples",
+        "index": 8
+      },
+      {
+        "capture_order": 18,
+        "collection": "frames",
+        "index": 4
+      },
+      {
+        "capture_order": 19,
+        "collection": "rendered_frames",
+        "index": 4
+      },
+      {
+        "capture_order": 20,
+        "collection": "process_samples",
+        "index": 9
+      },
+      {
+        "capture_order": 21,
+        "collection": "frames",
+        "index": 5
+      },
+      {
+        "capture_order": 22,
+        "collection": "rendered_frames",
+        "index": 5
+      },
+      {
+        "capture_order": 23,
+        "collection": "process_samples",
+        "index": 10
+      },
+      {
+        "capture_order": 24,
+        "collection": "frames",
+        "index": 6
+      },
+      {
+        "capture_order": 25,
+        "collection": "rendered_frames",
+        "index": 6
+      },
+      {
+        "capture_order": 26,
+        "collection": "process_samples",
+        "index": 11
+      },
+      {
+        "capture_order": 27,
+        "collection": "frames",
+        "index": 7
+      },
+      {
+        "capture_order": 28,
+        "collection": "rendered_frames",
+        "index": 7
+      },
+      {
+        "capture_order": 29,
+        "collection": "process_samples",
+        "index": 12
+      },
+      {
+        "capture_order": 30,
+        "collection": "frames",
+        "index": 8
+      },
+      {
+        "capture_order": 31,
+        "collection": "rendered_frames",
+        "index": 8
+      },
+      {
+        "capture_order": 32,
+        "collection": "process_samples",
+        "index": 13
+      },
+      {
+        "capture_order": 33,
+        "collection": "frames",
+        "index": 9
+      },
+      {
+        "capture_order": 34,
+        "collection": "rendered_frames",
+        "index": 9
+      },
+      {
+        "capture_order": 35,
+        "collection": "process_samples",
+        "index": 14
+      },
+      {
+        "capture_order": 36,
+        "collection": "frames",
+        "index": 10
+      },
+      {
+        "capture_order": 37,
+        "collection": "rendered_frames",
+        "index": 10
+      },
+      {
+        "capture_order": 38,
+        "collection": "process_samples",
+        "index": 15
+      },
+      {
+        "capture_order": 39,
+        "collection": "frames",
+        "index": 11
+      },
+      {
+        "capture_order": 40,
+        "collection": "process_samples",
+        "index": 16
+      },
+      {
+        "capture_order": 41,
+        "collection": "frames",
+        "index": 12
+      },
+      {
+        "capture_order": 42,
+        "collection": "process_samples",
+        "index": 17
+      },
+      {
+        "capture_order": 43,
+        "collection": "frames",
+        "index": 13
+      },
+      {
+        "capture_order": 44,
+        "collection": "process_samples",
+        "index": 18
+      },
+      {
+        "capture_order": 45,
+        "collection": "frames",
+        "index": 14
+      },
+      {
+        "capture_order": 46,
+        "collection": "process_samples",
+        "index": 19
+      },
+      {
+        "capture_order": 47,
+        "collection": "frames",
+        "index": 15
+      },
+      {
+        "capture_order": 48,
+        "collection": "process_samples",
+        "index": 20
+      },
+      {
+        "capture_order": 49,
+        "collection": "frames",
+        "index": 16
+      },
+      {
+        "capture_order": 50,
+        "collection": "process_samples",
+        "index": 21
+      },
+      {
+        "capture_order": 51,
+        "collection": "frames",
+        "index": 17
+      },
+      {
+        "capture_order": 52,
+        "collection": "process_samples",
+        "index": 22
+      },
+      {
+        "capture_order": 53,
+        "collection": "frames",
+        "index": 18
+      },
+      {
+        "capture_order": 54,
+        "collection": "process_samples",
+        "index": 23
+      },
+      {
+        "capture_order": 55,
+        "collection": "frames",
+        "index": 19
+      },
+      {
+        "capture_order": 56,
+        "collection": "process_samples",
+        "index": 24
+      },
+      {
+        "capture_order": 57,
+        "collection": "frames",
+        "index": 20
+      },
+      {
+        "capture_order": 58,
+        "collection": "process_samples",
+        "index": 25
+      },
+      {
+        "capture_order": 59,
+        "collection": "frames",
+        "index": 21
+      },
+      {
+        "capture_order": 60,
+        "collection": "process_samples",
+        "index": 26
+      },
+      {
+        "capture_order": 61,
+        "collection": "frames",
+        "index": 22
+      },
+      {
+        "capture_order": 62,
+        "collection": "process_samples",
+        "index": 27
+      },
+      {
+        "capture_order": 63,
+        "collection": "frames",
+        "index": 23
+      },
+      {
+        "capture_order": 64,
+        "collection": "process_samples",
+        "index": 28
+      },
+      {
+        "capture_order": 65,
+        "collection": "frames",
+        "index": 24
+      },
+      {
+        "capture_order": 66,
+        "collection": "process_samples",
+        "index": 29
+      },
+      {
+        "capture_order": 67,
+        "collection": "frames",
+        "index": 25
+      },
+      {
+        "capture_order": 68,
+        "collection": "process_samples",
+        "index": 30
+      },
+      {
+        "capture_order": 69,
+        "collection": "frames",
+        "index": 26
+      },
+      {
+        "capture_order": 70,
+        "collection": "process_samples",
+        "index": 31
+      },
+      {
+        "capture_order": 71,
+        "collection": "frames",
+        "index": 27
+      },
+      {
+        "capture_order": 72,
+        "collection": "process_samples",
+        "index": 32
+      },
+      {
+        "capture_order": 73,
+        "collection": "frames",
+        "index": 28
+      },
+      {
+        "capture_order": 74,
+        "collection": "process_samples",
+        "index": 33
+      },
+      {
+        "capture_order": 75,
+        "collection": "frames",
+        "index": 29
+      },
+      {
+        "capture_order": 76,
+        "collection": "process_samples",
+        "index": 34
+      },
+      {
+        "capture_order": 77,
+        "collection": "frames",
+        "index": 30
+      },
+      {
+        "capture_order": 78,
+        "collection": "process_samples",
+        "index": 35
+      },
+      {
+        "capture_order": 79,
+        "collection": "frames",
+        "index": 31
+      },
+      {
+        "capture_order": 80,
+        "collection": "process_samples",
+        "index": 36
+      },
+      {
+        "capture_order": 81,
+        "collection": "frames",
+        "index": 32
+      },
+      {
+        "capture_order": 82,
+        "collection": "process_samples",
+        "index": 37
+      },
+      {
+        "capture_order": 83,
+        "collection": "frames",
+        "index": 33
+      },
+      {
+        "capture_order": 84,
+        "collection": "process_samples",
+        "index": 38
+      },
+      {
+        "capture_order": 85,
+        "collection": "frames",
+        "index": 34
+      },
+      {
+        "capture_order": 86,
+        "collection": "process_samples",
+        "index": 39
+      },
+      {
+        "capture_order": 87,
+        "collection": "frames",
+        "index": 35
+      },
+      {
+        "capture_order": 88,
+        "collection": "process_samples",
+        "index": 40
+      },
+      {
+        "capture_order": 89,
+        "collection": "frames",
+        "index": 36
+      },
+      {
+        "capture_order": 90,
+        "collection": "lifecycle",
+        "index": 0
+      },
+      {
+        "capture_order": 91,
+        "collection": "lifecycle",
+        "index": 1
+      },
+      {
+        "capture_order": 92,
+        "collection": "filesystem_checkpoints",
+        "index": 1
+      }
+    ],
+    "files_before": [],
+    "files_after": [],
+    "filesystem_effects": [],
+    "truncated": true,
+    "truncation_details": {
+      "raw_terminal": {
+        "budget_bytes": 50000,
+        "observed_bytes": 14817,
+        "retained_bytes": 14817,
+        "observed_frames": 37,
+        "retained_frames": 37
+      },
+      "rendered_terminal": {
+        "budget_bytes": 50000,
+        "observed_bytes": 374760,
+        "retained_bytes": 46704,
+        "observed_frames": 37,
+        "retained_frames": 11
+      },
+      "filesystem_before": {
+        "files_limit": 20,
+        "depth_limit": 1,
+        "enumeration_truncated": false,
+        "enumeration_reasons": [],
+        "hash_budget_bytes": 100000,
+        "hashed_bytes": 0,
+        "hash_omissions": []
+      },
+      "filesystem_after": {
+        "files_limit": 20,
+        "depth_limit": 1,
+        "enumeration_truncated": false,
+        "enumeration_reasons": [],
+        "hash_budget_bytes": 100000,
+        "hashed_bytes": 0,
+        "hash_omissions": []
+      },
+      "process": {
+        "sample_limit": 128,
+        "sampling_partial": false,
+        "retained_samples": 41,
+        "sample_limit_reached": false,
+        "sampling_failures": 0,
+        "first_sampling_failure": null,
+        "coverage": "sampled"
+      }
+    },
+    "limitations": [
+      "The executable digest is a prelaunch file sample; matching path metadata immediately after spawn does not prove an atomic operating-system image binding.",
+      "Process trees are sampled and may omit short-lived descendants.",
+      "Filesystem observations are before/after snapshots, not syscall traces.",
+      "Inherited host environment variables are not recorded and may affect results.",
+      "No filesystem observation paths were selected; filesystem effects remain unknown.",
+      "Cumulative rendered state and visible-line bytes exceeded output_bytes; whole rendered frames were omitted. Raw PTY coverage is reported separately. See truncation_details.rendered_terminal."
+    ],
+    "residual_unknowns": [
+      {
+        "scope": "process",
+        "reason": "Process trees are sampled and may omit short-lived descendants."
+      },
+      {
+        "scope": "process",
+        "reason": "The executable digest is a prelaunch file sample; operating-system image binding is not atomically observed."
+      },
+      {
+        "scope": "environment",
+        "reason": "Inherited host environment variables are not recorded."
+      },
+      {
+        "scope": "network",
+        "reason": "Network activity is not observed by this capture."
+      },
+      {
+        "scope": "filesystem",
+        "reason": "No filesystem observation paths were selected; filesystem effects remain unknown."
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 2765727 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/2765727/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 2765775 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/2765775/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 2768740 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/2768740/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 2774384 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/2774384/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 2777137 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/2777137/environ'"
+      }
+    ],
+    "cleanup": {
+      "owned_process_group": "verified",
+      "temporary_root": "removed",
+      "unverified_processes": [
+        {
+          "pid": 2765727,
+          "reason": "EACCES: permission denied, open '/proc/2765727/environ'"
+        },
+        {
+          "pid": 2765775,
+          "reason": "EACCES: permission denied, open '/proc/2765775/environ'"
+        },
+        {
+          "pid": 2768740,
+          "reason": "EACCES: permission denied, open '/proc/2768740/environ'"
+        },
+        {
+          "pid": 2774384,
+          "reason": "EACCES: permission denied, open '/proc/2774384/environ'"
+        },
+        {
+          "pid": 2777137,
+          "reason": "EACCES: permission denied, open '/proc/2777137/environ'"
+        }
+      ]
+    }
+  },
+  "confidence": "observed",
+  "authority": "controlled-replay",
+  "environment": {
+    "id": "linux-x64",
+    "platform": "linux",
+    "architecture": "x64",
+    "isolation": "process"
+  },
+  "limitations": [
+    "Artifact identity is unavailable for this observation.",
+    "The executable digest is a prelaunch file sample; matching path metadata immediately after spawn does not prove an atomic operating-system image binding.",
+    "Process trees are sampled and may omit short-lived descendants.",
+    "Filesystem observations are before/after snapshots, not syscall traces.",
+    "Inherited host environment variables are not recorded and may affect results.",
+    "No filesystem observation paths were selected; filesystem effects remain unknown.",
+    "Cumulative rendered state and visible-line bytes exceeded output_bytes; whole rendered frames were omitted. Raw PTY coverage is reported separately. See truncation_details.rendered_terminal."
+  ],
+  "locations": [],
+  "evidence_links": []
+}

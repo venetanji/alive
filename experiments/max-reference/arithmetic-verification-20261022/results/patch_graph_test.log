@@ -1,0 +1,3 @@
+COMMAND ['c++', '-std=c++17', '-O2', '-Wall', '-Wextra', '-Werror', '-pthread', 'apps/ultra/tests/patch_graph_test.cpp', '-o', 'experiments/max-reference/arithmetic-verification-20261022/results/patch_graph_test']
+PASS: native canvas validation, actual routing plans, depth-first messages/math, MIDI, stale events, million-step bounded timers, partition invariance, live params, stop and rejection safety
+EXIT 0

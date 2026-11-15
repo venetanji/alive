@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "status": "NATIVE_ASSERTIONS_PASS_NOT_MAX_COMPARED",
+  "verification_mode": "Read-only assertions over retained UBSan native output",
+  "bindings": {
+    "native_score": {
+      "path": "experiments/max-reference/help-roots-native-20261022/results/int-float-native-score-current.json",
+      "sha256": "5fc133b2909ec845150541068a16b3ec391435142eeabfb8e4cb924b63df0726"
+    },
+    "score_json": {
+      "path": "experiments/max-reference/help-roots-native-20261022/int-float-score.json",
+      "sha256": "0ea52e269e960d64f7a55f137a1925d2186119cd6d960afabc21730e3c2fad30"
+    },
+    "binary": {
+      "path": "/tmp/ultra-help-root-native-ubsan",
+      "sha256": "31b5647c5c70c9f2da7a55b033f90dfe5aae8b13abcde5c7ae39a4ad9a124945"
+    },
+    "replay": {
+      "path": "experiments/max-reference/help-roots-native-20261022/replay.py",
+      "sha256": "b24b678f946322c8b0c5e965bffd02a69f3cbea13df8dbdff469776b63448fb9"
+    },
+    "private_verifier": {
+      "sha256": "f9ebd65c4ed06b466cc7c236e08f2e3087f616df20eed259b349dd23a4b4684c",
+      "mode": "0600",
+      "owner_only": true
+    },
+    "private_output_sha256": {
+      "transport.txt": "c0dacb70017c50051011ca2b72c98b0897c9896a03a3fcdd3454522972a65948",
+      "native.jsonl": "a657cb1a29bcbd226eeb0f52951e60cdd11f20cf16c069572cb93d3f58c0df56",
+      "stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "assertion_count": 644,
+  "passed_assertion_count": 644,
+  "failed_assertion_count": 0,
+  "all_assertions_pass": true,
+  "assertion_groups": {
+    "integrity": {
+      "checked": 13,
+      "passed": 13,
+      "failed": 0
+    },
+    "retained_state": {
+      "checked": 306,
+      "passed": 306,
+      "failed": 0
+    },
+    "lifecycle": {
+      "checked": 16,
+      "passed": 16,
+      "failed": 0
+    },
+    "main_values": {
+      "checked": 42,
+      "passed": 42,
+      "failed": 0
+    },
+    "destination_output_order": {
+      "checked": 63,
+      "passed": 63,
+      "failed": 0
+    },
+    "destination_input_order": {
+      "checked": 21,
+      "passed": 21,
+      "failed": 0
+    },
+    "named_send": {
+      "checked": 142,
+      "passed": 142,
+      "failed": 0
+    },
+    "sender_setup": {
+      "checked": 6,
+      "passed": 6,
+      "failed": 0
+    },
+    "cold_store": {
+      "checked": 12,
+      "passed": 12,
+      "failed": 0
+    },
+    "display_only": {
+      "checked": 12,
+      "passed": 12,
+      "failed": 0
+    },
+    "direct_button": {
+      "checked": 4,
+      "passed": 4,
+      "failed": 0
+    },
+    "float_scaling": {
+      "checked": 5,
+      "passed": 5,
+      "failed": 0
+    },
+    "ui_conversion": {
+      "checked": 2,
+      "passed": 2,
+      "failed": 0
+    }
+  },
+  "destination_order": {
+    "main_actions_checked": 21,
+    "exact_numeric_before_button_output_passes": 21,
+    "numeric_before_button_input_passes": 21,
+    "numeric_anchor": "root/obj-2/obj-21",
+    "button_anchor": "root/obj-2/obj-24",
+    "outlet": 0,
+    "shared_bus_actions": 13,
+    "shared_bus_main_destination_receipts": {
+      "input": 0,
+      "output": 0
+    },
+    "exact_typed_receiver_deliveries": 23
+  },
+  "retention": {
+    "source_identities": {
+      "int": "bbb8fc3b458eb168fe69b8709ba343808d23b6d55e2c59cc3086d01976c5ac61",
+      "float": "c5e9bd4e89ebc5808d2faf76400031705c35195c32b363b890787a37bbdec15c"
+    },
+    "source_bindings_match": true,
+    "bundle_files_checked": 8,
+    "bundle_file_sha256": {
+      "int": {
+        "authoring.json": "bb5852d6a5a0ee1e8bfdfa03e1d99253bcabd325a0b42082822d450788775140",
+        "flat.json": "bae78714d7f3f7850441c0b805276444093534df6278b12ca50ee45d1526e2cb",
+        "import.json": "da0079ba1f52272d3603d7e4a7eb6db633f03b25429957c24ad377f82124e430",
+        "native.json": "c09a317ac9d3b61f9388e788ea7d30d7593e454f3540b7ed70b58ceff54aa83b"
+      },
+      "float": {
+        "authoring.json": "e8daa82c50219d35d68643a748909e1009d1eadcb7906ebdd062fabd6460972f",
+        "flat.json": "799de3409378dec744121227dfe0c4624bd3e820f07c170373d8436cdb2bc9b6",
+        "import.json": "09108b8fa77847602595277010fea36bbae1065ef41b9eaf35f3a6c8d8c80ca0",
+        "native.json": "d170f63cf031d07aef2c565b3c5bbdf42937d6b7cdcb7820735b6360de1cb8db"
+      }
+    },
+    "all_bundle_files_retained": true,
+    "authoring_retained": true,
+    "unchanged_template_operations": 54,
+    "harness_score_binary_and_native_evidence_hashes_unchanged": true
+  },
+  "runtime": {
+    "operations": 54,
+    "accepted_operations": 54,
+    "failed_operations": 0,
+    "input_receipts": 168,
+    "output_receipts": 174,
+    "trace_overflow_operations": 0,
+    "console_records": 0,
+    "console_drops": 0,
+    "native_stderr_bytes": 0,
+    "all_replay_runtime_gates_pass": true
+  },
+  "complete_installed_help_qualification_passes_added": 0
+}

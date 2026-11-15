@@ -1,0 +1,3 @@
+COMMAND ['bash', '-c', 'c++ -std=c++17 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=undefined,float-divide-by-zero -fno-sanitize-recover=all apps/ultra/tests/canvas_arithmetic_test.cpp -o experiments/max-reference/arithmetic-verification-20261022/results/canvas-arithmetic-ubsan && experiments/max-reference/arithmetic-verification-20261022/results/canvas-arithmetic-ubsan']
+EXIT 0
+arithmetic contracts passed

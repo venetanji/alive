@@ -1,0 +1,124 @@
+TAP version 13
+# Subtest: saved rhs-only arithmetic and English legacy text retain existing defaults
+ok 1 - saved rhs-only arithmetic and English legacy text retain existing defaults
+  ---
+  duration_ms: 4.320869
+  type: 'test'
+  ...
+# Subtest: typed creation retains whole float spelling and bare edits reset operand and mode
+ok 2 - typed creation retains whole float spelling and bare edits reset operand and mode
+  ---
+  duration_ms: 1.877224
+  type: 'test'
+  ...
+# Subtest: qualified decimal modulo and abs creation retain float mode without exponent aliases
+ok 3 - qualified decimal modulo and abs creation retain float mode without exponent aliases
+  ---
+  duration_ms: 1.899784
+  type: 'test'
+  ...
+# Subtest: integer saved operands validate atomically across flat and nested patches
+ok 4 - integer saved operands validate atomically across flat and nested patches
+  ---
+  duration_ms: 2.515095
+  type: 'test'
+  ...
+# Subtest: mode changes and their undo redo reapply standalone graphs while rhs stays live
+ok 5 - mode changes and their undo redo reapply standalone graphs while rhs stays live
+  ---
+  duration_ms: 3.051624
+  type: 'test'
+  ...
+# Subtest: new arithmetic reuses generic faces and exposes fixed type in help and creation hints
+ok 6 - new arithmetic reuses generic faces and exposes fixed type in help and creation hints
+  ---
+  duration_ms: 1.467039
+  type: 'test'
+  ...
+# Subtest: Max import uses typed symbols and refuses Ultra-only legacy spellings
+ok 7 - Max import uses typed symbols and refuses Ultra-only legacy spellings
+  ---
+  duration_ms: 3.988839
+  type: 'test'
+  ...
+# Subtest: qualified arithmetic set cables import and ignored reverse set is described accurately
+ok 8 - qualified arithmetic set cables import and ignored reverse set is described accurately
+  ---
+  duration_ms: 1.921505
+  type: 'test'
+  ...
+# Subtest: typed names and arguments build the supported profile without approximating Max classes
+ok 9 - typed names and arguments build the supported profile without approximating Max classes
+  ---
+  duration_ms: 4.785182
+  type: 'test'
+  ...
+# Subtest: every supported object has round-trippable creation text and directional port help
+ok 10 - every supported object has round-trippable creation text and directional port help
+  ---
+  duration_ms: 8.207389
+  type: 'test'
+  ...
+# Subtest: autocomplete ranks exact names before prefixes, and never invents unsupported objects
+ok 11 - autocomplete ranks exact names before prefixes, and never invents unsupported objects
+  ---
+  duration_ms: 0.916472
+  type: 'test'
+  ...
+# Subtest: comment creation text round-trips multiline whitespace and the full annotation limit
+ok 12 - comment creation text round-trips multiline whitespace and the full annotation limit
+  ---
+  duration_ms: 1.102672
+  type: 'test'
+  ...
+# Subtest: named creation parameters share the positional validator and preserve unspecified edit values
+ok 13 - named creation parameters share the positional validator and preserve unspecified edit values
+  ---
+  duration_ms: 0.873588
+  type: 'test'
+  ...
+# Subtest: creation and text replacement are atomic, undoable and preserve identity and valid cords
+ok 14 - creation and text replacement are atomic, undoable and preserve identity and valid cords
+  ---
+  duration_ms: 1.42276
+  type: 'test'
+  ...
+# Subtest: group movement and deletion each have one undo step, preserving internal wires
+ok 15 - group movement and deletion each have one undo step, preserving internal wires
+  ---
+  duration_ms: 0.972695
+  type: 'test'
+  ...
+# Subtest: object completion exposes syntax and argument guidance from the validated profile
+ok 16 - object completion exposes syntax and argument guidance from the validated profile
+  ---
+  duration_ms: 3.217989
+  type: 'test'
+  ...
+# Subtest: option and value completion follows the caret and retains text after the current token
+ok 17 - option and value completion follows the caret and retains text after the current token
+  ---
+  duration_ms: 0.984708
+  type: 'test'
+  ...
+# Subtest: legacy zl names use the selected mode instead of completing to the first zl object
+ok 18 - legacy zl names use the selected mode instead of completing to the first zl object
+  ---
+  duration_ms: 0.422267
+  type: 'test'
+  ...
+# Subtest: arithmetic completion retains the authored legacy defaults and decimal semantics
+ok 19 - arithmetic completion retains the authored legacy defaults and decimal semantics
+  ---
+  duration_ms: 0.510966
+  type: 'test'
+  ...
+1..19
+# tests 19
+# suites 0
+# pass 19
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 99.323294

@@ -1,0 +1,817 @@
+{
+  "schema": 1,
+  "evidence": "ORIGINAL_MAX_EXECUTED",
+  "hierarchy": {
+    "raw_rows": 42,
+    "scored_inputs": 17,
+    "startup_events": [
+      {
+        "seq": 1,
+        "selector": "lifecycle-deep-load",
+        "atoms": [
+          "#0",
+          "#1",
+          "#2",
+          "#3",
+          "#0-tail",
+          "tail-#0",
+          "#1-tail",
+          "tail-#1"
+        ]
+      },
+      {
+        "seq": 2,
+        "selector": "lifecycle-load",
+        "atoms": [
+          "#0",
+          "#1",
+          "#2",
+          "#3",
+          "#0-tail",
+          "tail-#0",
+          "#1-tail",
+          "tail-#1"
+        ]
+      },
+      {
+        "seq": 3,
+        "selector": "abstract-nested",
+        "atoms": [
+          1001,
+          23,
+          "beta",
+          0,
+          "1001-tail",
+          "tail-#0",
+          "23-tail",
+          "tail-#1"
+        ]
+      },
+      {
+        "seq": 4,
+        "selector": "abstract-1-out-1",
+        "atoms": [
+          "abstract-message",
+          1001,
+          23,
+          "beta",
+          0,
+          "1001-tail",
+          "tail-#0",
+          "23-tail",
+          "tail-#1"
+        ]
+      },
+      {
+        "seq": 5,
+        "selector": "abstract-1-out-0",
+        "atoms": [
+          "abstract",
+          1001,
+          23,
+          "beta",
+          0,
+          "1001-tail",
+          "tail-#0",
+          "23-tail",
+          "tail-#1"
+        ]
+      },
+      {
+        "seq": 6,
+        "selector": "abstract-nested",
+        "atoms": [
+          1000,
+          17,
+          "alpha",
+          0,
+          "1000-tail",
+          "tail-#0",
+          "17-tail",
+          "tail-#1"
+        ]
+      },
+      {
+        "seq": 7,
+        "selector": "abstract-0-out-1",
+        "atoms": [
+          "abstract-message",
+          1000,
+          17,
+          "alpha",
+          0,
+          "1000-tail",
+          "tail-#0",
+          "17-tail",
+          "tail-#1"
+        ]
+      },
+      {
+        "seq": 8,
+        "selector": "abstract-0-out-0",
+        "atoms": [
+          "abstract",
+          1000,
+          17,
+          "alpha",
+          0,
+          "1000-tail",
+          "tail-#0",
+          "17-tail",
+          "tail-#1"
+        ]
+      },
+      {
+        "seq": 9,
+        "selector": "root-nested",
+        "atoms": [
+          "#0",
+          "#1",
+          "#2",
+          "#3",
+          "#0-tail",
+          "tail-#0",
+          "#1-tail",
+          "tail-#1"
+        ]
+      },
+      {
+        "seq": 10,
+        "selector": "root-load",
+        "atoms": [
+          "#0",
+          "#1",
+          "#2",
+          "#3",
+          "#0-tail",
+          "tail-#0",
+          "#1-tail",
+          "tail-#1"
+        ]
+      }
+    ],
+    "scored_outputs": {
+      "event-0": [
+        {
+          "selector": "explicit-out-0",
+          "atoms": [
+            "explicit-A",
+            100
+          ]
+        }
+      ],
+      "event-1": [
+        {
+          "selector": "explicit-out-1",
+          "atoms": [
+            "explicit-B",
+            101
+          ]
+        }
+      ],
+      "event-2": [
+        {
+          "selector": "geometry-out-0",
+          "atoms": [
+            "geometry-A",
+            110
+          ]
+        }
+      ],
+      "event-3": [
+        {
+          "selector": "geometry-out-1",
+          "atoms": [
+            "geometry-B",
+            111
+          ]
+        }
+      ],
+      "event-4": [
+        {
+          "selector": "tie-y-out-0",
+          "atoms": [
+            "tie-y-A",
+            120
+          ]
+        }
+      ],
+      "event-5": [
+        {
+          "selector": "tie-y-out-1",
+          "atoms": [
+            "tie-y-B",
+            121
+          ]
+        }
+      ],
+      "event-6": [
+        {
+          "selector": "tie-array-out-0",
+          "atoms": [
+            "tie-array-A",
+            130
+          ]
+        }
+      ],
+      "event-7": [
+        {
+          "selector": "tie-array-out-1",
+          "atoms": [
+            "tie-array-B",
+            131
+          ]
+        }
+      ],
+      "event-8": [
+        {
+          "selector": "tie-reversed-out-0",
+          "atoms": [
+            "tie-reversed-B",
+            140
+          ]
+        }
+      ],
+      "event-9": [
+        {
+          "selector": "tie-reversed-out-1",
+          "atoms": [
+            "tie-reversed-A",
+            141
+          ]
+        }
+      ],
+      "event-10": [
+        {
+          "selector": "lifecycle-value",
+          "atoms": [
+            77
+          ]
+        }
+      ],
+      "event-14": [
+        {
+          "selector": "lifecycle-value",
+          "atoms": [
+            77
+          ]
+        }
+      ],
+      "event-15": [
+        {
+          "selector": "lifecycle-load",
+          "atoms": [
+            "#0",
+            "#1",
+            "#2",
+            "#3",
+            "#0-tail",
+            "tail-#0",
+            "#1-tail",
+            "tail-#1"
+          ]
+        }
+      ],
+      "event-16": [
+        {
+          "selector": "lifecycle-value",
+          "atoms": [
+            77
+          ]
+        }
+      ]
+    },
+    "port_rule": "x ascending; equal x follows saved boxes array; saved index and y ignored in these fixtures"
+  },
+  "boundary": {
+    "raw_rows": 468,
+    "scored_inputs": 62,
+    "frames_per_stage": 64,
+    "channels": 11,
+    "stages": {
+      "initial": [
+        {
+          "label": "relay-message-only",
+          "constant_sample": 10
+        },
+        {
+          "label": "relay-mixed",
+          "constant_sample": 13
+        },
+        {
+          "label": "inner-plus-message-only",
+          "constant_sample": 10
+        },
+        {
+          "label": "inner-plus-mixed",
+          "constant_sample": 13
+        },
+        {
+          "label": "fan-message-only",
+          "constant_sample": 10
+        },
+        {
+          "label": "fan-mixed",
+          "constant_sample": 13
+        },
+        {
+          "label": "merge-message-only",
+          "constant_sample": 10
+        },
+        {
+          "label": "merge-mixed",
+          "constant_sample": 13
+        },
+        {
+          "label": "deep-plus-message-only",
+          "constant_sample": 10
+        },
+        {
+          "label": "deep-plus-mixed",
+          "constant_sample": 13
+        },
+        {
+          "label": "constant-outlet",
+          "constant_sample": 5
+        }
+      ],
+      "message7": [
+        {
+          "label": "relay-message-only",
+          "constant_sample": 7
+        },
+        {
+          "label": "relay-mixed",
+          "constant_sample": 10
+        },
+        {
+          "label": "inner-plus-message-only",
+          "constant_sample": 7
+        },
+        {
+          "label": "inner-plus-mixed",
+          "constant_sample": 10
+        },
+        {
+          "label": "fan-message-only",
+          "constant_sample": 7
+        },
+        {
+          "label": "fan-mixed",
+          "constant_sample": 10
+        },
+        {
+          "label": "merge-message-only",
+          "constant_sample": 7
+        },
+        {
+          "label": "merge-mixed",
+          "constant_sample": 10
+        },
+        {
+          "label": "deep-plus-message-only",
+          "constant_sample": 7
+        },
+        {
+          "label": "deep-plus-mixed",
+          "constant_sample": 10
+        },
+        {
+          "label": "constant-outlet",
+          "constant_sample": 5
+        }
+      ],
+      "message9": [
+        {
+          "label": "relay-message-only",
+          "constant_sample": 9
+        },
+        {
+          "label": "relay-mixed",
+          "constant_sample": 12
+        },
+        {
+          "label": "inner-plus-message-only",
+          "constant_sample": 9
+        },
+        {
+          "label": "inner-plus-mixed",
+          "constant_sample": 12
+        },
+        {
+          "label": "fan-message-only",
+          "constant_sample": 9
+        },
+        {
+          "label": "fan-mixed",
+          "constant_sample": 12
+        },
+        {
+          "label": "merge-message-only",
+          "constant_sample": 9
+        },
+        {
+          "label": "merge-mixed",
+          "constant_sample": 12
+        },
+        {
+          "label": "deep-plus-message-only",
+          "constant_sample": 9
+        },
+        {
+          "label": "deep-plus-mixed",
+          "constant_sample": 12
+        },
+        {
+          "label": "constant-outlet",
+          "constant_sample": 5
+        }
+      ]
+    },
+    "control_messages": [
+      {
+        "seq": 222,
+        "input_id": "event_17",
+        "label": "inner-plus-message-only:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 223,
+        "input_id": "event_17",
+        "label": "inner-plus-mixed:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 224,
+        "input_id": "event_17",
+        "label": "fan-message-only:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 225,
+        "input_id": "event_17",
+        "label": "fan-mixed:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 226,
+        "input_id": "event_17",
+        "label": "merge-message-only:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 227,
+        "input_id": "event_17",
+        "label": "merge-mixed:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 228,
+        "input_id": "event_17",
+        "label": "deep-plus-message-only:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 229,
+        "input_id": "event_17",
+        "label": "deep-plus-mixed:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 230,
+        "input_id": "event_17",
+        "label": "constant:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 231,
+        "input_id": "event_17",
+        "label": "relay-mixed:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 285,
+        "input_id": "event_21",
+        "label": "relay-message-only:direct-control",
+        "selector": "int",
+        "atoms": [
+          7
+        ]
+      },
+      {
+        "seq": 286,
+        "input_id": "event_21",
+        "label": "relay-message-only:number",
+        "selector": "int",
+        "atoms": [
+          7
+        ]
+      },
+      {
+        "seq": 288,
+        "input_id": "event_22",
+        "label": "relay-mixed:number",
+        "selector": "int",
+        "atoms": [
+          7
+        ]
+      },
+      {
+        "seq": 289,
+        "input_id": "event_22",
+        "label": "relay-mixed:direct-control",
+        "selector": "int",
+        "atoms": [
+          7
+        ]
+      },
+      {
+        "seq": 293,
+        "input_id": "event_25",
+        "label": "fan-message-only:fan-number",
+        "selector": "int",
+        "atoms": [
+          7
+        ]
+      },
+      {
+        "seq": 295,
+        "input_id": "event_26",
+        "label": "fan-mixed:fan-number",
+        "selector": "int",
+        "atoms": [
+          7
+        ]
+      },
+      {
+        "seq": 304,
+        "input_id": "event_34",
+        "label": "inner-plus-message-only:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 305,
+        "input_id": "event_34",
+        "label": "inner-plus-mixed:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 306,
+        "input_id": "event_34",
+        "label": "fan-message-only:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 307,
+        "input_id": "event_34",
+        "label": "fan-mixed:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 308,
+        "input_id": "event_34",
+        "label": "merge-message-only:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 309,
+        "input_id": "event_34",
+        "label": "merge-mixed:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 310,
+        "input_id": "event_34",
+        "label": "deep-plus-message-only:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 311,
+        "input_id": "event_34",
+        "label": "deep-plus-mixed:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 312,
+        "input_id": "event_34",
+        "label": "constant:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 313,
+        "input_id": "event_34",
+        "label": "relay-mixed:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 367,
+        "input_id": "event_38",
+        "label": "relay-message-only:direct-control",
+        "selector": "int",
+        "atoms": [
+          9
+        ]
+      },
+      {
+        "seq": 368,
+        "input_id": "event_38",
+        "label": "relay-message-only:number",
+        "selector": "int",
+        "atoms": [
+          9
+        ]
+      },
+      {
+        "seq": 370,
+        "input_id": "event_39",
+        "label": "relay-mixed:number",
+        "selector": "int",
+        "atoms": [
+          9
+        ]
+      },
+      {
+        "seq": 371,
+        "input_id": "event_39",
+        "label": "relay-mixed:direct-control",
+        "selector": "int",
+        "atoms": [
+          9
+        ]
+      },
+      {
+        "seq": 375,
+        "input_id": "event_42",
+        "label": "fan-message-only:fan-number",
+        "selector": "int",
+        "atoms": [
+          9
+        ]
+      },
+      {
+        "seq": 377,
+        "input_id": "event_43",
+        "label": "fan-mixed:fan-number",
+        "selector": "int",
+        "atoms": [
+          9
+        ]
+      },
+      {
+        "seq": 386,
+        "input_id": "event_51",
+        "label": "inner-plus-message-only:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 387,
+        "input_id": "event_51",
+        "label": "inner-plus-mixed:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 388,
+        "input_id": "event_51",
+        "label": "fan-message-only:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 389,
+        "input_id": "event_51",
+        "label": "fan-mixed:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 390,
+        "input_id": "event_51",
+        "label": "merge-message-only:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 391,
+        "input_id": "event_51",
+        "label": "merge-mixed:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 392,
+        "input_id": "event_51",
+        "label": "deep-plus-message-only:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 393,
+        "input_id": "event_51",
+        "label": "deep-plus-mixed:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 394,
+        "input_id": "event_51",
+        "label": "constant:direct-control",
+        "selector": "signal",
+        "atoms": []
+      },
+      {
+        "seq": 395,
+        "input_id": "event_51",
+        "label": "relay-mixed:direct-control",
+        "selector": "signal",
+        "atoms": []
+      }
+    ],
+    "signal_marker_counts": {
+      "inner-plus-message-only:direct-control": 3,
+      "inner-plus-mixed:direct-control": 3,
+      "fan-message-only:direct-control": 3,
+      "fan-mixed:direct-control": 3,
+      "merge-message-only:direct-control": 3,
+      "merge-mixed:direct-control": 3,
+      "deep-plus-message-only:direct-control": 3,
+      "deep-plus-mixed:direct-control": 3,
+      "constant:direct-control": 3,
+      "relay-mixed:direct-control": 3
+    },
+    "settings_after_capture": {
+      "sr": 48000,
+      "sigvs": 64,
+      "iovs": 512,
+      "overdrive": 0,
+      "takeover": 0,
+      "switch": 0
+    },
+    "driver_index": 4,
+    "driver_menu": [
+      [
+        "None"
+      ],
+      [
+        "ad_asio",
+        "PipeASIO Driver"
+      ],
+      [
+        "ad_directsound",
+        ""
+      ],
+      [
+        "ad_mme",
+        ""
+      ],
+      [
+        "NonRealTime"
+      ],
+      [
+        "ad_portaudio",
+        "MME"
+      ],
+      [
+        "ad_portaudio",
+        "Windows DirectSound"
+      ],
+      [
+        "ad_portaudio",
+        "Windows WASAPI"
+      ],
+      [
+        "ad_portaudio",
+        "Windows WDM-KS"
+      ]
+    ]
+  },
+  "limitations": [
+    "Finite original fixtures, not whole installed-help execution or conformance.",
+    "Collector order is JS arrival order, not scheduler-thread priority or timing.",
+    "Ties, index precedence, and substitution are observed for the exact authored shapes only.",
+    "No signal feedback, abstraction DSP, bpatcher, MC, poly~, or Jitter execution tested.",
+    "Print boxes were connected; only direct JS and number outputs were machine-collected.",
+    "DSP-start signal announcements are retained, not claimed implemented by Alive."
+  ]
+}

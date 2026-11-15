@@ -1,0 +1,106 @@
+{
+  "events": [
+    {
+      "id": "event-0",
+      "message": "100",
+      "destination": "explicit",
+      "inlet": 0
+    },
+    {
+      "id": "event-1",
+      "message": "101",
+      "destination": "explicit",
+      "inlet": 1
+    },
+    {
+      "id": "event-2",
+      "message": "110",
+      "destination": "geometry",
+      "inlet": 0
+    },
+    {
+      "id": "event-3",
+      "message": "111",
+      "destination": "geometry",
+      "inlet": 1
+    },
+    {
+      "id": "event-4",
+      "message": "120",
+      "destination": "tie-y",
+      "inlet": 0
+    },
+    {
+      "id": "event-5",
+      "message": "121",
+      "destination": "tie-y",
+      "inlet": 1
+    },
+    {
+      "id": "event-6",
+      "message": "130",
+      "destination": "tie-array",
+      "inlet": 0
+    },
+    {
+      "id": "event-7",
+      "message": "131",
+      "destination": "tie-array",
+      "inlet": 1
+    },
+    {
+      "id": "event-8",
+      "message": "140",
+      "destination": "tie-reversed",
+      "inlet": 0
+    },
+    {
+      "id": "event-9",
+      "message": "141",
+      "destination": "tie-reversed",
+      "inlet": 1
+    },
+    {
+      "id": "event-10",
+      "message": "77",
+      "destination": "lifecycle",
+      "inlet": 0
+    },
+    {
+      "id": "event-11",
+      "message": "open",
+      "destination": "pcontrol",
+      "inlet": 0
+    },
+    {
+      "id": "event-12",
+      "message": "close",
+      "destination": "pcontrol",
+      "inlet": 0
+    },
+    {
+      "id": "event-13",
+      "message": "open",
+      "destination": "pcontrol",
+      "inlet": 0
+    },
+    {
+      "id": "event-14",
+      "message": "bang",
+      "destination": "lifecycle",
+      "inlet": 0
+    },
+    {
+      "id": "event-15",
+      "message": "loadbang",
+      "destination": "lifecycle",
+      "inlet": 1
+    },
+    {
+      "id": "event-16",
+      "message": "bang",
+      "destination": "lifecycle",
+      "inlet": 0
+    }
+  ]
+}

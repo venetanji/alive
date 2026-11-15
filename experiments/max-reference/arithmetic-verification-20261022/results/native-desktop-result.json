@@ -1,0 +1,45 @@
+{
+  "status": "passed",
+  "scope": "six original examples through native File Open, WebKitGTK and C++ execution",
+  "audio": "off",
+  "captures": 0,
+  "cases": [
+    {
+      "type": "subtract",
+      "initial_console": "5.",
+      "after_silent_cold_and_bang": "3.",
+      "authoring_retained": true
+    },
+    {
+      "type": "divide",
+      "initial_console": "3.5",
+      "after_silent_cold_and_bang": "1.75",
+      "authoring_retained": true
+    },
+    {
+      "type": "modulo",
+      "initial_console": "1",
+      "after_silent_cold_and_bang": "3",
+      "authoring_retained": true
+    },
+    {
+      "type": "reverse_subtract",
+      "initial_console": "3.",
+      "after_silent_cold_and_bang": "-3.",
+      "authoring_retained": true
+    },
+    {
+      "type": "reverse_divide",
+      "initial_console": "2.",
+      "after_silent_cold_and_bang": "0.5714285714285714",
+      "authoring_retained": true
+    },
+    {
+      "type": "abs",
+      "initial_console": "7.5",
+      "after_silent_cold_and_bang": null,
+      "authoring_retained": true
+    }
+  ],
+  "whole_help_roots_qualified": 0
+}

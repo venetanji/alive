@@ -1,0 +1,647 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"evidence_id\":\"ev_40fbaf6bae92a5d383a724cc0f216e3c8bca9516183ebd69f819910b95375372\",\"subject\":null,\"provider\":{\"id\":\"rea-process\",\"name\":\"REA process capture\",\"version\":\"3\"},\"analysis_profile\":null,\"predicate_type\":\"rea.process-capture\",\"operation\":\"capture_process_scenario\",\"parameters\":{\"executable_name\":\"python3\",\"argument_count\":2,\"event_count\":0,\"filesystem_observation_path_count\":1,\"normalization\":{\"paths\":false,\"pids\":true,\"ports\":true,\"time_bucket_ms\":10,\"patterns\":[]}},\"raw_result\":null,\"normalized_result\":{\"manifest\":{\"rea_version\":\"6.4.0\",\"provider_version\":\"3\",\"platform\":\"linux\",\"architecture\":\"x64\",\"pty_backend\":\"node-pty\",\"started_at\":\"2026-10-22T04:37:34.597Z\",\"completed_at\":\"2026-10-22T04:37:35.746Z\",\"scenario\":{\"executable\":\"/usr/bin/python3\",\"arguments\":[\"-c\",\"import importlib.util,json,os,secrets,signal,subprocess,sys,tempfile,time\\nfrom pathlib import Path\\nr=Path('/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022');sys.path.insert(0,str(r));s=importlib.util.spec_from_file_location('run_debug',r/'run-runtime.py');m=importlib.util.module_from_spec(s);s.loader.exec_module(m)\\nruns=[]\\nfor index in range(10):\\n with tempfile.TemporaryDirectory(prefix='alive-help-xvfb-diagnostic-') as temporary:\\n  work=Path(temporary);display=m.choose_private_display(':0',os.environ.get('DISPLAY'))\\n  scope=dict(capture_id=secrets.token_hex(24),prefix=str(work/'unused-prefix'),display=display)\\n  env=dict(os.environ,**m.scope_environment(scope),XAUTHORITY=str(work/'auth'))\\n  m.private_xauthority(work/'auth',display);log=(work/'log').open('w')\\n  p=subprocess.Popen(['Xvfb',display,'-screen','0','64x64x24','-nolisten','tcp','-auth',str(work/'auth')],env=env,stdout=log,stderr=log)\\n  fd=os.pidfd_open(p.pid);observations=[]\\n  try:\\n   row=dict(pid=p.pid,start=m.process_start(Path('/proc')/str(p.pid)))\\n   for delay in [0,.001,.01,.05]:\\n    time.sleep(delay)\\n    try:\\n     data=(Path('/proc')/str(p.pid)/'environ').read_bytes().split(b'\\\\\\\\0')\\n     fields={key:(key+'='+value).encode() in data for key,value in m.scope_environment(scope).items()}\\n     observations.append(dict(delay_seconds=delay,env_readable=True,scope_fields=fields,identity_match=m.matches_scope(row,scope),alive=p.poll() is None))\\n    except PermissionError:observations.append(dict(delay_seconds=delay,env_readable=False,alive=p.poll() is None))\\n  finally:\\n   try:signal.pidfd_send_signal(fd,signal.SIGTERM)\\n   except ProcessLookupError:pass\\n   p.wait(timeout=5);os.close(fd);log.close()\\n  runs.append(dict(index=index,observations=observations,child_reaped=p.poll() is not None))\\nout=dict(scope='Xvfb-only repeated REA startup diagnostic; no Max/Wine/source prefix',uid=os.getuid(),runs=runs)\\n(r/'results/xvfb-rea-startup-diagnostic.json').write_text(json.dumps(out,indent=2)+'\\\\\\\\n')\\nprint(json.dumps(out))\"],\"working_directory\":\"/home/venetanji/Work/alive\",\"environment\":{},\"filesystem_observation_paths\":[\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/results/xvfb-rea-startup-diagnostic.json\"],\"terminal\":{\"columns\":100,\"rows\":30,\"scrollback\":100},\"events\":[],\"timeout_ms\":30000,\"idle_timeout_ms\":25000,\"settle_ms\":100,\"limits\":{\"output_bytes\":32768,\"files\":4,\"file_bytes\":1048576,\"processes\":64,\"filesystem_depth\":16},\"normalization\":{\"paths\":false,\"pids\":true,\"ports\":true,\"time_bucket_ms\":10,\"patterns\":[]},\"finalization_ms\":5000,\"executable_sha256\":\"375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b\"},\"comparison_contract\":{\"working_directory\":\"/home/venetanji/Work/alive\",\"environment\":{},\"ambient_environment\":\"unknown\",\"filesystem_observation_paths\":[\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/results/xvfb-rea-startup-diagnostic.json\"],\"terminal\":{\"columns\":100,\"rows\":30,\"scrollback\":100},\"events\":[],\"timeout_ms\":30000,\"idle_timeout_ms\":25000,\"settle_ms\":100,\"finalization_ms\":5000,\"limits\":{\"output_bytes\":32768,\"files\":4,\"file_bytes\":1048576,\"processes\":64,\"filesystem_depth\":16},\"normalization\":{\"paths\":false,\"pids\":true,\"ports\":true,\"time_bucket_ms\":10,\"patterns\":[]},\"port_normalization_version\":\"contextual-endpoints-v2\",\"rendered_line_format\":\"trailing-spaces-trimmed-v1\"},\"full_scenario_sha256\":\"e25ecc4d2d8cfc11a3a136b4020347c0dbc8f7e7a3c613fe06412ae7fad40c14\",\"comparison_contract_sha256\":\"9b97b80ad6301ef5d08cc56e1e441fc6e932b6048892701f93789ab1a90b2f91\",\"selected_executable_sha256\":\"375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b\",\"executable_sha256\":\"375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b\",\"executable_identity\":{\"state\":\"path_metadata_unchanged\",\"reason\":null},\"normalization_sha256\":\"5c58aa1aa890197f15f9c59ef755d01120e6e07f356fa1ef2f20787e63b6fa87\"},\"normalization\":{\"paths\":false,\"pids\":true,\"ports\":true,\"time_bucket_ms\":10,\"patterns\":[]},\"frames\":[{\"sequence\":0,\"at_ms\":1000,\"data\":\"{\\\"scope\\\": \\\"Xvfb-only repeated REA startup diagnostic; no Max/Wine/source prefix\\\", \\\"uid\\\": 1000, \\\"runs\\\": [{\\\"index\\\": 0, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 1, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 2, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 3, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 4, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 5, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAP\"},{\"sequence\":1,\"at_ms\":1010,\"data\":\"TURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 6, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 7, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 8, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 9, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}]}\\r\\n\"}],\"rendered_frames\":[{\"sequence\":0,\"at_ms\":1000,\"columns\":100,\"rows\":30,\"cursor_x\":95,\"cursor_y\":29,\"active_buffer\":\"normal\",\"lines\":[\"nds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFI\",\"X\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_r\",\"eadable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\",\"\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"sc\",\"ope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identit\",\"y_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 2, \\\"observations\\\": [{\\\"delay_second\",\"s\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": fa\",\"lse, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readab\",\"le\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": fa\",\"lse}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_f\",\"ields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_mat\",\"ch\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HEL\",\"P_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\":\",\" true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 3, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": t\",\"rue, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false},\",\"\\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\",\"\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\":\",\"true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROO\",\"TS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true\",\"}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": fal\",\"se, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\":\",\" true}, {\\\"index\\\": 4, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"A\",\"LIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true,\",\"\\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CA\",\"PTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"\",\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"\",\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.0\",\"5, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false,\",\" \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 5, \\\"ob\",\"servations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAP\"],\"serialized_state\":\"{\\\"scope\\\": \\\"Xvfb-only repeated REA startup diagnostic; no Max/Wine/source prefix\\\", \\\"uid\\\": 1000, \\\"runs\\\": [{\\\"index\\\": 0, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 1, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 2, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 3, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 4, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 5, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAP\"},{\"sequence\":1,\"at_ms\":1010,\"columns\":100,\"rows\":30,\"cursor_x\":0,\"cursor_y\":29,\"active_buffer\":\"normal\",\"lines\":[\"adable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\"\",\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"sco\",\"pe_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity\",\"_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE\",\"_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"ali\",\"ve\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 7, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\",\"\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": fals\",\"e}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fi\",\"elds\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_matc\",\"h\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP\",\"_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\":\",\"true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\":\",\" false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reap\",\"ed\\\": true}, {\\\"index\\\": 8, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\":\",\" {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": tr\",\"ue, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOT\",\"S_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}\",\", {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": fals\",\"e, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\":\",\" 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": fa\",\"lse, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 9,\",\" \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPT\",\"URE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"de\",\"lay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"W\",\"INEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01\",\", \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false,\",\"\\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": t\",\"rue, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false},\",\"\\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}]}\",\"\"],\"serialized_state\":\"{\\\"scope\\\": \\\"Xvfb-only repeated REA startup diagnostic; no Max/Wine/source prefix\\\", \\\"uid\\\": 1000, \\\"runs\\\": [{\\\"index\\\": 0, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 1, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 2, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 3, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 4, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 5, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 6, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 7, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 8, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}, {\\\"index\\\": 9, \\\"observations\\\": [{\\\"delay_seconds\\\": 0, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.001, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.01, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}, {\\\"delay_seconds\\\": 0.05, \\\"env_readable\\\": true, \\\"scope_fields\\\": {\\\"ALIVE_HELP_ROOTS_CAPTURE_ID\\\": false, \\\"WINEPREFIX\\\": false, \\\"DISPLAY\\\": false}, \\\"identity_match\\\": true, \\\"alive\\\": true}], \\\"child_reaped\\\": true}]}\\r\\n\"}],\"interaction_events\":[],\"exit\":{\"code\":0,\"signal\":0,\"reason\":\"exited\"},\"settlement\":{\"state\":\"quiesced\",\"elapsed_ms\":106,\"cleanup_outcome\":\"not_required\"},\"process_samples\":[{\"at_ms\":10,\"pid\":1,\"parent_pid\":2,\"command\":\"/usr/bin/python3 -c import importlib.util,json,os,secrets,signal,subprocess,sys,tempfile,time\\nfrom pathlib import Path\\nr=Path('/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022');sys.path.insert(0,str(r));s=importlib.util.spec_from_file_location('run_debug',r/'run-runtime.py');m=importlib.util.module_from_spec(s);s.loader.exec_module(m)\\nruns=[]\\nfor index in range(10):\\n with tempfile.TemporaryDirectory(prefix='alive-help-xvfb-diagnostic-') as temporary:\\n  work=Path(temporary);display=m.choose_private_display(':0',os.environ.get('DISPLAY'))\\n  scope=dict(capture_id=secrets.token_hex(24),prefix=str(work/'unused-prefix'),display=display)\\n  env=dict(os.environ,**m.scope_environment(scope),XAUTHORITY=str(work/'auth'))\\n  m.private_xauthority(work/'auth',display);log=(work/'log').open('w')\\n  p=subprocess.Popen(['Xvfb',display,'-screen','0','64x64x24','-nolisten','tcp','-auth',str(work/'auth')],env=env,stdout=log,stderr=log)\\n  fd=os.pidfd_open(p.pid);observations=[]\\n  try:\\n   row=dict(pid=p.pid,start=m.process_start(Path('/proc')/str(p.pid)))\\n   for delay in [0,.001,.01,.05]:\\n    time.sleep(delay)\\n    try:\\n     data=(Path('/proc')/str(p.pid)/'environ').read_bytes().split(b'\\\\\\\\0')\\n     fields={key:(key+'='+value).encode() in data for key,value in m.scope_environment(scope).items()}\\n     observations.append(dict(delay_seconds=delay,env_readable=True,scope_fields=fields,identity_match=m.matches_scope(row,scope),alive=p.poll() is None))\\n    except PermissionError:observations.append(dict(delay_seconds=delay,env_readable=False,alive=p.poll() is None))\\n  finally:\\n   try:signal.pidfd_send_signal(fd,signal.SIGTERM)\\n   except ProcessLookupError:pass\\n   p.wait(timeout=5);os.close(fd);log.close()\\n  runs.append(dict(index=index,observations=observations,child_reaped=p.poll() is not None))\\nout=dict(scope='Xvfb-only repeated REA startup diagnostic; no Max/Wine/source prefix',uid=os.getuid(),runs=runs)\\n(r/'results/xvfb-rea-startup-diagnostic.json').write_text(json.dumps(out,indent=2)+'\\\\\\\\n')\\nprint(json.dumps(out))\",\"process_group_id\":1,\"session_id\":1},{\"at_ms\":50,\"pid\":3,\"parent_pid\":1,\"command\":\"Xvfb :200 -screen 0 64x64x24 -nolisten tcp -auth /tmp/alive-help-xvfb-diagnostic-nqjj46hp/auth\",\"process_group_id\":1,\"session_id\":1},{\"at_ms\":150,\"pid\":4,\"parent_pid\":1,\"command\":\"Xvfb :200 -screen 0 64x64x24 -nolisten tcp -auth /tmp/alive-help-xvfb-diagnostic-schn7oie/auth\",\"process_group_id\":1,\"session_id\":1},{\"at_ms\":250,\"pid\":5,\"parent_pid\":1,\"command\":\"Xvfb :200 -screen 0 64x64x24 -nolisten tcp -auth /tmp/alive-help-xvfb-diagnostic-_i0rkrhc/auth\",\"process_group_id\":1,\"session_id\":1},{\"at_ms\":350,\"pid\":6,\"parent_pid\":1,\"command\":\"Xvfb :200 -screen 0 64x64x24 -nolisten tcp -auth /tmp/alive-help-xvfb-diagnostic-i4z3kj40/auth\",\"process_group_id\":1,\"session_id\":1},{\"at_ms\":450,\"pid\":7,\"parent_pid\":1,\"command\":\"Xvfb :200 -screen 0 64x64x24 -nolisten tcp -auth /tmp/alive-help-xvfb-diagnostic-ezqa3qkt/auth\",\"process_group_id\":1,\"session_id\":1},{\"at_ms\":500,\"pid\":8,\"parent_pid\":7,\"command\":\"/usr/bin/xkbcomp -w 1 -R/usr/share/X11/xkb -xkm - -em1 The XKEYBOARD keymap compiler (xkbcomp) reports: -emp >  -eml Errors from xkbcomp are not fatal to the X server /tmp/server-200.xkm\",\"process_group_id\":1,\"session_id\":1},{\"at_ms\":550,\"pid\":9,\"parent_pid\":1,\"command\":\"Xvfb :200 -screen 0 64x64x24 -nolisten tcp -auth /tmp/alive-help-xvfb-diagnostic-tdu48o8n/auth\",\"process_group_id\":1,\"session_id\":1},{\"at_ms\":600,\"pid\":10,\"parent_pid\":9,\"command\":\"/usr/bin/xkbcomp -w 1 -R/usr/share/X11/xkb -xkm - -em1 The XKEYBOARD keymap compiler (xkbcomp) reports: -emp >  -eml Errors from xkbcomp are not fatal to the X server /tmp/server-200.xkm\",\"process_group_id\":1,\"session_id\":1},{\"at_ms\":650,\"pid\":11,\"parent_pid\":1,\"command\":\"Xvfb :200 -screen 0 64x64x24 -nolisten tcp -auth /tmp/alive-help-xvfb-diagnostic-9cneoi0s/auth\",\"process_group_id\":1,\"session_id\":1},{\"at_ms\":700,\"pid\":11,\"parent_pid\":1,\"command\":\"\",\"process_group_id\":1,\"session_id\":1},{\"at_ms\":750,\"pid\":12,\"parent_pid\":1,\"command\":\"Xvfb :200 -screen 0 64x64x24 -nolisten tcp -auth /tmp/alive-help-xvfb-diagnostic-csp8yt11/auth\",\"process_group_id\":1,\"session_id\":1},{\"at_ms\":800,\"pid\":12,\"parent_pid\":1,\"command\":\"\",\"process_group_id\":1,\"session_id\":1},{\"at_ms\":850,\"pid\":13,\"parent_pid\":1,\"command\":\"Xvfb :200 -screen 0 64x64x24 -nolisten tcp -auth /tmp/alive-help-xvfb-diagnostic-1ck96oa_/auth\",\"process_group_id\":1,\"session_id\":1},{\"at_ms\":900,\"pid\":13,\"parent_pid\":1,\"command\":\"\",\"process_group_id\":1,\"session_id\":1},{\"at_ms\":950,\"pid\":14,\"parent_pid\":1,\"command\":\"Xvfb :200 -screen 0 64x64x24 -nolisten tcp -auth /tmp/alive-help-xvfb-diagnostic-wjd7029v/auth\",\"process_group_id\":1,\"session_id\":1}],\"filesystem_checkpoints\":[{\"name\":\"before\",\"at_ms\":0,\"files\":[],\"effects\":[],\"truncated\":false},{\"name\":\"after_settlement\",\"at_ms\":1149,\"files\":[{\"path\":\"root_0:.\",\"mode\":33188,\"size\":12878,\"type\":\"file\",\"sha256\":\"8f78145c855744c142007207865e68d74ece7bccda0ec979ea783b170e926c08\",\"symlink_target\":null}],\"effects\":[{\"path\":\"root_0:.\",\"status\":\"created\",\"before\":null,\"after\":{\"path\":\"root_0:.\",\"mode\":33188,\"size\":12878,\"type\":\"file\",\"sha256\":\"8f78145c855744c142007207865e68d74ece7bccda0ec979ea783b170e926c08\",\"symlink_target\":null}}],\"truncated\":false}],\"event_journal\":[{\"capture_order\":0,\"collection\":\"filesystem_checkpoints\",\"index\":0},{\"capture_order\":1,\"collection\":\"process_samples\",\"index\":0},{\"capture_order\":2,\"collection\":\"process_samples\",\"index\":1},{\"capture_order\":3,\"collection\":\"process_samples\",\"index\":2},{\"capture_order\":4,\"collection\":\"process_samples\",\"index\":3},{\"capture_order\":5,\"collection\":\"process_samples\",\"index\":4},{\"capture_order\":6,\"collection\":\"process_samples\",\"index\":5},{\"capture_order\":7,\"collection\":\"process_samples\",\"index\":6},{\"capture_order\":8,\"collection\":\"process_samples\",\"index\":7},{\"capture_order\":9,\"collection\":\"process_samples\",\"index\":8},{\"capture_order\":10,\"collection\":\"process_samples\",\"index\":9},{\"capture_order\":11,\"collection\":\"process_samples\",\"index\":10},{\"capture_order\":12,\"collection\":\"process_samples\",\"index\":11},{\"capture_order\":13,\"collection\":\"process_samples\",\"index\":12},{\"capture_order\":14,\"collection\":\"process_samples\",\"index\":13},{\"capture_order\":15,\"collection\":\"process_samples\",\"index\":14},{\"capture_order\":16,\"collection\":\"process_samples\",\"index\":15},{\"capture_order\":17,\"collection\":\"frames\",\"index\":0},{\"capture_order\":18,\"collection\":\"frames\",\"index\":1},{\"capture_order\":19,\"collection\":\"rendered_frames\",\"index\":0},{\"capture_order\":20,\"collection\":\"lifecycle\",\"index\":0},{\"capture_order\":21,\"collection\":\"rendered_frames\",\"index\":1},{\"capture_order\":22,\"collection\":\"lifecycle\",\"index\":1},{\"capture_order\":23,\"collection\":\"filesystem_checkpoints\",\"index\":1}],\"files_before\":[],\"files_after\":[{\"path\":\"root_0:.\",\"mode\":33188,\"size\":12878,\"type\":\"file\",\"sha256\":\"8f78145c855744c142007207865e68d74ece7bccda0ec979ea783b170e926c08\",\"symlink_target\":null}],\"filesystem_effects\":[{\"path\":\"root_0:.\",\"status\":\"created\",\"before\":null,\"after\":{\"path\":\"root_0:.\",\"mode\":33188,\"size\":12878,\"type\":\"file\",\"sha256\":\"8f78145c855744c142007207865e68d74ece7bccda0ec979ea783b170e926c08\",\"symlink_target\":null}}],\"truncated\":false,\"truncation_details\":{\"raw_terminal\":{\"budget_bytes\":32768,\"observed_bytes\":7866,\"retained_bytes\":7866,\"observed_frames\":2,\"retained_frames\":2},\"rendered_terminal\":{\"budget_bytes\":32768,\"observed_bytes\":17814,\"retained_bytes\":17814,\"observed_frames\":2,\"retained_frames\":2},\"filesystem_before\":{\"files_limit\":4,\"depth_limit\":16,\"enumeration_truncated\":false,\"enumeration_reasons\":[],\"hash_budget_bytes\":1048576,\"hashed_bytes\":0,\"hash_omissions\":[]},\"filesystem_after\":{\"files_limit\":4,\"depth_limit\":16,\"enumeration_truncated\":false,\"enumeration_reasons\":[],\"hash_budget_bytes\":1048576,\"hashed_bytes\":12878,\"hash_omissions\":[]},\"process\":{\"sample_limit\":64,\"sampling_partial\":false,\"retained_samples\":16,\"sample_limit_reached\":false,\"sampling_failures\":0,\"first_sampling_failure\":null,\"coverage\":\"sampled\"}},\"limitations\":[\"The executable digest is a prelaunch file sample; matching path metadata immediately after spawn does not prove an atomic operating-system image binding.\",\"Process trees are sampled and may omit short-lived descendants.\",\"Filesystem observations are before/after snapshots, not syscall traces.\",\"Inherited host environment variables are not recorded and may affect results.\"],\"residual_unknowns\":[{\"scope\":\"process\",\"reason\":\"Process trees are sampled and may omit short-lived descendants.\"},{\"scope\":\"process\",\"reason\":\"The executable digest is a prelaunch file sample; operating-system image binding is not atomically observed.\"},{\"scope\":\"environment\",\"reason\":\"Inherited host environment variables are not recorded.\"},{\"scope\":\"network\",\"reason\":\"Network activity is not observed by this capture.\"}],\"cleanup\":{\"owned_process_group\":\"verified\",\"temporary_root\":\"removed\"}},\"confidence\":\"observed\",\"authority\":\"controlled-replay\",\"environment\":{\"id\":\"linux-x64\",\"platform\":\"linux\",\"architecture\":\"x64\",\"isolation\":\"process\"},\"limitations\":[\"Artifact identity is unavailable for this observation.\",\"The executable digest is a prelaunch file sample; matching path metadata immediately after spawn does not prove an atomic operating-system image binding.\",\"Process trees are sampled and may omit short-lived descendants.\",\"Filesystem observations are before/after snapshots, not syscall traces.\",\"Inherited host environment variables are not recorded and may affect results.\"],\"locations\":[],\"evidence_links\":[]}"
+    }
+  ],
+  "structuredContent": {
+    "evidence_id": "ev_40fbaf6bae92a5d383a724cc0f216e3c8bca9516183ebd69f819910b95375372",
+    "subject": null,
+    "provider": {
+      "id": "rea-process",
+      "name": "REA process capture",
+      "version": "3"
+    },
+    "analysis_profile": null,
+    "predicate_type": "rea.process-capture",
+    "operation": "capture_process_scenario",
+    "parameters": {
+      "executable_name": "python3",
+      "argument_count": 2,
+      "event_count": 0,
+      "filesystem_observation_path_count": 1,
+      "normalization": {
+        "paths": false,
+        "pids": true,
+        "ports": true,
+        "time_bucket_ms": 10,
+        "patterns": []
+      }
+    },
+    "raw_result": null,
+    "normalized_result": {
+      "manifest": {
+        "rea_version": "6.4.0",
+        "provider_version": "3",
+        "platform": "linux",
+        "architecture": "x64",
+        "pty_backend": "node-pty",
+        "started_at": "2026-10-22T04:37:34.597Z",
+        "completed_at": "2026-10-22T04:37:35.746Z",
+        "scenario": {
+          "executable": "/usr/bin/python3",
+          "arguments": [
+            "-c",
+            "import importlib.util,json,os,secrets,signal,subprocess,sys,tempfile,time\nfrom pathlib import Path\nr=Path('/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022');sys.path.insert(0,str(r));s=importlib.util.spec_from_file_location('run_debug',r/'run-runtime.py');m=importlib.util.module_from_spec(s);s.loader.exec_module(m)\nruns=[]\nfor index in range(10):\n with tempfile.TemporaryDirectory(prefix='alive-help-xvfb-diagnostic-') as temporary:\n  work=Path(temporary);display=m.choose_private_display(':0',os.environ.get('DISPLAY'))\n  scope=dict(capture_id=secrets.token_hex(24),prefix=str(work/'unused-prefix'),display=display)\n  env=dict(os.environ,**m.scope_environment(scope),XAUTHORITY=str(work/'auth'))\n  m.private_xauthority(work/'auth',display);log=(work/'log').open('w')\n  p=subprocess.Popen(['Xvfb',display,'-screen','0','64x64x24','-nolisten','tcp','-auth',str(work/'auth')],env=env,stdout=log,stderr=log)\n  fd=os.pidfd_open(p.pid);observations=[]\n  try:\n   row=dict(pid=p.pid,start=m.process_start(Path('/proc')/str(p.pid)))\n   for delay in [0,.001,.01,.05]:\n    time.sleep(delay)\n    try:\n     data=(Path('/proc')/str(p.pid)/'environ').read_bytes().split(b'\\\\0')\n     fields={key:(key+'='+value).encode() in data for key,value in m.scope_environment(scope).items()}\n     observations.append(dict(delay_seconds=delay,env_readable=True,scope_fields=fields,identity_match=m.matches_scope(row,scope),alive=p.poll() is None))\n    except PermissionError:observations.append(dict(delay_seconds=delay,env_readable=False,alive=p.poll() is None))\n  finally:\n   try:signal.pidfd_send_signal(fd,signal.SIGTERM)\n   except ProcessLookupError:pass\n   p.wait(timeout=5);os.close(fd);log.close()\n  runs.append(dict(index=index,observations=observations,child_reaped=p.poll() is not None))\nout=dict(scope='Xvfb-only repeated REA startup diagnostic; no Max/Wine/source prefix',uid=os.getuid(),runs=runs)\n(r/'results/xvfb-rea-startup-diagnostic.json').write_text(json.dumps(out,indent=2)+'\\\\n')\nprint(json.dumps(out))"
+          ],
+          "working_directory": "/home/venetanji/Work/alive",
+          "environment": {},
+          "filesystem_observation_paths": [
+            "/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/results/xvfb-rea-startup-diagnostic.json"
+          ],
+          "terminal": {
+            "columns": 100,
+            "rows": 30,
+            "scrollback": 100
+          },
+          "events": [],
+          "timeout_ms": 30000,
+          "idle_timeout_ms": 25000,
+          "settle_ms": 100,
+          "limits": {
+            "output_bytes": 32768,
+            "files": 4,
+            "file_bytes": 1048576,
+            "processes": 64,
+            "filesystem_depth": 16
+          },
+          "normalization": {
+            "paths": false,
+            "pids": true,
+            "ports": true,
+            "time_bucket_ms": 10,
+            "patterns": []
+          },
+          "finalization_ms": 5000,
+          "executable_sha256": "375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b"
+        },
+        "comparison_contract": {
+          "working_directory": "/home/venetanji/Work/alive",
+          "environment": {},
+          "ambient_environment": "unknown",
+          "filesystem_observation_paths": [
+            "/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/results/xvfb-rea-startup-diagnostic.json"
+          ],
+          "terminal": {
+            "columns": 100,
+            "rows": 30,
+            "scrollback": 100
+          },
+          "events": [],
+          "timeout_ms": 30000,
+          "idle_timeout_ms": 25000,
+          "settle_ms": 100,
+          "finalization_ms": 5000,
+          "limits": {
+            "output_bytes": 32768,
+            "files": 4,
+            "file_bytes": 1048576,
+            "processes": 64,
+            "filesystem_depth": 16
+          },
+          "normalization": {
+            "paths": false,
+            "pids": true,
+            "ports": true,
+            "time_bucket_ms": 10,
+            "patterns": []
+          },
+          "port_normalization_version": "contextual-endpoints-v2",
+          "rendered_line_format": "trailing-spaces-trimmed-v1"
+        },
+        "full_scenario_sha256": "e25ecc4d2d8cfc11a3a136b4020347c0dbc8f7e7a3c613fe06412ae7fad40c14",
+        "comparison_contract_sha256": "9b97b80ad6301ef5d08cc56e1e441fc6e932b6048892701f93789ab1a90b2f91",
+        "selected_executable_sha256": "375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b",
+        "executable_sha256": "375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b",
+        "executable_identity": {
+          "state": "path_metadata_unchanged",
+          "reason": null
+        },
+        "normalization_sha256": "5c58aa1aa890197f15f9c59ef755d01120e6e07f356fa1ef2f20787e63b6fa87"
+      },
+      "normalization": {
+        "paths": false,
+        "pids": true,
+        "ports": true,
+        "time_bucket_ms": 10,
+        "patterns": []
+      },
+      "frames": [
+        {
+          "sequence": 0,
+          "at_ms": 1000,
+          "data": "{\"scope\": \"Xvfb-only repeated REA startup diagnostic; no Max/Wine/source prefix\", \"uid\": 1000, \"runs\": [{\"index\": 0, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 1, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 2, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 3, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 4, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 5, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAP"
+        },
+        {
+          "sequence": 1,
+          "at_ms": 1010,
+          "data": "TURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 6, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 7, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 8, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 9, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}]}\r\n"
+        }
+      ],
+      "rendered_frames": [
+        {
+          "sequence": 0,
+          "at_ms": 1000,
+          "columns": 100,
+          "rows": 30,
+          "cursor_x": 95,
+          "cursor_y": 29,
+          "active_buffer": "normal",
+          "lines": [
+            "nds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFI",
+            "X\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_r",
+            "eadable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY",
+            "\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"sc",
+            "ope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identit",
+            "y_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 2, \"observations\": [{\"delay_second",
+            "s\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": fa",
+            "lse, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readab",
+            "le\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": fa",
+            "lse}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_f",
+            "ields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_mat",
+            "ch\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HEL",
+            "P_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\":",
+            " true}], \"child_reaped\": true}, {\"index\": 3, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": t",
+            "rue, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false},",
+            "\"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields",
+            "\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\":",
+            "true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROO",
+            "TS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true",
+            "}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": fal",
+            "se, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\":",
+            " true}, {\"index\": 4, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"A",
+            "LIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true,",
+            "\"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CA",
+            "PTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"",
+            "delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"",
+            "WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.0",
+            "5, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false,",
+            " \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 5, \"ob",
+            "servations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAP"
+          ],
+          "serialized_state": "{\"scope\": \"Xvfb-only repeated REA startup diagnostic; no Max/Wine/source prefix\", \"uid\": 1000, \"runs\": [{\"index\": 0, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 1, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 2, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 3, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 4, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 5, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAP"
+        },
+        {
+          "sequence": 1,
+          "at_ms": 1010,
+          "columns": 100,
+          "rows": 30,
+          "cursor_x": 0,
+          "cursor_y": 29,
+          "active_buffer": "normal",
+          "lines": [
+            "adable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\"",
+            ": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"sco",
+            "pe_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity",
+            "_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE",
+            "_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"ali",
+            "ve\": true}], \"child_reaped\": true}, {\"index\": 7, \"observations\": [{\"delay_seconds\": 0, \"env_readable",
+            "\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": fals",
+            "e}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fi",
+            "elds\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_matc",
+            "h\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP",
+            "_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\":",
+            "true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\":",
+            " false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reap",
+            "ed\": true}, {\"index\": 8, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\":",
+            " {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": tr",
+            "ue, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOT",
+            "S_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}",
+            ", {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": fals",
+            "e, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\":",
+            " 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": fa",
+            "lse, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 9,",
+            " \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPT",
+            "URE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"de",
+            "lay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"W",
+            "INEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01",
+            ", \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false,",
+            "\"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": t",
+            "rue, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false},",
+            "\"identity_match\": true, \"alive\": true}], \"child_reaped\": true}]}",
+            ""
+          ],
+          "serialized_state": "{\"scope\": \"Xvfb-only repeated REA startup diagnostic; no Max/Wine/source prefix\", \"uid\": 1000, \"runs\": [{\"index\": 0, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 1, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 2, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 3, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 4, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 5, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 6, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 7, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 8, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}, {\"index\": 9, \"observations\": [{\"delay_seconds\": 0, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.001, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.01, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}, {\"delay_seconds\": 0.05, \"env_readable\": true, \"scope_fields\": {\"ALIVE_HELP_ROOTS_CAPTURE_ID\": false, \"WINEPREFIX\": false, \"DISPLAY\": false}, \"identity_match\": true, \"alive\": true}], \"child_reaped\": true}]}\r\n"
+        }
+      ],
+      "interaction_events": [],
+      "exit": {
+        "code": 0,
+        "signal": 0,
+        "reason": "exited"
+      },
+      "settlement": {
+        "state": "quiesced",
+        "elapsed_ms": 106,
+        "cleanup_outcome": "not_required"
+      },
+      "process_samples": [
+        {
+          "at_ms": 10,
+          "pid": 1,
+          "parent_pid": 2,
+          "command": "/usr/bin/python3 -c import importlib.util,json,os,secrets,signal,subprocess,sys,tempfile,time\nfrom pathlib import Path\nr=Path('/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022');sys.path.insert(0,str(r));s=importlib.util.spec_from_file_location('run_debug',r/'run-runtime.py');m=importlib.util.module_from_spec(s);s.loader.exec_module(m)\nruns=[]\nfor index in range(10):\n with tempfile.TemporaryDirectory(prefix='alive-help-xvfb-diagnostic-') as temporary:\n  work=Path(temporary);display=m.choose_private_display(':0',os.environ.get('DISPLAY'))\n  scope=dict(capture_id=secrets.token_hex(24),prefix=str(work/'unused-prefix'),display=display)\n  env=dict(os.environ,**m.scope_environment(scope),XAUTHORITY=str(work/'auth'))\n  m.private_xauthority(work/'auth',display);log=(work/'log').open('w')\n  p=subprocess.Popen(['Xvfb',display,'-screen','0','64x64x24','-nolisten','tcp','-auth',str(work/'auth')],env=env,stdout=log,stderr=log)\n  fd=os.pidfd_open(p.pid);observations=[]\n  try:\n   row=dict(pid=p.pid,start=m.process_start(Path('/proc')/str(p.pid)))\n   for delay in [0,.001,.01,.05]:\n    time.sleep(delay)\n    try:\n     data=(Path('/proc')/str(p.pid)/'environ').read_bytes().split(b'\\\\0')\n     fields={key:(key+'='+value).encode() in data for key,value in m.scope_environment(scope).items()}\n     observations.append(dict(delay_seconds=delay,env_readable=True,scope_fields=fields,identity_match=m.matches_scope(row,scope),alive=p.poll() is None))\n    except PermissionError:observations.append(dict(delay_seconds=delay,env_readable=False,alive=p.poll() is None))\n  finally:\n   try:signal.pidfd_send_signal(fd,signal.SIGTERM)\n   except ProcessLookupError:pass\n   p.wait(timeout=5);os.close(fd);log.close()\n  runs.append(dict(index=index,observations=observations,child_reaped=p.poll() is not None))\nout=dict(scope='Xvfb-only repeated REA startup diagnostic; no Max/Wine/source prefix',uid=os.getuid(),runs=runs)\n(r/'results/xvfb-rea-startup-diagnostic.json').write_text(json.dumps(out,indent=2)+'\\\\n')\nprint(json.dumps(out))",
+          "process_group_id": 1,
+          "session_id": 1
+        },
+        {
+          "at_ms": 50,
+          "pid": 3,
+          "parent_pid": 1,
+          "command": "Xvfb :200 -screen 0 64x64x24 -nolisten tcp -auth /tmp/alive-help-xvfb-diagnostic-nqjj46hp/auth",
+          "process_group_id": 1,
+          "session_id": 1
+        },
+        {
+          "at_ms": 150,
+          "pid": 4,
+          "parent_pid": 1,
+          "command": "Xvfb :200 -screen 0 64x64x24 -nolisten tcp -auth /tmp/alive-help-xvfb-diagnostic-schn7oie/auth",
+          "process_group_id": 1,
+          "session_id": 1
+        },
+        {
+          "at_ms": 250,
+          "pid": 5,
+          "parent_pid": 1,
+          "command": "Xvfb :200 -screen 0 64x64x24 -nolisten tcp -auth /tmp/alive-help-xvfb-diagnostic-_i0rkrhc/auth",
+          "process_group_id": 1,
+          "session_id": 1
+        },
+        {
+          "at_ms": 350,
+          "pid": 6,
+          "parent_pid": 1,
+          "command": "Xvfb :200 -screen 0 64x64x24 -nolisten tcp -auth /tmp/alive-help-xvfb-diagnostic-i4z3kj40/auth",
+          "process_group_id": 1,
+          "session_id": 1
+        },
+        {
+          "at_ms": 450,
+          "pid": 7,
+          "parent_pid": 1,
+          "command": "Xvfb :200 -screen 0 64x64x24 -nolisten tcp -auth /tmp/alive-help-xvfb-diagnostic-ezqa3qkt/auth",
+          "process_group_id": 1,
+          "session_id": 1
+        },
+        {
+          "at_ms": 500,
+          "pid": 8,
+          "parent_pid": 7,
+          "command": "/usr/bin/xkbcomp -w 1 -R/usr/share/X11/xkb -xkm - -em1 The XKEYBOARD keymap compiler (xkbcomp) reports: -emp >  -eml Errors from xkbcomp are not fatal to the X server /tmp/server-200.xkm",
+          "process_group_id": 1,
+          "session_id": 1
+        },
+        {
+          "at_ms": 550,
+          "pid": 9,
+          "parent_pid": 1,
+          "command": "Xvfb :200 -screen 0 64x64x24 -nolisten tcp -auth /tmp/alive-help-xvfb-diagnostic-tdu48o8n/auth",
+          "process_group_id": 1,
+          "session_id": 1
+        },
+        {
+          "at_ms": 600,
+          "pid": 10,
+          "parent_pid": 9,
+          "command": "/usr/bin/xkbcomp -w 1 -R/usr/share/X11/xkb -xkm - -em1 The XKEYBOARD keymap compiler (xkbcomp) reports: -emp >  -eml Errors from xkbcomp are not fatal to the X server /tmp/server-200.xkm",
+          "process_group_id": 1,
+          "session_id": 1
+        },
+        {
+          "at_ms": 650,
+          "pid": 11,
+          "parent_pid": 1,
+          "command": "Xvfb :200 -screen 0 64x64x24 -nolisten tcp -auth /tmp/alive-help-xvfb-diagnostic-9cneoi0s/auth",
+          "process_group_id": 1,
+          "session_id": 1
+        },
+        {
+          "at_ms": 700,
+          "pid": 11,
+          "parent_pid": 1,
+          "command": "",
+          "process_group_id": 1,
+          "session_id": 1
+        },
+        {
+          "at_ms": 750,
+          "pid": 12,
+          "parent_pid": 1,
+          "command": "Xvfb :200 -screen 0 64x64x24 -nolisten tcp -auth /tmp/alive-help-xvfb-diagnostic-csp8yt11/auth",
+          "process_group_id": 1,
+          "session_id": 1
+        },
+        {
+          "at_ms": 800,
+          "pid": 12,
+          "parent_pid": 1,
+          "command": "",
+          "process_group_id": 1,
+          "session_id": 1
+        },
+        {
+          "at_ms": 850,
+          "pid": 13,
+          "parent_pid": 1,
+          "command": "Xvfb :200 -screen 0 64x64x24 -nolisten tcp -auth /tmp/alive-help-xvfb-diagnostic-1ck96oa_/auth",
+          "process_group_id": 1,
+          "session_id": 1
+        },
+        {
+          "at_ms": 900,
+          "pid": 13,
+          "parent_pid": 1,
+          "command": "",
+          "process_group_id": 1,
+          "session_id": 1
+        },
+        {
+          "at_ms": 950,
+          "pid": 14,
+          "parent_pid": 1,
+          "command": "Xvfb :200 -screen 0 64x64x24 -nolisten tcp -auth /tmp/alive-help-xvfb-diagnostic-wjd7029v/auth",
+          "process_group_id": 1,
+          "session_id": 1
+        }
+      ],
+      "filesystem_checkpoints": [
+        {
+          "name": "before",
+          "at_ms": 0,
+          "files": [],
+          "effects": [],
+          "truncated": false
+        },
+        {
+          "name": "after_settlement",
+          "at_ms": 1149,
+          "files": [
+            {
+              "path": "root_0:.",
+              "mode": 33188,
+              "size": 12878,
+              "type": "file",
+              "sha256": "8f78145c855744c142007207865e68d74ece7bccda0ec979ea783b170e926c08",
+              "symlink_target": null
+            }
+          ],
+          "effects": [
+            {
+              "path": "root_0:.",
+              "status": "created",
+              "before": null,
+              "after": {
+                "path": "root_0:.",
+                "mode": 33188,
+                "size": 12878,
+                "type": "file",
+                "sha256": "8f78145c855744c142007207865e68d74ece7bccda0ec979ea783b170e926c08",
+                "symlink_target": null
+              }
+            }
+          ],
+          "truncated": false
+        }
+      ],
+      "event_journal": [
+        {
+          "capture_order": 0,
+          "collection": "filesystem_checkpoints",
+          "index": 0
+        },
+        {
+          "capture_order": 1,
+          "collection": "process_samples",
+          "index": 0
+        },
+        {
+          "capture_order": 2,
+          "collection": "process_samples",
+          "index": 1
+        },
+        {
+          "capture_order": 3,
+          "collection": "process_samples",
+          "index": 2
+        },
+        {
+          "capture_order": 4,
+          "collection": "process_samples",
+          "index": 3
+        },
+        {
+          "capture_order": 5,
+          "collection": "process_samples",
+          "index": 4
+        },
+        {
+          "capture_order": 6,
+          "collection": "process_samples",
+          "index": 5
+        },
+        {
+          "capture_order": 7,
+          "collection": "process_samples",
+          "index": 6
+        },
+        {
+          "capture_order": 8,
+          "collection": "process_samples",
+          "index": 7
+        },
+        {
+          "capture_order": 9,
+          "collection": "process_samples",
+          "index": 8
+        },
+        {
+          "capture_order": 10,
+          "collection": "process_samples",
+          "index": 9
+        },
+        {
+          "capture_order": 11,
+          "collection": "process_samples",
+          "index": 10
+        },
+        {
+          "capture_order": 12,
+          "collection": "process_samples",
+          "index": 11
+        },
+        {
+          "capture_order": 13,
+          "collection": "process_samples",
+          "index": 12
+        },
+        {
+          "capture_order": 14,
+          "collection": "process_samples",
+          "index": 13
+        },
+        {
+          "capture_order": 15,
+          "collection": "process_samples",
+          "index": 14
+        },
+        {
+          "capture_order": 16,
+          "collection": "process_samples",
+          "index": 15
+        },
+        {
+          "capture_order": 17,
+          "collection": "frames",
+          "index": 0
+        },
+        {
+          "capture_order": 18,
+          "collection": "frames",
+          "index": 1
+        },
+        {
+          "capture_order": 19,
+          "collection": "rendered_frames",
+          "index": 0
+        },
+        {
+          "capture_order": 20,
+          "collection": "lifecycle",
+          "index": 0
+        },
+        {
+          "capture_order": 21,
+          "collection": "rendered_frames",
+          "index": 1
+        },
+        {
+          "capture_order": 22,
+          "collection": "lifecycle",
+          "index": 1
+        },
+        {
+          "capture_order": 23,
+          "collection": "filesystem_checkpoints",
+          "index": 1
+        }
+      ],
+      "files_before": [],
+      "files_after": [
+        {
+          "path": "root_0:.",
+          "mode": 33188,
+          "size": 12878,
+          "type": "file",
+          "sha256": "8f78145c855744c142007207865e68d74ece7bccda0ec979ea783b170e926c08",
+          "symlink_target": null
+        }
+      ],
+      "filesystem_effects": [
+        {
+          "path": "root_0:.",
+          "status": "created",
+          "before": null,
+          "after": {
+            "path": "root_0:.",
+            "mode": 33188,
+            "size": 12878,
+            "type": "file",
+            "sha256": "8f78145c855744c142007207865e68d74ece7bccda0ec979ea783b170e926c08",
+            "symlink_target": null
+          }
+        }
+      ],
+      "truncated": false,
+      "truncation_details": {
+        "raw_terminal": {
+          "budget_bytes": 32768,
+          "observed_bytes": 7866,
+          "retained_bytes": 7866,
+          "observed_frames": 2,
+          "retained_frames": 2
+        },
+        "rendered_terminal": {
+          "budget_bytes": 32768,
+          "observed_bytes": 17814,
+          "retained_bytes": 17814,
+          "observed_frames": 2,
+          "retained_frames": 2
+        },
+        "filesystem_before": {
+          "files_limit": 4,
+          "depth_limit": 16,
+          "enumeration_truncated": false,
+          "enumeration_reasons": [],
+          "hash_budget_bytes": 1048576,
+          "hashed_bytes": 0,
+          "hash_omissions": []
+        },
+        "filesystem_after": {
+          "files_limit": 4,
+          "depth_limit": 16,
+          "enumeration_truncated": false,
+          "enumeration_reasons": [],
+          "hash_budget_bytes": 1048576,
+          "hashed_bytes": 12878,
+          "hash_omissions": []
+        },
+        "process": {
+          "sample_limit": 64,
+          "sampling_partial": false,
+          "retained_samples": 16,
+          "sample_limit_reached": false,
+          "sampling_failures": 0,
+          "first_sampling_failure": null,
+          "coverage": "sampled"
+        }
+      },
+      "limitations": [
+        "The executable digest is a prelaunch file sample; matching path metadata immediately after spawn does not prove an atomic operating-system image binding.",
+        "Process trees are sampled and may omit short-lived descendants.",
+        "Filesystem observations are before/after snapshots, not syscall traces.",
+        "Inherited host environment variables are not recorded and may affect results."
+      ],
+      "residual_unknowns": [
+        {
+          "scope": "process",
+          "reason": "Process trees are sampled and may omit short-lived descendants."
+        },
+        {
+          "scope": "process",
+          "reason": "The executable digest is a prelaunch file sample; operating-system image binding is not atomically observed."
+        },
+        {
+          "scope": "environment",
+          "reason": "Inherited host environment variables are not recorded."
+        },
+        {
+          "scope": "network",
+          "reason": "Network activity is not observed by this capture."
+        }
+      ],
+      "cleanup": {
+        "owned_process_group": "verified",
+        "temporary_root": "removed"
+      }
+    },
+    "confidence": "observed",
+    "authority": "controlled-replay",
+    "environment": {
+      "id": "linux-x64",
+      "platform": "linux",
+      "architecture": "x64",
+      "isolation": "process"
+    },
+    "limitations": [
+      "Artifact identity is unavailable for this observation.",
+      "The executable digest is a prelaunch file sample; matching path metadata immediately after spawn does not prove an atomic operating-system image binding.",
+      "Process trees are sampled and may omit short-lived descendants.",
+      "Filesystem observations are before/after snapshots, not syscall traces.",
+      "Inherited host environment variables are not recorded and may affect results."
+    ],
+    "locations": [],
+    "evidence_links": []
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "status": "COMPLETE_CAPTURE_COMPARATOR_INPUT_PHASE_DEFECT",
+  "evidence_id": "ev_091870590c00c4f1540ff0aa42308300c555f3a1a015ee48b4edc918d5bfc14c",
+  "rea_record_sha256": "a574f39b8efbe154db9ef21e1e30c48b0dcc6b2cbe6bbf93fc6c46c67189e6b4",
+  "rea_truncated": false,
+  "rea_exit": {
+    "code": 0,
+    "signal": 0,
+    "reason": "exited"
+  },
+  "rea_after_bindings": {
+    "receipts.jsonl": {
+      "bytes": 103573,
+      "sha256": "86c6ecf7005ab5334a988876ac1f34892348f98ecc808fad25280d2db78275a6",
+      "rea_binding_validated": true
+    },
+    "session.json": {
+      "bytes": 160353,
+      "sha256": "b50a6afe31c422e507ac08c356f18b349bfd7b308fc09479638a5fdb1131cbde",
+      "rea_binding_validated": true
+    },
+    "cleanup.json": {
+      "bytes": 2132,
+      "sha256": "740ebf9518f20c3364d61af1e1a04ad9310ecb6fe0660878e3e37cd3e8bc02b1",
+      "rea_binding_validated": true
+    },
+    "display-states.json": {
+      "bytes": 321176,
+      "sha256": "7012e5dbf6779c77b7e5beeab41a6d70c71426068b970470d9fcac0c25d61efa",
+      "rea_binding_validated": true
+    }
+  },
+  "operations": 54,
+  "checkpoints": 102,
+  "numeric_states": 612,
+  "public_requests": 156,
+  "private_barrier_request": 157,
+  "destination_witnesses": 21,
+  "destination_failures": 0,
+  "capabilities": {
+    "initial_message_prototypes_validated": true,
+    "initial_numeric_readback_validated": true,
+    "numeric_readback_validated": true,
+    "numeric_getters_silent_validated": true,
+    "runtime_endpoint_readback_validated": true,
+    "typed_float_dispatch_validated": true,
+    "synchronous_destination_outputs_validated": true
+  },
+  "accepted_closes": [
+    {
+      "request_id": 125,
+      "document": "float",
+      "revision": 1,
+      "close_proof_validated": true,
+      "ack_bytes": 106316,
+      "ack_sha256": "187aa3449c328055b6467ed3c353eee83a669035cfe47f9921d89aac20594c4d",
+      "root_bytes": 1721,
+      "root_sha256": "f5e9dd1e3669d3c12c5b5726b0de589da4d38d1055e8a8ab5b6b346220ced82b"
+    },
+    {
+      "request_id": 141,
+      "document": "int",
+      "revision": 1,
+      "close_proof_validated": true,
+      "ack_bytes": 101246,
+      "ack_sha256": "aa5c85a108f7e240531b979ad16cb449dd2e1830b24ee8653f0f28f7a1b4c833",
+      "root_bytes": 1710,
+      "root_sha256": "8e4634e55dcf3222c35899500f652180684d30937963cbb2c6571df48a859f4a"
+    }
+  ],
+  "lifecycle_barrier_validated": true,
+  "expected_live": {
+    "float": 2,
+    "int": 2
+  },
+  "preferences_unchanged": true,
+  "all_source_copies_unchanged": true,
+  "all_helpers_unchanged": true,
+  "owned_scans_empty": true,
+  "prefix_removed": true,
+  "xvfb_exited": true,
+  "unreadable_process_environments": {
+    "owned_scan": 319,
+    "prefix_scan": 317,
+    "marker_scan": 317
+  },
+  "rea_unverified_process_count": 11,
+  "historical_comparator_sha256": "b0e962ace212eb787f26d7aaeb1681f9f1d62c2848d8729480294dbee3c36a62",
+  "historical_comparison": {
+    "path": "experiments/max-reference/help-roots-native-20261022/results/int-float-comparison-012.json",
+    "sha256": "9f19644b23ce13f30fb8f649ad53c184a86be7f6fd4790fe093f5aebb9c8fca6",
+    "exit": 1,
+    "all_comparison_gates_pass": false,
+    "reason": "Output-shaped button bang required at numeric input; correction requires independent TDD review."
+  },
+  "complete_installed_help_qualification_passes_added": 0
+}

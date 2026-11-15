@@ -1,0 +1,23 @@
+.E.E.
+======================================================================
+ERROR: test_empty_or_duplicate_checkpoint_sets_cannot_pass (__main__.ComparisonContracts.test_empty_or_duplicate_checkpoint_sets_cannot_pass)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/venetanji/Work/alive/experiments/max-reference/help-roots-native-20261022/test-compare.py", line 58, in test_empty_or_duplicate_checkpoint_sets_cannot_pass
+    self.compare.validate_coverage(score, native, receipts, snapshots)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'help_compare' has no attribute 'validate_coverage'
+
+======================================================================
+ERROR: test_recorded_stimulus_and_native_input_must_match_declared_score (__main__.ComparisonContracts.test_recorded_stimulus_and_native_input_must_match_declared_score)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/venetanji/Work/alive/experiments/max-reference/help-roots-native-20261022/test-compare.py", line 68, in test_recorded_stimulus_and_native_input_must_match_declared_score
+    self.compare.validate_coverage(score, native, [changed, receipts[1]], snapshots)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'help_compare' has no attribute 'validate_coverage'
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.004s
+
+FAILED (errors=2)

@@ -1,0 +1,67 @@
+{
+  "status": "OFFLINE_PASS_NOT_RUNTIME",
+  "package_sha256": "66e2e0daff2d21776c441f9c2bbe8ab6e21e65f1c821318d26f598891dacfa1f",
+  "package_files": {
+    "controller.js": "af353076e2529ed25fbbf0cce4bc19243a77954f40244c6cf3362de50c630aec",
+    "lifecycle-fixture.cjs": "3a0f23f625b4d67af2e1708154c09a54552a1b8e4bbafe5e4c3b4c9d7278687d",
+    "lifecycle-observer.js": "9a886fa4044cb724786f50ea91f52de4d5719d7fff5def2ebba7df1b209f5fd9",
+    "lifecycle.py": "4c491651184680e8a40edb75219757d2cea61a35eb66735de24bb61ae055ce5d",
+    "numeric.py": "19885389ce908cf4f4aa4b6cd401209a5cb5445c79cfe899f1599c55a6b3a17f",
+    "observer.js": "48fd558df7025f96044ab1207646abd3d36c01dc9ba8ad74ea72b4fb5ab916e4",
+    "prepare.py": "7efe10b7f138a5d7977ccd53d474208f5c02fd09797ac155c579363b6c86ff72",
+    "run-runtime.py": "b265bfe0c822e1d32bf9dd78ef608d61124e6db4c6a0aaab8bd8cdede469374e",
+    "test_annotations.cjs": "3910ae4cb1360b86bee342346cf4860151b74ed97859ad5959a79199e73959e8",
+    "test_annotations.py": "6794e87f7fe5ecf1877a5f77f1e75fb0dd9f250cc570be92a053645a59f44b22",
+    "test_close.cjs": "662e5897c5cc9b51bfc4b895f490b3c2cfbc05a43d4696d1f36463a56265bf84",
+    "test_controller.cjs": "af17c4e8e9d3dfc42083d604a1fc2509f5c97faea3f91b2bc7463f435b72c175",
+    "test_float_mode.cjs": "d8f16d92644184082dd30800837b94c113b1a8d9e1b75ecfc3a366dbcad1e0b0",
+    "test_float_mode.py": "625b2a11c87e611717d535a235e0cf5ec8127f5f57b4515d33458628108c1e85",
+    "test_lifecycle.cjs": "800eeda1b023da103496a0696a49efccd2278167d198db8e8dffd4f83c25c9a7",
+    "test_lifecycle.py": "0873013fcb255c677ba3d2a8b1cf7fbc4c1d5be2ac66af942696688788de243b",
+    "test_numeric.py": "e05bb9ee4c037ca9badf91c7be1db27b726318060623f514e55b5a5b17a4434a",
+    "test_prepare.py": "60e9353ab76a3a808fae27699136b08c84e4596ebb381f8335dd4fd829779f16",
+    "test_readback.cjs": "2ee89201d1554b4a54b608e8080412e6a7567c0068cea02802366203bf0ae19f",
+    "test_runner.py": "3c0e3e7a33b78f38bcd94960b8deb3161c363ed58eb6922bd8a71af12ea3b057",
+    "test_shell.cjs": "106582b7e411824b0a6770b77cacd8523c72ba784a1a63683b4444556ffd78cb",
+    "test_transport.cjs": "4cb2f7a09f1828b39242dd417e30ca512ce95711c3126cb340ae3a20206ece35",
+    "v8-readback.js": "99f9ab7e4462149db4f1be26fe8827f03fbe52ddcf5ae79c325c3dee1dac817a",
+    "verify.py": "45c8d92723b3cd9b4625cc26d27923a6af8b5082ffdf9df2412a463b511784c8"
+  },
+  "checks": [
+    {
+      "check": "python",
+      "exit": 0,
+      "log": "experiments/max-reference/int-float-runtime-20261022/results/freebang-parent-final-python.log",
+      "sha256": "c1dd0f78c679df2dcb4e629dcbe350001fc9ac461afadb852fe7bf9f7684393b"
+    },
+    {
+      "check": "node",
+      "exit": 0,
+      "log": "experiments/max-reference/int-float-runtime-20261022/results/freebang-parent-final-node.log",
+      "sha256": "30ba8a2c4941facea5f2676bf49950fcf9d3e4298ab46b6f70123376b778e493"
+    },
+    {
+      "check": "syntax",
+      "exit": 0,
+      "log": "experiments/max-reference/int-float-runtime-20261022/results/freebang-parent-final-syntax.log",
+      "sha256": "0c30d9f4221994eebac63a1377f7109f34599acbaba4be994830accd1ca3fa0f"
+    },
+    {
+      "check": "package",
+      "exit": 0,
+      "log": "experiments/max-reference/int-float-runtime-20261022/results/freebang-parent-final-package.log",
+      "sha256": "65d843885eb1a75b0765c3a05008dbc614f8673a74e7e0fcf89ed977590cc89b"
+    },
+    {
+      "check": "dry-run",
+      "exit": 0,
+      "log": "experiments/max-reference/int-float-runtime-20261022/results/freebang-parent-final-dry-run.log",
+      "sha256": "f55188173a9ecd09799865eccf79db09d8d6b9c122fa725cfad14a9d84ada8b4"
+    }
+  ],
+  "unchanged_comparator_tests": {
+    "passed": 15,
+    "evidence": "freebang-parent-comparator.log",
+    "sha256": "75a19af9c9ed1d72367036ae0e907e054c889af68213c7eb12bb71f0971dd332"
+  }
+}

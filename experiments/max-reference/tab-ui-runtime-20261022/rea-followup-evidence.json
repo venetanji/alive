@@ -1,0 +1,1343 @@
+{
+  "evidence_id": "ev_1191af2531e052ee325090f16657674c3d9897222c797f5a309c178ce840655f",
+  "subject": null,
+  "provider": {
+    "id": "rea-process",
+    "name": "REA process capture",
+    "version": "3"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.process-capture",
+  "operation": "capture_process_scenario",
+  "parameters": {
+    "executable_name": "python3",
+    "argument_count": 1,
+    "event_count": 0,
+    "filesystem_observation_path_count": 0,
+    "normalization": {
+      "paths": false,
+      "pids": true,
+      "ports": true,
+      "time_bucket_ms": 10,
+      "patterns": []
+    }
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "manifest": {
+      "rea_version": "6.4.0",
+      "provider_version": "3",
+      "platform": "linux",
+      "architecture": "x64",
+      "pty_backend": "node-pty",
+      "started_at": "2026-10-21T16:43:08.339Z",
+      "completed_at": "2026-10-21T16:44:00.682Z",
+      "scenario": {
+        "executable": "/usr/bin/python3",
+        "arguments": [
+          "experiments/max-reference/tab-ui-runtime-20261022/run-followup.py"
+        ],
+        "working_directory": "/home/venetanji/Work/alive",
+        "environment": {},
+        "filesystem_observation_paths": [],
+        "terminal": {
+          "columns": 100,
+          "rows": 16,
+          "scrollback": 50
+        },
+        "events": [],
+        "timeout_ms": 120000,
+        "idle_timeout_ms": 50000,
+        "settle_ms": 100,
+        "limits": {
+          "output_bytes": 30000,
+          "files": 20,
+          "file_bytes": 100000,
+          "processes": 100,
+          "filesystem_depth": 1
+        },
+        "normalization": {
+          "paths": false,
+          "pids": true,
+          "ports": true,
+          "time_bucket_ms": 10,
+          "patterns": []
+        },
+        "finalization_ms": 3000,
+        "executable_sha256": "375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b"
+      },
+      "comparison_contract": {
+        "working_directory": "/home/venetanji/Work/alive",
+        "environment": {},
+        "ambient_environment": "unknown",
+        "filesystem_observation_paths": [],
+        "terminal": {
+          "columns": 100,
+          "rows": 16,
+          "scrollback": 50
+        },
+        "events": [],
+        "timeout_ms": 120000,
+        "idle_timeout_ms": 50000,
+        "settle_ms": 100,
+        "finalization_ms": 3000,
+        "limits": {
+          "output_bytes": 30000,
+          "files": 20,
+          "file_bytes": 100000,
+          "processes": 100,
+          "filesystem_depth": 1
+        },
+        "normalization": {
+          "paths": false,
+          "pids": true,
+          "ports": true,
+          "time_bucket_ms": 10,
+          "patterns": []
+        },
+        "port_normalization_version": "contextual-endpoints-v2",
+        "rendered_line_format": "trailing-spaces-trimmed-v1"
+      },
+      "full_scenario_sha256": "1d29e24209a15d63163baf6254b43064484525f3d64091aca34b7f16588af53c",
+      "comparison_contract_sha256": "7c83efb5ae12e221126966d9a4d1bf477a83a6879e62b68e79be7e741afc36f8",
+      "selected_executable_sha256": "375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b",
+      "executable_sha256": "375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b",
+      "executable_identity": {
+        "state": "path_metadata_unchanged",
+        "reason": null
+      },
+      "normalization_sha256": "5c58aa1aa890197f15f9c59ef755d01120e6e07f356fa1ef2f20787e63b6fa87"
+    },
+    "normalization": {
+      "paths": false,
+      "pids": true,
+      "ports": true,
+      "time_bucket_ms": 10,
+      "patterns": []
+    },
+    "frames": [
+      {
+        "sequence": 0,
+        "at_ms": 150,
+        "data": "{\"fixture\": \"position-swapped\", \"display\": \":0\", \"launcher_pid\": 2394644, \"xvfb_pid\": 2394628, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable\"}\r\n"
+      },
+      {
+        "sequence": 1,
+        "at_ms": 12680,
+        "data": "{\"fixture\": \"position-swapped\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601000407}\r\n"
+      },
+      {
+        "sequence": 2,
+        "at_ms": 13700,
+        "data": "{\"fixture\": \"position-swapped\", \"stage\": \"alpha\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601001568}\r\n"
+      },
+      {
+        "sequence": 3,
+        "at_ms": 14940,
+        "data": "{\"fixture\": \"position-swapped\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601002727}\r\n"
+      },
+      {
+        "sequence": 4,
+        "at_ms": 16060,
+        "data": "{\"fixture\": \"position-swapped\", \"stage\": \"alpha-again\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601003880}\r\n"
+      },
+      {
+        "sequence": 5,
+        "at_ms": 17190,
+        "data": "{\"fixture\": \"position-swapped\", \"stage\": \"zeta-retained\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601005036}\r\n"
+      },
+      {
+        "sequence": 6,
+        "at_ms": 18320,
+        "data": "{\"fixture\": \"position-swapped\", \"stage\": \"promoted\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601006140}\r\n"
+      },
+      {
+        "sequence": 7,
+        "at_ms": 19580,
+        "data": "{\"fixture\": \"position-swapped\", \"stage\": \"refresh-tabs\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601007425}\r\n"
+      },
+      {
+        "sequence": 8,
+        "at_ms": 20710,
+        "data": "{\"fixture\": \"position-swapped\", \"stage\": \"open-zeta\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601008529}\r\n"
+      },
+      {
+        "sequence": 9,
+        "at_ms": 21840,
+        "data": "{\"fixture\": \"position-swapped\", \"stage\": \"zeta-local\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601009634}\r\n"
+      },
+      {
+        "sequence": 10,
+        "at_ms": 22970,
+        "data": "{\"fixture\": \"position-swapped\", \"stage\": \"zeta-return\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601010741}\r\n"
+      },
+      {
+        "sequence": 11,
+        "at_ms": 26890,
+        "data": "{\"fixture\": \"position-swapped\", \"exit\": -9}\r\n"
+      },
+      {
+        "sequence": 12,
+        "at_ms": 26900,
+        "data": "{\"fixture\": \"nested-parent-hidden\", \"display\": \":0\", \"launcher_pid\": 2397791, \"xvfb_pid\": 2394628, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable\"}\r\n"
+      },
+      {
+        "sequence": 13,
+        "at_ms": 37460,
+        "data": "{\"fixture\": \"nested-parent-hidden\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601025272}\r\n"
+      },
+      {
+        "sequence": 14,
+        "at_ms": 38690,
+        "data": "{\"fixture\": \"nested-parent-hidden\", \"stage\": \"alpha\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601026481}\r\n"
+      },
+      {
+        "sequence": 15,
+        "at_ms": 39830,
+        "data": "{\"fixture\": \"nested-parent-hidden\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601027657}\r\n"
+      },
+      {
+        "sequence": 16,
+        "at_ms": 41070,
+        "data": "{\"fixture\": \"nested-parent-hidden\", \"stage\": \"alpha-again\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601028833}\r\n"
+      },
+      {
+        "sequence": 17,
+        "at_ms": 42210,
+        "data": "{\"fixture\": \"nested-parent-hidden\", \"stage\": \"zeta-retained\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601030006}\r\n"
+      },
+      {
+        "sequence": 18,
+        "at_ms": 43350,
+        "data": "{\"fixture\": \"nested-parent-hidden\", \"stage\": \"promoted\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601031109}\r\n"
+      },
+      {
+        "sequence": 19,
+        "at_ms": 44690,
+        "data": "{\"fixture\": \"nested-parent-hidden\", \"stage\": \"refresh-tabs\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601032510}\r\n"
+      },
+      {
+        "sequence": 20,
+        "at_ms": 45840,
+        "data": "{\"fixture\": \"nested-parent-hidden\", \"stage\": \"open-zeta\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601033648}\r\n"
+      },
+      {
+        "sequence": 21,
+        "at_ms": 46980,
+        "data": "{\"fixture\": \"nested-parent-hidden\", \"stage\": \"zeta-local\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601034752}\r\n"
+      },
+      {
+        "sequence": 22,
+        "at_ms": 48110,
+        "data": "{\"fixture\": \"nested-parent-hidden\", \"stage\": \"zeta-return\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601035873}\r\n"
+      },
+      {
+        "sequence": 23,
+        "at_ms": 52180,
+        "data": "{\"fixture\": \"nested-parent-hidden\", \"exit\": -9}\r\n"
+      }
+    ],
+    "rendered_frames": [
+      {
+        "sequence": 0,
+        "at_ms": 150,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 2,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"fixture\": \"position-swapped\", \"display\": \":0\", \"launcher_pid\": 2394644, \"xvfb_pid\": 2394628, \"pref",
+          "ix\": \"/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable\"}",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"fixture\": \"position-swapped\", \"display\": \":0\", \"launcher_pid\": 2394644, \"xvfb_pid\": 2394628, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable\"}\u001b[1B\u001b[79D"
+      },
+      {
+        "sequence": 1,
+        "at_ms": 12680,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 5,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"fixture\": \"position-swapped\", \"display\": \":0\", \"launcher_pid\": 2394644, \"xvfb_pid\": 2394628, \"pref",
+          "ix\": \"/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable\"}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 0, \"root_s",
+          "howontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 179260100040",
+          "7}",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"fixture\": \"position-swapped\", \"display\": \":0\", \"launcher_pid\": 2394644, \"xvfb_pid\": 2394628, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable\"}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601000407}\u001b[1B\u001b[2D"
+      },
+      {
+        "sequence": 2,
+        "at_ms": 13700,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 7,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"fixture\": \"position-swapped\", \"display\": \":0\", \"launcher_pid\": 2394644, \"xvfb_pid\": 2394628, \"pref",
+          "ix\": \"/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable\"}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 0, \"root_s",
+          "howontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 179260100040",
+          "7}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"alpha\", \"number_value\": [0], \"root_showroot\": 0, \"root_sho",
+          "wontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601001568}",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"fixture\": \"position-swapped\", \"display\": \":0\", \"launcher_pid\": 2394644, \"xvfb_pid\": 2394628, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable\"}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601000407}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"alpha\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601001568}\u001b[1B\u001b[100D"
+      },
+      {
+        "sequence": 3,
+        "at_ms": 14940,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 10,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"fixture\": \"position-swapped\", \"display\": \":0\", \"launcher_pid\": 2394644, \"xvfb_pid\": 2394628, \"pref",
+          "ix\": \"/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable\"}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 0, \"root_s",
+          "howontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 179260100040",
+          "7}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"alpha\", \"number_value\": [0], \"root_showroot\": 0, \"root_sho",
+          "wontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601001568}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 0, \"ro",
+          "ot_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 17926010",
+          "02727}",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"fixture\": \"position-swapped\", \"display\": \":0\", \"launcher_pid\": 2394644, \"xvfb_pid\": 2394628, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable\"}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601000407}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"alpha\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601001568}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601002727}\u001b[1B\u001b[6D"
+      },
+      {
+        "sequence": 4,
+        "at_ms": 16060,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 13,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"fixture\": \"position-swapped\", \"display\": \":0\", \"launcher_pid\": 2394644, \"xvfb_pid\": 2394628, \"pref",
+          "ix\": \"/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable\"}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 0, \"root_s",
+          "howontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 179260100040",
+          "7}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"alpha\", \"number_value\": [0], \"root_showroot\": 0, \"root_sho",
+          "wontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601001568}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 0, \"ro",
+          "ot_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 17926010",
+          "02727}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"alpha-again\", \"number_value\": [77], \"root_showroot\": 0, \"r",
+          "oot_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601",
+          "003880}",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"fixture\": \"position-swapped\", \"display\": \":0\", \"launcher_pid\": 2394644, \"xvfb_pid\": 2394628, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable\"}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601000407}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"alpha\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601001568}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601002727}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"alpha-again\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601003880}\u001b[1B\u001b[7D"
+      },
+      {
+        "sequence": 5,
+        "at_ms": 17190,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 15,
+        "active_buffer": "normal",
+        "lines": [
+          "ix\": \"/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable\"}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 0, \"root_s",
+          "howontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 179260100040",
+          "7}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"alpha\", \"number_value\": [0], \"root_showroot\": 0, \"root_sho",
+          "wontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601001568}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 0, \"ro",
+          "ot_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 17926010",
+          "02727}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"alpha-again\", \"number_value\": [77], \"root_showroot\": 0, \"r",
+          "oot_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601",
+          "003880}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"zeta-retained\", \"number_value\": [77], \"root_showroot\": 0,",
+          "\"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 17926",
+          "01005036}",
+          ""
+        ],
+        "serialized_state": "{\"fixture\": \"position-swapped\", \"display\": \":0\", \"launcher_pid\": 2394644, \"xvfb_pid\": 2394628, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable\"}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601000407}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"alpha\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601001568}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601002727}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"alpha-again\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601003880}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-retained\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601005036}\r\n"
+      },
+      {
+        "sequence": 6,
+        "at_ms": 18320,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 15,
+        "active_buffer": "normal",
+        "lines": [
+          "7}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"alpha\", \"number_value\": [0], \"root_showroot\": 0, \"root_sho",
+          "wontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601001568}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 0, \"ro",
+          "ot_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 17926010",
+          "02727}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"alpha-again\", \"number_value\": [77], \"root_showroot\": 0, \"r",
+          "oot_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601",
+          "003880}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"zeta-retained\", \"number_value\": [77], \"root_showroot\": 0,",
+          "\"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 17926",
+          "01005036}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"promoted\", \"number_value\": [77], \"root_showroot\": 0, \"root",
+          "_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601006",
+          "140}",
+          ""
+        ],
+        "serialized_state": "{\"fixture\": \"position-swapped\", \"display\": \":0\", \"launcher_pid\": 2394644, \"xvfb_pid\": 2394628, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable\"}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601000407}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"alpha\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601001568}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601002727}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"alpha-again\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601003880}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-retained\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601005036}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"promoted\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601006140}\r\n"
+      },
+      {
+        "sequence": 7,
+        "at_ms": 19580,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 15,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"fixture\": \"position-swapped\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 0, \"ro",
+          "ot_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 17926010",
+          "02727}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"alpha-again\", \"number_value\": [77], \"root_showroot\": 0, \"r",
+          "oot_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601",
+          "003880}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"zeta-retained\", \"number_value\": [77], \"root_showroot\": 0,",
+          "\"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 17926",
+          "01005036}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"promoted\", \"number_value\": [77], \"root_showroot\": 0, \"root",
+          "_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601006",
+          "140}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"refresh-tabs\", \"number_value\": [77], \"root_showroot\": 1, \"",
+          "root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 179260",
+          "1007425}",
+          ""
+        ],
+        "serialized_state": "{\"fixture\": \"position-swapped\", \"display\": \":0\", \"launcher_pid\": 2394644, \"xvfb_pid\": 2394628, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable\"}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601000407}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"alpha\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601001568}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601002727}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"alpha-again\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601003880}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-retained\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601005036}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"promoted\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601006140}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"refresh-tabs\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601007425}\r\n"
+      },
+      {
+        "sequence": 8,
+        "at_ms": 20710,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 15,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"fixture\": \"position-swapped\", \"stage\": \"alpha-again\", \"number_value\": [77], \"root_showroot\": 0, \"r",
+          "oot_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601",
+          "003880}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"zeta-retained\", \"number_value\": [77], \"root_showroot\": 0,",
+          "\"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 17926",
+          "01005036}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"promoted\", \"number_value\": [77], \"root_showroot\": 0, \"root",
+          "_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601006",
+          "140}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"refresh-tabs\", \"number_value\": [77], \"root_showroot\": 1, \"",
+          "root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 179260",
+          "1007425}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"open-zeta\", \"number_value\": [77], \"root_showroot\": 1, \"roo",
+          "t_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 179260100",
+          "8529}",
+          ""
+        ],
+        "serialized_state": "{\"fixture\": \"position-swapped\", \"display\": \":0\", \"launcher_pid\": 2394644, \"xvfb_pid\": 2394628, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable\"}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601000407}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"alpha\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601001568}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601002727}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"alpha-again\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601003880}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-retained\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601005036}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"promoted\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601006140}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"refresh-tabs\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601007425}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"open-zeta\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601008529}\r\n"
+      },
+      {
+        "sequence": 9,
+        "at_ms": 21840,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 15,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"fixture\": \"position-swapped\", \"stage\": \"zeta-retained\", \"number_value\": [77], \"root_showroot\": 0,",
+          "\"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 17926",
+          "01005036}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"promoted\", \"number_value\": [77], \"root_showroot\": 0, \"root",
+          "_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601006",
+          "140}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"refresh-tabs\", \"number_value\": [77], \"root_showroot\": 1, \"",
+          "root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 179260",
+          "1007425}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"open-zeta\", \"number_value\": [77], \"root_showroot\": 1, \"roo",
+          "t_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 179260100",
+          "8529}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"zeta-local\", \"number_value\": [77], \"root_showroot\": 1, \"ro",
+          "ot_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 17926010",
+          "09634}",
+          ""
+        ],
+        "serialized_state": "{\"fixture\": \"position-swapped\", \"display\": \":0\", \"launcher_pid\": 2394644, \"xvfb_pid\": 2394628, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable\"}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601000407}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"alpha\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601001568}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601002727}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"alpha-again\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601003880}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-retained\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601005036}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"promoted\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601006140}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"refresh-tabs\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601007425}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"open-zeta\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601008529}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-local\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601009634}\r\n"
+      },
+      {
+        "sequence": 10,
+        "at_ms": 22970,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 15,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"fixture\": \"position-swapped\", \"stage\": \"promoted\", \"number_value\": [77], \"root_showroot\": 0, \"root",
+          "_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601006",
+          "140}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"refresh-tabs\", \"number_value\": [77], \"root_showroot\": 1, \"",
+          "root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 179260",
+          "1007425}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"open-zeta\", \"number_value\": [77], \"root_showroot\": 1, \"roo",
+          "t_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 179260100",
+          "8529}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"zeta-local\", \"number_value\": [77], \"root_showroot\": 1, \"ro",
+          "ot_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 17926010",
+          "09634}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"zeta-return\", \"number_value\": [77], \"root_showroot\": 1, \"r",
+          "oot_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601",
+          "010741}",
+          ""
+        ],
+        "serialized_state": "{\"fixture\": \"position-swapped\", \"display\": \":0\", \"launcher_pid\": 2394644, \"xvfb_pid\": 2394628, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable\"}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601000407}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"alpha\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601001568}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601002727}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"alpha-again\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601003880}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-retained\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601005036}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"promoted\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601006140}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"refresh-tabs\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601007425}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"open-zeta\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601008529}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-local\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601009634}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-return\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601010741}\r\n"
+      },
+      {
+        "sequence": 11,
+        "at_ms": 26890,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 15,
+        "active_buffer": "normal",
+        "lines": [
+          "_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601006",
+          "140}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"refresh-tabs\", \"number_value\": [77], \"root_showroot\": 1, \"",
+          "root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 179260",
+          "1007425}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"open-zeta\", \"number_value\": [77], \"root_showroot\": 1, \"roo",
+          "t_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 179260100",
+          "8529}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"zeta-local\", \"number_value\": [77], \"root_showroot\": 1, \"ro",
+          "ot_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 17926010",
+          "09634}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"zeta-return\", \"number_value\": [77], \"root_showroot\": 1, \"r",
+          "oot_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601",
+          "010741}",
+          "{\"fixture\": \"position-swapped\", \"exit\": -9}",
+          ""
+        ],
+        "serialized_state": "{\"fixture\": \"position-swapped\", \"display\": \":0\", \"launcher_pid\": 2394644, \"xvfb_pid\": 2394628, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable\"}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601000407}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"alpha\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601001568}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601002727}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"alpha-again\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601003880}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-retained\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601005036}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"promoted\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601006140}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"refresh-tabs\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601007425}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"open-zeta\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601008529}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-local\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601009634}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-return\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601010741}\r\n{\"fixture\": \"position-swapped\", \"exit\": -9}\r\n"
+      },
+      {
+        "sequence": 12,
+        "at_ms": 26900,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 15,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"fixture\": \"position-swapped\", \"stage\": \"refresh-tabs\", \"number_value\": [77], \"root_showroot\": 1, \"",
+          "root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 179260",
+          "1007425}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"open-zeta\", \"number_value\": [77], \"root_showroot\": 1, \"roo",
+          "t_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 179260100",
+          "8529}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"zeta-local\", \"number_value\": [77], \"root_showroot\": 1, \"ro",
+          "ot_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 17926010",
+          "09634}",
+          "{\"fixture\": \"position-swapped\", \"stage\": \"zeta-return\", \"number_value\": [77], \"root_showroot\": 1, \"r",
+          "oot_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601",
+          "010741}",
+          "{\"fixture\": \"position-swapped\", \"exit\": -9}",
+          "{\"fixture\": \"nested-parent-hidden\", \"display\": \":0\", \"launcher_pid\": 2397791, \"xvfb_pid\": 2394628, \"",
+          "prefix\": \"/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable\"}",
+          ""
+        ],
+        "serialized_state": "{\"fixture\": \"position-swapped\", \"display\": \":0\", \"launcher_pid\": 2394644, \"xvfb_pid\": 2394628, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable\"}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601000407}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"alpha\", \"number_value\": [0], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601001568}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601002727}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"alpha-again\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601003880}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-retained\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601005036}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"promoted\", \"number_value\": [77], \"root_showroot\": 0, \"root_showontab\": 0, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601006140}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"refresh-tabs\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601007425}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"open-zeta\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601008529}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-local\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601009634}\r\n{\"fixture\": \"position-swapped\", \"stage\": \"zeta-return\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"wall_ms\": 1792601010741}\r\n{\"fixture\": \"position-swapped\", \"exit\": -9}\r\n{\"fixture\": \"nested-parent-hidden\", \"display\": \":0\", \"launcher_pid\": 2397791, \"xvfb_pid\": 2394628, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable\"}\r\n"
+      }
+    ],
+    "interaction_events": [],
+    "exit": {
+      "code": 0,
+      "signal": 0,
+      "reason": "exited"
+    },
+    "settlement": {
+      "state": "quiesced",
+      "elapsed_ms": 113,
+      "cleanup_outcome": "not_required"
+    },
+    "process_samples": [
+      {
+        "at_ms": 10,
+        "pid": 1,
+        "parent_pid": 2,
+        "command": "/usr/bin/python3 experiments/max-reference/tab-ui-runtime-20261022/run-followup.py",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 50,
+        "pid": 3,
+        "parent_pid": 1,
+        "command": "Xvfb -displayfd 1 -screen 0 1440x1000x24 -nolisten tcp",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 150,
+        "pid": 4,
+        "parent_pid": 1,
+        "command": "/home/venetanji/.local/opt/wine-d2d1-nspa-11.13/lib/wine/x86_64-unix/wine C:\\ProgramData\\Ableton\\Live 12 Suite\\Resources\\Max\\Max.exe Z:\\home\\venetanji\\Work\\alive\\experiments\\max-reference\\tab-ui-runtime-20261022\\fixtures\\position-swapped.maxpat",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 1210,
+        "pid": 4,
+        "parent_pid": 1,
+        "command": "C:\\ProgramData\\Ableton\\Live 12 Suite\\Resources\\Max\\Max.exe Z:\\home\\venetanji\\Work\\alive\\experiments\\max-reference\\tab-ui-runtime-20261022\\fixtures\\position-swapped.maxpat",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 7430,
+        "pid": 5,
+        "parent_pid": 4,
+        "command": "",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 7430,
+        "pid": 6,
+        "parent_pid": 5,
+        "command": "",
+        "process_group_id": 6,
+        "session_id": 6
+      },
+      {
+        "at_ms": 12570,
+        "pid": 7,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/position-swapped-initial.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 13620,
+        "pid": 8,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/position-swapped-alpha.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 14850,
+        "pid": 9,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/position-swapped-zeta-set77.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 15950,
+        "pid": 10,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/position-swapped-alpha-again.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 17070,
+        "pid": 11,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/position-swapped-zeta-retained.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 18230,
+        "pid": 12,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/position-swapped-promoted.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 19500,
+        "pid": 13,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/position-swapped-refresh-tabs.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 20600,
+        "pid": 14,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/position-swapped-open-zeta.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 21730,
+        "pid": 15,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/position-swapped-zeta-local.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 22880,
+        "pid": 16,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/position-swapped-zeta-return.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 26790,
+        "pid": 4,
+        "parent_pid": 1,
+        "command": "",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 26940,
+        "pid": 17,
+        "parent_pid": 1,
+        "command": "C:\\ProgramData\\Ableton\\Live 12 Suite\\Resources\\Max\\Max.exe Z:\\home\\venetanji\\Work\\alive\\experiments\\max-reference\\tab-ui-runtime-20261022\\fixtures\\nested-parent-hidden.maxpat",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 37360,
+        "pid": 18,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/nested-parent-hidden-initial.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 38580,
+        "pid": 19,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/nested-parent-hidden-alpha.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 39730,
+        "pid": 20,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/nested-parent-hidden-zeta-set77.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 40930,
+        "pid": 21,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/nested-parent-hidden-alpha-again.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 42090,
+        "pid": 22,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/nested-parent-hidden-zeta-retained.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 43270,
+        "pid": 23,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/nested-parent-hidden-promoted.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 44570,
+        "pid": 24,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/nested-parent-hidden-refresh-tabs.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 45720,
+        "pid": 25,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/nested-parent-hidden-open-zeta.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 46850,
+        "pid": 26,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/nested-parent-hidden-zeta-local.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 48000,
+        "pid": 27,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/nested-parent-hidden-zeta-return.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 52080,
+        "pid": 17,
+        "parent_pid": 1,
+        "command": "",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 52180,
+        "pid": 3,
+        "parent_pid": 1,
+        "command": "",
+        "process_group_id": 1,
+        "session_id": 1
+      }
+    ],
+    "filesystem_checkpoints": [
+      {
+        "name": "before",
+        "at_ms": 0,
+        "files": [],
+        "effects": [],
+        "truncated": false
+      },
+      {
+        "name": "after_settlement",
+        "at_ms": 52342,
+        "files": [],
+        "effects": [],
+        "truncated": false
+      }
+    ],
+    "event_journal": [
+      {
+        "capture_order": 0,
+        "collection": "filesystem_checkpoints",
+        "index": 0
+      },
+      {
+        "capture_order": 1,
+        "collection": "process_samples",
+        "index": 0
+      },
+      {
+        "capture_order": 2,
+        "collection": "process_samples",
+        "index": 1
+      },
+      {
+        "capture_order": 3,
+        "collection": "frames",
+        "index": 0
+      },
+      {
+        "capture_order": 4,
+        "collection": "rendered_frames",
+        "index": 0
+      },
+      {
+        "capture_order": 5,
+        "collection": "process_samples",
+        "index": 2
+      },
+      {
+        "capture_order": 6,
+        "collection": "process_samples",
+        "index": 3
+      },
+      {
+        "capture_order": 7,
+        "collection": "process_samples",
+        "index": 4
+      },
+      {
+        "capture_order": 8,
+        "collection": "process_samples",
+        "index": 5
+      },
+      {
+        "capture_order": 9,
+        "collection": "process_samples",
+        "index": 6
+      },
+      {
+        "capture_order": 10,
+        "collection": "frames",
+        "index": 1
+      },
+      {
+        "capture_order": 11,
+        "collection": "rendered_frames",
+        "index": 1
+      },
+      {
+        "capture_order": 12,
+        "collection": "process_samples",
+        "index": 7
+      },
+      {
+        "capture_order": 13,
+        "collection": "frames",
+        "index": 2
+      },
+      {
+        "capture_order": 14,
+        "collection": "rendered_frames",
+        "index": 2
+      },
+      {
+        "capture_order": 15,
+        "collection": "process_samples",
+        "index": 8
+      },
+      {
+        "capture_order": 16,
+        "collection": "frames",
+        "index": 3
+      },
+      {
+        "capture_order": 17,
+        "collection": "rendered_frames",
+        "index": 3
+      },
+      {
+        "capture_order": 18,
+        "collection": "process_samples",
+        "index": 9
+      },
+      {
+        "capture_order": 19,
+        "collection": "frames",
+        "index": 4
+      },
+      {
+        "capture_order": 20,
+        "collection": "rendered_frames",
+        "index": 4
+      },
+      {
+        "capture_order": 21,
+        "collection": "process_samples",
+        "index": 10
+      },
+      {
+        "capture_order": 22,
+        "collection": "frames",
+        "index": 5
+      },
+      {
+        "capture_order": 23,
+        "collection": "rendered_frames",
+        "index": 5
+      },
+      {
+        "capture_order": 24,
+        "collection": "process_samples",
+        "index": 11
+      },
+      {
+        "capture_order": 25,
+        "collection": "frames",
+        "index": 6
+      },
+      {
+        "capture_order": 26,
+        "collection": "rendered_frames",
+        "index": 6
+      },
+      {
+        "capture_order": 27,
+        "collection": "process_samples",
+        "index": 12
+      },
+      {
+        "capture_order": 28,
+        "collection": "frames",
+        "index": 7
+      },
+      {
+        "capture_order": 29,
+        "collection": "rendered_frames",
+        "index": 7
+      },
+      {
+        "capture_order": 30,
+        "collection": "process_samples",
+        "index": 13
+      },
+      {
+        "capture_order": 31,
+        "collection": "frames",
+        "index": 8
+      },
+      {
+        "capture_order": 32,
+        "collection": "rendered_frames",
+        "index": 8
+      },
+      {
+        "capture_order": 33,
+        "collection": "process_samples",
+        "index": 14
+      },
+      {
+        "capture_order": 34,
+        "collection": "frames",
+        "index": 9
+      },
+      {
+        "capture_order": 35,
+        "collection": "rendered_frames",
+        "index": 9
+      },
+      {
+        "capture_order": 36,
+        "collection": "process_samples",
+        "index": 15
+      },
+      {
+        "capture_order": 37,
+        "collection": "frames",
+        "index": 10
+      },
+      {
+        "capture_order": 38,
+        "collection": "rendered_frames",
+        "index": 10
+      },
+      {
+        "capture_order": 39,
+        "collection": "process_samples",
+        "index": 16
+      },
+      {
+        "capture_order": 40,
+        "collection": "frames",
+        "index": 11
+      },
+      {
+        "capture_order": 41,
+        "collection": "frames",
+        "index": 12
+      },
+      {
+        "capture_order": 42,
+        "collection": "rendered_frames",
+        "index": 11
+      },
+      {
+        "capture_order": 43,
+        "collection": "rendered_frames",
+        "index": 12
+      },
+      {
+        "capture_order": 44,
+        "collection": "process_samples",
+        "index": 17
+      },
+      {
+        "capture_order": 45,
+        "collection": "process_samples",
+        "index": 18
+      },
+      {
+        "capture_order": 46,
+        "collection": "frames",
+        "index": 13
+      },
+      {
+        "capture_order": 47,
+        "collection": "process_samples",
+        "index": 19
+      },
+      {
+        "capture_order": 48,
+        "collection": "frames",
+        "index": 14
+      },
+      {
+        "capture_order": 49,
+        "collection": "process_samples",
+        "index": 20
+      },
+      {
+        "capture_order": 50,
+        "collection": "frames",
+        "index": 15
+      },
+      {
+        "capture_order": 51,
+        "collection": "process_samples",
+        "index": 21
+      },
+      {
+        "capture_order": 52,
+        "collection": "frames",
+        "index": 16
+      },
+      {
+        "capture_order": 53,
+        "collection": "process_samples",
+        "index": 22
+      },
+      {
+        "capture_order": 54,
+        "collection": "frames",
+        "index": 17
+      },
+      {
+        "capture_order": 55,
+        "collection": "process_samples",
+        "index": 23
+      },
+      {
+        "capture_order": 56,
+        "collection": "frames",
+        "index": 18
+      },
+      {
+        "capture_order": 57,
+        "collection": "process_samples",
+        "index": 24
+      },
+      {
+        "capture_order": 58,
+        "collection": "frames",
+        "index": 19
+      },
+      {
+        "capture_order": 59,
+        "collection": "process_samples",
+        "index": 25
+      },
+      {
+        "capture_order": 60,
+        "collection": "frames",
+        "index": 20
+      },
+      {
+        "capture_order": 61,
+        "collection": "process_samples",
+        "index": 26
+      },
+      {
+        "capture_order": 62,
+        "collection": "frames",
+        "index": 21
+      },
+      {
+        "capture_order": 63,
+        "collection": "process_samples",
+        "index": 27
+      },
+      {
+        "capture_order": 64,
+        "collection": "frames",
+        "index": 22
+      },
+      {
+        "capture_order": 65,
+        "collection": "process_samples",
+        "index": 28
+      },
+      {
+        "capture_order": 66,
+        "collection": "frames",
+        "index": 23
+      },
+      {
+        "capture_order": 67,
+        "collection": "process_samples",
+        "index": 29
+      },
+      {
+        "capture_order": 68,
+        "collection": "lifecycle",
+        "index": 0
+      },
+      {
+        "capture_order": 69,
+        "collection": "lifecycle",
+        "index": 1
+      },
+      {
+        "capture_order": 70,
+        "collection": "filesystem_checkpoints",
+        "index": 1
+      }
+    ],
+    "files_before": [],
+    "files_after": [],
+    "filesystem_effects": [],
+    "truncated": true,
+    "truncation_details": {
+      "raw_terminal": {
+        "budget_bytes": 30000,
+        "observed_bytes": 4648,
+        "retained_bytes": 4648,
+        "observed_frames": 24,
+        "retained_frames": 24
+      },
+      "rendered_terminal": {
+        "budget_bytes": 30000,
+        "observed_bytes": 81959,
+        "retained_bytes": 29378,
+        "observed_frames": 24,
+        "retained_frames": 13
+      },
+      "filesystem_before": {
+        "files_limit": 20,
+        "depth_limit": 1,
+        "enumeration_truncated": false,
+        "enumeration_reasons": [],
+        "hash_budget_bytes": 100000,
+        "hashed_bytes": 0,
+        "hash_omissions": []
+      },
+      "filesystem_after": {
+        "files_limit": 20,
+        "depth_limit": 1,
+        "enumeration_truncated": false,
+        "enumeration_reasons": [],
+        "hash_budget_bytes": 100000,
+        "hashed_bytes": 0,
+        "hash_omissions": []
+      },
+      "process": {
+        "sample_limit": 100,
+        "sampling_partial": false,
+        "retained_samples": 30,
+        "sample_limit_reached": false,
+        "sampling_failures": 0,
+        "first_sampling_failure": null,
+        "coverage": "sampled"
+      }
+    },
+    "limitations": [
+      "The executable digest is a prelaunch file sample; matching path metadata immediately after spawn does not prove an atomic operating-system image binding.",
+      "Process trees are sampled and may omit short-lived descendants.",
+      "Filesystem observations are before/after snapshots, not syscall traces.",
+      "Inherited host environment variables are not recorded and may affect results.",
+      "No filesystem observation paths were selected; filesystem effects remain unknown.",
+      "Cumulative rendered state and visible-line bytes exceeded output_bytes; whole rendered frames were omitted. Raw PTY coverage is reported separately. See truncation_details.rendered_terminal."
+    ],
+    "residual_unknowns": [
+      {
+        "scope": "process",
+        "reason": "Process trees are sampled and may omit short-lived descendants."
+      },
+      {
+        "scope": "process",
+        "reason": "The executable digest is a prelaunch file sample; operating-system image binding is not atomically observed."
+      },
+      {
+        "scope": "environment",
+        "reason": "Inherited host environment variables are not recorded."
+      },
+      {
+        "scope": "network",
+        "reason": "Network activity is not observed by this capture."
+      },
+      {
+        "scope": "filesystem",
+        "reason": "No filesystem observation paths were selected; filesystem effects remain unknown."
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 2394677 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/2394677/environ'"
+      }
+    ],
+    "cleanup": {
+      "owned_process_group": "verified",
+      "temporary_root": "removed",
+      "unverified_processes": [
+        {
+          "pid": 2394677,
+          "reason": "EACCES: permission denied, open '/proc/2394677/environ'"
+        }
+      ]
+    }
+  },
+  "confidence": "observed",
+  "authority": "controlled-replay",
+  "environment": {
+    "id": "linux-x64",
+    "platform": "linux",
+    "architecture": "x64",
+    "isolation": "process"
+  },
+  "limitations": [
+    "Artifact identity is unavailable for this observation.",
+    "The executable digest is a prelaunch file sample; matching path metadata immediately after spawn does not prove an atomic operating-system image binding.",
+    "Process trees are sampled and may omit short-lived descendants.",
+    "Filesystem observations are before/after snapshots, not syscall traces.",
+    "Inherited host environment variables are not recorded and may affect results.",
+    "No filesystem observation paths were selected; filesystem effects remain unknown.",
+    "Cumulative rendered state and visible-line bytes exceeded output_bytes; whole rendered frames were omitted. Raw PTY coverage is reported separately. See truncation_details.rendered_terminal."
+  ],
+  "locations": [],
+  "evidence_links": []
+}

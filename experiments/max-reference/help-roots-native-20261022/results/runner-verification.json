@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-10-22T02:40:44.858207+00:00",
+  "scope": "generic original runner/observer infrastructure; source-free regression fixtures only",
+  "checks": [
+    {
+      "command": "python experiments/max-reference/help-roots-native-20261022/test-runner.py",
+      "exit": 0,
+      "assertions": [
+        "native trace contracts",
+        "original transport contracts",
+        "compiled-out observer equivalence"
+      ]
+    },
+    {
+      "command": "fresh C++17 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=undefined -fno-sanitize-recover=all build; --self-test and test-runner.py --binary",
+      "exit": 0,
+      "sanitizer_diagnostics": 0
+    },
+    {
+      "command": "fresh normal C++17 -O2 -Wall -Wextra -Werror -pthread canvas_workspace_test.cpp build/run",
+      "exit": 0
+    }
+  ],
+  "observed_red_states": [
+    "set_test_trace missing before observer implementation",
+    "runner had no transport JSON before transport implementation",
+    "negative-zero JSON output lost sign before explicit -0.0 spelling"
+  ],
+  "source_sha256": {
+    "apps/ultra/tests/help_root_runtime_test.cpp": "36f023b9a356cad26a470fe8d59350b16e79d358b513faa5421ba5a8e2e8fb06",
+    "apps/ultra/src-tauri/native/patch_graph.hpp": "855a13fb791a80808e6757c0712f4ba731d9d9386bb1dfa2a3542a6ff9121292",
+    "apps/ultra/src-tauri/native/canvas_workspace.hpp": "0f9a388b4dfa1ea3eeb0a37845b3db75d59d479e3e33fae8baec191aa73b1458",
+    "experiments/max-reference/help-roots-native-20261022/test-runner.py": "43a468e04f935795cba3cf9702a036f0b124b7029c5128c86b03f637f56aba12"
+  },
+  "max_executed": false,
+  "desktop_executed": false,
+  "screenshots": false,
+  "complete_installed_help_qualification_passes_added": 0
+}

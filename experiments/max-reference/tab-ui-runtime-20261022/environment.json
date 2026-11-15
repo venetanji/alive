@@ -1,0 +1,103 @@
+{
+  "captured_utc": "2026-10-21T16:50:55.352876+00:00",
+  "max_version": "9.1.5",
+  "max_sha256": "7a881318209a10d33c982db482297ab870327d5d2cb90aee6e4e01a13e279d8b",
+  "wine_path": "/home/venetanji/.local/opt/wine-d2d1-nspa-11.13/bin/wine",
+  "wine_resolved": "/home/venetanji/.local/opt/wine-d2d1-nspa-11.13/bin/wine",
+  "wine_sha256": "15096d23074c454e6cd3225c7cb7f62c4136f6697fdceeda22aeede6b46c031f",
+  "rendering": "private Xvfb 1440x1000x24, llvmpipe, software rendering",
+  "sessions": [
+    {
+      "fixture": "root-hidden",
+      "display": ":0",
+      "launcher_pid": 2372058,
+      "xvfb_pid": 2372043,
+      "prefix": "/home/venetanji/.cache/alive-max-tabs-20261022-wine-disposable"
+    },
+    {
+      "fixture": "root-shown",
+      "display": ":0",
+      "launcher_pid": 2374719,
+      "xvfb_pid": 2372043,
+      "prefix": "/home/venetanji/.cache/alive-max-tabs-20261022-wine-disposable"
+    },
+    {
+      "fixture": "order-reversed",
+      "display": ":0",
+      "launcher_pid": 2377061,
+      "xvfb_pid": 2372043,
+      "prefix": "/home/venetanji/.cache/alive-max-tabs-20261022-wine-disposable"
+    },
+    {
+      "fixture": "position-swapped",
+      "display": ":0",
+      "launcher_pid": 2394644,
+      "xvfb_pid": 2394628,
+      "prefix": "/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable"
+    },
+    {
+      "fixture": "nested-parent-hidden",
+      "display": ":0",
+      "launcher_pid": 2397791,
+      "xvfb_pid": 2394628,
+      "prefix": "/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable"
+    },
+    {
+      "fixture": "isolated-root-shown",
+      "display": ":0",
+      "launcher_pid": 2414271,
+      "xvfb_pid": 2414254,
+      "prefix": "/home/venetanji/.cache/alive-max-tabs-isolated-root-shown-20261022-wine-disposable"
+    },
+    {
+      "fixture": "isolated-nesting",
+      "display": ":0",
+      "launcher_pid": 2417961,
+      "xvfb_pid": 2417945,
+      "prefix": "/home/venetanji/.cache/alive-max-tabs-isolated-nesting-20261022-wine-disposable"
+    },
+    {
+      "fixture": "isolated-local",
+      "display": ":0",
+      "launcher_pid": 2425376,
+      "xvfb_pid": 2425359,
+      "prefix": "/home/venetanji/.cache/alive-max-tabs-isolated-local-20261022-wine-disposable"
+    }
+  ],
+  "runtime_logs": [
+    {
+      "path": "/home/venetanji/.cache/alive-max-tabs-20261022-run/runtime.log",
+      "bytes": 790,
+      "sha256": "3cb31cec4aa6b8caacdb660e644fde7508c112b7ee98e18ad48a5f844c114738"
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-max-tabs-followup-20261022-run/runtime.log",
+      "bytes": 707,
+      "sha256": "97f15e3a9395c4369ec0a8f81dca1c1d082dac63eec81475ccf3d026651d0079"
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-max-tabs-isolated-root-shown-20261022-run/runtime.log",
+      "bytes": 624,
+      "sha256": "e5f6a6f694f996fad752dc4fee67fdcd7d2e826d4f939b9ed10aac8aaffd8cfb"
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-max-tabs-isolated-nesting-20261022-run/runtime.log",
+      "bytes": 624,
+      "sha256": "dd85fe5ddc802ddac0988c87594cf1ce723e8283a954c17c47b199c89eb3ca91"
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-max-tabs-isolated-local-20261022-run/runtime.log",
+      "bytes": 624,
+      "sha256": "fcc0aa443914e2f5edb836fe7b6b09ddb69515580ff42d457e2d41951a7bc4e1"
+    }
+  ],
+  "remaining_prefix_processes": [],
+  "disposable_prefixes": [
+    "/home/venetanji/.cache/alive-max-tabs-20261022-wine-disposable",
+    "/home/venetanji/.cache/alive-max-tabs-followup-20261022-wine-disposable",
+    "/home/venetanji/.cache/alive-max-tabs-isolated-local-20261022-wine-disposable",
+    "/home/venetanji/.cache/alive-max-tabs-isolated-nesting-20261022-wine-disposable",
+    "/home/venetanji/.cache/alive-max-tabs-isolated-root-shown-20261022-wine-disposable"
+  ],
+  "disposable_prefix_cleanup": "removed all five task-created disposable prefixes after exact-prefix process scan was empty"
+}

@@ -1,0 +1,316 @@
+{
+  "attributes": {
+    "bubble": {
+      "type": "int",
+      "default": 0
+    },
+    "bubblepoint": {
+      "type": "float",
+      "default": 0.5
+    },
+    "bubbleside": {
+      "type": "int",
+      "default": 1,
+      "enum": {
+        "0": "top",
+        "1": "left",
+        "2": "bottom",
+        "3": "right"
+      }
+    },
+    "bubbletextmargin": {
+      "type": "int",
+      "default": 5
+    }
+  },
+  "linecount_in_comment_attribute_reference": false,
+  "documented_bubblepoint_range": [
+    0,
+    1
+  ],
+  "named_style": {
+    "default": {},
+    "name": "helpfile_label",
+    "multi": 0
+  },
+  "installed_default_theme": {
+    "textcolor": [
+      0.85,
+      0.85,
+      0.85,
+      1
+    ],
+    "bubble_bgcolor": [
+      0.235,
+      0.235,
+      0.235,
+      1
+    ],
+    "bubble_outlinecolor": [
+      0.85,
+      0.85,
+      0.85,
+      1
+    ]
+  },
+  "targeted_comments": [
+    {
+      "source": "append",
+      "path": "root/obj-5/obj-26",
+      "fields": {
+        "bubble": 1,
+        "fontname": "Arial",
+        "fontsize": 13.0,
+        "linecount": 2,
+        "patching_rect": [
+          210.5,
+          279.5,
+          219.0,
+          40.0
+        ]
+      },
+      "parent_default_fontsize": 13.0,
+      "parent_default_fontname": "Arial"
+    },
+    {
+      "source": "prepend",
+      "path": "root/obj-2/obj-12",
+      "fields": {
+        "bubble": 1,
+        "fontname": "Arial",
+        "fontsize": 13.0,
+        "linecount": 2,
+        "patching_rect": [
+          378.0,
+          114.5,
+          213.0,
+          40.0
+        ]
+      },
+      "parent_default_fontsize": 13.0,
+      "parent_default_fontname": "Arial"
+    },
+    {
+      "source": "int",
+      "path": "root/obj-2/obj-5",
+      "fields": {
+        "bubble": 1,
+        "fontname": "Arial",
+        "fontsize": 13.0,
+        "linecount": 2,
+        "patching_rect": [
+          414.0,
+          172.0,
+          145.0,
+          40.0
+        ]
+      },
+      "parent_default_fontsize": 13.0,
+      "parent_default_fontname": "Arial"
+    },
+    {
+      "source": "int",
+      "path": "root/obj-2/obj-1",
+      "fields": {
+        "bubble": 1,
+        "bubbleside": 3,
+        "fontname": "Arial",
+        "fontsize": 13.0,
+        "linecount": 2,
+        "patching_rect": [
+          38.0,
+          114.0,
+          145.0,
+          40.0
+        ]
+      },
+      "parent_default_fontsize": 13.0,
+      "parent_default_fontname": "Arial"
+    },
+    {
+      "source": "int",
+      "path": "root/obj-2/obj-23",
+      "fields": {
+        "bubble": 1,
+        "bubblepoint": 0.75,
+        "bubbleside": 3,
+        "fontname": "Arial",
+        "fontsize": 13.0,
+        "linecount": 3,
+        "patching_rect": [
+          11.0,
+          186.5,
+          143.0,
+          54.0
+        ]
+      },
+      "parent_default_fontsize": 13.0,
+      "parent_default_fontname": "Arial"
+    },
+    {
+      "source": "int",
+      "path": "root/obj-2/obj-31",
+      "fields": {
+        "patching_rect": [
+          11.0,
+          407.0,
+          262.0,
+          21.0
+        ],
+        "style": "helpfile_label"
+      },
+      "parent_default_fontsize": 13.0,
+      "parent_default_fontname": "Arial"
+    },
+    {
+      "source": "int",
+      "path": "root/obj-2/obj-34",
+      "fields": {
+        "patching_rect": [
+          305.0,
+          407.0,
+          142.0,
+          21.0
+        ],
+        "style": "helpfile_label"
+      },
+      "parent_default_fontsize": 13.0,
+      "parent_default_fontname": "Arial"
+    },
+    {
+      "source": "float",
+      "path": "root/obj-2/obj-6",
+      "fields": {
+        "bubble": 1,
+        "bubblepoint": 0.11,
+        "bubbleside": 2,
+        "fontname": "Arial",
+        "fontsize": 13.0,
+        "linecount": 2,
+        "patching_rect": [
+          14.0,
+          286.5,
+          139.0,
+          55.0
+        ]
+      },
+      "parent_default_fontsize": 13.0,
+      "parent_default_fontname": "Arial"
+    },
+    {
+      "source": "float",
+      "path": "root/obj-2/obj-3",
+      "fields": {
+        "bubble": 1,
+        "fontname": "Arial",
+        "fontsize": 13.0,
+        "linecount": 3,
+        "patching_rect": [
+          411.0,
+          156.5,
+          133.0,
+          54.0
+        ]
+      },
+      "parent_default_fontsize": 13.0,
+      "parent_default_fontname": "Arial"
+    },
+    {
+      "source": "float",
+      "path": "root/obj-2/obj-1",
+      "fields": {
+        "bubble": 1,
+        "bubblepoint": 0.75,
+        "bubbleside": 3,
+        "fontname": "Arial",
+        "fontsize": 13.0,
+        "linecount": 2,
+        "patching_rect": [
+          36.0,
+          124.0,
+          150.0,
+          40.0
+        ]
+      },
+      "parent_default_fontsize": 13.0,
+      "parent_default_fontname": "Arial"
+    },
+    {
+      "source": "float",
+      "path": "root/obj-2/obj-5",
+      "fields": {
+        "bubble": 1,
+        "bubblepoint": 0.75,
+        "bubbleside": 3,
+        "fontname": "Arial",
+        "fontsize": 13.0,
+        "linecount": 3,
+        "patching_rect": [
+          14.0,
+          201.5,
+          143.0,
+          54.0
+        ]
+      },
+      "parent_default_fontsize": 13.0,
+      "parent_default_fontname": "Arial"
+    },
+    {
+      "source": "float",
+      "path": "root/obj-2/obj-34",
+      "fields": {
+        "patching_rect": [
+          313.0,
+          366.5,
+          143.0,
+          21.0
+        ],
+        "style": "helpfile_label"
+      },
+      "parent_default_fontsize": 13.0,
+      "parent_default_fontname": "Arial"
+    }
+  ],
+  "sources": [
+    {
+      "resource": "Max.exe",
+      "bytes": 33077248,
+      "sha256": "7a881318209a10d33c982db482297ab870327d5d2cb90aee6e4e01a13e279d8b"
+    },
+    {
+      "resource": "resources/docs/refpages/max-ref/comment.maxref.xml",
+      "bytes": 14354,
+      "sha256": "b3d05b255484f4e38b8461eb092464a86075ad93e1b305386aefbee5ff3e4e84"
+    },
+    {
+      "resource": "resources/styles/greenroom/helpfile_label.maxstyle",
+      "bytes": 73,
+      "sha256": "539c2fb80deae334c77cdb28f4bd2870dc285d76338a29b283191601e06a75b7"
+    },
+    {
+      "resource": "resources/interfaces/themes/default.maxtheme",
+      "bytes": 48299,
+      "sha256": "37d17ba802b3fba6ec8a8a3799a917f45f2b19a668e55021d4928bbdb3db8634"
+    },
+    {
+      "resource": "resources/help/max/append.maxhelp",
+      "bytes": 22166,
+      "sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "resource": "resources/help/max/prepend.maxhelp",
+      "bytes": 20651,
+      "sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb"
+    },
+    {
+      "resource": "resources/help/max/int.maxhelp",
+      "bytes": 26001,
+      "sha256": "bbb8fc3b458eb168fe69b8709ba343808d23b6d55e2c59cc3086d01976c5ac61"
+    },
+    {
+      "resource": "resources/help/max/float.maxhelp",
+      "bytes": 28070,
+      "sha256": "c5e9bd4e89ebc5808d2faf76400031705c35195c32b363b890787a37bbdec15c"
+    }
+  ]
+}

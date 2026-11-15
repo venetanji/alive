@@ -1,0 +1,234 @@
+{
+  "fixture": "message-display",
+  "labels": [
+    "template:0",
+    "empty:0",
+    "literal:0",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "unused",
+    "$delivery"
+  ],
+  "targets": [
+    {
+      "key": "template",
+      "maxclass": "message",
+      "text": "saved $1 $2",
+      "inlets": 2,
+      "outlets": 1
+    },
+    {
+      "key": "empty",
+      "maxclass": "message",
+      "text": "",
+      "inlets": 2,
+      "outlets": 1
+    },
+    {
+      "key": "literal",
+      "maxclass": "message",
+      "text": "fixed 7 pear",
+      "inlets": 2,
+      "outlets": 1
+    }
+  ],
+  "events": [
+    {
+      "id": "display_0",
+      "target": "template",
+      "lane": 0,
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "wait_after_ms": 1200,
+      "screenshot": true
+    },
+    {
+      "id": "display_1",
+      "target": "template",
+      "lane": 0,
+      "inlet": 0,
+      "selector": "list",
+      "atoms": [
+        8,
+        9
+      ],
+      "wait_after_ms": 1200,
+      "screenshot": true
+    },
+    {
+      "id": "display_2",
+      "target": "template",
+      "lane": 1,
+      "inlet": 1,
+      "selector": "new",
+      "atoms": [
+        "$1",
+        "$2"
+      ],
+      "wait_after_ms": 1200,
+      "screenshot": true
+    },
+    {
+      "id": "display_3",
+      "target": "template",
+      "lane": 0,
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        3
+      ],
+      "wait_after_ms": 1200,
+      "screenshot": true
+    },
+    {
+      "id": "display_4",
+      "target": "empty",
+      "lane": 3,
+      "inlet": 1,
+      "selector": "list",
+      "atoms": [
+        5,
+        "pear",
+        2.25
+      ],
+      "wait_after_ms": 1200,
+      "screenshot": true
+    },
+    {
+      "id": "display_5",
+      "target": "literal",
+      "lane": 5,
+      "inlet": 1,
+      "selector": "symbol",
+      "atoms": [
+        "kiwi"
+      ],
+      "wait_after_ms": 1200,
+      "screenshot": true
+    },
+    {
+      "id": "display_6",
+      "target": "literal",
+      "lane": 4,
+      "inlet": 0,
+      "selector": "bang",
+      "atoms": [],
+      "wait_after_ms": 1200,
+      "screenshot": true
+    },
+    {
+      "id": "display_7",
+      "target": "literal",
+      "lane": 5,
+      "inlet": 1,
+      "selector": "bang",
+      "atoms": [],
+      "wait_after_ms": 1200,
+      "screenshot": true
+    },
+    {
+      "id": "display_8",
+      "target": "literal",
+      "lane": 5,
+      "inlet": 1,
+      "selector": "list",
+      "atoms": [],
+      "wait_after_ms": 1200,
+      "screenshot": true
+    },
+    {
+      "id": "display_9",
+      "target": "template",
+      "lane": 0,
+      "inlet": 0,
+      "selector": "set",
+      "atoms": [],
+      "wait_after_ms": 1200,
+      "screenshot": true
+    },
+    {
+      "id": "display_10",
+      "target": "empty",
+      "lane": 2,
+      "inlet": 0,
+      "selector": "set",
+      "atoms": [
+        "fresh",
+        "$1"
+      ],
+      "wait_after_ms": 1200,
+      "screenshot": true
+    },
+    {
+      "id": "display_11",
+      "target": "empty",
+      "lane": 2,
+      "inlet": 0,
+      "selector": "int",
+      "atoms": [
+        7
+      ],
+      "wait_after_ms": 1200,
+      "screenshot": true
+    }
+  ],
+  "drain_ms": 150
+}

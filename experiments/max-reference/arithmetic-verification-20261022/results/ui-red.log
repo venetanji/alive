@@ -1,0 +1,178 @@
+TAP version 13
+# Subtest: saved rhs-only arithmetic and English legacy text retain existing defaults
+not ok 1 - saved rhs-only arithmetic and English legacy text retain existing defaults
+  ---
+  duration_ms: 3.400827
+  type: 'test'
+  location: '/home/venetanji/Work/alive/apps/ultra/ui/canvas-arithmetic.test.mjs:12:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      {
+    -   numericmode: 0,
+        rhs: 0.5
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    rhs: 0.5
+    numericmode: 0
+  actual:
+    rhs: 0.5
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-arithmetic.test.mjs:13:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: typed creation retains whole float spelling and bare edits reset operand and mode
+not ok 2 - typed creation retains whole float spelling and bare edits reset operand and mode
+  ---
+  duration_ms: 1.309123
+  type: 'test'
+  location: '/home/venetanji/Work/alive/apps/ultra/ui/canvas-arithmetic.test.mjs:21:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly deep-equal:
+    + actual - expected
+    
+      {
+        params: {
+    -     numericmode: 1,
+          rhs: 2
+        },
+        type: 'add'
+      }
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+    type: 'add'
+    params:
+      rhs: 2
+      numericmode: 1
+  actual:
+    type: 'add'
+    params:
+      rhs: 2
+  operator: 'deepStrictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-arithmetic.test.mjs:29:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: integer saved operands validate atomically across flat and nested patches
+not ok 3 - integer saved operands validate atomically across flat and nested patches
+  ---
+  duration_ms: 0.889231
+  type: 'test'
+  location: '/home/venetanji/Work/alive/apps/ultra/ui/canvas-arithmetic.test.mjs:38:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    The input did not match the regular expression /integer|integral/i. Input:
+    
+    'Error: Unknown add parameters field: numericmode.'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected:
+  actual:
+  error: 'Unknown add parameters field: numericmode.'
+  stack: |-
+    fail (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-model.mjs:75:33)
+    fields (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-model.mjs:78:67)
+    validateFlatPatch (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-model.mjs:147:5)
+    validatePatch (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-model.mjs:132:10)
+    file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-arithmetic.test.mjs:41:23
+    getActual (node:assert:609:5)
+    Function.throws (node:assert:757:24)
+    TestContext.<anonymous> (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-arithmetic.test.mjs:41:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+  operator: 'throws'
+  stack: |-
+    TestContext.<anonymous> (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-arithmetic.test.mjs:41:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: mode changes and their undo redo reapply standalone graphs while rhs stays live
+not ok 4 - mode changes and their undo redo reapply standalone graphs while rhs stays live
+  ---
+  duration_ms: 2.700379
+  type: 'test'
+  location: '/home/venetanji/Work/alive/apps/ultra/ui/canvas-arithmetic.test.mjs:49:1'
+  failureType: 'testCodeFailure'
+  error: 'Unknown add parameters field: numericmode.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-model.mjs:75:33)
+    fields (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-model.mjs:78:67)
+    validateFlatPatch (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-model.mjs:147:5)
+    validatePatch (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-model.mjs:132:10)
+    CanvasDocument.edit (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-model.mjs:238:21)
+    CanvasDocument.parameter (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-model.mjs:269:49)
+    Object.parameter (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-model.mjs:374:14)
+    file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-arithmetic.test.mjs:60:39
+    TestContext.<anonymous> (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-arithmetic.test.mjs:61:33)
+    async Test.run (node:internal/test_runner/test:1054:7)
+  ...
+# Subtest: new arithmetic reuses generic faces and exposes fixed type in help and creation hints
+not ok 5 - new arithmetic reuses generic faces and exposes fixed type in help and creation hints
+  ---
+  duration_ms: 0.256182
+  type: 'test'
+  location: '/home/venetanji/Work/alive/apps/ultra/ui/canvas-arithmetic.test.mjs:67:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot read properties of undefined (reading 'ui')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-arithmetic.test.mjs:69:32)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: Max import uses typed symbols and refuses Ultra-only legacy spellings
+not ok 6 - Max import uses typed symbols and refuses Ultra-only legacy spellings
+  ---
+  duration_ms: 2.556085
+  type: 'test'
+  location: '/home/venetanji/Work/alive/apps/ultra/ui/canvas-arithmetic.test.mjs:78:1'
+  failureType: 'testCodeFailure'
+  error: "Cannot read properties of null (reading 'nodes')"
+  code: 'ERR_TEST_FAILURE'
+  name: 'TypeError'
+  stack: |-
+    TestContext.<anonymous> (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-arithmetic.test.mjs:81:35)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 0
+# fail 6
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 91.416067

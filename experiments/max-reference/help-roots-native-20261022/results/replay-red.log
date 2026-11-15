@@ -1,0 +1,17 @@
+E
+======================================================================
+ERROR: setUpClass (__main__.ReplayContracts)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/venetanji/Work/alive/experiments/max-reference/help-roots-native-20261022/test-replay.py", line 17, in setUpClass
+    spec.loader.exec_module(cls.replay)
+    ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap_external>", line 759, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 896, in get_code
+  File "<frozen importlib._bootstrap_external>", line 954, in get_data
+FileNotFoundError: [Errno 2] No such file or directory: '/home/venetanji/Work/alive/experiments/max-reference/help-roots-native-20261022/replay.py'
+
+----------------------------------------------------------------------
+Ran 0 tests in 0.001s
+
+FAILED (errors=1)

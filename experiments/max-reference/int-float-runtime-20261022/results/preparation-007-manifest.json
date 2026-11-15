@@ -1,0 +1,594 @@
+{
+  "schema_version": 1,
+  "status": "PREPARED_NOT_EXECUTED",
+  "runtime_invocations": 0,
+  "private_work": "/home/venetanji/.cache/alive-ultra-evidence/int-float-max-20261022-prepared-007",
+  "private_config_sha256": "ebcd0c1a9b460b50e9f82335361c4cb7af319511421df6719bdf5544d6dc2509",
+  "private_seal_sha256": "7b0a3621aafc68c9bc238ba3c369a7d12bb9c4e01688b7333f4920f76b590894",
+  "score_binding": {
+    "path": "experiments/max-reference/help-roots-native-20261022/int-float-score.json",
+    "sha256": "0ea52e269e960d64f7a55f137a1925d2186119cd6d960afabc21730e3c2fad30",
+    "bytes": 16369,
+    "operations": 54
+  },
+  "source_metadata": [
+    {
+      "document": "int",
+      "source_sha256": "bbb8fc3b458eb168fe69b8709ba343808d23b6d55e2c59cc3086d01976c5ac61",
+      "bytes": 26001,
+      "full_box_count": 25,
+      "basic_box_count": 21,
+      "basic_cable_count": 10,
+      "executable_count": 14,
+      "observer_leaf_cables": 20,
+      "anchors": [
+        {
+          "anchor": "root/obj-2/obj-5",
+          "maxclass": "comment",
+          "runtime_class": "comment",
+          "rect": [
+            414.0,
+            172.0,
+            145.0,
+            40.0
+          ],
+          "outlets": 0
+        },
+        {
+          "anchor": "root/obj-2/obj-1",
+          "maxclass": "comment",
+          "runtime_class": "comment",
+          "rect": [
+            38.0,
+            114.0,
+            145.0,
+            40.0
+          ],
+          "outlets": 0
+        },
+        {
+          "anchor": "root/obj-2/obj-23",
+          "maxclass": "comment",
+          "runtime_class": "comment",
+          "rect": [
+            11.0,
+            186.5,
+            143.0,
+            54.0
+          ],
+          "outlets": 0
+        },
+        {
+          "anchor": "root/obj-2/obj-28",
+          "maxclass": "newobj",
+          "runtime_class": "int",
+          "rect": [
+            11.0,
+            472.5,
+            43.0,
+            23.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-35",
+          "maxclass": "button",
+          "runtime_class": "button",
+          "rect": [
+            11.0,
+            505.5,
+            24.0,
+            24.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-9",
+          "maxclass": "newobj",
+          "runtime_class": "int",
+          "rect": [
+            451.0,
+            406.5,
+            36.0,
+            23.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-16",
+          "maxclass": "number",
+          "runtime_class": "number",
+          "rect": [
+            195.0,
+            217.0,
+            53.0,
+            23.0
+          ],
+          "outlets": 2
+        },
+        {
+          "anchor": "root/obj-2/obj-17",
+          "maxclass": "number",
+          "runtime_class": "number",
+          "rect": [
+            266.0,
+            216.0,
+            52.0,
+            23.0
+          ],
+          "outlets": 2
+        },
+        {
+          "anchor": "root/obj-2/obj-18",
+          "maxclass": "slider",
+          "runtime_class": "slider",
+          "rect": [
+            266.0,
+            183.0,
+            144.0,
+            18.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-20",
+          "maxclass": "slider",
+          "runtime_class": "slider",
+          "rect": [
+            195.0,
+            125.0,
+            144.0,
+            18.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-21",
+          "maxclass": "number",
+          "runtime_class": "number",
+          "rect": [
+            221.0,
+            363.0,
+            53.0,
+            23.0
+          ],
+          "outlets": 2
+        },
+        {
+          "anchor": "root/obj-2/obj-22",
+          "maxclass": "newobj",
+          "runtime_class": "int",
+          "rect": [
+            195.0,
+            296.0,
+            90.0,
+            23.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-24",
+          "maxclass": "button",
+          "runtime_class": "button",
+          "rect": [
+            195.0,
+            363.0,
+            24.0,
+            24.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-29",
+          "maxclass": "message",
+          "runtime_class": "message",
+          "rect": [
+            11.0,
+            440.0,
+            75.0,
+            23.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-30",
+          "maxclass": "button",
+          "runtime_class": "button",
+          "rect": [
+            161.0,
+            217.0,
+            24.0,
+            24.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-31",
+          "maxclass": "comment",
+          "runtime_class": "comment",
+          "rect": [
+            11.0,
+            407.0,
+            262.0,
+            21.0
+          ],
+          "outlets": 0
+        },
+        {
+          "anchor": "root/obj-2/obj-32",
+          "maxclass": "newobj",
+          "runtime_class": "receive",
+          "rect": [
+            124.0,
+            467.5,
+            52.0,
+            23.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-33",
+          "maxclass": "number",
+          "runtime_class": "number",
+          "rect": [
+            124.0,
+            499.5,
+            52.0,
+            23.0
+          ],
+          "outlets": 2
+        },
+        {
+          "anchor": "root/obj-2/obj-34",
+          "maxclass": "comment",
+          "runtime_class": "comment",
+          "rect": [
+            305.0,
+            407.0,
+            142.0,
+            21.0
+          ],
+          "outlets": 0
+        },
+        {
+          "anchor": "root/obj-2/obj-2",
+          "maxclass": "jsui",
+          "runtime_class": "jsui",
+          "rect": [
+            10.0,
+            10.0,
+            620.0,
+            125.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-4",
+          "maxclass": "jsui",
+          "runtime_class": "jsui",
+          "rect": [
+            291.0,
+            296.0,
+            208.315216,
+            39.0
+          ],
+          "outlets": 1
+        }
+      ]
+    },
+    {
+      "document": "float",
+      "source_sha256": "c5e9bd4e89ebc5808d2faf76400031705c35195c32b363b890787a37bbdec15c",
+      "bytes": 28070,
+      "full_box_count": 27,
+      "basic_box_count": 23,
+      "basic_cable_count": 12,
+      "executable_count": 16,
+      "observer_leaf_cables": 22,
+      "anchors": [
+        {
+          "anchor": "root/obj-2/obj-6",
+          "maxclass": "comment",
+          "runtime_class": "comment",
+          "rect": [
+            14.0,
+            286.5,
+            139.0,
+            55.0
+          ],
+          "outlets": 0
+        },
+        {
+          "anchor": "root/obj-2/obj-3",
+          "maxclass": "comment",
+          "runtime_class": "comment",
+          "rect": [
+            411.0,
+            156.5,
+            133.0,
+            54.0
+          ],
+          "outlets": 0
+        },
+        {
+          "anchor": "root/obj-2/obj-1",
+          "maxclass": "comment",
+          "runtime_class": "comment",
+          "rect": [
+            36.0,
+            124.0,
+            150.0,
+            40.0
+          ],
+          "outlets": 0
+        },
+        {
+          "anchor": "root/obj-2/obj-5",
+          "maxclass": "comment",
+          "runtime_class": "comment",
+          "rect": [
+            14.0,
+            201.5,
+            143.0,
+            54.0
+          ],
+          "outlets": 0
+        },
+        {
+          "anchor": "root/obj-2/obj-28",
+          "maxclass": "newobj",
+          "runtime_class": "float",
+          "rect": [
+            12.0,
+            380.0,
+            58.0,
+            23.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-35",
+          "maxclass": "button",
+          "runtime_class": "button",
+          "rect": [
+            12.0,
+            413.0,
+            24.0,
+            24.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-9",
+          "maxclass": "newobj",
+          "runtime_class": "float",
+          "rect": [
+            459.0,
+            366.5,
+            37.0,
+            23.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-16",
+          "maxclass": "flonum",
+          "runtime_class": "flonum",
+          "rect": [
+            194.0,
+            230.5,
+            54.0,
+            23.0
+          ],
+          "outlets": 2
+        },
+        {
+          "anchor": "root/obj-2/obj-17",
+          "maxclass": "flonum",
+          "runtime_class": "flonum",
+          "rect": [
+            265.0,
+            230.5,
+            54.0,
+            23.0
+          ],
+          "outlets": 2
+        },
+        {
+          "anchor": "root/obj-2/obj-18",
+          "maxclass": "slider",
+          "runtime_class": "slider",
+          "rect": [
+            265.0,
+            175.0,
+            144.0,
+            18.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-19",
+          "maxclass": "newobj",
+          "runtime_class": "*",
+          "rect": [
+            265.0,
+            200.5,
+            38.0,
+            23.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-20",
+          "maxclass": "slider",
+          "runtime_class": "slider",
+          "rect": [
+            194.0,
+            145.0,
+            144.0,
+            18.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-21",
+          "maxclass": "flonum",
+          "runtime_class": "flonum",
+          "rect": [
+            220.0,
+            330.5,
+            54.0,
+            23.0
+          ],
+          "outlets": 2
+        },
+        {
+          "anchor": "root/obj-2/obj-22",
+          "maxclass": "newobj",
+          "runtime_class": "float",
+          "rect": [
+            194.0,
+            274.5,
+            90.0,
+            23.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-23",
+          "maxclass": "newobj",
+          "runtime_class": "*",
+          "rect": [
+            194.0,
+            200.5,
+            38.0,
+            23.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-24",
+          "maxclass": "button",
+          "runtime_class": "button",
+          "rect": [
+            194.0,
+            330.5,
+            24.0,
+            24.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-29",
+          "maxclass": "message",
+          "runtime_class": "message",
+          "rect": [
+            12.0,
+            347.5,
+            75.0,
+            23.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-30",
+          "maxclass": "button",
+          "runtime_class": "button",
+          "rect": [
+            165.0,
+            230.5,
+            24.0,
+            24.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-32",
+          "maxclass": "newobj",
+          "runtime_class": "receive",
+          "rect": [
+            117.0,
+            347.5,
+            52.0,
+            23.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-33",
+          "maxclass": "flonum",
+          "runtime_class": "flonum",
+          "rect": [
+            117.0,
+            380.5,
+            54.0,
+            23.0
+          ],
+          "outlets": 2
+        },
+        {
+          "anchor": "root/obj-2/obj-34",
+          "maxclass": "comment",
+          "runtime_class": "comment",
+          "rect": [
+            313.0,
+            366.5,
+            143.0,
+            21.0
+          ],
+          "outlets": 0
+        },
+        {
+          "anchor": "root/obj-2/obj-2",
+          "maxclass": "jsui",
+          "runtime_class": "jsui",
+          "rect": [
+            10.0,
+            10.0,
+            350.0,
+            103.0
+          ],
+          "outlets": 1
+        },
+        {
+          "anchor": "root/obj-2/obj-4",
+          "maxclass": "jsui",
+          "runtime_class": "jsui",
+          "rect": [
+            289.0,
+            274.0,
+            190.328094,
+            39.0
+          ],
+          "outlets": 1
+        }
+      ]
+    }
+  ],
+  "helpers": [
+    {
+      "name": "helpargs.js",
+      "path": "help/resources/helpargs.js",
+      "bytes": 3623,
+      "sha256": "04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469"
+    },
+    {
+      "name": "helpdetails.js",
+      "path": "help/resources/helpdetails.js",
+      "bytes": 4199,
+      "sha256": "31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1"
+    },
+    {
+      "name": "helpname.js",
+      "path": "help/resources/helpname.js",
+      "bytes": 905,
+      "sha256": "49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa"
+    },
+    {
+      "name": "helpstarter.js",
+      "path": "help/resources/helpstarter.js",
+      "bytes": 1591,
+      "sha256": "a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8"
+    }
+  ]
+}

@@ -1,0 +1,1431 @@
+{
+  "evidence_id": "ev_63d8b37d9c769beebdd28da04ee6a017f5b2bebace4a44b52a1a24e9f98e18b8",
+  "subject": null,
+  "provider": {
+    "id": "rea-process",
+    "name": "REA process capture",
+    "version": "3"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.process-capture",
+  "operation": "capture_process_scenario",
+  "parameters": {
+    "executable_name": "python3",
+    "argument_count": 1,
+    "event_count": 0,
+    "filesystem_observation_path_count": 0,
+    "normalization": {
+      "paths": false,
+      "pids": true,
+      "ports": true,
+      "time_bucket_ms": 10,
+      "patterns": []
+    }
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "manifest": {
+      "rea_version": "6.4.0",
+      "provider_version": "3",
+      "platform": "linux",
+      "architecture": "x64",
+      "pty_backend": "node-pty",
+      "started_at": "2026-10-21T16:45:54.408Z",
+      "completed_at": "2026-10-21T16:46:55.660Z",
+      "scenario": {
+        "executable": "/usr/bin/python3",
+        "arguments": [
+          "experiments/max-reference/tab-ui-runtime-20261022/run-isolated.py"
+        ],
+        "working_directory": "/home/venetanji/Work/alive",
+        "environment": {},
+        "filesystem_observation_paths": [],
+        "terminal": {
+          "columns": 100,
+          "rows": 16,
+          "scrollback": 20
+        },
+        "events": [],
+        "timeout_ms": 120000,
+        "idle_timeout_ms": 50000,
+        "settle_ms": 100,
+        "limits": {
+          "output_bytes": 40000,
+          "files": 20,
+          "file_bytes": 100000,
+          "processes": 120,
+          "filesystem_depth": 1
+        },
+        "normalization": {
+          "paths": false,
+          "pids": true,
+          "ports": true,
+          "time_bucket_ms": 10,
+          "patterns": []
+        },
+        "finalization_ms": 3000,
+        "executable_sha256": "375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b"
+      },
+      "comparison_contract": {
+        "working_directory": "/home/venetanji/Work/alive",
+        "environment": {},
+        "ambient_environment": "unknown",
+        "filesystem_observation_paths": [],
+        "terminal": {
+          "columns": 100,
+          "rows": 16,
+          "scrollback": 20
+        },
+        "events": [],
+        "timeout_ms": 120000,
+        "idle_timeout_ms": 50000,
+        "settle_ms": 100,
+        "finalization_ms": 3000,
+        "limits": {
+          "output_bytes": 40000,
+          "files": 20,
+          "file_bytes": 100000,
+          "processes": 120,
+          "filesystem_depth": 1
+        },
+        "normalization": {
+          "paths": false,
+          "pids": true,
+          "ports": true,
+          "time_bucket_ms": 10,
+          "patterns": []
+        },
+        "port_normalization_version": "contextual-endpoints-v2",
+        "rendered_line_format": "trailing-spaces-trimmed-v1"
+      },
+      "full_scenario_sha256": "c449af250793908450bf855b87ea4b0defcc2e2d180789a4d0d1f409dc776e6c",
+      "comparison_contract_sha256": "0a6ad3e146a287fd6814739c1a10ca8e16980f5ddf32ca280e24964862202793",
+      "selected_executable_sha256": "375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b",
+      "executable_sha256": "375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b",
+      "executable_identity": {
+        "state": "path_metadata_unchanged",
+        "reason": null
+      },
+      "normalization_sha256": "5c58aa1aa890197f15f9c59ef755d01120e6e07f356fa1ef2f20787e63b6fa87"
+    },
+    "normalization": {
+      "paths": false,
+      "pids": true,
+      "ports": true,
+      "time_bucket_ms": 10,
+      "patterns": []
+    },
+    "frames": [
+      {
+        "sequence": 0,
+        "at_ms": 4640,
+        "data": "{\"fixture\": \"isolated-root-shown\", \"display\": \":0\", \"launcher_pid\": 2414271, \"xvfb_pid\": 2414254, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-isolated-root-shown-20261022-wine-disposable\"}\r\n"
+      },
+      {
+        "sequence": 1,
+        "at_ms": 17350,
+        "data": "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601171230}\r\n"
+      },
+      {
+        "sequence": 2,
+        "at_ms": 18500,
+        "data": "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promoted\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601172333}\r\n"
+      },
+      {
+        "sequence": 3,
+        "at_ms": 19540,
+        "data": "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"root\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601173440}\r\n"
+      },
+      {
+        "sequence": 4,
+        "at_ms": 20780,
+        "data": "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601174603}\r\n"
+      },
+      {
+        "sequence": 5,
+        "at_ms": 21920,
+        "data": "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"alpha\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601175776}\r\n"
+      },
+      {
+        "sequence": 6,
+        "at_ms": 23070,
+        "data": "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-retained\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601176944}\r\n"
+      },
+      {
+        "sequence": 7,
+        "at_ms": 24370,
+        "data": "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promote-runtime\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601178213}\r\n"
+      },
+      {
+        "sequence": 8,
+        "at_ms": 25410,
+        "data": "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"open-zeta\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601179318}\r\n"
+      },
+      {
+        "sequence": 9,
+        "at_ms": 26550,
+        "data": "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-local\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601180425}\r\n"
+      },
+      {
+        "sequence": 10,
+        "at_ms": 27730,
+        "data": "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-return\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601181535}\r\n"
+      },
+      {
+        "sequence": 11,
+        "at_ms": 31570,
+        "data": "{\"fixture\": \"isolated-root-shown\", \"exit\": -9}\r\n"
+      },
+      {
+        "sequence": 12,
+        "at_ms": 35890,
+        "data": "{\"fixture\": \"isolated-nesting\", \"display\": \":0\", \"launcher_pid\": 2417961, \"xvfb_pid\": 2417945, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-isolated-nesting-20261022-wine-disposable\"}\r\n"
+      },
+      {
+        "sequence": 13,
+        "at_ms": 46790,
+        "data": "{\"fixture\": \"isolated-nesting\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-nesting.maxpat\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601200628}\r\n"
+      },
+      {
+        "sequence": 14,
+        "at_ms": 47860,
+        "data": "{\"fixture\": \"isolated-nesting\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-nesting.maxpat\", \"stage\": \"promoted\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601201732}\r\n"
+      },
+      {
+        "sequence": 15,
+        "at_ms": 49000,
+        "data": "{\"fixture\": \"isolated-nesting\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-nesting.maxpat\", \"stage\": \"root\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601202839}\r\n"
+      },
+      {
+        "sequence": 16,
+        "at_ms": 50150,
+        "data": "{\"fixture\": \"isolated-nesting\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-nesting.maxpat\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601203999}\r\n"
+      },
+      {
+        "sequence": 17,
+        "at_ms": 51290,
+        "data": "{\"fixture\": \"isolated-nesting\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-nesting.maxpat\", \"stage\": \"alpha\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601205158}\r\n"
+      },
+      {
+        "sequence": 18,
+        "at_ms": 52420,
+        "data": "{\"fixture\": \"isolated-nesting\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-nesting.maxpat\", \"stage\": \"zeta-retained\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601206321}\r\n"
+      },
+      {
+        "sequence": 19,
+        "at_ms": 53660,
+        "data": "{\"fixture\": \"isolated-nesting\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-nesting.maxpat\", \"stage\": \"promote-runtime\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601207585}\r\n"
+      },
+      {
+        "sequence": 20,
+        "at_ms": 54790,
+        "data": "{\"fixture\": \"isolated-nesting\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-nesting.maxpat\", \"stage\": \"open-zeta\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601208711}\r\n"
+      },
+      {
+        "sequence": 21,
+        "at_ms": 55920,
+        "data": "{\"fixture\": \"isolated-nesting\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-nesting.maxpat\", \"stage\": \"zeta-local\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601209816}\r\n"
+      },
+      {
+        "sequence": 22,
+        "at_ms": 57080,
+        "data": "{\"fixture\": \"isolated-nesting\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-nesting.maxpat\", \"stage\": \"zeta-return\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601210926}\r\n"
+      },
+      {
+        "sequence": 23,
+        "at_ms": 61090,
+        "data": "{\"fixture\": \"isolated-nesting\", \"exit\": -9}\r\n"
+      }
+    ],
+    "rendered_frames": [
+      {
+        "sequence": 0,
+        "at_ms": 4640,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 2,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"fixture\": \"isolated-root-shown\", \"display\": \":0\", \"launcher_pid\": 2414271, \"xvfb_pid\": 2414254, \"p",
+          "refix\": \"/home/venetanji/.cache/alive-max-tabs-isolated-root-shown-20261022-wine-disposable\"}",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"fixture\": \"isolated-root-shown\", \"display\": \":0\", \"launcher_pid\": 2414271, \"xvfb_pid\": 2414254, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-isolated-root-shown-20261022-wine-disposable\"}\u001b[1B\u001b[93D"
+      },
+      {
+        "sequence": 1,
+        "at_ms": 17350,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 6,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"fixture\": \"isolated-root-shown\", \"display\": \":0\", \"launcher_pid\": 2414271, \"xvfb_pid\": 2414254, \"p",
+          "refix\": \"/home/venetanji/.cache/alive-max-tabs-isolated-root-shown-20261022-wine-disposable\"}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"initial\", \"number_",
+          "value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"loca",
+          "l_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601171230}",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"fixture\": \"isolated-root-shown\", \"display\": \":0\", \"launcher_pid\": 2414271, \"xvfb_pid\": 2414254, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-isolated-root-shown-20261022-wine-disposable\"}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601171230}\u001b[1B\u001b[67D"
+      },
+      {
+        "sequence": 2,
+        "at_ms": 18500,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 10,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"fixture\": \"isolated-root-shown\", \"display\": \":0\", \"launcher_pid\": 2414271, \"xvfb_pid\": 2414254, \"p",
+          "refix\": \"/home/venetanji/.cache/alive-max-tabs-isolated-root-shown-20261022-wine-disposable\"}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"initial\", \"number_",
+          "value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"loca",
+          "l_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601171230}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promoted\", \"number",
+          "_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"loc",
+          "al_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601172333}",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"fixture\": \"isolated-root-shown\", \"display\": \":0\", \"launcher_pid\": 2414271, \"xvfb_pid\": 2414254, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-isolated-root-shown-20261022-wine-disposable\"}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601171230}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promoted\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601172333}\u001b[1B\u001b[68D"
+      },
+      {
+        "sequence": 3,
+        "at_ms": 19540,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 14,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"fixture\": \"isolated-root-shown\", \"display\": \":0\", \"launcher_pid\": 2414271, \"xvfb_pid\": 2414254, \"p",
+          "refix\": \"/home/venetanji/.cache/alive-max-tabs-isolated-root-shown-20261022-wine-disposable\"}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"initial\", \"number_",
+          "value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"loca",
+          "l_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601171230}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promoted\", \"number",
+          "_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"loc",
+          "al_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601172333}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"root\", \"number_val",
+          "ue\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_s",
+          "howontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601173440}",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"fixture\": \"isolated-root-shown\", \"display\": \":0\", \"launcher_pid\": 2414271, \"xvfb_pid\": 2414254, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-isolated-root-shown-20261022-wine-disposable\"}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601171230}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promoted\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601172333}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"root\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601173440}\u001b[1B\u001b[64D"
+      },
+      {
+        "sequence": 4,
+        "at_ms": 20780,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 15,
+        "active_buffer": "normal",
+        "lines": [
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"initial\", \"number_",
+          "value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"loca",
+          "l_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601171230}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promoted\", \"number",
+          "_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"loc",
+          "al_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601172333}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"root\", \"number_val",
+          "ue\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_s",
+          "howontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601173440}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-set77\", \"numb",
+          "er_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"",
+          "local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601174603}",
+          ""
+        ],
+        "serialized_state": "{\"fixture\": \"isolated-root-shown\", \"display\": \":0\", \"launcher_pid\": 2414271, \"xvfb_pid\": 2414254, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-isolated-root-shown-20261022-wine-disposable\"}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601171230}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promoted\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601172333}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"root\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601173440}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601174603}\r\n"
+      },
+      {
+        "sequence": 5,
+        "at_ms": 21920,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 15,
+        "active_buffer": "normal",
+        "lines": [
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promoted\", \"number",
+          "_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"loc",
+          "al_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601172333}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"root\", \"number_val",
+          "ue\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_s",
+          "howontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601173440}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-set77\", \"numb",
+          "er_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"",
+          "local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601174603}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"alpha\", \"number_va",
+          "lue\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local",
+          "_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601175776}",
+          ""
+        ],
+        "serialized_state": "{\"fixture\": \"isolated-root-shown\", \"display\": \":0\", \"launcher_pid\": 2414271, \"xvfb_pid\": 2414254, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-isolated-root-shown-20261022-wine-disposable\"}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601171230}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promoted\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601172333}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"root\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601173440}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601174603}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"alpha\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601175776}\r\n"
+      },
+      {
+        "sequence": 6,
+        "at_ms": 23070,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 15,
+        "active_buffer": "normal",
+        "lines": [
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"root\", \"number_val",
+          "ue\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_s",
+          "howontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601173440}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-set77\", \"numb",
+          "er_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"",
+          "local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601174603}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"alpha\", \"number_va",
+          "lue\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local",
+          "_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601175776}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-retained\", \"n",
+          "umber_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1",
+          ", \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601176944}",
+          ""
+        ],
+        "serialized_state": "{\"fixture\": \"isolated-root-shown\", \"display\": \":0\", \"launcher_pid\": 2414271, \"xvfb_pid\": 2414254, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-isolated-root-shown-20261022-wine-disposable\"}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601171230}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promoted\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601172333}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"root\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601173440}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601174603}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"alpha\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601175776}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-retained\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601176944}\r\n"
+      },
+      {
+        "sequence": 7,
+        "at_ms": 24370,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 15,
+        "active_buffer": "normal",
+        "lines": [
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-set77\", \"numb",
+          "er_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"",
+          "local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601174603}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"alpha\", \"number_va",
+          "lue\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local",
+          "_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601175776}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-retained\", \"n",
+          "umber_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1",
+          ", \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601176944}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promote-runtime\",",
+          "\"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\":",
+          " 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601178213}",
+          ""
+        ],
+        "serialized_state": "{\"fixture\": \"isolated-root-shown\", \"display\": \":0\", \"launcher_pid\": 2414271, \"xvfb_pid\": 2414254, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-isolated-root-shown-20261022-wine-disposable\"}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601171230}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promoted\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601172333}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"root\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601173440}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601174603}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"alpha\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601175776}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-retained\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601176944}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promote-runtime\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601178213}\r\n"
+      },
+      {
+        "sequence": 8,
+        "at_ms": 25410,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 15,
+        "active_buffer": "normal",
+        "lines": [
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"alpha\", \"number_va",
+          "lue\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local",
+          "_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601175776}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-retained\", \"n",
+          "umber_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1",
+          ", \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601176944}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promote-runtime\",",
+          "\"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\":",
+          " 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601178213}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"open-zeta\", \"numbe",
+          "r_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"l",
+          "ocal_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601179318}",
+          ""
+        ],
+        "serialized_state": "{\"fixture\": \"isolated-root-shown\", \"display\": \":0\", \"launcher_pid\": 2414271, \"xvfb_pid\": 2414254, \"prefix\": \"/home/venetanji/.cache/alive-max-tabs-isolated-root-shown-20261022-wine-disposable\"}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601171230}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promoted\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601172333}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"root\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601173440}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601174603}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"alpha\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601175776}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-retained\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601176944}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promote-runtime\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601178213}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"open-zeta\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601179318}\r\n"
+      },
+      {
+        "sequence": 9,
+        "at_ms": 26550,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 15,
+        "active_buffer": "normal",
+        "lines": [
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-retained\", \"n",
+          "umber_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1",
+          ", \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601176944}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promote-runtime\",",
+          "\"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\":",
+          " 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601178213}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"open-zeta\", \"numbe",
+          "r_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"l",
+          "ocal_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601179318}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-local\", \"numb",
+          "er_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"",
+          "local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601180425}",
+          ""
+        ],
+        "serialized_state": "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"initial\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601171230}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promoted\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601172333}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"root\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601173440}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601174603}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"alpha\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601175776}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-retained\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601176944}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promote-runtime\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601178213}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"open-zeta\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601179318}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-local\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601180425}\r\n"
+      },
+      {
+        "sequence": 10,
+        "at_ms": 27730,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 15,
+        "active_buffer": "normal",
+        "lines": [
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promote-runtime\",",
+          "\"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\":",
+          " 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601178213}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"open-zeta\", \"numbe",
+          "r_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"l",
+          "ocal_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601179318}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-local\", \"numb",
+          "er_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"",
+          "local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601180425}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-return\", \"num",
+          "ber_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1,",
+          "\"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601181535}",
+          ""
+        ],
+        "serialized_state": "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promoted\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601172333}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"root\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601173440}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601174603}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"alpha\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601175776}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-retained\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601176944}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promote-runtime\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601178213}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"open-zeta\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601179318}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-local\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601180425}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-return\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601181535}\r\n"
+      },
+      {
+        "sequence": 11,
+        "at_ms": 31570,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 15,
+        "active_buffer": "normal",
+        "lines": [
+          "\"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\":",
+          " 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601178213}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"open-zeta\", \"numbe",
+          "r_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"l",
+          "ocal_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601179318}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-local\", \"numb",
+          "er_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"",
+          "local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601180425}",
+          "{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-",
+          "reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-return\", \"num",
+          "ber_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1,",
+          "\"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601181535}",
+          "{\"fixture\": \"isolated-root-shown\", \"exit\": -9}",
+          ""
+        ],
+        "serialized_state": "_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601172333}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"root\", \"number_value\": [0], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601173440}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-set77\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601174603}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"alpha\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601175776}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-retained\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601176944}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"promote-runtime\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601178213}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"open-zeta\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601179318}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-local\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601180425}\r\n{\"fixture\": \"isolated-root-shown\", \"source_filepath\": \"Z:/home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/fixtures/isolated-root-shown.maxpat\", \"stage\": \"zeta-return\", \"number_value\": [77], \"root_showroot\": 1, \"root_showontab\": 1, \"zeta_showroot\": 1, \"zeta_showontab\": 1, \"local_showontab\": 1, \"promoted_showontab\": 2, \"wall_ms\": 1792601181535}\r\n{\"fixture\": \"isolated-root-shown\", \"exit\": -9}\r\n"
+      }
+    ],
+    "interaction_events": [],
+    "exit": {
+      "code": 0,
+      "signal": 0,
+      "reason": "exited"
+    },
+    "settlement": {
+      "state": "quiesced",
+      "elapsed_ms": 108,
+      "cleanup_outcome": "not_required"
+    },
+    "process_samples": [
+      {
+        "at_ms": 20,
+        "pid": 1,
+        "parent_pid": 2,
+        "command": "/usr/bin/python3 experiments/max-reference/tab-ui-runtime-20261022/run-isolated.py",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 60,
+        "pid": 3,
+        "parent_pid": 1,
+        "command": "cp -a --reflink=always /home/venetanji/.cache/alive-max-list-20261021/wine-disposable /home/venetanji/.cache/alive-max-tabs-isolated-root-shown-20261022-wine-disposable",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 4500,
+        "pid": 4,
+        "parent_pid": 1,
+        "command": "/usr/bin/python3 /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/run-one.py isolated-root-shown",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 4560,
+        "pid": 5,
+        "parent_pid": 4,
+        "command": "Xvfb -displayfd 1 -screen 0 1440x1000x24 -nolisten tcp",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 4650,
+        "pid": 6,
+        "parent_pid": 4,
+        "command": "/home/venetanji/.local/opt/wine-d2d1-nspa-11.13/lib/wine/x86_64-unix/wine C:\\ProgramData\\Ableton\\Live 12 Suite\\Resources\\Max\\Max.exe Z:\\home\\venetanji\\Work\\alive\\experiments\\max-reference\\tab-ui-runtime-20261022\\fixtures\\isolated-root-shown.maxpat",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 5870,
+        "pid": 6,
+        "parent_pid": 4,
+        "command": "C:\\ProgramData\\Ableton\\Live 12 Suite\\Resources\\Max\\Max.exe Z:\\home\\venetanji\\Work\\alive\\experiments\\max-reference\\tab-ui-runtime-20261022\\fixtures\\isolated-root-shown.maxpat",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 12110,
+        "pid": 7,
+        "parent_pid": 6,
+        "command": "",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 12110,
+        "pid": 8,
+        "parent_pid": 7,
+        "command": "",
+        "process_group_id": 8,
+        "session_id": 8
+      },
+      {
+        "at_ms": 17230,
+        "pid": 9,
+        "parent_pid": 4,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/isolated-root-shown-initial.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 18380,
+        "pid": 10,
+        "parent_pid": 4,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/isolated-root-shown-promoted.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 19440,
+        "pid": 11,
+        "parent_pid": 4,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/isolated-root-shown-root.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 20640,
+        "pid": 12,
+        "parent_pid": 4,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/isolated-root-shown-zeta-set77.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 21800,
+        "pid": 13,
+        "parent_pid": 4,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/isolated-root-shown-alpha.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 22950,
+        "pid": 14,
+        "parent_pid": 4,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/isolated-root-shown-zeta-retained.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 24200,
+        "pid": 15,
+        "parent_pid": 4,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/isolated-root-shown-promote-runtime.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 25310,
+        "pid": 16,
+        "parent_pid": 4,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/isolated-root-shown-open-zeta.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 26410,
+        "pid": 17,
+        "parent_pid": 4,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/isolated-root-shown-zeta-local.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 27570,
+        "pid": 18,
+        "parent_pid": 4,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/isolated-root-shown-zeta-return.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 31490,
+        "pid": 6,
+        "parent_pid": 4,
+        "command": "",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 31590,
+        "pid": 19,
+        "parent_pid": 1,
+        "command": "cp -a --reflink=always /home/venetanji/.cache/alive-max-list-20261021/wine-disposable /home/venetanji/.cache/alive-max-tabs-isolated-nesting-20261022-wine-disposable",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 35760,
+        "pid": 20,
+        "parent_pid": 1,
+        "command": "/usr/bin/python3 /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/run-one.py isolated-nesting",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 35810,
+        "pid": 21,
+        "parent_pid": 20,
+        "command": "Xvfb -displayfd 1 -screen 0 1440x1000x24 -nolisten tcp",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 35910,
+        "pid": 22,
+        "parent_pid": 20,
+        "command": "/home/venetanji/.local/opt/wine-d2d1-nspa-11.13/lib/wine/x86_64-unix/wine C:\\ProgramData\\Ableton\\Live 12 Suite\\Resources\\Max\\Max.exe Z:\\home\\venetanji\\Work\\alive\\experiments\\max-reference\\tab-ui-runtime-20261022\\fixtures\\isolated-nesting.maxpat",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 36960,
+        "pid": 22,
+        "parent_pid": 20,
+        "command": "C:\\ProgramData\\Ableton\\Live 12 Suite\\Resources\\Max\\Max.exe Z:\\home\\venetanji\\Work\\alive\\experiments\\max-reference\\tab-ui-runtime-20261022\\fixtures\\isolated-nesting.maxpat",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 46680,
+        "pid": 23,
+        "parent_pid": 20,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/isolated-nesting-initial.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 47730,
+        "pid": 24,
+        "parent_pid": 20,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/isolated-nesting-promoted.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 48890,
+        "pid": 25,
+        "parent_pid": 20,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/isolated-nesting-root.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 50010,
+        "pid": 26,
+        "parent_pid": 20,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/isolated-nesting-zeta-set77.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 51160,
+        "pid": 27,
+        "parent_pid": 20,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/isolated-nesting-alpha.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 52320,
+        "pid": 28,
+        "parent_pid": 20,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/isolated-nesting-zeta-retained.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 53570,
+        "pid": 29,
+        "parent_pid": 20,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/isolated-nesting-promote-runtime.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 54670,
+        "pid": 30,
+        "parent_pid": 20,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/isolated-nesting-open-zeta.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 55820,
+        "pid": 31,
+        "parent_pid": 20,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/isolated-nesting-zeta-local.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 56940,
+        "pid": 32,
+        "parent_pid": 20,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/tab-ui-runtime-20261022/results/isolated-nesting-zeta-return.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 60990,
+        "pid": 22,
+        "parent_pid": 20,
+        "command": "",
+        "process_group_id": 1,
+        "session_id": 1
+      }
+    ],
+    "filesystem_checkpoints": [
+      {
+        "name": "before",
+        "at_ms": 0,
+        "files": [],
+        "effects": [],
+        "truncated": false
+      },
+      {
+        "name": "after_settlement",
+        "at_ms": 61252,
+        "files": [],
+        "effects": [],
+        "truncated": false
+      }
+    ],
+    "event_journal": [
+      {
+        "capture_order": 0,
+        "collection": "filesystem_checkpoints",
+        "index": 0
+      },
+      {
+        "capture_order": 1,
+        "collection": "process_samples",
+        "index": 0
+      },
+      {
+        "capture_order": 2,
+        "collection": "process_samples",
+        "index": 1
+      },
+      {
+        "capture_order": 3,
+        "collection": "process_samples",
+        "index": 2
+      },
+      {
+        "capture_order": 4,
+        "collection": "process_samples",
+        "index": 3
+      },
+      {
+        "capture_order": 5,
+        "collection": "frames",
+        "index": 0
+      },
+      {
+        "capture_order": 6,
+        "collection": "rendered_frames",
+        "index": 0
+      },
+      {
+        "capture_order": 7,
+        "collection": "process_samples",
+        "index": 4
+      },
+      {
+        "capture_order": 8,
+        "collection": "process_samples",
+        "index": 5
+      },
+      {
+        "capture_order": 9,
+        "collection": "process_samples",
+        "index": 6
+      },
+      {
+        "capture_order": 10,
+        "collection": "process_samples",
+        "index": 7
+      },
+      {
+        "capture_order": 11,
+        "collection": "process_samples",
+        "index": 8
+      },
+      {
+        "capture_order": 12,
+        "collection": "frames",
+        "index": 1
+      },
+      {
+        "capture_order": 13,
+        "collection": "rendered_frames",
+        "index": 1
+      },
+      {
+        "capture_order": 14,
+        "collection": "process_samples",
+        "index": 9
+      },
+      {
+        "capture_order": 15,
+        "collection": "frames",
+        "index": 2
+      },
+      {
+        "capture_order": 16,
+        "collection": "rendered_frames",
+        "index": 2
+      },
+      {
+        "capture_order": 17,
+        "collection": "process_samples",
+        "index": 10
+      },
+      {
+        "capture_order": 18,
+        "collection": "frames",
+        "index": 3
+      },
+      {
+        "capture_order": 19,
+        "collection": "rendered_frames",
+        "index": 3
+      },
+      {
+        "capture_order": 20,
+        "collection": "process_samples",
+        "index": 11
+      },
+      {
+        "capture_order": 21,
+        "collection": "frames",
+        "index": 4
+      },
+      {
+        "capture_order": 22,
+        "collection": "rendered_frames",
+        "index": 4
+      },
+      {
+        "capture_order": 23,
+        "collection": "process_samples",
+        "index": 12
+      },
+      {
+        "capture_order": 24,
+        "collection": "frames",
+        "index": 5
+      },
+      {
+        "capture_order": 25,
+        "collection": "rendered_frames",
+        "index": 5
+      },
+      {
+        "capture_order": 26,
+        "collection": "process_samples",
+        "index": 13
+      },
+      {
+        "capture_order": 27,
+        "collection": "frames",
+        "index": 6
+      },
+      {
+        "capture_order": 28,
+        "collection": "rendered_frames",
+        "index": 6
+      },
+      {
+        "capture_order": 29,
+        "collection": "process_samples",
+        "index": 14
+      },
+      {
+        "capture_order": 30,
+        "collection": "frames",
+        "index": 7
+      },
+      {
+        "capture_order": 31,
+        "collection": "rendered_frames",
+        "index": 7
+      },
+      {
+        "capture_order": 32,
+        "collection": "process_samples",
+        "index": 15
+      },
+      {
+        "capture_order": 33,
+        "collection": "frames",
+        "index": 8
+      },
+      {
+        "capture_order": 34,
+        "collection": "rendered_frames",
+        "index": 8
+      },
+      {
+        "capture_order": 35,
+        "collection": "process_samples",
+        "index": 16
+      },
+      {
+        "capture_order": 36,
+        "collection": "frames",
+        "index": 9
+      },
+      {
+        "capture_order": 37,
+        "collection": "rendered_frames",
+        "index": 9
+      },
+      {
+        "capture_order": 38,
+        "collection": "process_samples",
+        "index": 17
+      },
+      {
+        "capture_order": 39,
+        "collection": "frames",
+        "index": 10
+      },
+      {
+        "capture_order": 40,
+        "collection": "rendered_frames",
+        "index": 10
+      },
+      {
+        "capture_order": 41,
+        "collection": "process_samples",
+        "index": 18
+      },
+      {
+        "capture_order": 42,
+        "collection": "frames",
+        "index": 11
+      },
+      {
+        "capture_order": 43,
+        "collection": "rendered_frames",
+        "index": 11
+      },
+      {
+        "capture_order": 44,
+        "collection": "process_samples",
+        "index": 19
+      },
+      {
+        "capture_order": 45,
+        "collection": "process_samples",
+        "index": 20
+      },
+      {
+        "capture_order": 46,
+        "collection": "process_samples",
+        "index": 21
+      },
+      {
+        "capture_order": 47,
+        "collection": "frames",
+        "index": 12
+      },
+      {
+        "capture_order": 48,
+        "collection": "process_samples",
+        "index": 22
+      },
+      {
+        "capture_order": 49,
+        "collection": "process_samples",
+        "index": 23
+      },
+      {
+        "capture_order": 50,
+        "collection": "process_samples",
+        "index": 24
+      },
+      {
+        "capture_order": 51,
+        "collection": "frames",
+        "index": 13
+      },
+      {
+        "capture_order": 52,
+        "collection": "process_samples",
+        "index": 25
+      },
+      {
+        "capture_order": 53,
+        "collection": "frames",
+        "index": 14
+      },
+      {
+        "capture_order": 54,
+        "collection": "process_samples",
+        "index": 26
+      },
+      {
+        "capture_order": 55,
+        "collection": "frames",
+        "index": 15
+      },
+      {
+        "capture_order": 56,
+        "collection": "process_samples",
+        "index": 27
+      },
+      {
+        "capture_order": 57,
+        "collection": "frames",
+        "index": 16
+      },
+      {
+        "capture_order": 58,
+        "collection": "process_samples",
+        "index": 28
+      },
+      {
+        "capture_order": 59,
+        "collection": "frames",
+        "index": 17
+      },
+      {
+        "capture_order": 60,
+        "collection": "process_samples",
+        "index": 29
+      },
+      {
+        "capture_order": 61,
+        "collection": "frames",
+        "index": 18
+      },
+      {
+        "capture_order": 62,
+        "collection": "process_samples",
+        "index": 30
+      },
+      {
+        "capture_order": 63,
+        "collection": "frames",
+        "index": 19
+      },
+      {
+        "capture_order": 64,
+        "collection": "process_samples",
+        "index": 31
+      },
+      {
+        "capture_order": 65,
+        "collection": "frames",
+        "index": 20
+      },
+      {
+        "capture_order": 66,
+        "collection": "process_samples",
+        "index": 32
+      },
+      {
+        "capture_order": 67,
+        "collection": "frames",
+        "index": 21
+      },
+      {
+        "capture_order": 68,
+        "collection": "process_samples",
+        "index": 33
+      },
+      {
+        "capture_order": 69,
+        "collection": "frames",
+        "index": 22
+      },
+      {
+        "capture_order": 70,
+        "collection": "process_samples",
+        "index": 34
+      },
+      {
+        "capture_order": 71,
+        "collection": "frames",
+        "index": 23
+      },
+      {
+        "capture_order": 72,
+        "collection": "lifecycle",
+        "index": 0
+      },
+      {
+        "capture_order": 73,
+        "collection": "lifecycle",
+        "index": 1
+      },
+      {
+        "capture_order": 74,
+        "collection": "filesystem_checkpoints",
+        "index": 1
+      }
+    ],
+    "files_before": [],
+    "files_after": [],
+    "filesystem_effects": [],
+    "truncated": true,
+    "truncation_details": {
+      "raw_terminal": {
+        "budget_bytes": 40000,
+        "observed_bytes": 7855,
+        "retained_bytes": 7855,
+        "observed_frames": 24,
+        "retained_frames": 24
+      },
+      "rendered_terminal": {
+        "budget_bytes": 40000,
+        "observed_bytes": 93122,
+        "retained_bytes": 38776,
+        "observed_frames": 24,
+        "retained_frames": 12
+      },
+      "filesystem_before": {
+        "files_limit": 20,
+        "depth_limit": 1,
+        "enumeration_truncated": false,
+        "enumeration_reasons": [],
+        "hash_budget_bytes": 100000,
+        "hashed_bytes": 0,
+        "hash_omissions": []
+      },
+      "filesystem_after": {
+        "files_limit": 20,
+        "depth_limit": 1,
+        "enumeration_truncated": false,
+        "enumeration_reasons": [],
+        "hash_budget_bytes": 100000,
+        "hashed_bytes": 0,
+        "hash_omissions": []
+      },
+      "process": {
+        "sample_limit": 120,
+        "sampling_partial": false,
+        "retained_samples": 35,
+        "sample_limit_reached": false,
+        "sampling_failures": 0,
+        "first_sampling_failure": null,
+        "coverage": "sampled"
+      }
+    },
+    "limitations": [
+      "The executable digest is a prelaunch file sample; matching path metadata immediately after spawn does not prove an atomic operating-system image binding.",
+      "Process trees are sampled and may omit short-lived descendants.",
+      "Filesystem observations are before/after snapshots, not syscall traces.",
+      "Inherited host environment variables are not recorded and may affect results.",
+      "No filesystem observation paths were selected; filesystem effects remain unknown.",
+      "Cumulative rendered state and visible-line bytes exceeded output_bytes; whole rendered frames were omitted. Raw PTY coverage is reported separately. See truncation_details.rendered_terminal."
+    ],
+    "residual_unknowns": [
+      {
+        "scope": "process",
+        "reason": "Process trees are sampled and may omit short-lived descendants."
+      },
+      {
+        "scope": "process",
+        "reason": "The executable digest is a prelaunch file sample; operating-system image binding is not atomically observed."
+      },
+      {
+        "scope": "environment",
+        "reason": "Inherited host environment variables are not recorded."
+      },
+      {
+        "scope": "network",
+        "reason": "Network activity is not observed by this capture."
+      },
+      {
+        "scope": "filesystem",
+        "reason": "No filesystem observation paths were selected; filesystem effects remain unknown."
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 2414249 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/2414249/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 2414250 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/2414250/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 2414251 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/2414251/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 2416733 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/2416733/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 2416876 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/2416876/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 2418462 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/2418462/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 2418463 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/2418463/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 2420527 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/2420527/environ'"
+      }
+    ],
+    "cleanup": {
+      "owned_process_group": "verified",
+      "temporary_root": "removed",
+      "unverified_processes": [
+        {
+          "pid": 2414249,
+          "reason": "EACCES: permission denied, open '/proc/2414249/environ'"
+        },
+        {
+          "pid": 2414250,
+          "reason": "EACCES: permission denied, open '/proc/2414250/environ'"
+        },
+        {
+          "pid": 2414251,
+          "reason": "EACCES: permission denied, open '/proc/2414251/environ'"
+        },
+        {
+          "pid": 2416733,
+          "reason": "EACCES: permission denied, open '/proc/2416733/environ'"
+        },
+        {
+          "pid": 2416876,
+          "reason": "EACCES: permission denied, open '/proc/2416876/environ'"
+        },
+        {
+          "pid": 2418462,
+          "reason": "EACCES: permission denied, open '/proc/2418462/environ'"
+        },
+        {
+          "pid": 2418463,
+          "reason": "EACCES: permission denied, open '/proc/2418463/environ'"
+        },
+        {
+          "pid": 2420527,
+          "reason": "EACCES: permission denied, open '/proc/2420527/environ'"
+        }
+      ]
+    }
+  },
+  "confidence": "observed",
+  "authority": "controlled-replay",
+  "environment": {
+    "id": "linux-x64",
+    "platform": "linux",
+    "architecture": "x64",
+    "isolation": "process"
+  },
+  "limitations": [
+    "Artifact identity is unavailable for this observation.",
+    "The executable digest is a prelaunch file sample; matching path metadata immediately after spawn does not prove an atomic operating-system image binding.",
+    "Process trees are sampled and may omit short-lived descendants.",
+    "Filesystem observations are before/after snapshots, not syscall traces.",
+    "Inherited host environment variables are not recorded and may affect results.",
+    "No filesystem observation paths were selected; filesystem effects remain unknown.",
+    "Cumulative rendered state and visible-line bytes exceeded output_bytes; whole rendered frames were omitted. Raw PTY coverage is reported separately. See truncation_details.rendered_terminal."
+  ],
+  "locations": [],
+  "evidence_links": []
+}

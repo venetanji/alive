@@ -1,0 +1,14 @@
+E.....
+======================================================================
+ERROR: test_capture_requires_marker_cleanup_and_protected_helpers (__main__.ComparisonContracts.test_capture_requires_marker_cleanup_and_protected_helpers)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/venetanji/Work/alive/experiments/max-reference/help-roots-native-20261022/test-compare.py", line 78, in test_capture_requires_marker_cleanup_and_protected_helpers
+    self.compare.validate_cleanup(cleanup, ['original'])
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'help_compare' has no attribute 'validate_cleanup'. Did you mean: 'validate_coverage'?
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.015s
+
+FAILED (errors=1)

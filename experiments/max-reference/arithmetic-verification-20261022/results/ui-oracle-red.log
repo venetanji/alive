@@ -1,0 +1,67 @@
+TAP version 13
+# Subtest: saved rhs-only arithmetic and English legacy text retain existing defaults
+ok 1 - saved rhs-only arithmetic and English legacy text retain existing defaults
+  ---
+  duration_ms: 4.232233
+  type: 'test'
+  ...
+# Subtest: typed creation retains whole float spelling and bare edits reset operand and mode
+ok 2 - typed creation retains whole float spelling and bare edits reset operand and mode
+  ---
+  duration_ms: 1.951813
+  type: 'test'
+  ...
+# Subtest: qualified decimal modulo and abs creation retain float mode without exponent aliases
+not ok 3 - qualified decimal modulo and abs creation retain float mode without exponent aliases
+  ---
+  duration_ms: 0.398171
+  type: 'test'
+  location: '/home/venetanji/Work/alive/apps/ultra/ui/canvas-arithmetic.test.mjs:38:1'
+  failureType: 'testCodeFailure'
+  error: 'modulo.numericmode must be an integer from 1 to 1.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    fail (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-model.mjs:84:33)
+    numeric (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-model.mjs:91:115)
+    validateFlatPatch (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-model.mjs:168:13)
+    validatePatch (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-model.mjs:141:10)
+    parseObjectText (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-catalog.mjs:179:3)
+    TestContext.<anonymous> (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-arithmetic.test.mjs:40:22)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+  ...
+# Subtest: integer saved operands validate atomically across flat and nested patches
+ok 4 - integer saved operands validate atomically across flat and nested patches
+  ---
+  duration_ms: 3.570897
+  type: 'test'
+  ...
+# Subtest: mode changes and their undo redo reapply standalone graphs while rhs stays live
+ok 5 - mode changes and their undo redo reapply standalone graphs while rhs stays live
+  ---
+  duration_ms: 3.057277
+  type: 'test'
+  ...
+# Subtest: new arithmetic reuses generic faces and exposes fixed type in help and creation hints
+ok 6 - new arithmetic reuses generic faces and exposes fixed type in help and creation hints
+  ---
+  duration_ms: 1.374217
+  type: 'test'
+  ...
+# Subtest: Max import uses typed symbols and refuses Ultra-only legacy spellings
+ok 7 - Max import uses typed symbols and refuses Ultra-only legacy spellings
+  ---
+  duration_ms: 3.199266
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 6
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 98.178845

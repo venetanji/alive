@@ -1,0 +1,20 @@
+-- Clockwork 94b67500c96e105491682ec68741b5018560eab7
+-- Ableton Link disabled — ClockworkClock uses its local-state backing
+-- DSP: ultra_hardened_guest
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/venetanji/Work/alive/apps/ultra/build
+[  2%] Building Rust subsystems (cargo: clockwork-native)
+    Finished `release` profile [optimized] target(s) in 0.06s
+[  2%] Built target clockwork_rust
+[ 77%] Built target clockwork
+[ 82%] Built target ultra_hardened_guest
+[ 88%] Built target ultra_core
+[ 94%] Built target ultra_native
+[ 97%] Building CXX object CMakeFiles/ultra-diagnostic.dir/src-tauri/native/diagnostic.cpp.o
+[100%] Linking CXX executable ultra-diagnostic
+[100%] Built target ultra-diagnostic
+   Compiling ultra v0.1.0 (/home/venetanji/Work/alive/apps/ultra/src-tauri)
+    Finished `release` profile [optimized] target(s) in 24.30s
+
+Run /home/venetanji/Work/alive/apps/ultra/src-tauri/target/release/ultra

@@ -1,0 +1,26 @@
+COMMAND ['cargo', 'test', '--manifest-path', 'apps/ultra/src-tauri/Cargo.toml', '--locked', 'arithmetic', '--', '--nocapture']
+EXIT 101
+   Compiling ultra v0.1.0 (/home/venetanji/Work/alive/apps/ultra/src-tauri)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.45s
+     Running unittests src/main.rs (apps/ultra/src-tauri/target/debug/deps/ultra-efa75696e3a5196e)
+
+running 2 tests
+
+thread 'canvas::tests::arithmetic_numericmode_is_structural_and_rhs_live_admission_is_atomic' panicked at src/canvas_tests.rs:58:93:
+called `Result::unwrap()` on an `Err` value: "Unknown canvas object: subtract"
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+test canvas::tests::arithmetic_numericmode_is_structural_and_rhs_live_admission_is_atomic ... FAILED
+
+thread 'canvas::tests::arithmetic_modes_preserve_legacy_defaults_and_validate_new_descriptors' panicked at src/canvas_tests.rs:45:71:
+called `Result::unwrap()` on an `Err` value: "Unknown parameter for add"
+test canvas::tests::arithmetic_modes_preserve_legacy_defaults_and_validate_new_descriptors ... FAILED
+
+failures:
+
+failures:
+    canvas::tests::arithmetic_modes_preserve_legacy_defaults_and_validate_new_descriptors
+    canvas::tests::arithmetic_numericmode_is_structural_and_rhs_live_admission_is_atomic
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 112 filtered out; finished in 0.00s
+
+error: test failed, to rerun pass `--bin ultra`

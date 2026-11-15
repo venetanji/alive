@@ -1,0 +1,702 @@
+{
+  "status": "FAILED",
+  "work": "/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-005",
+  "prefix": "/home/venetanji/.cache/alive-max-help-roots-20261022-wine-disposable",
+  "source_prefix": "/home/venetanji/.cache/alive-max-list-20261021/wine-disposable",
+  "capture_id": "7250359b9d4ada1fee052422e8d16f95227b88b56c1d60cb",
+  "host_display": ":0",
+  "display": ":200",
+  "process_ownership": "unique capture environment marker plus exact prefix/display and PID start; pidfd signals",
+  "launch_diagnostics": [
+    {
+      "role": "xvfb",
+      "pid": 133089,
+      "status": "verified",
+      "attempts": [
+        {
+          "pid": 133089,
+          "expected_start": "392084",
+          "observed_start": "392084",
+          "start_match": true,
+          "environment_readable": true,
+          "field_matches": {
+            "capture_marker": true,
+            "prefix": true,
+            "display": true
+          },
+          "executable_path_sha256": "cc2fda09e0686b85457a35aa6ff9f53f8c33f6d94fd4e60aa255efbd25301d50",
+          "matches_scope": true,
+          "elapsed_ms": 0.353
+        }
+      ],
+      "expected_start": "392084"
+    },
+    {
+      "role": "wine-launcher",
+      "pid": 133090,
+      "status": "verified",
+      "attempts": [
+        {
+          "pid": 133090,
+          "expected_start": "392089",
+          "observed_start": "392089",
+          "start_match": true,
+          "environment_readable": true,
+          "field_matches": {
+            "capture_marker": true,
+            "prefix": true,
+            "display": true
+          },
+          "executable_path_sha256": "2ecadfbc9f7bd18a32773f9385c7c0d1033a697e13e571386c990b08dc42d9b0",
+          "matches_scope": true,
+          "elapsed_ms": 0.565
+        }
+      ],
+      "expected_start": "392089"
+    }
+  ],
+  "anchor_diagnostics": [
+    {
+      "expected_anchor": "root/obj-5/obj-4",
+      "expected_id": "obj-4",
+      "full_match_count": 0,
+      "position_class_match_count": 1,
+      "expected_rect": [
+        130,
+        195,
+        257.934143,
+        39
+      ],
+      "expected_maxclass": "jsui",
+      "expected_runtime_class": "jsui",
+      "full_matches": [],
+      "position_class_matches": [
+        {
+          "ordinal": 0,
+          "rect": [
+            130,
+            195,
+            257.9139709472656,
+            39
+          ],
+          "raw_rect": [
+            130,
+            195,
+            387,
+            234
+          ],
+          "patching_rect": [
+            130,
+            195,
+            257.9139709472656,
+            39
+          ],
+          "getattr_patching_rect": [
+            130,
+            195,
+            257.9139709472656,
+            39
+          ],
+          "patching_rect_status": "observed",
+          "getattr_patching_rect_status": "observed",
+          "maxclass": "jsui"
+        }
+      ],
+      "candidates": [
+        {
+          "ordinal": 0,
+          "rect": [
+            130,
+            195,
+            257.9139709472656,
+            39
+          ],
+          "raw_rect": [
+            130,
+            195,
+            387,
+            234
+          ],
+          "patching_rect": [
+            130,
+            195,
+            257.9139709472656,
+            39
+          ],
+          "getattr_patching_rect": [
+            130,
+            195,
+            257.9139709472656,
+            39
+          ],
+          "patching_rect_status": "observed",
+          "getattr_patching_rect_status": "observed",
+          "maxclass": "jsui"
+        },
+        {
+          "ordinal": 1,
+          "rect": [
+            10,
+            10,
+            620,
+            115
+          ],
+          "raw_rect": [
+            10,
+            10,
+            630,
+            125
+          ],
+          "patching_rect": [
+            10,
+            10,
+            620,
+            115
+          ],
+          "getattr_patching_rect": [
+            10,
+            10,
+            620,
+            115
+          ],
+          "patching_rect_status": "observed",
+          "getattr_patching_rect_status": "observed",
+          "maxclass": "jsui"
+        },
+        {
+          "ordinal": 2,
+          "rect": [
+            20,
+            195,
+            106,
+            23
+          ],
+          "raw_rect": [
+            20,
+            195,
+            126,
+            218
+          ],
+          "patching_rect": [
+            20,
+            195,
+            106,
+            23
+          ],
+          "getattr_patching_rect": [
+            20,
+            195,
+            106,
+            23
+          ],
+          "patching_rect_status": "observed",
+          "getattr_patching_rect_status": "observed",
+          "maxclass": "append"
+        },
+        {
+          "ordinal": 3,
+          "rect": [
+            20,
+            140,
+            50,
+            23
+          ],
+          "raw_rect": [
+            20,
+            140,
+            70,
+            163
+          ],
+          "patching_rect": [
+            20,
+            140,
+            50,
+            23
+          ],
+          "getattr_patching_rect": [
+            20,
+            140,
+            50,
+            23
+          ],
+          "patching_rect_status": "observed",
+          "getattr_patching_rect_status": "observed",
+          "maxclass": "number"
+        },
+        {
+          "ordinal": 4,
+          "rect": [
+            20,
+            235,
+            100,
+            23
+          ],
+          "raw_rect": [
+            20,
+            235,
+            120,
+            258
+          ],
+          "patching_rect": [
+            20,
+            235,
+            100,
+            23
+          ],
+          "getattr_patching_rect": [
+            20,
+            235,
+            100,
+            23
+          ],
+          "patching_rect_status": "observed",
+          "getattr_patching_rect_status": "observed",
+          "maxclass": "message"
+        },
+        {
+          "ordinal": 5,
+          "rect": [
+            458,
+            201,
+            159,
+            23
+          ],
+          "raw_rect": [
+            458,
+            201,
+            617,
+            224
+          ],
+          "patching_rect": [
+            458,
+            201,
+            159,
+            23
+          ],
+          "getattr_patching_rect": [
+            458,
+            201,
+            159,
+            23
+          ],
+          "patching_rect_status": "observed",
+          "getattr_patching_rect_status": "observed",
+          "maxclass": "append"
+        },
+        {
+          "ordinal": 6,
+          "rect": [
+            458,
+            241,
+            159,
+            23
+          ],
+          "raw_rect": [
+            458,
+            241,
+            617,
+            264
+          ],
+          "patching_rect": [
+            458,
+            241,
+            159,
+            23
+          ],
+          "getattr_patching_rect": [
+            458,
+            241,
+            159,
+            23
+          ],
+          "patching_rect_status": "observed",
+          "getattr_patching_rect_status": "observed",
+          "maxclass": "message"
+        },
+        {
+          "ordinal": 7,
+          "rect": [
+            458,
+            146,
+            35,
+            23
+          ],
+          "raw_rect": [
+            458,
+            146,
+            493,
+            169
+          ],
+          "patching_rect": [
+            458,
+            146,
+            35,
+            23
+          ],
+          "getattr_patching_rect": [
+            458,
+            146,
+            35,
+            23
+          ],
+          "patching_rect_status": "observed",
+          "getattr_patching_rect_status": "observed",
+          "maxclass": "message"
+        },
+        {
+          "ordinal": 8,
+          "rect": [
+            506,
+            146,
+            52,
+            23
+          ],
+          "raw_rect": [
+            506,
+            146,
+            558,
+            169
+          ],
+          "patching_rect": [
+            506,
+            146,
+            52,
+            23
+          ],
+          "getattr_patching_rect": [
+            506,
+            146,
+            52,
+            23
+          ],
+          "patching_rect_status": "observed",
+          "getattr_patching_rect_status": "observed",
+          "maxclass": "message"
+        },
+        {
+          "ordinal": 9,
+          "rect": [
+            20,
+            360,
+            55,
+            23
+          ],
+          "raw_rect": [
+            20,
+            360,
+            75,
+            383
+          ],
+          "patching_rect": [
+            20,
+            360,
+            55,
+            23
+          ],
+          "getattr_patching_rect": [
+            20,
+            360,
+            55,
+            23
+          ],
+          "patching_rect_status": "observed",
+          "getattr_patching_rect_status": "observed",
+          "maxclass": "append"
+        },
+        {
+          "ordinal": 10,
+          "rect": [
+            20,
+            395,
+            159,
+            23
+          ],
+          "raw_rect": [
+            20,
+            395,
+            179,
+            418
+          ],
+          "patching_rect": [
+            20,
+            395,
+            159,
+            23
+          ],
+          "getattr_patching_rect": [
+            20,
+            395,
+            159,
+            23
+          ],
+          "patching_rect_status": "observed",
+          "getattr_patching_rect_status": "observed",
+          "maxclass": "message"
+        },
+        {
+          "ordinal": 11,
+          "rect": [
+            100,
+            290,
+            109,
+            23
+          ],
+          "raw_rect": [
+            100,
+            290,
+            209,
+            313
+          ],
+          "patching_rect": [
+            100,
+            290,
+            109,
+            23
+          ],
+          "getattr_patching_rect": [
+            100,
+            290,
+            109,
+            23
+          ],
+          "patching_rect_status": "observed",
+          "getattr_patching_rect_status": "observed",
+          "maxclass": "message"
+        },
+        {
+          "ordinal": 12,
+          "rect": [
+            100,
+            325,
+            80,
+            23
+          ],
+          "raw_rect": [
+            100,
+            325,
+            180,
+            348
+          ],
+          "patching_rect": [
+            100,
+            325,
+            80,
+            23
+          ],
+          "getattr_patching_rect": [
+            100,
+            325,
+            80,
+            23
+          ],
+          "patching_rect_status": "observed",
+          "getattr_patching_rect_status": "observed",
+          "maxclass": "message"
+        },
+        {
+          "ordinal": 13,
+          "rect": [
+            20,
+            290,
+            50,
+            23
+          ],
+          "raw_rect": [
+            20,
+            290,
+            70,
+            313
+          ],
+          "patching_rect": [
+            20,
+            290,
+            50,
+            23
+          ],
+          "getattr_patching_rect": [
+            20,
+            290,
+            50,
+            23
+          ],
+          "patching_rect_status": "observed",
+          "getattr_patching_rect_status": "observed",
+          "maxclass": "number"
+        },
+        {
+          "ordinal": 14,
+          "rect": [
+            210.5,
+            279.5,
+            219,
+            40
+          ],
+          "raw_rect": [
+            210,
+            279,
+            429,
+            319
+          ],
+          "patching_rect": [
+            210.5,
+            279.5,
+            219,
+            40
+          ],
+          "getattr_patching_rect": [
+            210.5,
+            279.5,
+            219,
+            40
+          ],
+          "patching_rect_status": "observed",
+          "getattr_patching_rect_status": "observed",
+          "maxclass": "comment"
+        }
+      ]
+    }
+  ],
+  "screenshot_count": 0,
+  "clipboard_actions": 0,
+  "runtime_invocations": 1,
+  "documents": [
+    {
+      "document": "append",
+      "source_path": "/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resources/help/max/append.maxhelp",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+      "pristine_path": "/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-005/pristine/append.maxhelp",
+      "working_path": "/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-005/working/append.maxhelp",
+      "initial_working_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "document": "prepend",
+      "source_path": "/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resources/help/max/prepend.maxhelp",
+      "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+      "pristine_path": "/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-005/pristine/prepend.maxhelp",
+      "working_path": "/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-005/working/prepend.maxhelp",
+      "initial_working_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb"
+    }
+  ],
+  "score_steps": 33,
+  "input_method": "programmatic original controls; no physical entry/drag claim",
+  "max_sha256": "7a881318209a10d33c982db482297ab870327d5d2cb90aee6e4e01a13e279d8b",
+  "helpers": [
+    {
+      "name": "helpargs.js",
+      "path": "help/resources/helpargs.js",
+      "bytes": 3623,
+      "sha256": "04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469",
+      "installed_verified": true,
+      "copied_verified": true
+    },
+    {
+      "name": "helpdetails.js",
+      "path": "help/resources/helpdetails.js",
+      "bytes": 4199,
+      "sha256": "31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1",
+      "installed_verified": true,
+      "copied_verified": true
+    },
+    {
+      "name": "helpname.js",
+      "path": "help/resources/helpname.js",
+      "bytes": 905,
+      "sha256": "49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa",
+      "installed_verified": true,
+      "copied_verified": true
+    },
+    {
+      "name": "helpstarter.js",
+      "path": "help/resources/helpstarter.js",
+      "bytes": 1591,
+      "sha256": "a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8",
+      "installed_verified": true,
+      "copied_verified": true
+    }
+  ],
+  "launched_processes": [
+    {
+      "role": "xvfb",
+      "pid": 133089,
+      "start": "392084"
+    },
+    {
+      "role": "wine-launcher",
+      "pid": 133090,
+      "start": "392089"
+    }
+  ],
+  "xvfb_pid": 133089,
+  "launcher_pid": 133090,
+  "loading_diagnostics": [
+    {
+      "document": "append",
+      "tree_boxes": 19,
+      "basic_named": true,
+      "attempts": 1,
+      "filepath_sha256": "c6f967163b26900fffd1429f47d86c81fc65dc995c1c1d17c17b09e20c0278e6",
+      "filepath": "Z:/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-005/working/append.maxhelp",
+      "top_boxes": [
+        {
+          "ordinal": 0,
+          "basic_named": false,
+          "maxclass": "patcher"
+        },
+        {
+          "ordinal": 1,
+          "basic_named": false,
+          "maxclass_sha256": "72d8f0277feb5d68008f2a0da84b0a00ccb6809ef6fb51204d59884c922f2bb8"
+        },
+        {
+          "ordinal": 2,
+          "basic_named": true,
+          "maxclass": "patcher"
+        },
+        {
+          "ordinal": 3,
+          "basic_named": false,
+          "maxclass": "js"
+        }
+      ]
+    },
+    {
+      "document": "prepend",
+      "tree_boxes": 18,
+      "basic_named": true,
+      "attempts": 1,
+      "filepath_sha256": "5c45d2112ea833b4aa03ecaa16597067e64b401c21ca9e7439dba8844c95ea1f",
+      "filepath": "Z:/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-005/working/prepend.maxhelp",
+      "top_boxes": [
+        {
+          "ordinal": 0,
+          "basic_named": false,
+          "maxclass": "patcher"
+        },
+        {
+          "ordinal": 1,
+          "basic_named": false,
+          "maxclass_sha256": "72d8f0277feb5d68008f2a0da84b0a00ccb6809ef6fb51204d59884c922f2bb8"
+        },
+        {
+          "ordinal": 2,
+          "basic_named": true,
+          "maxclass": "patcher"
+        },
+        {
+          "ordinal": 3,
+          "basic_named": false,
+          "maxclass": "js"
+        }
+      ]
+    }
+  ],
+  "complete": false,
+  "failure_sha256": "7311912b3b776396c0a0eb8be25ce18f0ef8d737440b736a368b1d3605bd6956",
+  "ordinary_quit_requested": false,
+  "public_rows": 1,
+  "private_journal_sha256": "93ccbdbff36dd33631bfe53dec1cb9988060c8cdfd973d1dd124011c10ed1968",
+  "private_log": {
+    "sha256": "02dec7563e7b22873869d66a81bdea7eee92524155f4750050e0fcf49c0f316c",
+    "bytes": 616
+  }
+}

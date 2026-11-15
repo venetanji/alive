@@ -1,0 +1,291 @@
+{
+  "audit_mode": "historically-bound-retained-evidence",
+  "binding": {
+    "all_historical_scripts_match_session_config": true,
+    "all_sealed_files_match": true,
+    "archived_preparation_manifest": {
+      "bytes": 13525,
+      "sha256": "47bd2a4290169cd0fd37b433a9305d4741e64a05ca1b0d55ed3fedfce5c98cf2"
+    },
+    "controller_sha256": "dd98f2c01afb095aeb2c87ff8301a4531a5590ab65e23e81f079fc936024507e",
+    "helper_metadata_bindings_match": true,
+    "historical_package_sha256": "7feb6f36baeefdba40ee22e9b53089c3e7b017092738c81a523b7faedc29173d",
+    "historical_script_count": 24,
+    "lifecycle_helper_sha256": "97e549c5a3b439fdf245cf9a578cb07e4b525f6492f8b103fa4df6363bb307d6",
+    "private_config": {
+      "bytes": 228163,
+      "sha256": "2bcaba26b8d5486d7c36053a785923a329531470271683d8287a30db1e39d01b"
+    },
+    "private_seal": {
+      "bytes": 1979,
+      "sha256": "e837c616c32175adbfe2527fdea1358dc7caf2eb5e74025806ce0e1b789db0f2"
+    },
+    "rea_record": {
+      "bytes": 31106,
+      "sha256": "28854f3605bd513cc2b3d793ed315d908d4a6d82165e45e98a719b4304f6d45f"
+    },
+    "runtime_helper_copies_match": 4,
+    "score_bindings_match": true,
+    "sealed_file_count": 18,
+    "shared_safety_file_count": 2,
+    "shared_safety_files_match": true,
+    "source_metadata_bindings_match": true
+  },
+  "capture": "int-float-008",
+  "cleanup": {
+    "copied_prefix_absent": true,
+    "display_only_attribution": false,
+    "launch_identities_verified": true,
+    "marker_scan_empty": true,
+    "ordinary_quit_requested": false,
+    "owned_scan_empty": true,
+    "prefix_removed_recorded": true,
+    "prefix_scan_empty": true,
+    "unreadable_process_environments": {
+      "marker_scan": 316,
+      "owned_scan": 318,
+      "prefix_scan": 316
+    },
+    "xvfb_exited_recorded": true
+  },
+  "comparison_performed": false,
+  "evidence_id": "ev_d308e4df39ce222d93d16c7161d48073ebb1e107152026b9dcffb63f94fc14bd",
+  "failure": {
+    "causation_limits": "Geometry and quote differences are observed; text wrapping, resizing mechanism, and construction interpretation are not established.",
+    "observed_correction_scope": [
+      "Construct the six driver objects with the intended geometry and require exact actual readback.",
+      "Construct the controller and observer with the intended runtime box text and require exact actual readback."
+    ],
+    "root_cause_mechanism": "unproven",
+    "session_failure_matches_ready_refusal": true,
+    "session_failure_sha256": "9e33fb490353490a520c4fbe3ff86bbf97f51ab28fec913d1b2d886b24d303b6",
+    "terminal_failure_matches_outer_runner_refusal": true,
+    "terminal_failure_sha256": "0a9d3172b634e79cda409ea4d41750f952b04d11d57b44a3e508ec0984fbdde7",
+    "timed_out_wait": false
+  },
+  "kind": "startup-diagnosis",
+  "limitations": [
+    "Only four public after-files have direct REA filesystem snapshots; private ready/report bytes bind through the session, sealed config, archived manifest, and exclusive audit retention.",
+    "REA process trees are sampled, nine ownership checks were unavailable, and runner scans had 318/316/316 unreadable environments.",
+    "Inherited environment and network activity are unobserved; filesystem observations are snapshots.",
+    "The six driver objects are startup diagnostics, not a passing driver topology proof or source/root graph comparison.",
+    "No score command was sent, no root freebang was witnessed, and no close or final barrier was validated.",
+    "The reason Max returned these geometry/text values is unproven; this audit does not assert text wrapping or another resize mechanism.",
+    "Current package changes by the separate construction worker are excluded; this audit uses historical008 pins only."
+  ],
+  "preservation": {
+    "current_preferences_match_capture_after": true,
+    "helper_checks_match": true,
+    "preference_file_counts": {
+      "original": 33,
+      "source": 1081
+    },
+    "preference_snapshot_sha256": "5444dc994f5d2dcd50cc9fedd6ed2984e34308f750888b4760e2345f79ee33cd",
+    "preference_snapshots_byte_identical": true,
+    "private_directories_mode": "0700",
+    "private_directory_count": 5,
+    "private_file_count_after_retention": 27,
+    "private_file_count_before_retention": 25,
+    "private_files_mode": "0600",
+    "private_files_single_link": true,
+    "private_tree_symlink_free": true,
+    "shell_helper_count": 4,
+    "shell_helper_digest_checks": 8,
+    "source_checks_match": true,
+    "source_digest_checks": 12,
+    "source_max_digest_matches_session": true,
+    "source_revision_count": 4
+  },
+  "progress": {
+    "all_session_validation_flags_false": true,
+    "checkpoints": 0,
+    "clipboard_actions": 0,
+    "command_requests": 0,
+    "completed_operations": 0,
+    "display_states": 0,
+    "public_rows": 0,
+    "runtime_invocations": 1,
+    "screenshot_count": 0,
+    "validated_closes": 0
+  },
+  "qualification_passes_added": 0,
+  "rea": {
+    "after_files": [
+      {
+        "bytes": 0,
+        "name": "receipts.jsonl",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "bytes": 18571,
+        "name": "session.json",
+        "sha256": "3e4eb94741921ea7e244ce23796850b2b9ff72df6ea45478d5ae8beb5373d178"
+      },
+      {
+        "bytes": 2132,
+        "name": "cleanup.json",
+        "sha256": "3a2f7b87bf2f62d692815ccce15403a3d3e8c7814e30b1797d7062c08c909cb5"
+      },
+      {
+        "bytes": 3,
+        "name": "display-states.json",
+        "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+      }
+    ],
+    "all_after_file_hashes_sizes_modes_match": true,
+    "exit": {
+      "code": 1,
+      "reason": "exited",
+      "signal": 0
+    },
+    "settlement": {
+      "cleanup_outcome": "not_required",
+      "elapsed_ms": 99,
+      "state": "quiesced"
+    },
+    "truncated": false,
+    "unverified_process_count": 9
+  },
+  "retained_raw": {
+    "lifecycle-report.json": {
+      "bytes": 3694,
+      "exact_raw_bytes": true,
+      "exclusive_copy": true,
+      "mode": "0600",
+      "retained_file": "retained-startup-lifecycle-report.json",
+      "sha256": "590f09a2c79ae9da98b89aba59bf1393d1e9d49f4e67302d67f1f0f5fcdde1ff"
+    },
+    "ready.json": {
+      "bytes": 3932,
+      "exact_raw_bytes": true,
+      "exclusive_copy": true,
+      "mode": "0600",
+      "retained_file": "retained-startup-ready.json",
+      "sha256": "e3943af54697ce4b9233a97b053192ba6927d73c4149de5ca7af8658bb99e54a"
+    }
+  },
+  "root_freebang_witness_observed": false,
+  "runtime_log": {
+    "bytes": 616,
+    "lines": 10,
+    "sha256": "ff2de511fec56f172d54754450b9d517351ae8d6e391f4ada4484df1fe80eb25"
+  },
+  "schema_version": 1,
+  "startup": {
+    "actual_driver_object_count": 6,
+    "actual_names_unique_and_match_expected": true,
+    "control": "attest",
+    "driver_geometry_mismatch_count": 6,
+    "driver_objects": [
+      {
+        "actual_double_quote_count": 0,
+        "actual_height": 50,
+        "boxtext_exact": true,
+        "boxtext_matches_after_only_double_quote_removal": true,
+        "class_matches": true,
+        "expected_double_quote_count": 0,
+        "expected_height": 22,
+        "maxclass": "receive",
+        "nonquote_text_characters_unchanged": true,
+        "object": "__alive_numeric_lifecycle_receive_3",
+        "other_rectangle_components_match": true,
+        "validity_type": "number",
+        "validity_value": 1
+      },
+      {
+        "actual_double_quote_count": 0,
+        "actual_height": 50,
+        "boxtext_exact": true,
+        "boxtext_matches_after_only_double_quote_removal": true,
+        "class_matches": true,
+        "expected_double_quote_count": 0,
+        "expected_height": 22,
+        "maxclass": "receive",
+        "nonquote_text_characters_unchanged": true,
+        "object": "__alive_numeric_lifecycle_receive_2",
+        "other_rectangle_components_match": true,
+        "validity_type": "number",
+        "validity_value": 1
+      },
+      {
+        "actual_double_quote_count": 0,
+        "actual_height": 50,
+        "boxtext_exact": true,
+        "boxtext_matches_after_only_double_quote_removal": true,
+        "class_matches": true,
+        "expected_double_quote_count": 0,
+        "expected_height": 22,
+        "maxclass": "receive",
+        "nonquote_text_characters_unchanged": true,
+        "object": "__alive_numeric_lifecycle_receive_1",
+        "other_rectangle_components_match": true,
+        "validity_type": "number",
+        "validity_value": 1
+      },
+      {
+        "actual_double_quote_count": 0,
+        "actual_height": 50,
+        "boxtext_exact": true,
+        "boxtext_matches_after_only_double_quote_removal": true,
+        "class_matches": true,
+        "expected_double_quote_count": 0,
+        "expected_height": 22,
+        "maxclass": "receive",
+        "nonquote_text_characters_unchanged": true,
+        "object": "__alive_numeric_lifecycle_receive_0",
+        "other_rectangle_components_match": true,
+        "validity_type": "number",
+        "validity_value": 1
+      },
+      {
+        "actual_double_quote_count": 0,
+        "actual_height": 50,
+        "boxtext_exact": false,
+        "boxtext_matches_after_only_double_quote_removal": true,
+        "class_matches": true,
+        "expected_double_quote_count": 2,
+        "expected_height": 22,
+        "maxclass": "v8",
+        "nonquote_text_characters_unchanged": true,
+        "object": "__alive_numeric_lifecycle_observer",
+        "other_rectangle_components_match": true,
+        "validity_type": "number",
+        "validity_value": 1
+      },
+      {
+        "actual_double_quote_count": 0,
+        "actual_height": 50,
+        "boxtext_exact": false,
+        "boxtext_matches_after_only_double_quote_removal": true,
+        "class_matches": true,
+        "expected_double_quote_count": 2,
+        "expected_height": 22,
+        "maxclass": "js",
+        "nonquote_text_characters_unchanged": true,
+        "object": "__alive_numeric_controller",
+        "other_rectangle_components_match": true,
+        "validity_type": "number",
+        "validity_value": 1
+      }
+    ],
+    "driver_scan_complete": true,
+    "driver_text_quote_mismatch_count": 2,
+    "live_owner_count": 0,
+    "monitor_epoch_matches_config": true,
+    "nested_ready_report_type_sensitive_equality": true,
+    "observer_error": "lifecycle-driver-object",
+    "observer_stage": "driver-object",
+    "observer_success": false,
+    "ready": false,
+    "ready_error": "lifecycle-observer-failure-report",
+    "ready_stage": "observer",
+    "receiver_text_exact_match_count": 4,
+    "request_id": 0,
+    "saved_driver_construction_matches_sealed_inventory": true,
+    "saved_driver_routes_match_physical_owner_inlets": true,
+    "source_roots_opened": 0,
+    "step_id": "startup",
+    "version": "freebang-v1"
+  },
+  "verdict": "FAILED_STARTUP_DRIVER_ATTESTATION_NONQUALIFYING"
+}

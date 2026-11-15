@@ -1,0 +1,395 @@
+{
+  "audit_mode": "historically-bound-retained-evidence",
+  "binding": {
+    "all_sealed_files_match": true,
+    "archived_preparation_manifest": {
+      "bytes": 13525,
+      "sha256": "eda4288c5ab2fb25c8233623b6d883eccb99f76e52a065b710a92e492cfeb759"
+    },
+    "archived_preparation_verification": {
+      "bytes": 2814,
+      "sha256": "ecedafdbd5760473de289aa61f445d094a14abc995bc29fc518be573e12ebfc0"
+    },
+    "controller_sha256": "dd98f2c01afb095aeb2c87ff8301a4531a5590ab65e23e81f079fc936024507e",
+    "helper_metadata_bindings_match": true,
+    "historical_package_matches_session_config_and_archived_verification": true,
+    "historical_package_sha256": "de17f787c669fa992eaa15f1a85729a7c3bfd53ac4dd735fc6a63209f78bcaa0",
+    "historical_script_count": 24,
+    "lifecycle_helper_sha256": "97e549c5a3b439fdf245cf9a578cb07e4b525f6492f8b103fa4df6363bb307d6",
+    "private_config": {
+      "bytes": 228155,
+      "sha256": "8f00d8f1ea3002957fbaeb95250cdde4db0da4ca8277c20da5d63ec9b4cbe376"
+    },
+    "private_seal": {
+      "bytes": 1979,
+      "sha256": "7e5028363c729f03905e8e2dda21886aa58f40fe96e4f90bff4947ff0f2da718"
+    },
+    "rea_record": {
+      "bytes": 32204,
+      "sha256": "209ba41a8a755077a3b995543917476c09dcb71d30c544f4d172e3892bcfe968"
+    },
+    "root_reader_sha256": "3ee0796804a9ec8c9274e85e75fe8e7f1849f9a0b940cdfe3c47404d05589704",
+    "score_bindings_match": true,
+    "sealed_file_count": 18,
+    "shared_safety_file_count": 2,
+    "shared_safety_files_match": true,
+    "source_metadata_bindings_match": true
+  },
+  "capture": "int-float-010",
+  "cleanup": {
+    "copied_prefix_absent": true,
+    "display_only_attribution": false,
+    "launch_identities_verified": true,
+    "marker_scan_empty": true,
+    "ordinary_quit_requested": false,
+    "owned_scan_empty": true,
+    "prefix_removed_recorded": true,
+    "prefix_scan_empty": true,
+    "unreadable_process_environments": {
+      "marker_scan": 316,
+      "owned_scan": 318,
+      "prefix_scan": 316
+    },
+    "xvfb_exited_recorded": true
+  },
+  "close": {
+    "ack": {
+      "bytes": 839,
+      "current_and_exclusively_retained_bytes_equal": true,
+      "error_code": "numeric-controller-refused",
+      "public_request_hash_size_matches": true,
+      "sha256": "a9788be4614ff73d37da95a70f682e9ac7c78b96d3acfba23e909aab02df11e6",
+      "success": false
+    },
+    "close_completion_retained": false,
+    "command_binding_matches": true,
+    "diagnostic_bindings_match": true,
+    "dispose_diagnostic_present": false,
+    "document": "float",
+    "final_barrier_present": false,
+    "lifecycle_evidence_present": false,
+    "request_id": 125,
+    "revision": 1,
+    "root_result": {
+      "bytes": 4489,
+      "error_code": "lifecycle-root-proof-refused",
+      "request_id": 125,
+      "sha256": "35588547e30ee7be5c76a9376be4bee8c68d01da8b346b5296a4735b6a9dd146",
+      "success": false
+    },
+    "sample_count": 0,
+    "step_id": "close-float",
+    "validated_close_metadata_present": false
+  },
+  "comparison_performed": false,
+  "evidence_id": "ev_60254df9da04de2743629f681a82c4cf6352278f95adda48bf56c6b4a0489061",
+  "failure": {
+    "cause_limits": "The recorded initial refusal is the harness check. Two original class mismatches are also observed. Wrapping, resizing mechanism, and capture009 underlying failure are not established.",
+    "session_failure_matches_controller_refusal": true,
+    "session_failure_sha256": "6d8bf3bb5ba4145f22c2d48cae211c17564ed8e5057fbfcb683f04272a2b2322",
+    "stage": "close-root-proof-harness-check-before-arming-disposal-and-sampling",
+    "terminal_failure_matches_outer_runner_refusal": true,
+    "terminal_failure_sha256": "0a9d3172b634e79cda409ea4d41750f952b04d11d57b44a3e508ec0984fbdde7"
+  },
+  "kind": "startup-or-close-diagnosis",
+  "limitations": [
+    "Only four public after-files have direct REA filesystem snapshots; private raw bytes bind through the session, sealed config, archived manifest, and this audit.",
+    "REA process trees are sampled, eleven ownership checks were unavailable, and runner scans had 318/316/316 unreadable environments.",
+    "The root diagnostic records metadata and positive validity for four harness objects, not validity of original Basic handles.",
+    "The original class differences are observed metadata, not the recorded initial harness failure.",
+    "No text-wrapping or resize mechanism is proven, and capture009 remains historically unexplained.",
+    "This audit checks retained prefix integrity and metadata; no numeric semantic/native comparison, root freebang witness, close validation, or qualification pass is established."
+  ],
+  "prefix_integrity": {
+    "ack_hash_size_bindings_checked": 125,
+    "checkpoint_raw_retained_public_hash_size_bindings_checked": 82,
+    "checkpoint_sidecar_bindings_checked": 82,
+    "getter_journal_boundaries_equal": 82,
+    "journal_public_projection_rows_checked": 223,
+    "numeric_semantic_comparison_performed": false,
+    "public_close_claim_count": 0
+  },
+  "preservation": {
+    "current_preferences_match_capture_after": true,
+    "helper_checks_match": true,
+    "preference_file_counts": {
+      "original": 33,
+      "source": 1081
+    },
+    "preference_snapshot_sha256": "5444dc994f5d2dcd50cc9fedd6ed2984e34308f750888b4760e2345f79ee33cd",
+    "preference_snapshots_byte_identical": true,
+    "private_directories_mode": "0700",
+    "private_directory_count": 5,
+    "private_file_count_after_retention": 402,
+    "private_file_count_before_retention": 398,
+    "private_files_mode": "0600",
+    "private_files_single_link": true,
+    "private_tree_symlink_free": true,
+    "runtime_helper_copies_match": 4,
+    "shell_helper_count": 4,
+    "shell_helper_digest_checks": 8,
+    "source_checks_match": true,
+    "source_digest_checks": 12,
+    "source_max_digest_matches_session": true,
+    "source_revision_count": 4
+  },
+  "progress": {
+    "checkpoints": 82,
+    "clipboard_actions": 0,
+    "command_requests": 125,
+    "completed_events": 40,
+    "completed_installs": 2,
+    "completed_operations": 42,
+    "destination_order_failures_retained": 0,
+    "destination_order_witnesses_retained": 19,
+    "float_checkpoints": 40,
+    "int_checkpoints": 42,
+    "private_journal_rows": 223,
+    "public_rows": 223,
+    "retained_numeric_values": 492,
+    "runtime_invocations": 1,
+    "screenshot_count": 0,
+    "session_validation_flags": {
+      "initial_message_prototypes_validated": false,
+      "initial_numeric_readback_validated": false,
+      "numeric_getters_silent_validated": false,
+      "numeric_readback_validated": false,
+      "runtime_endpoint_readback_validated": false,
+      "synchronous_destination_outputs_validated": false,
+      "typed_float_dispatch_validated": true
+    },
+    "validated_closes": 0
+  },
+  "qualification_passes_added": 0,
+  "rea": {
+    "after_files": [
+      {
+        "bytes": 83011,
+        "name": "receipts.jsonl",
+        "sha256": "8eb18cbf568690df5e053d4712535dfd70487cb8d80f2448b4012c98c3e8ceff"
+      },
+      {
+        "bytes": 132184,
+        "name": "session.json",
+        "sha256": "0675c32663da195aff58b8c1cd3bbfe85e45def66270b89a3ea8ed9f3c628ded"
+      },
+      {
+        "bytes": 2132,
+        "name": "cleanup.json",
+        "sha256": "02245ca504dec087cfb98fab14f41f7445d44add140864c8161f8667b21b97ab"
+      },
+      {
+        "bytes": 258180,
+        "name": "display-states.json",
+        "sha256": "ad7a5e0baa09024681943635537e087b7b2f8e09cf4295c62e6cfbf21ba83b6d"
+      }
+    ],
+    "all_after_file_hashes_sizes_modes_match": true,
+    "exit": {
+      "code": 1,
+      "reason": "exited",
+      "signal": 0
+    },
+    "settlement": {
+      "cleanup_outcome": "not_required",
+      "elapsed_ms": 97,
+      "state": "quiesced"
+    },
+    "truncated": false,
+    "unverified_process_count": 11
+  },
+  "retained_raw": {
+    "command.json": {
+      "bytes": 228,
+      "exact_raw_bytes": true,
+      "exclusive_copy": true,
+      "mode": "0600",
+      "retained_file": "retained-close-command-request-125.json",
+      "sha256": "ab33b55fdabe0a6521df41df0c7f90b9c07ece4c05defb275a3db26a5a904bb3"
+    },
+    "lifecycle-report.json": {
+      "bytes": 3126,
+      "exact_raw_bytes": true,
+      "exclusive_copy": true,
+      "mode": "0600",
+      "retained_file": "retained-startup-lifecycle-report.json",
+      "sha256": "d24a5378fb6096d45e5abb375ffce56f6aee59693f393e533d406b20e730b21f"
+    },
+    "lifecycle-root-float-r1.json": {
+      "bytes": 4489,
+      "exact_raw_bytes": true,
+      "exclusive_copy": true,
+      "mode": "0600",
+      "retained_file": "retained-lifecycle-root-refusal-float-r1-request-125.json",
+      "sha256": "35588547e30ee7be5c76a9376be4bee8c68d01da8b346b5296a4735b6a9dd146"
+    },
+    "ready.json": {
+      "bytes": 56,
+      "exact_raw_bytes": true,
+      "exclusive_copy": true,
+      "mode": "0600",
+      "retained_file": "retained-startup-ready.json",
+      "sha256": "84695a0a3a387d0b45ed4ea53fed28b05b2b9865df88b22c30d34eb51bc83d8a"
+    }
+  },
+  "root_diagnostic": {
+    "all_harness_validity_reads_numeric_one": true,
+    "capture009_underlying_cause": "historically-unknown",
+    "complete_ascii_json": true,
+    "declared_bounds": {
+      "array_depth": 1,
+      "array_items": 16,
+      "ascii_json_bytes": 24000,
+      "objects": 16,
+      "string_characters": 256
+    },
+    "error": "lifecycle-root-harness",
+    "freebang_and_send_text_exact": true,
+    "geometry_change_mechanism": "unproven",
+    "harness_comparisons": [
+      {
+        "actual_height": 64,
+        "boxtext_expected_comparison": "exact",
+        "boxtext_primitive_returned_untruncated": true,
+        "class_matches": true,
+        "expected_height": 22,
+        "maxclass": "send",
+        "object": "__alive_numeric_lifecycle_send",
+        "other_rectangle_components_match": true,
+        "rectangle_matches": false,
+        "validity_type": "number",
+        "validity_value": 1
+      },
+      {
+        "actual_height": 22,
+        "boxtext_expected_comparison": "exact",
+        "boxtext_primitive_returned_untruncated": true,
+        "class_matches": true,
+        "expected_height": 22,
+        "maxclass": "freebang",
+        "object": "__alive_numeric_freebang",
+        "other_rectangle_components_match": true,
+        "rectangle_matches": true,
+        "validity_type": "number",
+        "validity_value": 1
+      },
+      {
+        "actual_height": 22,
+        "boxtext_expected_comparison": "not-independently-reconstructed",
+        "boxtext_primitive_returned_untruncated": true,
+        "class_matches": true,
+        "expected_height": 22,
+        "maxclass": "thispatcher",
+        "object": "__alive_numeric_disposer",
+        "other_rectangle_components_match": true,
+        "rectangle_matches": true,
+        "validity_type": "number",
+        "validity_value": 1
+      },
+      {
+        "actual_height": 133,
+        "boxtext_expected_comparison": "not-independently-reconstructed",
+        "boxtext_primitive_returned_untruncated": true,
+        "class_matches": true,
+        "expected_height": 22,
+        "maxclass": "v8",
+        "object": "__alive_numeric_reader",
+        "other_rectangle_components_match": true,
+        "rectangle_matches": false,
+        "validity_type": "number",
+        "validity_value": 1
+      }
+    ],
+    "harness_height_mismatch_count": 2,
+    "harness_object_count": 4,
+    "omitted_objects": 0,
+    "original_class_mismatch_count": 2,
+    "original_comparisons": [
+      {
+        "actual_class": "jpatcher",
+        "anchor": "root/obj-3",
+        "boxtext_recorded": false,
+        "class_matches": false,
+        "expected_classes": [
+          "patcher",
+          "p"
+        ],
+        "rectangle_matches": true,
+        "unique_name_rectangle_binding": true,
+        "validity_recorded": false,
+        "varname_matches": true
+      },
+      {
+        "actual_class": "jsui",
+        "anchor": "root/obj-4",
+        "boxtext_recorded": false,
+        "class_matches": true,
+        "expected_classes": [
+          "jsui"
+        ],
+        "rectangle_matches": true,
+        "unique_name_rectangle_binding": true,
+        "validity_recorded": false,
+        "varname_matches": true
+      },
+      {
+        "actual_class": "jpatcher",
+        "anchor": "root/obj-2",
+        "boxtext_recorded": false,
+        "class_matches": false,
+        "expected_classes": [
+          "patcher",
+          "p"
+        ],
+        "rectangle_matches": true,
+        "unique_name_rectangle_binding": true,
+        "validity_recorded": false,
+        "varname_matches": true
+      },
+      {
+        "actual_class": "js",
+        "anchor": "root/obj-1",
+        "boxtext_recorded": false,
+        "class_matches": true,
+        "expected_classes": [
+          "js"
+        ],
+        "rectangle_matches": true,
+        "unique_name_rectangle_binding": true,
+        "validity_recorded": false,
+        "varname_matches": true
+      }
+    ],
+    "original_object_count": 4,
+    "original_validity_recorded": false,
+    "root_object_count": 8,
+    "scan_complete": true,
+    "stage": "harness",
+    "truncated_fields": 0,
+    "typed_exception_status": "threw",
+    "typed_exception_type": "object"
+  },
+  "root_freebang_witness_observed": false,
+  "runtime_log": {
+    "bytes": 616,
+    "lines": 10,
+    "sha256": "5e636aed5be17ba60f7b07aec7d075b6ad50c790a00993085fffecddd37b4bf7"
+  },
+  "schema_version": 1,
+  "startup": {
+    "all_owners_monitoring": true,
+    "driver_inventory_matches_sealed_config": true,
+    "driver_route_multisets_match": true,
+    "lifecycle_report_control": "attest",
+    "lifecycle_report_request_id": 0,
+    "lifecycle_report_step_id": "startup",
+    "monitor_epoch_matches_config": true,
+    "observer_event_count": 0,
+    "observer_failures": [],
+    "observer_sealed": false,
+    "observer_seq": 0,
+    "observer_transition_count": 0,
+    "ready": true
+  },
+  "verdict": "FAILED_CLOSE_ROOT_HARNESS_NONQUALIFYING"
+}

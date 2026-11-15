@@ -1,0 +1,74 @@
+{
+  "schema": 1,
+  "max_version": "9.1.5 (3db35fa476d), Windows x64; version from retained executable identity",
+  "max_executable": {
+    "path": "/home/venetanji/.cache/alive-max-message-ui-20261022-wine-disposable/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/Max.exe",
+    "bytes": 33077248,
+    "sha256": "7a881318209a10d33c982db482297ab870327d5d2cb90aee6e4e01a13e279d8b"
+  },
+  "wine_version": "wine-11.13",
+  "wine_executable": {
+    "path": "/home/venetanji/.local/opt/wine-d2d1-nspa-11.13/bin/wine",
+    "bytes": 14400,
+    "sha256": "15096d23074c454e6cd3225c7cb7f62c4136f6697fdceeda22aeede6b46c031f"
+  },
+  "host": {
+    "system": "Linux",
+    "release": "7.2.8-9-omarchy",
+    "architecture": "x86_64"
+  },
+  "isolation": {
+    "prefix": "/home/venetanji/.cache/alive-max-message-ui-20261022-wine-disposable",
+    "clone_source": "/home/venetanji/.cache/alive-max-list-20261021/wine-disposable",
+    "clone_method": "cp -a --reflink=always",
+    "profile_symlinks": [],
+    "original_prefix_launched": false,
+    "private_xvfb": true,
+    "software_llvmpipe": true,
+    "exact_prefix_processes_after_quit": [],
+    "disposable_prefix_removed": true
+  },
+  "settings": {
+    "dsp": null,
+    "overdrive": null,
+    "scheduler_in_audio_interrupt": null,
+    "samplerate": null
+  },
+  "settings_note": "No DSP graph or setting command; settings not queried.",
+  "runs": [
+    {
+      "fixture": "message-ui",
+      "session": {
+        "display": ":0",
+        "xvfb_pid": 2348361,
+        "launcher_pid": 2348376,
+        "prefix": "/home/venetanji/.cache/alive-max-message-ui-20261022-wine-disposable",
+        "wine": "/home/venetanji/.local/opt/wine-d2d1-nspa-11.13/bin/wine",
+        "fixture": "message-ui"
+      },
+      "runtime_log": {
+        "path": "/home/venetanji/.cache/alive-max-message-ui-20261022-run/runtime.log",
+        "bytes": 750,
+        "sha256": "861b8faac61cd92cec0a3bc18627722275643bc96f0ddd941fd194bbb513822a"
+      },
+      "quit": "ordinary Ctrl-Q; no termination fallback; owned Xvfb terminated"
+    },
+    {
+      "fixture": "message-display",
+      "session": {
+        "display": ":0",
+        "xvfb_pid": 2360732,
+        "launcher_pid": 2360747,
+        "prefix": "/home/venetanji/.cache/alive-max-message-ui-20261022-wine-disposable",
+        "wine": "/home/venetanji/.local/opt/wine-d2d1-nspa-11.13/bin/wine",
+        "fixture": "message-display"
+      },
+      "runtime_log": {
+        "path": "/home/venetanji/.cache/alive-max-message-ui-20261022-display-run/runtime.log",
+        "bytes": 624,
+        "sha256": "e39d20cd452a5cfe86019dadd90c2e20687fbba71e5d94cddf5740545d3785f2"
+      },
+      "quit": "ordinary Ctrl-Q; no termination fallback; owned Xvfb terminated"
+    }
+  ]
+}

@@ -1,0 +1,161 @@
+TAP version 13
+# Subtest: saved cable corners are rounded while joining actual ports vertically
+not ok 1 - saved cable corners are rounded while joining actual ports vertically
+  ---
+  duration_ms: 1.801365
+  type: 'test'
+  location: '/home/venetanji/Work/alive/apps/ultra/ui/canvas-cable-path.test.mjs:5:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'M 47.5 64 L 47.5 100 L 210 100 L 210 160 L 327.5 160 L 327.5 190'
+    - 'M 47.5 64 L 47.5 88 Q 47.5 100 59.5 100 L 198 100 Q 210 100 210 112 L 210 148 Q 210 160 222 160 L 315.5 160 Q 327.5 160 327.5 172 L 327.5 190'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'M 47.5 64 L 47.5 88 Q 47.5 100 59.5 100 L 198 100 Q 210 100 210 112 L 210 148 Q 210 160 222 160 L 315.5 160 Q 327.5 160 327.5 172 L 327.5 190'
+  actual: 'M 47.5 64 L 47.5 100 L 210 100 L 210 160 L 327.5 160 L 327.5 190'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-cable-path.test.mjs:6:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: stale endpoint x coordinates render against current ports without rewriting source
+not ok 2 - stale endpoint x coordinates render against current ports without rewriting source
+  ---
+  duration_ms: 0.297457
+  type: 'test'
+  location: '/home/venetanji/Work/alive/apps/ultra/ui/canvas-cable-path.test.mjs:10:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'M 47.5 64 L 51.5 100 L 100 100 L 100 160 L 171.5 160 L 147.5 190'
+    - 'M 47.5 64 L 47.5 88 Q 47.5 100 59.5 100 L 88 100 Q 100 100 100 112 L 100 148 Q 100 160 112 160 L 135.5 160 Q 147.5 160 147.5 172 L 147.5 190'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'M 47.5 64 L 47.5 88 Q 47.5 100 59.5 100 L 88 100 Q 100 100 100 112 L 100 148 Q 100 160 112 160 L 135.5 160 Q 147.5 160 147.5 172 L 147.5 190'
+  actual: 'M 47.5 64 L 51.5 100 L 100 100 L 100 160 L 171.5 160 L 147.5 190'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-cable-path.test.mjs:12:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:296:3)
+  ...
+# Subtest: single and repeated saved points render an endpoint-aligned dogleg
+not ok 3 - single and repeated saved points render an endpoint-aligned dogleg
+  ---
+  duration_ms: 0.294733
+  type: 'test'
+  location: '/home/venetanji/Work/alive/apps/ultra/ui/canvas-cable-path.test.mjs:17:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'M 50 70 L 50 100 L 200 140'
+    - 'M 50 70 L 50 88 Q 50 100 62 100 L 188 100 Q 200 100 200 112 L 200 140'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'M 50 70 L 50 88 Q 50 100 62 100 L 188 100 Q 200 100 200 112 L 200 140'
+  actual: 'M 50 70 L 50 100 L 200 140'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-cable-path.test.mjs:19:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: short segments limit corner rounding without overshoot
+not ok 4 - short segments limit corner rounding without overshoot
+  ---
+  duration_ms: 1.186197
+  type: 'test'
+  location: '/home/venetanji/Work/alive/apps/ultra/ui/canvas-cable-path.test.mjs:24:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'M 50 94 L 50 100 L 60 106'
+    - 'M 50 94 L 50 97 Q 50 100 53 100 L 57 100 Q 60 100 60 103 L 60 106'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'M 50 94 L 50 97 Q 50 100 53 100 L 57 100 Q 60 100 60 103 L 60 106'
+  actual: 'M 50 94 L 50 100 L 60 106'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-cable-path.test.mjs:25:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: coincident ports and collinear or reversing points never produce invalid curves
+not ok 5 - coincident ports and collinear or reversing points never produce invalid curves
+  ---
+  duration_ms: 0.363947
+  type: 'test'
+  location: '/home/venetanji/Work/alive/apps/ultra/ui/canvas-cable-path.test.mjs:29:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'M 50 100 L 50 100 L 50 100 L 50 100'
+    - 'M 50 100 L 50 100'
+                        ^
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'M 50 100 L 50 100'
+  actual: 'M 50 100 L 50 100 L 50 100 L 50 100'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-cable-path.test.mjs:30:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: unrouted and explicitly empty cables keep automatic curves
+ok 6 - unrouted and explicitly empty cables keep automatic curves
+  ---
+  duration_ms: 0.230339
+  type: 'test'
+  ...
+# Subtest: camera bounds include every saved bend and ignore automatic routes
+ok 7 - camera bounds include every saved bend and ignore automatic routes
+  ---
+  duration_ms: 0.880568
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 2
+# fail 5
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 73.162805

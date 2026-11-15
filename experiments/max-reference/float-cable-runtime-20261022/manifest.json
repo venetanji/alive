@@ -1,0 +1,504 @@
+{
+  "original_fixture": true,
+  "values": [
+    [
+      "zero",
+      "int",
+      0
+    ],
+    [
+      "whole",
+      "float",
+      2
+    ],
+    [
+      "half",
+      "float",
+      2.5
+    ],
+    [
+      "negative",
+      "float",
+      -2.5
+    ],
+    [
+      "fraction",
+      "float",
+      0.123456789
+    ],
+    [
+      "small",
+      "float",
+      1e-06
+    ],
+    [
+      "tinyneg",
+      "float",
+      -1e-07
+    ],
+    [
+      "tiny",
+      "float",
+      1e-08
+    ]
+  ],
+  "arithmetic": [
+    [
+      "hot-int-3",
+      10,
+      "int",
+      [
+        3
+      ]
+    ],
+    [
+      "hot-float-4",
+      10,
+      "float",
+      [
+        4
+      ]
+    ],
+    [
+      "hot-int-negative-3",
+      10,
+      "int",
+      [
+        -3
+      ]
+    ],
+    [
+      "recall-half",
+      10,
+      "bang",
+      []
+    ],
+    [
+      "cold-int-2",
+      11,
+      "int",
+      [
+        2
+      ]
+    ],
+    [
+      "recall-cold-int",
+      10,
+      "bang",
+      []
+    ],
+    [
+      "cold-float-half",
+      11,
+      "float",
+      [
+        0.5
+      ]
+    ],
+    [
+      "recall-cold-float",
+      10,
+      "bang",
+      []
+    ],
+    [
+      "cold-float-negative",
+      11,
+      "float",
+      [
+        -2.5
+      ]
+    ],
+    [
+      "hot-int-2",
+      10,
+      "int",
+      [
+        2
+      ]
+    ],
+    [
+      "cold-restore-half",
+      11,
+      "float",
+      [
+        0.5
+      ]
+    ],
+    [
+      "hot-fraction",
+      10,
+      "float",
+      [
+        0.25
+      ]
+    ],
+    [
+      "hot-int-zero",
+      10,
+      "int",
+      [
+        0
+      ]
+    ],
+    [
+      "hot-float-zero",
+      10,
+      "float",
+      [
+        0
+      ]
+    ]
+  ],
+  "route_midpoint_coordinates": [
+    [
+      51.5,
+      400
+    ],
+    [
+      251.5,
+      380,
+      371.5,
+      380
+    ],
+    [
+      451.5,
+      360,
+      500,
+      360,
+      500,
+      445,
+      571.5,
+      445
+    ],
+    [
+      651.5,
+      400,
+      651.5,
+      400
+    ],
+    []
+  ],
+  "format_scope": {
+    "format": 6,
+    "rect": [
+      54,
+      23
+    ],
+    "explicit_decimal_places": false
+  },
+  "exclusions": [
+    "set",
+    "list",
+    "other number formats",
+    "integer-creation multiplication"
+  ],
+  "runtime_identity": {
+    "app": "Max",
+    "version": "9.1.5",
+    "architecture": "Windows x64",
+    "wine": "11.13",
+    "max_sha256": "7a881318209a10d33c982db482297ab870327d5d2cb90aee6e4e01a13e279d8b"
+  },
+  "coverage": {
+    "numeric_storage_and_typed_outlets": "qualified-finite-score",
+    "physical_typed_entry": "qualified-one-value",
+    "midpoint_movement": "unqualified",
+    "display_labels": "parent-visual-review-narrow-face-only",
+    "physical_tab_outlet": "not-observed",
+    "initial_cable_contour": "parent-visual-review",
+    "whole_help_files": "0/2103",
+    "general_float_format_algorithm": "unqualified"
+  },
+  "evidence_files": [
+    {
+      "path": "README.md",
+      "bytes": 5668,
+      "sha256": "96ec716786277eb6d9cffe3c4130854a4b5d7be00b092e947f94abdd9ece9bbd"
+    },
+    {
+      "path": "attempt-1-incomplete/fixtures/command.json",
+      "bytes": 58,
+      "sha256": "7efc71798d386b2218f9081a46b776aadf7414cc2f982ac072a8f19f6decb75e"
+    },
+    {
+      "path": "attempt-1-incomplete/fixtures/float-cable.maxpat",
+      "bytes": 18729,
+      "sha256": "c92d0ca82a995433e69d101b10c7dcd31158c97dc96b083f892ce1d2c20aacd6"
+    },
+    {
+      "path": "attempt-1-incomplete/fixtures/probe.js",
+      "bytes": 3591,
+      "sha256": "6b9eb45d9f2b625df20434874346fea18f5e3f2ad3e7613b628dffbb9eee8ae3"
+    },
+    {
+      "path": "attempt-1-incomplete/fixtures/score.json",
+      "bytes": 2945,
+      "sha256": "82cadb31c30db831781a26aff7c6054890e62fc3d6411583c615110af7e39a18"
+    },
+    {
+      "path": "attempt-1-incomplete/generate.py",
+      "bytes": 4622,
+      "sha256": "5724458dbcbeb3989146b2dfb0c6b93bf1d3b9e999977694fc9466636bd029c0"
+    },
+    {
+      "path": "attempt-1-incomplete/manifest.json",
+      "bytes": 2210,
+      "sha256": "1c62b32d8f81eae98e9f3a82ea481b74bc0744dae3cc70665650733a99453330"
+    },
+    {
+      "path": "attempt-1-incomplete/recovery-facts.json",
+      "bytes": 528,
+      "sha256": "48d3ccc5fbafc26acecfcfbcfdd2c55e5fc31edf76fd035982f6249bdb1471fb"
+    },
+    {
+      "path": "attempt-1-incomplete/results/applied.json",
+      "bytes": 10,
+      "sha256": "7a0635bee0e1bfc73dca1e66da0259947579beb3f614c196f2aabe0e77c37ed3"
+    },
+    {
+      "path": "attempt-1-incomplete/results/both-script.clipboard.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "attempt-1-incomplete/results/initial.clipboard.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "attempt-1-incomplete/results/one-endpoint.clipboard.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "attempt-1-incomplete/results/physical-group.clipboard.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "attempt-1-incomplete/results/ready.json",
+      "bytes": 16,
+      "sha256": "fe590cf27d16cf2fa555199fba9b47821fbd958c5995c489b4367a522f625a2d"
+    },
+    {
+      "path": "attempt-1-incomplete/results/receipts.json",
+      "bytes": 32769,
+      "sha256": "5bcd24899d099386d72576f2d2f430160592c8a28584d2869958f737857fca98"
+    },
+    {
+      "path": "attempt-1-incomplete/results/session.json",
+      "bytes": 19004,
+      "sha256": "9efc84eda4cbc3ed370a7e285900ebac3706ffa10741ccd71f3ad902c1e47c28"
+    },
+    {
+      "path": "attempt-1-incomplete/run-runtime.py",
+      "bytes": 9906,
+      "sha256": "c25c5fecf188d7928042ae52e42ad13b3fb2e19a68de6c91ef7f52e4290fe497"
+    },
+    {
+      "path": "attempt-2-scalar-only/fixtures/clipboard.c",
+      "bytes": 1054,
+      "sha256": "1bf7e88d3b88ad7973b09432ac90b17f2bf666c6c88c4f5a9d636628502e0fe6"
+    },
+    {
+      "path": "attempt-2-scalar-only/fixtures/command.json",
+      "bytes": 58,
+      "sha256": "f7aee3f4fa927cd23f3c2a3d585da79048c980b1692f51e493d6d3bd4ba6d539"
+    },
+    {
+      "path": "attempt-2-scalar-only/fixtures/float-cable.maxpat",
+      "bytes": 19958,
+      "sha256": "32e6ba1acd13530302d0c64d2ceae0f29fbd421c51a34fc5bd85f5c8510382a3"
+    },
+    {
+      "path": "attempt-2-scalar-only/fixtures/probe.js",
+      "bytes": 3768,
+      "sha256": "8ab2e60c7e1a04980fba3428df6f6ff5f04ada7ecc4e1972269de41f07c7d4fa"
+    },
+    {
+      "path": "attempt-2-scalar-only/fixtures/score.json",
+      "bytes": 2945,
+      "sha256": "82cadb31c30db831781a26aff7c6054890e62fc3d6411583c615110af7e39a18"
+    },
+    {
+      "path": "attempt-2-scalar-only/manifest.json",
+      "bytes": 2218,
+      "sha256": "a474afdcd8e8b9d7b68f9eb80ced8cc5371b1d483247f0e956e88b6098804e1d"
+    },
+    {
+      "path": "attempt-2-scalar-only/results/applied.json",
+      "bytes": 10,
+      "sha256": "f4541e24bb6d1d0ede4486b398fe4094812b3f1d53d013db4afbb2b06aa21601"
+    },
+    {
+      "path": "attempt-2-scalar-only/results/cleanup.json",
+      "bytes": 785,
+      "sha256": "c690df4b598fef7709ea226874063834c13224838a04b9bd8eeb7ac9e2ca0738"
+    },
+    {
+      "path": "attempt-2-scalar-only/results/initial.clipboard.txt",
+      "bytes": 1,
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "path": "attempt-2-scalar-only/results/ready.json",
+      "bytes": 16,
+      "sha256": "fe590cf27d16cf2fa555199fba9b47821fbd958c5995c489b4367a522f625a2d"
+    },
+    {
+      "path": "attempt-2-scalar-only/results/receipts.json",
+      "bytes": 323928,
+      "sha256": "1ed1a667ca153f4ebf28a40f298efb277f0af7e53704b8b4097594cad1c79dd8"
+    },
+    {
+      "path": "attempt-2-scalar-only/results/receipts.jsonl",
+      "bytes": 129645,
+      "sha256": "63ab27a2a44ada839b2e4324eff2cfacaf985f7c1b8d54e62ea3ed81bb4cc047"
+    },
+    {
+      "path": "attempt-2-scalar-only/results/session.json",
+      "bytes": 2819,
+      "sha256": "ede7846662deaa41c7c78b5d28b8b3efb0bb6773590df54fe6bcafcb7060bed6"
+    },
+    {
+      "path": "attempt-2-scalar-only/run-runtime.py",
+      "bytes": 10506,
+      "sha256": "c3501a83b2d5e25b6b5cb41e1828aa4e8bf996172b0de3f491eec7e5e66b9cd3"
+    },
+    {
+      "path": "fixtures/clipboard.c",
+      "bytes": 1054,
+      "sha256": "1bf7e88d3b88ad7973b09432ac90b17f2bf666c6c88c4f5a9d636628502e0fe6"
+    },
+    {
+      "path": "fixtures/command.json",
+      "bytes": 58,
+      "sha256": "7efc71798d386b2218f9081a46b776aadf7414cc2f982ac072a8f19f6decb75e"
+    },
+    {
+      "path": "fixtures/float-cable.maxpat",
+      "bytes": 19958,
+      "sha256": "32e6ba1acd13530302d0c64d2ceae0f29fbd421c51a34fc5bd85f5c8510382a3"
+    },
+    {
+      "path": "fixtures/probe.js",
+      "bytes": 3768,
+      "sha256": "8ab2e60c7e1a04980fba3428df6f6ff5f04ada7ecc4e1972269de41f07c7d4fa"
+    },
+    {
+      "path": "fixtures/score.json",
+      "bytes": 2945,
+      "sha256": "82cadb31c30db831781a26aff7c6054890e62fc3d6411583c615110af7e39a18"
+    },
+    {
+      "path": "generate.py",
+      "bytes": 4643,
+      "sha256": "1e7cb1526eaf33778ad8113e4b365cedee30e6d7603f7cb3901d47fed818642b"
+    },
+    {
+      "path": "results/applied.json",
+      "bytes": 10,
+      "sha256": "7a0635bee0e1bfc73dca1e66da0259947579beb3f614c196f2aabe0e77c37ed3"
+    },
+    {
+      "path": "results/both-script.clipboard.txt",
+      "bytes": 1,
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "path": "results/cleanup.json",
+      "bytes": 1013,
+      "sha256": "3a13b731e822583cf58c2840434633c25336eb76262fcece103675dcb780533d"
+    },
+    {
+      "path": "results/initial.clipboard.txt",
+      "bytes": 1,
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "path": "results/one-endpoint.clipboard.txt",
+      "bytes": 1,
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "path": "results/physical-group.clipboard.txt",
+      "bytes": 1,
+      "sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b"
+    },
+    {
+      "path": "results/postflight.json",
+      "bytes": 339,
+      "sha256": "7f2383a9bba9798e44a520a87fb31367441b92765e4d1293f80a8d76a0178171"
+    },
+    {
+      "path": "results/ready.json",
+      "bytes": 16,
+      "sha256": "fe590cf27d16cf2fa555199fba9b47821fbd958c5995c489b4367a522f625a2d"
+    },
+    {
+      "path": "results/receipts.json",
+      "bytes": 425460,
+      "sha256": "94d2e72b5551cddefda313b04beb1384f069d20bb8a2f13b27e2dbcd26039516"
+    },
+    {
+      "path": "results/receipts.jsonl",
+      "bytes": 170519,
+      "sha256": "e1a61c1a6ca2bb7b03dea500298c2839ce44e6c20175443e2d59fe71fcda8e5b"
+    },
+    {
+      "path": "results/session.json",
+      "bytes": 8015,
+      "sha256": "4c9f869871368c12e5f9fdd2d31f6526241c4684984fe2cba1bc72f501cca031"
+    },
+    {
+      "path": "run-runtime.py",
+      "bytes": 10904,
+      "sha256": "e1e9d03585939c1315351f2895e049f77c35fb00daa3a1877df5ea51a371f259"
+    },
+    {
+      "path": "verify.py",
+      "bytes": 6981,
+      "sha256": "1874fbd5f2f57d34c3b472fb0c3d0c336b931a8198aa3bfa8b53100c9bc93b28"
+    }
+  ],
+  "external_artifacts": [
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/float-cable-20261022/initial.png",
+      "bytes": 424474,
+      "sha256": "2b95d931833dff56de7e8957292cd6da0745bf1d6b32c123b1052067f259148e",
+      "dimensions": [
+        2000,
+        1400
+      ],
+      "reviewed_by": "parent",
+      "interpretation": "initial-cable-contour-and-narrow-float-labels"
+    },
+    {
+      "path": "/home/venetanji/.cache/alive-ultra-evidence/float-cable-20261022/clipboard.exe.so",
+      "bytes": 104880,
+      "sha256": "45be56f7607748e6b7f3c2c30290d6566b4f35650defe2a8ff9c4ee728f51d51"
+    }
+  ],
+  "visual_observations": {
+    "source": "parent review of existing initial.png; no additional capture or image review",
+    "float_labels_in_generator_order": [
+      "0.",
+      "2.",
+      "2.5",
+      "-2.5",
+      "0.123",
+      "0.000",
+      "-0.",
+      "0."
+    ],
+    "approximate_label_indices": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "rounding_versus_clipping": "unqualified",
+    "scope": "format 6; 54 by 23 logical pixels; no authored decimal-place override"
+  }
+}

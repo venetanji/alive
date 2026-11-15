@@ -1,0 +1,66 @@
+{
+  "owned_capture_after": [],
+  "prefix_processes_after": [],
+  "marker_processes_after": [],
+  "signal_scope": "capture marker AND prefix AND display AND PID start; pidfd bound",
+  "display_only_attribution": false,
+  "ordinary_quit_requested": false,
+  "launched_processes": [
+    {
+      "role": "xvfb",
+      "pid": 100341,
+      "start": "301004"
+    },
+    {
+      "role": "wine-launcher",
+      "pid": 100365,
+      "start": "301009"
+    }
+  ],
+  "unreadable_process_environments": {
+    "owned_scan": 321,
+    "prefix_scan": 321,
+    "marker_scan": 321
+  },
+  "preference_file_counts": {
+    "original": 33,
+    "source": 1081
+  },
+  "preferences_unchanged": true,
+  "source_preservation": [
+    {
+      "document": "append",
+      "installed_unchanged": true,
+      "pristine_unchanged": true
+    },
+    {
+      "document": "prepend",
+      "installed_unchanged": true,
+      "pristine_unchanged": true
+    }
+  ],
+  "helper_preservation": [
+    {
+      "name": "helpargs.js",
+      "sha256": "04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469",
+      "installed_unchanged": true
+    },
+    {
+      "name": "helpdetails.js",
+      "sha256": "31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1",
+      "installed_unchanged": true
+    },
+    {
+      "name": "helpname.js",
+      "sha256": "49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa",
+      "installed_unchanged": true
+    },
+    {
+      "name": "helpstarter.js",
+      "sha256": "a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8",
+      "installed_unchanged": true
+    }
+  ],
+  "prefix_removed": true,
+  "xvfb_exited": true
+}

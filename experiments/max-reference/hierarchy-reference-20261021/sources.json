@@ -1,0 +1,2488 @@
+{
+  "schema": 1,
+  "evidence": "installed-static-sources-not-executed",
+  "help": {
+    "append": {
+      "path": "help/max/append.maxhelp",
+      "bytes": 22166,
+      "sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+      "patchers": [
+        {
+          "anchor": "/patcher",
+          "owner_box": null,
+          "boxes": [
+            {
+              "id": "obj-4",
+              "maxclass": "newobj",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                415.0,
+                395.0,
+                138.0,
+                20.0
+              ],
+              "anchor": "/patcher/boxes/0/box",
+              "token": "js",
+              "text_sha256": "bf5224b593adeed5974a841958eb8f222752a7542a96fe1860393b67f5be5b74",
+              "creation_argument_count": 2
+            },
+            {
+              "id": "obj-5",
+              "maxclass": "newobj",
+              "numinlets": 0,
+              "numoutlets": 0,
+              "varname": "basic_tab",
+              "patching_rect": [
+                10.0,
+                85.0,
+                50.0,
+                20.0
+              ],
+              "anchor": "/patcher/boxes/1/box",
+              "token": "p",
+              "text_sha256": "484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393",
+              "creation_argument_count": 1,
+              "child_patcher": "/patcher/boxes/1/box/patcher"
+            },
+            {
+              "id": "obj-7",
+              "maxclass": "jsui",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                10.0,
+                10.0,
+                305.0,
+                55.0
+              ],
+              "ignoreclick": 1,
+              "filename": "helpname.js",
+              "jsarguments": [
+                "append"
+              ],
+              "anchor": "/patcher/boxes/2/box",
+              "token": "jsui"
+            },
+            {
+              "id": "obj-1",
+              "maxclass": "newobj",
+              "numinlets": 0,
+              "numoutlets": 0,
+              "varname": "q_tab",
+              "patching_rect": [
+                205.0,
+                205.0,
+                50.0,
+                20.0
+              ],
+              "anchor": "/patcher/boxes/3/box",
+              "token": "p",
+              "text_sha256": "bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a",
+              "creation_argument_count": 1,
+              "child_patcher": "/patcher/boxes/3/box/patcher"
+            }
+          ],
+          "box_count": 4,
+          "line_count": 0,
+          "tokens": {
+            "js": 1,
+            "jsui": 1,
+            "p": 2
+          },
+          "attributes": {
+            "showontab": 0,
+            "openinpresentation": 0,
+            "rect": [
+              34.0,
+              79.0,
+              640.0,
+              458.0
+            ],
+            "bglocked": 0
+          },
+          "dependencies": [
+            {
+              "name": "helpargs.js",
+              "type": "TEXT",
+              "implicit": 1
+            },
+            {
+              "name": "helpdetails.js",
+              "type": "TEXT",
+              "implicit": 1
+            },
+            {
+              "name": "helpname.js",
+              "type": "TEXT",
+              "implicit": 1
+            },
+            {
+              "name": "helpstarter.js",
+              "type": "TEXT",
+              "implicit": 1
+            }
+          ]
+        },
+        {
+          "anchor": "/patcher/boxes/1/box/patcher",
+          "owner_box": "obj-5",
+          "boxes": [
+            {
+              "id": "obj-26",
+              "maxclass": "comment",
+              "numinlets": 1,
+              "numoutlets": 0,
+              "patching_rect": [
+                210.5,
+                279.5,
+                219.0,
+                40.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/0/box",
+              "token": "comment",
+              "text_sha256": "b6bf330924e6d7bebd054f7f7ffa8988b35b7e2be3013489f87088cfcf7bcc0f"
+            },
+            {
+              "id": "obj-24",
+              "maxclass": "number",
+              "numinlets": 1,
+              "numoutlets": 2,
+              "patching_rect": [
+                20.0,
+                290.0,
+                50.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/1/box",
+              "token": "number"
+            },
+            {
+              "id": "obj-22",
+              "maxclass": "message",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "patching_rect": [
+                100.0,
+                325.0,
+                80.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/2/box",
+              "token": "message",
+              "text_sha256": "24929a70f4d3f1842fc55604a0c5f315afe4d8598410951dedfc89e3f00790cb"
+            },
+            {
+              "id": "obj-18",
+              "maxclass": "message",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "patching_rect": [
+                100.0,
+                290.0,
+                109.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/3/box",
+              "token": "message",
+              "text_sha256": "c37165850eaf3d600bcb4df0235dd622d7a7e049699c2128d3b4a22e32e6629d"
+            },
+            {
+              "id": "obj-20",
+              "maxclass": "message",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "patching_rect": [
+                20.0,
+                395.0,
+                159.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/4/box",
+              "token": "message"
+            },
+            {
+              "id": "obj-21",
+              "maxclass": "newobj",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                20.0,
+                360.0,
+                55.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/5/box",
+              "token": "append",
+              "text_sha256": "ae524b54d9b5acbe3bbf0a4f4825bae82bca8b0a474878c2713394ea284ef929",
+              "creation_argument_count": 0
+            },
+            {
+              "id": "obj-17",
+              "maxclass": "message",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "patching_rect": [
+                506.0,
+                146.0,
+                52.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/6/box",
+              "token": "message",
+              "text_sha256": "24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f"
+            },
+            {
+              "id": "obj-16",
+              "maxclass": "message",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "patching_rect": [
+                458.0,
+                146.0,
+                35.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/7/box",
+              "token": "message",
+              "text_sha256": "f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9"
+            },
+            {
+              "id": "obj-10",
+              "maxclass": "message",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "patching_rect": [
+                458.0,
+                241.0,
+                159.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/8/box",
+              "token": "message"
+            },
+            {
+              "id": "obj-12",
+              "maxclass": "newobj",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                458.0,
+                201.0,
+                159.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/9/box",
+              "token": "append",
+              "text_sha256": "496509a844cf7cfe6bc39bdd06d5fda2fe8c5ad7933c73a7865dcc20c46f849b",
+              "creation_argument_count": 3
+            },
+            {
+              "id": "obj-9",
+              "maxclass": "message",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "patching_rect": [
+                20.0,
+                235.0,
+                100.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/10/box",
+              "token": "message"
+            },
+            {
+              "id": "obj-7",
+              "maxclass": "number",
+              "numinlets": 1,
+              "numoutlets": 2,
+              "patching_rect": [
+                20.0,
+                140.0,
+                50.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/11/box",
+              "token": "number"
+            },
+            {
+              "id": "obj-5",
+              "maxclass": "newobj",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                20.0,
+                195.0,
+                106.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/12/box",
+              "token": "append",
+              "text_sha256": "5e9a7c14105b899fb123bbd3384654da0868d7adf28223f0f1363ebd4ed28a17",
+              "creation_argument_count": 1
+            },
+            {
+              "id": "obj-2",
+              "maxclass": "jsui",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                10.0,
+                10.0,
+                620.0,
+                115.0
+              ],
+              "ignoreclick": 1,
+              "filename": "helpdetails.js",
+              "jsarguments": [
+                "append"
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/13/box",
+              "token": "jsui"
+            },
+            {
+              "id": "obj-4",
+              "maxclass": "jsui",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                130.0,
+                195.0,
+                257.934143,
+                39.0
+              ],
+              "ignoreclick": 1,
+              "filename": "helpargs.js",
+              "jsarguments": [
+                "append"
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/14/box",
+              "token": "jsui"
+            }
+          ],
+          "box_count": 15,
+          "line_count": 9,
+          "tokens": {
+            "append": 3,
+            "comment": 1,
+            "jsui": 2,
+            "message": 7,
+            "number": 2
+          },
+          "attributes": {
+            "showontab": 1,
+            "openinpresentation": 0,
+            "rect": [
+              34.0,
+              105.0,
+              640.0,
+              432.0
+            ],
+            "bglocked": 0
+          },
+          "dependencies": []
+        },
+        {
+          "anchor": "/patcher/boxes/3/box/patcher",
+          "owner_box": "obj-1",
+          "boxes": [],
+          "box_count": 0,
+          "line_count": 0,
+          "tokens": {},
+          "attributes": {
+            "showontab": 1,
+            "openinpresentation": 0,
+            "rect": [
+              0.0,
+              26.0,
+              640.0,
+              432.0
+            ],
+            "bglocked": 0
+          },
+          "dependencies": []
+        }
+      ],
+      "total_boxes": 19,
+      "total_lines": 9
+    },
+    "prepend": {
+      "path": "help/max/prepend.maxhelp",
+      "bytes": 20651,
+      "sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+      "patchers": [
+        {
+          "anchor": "/patcher",
+          "owner_box": null,
+          "boxes": [
+            {
+              "id": "obj-1",
+              "maxclass": "newobj",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                10.0,
+                120.0,
+                142.0,
+                20.0
+              ],
+              "anchor": "/patcher/boxes/0/box",
+              "token": "js",
+              "text_sha256": "c8cda3de789c5aaa3ad0b2718c692d6813cbd2eb6c00f354f6682757e7df7d29",
+              "creation_argument_count": 2
+            },
+            {
+              "id": "obj-2",
+              "maxclass": "newobj",
+              "numinlets": 0,
+              "numoutlets": 0,
+              "varname": "basic_tab",
+              "patching_rect": [
+                10.0,
+                85.0,
+                50.0,
+                20.0
+              ],
+              "anchor": "/patcher/boxes/1/box",
+              "token": "p",
+              "text_sha256": "484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393",
+              "creation_argument_count": 1,
+              "child_patcher": "/patcher/boxes/1/box/patcher"
+            },
+            {
+              "id": "obj-4",
+              "maxclass": "jsui",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                10.0,
+                10.0,
+                305.0,
+                55.0
+              ],
+              "ignoreclick": 1,
+              "filename": "helpname.js",
+              "jsarguments": [
+                "prepend"
+              ],
+              "anchor": "/patcher/boxes/2/box",
+              "token": "jsui"
+            },
+            {
+              "id": "obj-3",
+              "maxclass": "newobj",
+              "numinlets": 0,
+              "numoutlets": 0,
+              "varname": "q_tab",
+              "patching_rect": [
+                205.0,
+                205.0,
+                50.0,
+                20.0
+              ],
+              "anchor": "/patcher/boxes/3/box",
+              "token": "p",
+              "text_sha256": "bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a",
+              "creation_argument_count": 1,
+              "child_patcher": "/patcher/boxes/3/box/patcher"
+            }
+          ],
+          "box_count": 4,
+          "line_count": 0,
+          "tokens": {
+            "js": 1,
+            "jsui": 1,
+            "p": 2
+          },
+          "attributes": {
+            "showontab": 0,
+            "openinpresentation": 0,
+            "rect": [
+              34.0,
+              78.0,
+              598.0,
+              309.0
+            ],
+            "bglocked": 0
+          },
+          "dependencies": [
+            {
+              "name": "helpargs.js",
+              "type": "TEXT",
+              "implicit": 1
+            },
+            {
+              "name": "helpdetails.js",
+              "type": "TEXT",
+              "implicit": 1
+            },
+            {
+              "name": "helpname.js",
+              "type": "TEXT",
+              "implicit": 1
+            },
+            {
+              "name": "helpstarter.js",
+              "type": "TEXT",
+              "implicit": 1
+            }
+          ]
+        },
+        {
+          "anchor": "/patcher/boxes/1/box/patcher",
+          "owner_box": "obj-2",
+          "boxes": [
+            {
+              "id": "obj-9",
+              "maxclass": "newobj",
+              "numinlets": 1,
+              "numoutlets": 0,
+              "patching_rect": [
+                198.0,
+                241.5,
+                102.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/0/box",
+              "token": "print",
+              "text_sha256": "8502c77ffb428d03832b4fa40e57afb8c10225eda689a4450649fc3990e8a58c",
+              "creation_argument_count": 2
+            },
+            {
+              "id": "obj-10",
+              "maxclass": "message",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "patching_rect": [
+                246.0,
+                125.0,
+                37.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/1/box",
+              "token": "message",
+              "text_sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"
+            },
+            {
+              "id": "obj-11",
+              "maxclass": "message",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "patching_rect": [
+                198.0,
+                125.0,
+                37.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/2/box",
+              "token": "message",
+              "text_sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+            },
+            {
+              "id": "obj-12",
+              "maxclass": "comment",
+              "numinlets": 1,
+              "numoutlets": 0,
+              "patching_rect": [
+                378.0,
+                114.5,
+                213.0,
+                40.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/3/box",
+              "token": "comment",
+              "text_sha256": "c425b665e4ca43ae12074fb7fbb461f85667fd89651751a99fa7a1179ffcb3cb"
+            },
+            {
+              "id": "obj-14",
+              "maxclass": "message",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "patching_rect": [
+                129.5,
+                125.0,
+                37.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/4/box",
+              "token": "message",
+              "text_sha256": "fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9"
+            },
+            {
+              "id": "obj-15",
+              "maxclass": "message",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "patching_rect": [
+                84.0,
+                125.0,
+                37.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/5/box",
+              "token": "message",
+              "text_sha256": "2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1"
+            },
+            {
+              "id": "obj-16",
+              "maxclass": "message",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "patching_rect": [
+                40.0,
+                125.0,
+                38.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/6/box",
+              "token": "message",
+              "text_sha256": "525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29"
+            },
+            {
+              "id": "obj-17",
+              "maxclass": "newobj",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                13.0,
+                206.5,
+                133.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/7/box",
+              "token": "prepend",
+              "text_sha256": "2b6e988461b053074c1e3bd1e99e29ca19c59cdc34f36c03a50f4be2033cd4d0",
+              "creation_argument_count": 3
+            },
+            {
+              "id": "obj-18",
+              "maxclass": "newobj",
+              "numinlets": 1,
+              "numoutlets": 0,
+              "patching_rect": [
+                13.0,
+                241.5,
+                102.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/8/box",
+              "token": "print",
+              "text_sha256": "8502c77ffb428d03832b4fa40e57afb8c10225eda689a4450649fc3990e8a58c",
+              "creation_argument_count": 2
+            },
+            {
+              "id": "obj-19",
+              "maxclass": "button",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                13.0,
+                125.0,
+                23.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/9/box",
+              "token": "button"
+            },
+            {
+              "id": "obj-27",
+              "maxclass": "message",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "patching_rect": [
+                290.0,
+                125.0,
+                78.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/10/box",
+              "token": "message",
+              "text_sha256": "298022fdf050fa14f68b5a55a3382942a33e01b5c4b38c2947789c1883fd1927"
+            },
+            {
+              "id": "obj-28",
+              "maxclass": "newobj",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                198.0,
+                206.5,
+                105.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/11/box",
+              "token": "prepend",
+              "text_sha256": "631c01968ccee02264d9b75ac44fc94eb74d07330a4ccd741d2bd14000371e47",
+              "creation_argument_count": 2
+            },
+            {
+              "id": "obj-2",
+              "maxclass": "jsui",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                10.0,
+                10.0,
+                335.0,
+                100.0
+              ],
+              "ignoreclick": 1,
+              "filename": "helpdetails.js",
+              "jsarguments": [
+                "prepend"
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/12/box",
+              "token": "jsui"
+            },
+            {
+              "id": "obj-4",
+              "maxclass": "jsui",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                313.0,
+                206.0,
+                131.458862,
+                39.0
+              ],
+              "ignoreclick": 1,
+              "filename": "helpargs.js",
+              "jsarguments": [
+                "prepend"
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/13/box",
+              "token": "jsui"
+            }
+          ],
+          "box_count": 14,
+          "line_count": 9,
+          "tokens": {
+            "button": 1,
+            "comment": 1,
+            "jsui": 2,
+            "message": 6,
+            "prepend": 2,
+            "print": 2
+          },
+          "attributes": {
+            "showontab": 1,
+            "openinpresentation": 0,
+            "rect": [
+              34.0,
+              104.0,
+              598.0,
+              283.0
+            ],
+            "bglocked": 0
+          },
+          "dependencies": []
+        },
+        {
+          "anchor": "/patcher/boxes/3/box/patcher",
+          "owner_box": "obj-3",
+          "boxes": [],
+          "box_count": 0,
+          "line_count": 0,
+          "tokens": {},
+          "attributes": {
+            "showontab": 1,
+            "openinpresentation": 0,
+            "rect": [
+              0.0,
+              26.0,
+              598.0,
+              283.0
+            ],
+            "bglocked": 0
+          },
+          "dependencies": []
+        }
+      ],
+      "total_boxes": 18,
+      "total_lines": 9
+    },
+    "int": {
+      "path": "help/max/int.maxhelp",
+      "bytes": 26001,
+      "sha256": "bbb8fc3b458eb168fe69b8709ba343808d23b6d55e2c59cc3086d01976c5ac61",
+      "patchers": [
+        {
+          "anchor": "/patcher",
+          "owner_box": null,
+          "boxes": [
+            {
+              "id": "obj-1",
+              "maxclass": "newobj",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                92.0,
+                94.0,
+                110.0,
+                20.0
+              ],
+              "anchor": "/patcher/boxes/0/box",
+              "token": "js",
+              "text_sha256": "3c299423556feddb0be4ff31bc20e20f1fc305063815420e899f529763daa2e1",
+              "creation_argument_count": 2
+            },
+            {
+              "id": "obj-2",
+              "maxclass": "newobj",
+              "numinlets": 0,
+              "numoutlets": 0,
+              "varname": "basic_tab",
+              "patching_rect": [
+                10.0,
+                85.0,
+                50.0,
+                20.0
+              ],
+              "anchor": "/patcher/boxes/1/box",
+              "token": "p",
+              "text_sha256": "484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393",
+              "creation_argument_count": 1,
+              "child_patcher": "/patcher/boxes/1/box/patcher"
+            },
+            {
+              "id": "obj-4",
+              "maxclass": "jsui",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                10.0,
+                10.0,
+                305.0,
+                55.0
+              ],
+              "ignoreclick": 1,
+              "filename": "helpname.js",
+              "jsarguments": [
+                "int"
+              ],
+              "anchor": "/patcher/boxes/2/box",
+              "token": "jsui"
+            },
+            {
+              "id": "obj-3",
+              "maxclass": "newobj",
+              "numinlets": 0,
+              "numoutlets": 0,
+              "varname": "q_tab",
+              "patching_rect": [
+                205.0,
+                205.0,
+                50.0,
+                20.0
+              ],
+              "anchor": "/patcher/boxes/3/box",
+              "token": "p",
+              "text_sha256": "bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a",
+              "creation_argument_count": 1,
+              "child_patcher": "/patcher/boxes/3/box/patcher"
+            }
+          ],
+          "box_count": 4,
+          "line_count": 0,
+          "tokens": {
+            "js": 1,
+            "jsui": 1,
+            "p": 2
+          },
+          "attributes": {
+            "showontab": 0,
+            "openinpresentation": 0,
+            "rect": [
+              34.0,
+              79.0,
+              595.0,
+              586.0
+            ],
+            "bglocked": 0
+          },
+          "dependencies": [
+            {
+              "name": "helpargs.js",
+              "type": "TEXT",
+              "implicit": 1
+            },
+            {
+              "name": "helpdetails.js",
+              "type": "TEXT",
+              "implicit": 1
+            },
+            {
+              "name": "helpname.js",
+              "type": "TEXT",
+              "implicit": 1
+            },
+            {
+              "name": "helpstarter.js",
+              "type": "TEXT",
+              "implicit": 1
+            }
+          ]
+        },
+        {
+          "anchor": "/patcher/boxes/1/box/patcher",
+          "owner_box": "obj-2",
+          "boxes": [
+            {
+              "id": "obj-5",
+              "maxclass": "comment",
+              "numinlets": 1,
+              "numoutlets": 0,
+              "patching_rect": [
+                414.0,
+                172.0,
+                145.0,
+                40.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/0/box",
+              "token": "comment",
+              "text_sha256": "0b309ad9f41dbf984b9c796caea7e26e1aa666209c5b3ba4818a32509ddd7be5"
+            },
+            {
+              "id": "obj-1",
+              "maxclass": "comment",
+              "numinlets": 1,
+              "numoutlets": 0,
+              "patching_rect": [
+                38.0,
+                114.0,
+                145.0,
+                40.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/1/box",
+              "token": "comment",
+              "text_sha256": "2932dc02ba83ac938ce6cba1cac06386cb32e7e69e56319d59790701180de6fa"
+            },
+            {
+              "id": "obj-23",
+              "maxclass": "comment",
+              "numinlets": 1,
+              "numoutlets": 0,
+              "patching_rect": [
+                11.0,
+                186.5,
+                143.0,
+                54.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/2/box",
+              "token": "comment",
+              "text_sha256": "96d3d71a61b0f13d7c759315dc9e49578d5c542d24ac120753d628392a55723d"
+            },
+            {
+              "id": "obj-28",
+              "maxclass": "newobj",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "patching_rect": [
+                11.0,
+                472.5,
+                43.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/3/box",
+              "token": "int",
+              "text_sha256": "4446d7d6e94c3d85342d75203c41e0c7958f92842d2524b55a2011947e8df3a4",
+              "creation_argument_count": 1
+            },
+            {
+              "id": "obj-35",
+              "maxclass": "button",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                11.0,
+                505.5,
+                24.0,
+                24.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/4/box",
+              "token": "button"
+            },
+            {
+              "id": "obj-9",
+              "maxclass": "newobj",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "patching_rect": [
+                451.0,
+                406.5,
+                36.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/5/box",
+              "token": "i",
+              "text_sha256": "65c8d70c1a32aec927a96ac2eac53b75bc3f5e2a1cd29105201700014e944946",
+              "creation_argument_count": 1
+            },
+            {
+              "id": "obj-16",
+              "maxclass": "number",
+              "numinlets": 1,
+              "numoutlets": 2,
+              "patching_rect": [
+                195.0,
+                217.0,
+                53.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/6/box",
+              "token": "number"
+            },
+            {
+              "id": "obj-17",
+              "maxclass": "number",
+              "numinlets": 1,
+              "numoutlets": 2,
+              "patching_rect": [
+                266.0,
+                216.0,
+                52.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/7/box",
+              "token": "number"
+            },
+            {
+              "id": "obj-18",
+              "maxclass": "slider",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                266.0,
+                183.0,
+                144.0,
+                18.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/8/box",
+              "token": "slider"
+            },
+            {
+              "id": "obj-20",
+              "maxclass": "slider",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                195.0,
+                125.0,
+                144.0,
+                18.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/9/box",
+              "token": "slider"
+            },
+            {
+              "id": "obj-21",
+              "maxclass": "number",
+              "numinlets": 1,
+              "numoutlets": 2,
+              "patching_rect": [
+                221.0,
+                363.0,
+                53.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/10/box",
+              "token": "number"
+            },
+            {
+              "id": "obj-22",
+              "maxclass": "newobj",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "patching_rect": [
+                195.0,
+                296.0,
+                90.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/11/box",
+              "token": "int",
+              "text_sha256": "4446d7d6e94c3d85342d75203c41e0c7958f92842d2524b55a2011947e8df3a4",
+              "creation_argument_count": 1
+            },
+            {
+              "id": "obj-24",
+              "maxclass": "button",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                195.0,
+                363.0,
+                24.0,
+                24.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/12/box",
+              "token": "button"
+            },
+            {
+              "id": "obj-29",
+              "maxclass": "message",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "patching_rect": [
+                11.0,
+                440.0,
+                75.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/13/box",
+              "token": "message",
+              "text_sha256": "4bda7034b082c0e479748654cef39de5e0d0ace726a42f0d6e45572c91fc3fd1"
+            },
+            {
+              "id": "obj-30",
+              "maxclass": "button",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                161.0,
+                217.0,
+                24.0,
+                24.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/14/box",
+              "token": "button"
+            },
+            {
+              "id": "obj-31",
+              "maxclass": "comment",
+              "numinlets": 1,
+              "numoutlets": 0,
+              "patching_rect": [
+                11.0,
+                407.0,
+                262.0,
+                21.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/15/box",
+              "token": "comment",
+              "text_sha256": "bf53a3221291310a7ed3df94f57d36907d3f8539136a118554d9919a8e2c35fb"
+            },
+            {
+              "id": "obj-32",
+              "maxclass": "newobj",
+              "numinlets": 0,
+              "numoutlets": 1,
+              "patching_rect": [
+                124.0,
+                467.5,
+                52.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/16/box",
+              "token": "r",
+              "text_sha256": "d914ce0ebc71776a1ee7afb64e3538ced46392c76de24438b77af7d4d315018e",
+              "creation_argument_count": 1
+            },
+            {
+              "id": "obj-33",
+              "maxclass": "number",
+              "numinlets": 1,
+              "numoutlets": 2,
+              "patching_rect": [
+                124.0,
+                499.5,
+                52.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/17/box",
+              "token": "number"
+            },
+            {
+              "id": "obj-34",
+              "maxclass": "comment",
+              "numinlets": 1,
+              "numoutlets": 0,
+              "patching_rect": [
+                305.0,
+                407.0,
+                142.0,
+                21.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/18/box",
+              "token": "comment",
+              "text_sha256": "694fe323073754c8c3947d268fdfbd9430bf8b8e02b835fa75a19f45f7bbdab8"
+            },
+            {
+              "id": "obj-2",
+              "maxclass": "jsui",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                10.0,
+                10.0,
+                620.0,
+                125.0
+              ],
+              "ignoreclick": 1,
+              "filename": "helpdetails.js",
+              "jsarguments": [
+                "int"
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/19/box",
+              "token": "jsui"
+            },
+            {
+              "id": "obj-4",
+              "maxclass": "jsui",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                291.0,
+                296.0,
+                208.315216,
+                39.0
+              ],
+              "ignoreclick": 1,
+              "filename": "helpargs.js",
+              "jsarguments": [
+                "int"
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/20/box",
+              "token": "jsui"
+            }
+          ],
+          "box_count": 21,
+          "line_count": 10,
+          "tokens": {
+            "button": 3,
+            "comment": 5,
+            "i": 1,
+            "int": 2,
+            "jsui": 2,
+            "message": 1,
+            "number": 4,
+            "r": 1,
+            "slider": 2
+          },
+          "attributes": {
+            "showontab": 1,
+            "openinpresentation": 0,
+            "rect": [
+              34.0,
+              105.0,
+              595.0,
+              560.0
+            ],
+            "bglocked": 0
+          },
+          "dependencies": []
+        },
+        {
+          "anchor": "/patcher/boxes/3/box/patcher",
+          "owner_box": "obj-3",
+          "boxes": [],
+          "box_count": 0,
+          "line_count": 0,
+          "tokens": {},
+          "attributes": {
+            "showontab": 1,
+            "openinpresentation": 0,
+            "rect": [
+              0.0,
+              26.0,
+              595.0,
+              560.0
+            ],
+            "bglocked": 0
+          },
+          "dependencies": []
+        }
+      ],
+      "total_boxes": 25,
+      "total_lines": 10
+    },
+    "float": {
+      "path": "help/max/float.maxhelp",
+      "bytes": 28070,
+      "sha256": "c5e9bd4e89ebc5808d2faf76400031705c35195c32b363b890787a37bbdec15c",
+      "patchers": [
+        {
+          "anchor": "/patcher",
+          "owner_box": null,
+          "boxes": [
+            {
+              "id": "obj-1",
+              "maxclass": "newobj",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                374.0,
+                27.5,
+                120.0,
+                20.0
+              ],
+              "anchor": "/patcher/boxes/0/box",
+              "token": "js",
+              "text_sha256": "e9cd2d2ae24129f7ce891e9a5ee418d273b18a0b2641d3f3beb34be09def8ab5",
+              "creation_argument_count": 2
+            },
+            {
+              "id": "obj-2",
+              "maxclass": "newobj",
+              "numinlets": 0,
+              "numoutlets": 0,
+              "varname": "basic_tab",
+              "patching_rect": [
+                10.0,
+                85.0,
+                50.0,
+                20.0
+              ],
+              "anchor": "/patcher/boxes/1/box",
+              "token": "p",
+              "text_sha256": "484a245125c7a3ab76b61a83ed79fdc0813b1a62af7c2405ac22e0fc55c7d393",
+              "creation_argument_count": 1,
+              "child_patcher": "/patcher/boxes/1/box/patcher"
+            },
+            {
+              "id": "obj-4",
+              "maxclass": "jsui",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                10.0,
+                10.0,
+                305.0,
+                55.0
+              ],
+              "ignoreclick": 1,
+              "filename": "helpname.js",
+              "jsarguments": [
+                "float"
+              ],
+              "anchor": "/patcher/boxes/2/box",
+              "token": "jsui"
+            },
+            {
+              "id": "obj-3",
+              "maxclass": "newobj",
+              "numinlets": 0,
+              "numoutlets": 0,
+              "varname": "q_tab",
+              "patching_rect": [
+                205.0,
+                205.0,
+                50.0,
+                20.0
+              ],
+              "anchor": "/patcher/boxes/3/box",
+              "token": "p",
+              "text_sha256": "bebf7c3258d1aa320e962f4d3258a831cd0ca12c2d69b5aab221d67d7fefc52a",
+              "creation_argument_count": 1,
+              "child_patcher": "/patcher/boxes/3/box/patcher"
+            }
+          ],
+          "box_count": 4,
+          "line_count": 0,
+          "tokens": {
+            "js": 1,
+            "jsui": 1,
+            "p": 2
+          },
+          "attributes": {
+            "showontab": 0,
+            "openinpresentation": 0,
+            "rect": [
+              34.0,
+              79.0,
+              559.0,
+              486.0
+            ],
+            "bglocked": 0
+          },
+          "dependencies": [
+            {
+              "name": "helpargs.js",
+              "type": "TEXT",
+              "implicit": 1
+            },
+            {
+              "name": "helpdetails.js",
+              "type": "TEXT",
+              "implicit": 1
+            },
+            {
+              "name": "helpname.js",
+              "type": "TEXT",
+              "implicit": 1
+            },
+            {
+              "name": "helpstarter.js",
+              "type": "TEXT",
+              "implicit": 1
+            }
+          ]
+        },
+        {
+          "anchor": "/patcher/boxes/1/box/patcher",
+          "owner_box": "obj-2",
+          "boxes": [
+            {
+              "id": "obj-6",
+              "maxclass": "comment",
+              "numinlets": 1,
+              "numoutlets": 0,
+              "patching_rect": [
+                14.0,
+                286.5,
+                139.0,
+                55.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/0/box",
+              "token": "comment",
+              "text_sha256": "a987ba4ec351f059c7decf163d8169ba0525c08e1a23d7875dc16b44bbf21bc4"
+            },
+            {
+              "id": "obj-3",
+              "maxclass": "comment",
+              "numinlets": 1,
+              "numoutlets": 0,
+              "patching_rect": [
+                411.0,
+                156.5,
+                133.0,
+                54.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/1/box",
+              "token": "comment",
+              "text_sha256": "de8dbc68910ee493e95c0bad7d48cf0b12577baa5955cd7d894aa80cae1fb027"
+            },
+            {
+              "id": "obj-1",
+              "maxclass": "comment",
+              "numinlets": 1,
+              "numoutlets": 0,
+              "patching_rect": [
+                36.0,
+                124.0,
+                150.0,
+                40.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/2/box",
+              "token": "comment",
+              "text_sha256": "1d5f6554cfc2a94656c68ef6314280f8cdaa2a96d119609e2d04c3c1bce0fe72"
+            },
+            {
+              "id": "obj-5",
+              "maxclass": "comment",
+              "numinlets": 1,
+              "numoutlets": 0,
+              "patching_rect": [
+                14.0,
+                201.5,
+                143.0,
+                54.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/3/box",
+              "token": "comment",
+              "text_sha256": "96d3d71a61b0f13d7c759315dc9e49578d5c542d24ac120753d628392a55723d"
+            },
+            {
+              "id": "obj-28",
+              "maxclass": "newobj",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "patching_rect": [
+                12.0,
+                380.0,
+                58.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/4/box",
+              "token": "float",
+              "text_sha256": "a5322fd677d550141fbb705cbe8a7dfc54c7e139439526466b2588574b011840",
+              "creation_argument_count": 1
+            },
+            {
+              "id": "obj-35",
+              "maxclass": "button",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                12.0,
+                413.0,
+                24.0,
+                24.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/5/box",
+              "token": "button"
+            },
+            {
+              "id": "obj-9",
+              "maxclass": "newobj",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "patching_rect": [
+                459.0,
+                366.5,
+                37.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/6/box",
+              "token": "f",
+              "text_sha256": "fe9d266cffd30eefcb86e4f46e6e5fda44859859058045a6ded164f498bd9ec4",
+              "creation_argument_count": 1
+            },
+            {
+              "id": "obj-16",
+              "maxclass": "flonum",
+              "numinlets": 1,
+              "numoutlets": 2,
+              "patching_rect": [
+                194.0,
+                230.5,
+                54.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/7/box",
+              "token": "flonum"
+            },
+            {
+              "id": "obj-17",
+              "maxclass": "flonum",
+              "numinlets": 1,
+              "numoutlets": 2,
+              "patching_rect": [
+                265.0,
+                230.5,
+                54.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/8/box",
+              "token": "flonum"
+            },
+            {
+              "id": "obj-18",
+              "maxclass": "slider",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                265.0,
+                175.0,
+                144.0,
+                18.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/9/box",
+              "token": "slider"
+            },
+            {
+              "id": "obj-19",
+              "maxclass": "newobj",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "patching_rect": [
+                265.0,
+                200.5,
+                38.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/10/box",
+              "token": "*",
+              "text_sha256": "7225e70cc8a647e66a7c6888a48e071079d179362808f9a7325ca940330dd069",
+              "creation_argument_count": 1
+            },
+            {
+              "id": "obj-20",
+              "maxclass": "slider",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                194.0,
+                145.0,
+                144.0,
+                18.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/11/box",
+              "token": "slider"
+            },
+            {
+              "id": "obj-21",
+              "maxclass": "flonum",
+              "numinlets": 1,
+              "numoutlets": 2,
+              "patching_rect": [
+                220.0,
+                330.5,
+                54.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/12/box",
+              "token": "flonum"
+            },
+            {
+              "id": "obj-22",
+              "maxclass": "newobj",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "patching_rect": [
+                194.0,
+                274.5,
+                90.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/13/box",
+              "token": "float",
+              "text_sha256": "1994c4a67a6780e3e434f9df8278c991073df00dee4bf35648bb4786f3049cc5",
+              "creation_argument_count": 1
+            },
+            {
+              "id": "obj-23",
+              "maxclass": "newobj",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "patching_rect": [
+                194.0,
+                200.5,
+                38.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/14/box",
+              "token": "*",
+              "text_sha256": "7225e70cc8a647e66a7c6888a48e071079d179362808f9a7325ca940330dd069",
+              "creation_argument_count": 1
+            },
+            {
+              "id": "obj-24",
+              "maxclass": "button",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                194.0,
+                330.5,
+                24.0,
+                24.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/15/box",
+              "token": "button"
+            },
+            {
+              "id": "obj-29",
+              "maxclass": "message",
+              "numinlets": 2,
+              "numoutlets": 1,
+              "patching_rect": [
+                12.0,
+                347.5,
+                75.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/16/box",
+              "token": "message",
+              "text_sha256": "4bda7034b082c0e479748654cef39de5e0d0ace726a42f0d6e45572c91fc3fd1"
+            },
+            {
+              "id": "obj-30",
+              "maxclass": "button",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                165.0,
+                230.5,
+                24.0,
+                24.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/17/box",
+              "token": "button"
+            },
+            {
+              "id": "obj-32",
+              "maxclass": "newobj",
+              "numinlets": 0,
+              "numoutlets": 1,
+              "patching_rect": [
+                117.0,
+                347.5,
+                52.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/18/box",
+              "token": "r",
+              "text_sha256": "d914ce0ebc71776a1ee7afb64e3538ced46392c76de24438b77af7d4d315018e",
+              "creation_argument_count": 1
+            },
+            {
+              "id": "obj-33",
+              "maxclass": "flonum",
+              "numinlets": 1,
+              "numoutlets": 2,
+              "patching_rect": [
+                117.0,
+                380.5,
+                54.0,
+                23.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/19/box",
+              "token": "flonum"
+            },
+            {
+              "id": "obj-34",
+              "maxclass": "comment",
+              "numinlets": 1,
+              "numoutlets": 0,
+              "patching_rect": [
+                313.0,
+                366.5,
+                143.0,
+                21.0
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/20/box",
+              "token": "comment",
+              "text_sha256": "b68739c7fc57f58309765b18e006310af3d6e4cdc902de22da2dfff54c2dec0b"
+            },
+            {
+              "id": "obj-2",
+              "maxclass": "jsui",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                10.0,
+                10.0,
+                350.0,
+                103.0
+              ],
+              "ignoreclick": 1,
+              "filename": "helpdetails.js",
+              "jsarguments": [
+                "float"
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/21/box",
+              "token": "jsui"
+            },
+            {
+              "id": "obj-4",
+              "maxclass": "jsui",
+              "numinlets": 1,
+              "numoutlets": 1,
+              "patching_rect": [
+                289.0,
+                274.0,
+                190.328094,
+                39.0
+              ],
+              "ignoreclick": 1,
+              "filename": "helpargs.js",
+              "jsarguments": [
+                "float"
+              ],
+              "anchor": "/patcher/boxes/1/box/patcher/boxes/22/box",
+              "token": "jsui"
+            }
+          ],
+          "box_count": 23,
+          "line_count": 12,
+          "tokens": {
+            "*": 2,
+            "button": 3,
+            "comment": 5,
+            "f": 1,
+            "float": 2,
+            "flonum": 4,
+            "jsui": 2,
+            "message": 1,
+            "r": 1,
+            "slider": 2
+          },
+          "attributes": {
+            "showontab": 1,
+            "openinpresentation": 0,
+            "rect": [
+              34.0,
+              105.0,
+              559.0,
+              460.0
+            ],
+            "bglocked": 0
+          },
+          "dependencies": []
+        },
+        {
+          "anchor": "/patcher/boxes/3/box/patcher",
+          "owner_box": "obj-3",
+          "boxes": [],
+          "box_count": 0,
+          "line_count": 0,
+          "tokens": {},
+          "attributes": {
+            "showontab": 1,
+            "openinpresentation": 0,
+            "rect": [
+              0.0,
+              26.0,
+              559.0,
+              460.0
+            ],
+            "bglocked": 0
+          },
+          "dependencies": []
+        }
+      ],
+      "total_boxes": 27,
+      "total_lines": 12
+    }
+  },
+  "xml": {
+    "patcher": {
+      "path": "docs/refpages/max-ref/patcher.maxref.xml",
+      "bytes": 88432,
+      "sha256": "d871a628a177f82c55af601890001052a8bf381fcad244d33b837345aec0f9cf",
+      "citations": [
+        {
+          "selector": "./discussion",
+          "attributes": {},
+          "element_sha256": "86abae74c6357403e6e2d7fb70760ce5158c3e978c66b03d70b98696abf90e5f"
+        },
+        {
+          "selector": "./objarglist/objarg",
+          "attributes": {
+            "name": "subpatch",
+            "optional": "1",
+            "type": "symbol"
+          },
+          "element_sha256": "de4644a59ea945b790bb8790ab505d0554519ea80a2294599c99b334fd6ec6c1"
+        },
+        {
+          "selector": "./attributelist/attribute[@name=\"showontab\"]",
+          "attributes": {
+            "name": "showontab",
+            "get": "1",
+            "set": "1",
+            "type": "atom",
+            "size": "1"
+          },
+          "element_sha256": "9adb01f333981a157bbac816d4364ebf0baead6b6afaa80b0ceecb2324c7e807"
+        }
+      ],
+      "documented_attributes": [
+        "accentcolor",
+        "assistshowspatchername",
+        "bgcolor",
+        "bgfillcolor",
+        "bottomtoolbarpinned",
+        "boxanimatetime",
+        "bubble_bgcolor",
+        "bubble_outlinecolor",
+        "clearcolor",
+        "cluebar",
+        "color",
+        "commentary",
+        "defaultfocusbox",
+        "description",
+        "digest",
+        "editing_bgcolor",
+        "elementcolor",
+        "enablehscroll",
+        "enabletransparentbgwithtitlebar",
+        "enablevscroll",
+        "filepath",
+        "fontface",
+        "fontname",
+        "fontsize",
+        "globalpatchername",
+        "gridonopen",
+        "gridsize",
+        "gridsnaponopen",
+        "helpsidebarclosed",
+        "integercoordinates",
+        "isolateaudio",
+        "lefttoolbarpinned",
+        "locked_bgcolor",
+        "objectsnaponopen",
+        "openinpresentation",
+        "openrect",
+        "openrectmode",
+        "oscdefer",
+        "oscparamenableddefault",
+        "oscprefix",
+        "oscprefixmode",
+        "oscqueryenable",
+        "oscreceivemode",
+        "oscreceivequantize",
+        "oscreceivethreshold",
+        "oscreceiveudpport",
+        "oscsendmode",
+        "oscsendthreshold",
+        "oscsendudpaddr",
+        "oscsendudpport",
+        "oscuseparamprefix",
+        "oscvaluemode",
+        "patchlinecolor",
+        "righttoolbarpinned",
+        "selectioncolor",
+        "showcommentary",
+        "showontab",
+        "stripecolor",
+        "style",
+        "subpatcher_template",
+        "syntax_attrargcolor",
+        "syntax_attributecolor",
+        "syntax_objargcolor",
+        "syntax_objectcolor",
+        "taborientation",
+        "tags",
+        "tallnewobj",
+        "textcolor",
+        "textcolor_inverse",
+        "textjustification",
+        "title",
+        "toolbarvisible",
+        "toptoolbarpinned",
+        "workspacedisabled",
+        "external_mpe_tuning_enabled",
+        "is_mpe",
+        "latency",
+        "minimum_live_version",
+        "minimum_max_version",
+        "platform_compatibility"
+      ]
+    },
+    "inlet": {
+      "path": "docs/refpages/max-ref/inlet.maxref.xml",
+      "bytes": 6424,
+      "sha256": "01a8d44311b186b678d47934d8b780539a04538aa6e3e963a463b09f69e72647",
+      "citations": [
+        {
+          "selector": "./description",
+          "attributes": {},
+          "element_sha256": "cb48bf803f59d334512dabeea1d0b71c7dea421598c7eceeffd8d0cca6b40c75"
+        },
+        {
+          "selector": "./methodlist/method[@name=\"(mouse)\"]",
+          "attributes": {
+            "name": "(mouse)"
+          },
+          "element_sha256": "ea8d198dc60b1070d5a7907cdfd83358610ebe191c7fd68d64a2f56d16f0aac6"
+        }
+      ],
+      "documented_attributes": [
+        "comment",
+        "cool",
+        "style",
+        "tricolor"
+      ]
+    },
+    "outlet": {
+      "path": "docs/refpages/max-ref/outlet.maxref.xml",
+      "bytes": 5494,
+      "sha256": "3f2ad9661428245d6f813423c72116fff5fe82882d30c22c6cb0a8eb1b1f7d6e",
+      "citations": [
+        {
+          "selector": "./description",
+          "attributes": {},
+          "element_sha256": "adf63197326a699d66af8bd8cd474aa22118bd51ff52c2c45188dcc12b4270ab"
+        },
+        {
+          "selector": "./methodlist/method[@name=\"(mouse)\"]",
+          "attributes": {
+            "name": "(mouse)"
+          },
+          "element_sha256": "f4a28494ce3dd3a6f5f61eae839cda8e6dbd914d614d22a201d79ebf7740d96d"
+        }
+      ],
+      "documented_attributes": [
+        "comment",
+        "style",
+        "tricolor"
+      ]
+    },
+    "loadbang": {
+      "path": "docs/refpages/max-ref/loadbang.maxref.xml",
+      "bytes": 2857,
+      "sha256": "53d68b41ce7023b487c44782fa4e87fa33e8916b9953cd34e7d5db12f292c411",
+      "citations": [
+        {
+          "selector": "./description",
+          "attributes": {},
+          "element_sha256": "0f61676c53b142e1e1f0fad30ddba6c4af105e367fa3af8c0295618a02df3820"
+        },
+        {
+          "selector": "./methodlist/method",
+          "attributes": {
+            "name": "bang"
+          },
+          "element_sha256": "0fc097c72103997efaedc8e0b9aa1ab347ef8d09933a40f8a5b36f06657902ff"
+        },
+        {
+          "selector": "./methodlist/method",
+          "attributes": {
+            "name": "(mouse)"
+          },
+          "element_sha256": "c89c8eb36e30579d5bf77ceaa3e4fdf174aecf930c01ce4bf68cb7921831ad60"
+        },
+        {
+          "selector": "./methodlist/method",
+          "attributes": {
+            "name": "loadbang"
+          },
+          "element_sha256": "c34ed63288354f8b721346e5b269d1297ecfe78c32dbc51cf0b331bbb6ebca85"
+        }
+      ],
+      "documented_attributes": []
+    },
+    "loadmess": {
+      "path": "docs/refpages/max-ref/loadmess.maxref.xml",
+      "bytes": 4193,
+      "sha256": "0204143260c46c5f9ccc23ea817c1b5895476692a8533da5c23f8794cacc254f",
+      "citations": [
+        {
+          "selector": "./description",
+          "attributes": {},
+          "element_sha256": "11e66a86de1f9a1de06ddf4f4abdfef7e5c351a91fcfe8cf32192136c226a678"
+        },
+        {
+          "selector": "./objarglist/objarg",
+          "attributes": {
+            "name": "message",
+            "optional": "0",
+            "type": "symbol"
+          },
+          "element_sha256": "bbc0c486a1ab89d59ccd28332b6d062a937d52b1d2c34bc9c768befb57d4a835"
+        },
+        {
+          "selector": "./methodlist/method",
+          "attributes": {
+            "name": "bang"
+          },
+          "element_sha256": "53980e17c17ff2f295c25164f140fb141956124102d7172be69093c47f7ee794"
+        },
+        {
+          "selector": "./methodlist/method",
+          "attributes": {
+            "name": "(mouse)"
+          },
+          "element_sha256": "4c10650de2bb8443559a176e5b84674de468db627132680aebd0ac114865e45b"
+        },
+        {
+          "selector": "./methodlist/method",
+          "attributes": {
+            "name": "set"
+          },
+          "element_sha256": "36ef6b9efc84a97a02a021ea96f6f027e333c4b07c621f51a0cd74c47c8cad1a"
+        },
+        {
+          "selector": "./attributelist/attribute[@name=\"defer\"]",
+          "attributes": {
+            "name": "defer",
+            "get": "1",
+            "set": "1",
+            "type": "int",
+            "size": "1"
+          },
+          "element_sha256": "7afa6dfd378b846bbc215475c1b5767239ca3a4b593a0751865c314f5926c4bf"
+        }
+      ],
+      "documented_attributes": [
+        "defer"
+      ]
+    },
+    "thispatcher": {
+      "path": "docs/refpages/max-ref/thispatcher.maxref.xml",
+      "bytes": 22422,
+      "sha256": "9fee214fb158c465cc208afe78805eb6bc21df9aeab25c04415527a3c51cce81",
+      "citations": [
+        {
+          "selector": "./discussion",
+          "attributes": {},
+          "element_sha256": "4ad921705a62d0fc83f64ae6c0658c314f13ff2095448cc797c18aa8de240495"
+        },
+        {
+          "selector": "./methodlist/method[@name=\"setactivetab\"]",
+          "attributes": {
+            "name": "setactivetab"
+          },
+          "element_sha256": "add5d611220c1618aeb73730a2150c0df09492601c008b35b5422bc64d9788c8"
+        },
+        {
+          "selector": ".//entry[@name=\"front\"]",
+          "attributes": {
+            "name": "front"
+          },
+          "element_sha256": "8f8cbeb75edfb0a34c5e93ce7643f93cf55d095a0b6b37884ddf437d34a7c30d"
+        },
+        {
+          "selector": ".//entry[@name=\"loadbang\"]",
+          "attributes": {
+            "name": "loadbang"
+          },
+          "element_sha256": "44ad874cfffe2b231e6c41b4b55d44225a3d5dea3e89f855daa33d4b92e65b58"
+        },
+        {
+          "selector": ".//entry[@name=\"dispose\"]",
+          "attributes": {
+            "name": "dispose"
+          },
+          "element_sha256": "3308a94a525a5b2b2d8e2997086ced6fc24b1f3f5f7bd2668a7a7e5b3f6331bf"
+        }
+      ],
+      "documented_attributes": []
+    },
+    "pcontrol": {
+      "path": "docs/refpages/max-ref/pcontrol.maxref.xml",
+      "bytes": 5651,
+      "sha256": "4621ef2d19f02c7dd4abf442a24274a0feec335937275ad35cae93fc36ed5b40",
+      "citations": [
+        {
+          "selector": "./methodlist/method[@name=\"open\"]",
+          "attributes": {
+            "name": "open"
+          },
+          "element_sha256": "6f1c5ba4feb5bef2258a1bb1ebba99c165a7e62dbcdb0bab57b5f59c277f4220"
+        },
+        {
+          "selector": "./methodlist/method[@name=\"close\"]",
+          "attributes": {
+            "name": "close"
+          },
+          "element_sha256": "1252f6750dda27ee0d7d650643ce676e4e44e6a286b5238703c3d37eeb7cfd18"
+        },
+        {
+          "selector": "./methodlist/method[@name=\"load\"]",
+          "attributes": {
+            "name": "load"
+          },
+          "element_sha256": "7c3ad96fa506ae3af9cf4f10df51ce69f742387bc15591f1495e9812f5e53c98"
+        },
+        {
+          "selector": "./methodlist/method[@name=\"loadunique\"]",
+          "attributes": {
+            "name": "loadunique"
+          },
+          "element_sha256": "825770dd515847322d777f5a38260a5ba9a809fb1e74edb938ec7db2676e806b"
+        }
+      ],
+      "documented_attributes": []
+    }
+  },
+  "guides": {
+    "patcher_lifecycle": {
+      "path": "docs/userguide/content/patcher_lifecycle.json",
+      "bytes": 18052,
+      "sha256": "1ec9527db7cdd1be2f5abc462270610e8a9afae5ba6a14360e3dc8dcc84bfd1b",
+      "headings": [
+        {
+          "depth": 1,
+          "id": "patcher-lifecycle",
+          "text": "Patcher Lifecycle"
+        },
+        {
+          "depth": 2,
+          "id": "opening-a-patcher",
+          "text": "Opening a Patcher"
+        },
+        {
+          "depth": 3,
+          "id": "subpatchers",
+          "text": "Subpatchers"
+        },
+        {
+          "depth": 3,
+          "id": "object-initialization",
+          "text": "Object initialization"
+        },
+        {
+          "depth": 3,
+          "id": "patchcord-connection",
+          "text": "Patchcord connection"
+        },
+        {
+          "depth": 3,
+          "id": "parameter-initialization",
+          "text": "Parameter initialization"
+        },
+        {
+          "depth": 3,
+          "id": "pattr-restoration",
+          "text": "pattr Restoration"
+        },
+        {
+          "depth": 3,
+          "id": "loadbang-and-loadmess",
+          "text": "loadbang and loadmess"
+        },
+        {
+          "depth": 3,
+          "id": "live_thisdevice",
+          "text": "live.thisdevice"
+        },
+        {
+          "depth": 3,
+          "id": "window-activity",
+          "text": "Window activity"
+        },
+        {
+          "depth": 3,
+          "id": "patcher-arguments",
+          "text": "Patcher Arguments"
+        },
+        {
+          "depth": 3,
+          "id": "dspstate~-and-signal-processing",
+          "text": "dspstate~ and signal processing"
+        },
+        {
+          "depth": 2,
+          "id": "closing-a-patcher",
+          "text": "Closing a Patcher"
+        },
+        {
+          "depth": 3,
+          "id": "closebang",
+          "text": "closebang"
+        },
+        {
+          "depth": 3,
+          "id": "freeing-objects",
+          "text": "Freeing objects"
+        }
+      ],
+      "content_sha256": "9d723f7916677b4efd72fffd98c92711c50eb3df56442564947290f5af95c790"
+    },
+    "abstractions": {
+      "path": "docs/userguide/content/abstractions.json",
+      "bytes": 21132,
+      "sha256": "09df2c0194f1c23730924fb75f98c9e255f662baab500028bad5a80e00d10a3b",
+      "headings": [
+        {
+          "depth": 1,
+          "id": "abstractions",
+          "text": "Abstractions"
+        },
+        {
+          "depth": 2,
+          "id": "creating-an-abstraction",
+          "text": "Creating an Abstraction"
+        },
+        {
+          "depth": 2,
+          "id": "editing-an-abstraction",
+          "text": "Editing an Abstraction"
+        },
+        {
+          "depth": 2,
+          "id": "inlets-and-outlets",
+          "text": "Inlets and Outlets"
+        },
+        {
+          "depth": 2,
+          "id": "abstractions-vs-subpatchers",
+          "text": "Abstractions vs Subpatchers"
+        },
+        {
+          "depth": 3,
+          "id": "transformations",
+          "text": "Transformations"
+        },
+        {
+          "depth": 2,
+          "id": "arguments-and-attributes",
+          "text": "Arguments and Attributes"
+        },
+        {
+          "depth": 2,
+          "id": "unique-identifiers",
+          "text": "Unique Identifiers"
+        },
+        {
+          "depth": 2,
+          "id": "description-tags-and-browsing",
+          "text": "Description, Tags, and Browsing"
+        },
+        {
+          "depth": 2,
+          "id": "help-patches",
+          "text": "Help Patches"
+        }
+      ],
+      "content_sha256": "3f2b842d3e0d8d819548178164b491c045162c7afbde9f7da7fd9d8f478ff261"
+    },
+    "subpatchers": {
+      "path": "docs/userguide/content/subpatchers.json",
+      "bytes": 11014,
+      "sha256": "b72ec06f98d611936f5cb317765ac127ee1de56225b1ca4dbad22a155f82d887",
+      "headings": [
+        {
+          "depth": 1,
+          "id": "subpatchers-and-encapsulation",
+          "text": "Subpatchers and Encapsulation"
+        },
+        {
+          "depth": 2,
+          "id": "inlets-and-outlets",
+          "text": "Inlets and Outlets"
+        },
+        {
+          "depth": 2,
+          "id": "abstractions-vs-subpatchers",
+          "text": "Abstractions vs Subpatchers"
+        },
+        {
+          "depth": 2,
+          "id": "encapsulating-and-deencapsulating",
+          "text": "Encapsulating and De-encapsulating"
+        },
+        {
+          "depth": 3,
+          "id": "reinitializing",
+          "text": "Re-initializing"
+        }
+      ],
+      "content_sha256": "3cd75938d5c570a527ee7197069d0ac5a22a6e69ad834d0bce76340bf0d89db9"
+    }
+  },
+  "scripts": {
+    "helpstarter.js": {
+      "path": "help/resources/helpstarter.js",
+      "bytes": 1591,
+      "sha256": "a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8"
+    },
+    "helpname.js": {
+      "path": "help/resources/helpname.js",
+      "bytes": 905,
+      "sha256": "49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa"
+    },
+    "helpdetails.js": {
+      "path": "help/resources/helpdetails.js",
+      "bytes": 4199,
+      "sha256": "31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1"
+    },
+    "helpargs.js": {
+      "path": "help/resources/helpargs.js",
+      "bytes": 3623,
+      "sha256": "04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469"
+    }
+  },
+  "connector_shapes": {
+    "patcher": {
+      "path": "help/max/patcher.maxhelp",
+      "bytes": 27643,
+      "sha256": "051056b9ea8035e25605ff5dcdc656f9652a5c927a3acf904d0ac6f6c9386b45",
+      "connectors": [
+        {
+          "anchor": "/patcher/boxes/2/box/patcher/boxes/4/box/patcher/boxes/3/box",
+          "id": "obj-3",
+          "maxclass": "inlet",
+          "index": 1,
+          "patching_rect": [
+            31.0,
+            40.0,
+            31.0,
+            31.0
+          ],
+          "numinlets": 0,
+          "numoutlets": 1,
+          "outlettype": [
+            "float"
+          ]
+        },
+        {
+          "anchor": "/patcher/boxes/2/box/patcher/boxes/4/box/patcher/boxes/4/box",
+          "id": "obj-4",
+          "maxclass": "outlet",
+          "index": 1,
+          "patching_rect": [
+            31.0,
+            237.0,
+            30.0,
+            30.0
+          ],
+          "numinlets": 1,
+          "numoutlets": 0
+        },
+        {
+          "anchor": "/patcher/boxes/2/box/patcher/boxes/4/box/patcher/boxes/6/box",
+          "id": "obj-7",
+          "maxclass": "outlet",
+          "index": 2,
+          "patching_rect": [
+            100.0,
+            237.0,
+            30.0,
+            30.0
+          ],
+          "numinlets": 1,
+          "numoutlets": 0
+        }
+      ]
+    },
+    "inlet": {
+      "path": "help/max/inlet.maxhelp",
+      "bytes": 19204,
+      "sha256": "46ef162ac5d03035838bea3b2dd210282c845129427ea2ddcc2ebbf15782a7ce",
+      "connectors": [
+        {
+          "anchor": "/patcher/boxes/1/box/patcher/boxes/3/box/patcher/boxes/1/box",
+          "id": "obj-6",
+          "maxclass": "inlet",
+          "index": 2,
+          "patching_rect": [
+            160.0,
+            33.0,
+            25.0,
+            25.0
+          ],
+          "numinlets": 0,
+          "numoutlets": 1,
+          "outlettype": [
+            ""
+          ]
+        },
+        {
+          "anchor": "/patcher/boxes/1/box/patcher/boxes/3/box/patcher/boxes/2/box",
+          "id": "obj-5",
+          "maxclass": "inlet",
+          "index": 1,
+          "patching_rect": [
+            33.0,
+            35.0,
+            25.0,
+            25.0
+          ],
+          "numinlets": 0,
+          "numoutlets": 1,
+          "outlettype": [
+            ""
+          ]
+        }
+      ]
+    },
+    "outlet": {
+      "path": "help/max/outlet.maxhelp",
+      "bytes": 19096,
+      "sha256": "1ca70f0fe5ca4b269d9d5d18a26b403e3969335e3f3068c22fc315ac30a29e9a",
+      "connectors": [
+        {
+          "anchor": "/patcher/boxes/1/box/patcher/boxes/3/box/patcher/boxes/1/box",
+          "id": "obj-2",
+          "maxclass": "outlet",
+          "index": 2,
+          "patching_rect": [
+            148.0,
+            128.0,
+            25.0,
+            25.0
+          ],
+          "numinlets": 1,
+          "numoutlets": 0
+        },
+        {
+          "anchor": "/patcher/boxes/1/box/patcher/boxes/3/box/patcher/boxes/3/box",
+          "id": "obj-4",
+          "maxclass": "outlet",
+          "index": 1,
+          "patching_rect": [
+            35.0,
+            128.0,
+            25.0,
+            25.0
+          ],
+          "numinlets": 1,
+          "numoutlets": 0
+        }
+      ]
+    }
+  }
+}

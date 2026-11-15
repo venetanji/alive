@@ -1,0 +1,6349 @@
+{
+  "schema": 1,
+  "status": "observed-original-max",
+  "fixtures": [
+    {
+      "fixture": "message-ui",
+      "event_count": 185,
+      "row_count": 490,
+      "events": [
+        {
+          "input": {
+            "id": "event_0",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "bang",
+            "atoms": [],
+            "case": "initial hot"
+          },
+          "outputs": [
+            {
+              "seq": 2,
+              "label": "template:0",
+              "selector": "saved",
+              "atoms": [
+                0,
+                0
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "input": {
+            "id": "event_1",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "int",
+            "atoms": [
+              4
+            ],
+            "case": "initial hot"
+          },
+          "outputs": [
+            {
+              "seq": 5,
+              "label": "template:0",
+              "selector": "saved",
+              "atoms": [
+                4,
+                0
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            4,
+            5,
+            6
+          ]
+        },
+        {
+          "input": {
+            "id": "event_2",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "float",
+            "atoms": [
+              3.75
+            ],
+            "case": "initial hot"
+          },
+          "outputs": [
+            {
+              "seq": 8,
+              "label": "template:0",
+              "selector": "saved",
+              "atoms": [
+                3.75,
+                0
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            7,
+            8,
+            9
+          ]
+        },
+        {
+          "input": {
+            "id": "event_3",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "list",
+            "atoms": [
+              8,
+              9
+            ],
+            "case": "initial hot"
+          },
+          "outputs": [
+            {
+              "seq": 11,
+              "label": "template:0",
+              "selector": "saved",
+              "atoms": [
+                8,
+                9
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            10,
+            11,
+            12
+          ]
+        },
+        {
+          "input": {
+            "id": "event_4",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "list",
+            "atoms": [
+              "pear",
+              6
+            ],
+            "case": "initial hot"
+          },
+          "outputs": [
+            {
+              "seq": 14,
+              "label": "template:0",
+              "selector": "saved",
+              "atoms": [
+                "pear",
+                6
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            13,
+            14,
+            15
+          ]
+        },
+        {
+          "input": {
+            "id": "event_5",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "symbol",
+            "atoms": [
+              "apple"
+            ],
+            "case": "initial hot"
+          },
+          "outputs": [
+            {
+              "seq": 17,
+              "label": "template:0",
+              "selector": "saved",
+              "atoms": [
+                "apple",
+                6
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            16,
+            17,
+            18
+          ]
+        },
+        {
+          "input": {
+            "id": "event_6",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "other",
+            "atoms": [
+              2
+            ],
+            "case": "initial hot"
+          },
+          "outputs": [
+            {
+              "seq": 20,
+              "label": "template:0",
+              "selector": "saved",
+              "atoms": [
+                "other",
+                2
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            19,
+            20,
+            21
+          ]
+        },
+        {
+          "input": {
+            "id": "event_7",
+            "target": "template",
+            "inlet": 1,
+            "lane": 1,
+            "selector": "new",
+            "atoms": [
+              "$1",
+              "$2"
+            ],
+            "case": "cold replacement"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            22,
+            23
+          ]
+        },
+        {
+          "input": {
+            "id": "event_8",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "int",
+            "atoms": [
+              9
+            ],
+            "case": "hot after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 25,
+              "label": "template:0",
+              "selector": "new",
+              "atoms": [
+                9,
+                2
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            24,
+            25,
+            26
+          ]
+        },
+        {
+          "input": {
+            "id": "event_9",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 28,
+              "label": "template:0",
+              "selector": "new",
+              "atoms": [
+                9,
+                2
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            27,
+            28,
+            29
+          ]
+        },
+        {
+          "input": {
+            "id": "event_10",
+            "target": "template",
+            "inlet": 1,
+            "lane": 1,
+            "selector": "list",
+            "atoms": [
+              5,
+              "pear",
+              2.25
+            ],
+            "case": "cold replacement"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            30,
+            31
+          ]
+        },
+        {
+          "input": {
+            "id": "event_11",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "int",
+            "atoms": [
+              9
+            ],
+            "case": "hot after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 33,
+              "label": "template:0",
+              "selector": "list",
+              "atoms": [
+                5,
+                "pear",
+                2.25
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            32,
+            33,
+            34
+          ]
+        },
+        {
+          "input": {
+            "id": "event_12",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 36,
+              "label": "template:0",
+              "selector": "list",
+              "atoms": [
+                5,
+                "pear",
+                2.25
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            35,
+            36,
+            37
+          ]
+        },
+        {
+          "input": {
+            "id": "event_13",
+            "target": "template",
+            "inlet": 1,
+            "lane": 1,
+            "selector": "float",
+            "atoms": [
+              6.25
+            ],
+            "case": "cold replacement"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            38,
+            39
+          ]
+        },
+        {
+          "input": {
+            "id": "event_14",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "int",
+            "atoms": [
+              9
+            ],
+            "case": "hot after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 41,
+              "label": "template:0",
+              "selector": "float",
+              "atoms": [
+                6.25
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            40,
+            41,
+            42
+          ]
+        },
+        {
+          "input": {
+            "id": "event_15",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 44,
+              "label": "template:0",
+              "selector": "float",
+              "atoms": [
+                6.25
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            43,
+            44,
+            45
+          ]
+        },
+        {
+          "input": {
+            "id": "event_16",
+            "target": "template",
+            "inlet": 1,
+            "lane": 1,
+            "selector": "symbol",
+            "atoms": [
+              "kiwi"
+            ],
+            "case": "cold replacement"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            46,
+            47
+          ]
+        },
+        {
+          "input": {
+            "id": "event_17",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "int",
+            "atoms": [
+              9
+            ],
+            "case": "hot after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 49,
+              "label": "template:0",
+              "selector": "symbol",
+              "atoms": [
+                "kiwi"
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            48,
+            49,
+            50
+          ]
+        },
+        {
+          "input": {
+            "id": "event_18",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 52,
+              "label": "template:0",
+              "selector": "symbol",
+              "atoms": [
+                "kiwi"
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            51,
+            52,
+            53
+          ]
+        },
+        {
+          "input": {
+            "id": "event_19",
+            "target": "template",
+            "inlet": 1,
+            "lane": 1,
+            "selector": "bang",
+            "atoms": [],
+            "case": "cold replacement"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            54,
+            55
+          ]
+        },
+        {
+          "input": {
+            "id": "event_20",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "int",
+            "atoms": [
+              9
+            ],
+            "case": "hot after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 57,
+              "label": "template:0",
+              "selector": "bang",
+              "atoms": []
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            56,
+            57,
+            58
+          ]
+        },
+        {
+          "input": {
+            "id": "event_21",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 60,
+              "label": "template:0",
+              "selector": "bang",
+              "atoms": []
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            59,
+            60,
+            61
+          ]
+        },
+        {
+          "input": {
+            "id": "event_22",
+            "target": "template",
+            "inlet": 1,
+            "lane": 1,
+            "selector": "list",
+            "atoms": [],
+            "case": "cold replacement"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            62,
+            63
+          ]
+        },
+        {
+          "input": {
+            "id": "event_23",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "int",
+            "atoms": [
+              9
+            ],
+            "case": "hot after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 65,
+              "label": "template:0",
+              "selector": "bang",
+              "atoms": []
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            64,
+            65,
+            66
+          ]
+        },
+        {
+          "input": {
+            "id": "event_24",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 68,
+              "label": "template:0",
+              "selector": "bang",
+              "atoms": []
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            67,
+            68,
+            69
+          ]
+        },
+        {
+          "input": {
+            "id": "event_25",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "set",
+            "atoms": [
+              "fresh",
+              "$1",
+              "$2"
+            ],
+            "case": "silent set"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            70,
+            71
+          ]
+        },
+        {
+          "input": {
+            "id": "event_26",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "list",
+            "atoms": [
+              11,
+              12
+            ],
+            "case": "hot after set"
+          },
+          "outputs": [
+            {
+              "seq": 73,
+              "label": "template:0",
+              "selector": "fresh",
+              "atoms": [
+                11,
+                12
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            72,
+            73,
+            74
+          ]
+        },
+        {
+          "input": {
+            "id": "event_27",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after set"
+          },
+          "outputs": [
+            {
+              "seq": 76,
+              "label": "template:0",
+              "selector": "fresh",
+              "atoms": [
+                11,
+                12
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            75,
+            76,
+            77
+          ]
+        },
+        {
+          "input": {
+            "id": "event_28",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "set",
+            "atoms": [
+              1,
+              "apple"
+            ],
+            "case": "silent set"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            78,
+            79
+          ]
+        },
+        {
+          "input": {
+            "id": "event_29",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "list",
+            "atoms": [
+              11,
+              12
+            ],
+            "case": "hot after set"
+          },
+          "outputs": [
+            {
+              "seq": 81,
+              "label": "template:0",
+              "selector": "list",
+              "atoms": [
+                1,
+                "apple"
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            80,
+            81,
+            82
+          ]
+        },
+        {
+          "input": {
+            "id": "event_30",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after set"
+          },
+          "outputs": [
+            {
+              "seq": 84,
+              "label": "template:0",
+              "selector": "list",
+              "atoms": [
+                1,
+                "apple"
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            83,
+            84,
+            85
+          ]
+        },
+        {
+          "input": {
+            "id": "event_31",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "set",
+            "atoms": [],
+            "case": "silent set"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            86,
+            87
+          ]
+        },
+        {
+          "input": {
+            "id": "event_32",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "list",
+            "atoms": [
+              11,
+              12
+            ],
+            "case": "hot after set"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            88,
+            89
+          ]
+        },
+        {
+          "input": {
+            "id": "event_33",
+            "target": "template",
+            "inlet": 0,
+            "lane": 0,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after set"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            90,
+            91
+          ]
+        },
+        {
+          "input": {
+            "id": "event_34",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "bang",
+            "atoms": [],
+            "case": "initial hot"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            92,
+            93
+          ]
+        },
+        {
+          "input": {
+            "id": "event_35",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "int",
+            "atoms": [
+              4
+            ],
+            "case": "initial hot"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            94,
+            95
+          ]
+        },
+        {
+          "input": {
+            "id": "event_36",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "float",
+            "atoms": [
+              3.75
+            ],
+            "case": "initial hot"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            96,
+            97
+          ]
+        },
+        {
+          "input": {
+            "id": "event_37",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "list",
+            "atoms": [
+              8,
+              9
+            ],
+            "case": "initial hot"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            98,
+            99
+          ]
+        },
+        {
+          "input": {
+            "id": "event_38",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "list",
+            "atoms": [
+              "pear",
+              6
+            ],
+            "case": "initial hot"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            100,
+            101
+          ]
+        },
+        {
+          "input": {
+            "id": "event_39",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "symbol",
+            "atoms": [
+              "apple"
+            ],
+            "case": "initial hot"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            102,
+            103
+          ]
+        },
+        {
+          "input": {
+            "id": "event_40",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "other",
+            "atoms": [
+              2
+            ],
+            "case": "initial hot"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            104,
+            105
+          ]
+        },
+        {
+          "input": {
+            "id": "event_41",
+            "target": "empty",
+            "inlet": 1,
+            "lane": 3,
+            "selector": "new",
+            "atoms": [
+              "$1",
+              "$2"
+            ],
+            "case": "cold replacement"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            106,
+            107
+          ]
+        },
+        {
+          "input": {
+            "id": "event_42",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "int",
+            "atoms": [
+              9
+            ],
+            "case": "hot after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 109,
+              "label": "empty:0",
+              "selector": "new",
+              "atoms": [
+                9,
+                0
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            108,
+            109,
+            110
+          ]
+        },
+        {
+          "input": {
+            "id": "event_43",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 112,
+              "label": "empty:0",
+              "selector": "new",
+              "atoms": [
+                9,
+                0
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            111,
+            112,
+            113
+          ]
+        },
+        {
+          "input": {
+            "id": "event_44",
+            "target": "empty",
+            "inlet": 1,
+            "lane": 3,
+            "selector": "list",
+            "atoms": [
+              5,
+              "pear",
+              2.25
+            ],
+            "case": "cold replacement"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            114,
+            115
+          ]
+        },
+        {
+          "input": {
+            "id": "event_45",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "int",
+            "atoms": [
+              9
+            ],
+            "case": "hot after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 117,
+              "label": "empty:0",
+              "selector": "list",
+              "atoms": [
+                5,
+                "pear",
+                2.25
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            116,
+            117,
+            118
+          ]
+        },
+        {
+          "input": {
+            "id": "event_46",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 120,
+              "label": "empty:0",
+              "selector": "list",
+              "atoms": [
+                5,
+                "pear",
+                2.25
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            119,
+            120,
+            121
+          ]
+        },
+        {
+          "input": {
+            "id": "event_47",
+            "target": "empty",
+            "inlet": 1,
+            "lane": 3,
+            "selector": "float",
+            "atoms": [
+              6.25
+            ],
+            "case": "cold replacement"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            122,
+            123
+          ]
+        },
+        {
+          "input": {
+            "id": "event_48",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "int",
+            "atoms": [
+              9
+            ],
+            "case": "hot after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 125,
+              "label": "empty:0",
+              "selector": "float",
+              "atoms": [
+                6.25
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            124,
+            125,
+            126
+          ]
+        },
+        {
+          "input": {
+            "id": "event_49",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 128,
+              "label": "empty:0",
+              "selector": "float",
+              "atoms": [
+                6.25
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            127,
+            128,
+            129
+          ]
+        },
+        {
+          "input": {
+            "id": "event_50",
+            "target": "empty",
+            "inlet": 1,
+            "lane": 3,
+            "selector": "symbol",
+            "atoms": [
+              "kiwi"
+            ],
+            "case": "cold replacement"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            130,
+            131
+          ]
+        },
+        {
+          "input": {
+            "id": "event_51",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "int",
+            "atoms": [
+              9
+            ],
+            "case": "hot after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 133,
+              "label": "empty:0",
+              "selector": "symbol",
+              "atoms": [
+                "kiwi"
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            132,
+            133,
+            134
+          ]
+        },
+        {
+          "input": {
+            "id": "event_52",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 136,
+              "label": "empty:0",
+              "selector": "symbol",
+              "atoms": [
+                "kiwi"
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            135,
+            136,
+            137
+          ]
+        },
+        {
+          "input": {
+            "id": "event_53",
+            "target": "empty",
+            "inlet": 1,
+            "lane": 3,
+            "selector": "bang",
+            "atoms": [],
+            "case": "cold replacement"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            138,
+            139
+          ]
+        },
+        {
+          "input": {
+            "id": "event_54",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "int",
+            "atoms": [
+              9
+            ],
+            "case": "hot after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 141,
+              "label": "empty:0",
+              "selector": "bang",
+              "atoms": []
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            140,
+            141,
+            142
+          ]
+        },
+        {
+          "input": {
+            "id": "event_55",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 144,
+              "label": "empty:0",
+              "selector": "bang",
+              "atoms": []
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            143,
+            144,
+            145
+          ]
+        },
+        {
+          "input": {
+            "id": "event_56",
+            "target": "empty",
+            "inlet": 1,
+            "lane": 3,
+            "selector": "list",
+            "atoms": [],
+            "case": "cold replacement"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            146,
+            147
+          ]
+        },
+        {
+          "input": {
+            "id": "event_57",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "int",
+            "atoms": [
+              9
+            ],
+            "case": "hot after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 149,
+              "label": "empty:0",
+              "selector": "bang",
+              "atoms": []
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            148,
+            149,
+            150
+          ]
+        },
+        {
+          "input": {
+            "id": "event_58",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 152,
+              "label": "empty:0",
+              "selector": "bang",
+              "atoms": []
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            151,
+            152,
+            153
+          ]
+        },
+        {
+          "input": {
+            "id": "event_59",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "set",
+            "atoms": [
+              "fresh",
+              "$1",
+              "$2"
+            ],
+            "case": "silent set"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            154,
+            155
+          ]
+        },
+        {
+          "input": {
+            "id": "event_60",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "list",
+            "atoms": [
+              11,
+              12
+            ],
+            "case": "hot after set"
+          },
+          "outputs": [
+            {
+              "seq": 157,
+              "label": "empty:0",
+              "selector": "fresh",
+              "atoms": [
+                11,
+                12
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            156,
+            157,
+            158
+          ]
+        },
+        {
+          "input": {
+            "id": "event_61",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after set"
+          },
+          "outputs": [
+            {
+              "seq": 160,
+              "label": "empty:0",
+              "selector": "fresh",
+              "atoms": [
+                11,
+                12
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            159,
+            160,
+            161
+          ]
+        },
+        {
+          "input": {
+            "id": "event_62",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "set",
+            "atoms": [
+              1,
+              "apple"
+            ],
+            "case": "silent set"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            162,
+            163
+          ]
+        },
+        {
+          "input": {
+            "id": "event_63",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "list",
+            "atoms": [
+              11,
+              12
+            ],
+            "case": "hot after set"
+          },
+          "outputs": [
+            {
+              "seq": 165,
+              "label": "empty:0",
+              "selector": "list",
+              "atoms": [
+                1,
+                "apple"
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            164,
+            165,
+            166
+          ]
+        },
+        {
+          "input": {
+            "id": "event_64",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after set"
+          },
+          "outputs": [
+            {
+              "seq": 168,
+              "label": "empty:0",
+              "selector": "list",
+              "atoms": [
+                1,
+                "apple"
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            167,
+            168,
+            169
+          ]
+        },
+        {
+          "input": {
+            "id": "event_65",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "set",
+            "atoms": [],
+            "case": "silent set"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            170,
+            171
+          ]
+        },
+        {
+          "input": {
+            "id": "event_66",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "list",
+            "atoms": [
+              11,
+              12
+            ],
+            "case": "hot after set"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            172,
+            173
+          ]
+        },
+        {
+          "input": {
+            "id": "event_67",
+            "target": "empty",
+            "inlet": 0,
+            "lane": 2,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after set"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            174,
+            175
+          ]
+        },
+        {
+          "input": {
+            "id": "event_68",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "bang",
+            "atoms": [],
+            "case": "initial hot"
+          },
+          "outputs": [
+            {
+              "seq": 177,
+              "label": "literal:0",
+              "selector": "fixed",
+              "atoms": [
+                7,
+                "pear"
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            176,
+            177,
+            178
+          ]
+        },
+        {
+          "input": {
+            "id": "event_69",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "int",
+            "atoms": [
+              4
+            ],
+            "case": "initial hot"
+          },
+          "outputs": [
+            {
+              "seq": 180,
+              "label": "literal:0",
+              "selector": "fixed",
+              "atoms": [
+                7,
+                "pear"
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            179,
+            180,
+            181
+          ]
+        },
+        {
+          "input": {
+            "id": "event_70",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "float",
+            "atoms": [
+              3.75
+            ],
+            "case": "initial hot"
+          },
+          "outputs": [
+            {
+              "seq": 183,
+              "label": "literal:0",
+              "selector": "fixed",
+              "atoms": [
+                7,
+                "pear"
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            182,
+            183,
+            184
+          ]
+        },
+        {
+          "input": {
+            "id": "event_71",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "list",
+            "atoms": [
+              8,
+              9
+            ],
+            "case": "initial hot"
+          },
+          "outputs": [
+            {
+              "seq": 186,
+              "label": "literal:0",
+              "selector": "fixed",
+              "atoms": [
+                7,
+                "pear"
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            185,
+            186,
+            187
+          ]
+        },
+        {
+          "input": {
+            "id": "event_72",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "list",
+            "atoms": [
+              "pear",
+              6
+            ],
+            "case": "initial hot"
+          },
+          "outputs": [
+            {
+              "seq": 189,
+              "label": "literal:0",
+              "selector": "fixed",
+              "atoms": [
+                7,
+                "pear"
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            188,
+            189,
+            190
+          ]
+        },
+        {
+          "input": {
+            "id": "event_73",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "symbol",
+            "atoms": [
+              "apple"
+            ],
+            "case": "initial hot"
+          },
+          "outputs": [
+            {
+              "seq": 192,
+              "label": "literal:0",
+              "selector": "fixed",
+              "atoms": [
+                7,
+                "pear"
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            191,
+            192,
+            193
+          ]
+        },
+        {
+          "input": {
+            "id": "event_74",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "other",
+            "atoms": [
+              2
+            ],
+            "case": "initial hot"
+          },
+          "outputs": [
+            {
+              "seq": 195,
+              "label": "literal:0",
+              "selector": "fixed",
+              "atoms": [
+                7,
+                "pear"
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            194,
+            195,
+            196
+          ]
+        },
+        {
+          "input": {
+            "id": "event_75",
+            "target": "literal",
+            "inlet": 1,
+            "lane": 5,
+            "selector": "new",
+            "atoms": [
+              "$1",
+              "$2"
+            ],
+            "case": "cold replacement"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            197,
+            198
+          ]
+        },
+        {
+          "input": {
+            "id": "event_76",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "int",
+            "atoms": [
+              9
+            ],
+            "case": "hot after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 200,
+              "label": "literal:0",
+              "selector": "new",
+              "atoms": [
+                9,
+                0
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            199,
+            200,
+            201
+          ]
+        },
+        {
+          "input": {
+            "id": "event_77",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 203,
+              "label": "literal:0",
+              "selector": "new",
+              "atoms": [
+                9,
+                0
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            202,
+            203,
+            204
+          ]
+        },
+        {
+          "input": {
+            "id": "event_78",
+            "target": "literal",
+            "inlet": 1,
+            "lane": 5,
+            "selector": "list",
+            "atoms": [
+              5,
+              "pear",
+              2.25
+            ],
+            "case": "cold replacement"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            205,
+            206
+          ]
+        },
+        {
+          "input": {
+            "id": "event_79",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "int",
+            "atoms": [
+              9
+            ],
+            "case": "hot after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 208,
+              "label": "literal:0",
+              "selector": "list",
+              "atoms": [
+                5,
+                "pear",
+                2.25
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            207,
+            208,
+            209
+          ]
+        },
+        {
+          "input": {
+            "id": "event_80",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 211,
+              "label": "literal:0",
+              "selector": "list",
+              "atoms": [
+                5,
+                "pear",
+                2.25
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            210,
+            211,
+            212
+          ]
+        },
+        {
+          "input": {
+            "id": "event_81",
+            "target": "literal",
+            "inlet": 1,
+            "lane": 5,
+            "selector": "float",
+            "atoms": [
+              6.25
+            ],
+            "case": "cold replacement"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            213,
+            214
+          ]
+        },
+        {
+          "input": {
+            "id": "event_82",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "int",
+            "atoms": [
+              9
+            ],
+            "case": "hot after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 216,
+              "label": "literal:0",
+              "selector": "float",
+              "atoms": [
+                6.25
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            215,
+            216,
+            217
+          ]
+        },
+        {
+          "input": {
+            "id": "event_83",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 219,
+              "label": "literal:0",
+              "selector": "float",
+              "atoms": [
+                6.25
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            218,
+            219,
+            220
+          ]
+        },
+        {
+          "input": {
+            "id": "event_84",
+            "target": "literal",
+            "inlet": 1,
+            "lane": 5,
+            "selector": "symbol",
+            "atoms": [
+              "kiwi"
+            ],
+            "case": "cold replacement"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            221,
+            222
+          ]
+        },
+        {
+          "input": {
+            "id": "event_85",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "int",
+            "atoms": [
+              9
+            ],
+            "case": "hot after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 224,
+              "label": "literal:0",
+              "selector": "symbol",
+              "atoms": [
+                "kiwi"
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            223,
+            224,
+            225
+          ]
+        },
+        {
+          "input": {
+            "id": "event_86",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 227,
+              "label": "literal:0",
+              "selector": "symbol",
+              "atoms": [
+                "kiwi"
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            226,
+            227,
+            228
+          ]
+        },
+        {
+          "input": {
+            "id": "event_87",
+            "target": "literal",
+            "inlet": 1,
+            "lane": 5,
+            "selector": "bang",
+            "atoms": [],
+            "case": "cold replacement"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            229,
+            230
+          ]
+        },
+        {
+          "input": {
+            "id": "event_88",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "int",
+            "atoms": [
+              9
+            ],
+            "case": "hot after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 232,
+              "label": "literal:0",
+              "selector": "bang",
+              "atoms": []
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            231,
+            232,
+            233
+          ]
+        },
+        {
+          "input": {
+            "id": "event_89",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 235,
+              "label": "literal:0",
+              "selector": "bang",
+              "atoms": []
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            234,
+            235,
+            236
+          ]
+        },
+        {
+          "input": {
+            "id": "event_90",
+            "target": "literal",
+            "inlet": 1,
+            "lane": 5,
+            "selector": "list",
+            "atoms": [],
+            "case": "cold replacement"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            237,
+            238
+          ]
+        },
+        {
+          "input": {
+            "id": "event_91",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "int",
+            "atoms": [
+              9
+            ],
+            "case": "hot after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 240,
+              "label": "literal:0",
+              "selector": "bang",
+              "atoms": []
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            239,
+            240,
+            241
+          ]
+        },
+        {
+          "input": {
+            "id": "event_92",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after cold replacement"
+          },
+          "outputs": [
+            {
+              "seq": 243,
+              "label": "literal:0",
+              "selector": "bang",
+              "atoms": []
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            242,
+            243,
+            244
+          ]
+        },
+        {
+          "input": {
+            "id": "event_93",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "set",
+            "atoms": [
+              "fresh",
+              "$1",
+              "$2"
+            ],
+            "case": "silent set"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            245,
+            246
+          ]
+        },
+        {
+          "input": {
+            "id": "event_94",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "list",
+            "atoms": [
+              11,
+              12
+            ],
+            "case": "hot after set"
+          },
+          "outputs": [
+            {
+              "seq": 248,
+              "label": "literal:0",
+              "selector": "fresh",
+              "atoms": [
+                11,
+                12
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            247,
+            248,
+            249
+          ]
+        },
+        {
+          "input": {
+            "id": "event_95",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after set"
+          },
+          "outputs": [
+            {
+              "seq": 251,
+              "label": "literal:0",
+              "selector": "fresh",
+              "atoms": [
+                11,
+                12
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            250,
+            251,
+            252
+          ]
+        },
+        {
+          "input": {
+            "id": "event_96",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "set",
+            "atoms": [
+              1,
+              "apple"
+            ],
+            "case": "silent set"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            253,
+            254
+          ]
+        },
+        {
+          "input": {
+            "id": "event_97",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "list",
+            "atoms": [
+              11,
+              12
+            ],
+            "case": "hot after set"
+          },
+          "outputs": [
+            {
+              "seq": 256,
+              "label": "literal:0",
+              "selector": "list",
+              "atoms": [
+                1,
+                "apple"
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            255,
+            256,
+            257
+          ]
+        },
+        {
+          "input": {
+            "id": "event_98",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after set"
+          },
+          "outputs": [
+            {
+              "seq": 259,
+              "label": "literal:0",
+              "selector": "list",
+              "atoms": [
+                1,
+                "apple"
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            258,
+            259,
+            260
+          ]
+        },
+        {
+          "input": {
+            "id": "event_99",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "set",
+            "atoms": [],
+            "case": "silent set"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            261,
+            262
+          ]
+        },
+        {
+          "input": {
+            "id": "event_100",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "list",
+            "atoms": [
+              11,
+              12
+            ],
+            "case": "hot after set"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            263,
+            264
+          ]
+        },
+        {
+          "input": {
+            "id": "event_101",
+            "target": "literal",
+            "inlet": 0,
+            "lane": 4,
+            "selector": "bang",
+            "atoms": [],
+            "case": "bang after set"
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            265,
+            266
+          ]
+        },
+        {
+          "input": {
+            "id": "event_102",
+            "target": "integer",
+            "inlet": 0,
+            "lane": 6,
+            "selector": "bang",
+            "atoms": []
+          },
+          "outputs": [
+            {
+              "seq": 268,
+              "label": "integer:0",
+              "selector": "int",
+              "atoms": [
+                0
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "integer",
+              "value": [
+                0
+              ]
+            }
+          ],
+          "raw_sequences": [
+            267,
+            268,
+            269
+          ]
+        },
+        {
+          "input": {
+            "id": "event_103",
+            "target": "integer",
+            "inlet": 0,
+            "lane": 6,
+            "selector": "float",
+            "atoms": [
+              3.9
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 271,
+              "label": "integer:0",
+              "selector": "int",
+              "atoms": [
+                3
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "integer",
+              "value": [
+                3
+              ]
+            }
+          ],
+          "raw_sequences": [
+            270,
+            271,
+            272
+          ]
+        },
+        {
+          "input": {
+            "id": "event_104",
+            "target": "integer",
+            "inlet": 0,
+            "lane": 6,
+            "selector": "float",
+            "atoms": [
+              -3.9
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 274,
+              "label": "integer:0",
+              "selector": "int",
+              "atoms": [
+                -3
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "integer",
+              "value": [
+                -3
+              ]
+            }
+          ],
+          "raw_sequences": [
+            273,
+            274,
+            275
+          ]
+        },
+        {
+          "input": {
+            "id": "event_105",
+            "target": "integer",
+            "inlet": 0,
+            "lane": 6,
+            "selector": "list",
+            "atoms": [
+              4,
+              5
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 277,
+              "label": "integer:0",
+              "selector": "int",
+              "atoms": [
+                4
+              ]
+            },
+            {
+              "seq": 278,
+              "label": "integer:0",
+              "selector": "int",
+              "atoms": [
+                4
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "integer",
+              "value": [
+                4
+              ]
+            }
+          ],
+          "raw_sequences": [
+            276,
+            277,
+            278,
+            279
+          ]
+        },
+        {
+          "input": {
+            "id": "event_106",
+            "target": "integer",
+            "inlet": 0,
+            "lane": 6,
+            "selector": "list",
+            "atoms": [
+              6.75,
+              "kiwi"
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 281,
+              "label": "integer:0",
+              "selector": "int",
+              "atoms": [
+                6
+              ]
+            },
+            {
+              "seq": 282,
+              "label": "integer:0",
+              "selector": "int",
+              "atoms": [
+                6
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "integer",
+              "value": [
+                6
+              ]
+            }
+          ],
+          "raw_sequences": [
+            280,
+            281,
+            282,
+            283
+          ]
+        },
+        {
+          "input": {
+            "id": "event_107",
+            "target": "integer",
+            "inlet": 0,
+            "lane": 6,
+            "selector": "symbol",
+            "atoms": [
+              "kiwi"
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "integer",
+              "value": [
+                6
+              ]
+            }
+          ],
+          "raw_sequences": [
+            284,
+            285
+          ]
+        },
+        {
+          "input": {
+            "id": "event_108",
+            "target": "integer",
+            "inlet": 0,
+            "lane": 6,
+            "selector": "set",
+            "atoms": [
+              12
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "integer",
+              "value": [
+                12
+              ]
+            }
+          ],
+          "raw_sequences": [
+            286,
+            287
+          ]
+        },
+        {
+          "input": {
+            "id": "event_109",
+            "target": "integer",
+            "inlet": 0,
+            "lane": 6,
+            "selector": "bang",
+            "atoms": []
+          },
+          "outputs": [
+            {
+              "seq": 289,
+              "label": "integer:0",
+              "selector": "int",
+              "atoms": [
+                12
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "integer",
+              "value": [
+                12
+              ]
+            }
+          ],
+          "raw_sequences": [
+            288,
+            289,
+            290
+          ]
+        },
+        {
+          "input": {
+            "id": "event_110",
+            "target": "integer",
+            "inlet": 0,
+            "lane": 6,
+            "selector": "min",
+            "atoms": [
+              -2
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "integer",
+              "value": [
+                12
+              ]
+            }
+          ],
+          "raw_sequences": [
+            291,
+            292
+          ]
+        },
+        {
+          "input": {
+            "id": "event_111",
+            "target": "integer",
+            "inlet": 0,
+            "lane": 6,
+            "selector": "max",
+            "atoms": [
+              2
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "integer",
+              "value": [
+                2
+              ]
+            }
+          ],
+          "raw_sequences": [
+            293,
+            294
+          ]
+        },
+        {
+          "input": {
+            "id": "event_112",
+            "target": "integer",
+            "inlet": 0,
+            "lane": 6,
+            "selector": "float",
+            "atoms": [
+              9.9
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 296,
+              "label": "integer:0",
+              "selector": "int",
+              "atoms": [
+                2
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "integer",
+              "value": [
+                2
+              ]
+            }
+          ],
+          "raw_sequences": [
+            295,
+            296,
+            297
+          ]
+        },
+        {
+          "input": {
+            "id": "event_113",
+            "target": "integer",
+            "inlet": 0,
+            "lane": 6,
+            "selector": "float",
+            "atoms": [
+              -9.9
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 299,
+              "label": "integer:0",
+              "selector": "int",
+              "atoms": [
+                -2
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "integer",
+              "value": [
+                -2
+              ]
+            }
+          ],
+          "raw_sequences": [
+            298,
+            299,
+            300
+          ]
+        },
+        {
+          "input": {
+            "id": "event_114",
+            "target": "integer",
+            "inlet": 0,
+            "lane": 6,
+            "selector": "set",
+            "atoms": [
+              8.9
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "integer",
+              "value": [
+                2
+              ]
+            }
+          ],
+          "raw_sequences": [
+            301,
+            302
+          ]
+        },
+        {
+          "input": {
+            "id": "event_115",
+            "target": "integer",
+            "inlet": 0,
+            "lane": 6,
+            "selector": "bang",
+            "atoms": []
+          },
+          "outputs": [
+            {
+              "seq": 304,
+              "label": "integer:0",
+              "selector": "int",
+              "atoms": [
+                2
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "integer",
+              "value": [
+                2
+              ]
+            }
+          ],
+          "raw_sequences": [
+            303,
+            304,
+            305
+          ]
+        },
+        {
+          "input": {
+            "id": "event_116",
+            "target": "integer",
+            "inlet": 0,
+            "lane": 6,
+            "selector": "min",
+            "atoms": []
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "integer",
+              "value": [
+                2
+              ]
+            }
+          ],
+          "raw_sequences": [
+            306,
+            307
+          ]
+        },
+        {
+          "input": {
+            "id": "event_117",
+            "target": "integer",
+            "inlet": 0,
+            "lane": 6,
+            "selector": "max",
+            "atoms": []
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "integer",
+              "value": [
+                2
+              ]
+            }
+          ],
+          "raw_sequences": [
+            308,
+            309
+          ]
+        },
+        {
+          "input": {
+            "id": "event_118",
+            "target": "integer",
+            "inlet": 0,
+            "lane": 6,
+            "selector": "float",
+            "atoms": [
+              9.9
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 311,
+              "label": "integer:0",
+              "selector": "int",
+              "atoms": [
+                9
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "integer",
+              "value": [
+                9
+              ]
+            }
+          ],
+          "raw_sequences": [
+            310,
+            311,
+            312
+          ]
+        },
+        {
+          "input": {
+            "id": "event_119",
+            "target": "integer",
+            "inlet": 0,
+            "lane": 6,
+            "selector": "tab",
+            "atoms": []
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "integer",
+              "value": [
+                9
+              ]
+            }
+          ],
+          "raw_sequences": [
+            313,
+            314
+          ]
+        },
+        {
+          "input": {
+            "id": "event_120",
+            "target": "integer",
+            "inlet": 0,
+            "lane": 6,
+            "selector": "bang",
+            "atoms": []
+          },
+          "outputs": [
+            {
+              "seq": 316,
+              "label": "integer:0",
+              "selector": "int",
+              "atoms": [
+                9
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "integer",
+              "value": [
+                9
+              ]
+            }
+          ],
+          "raw_sequences": [
+            315,
+            316,
+            317
+          ]
+        },
+        {
+          "input": {
+            "id": "event_121",
+            "target": "bounded",
+            "inlet": 0,
+            "lane": 7,
+            "selector": "bang",
+            "atoms": []
+          },
+          "outputs": [
+            {
+              "seq": 319,
+              "label": "bounded:0",
+              "selector": "int",
+              "atoms": [
+                0
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "bounded",
+              "value": [
+                0
+              ]
+            }
+          ],
+          "raw_sequences": [
+            318,
+            319,
+            320
+          ]
+        },
+        {
+          "input": {
+            "id": "event_122",
+            "target": "bounded",
+            "inlet": 0,
+            "lane": 7,
+            "selector": "float",
+            "atoms": [
+              3.9
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 322,
+              "label": "bounded:0",
+              "selector": "int",
+              "atoms": [
+                3
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "bounded",
+              "value": [
+                3
+              ]
+            }
+          ],
+          "raw_sequences": [
+            321,
+            322,
+            323
+          ]
+        },
+        {
+          "input": {
+            "id": "event_123",
+            "target": "bounded",
+            "inlet": 0,
+            "lane": 7,
+            "selector": "float",
+            "atoms": [
+              -3.9
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 325,
+              "label": "bounded:0",
+              "selector": "int",
+              "atoms": [
+                -3
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "bounded",
+              "value": [
+                -3
+              ]
+            }
+          ],
+          "raw_sequences": [
+            324,
+            325,
+            326
+          ]
+        },
+        {
+          "input": {
+            "id": "event_124",
+            "target": "bounded",
+            "inlet": 0,
+            "lane": 7,
+            "selector": "list",
+            "atoms": [
+              4,
+              5
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 328,
+              "label": "bounded:0",
+              "selector": "int",
+              "atoms": [
+                4
+              ]
+            },
+            {
+              "seq": 329,
+              "label": "bounded:0",
+              "selector": "int",
+              "atoms": [
+                4
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "bounded",
+              "value": [
+                4
+              ]
+            }
+          ],
+          "raw_sequences": [
+            327,
+            328,
+            329,
+            330
+          ]
+        },
+        {
+          "input": {
+            "id": "event_125",
+            "target": "bounded",
+            "inlet": 0,
+            "lane": 7,
+            "selector": "list",
+            "atoms": [
+              6.75,
+              "kiwi"
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 332,
+              "label": "bounded:0",
+              "selector": "int",
+              "atoms": [
+                5
+              ]
+            },
+            {
+              "seq": 333,
+              "label": "bounded:0",
+              "selector": "int",
+              "atoms": [
+                5
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "bounded",
+              "value": [
+                5
+              ]
+            }
+          ],
+          "raw_sequences": [
+            331,
+            332,
+            333,
+            334
+          ]
+        },
+        {
+          "input": {
+            "id": "event_126",
+            "target": "bounded",
+            "inlet": 0,
+            "lane": 7,
+            "selector": "symbol",
+            "atoms": [
+              "kiwi"
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "bounded",
+              "value": [
+                5
+              ]
+            }
+          ],
+          "raw_sequences": [
+            335,
+            336
+          ]
+        },
+        {
+          "input": {
+            "id": "event_127",
+            "target": "bounded",
+            "inlet": 0,
+            "lane": 7,
+            "selector": "set",
+            "atoms": [
+              12
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "bounded",
+              "value": [
+                5
+              ]
+            }
+          ],
+          "raw_sequences": [
+            337,
+            338
+          ]
+        },
+        {
+          "input": {
+            "id": "event_128",
+            "target": "bounded",
+            "inlet": 0,
+            "lane": 7,
+            "selector": "bang",
+            "atoms": []
+          },
+          "outputs": [
+            {
+              "seq": 340,
+              "label": "bounded:0",
+              "selector": "int",
+              "atoms": [
+                5
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "bounded",
+              "value": [
+                5
+              ]
+            }
+          ],
+          "raw_sequences": [
+            339,
+            340,
+            341
+          ]
+        },
+        {
+          "input": {
+            "id": "event_129",
+            "target": "bounded",
+            "inlet": 0,
+            "lane": 7,
+            "selector": "min",
+            "atoms": [
+              -2
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "bounded",
+              "value": [
+                5
+              ]
+            }
+          ],
+          "raw_sequences": [
+            342,
+            343
+          ]
+        },
+        {
+          "input": {
+            "id": "event_130",
+            "target": "bounded",
+            "inlet": 0,
+            "lane": 7,
+            "selector": "max",
+            "atoms": [
+              2
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "bounded",
+              "value": [
+                2
+              ]
+            }
+          ],
+          "raw_sequences": [
+            344,
+            345
+          ]
+        },
+        {
+          "input": {
+            "id": "event_131",
+            "target": "bounded",
+            "inlet": 0,
+            "lane": 7,
+            "selector": "float",
+            "atoms": [
+              9.9
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 347,
+              "label": "bounded:0",
+              "selector": "int",
+              "atoms": [
+                2
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "bounded",
+              "value": [
+                2
+              ]
+            }
+          ],
+          "raw_sequences": [
+            346,
+            347,
+            348
+          ]
+        },
+        {
+          "input": {
+            "id": "event_132",
+            "target": "bounded",
+            "inlet": 0,
+            "lane": 7,
+            "selector": "float",
+            "atoms": [
+              -9.9
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 350,
+              "label": "bounded:0",
+              "selector": "int",
+              "atoms": [
+                -2
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "bounded",
+              "value": [
+                -2
+              ]
+            }
+          ],
+          "raw_sequences": [
+            349,
+            350,
+            351
+          ]
+        },
+        {
+          "input": {
+            "id": "event_133",
+            "target": "bounded",
+            "inlet": 0,
+            "lane": 7,
+            "selector": "set",
+            "atoms": [
+              8.9
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "bounded",
+              "value": [
+                2
+              ]
+            }
+          ],
+          "raw_sequences": [
+            352,
+            353
+          ]
+        },
+        {
+          "input": {
+            "id": "event_134",
+            "target": "bounded",
+            "inlet": 0,
+            "lane": 7,
+            "selector": "bang",
+            "atoms": []
+          },
+          "outputs": [
+            {
+              "seq": 355,
+              "label": "bounded:0",
+              "selector": "int",
+              "atoms": [
+                2
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "bounded",
+              "value": [
+                2
+              ]
+            }
+          ],
+          "raw_sequences": [
+            354,
+            355,
+            356
+          ]
+        },
+        {
+          "input": {
+            "id": "event_135",
+            "target": "bounded",
+            "inlet": 0,
+            "lane": 7,
+            "selector": "min",
+            "atoms": []
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "bounded",
+              "value": [
+                2
+              ]
+            }
+          ],
+          "raw_sequences": [
+            357,
+            358
+          ]
+        },
+        {
+          "input": {
+            "id": "event_136",
+            "target": "bounded",
+            "inlet": 0,
+            "lane": 7,
+            "selector": "max",
+            "atoms": []
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "bounded",
+              "value": [
+                2
+              ]
+            }
+          ],
+          "raw_sequences": [
+            359,
+            360
+          ]
+        },
+        {
+          "input": {
+            "id": "event_137",
+            "target": "bounded",
+            "inlet": 0,
+            "lane": 7,
+            "selector": "float",
+            "atoms": [
+              9.9
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 362,
+              "label": "bounded:0",
+              "selector": "int",
+              "atoms": [
+                9
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "bounded",
+              "value": [
+                9
+              ]
+            }
+          ],
+          "raw_sequences": [
+            361,
+            362,
+            363
+          ]
+        },
+        {
+          "input": {
+            "id": "event_138",
+            "target": "bounded",
+            "inlet": 0,
+            "lane": 7,
+            "selector": "tab",
+            "atoms": []
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "bounded",
+              "value": [
+                9
+              ]
+            }
+          ],
+          "raw_sequences": [
+            364,
+            365
+          ]
+        },
+        {
+          "input": {
+            "id": "event_139",
+            "target": "bounded",
+            "inlet": 0,
+            "lane": 7,
+            "selector": "bang",
+            "atoms": []
+          },
+          "outputs": [
+            {
+              "seq": 367,
+              "label": "bounded:0",
+              "selector": "int",
+              "atoms": [
+                9
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "bounded",
+              "value": [
+                9
+              ]
+            }
+          ],
+          "raw_sequences": [
+            366,
+            367,
+            368
+          ]
+        },
+        {
+          "input": {
+            "id": "event_140",
+            "target": "fractional",
+            "inlet": 0,
+            "lane": 8,
+            "selector": "bang",
+            "atoms": []
+          },
+          "outputs": [
+            {
+              "seq": 370,
+              "label": "fractional:0",
+              "selector": "float",
+              "atoms": [
+                0
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "fractional",
+              "value": [
+                0
+              ]
+            }
+          ],
+          "raw_sequences": [
+            369,
+            370,
+            371
+          ]
+        },
+        {
+          "input": {
+            "id": "event_141",
+            "target": "fractional",
+            "inlet": 0,
+            "lane": 8,
+            "selector": "float",
+            "atoms": [
+              3.9
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 373,
+              "label": "fractional:0",
+              "selector": "float",
+              "atoms": [
+                3.9
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "fractional",
+              "value": [
+                3.9
+              ]
+            }
+          ],
+          "raw_sequences": [
+            372,
+            373,
+            374
+          ]
+        },
+        {
+          "input": {
+            "id": "event_142",
+            "target": "fractional",
+            "inlet": 0,
+            "lane": 8,
+            "selector": "float",
+            "atoms": [
+              -3.9
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 376,
+              "label": "fractional:0",
+              "selector": "float",
+              "atoms": [
+                -3.9
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "fractional",
+              "value": [
+                -3.9
+              ]
+            }
+          ],
+          "raw_sequences": [
+            375,
+            376,
+            377
+          ]
+        },
+        {
+          "input": {
+            "id": "event_143",
+            "target": "fractional",
+            "inlet": 0,
+            "lane": 8,
+            "selector": "list",
+            "atoms": [
+              4,
+              5
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 379,
+              "label": "fractional:0",
+              "selector": "float",
+              "atoms": [
+                4
+              ]
+            },
+            {
+              "seq": 380,
+              "label": "fractional:0",
+              "selector": "float",
+              "atoms": [
+                4
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "fractional",
+              "value": [
+                4
+              ]
+            }
+          ],
+          "raw_sequences": [
+            378,
+            379,
+            380,
+            381
+          ]
+        },
+        {
+          "input": {
+            "id": "event_144",
+            "target": "fractional",
+            "inlet": 0,
+            "lane": 8,
+            "selector": "list",
+            "atoms": [
+              6.75,
+              "kiwi"
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 383,
+              "label": "fractional:0",
+              "selector": "float",
+              "atoms": [
+                6.75
+              ]
+            },
+            {
+              "seq": 384,
+              "label": "fractional:0",
+              "selector": "float",
+              "atoms": [
+                6.75
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "fractional",
+              "value": [
+                6.75
+              ]
+            }
+          ],
+          "raw_sequences": [
+            382,
+            383,
+            384,
+            385
+          ]
+        },
+        {
+          "input": {
+            "id": "event_145",
+            "target": "fractional",
+            "inlet": 0,
+            "lane": 8,
+            "selector": "symbol",
+            "atoms": [
+              "kiwi"
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "fractional",
+              "value": [
+                6.75
+              ]
+            }
+          ],
+          "raw_sequences": [
+            386,
+            387
+          ]
+        },
+        {
+          "input": {
+            "id": "event_146",
+            "target": "fractional",
+            "inlet": 0,
+            "lane": 8,
+            "selector": "set",
+            "atoms": [
+              12
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "fractional",
+              "value": [
+                12
+              ]
+            }
+          ],
+          "raw_sequences": [
+            388,
+            389
+          ]
+        },
+        {
+          "input": {
+            "id": "event_147",
+            "target": "fractional",
+            "inlet": 0,
+            "lane": 8,
+            "selector": "bang",
+            "atoms": []
+          },
+          "outputs": [
+            {
+              "seq": 391,
+              "label": "fractional:0",
+              "selector": "float",
+              "atoms": [
+                12
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "fractional",
+              "value": [
+                12
+              ]
+            }
+          ],
+          "raw_sequences": [
+            390,
+            391,
+            392
+          ]
+        },
+        {
+          "input": {
+            "id": "event_148",
+            "target": "fractional",
+            "inlet": 0,
+            "lane": 8,
+            "selector": "min",
+            "atoms": [
+              -2
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "fractional",
+              "value": [
+                12
+              ]
+            }
+          ],
+          "raw_sequences": [
+            393,
+            394
+          ]
+        },
+        {
+          "input": {
+            "id": "event_149",
+            "target": "fractional",
+            "inlet": 0,
+            "lane": 8,
+            "selector": "max",
+            "atoms": [
+              2
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "fractional",
+              "value": [
+                2
+              ]
+            }
+          ],
+          "raw_sequences": [
+            395,
+            396
+          ]
+        },
+        {
+          "input": {
+            "id": "event_150",
+            "target": "fractional",
+            "inlet": 0,
+            "lane": 8,
+            "selector": "float",
+            "atoms": [
+              9.9
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 398,
+              "label": "fractional:0",
+              "selector": "float",
+              "atoms": [
+                2
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "fractional",
+              "value": [
+                2
+              ]
+            }
+          ],
+          "raw_sequences": [
+            397,
+            398,
+            399
+          ]
+        },
+        {
+          "input": {
+            "id": "event_151",
+            "target": "fractional",
+            "inlet": 0,
+            "lane": 8,
+            "selector": "float",
+            "atoms": [
+              -9.9
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 401,
+              "label": "fractional:0",
+              "selector": "float",
+              "atoms": [
+                -2
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "fractional",
+              "value": [
+                -2
+              ]
+            }
+          ],
+          "raw_sequences": [
+            400,
+            401,
+            402
+          ]
+        },
+        {
+          "input": {
+            "id": "event_152",
+            "target": "fractional",
+            "inlet": 0,
+            "lane": 8,
+            "selector": "set",
+            "atoms": [
+              8.9
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "fractional",
+              "value": [
+                2
+              ]
+            }
+          ],
+          "raw_sequences": [
+            403,
+            404
+          ]
+        },
+        {
+          "input": {
+            "id": "event_153",
+            "target": "fractional",
+            "inlet": 0,
+            "lane": 8,
+            "selector": "bang",
+            "atoms": []
+          },
+          "outputs": [
+            {
+              "seq": 406,
+              "label": "fractional:0",
+              "selector": "float",
+              "atoms": [
+                2
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "fractional",
+              "value": [
+                2
+              ]
+            }
+          ],
+          "raw_sequences": [
+            405,
+            406,
+            407
+          ]
+        },
+        {
+          "input": {
+            "id": "event_154",
+            "target": "fractional",
+            "inlet": 0,
+            "lane": 8,
+            "selector": "min",
+            "atoms": []
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "fractional",
+              "value": [
+                2
+              ]
+            }
+          ],
+          "raw_sequences": [
+            408,
+            409
+          ]
+        },
+        {
+          "input": {
+            "id": "event_155",
+            "target": "fractional",
+            "inlet": 0,
+            "lane": 8,
+            "selector": "max",
+            "atoms": []
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "fractional",
+              "value": [
+                2
+              ]
+            }
+          ],
+          "raw_sequences": [
+            410,
+            411
+          ]
+        },
+        {
+          "input": {
+            "id": "event_156",
+            "target": "fractional",
+            "inlet": 0,
+            "lane": 8,
+            "selector": "float",
+            "atoms": [
+              9.9
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 413,
+              "label": "fractional:0",
+              "selector": "float",
+              "atoms": [
+                9.9
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "fractional",
+              "value": [
+                9.9
+              ]
+            }
+          ],
+          "raw_sequences": [
+            412,
+            413,
+            414
+          ]
+        },
+        {
+          "input": {
+            "id": "event_157",
+            "target": "fractional",
+            "inlet": 0,
+            "lane": 8,
+            "selector": "tab",
+            "atoms": []
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "fractional",
+              "value": [
+                9.9
+              ]
+            }
+          ],
+          "raw_sequences": [
+            415,
+            416
+          ]
+        },
+        {
+          "input": {
+            "id": "event_158",
+            "target": "fractional",
+            "inlet": 0,
+            "lane": 8,
+            "selector": "bang",
+            "atoms": []
+          },
+          "outputs": [
+            {
+              "seq": 418,
+              "label": "fractional:0",
+              "selector": "float",
+              "atoms": [
+                9.9
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "fractional",
+              "value": [
+                9.9
+              ]
+            }
+          ],
+          "raw_sequences": [
+            417,
+            418,
+            419
+          ]
+        },
+        {
+          "input": {
+            "id": "event_159",
+            "target": "intstore",
+            "inlet": 0,
+            "lane": 9,
+            "selector": "bang",
+            "atoms": []
+          },
+          "outputs": [
+            {
+              "seq": 421,
+              "label": "intstore:0",
+              "selector": "int",
+              "atoms": [
+                3
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "intstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            420,
+            421,
+            422
+          ]
+        },
+        {
+          "input": {
+            "id": "event_160",
+            "target": "intstore",
+            "inlet": 1,
+            "lane": 10,
+            "selector": "float",
+            "atoms": [
+              8.75
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "intstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            423,
+            424
+          ]
+        },
+        {
+          "input": {
+            "id": "event_161",
+            "target": "intstore",
+            "inlet": 0,
+            "lane": 9,
+            "selector": "send",
+            "atoms": [
+              "message_ui_probe"
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 426,
+              "label": "receiver_b:0",
+              "selector": "int",
+              "atoms": [
+                8
+              ]
+            },
+            {
+              "seq": 427,
+              "label": "receiver_a:0",
+              "selector": "int",
+              "atoms": [
+                8
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "intstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            425,
+            426,
+            427,
+            428
+          ]
+        },
+        {
+          "input": {
+            "id": "event_162",
+            "target": "intstore",
+            "inlet": 0,
+            "lane": 9,
+            "selector": "bang",
+            "atoms": []
+          },
+          "outputs": [
+            {
+              "seq": 430,
+              "label": "intstore:0",
+              "selector": "int",
+              "atoms": [
+                8
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "intstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            429,
+            430,
+            431
+          ]
+        },
+        {
+          "input": {
+            "id": "event_163",
+            "target": "intstore",
+            "inlet": 0,
+            "lane": 9,
+            "selector": "set",
+            "atoms": [
+              -4.75
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "intstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            432,
+            433
+          ]
+        },
+        {
+          "input": {
+            "id": "event_164",
+            "target": "intstore",
+            "inlet": 0,
+            "lane": 9,
+            "selector": "send",
+            "atoms": [
+              "message_ui_probe"
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 435,
+              "label": "receiver_b:0",
+              "selector": "int",
+              "atoms": [
+                -4
+              ]
+            },
+            {
+              "seq": 436,
+              "label": "receiver_a:0",
+              "selector": "int",
+              "atoms": [
+                -4
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "intstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            434,
+            435,
+            436,
+            437
+          ]
+        },
+        {
+          "input": {
+            "id": "event_165",
+            "target": "intstore",
+            "inlet": 1,
+            "lane": 10,
+            "selector": "send",
+            "atoms": [
+              "message_ui_probe"
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "intstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            438,
+            439
+          ]
+        },
+        {
+          "input": {
+            "id": "event_166",
+            "target": "intstore",
+            "inlet": 0,
+            "lane": 9,
+            "selector": "bang",
+            "atoms": []
+          },
+          "outputs": [
+            {
+              "seq": 441,
+              "label": "intstore:0",
+              "selector": "int",
+              "atoms": [
+                -4
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "intstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            440,
+            441,
+            442
+          ]
+        },
+        {
+          "input": {
+            "id": "event_167",
+            "target": "intstore",
+            "inlet": 0,
+            "lane": 9,
+            "selector": "send",
+            "atoms": []
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "intstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            443,
+            444
+          ]
+        },
+        {
+          "input": {
+            "id": "event_168",
+            "target": "intstore",
+            "inlet": 0,
+            "lane": 9,
+            "selector": "send",
+            "atoms": [
+              42
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "intstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            445,
+            446
+          ]
+        },
+        {
+          "input": {
+            "id": "event_169",
+            "target": "intstore",
+            "inlet": 0,
+            "lane": 9,
+            "selector": "send",
+            "atoms": [
+              "missing_message_ui_probe"
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "intstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            447,
+            448
+          ]
+        },
+        {
+          "input": {
+            "id": "event_170",
+            "target": "intstore",
+            "inlet": 0,
+            "lane": 9,
+            "selector": "bang",
+            "atoms": []
+          },
+          "outputs": [
+            {
+              "seq": 450,
+              "label": "intstore:0",
+              "selector": "int",
+              "atoms": [
+                -4
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "intstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            449,
+            450,
+            451
+          ]
+        },
+        {
+          "input": {
+            "id": "event_171",
+            "target": "floatstore",
+            "inlet": 0,
+            "lane": 11,
+            "selector": "bang",
+            "atoms": []
+          },
+          "outputs": [
+            {
+              "seq": 453,
+              "label": "floatstore:0",
+              "selector": "float",
+              "atoms": [
+                3.5
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "floatstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            452,
+            453,
+            454
+          ]
+        },
+        {
+          "input": {
+            "id": "event_172",
+            "target": "floatstore",
+            "inlet": 1,
+            "lane": 12,
+            "selector": "float",
+            "atoms": [
+              8.75
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "floatstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            455,
+            456
+          ]
+        },
+        {
+          "input": {
+            "id": "event_173",
+            "target": "floatstore",
+            "inlet": 0,
+            "lane": 11,
+            "selector": "send",
+            "atoms": [
+              "message_ui_probe"
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 458,
+              "label": "receiver_b:0",
+              "selector": "float",
+              "atoms": [
+                8.75
+              ]
+            },
+            {
+              "seq": 459,
+              "label": "receiver_a:0",
+              "selector": "float",
+              "atoms": [
+                8.75
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "floatstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            457,
+            458,
+            459,
+            460
+          ]
+        },
+        {
+          "input": {
+            "id": "event_174",
+            "target": "floatstore",
+            "inlet": 0,
+            "lane": 11,
+            "selector": "bang",
+            "atoms": []
+          },
+          "outputs": [
+            {
+              "seq": 462,
+              "label": "floatstore:0",
+              "selector": "float",
+              "atoms": [
+                8.75
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "floatstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            461,
+            462,
+            463
+          ]
+        },
+        {
+          "input": {
+            "id": "event_175",
+            "target": "floatstore",
+            "inlet": 0,
+            "lane": 11,
+            "selector": "set",
+            "atoms": [
+              -4.75
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "floatstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            464,
+            465
+          ]
+        },
+        {
+          "input": {
+            "id": "event_176",
+            "target": "floatstore",
+            "inlet": 0,
+            "lane": 11,
+            "selector": "send",
+            "atoms": [
+              "message_ui_probe"
+            ]
+          },
+          "outputs": [
+            {
+              "seq": 467,
+              "label": "receiver_b:0",
+              "selector": "float",
+              "atoms": [
+                -4.75
+              ]
+            },
+            {
+              "seq": 468,
+              "label": "receiver_a:0",
+              "selector": "float",
+              "atoms": [
+                -4.75
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "floatstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            466,
+            467,
+            468,
+            469
+          ]
+        },
+        {
+          "input": {
+            "id": "event_177",
+            "target": "floatstore",
+            "inlet": 1,
+            "lane": 12,
+            "selector": "send",
+            "atoms": [
+              "message_ui_probe"
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "floatstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            470,
+            471
+          ]
+        },
+        {
+          "input": {
+            "id": "event_178",
+            "target": "floatstore",
+            "inlet": 0,
+            "lane": 11,
+            "selector": "bang",
+            "atoms": []
+          },
+          "outputs": [
+            {
+              "seq": 473,
+              "label": "floatstore:0",
+              "selector": "float",
+              "atoms": [
+                -4.75
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "floatstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            472,
+            473,
+            474
+          ]
+        },
+        {
+          "input": {
+            "id": "event_179",
+            "target": "floatstore",
+            "inlet": 0,
+            "lane": 11,
+            "selector": "send",
+            "atoms": []
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "floatstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            475,
+            476
+          ]
+        },
+        {
+          "input": {
+            "id": "event_180",
+            "target": "floatstore",
+            "inlet": 0,
+            "lane": 11,
+            "selector": "send",
+            "atoms": [
+              42
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "floatstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            477,
+            478
+          ]
+        },
+        {
+          "input": {
+            "id": "event_181",
+            "target": "floatstore",
+            "inlet": 0,
+            "lane": 11,
+            "selector": "send",
+            "atoms": [
+              "missing_message_ui_probe"
+            ]
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "floatstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            479,
+            480
+          ]
+        },
+        {
+          "input": {
+            "id": "event_182",
+            "target": "floatstore",
+            "inlet": 0,
+            "lane": 11,
+            "selector": "bang",
+            "atoms": []
+          },
+          "outputs": [
+            {
+              "seq": 482,
+              "label": "floatstore:0",
+              "selector": "float",
+              "atoms": [
+                -4.75
+              ]
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "floatstore",
+              "value": null
+            }
+          ],
+          "raw_sequences": [
+            481,
+            482,
+            483
+          ]
+        },
+        {
+          "input": {
+            "id": "event_183",
+            "target": "integer",
+            "inlet": 0,
+            "lane": 6,
+            "selector": "select",
+            "atoms": [],
+            "keyboard": "Tab",
+            "wait_after_ms": 1200,
+            "case": "physical selected Tab"
+          },
+          "outputs": [
+            {
+              "seq": 486,
+              "label": "integer:1",
+              "selector": "bang",
+              "atoms": []
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "integer",
+              "value": [
+                9
+              ]
+            }
+          ],
+          "raw_sequences": [
+            484,
+            485,
+            486
+          ]
+        },
+        {
+          "input": {
+            "id": "event_184",
+            "target": "fractional",
+            "inlet": 0,
+            "lane": 8,
+            "selector": "select",
+            "atoms": [],
+            "keyboard": "Tab",
+            "wait_after_ms": 1200,
+            "case": "physical selected Tab"
+          },
+          "outputs": [
+            {
+              "seq": 489,
+              "label": "fractional:1",
+              "selector": "bang",
+              "atoms": []
+            }
+          ],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "fractional",
+              "value": [
+                9.9
+              ]
+            }
+          ],
+          "raw_sequences": [
+            487,
+            488,
+            489,
+            490
+          ]
+        }
+      ]
+    },
+    {
+      "fixture": "message-display",
+      "event_count": 12,
+      "row_count": 41,
+      "events": [
+        {
+          "input": {
+            "id": "display_0",
+            "target": "template",
+            "lane": 0,
+            "inlet": 0,
+            "selector": "bang",
+            "atoms": [],
+            "wait_after_ms": 1200,
+            "screenshot": true
+          },
+          "outputs": [
+            {
+              "seq": 3,
+              "label": "template:0",
+              "selector": "saved",
+              "atoms": [
+                0,
+                0
+              ]
+            }
+          ],
+          "delivery_tap": [
+            {
+              "seq": 2,
+              "selector": "bang",
+              "atoms": []
+            }
+          ],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "input": {
+            "id": "display_1",
+            "target": "template",
+            "lane": 0,
+            "inlet": 0,
+            "selector": "list",
+            "atoms": [
+              8,
+              9
+            ],
+            "wait_after_ms": 1200,
+            "screenshot": true
+          },
+          "outputs": [
+            {
+              "seq": 7,
+              "label": "template:0",
+              "selector": "saved",
+              "atoms": [
+                8,
+                9
+              ]
+            }
+          ],
+          "delivery_tap": [
+            {
+              "seq": 6,
+              "selector": "list",
+              "atoms": [
+                8,
+                9
+              ]
+            }
+          ],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            5,
+            6,
+            7,
+            8
+          ]
+        },
+        {
+          "input": {
+            "id": "display_2",
+            "target": "template",
+            "lane": 1,
+            "inlet": 1,
+            "selector": "new",
+            "atoms": [
+              "$1",
+              "$2"
+            ],
+            "wait_after_ms": 1200,
+            "screenshot": true
+          },
+          "outputs": [],
+          "delivery_tap": [
+            {
+              "seq": 10,
+              "selector": "new",
+              "atoms": [
+                "$1",
+                "$2"
+              ]
+            }
+          ],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            9,
+            10,
+            11
+          ]
+        },
+        {
+          "input": {
+            "id": "display_3",
+            "target": "template",
+            "lane": 0,
+            "inlet": 0,
+            "selector": "int",
+            "atoms": [
+              3
+            ],
+            "wait_after_ms": 1200,
+            "screenshot": true
+          },
+          "outputs": [
+            {
+              "seq": 14,
+              "label": "template:0",
+              "selector": "new",
+              "atoms": [
+                3,
+                9
+              ]
+            }
+          ],
+          "delivery_tap": [
+            {
+              "seq": 13,
+              "selector": "int",
+              "atoms": [
+                3
+              ]
+            }
+          ],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            12,
+            13,
+            14,
+            15
+          ]
+        },
+        {
+          "input": {
+            "id": "display_4",
+            "target": "empty",
+            "lane": 3,
+            "inlet": 1,
+            "selector": "list",
+            "atoms": [
+              5,
+              "pear",
+              2.25
+            ],
+            "wait_after_ms": 1200,
+            "screenshot": true
+          },
+          "outputs": [],
+          "delivery_tap": [
+            {
+              "seq": 17,
+              "selector": "list",
+              "atoms": [
+                5,
+                "pear",
+                2.25
+              ]
+            }
+          ],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            16,
+            17,
+            18
+          ]
+        },
+        {
+          "input": {
+            "id": "display_5",
+            "target": "literal",
+            "lane": 5,
+            "inlet": 1,
+            "selector": "symbol",
+            "atoms": [
+              "kiwi"
+            ],
+            "wait_after_ms": 1200,
+            "screenshot": true
+          },
+          "outputs": [],
+          "delivery_tap": [
+            {
+              "seq": 20,
+              "selector": "symbol",
+              "atoms": [
+                "kiwi"
+              ]
+            }
+          ],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            19,
+            20,
+            21
+          ]
+        },
+        {
+          "input": {
+            "id": "display_6",
+            "target": "literal",
+            "lane": 4,
+            "inlet": 0,
+            "selector": "bang",
+            "atoms": [],
+            "wait_after_ms": 1200,
+            "screenshot": true
+          },
+          "outputs": [
+            {
+              "seq": 24,
+              "label": "literal:0",
+              "selector": "symbol",
+              "atoms": [
+                "kiwi"
+              ]
+            }
+          ],
+          "delivery_tap": [
+            {
+              "seq": 23,
+              "selector": "bang",
+              "atoms": []
+            }
+          ],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            22,
+            23,
+            24,
+            25
+          ]
+        },
+        {
+          "input": {
+            "id": "display_7",
+            "target": "literal",
+            "lane": 5,
+            "inlet": 1,
+            "selector": "bang",
+            "atoms": [],
+            "wait_after_ms": 1200,
+            "screenshot": true
+          },
+          "outputs": [],
+          "delivery_tap": [
+            {
+              "seq": 27,
+              "selector": "bang",
+              "atoms": []
+            }
+          ],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            26,
+            27,
+            28
+          ]
+        },
+        {
+          "input": {
+            "id": "display_8",
+            "target": "literal",
+            "lane": 5,
+            "inlet": 1,
+            "selector": "list",
+            "atoms": [],
+            "wait_after_ms": 1200,
+            "screenshot": true
+          },
+          "outputs": [],
+          "delivery_tap": [],
+          "snapshots": [
+            {
+              "target": "literal",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            29,
+            30
+          ]
+        },
+        {
+          "input": {
+            "id": "display_9",
+            "target": "template",
+            "lane": 0,
+            "inlet": 0,
+            "selector": "set",
+            "atoms": [],
+            "wait_after_ms": 1200,
+            "screenshot": true
+          },
+          "outputs": [],
+          "delivery_tap": [
+            {
+              "seq": 32,
+              "selector": "set",
+              "atoms": []
+            }
+          ],
+          "snapshots": [
+            {
+              "target": "template",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            31,
+            32,
+            33
+          ]
+        },
+        {
+          "input": {
+            "id": "display_10",
+            "target": "empty",
+            "lane": 2,
+            "inlet": 0,
+            "selector": "set",
+            "atoms": [
+              "fresh",
+              "$1"
+            ],
+            "wait_after_ms": 1200,
+            "screenshot": true
+          },
+          "outputs": [],
+          "delivery_tap": [
+            {
+              "seq": 35,
+              "selector": "set",
+              "atoms": [
+                "fresh",
+                "$1"
+              ]
+            }
+          ],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            34,
+            35,
+            36
+          ]
+        },
+        {
+          "input": {
+            "id": "display_11",
+            "target": "empty",
+            "lane": 2,
+            "inlet": 0,
+            "selector": "int",
+            "atoms": [
+              7
+            ],
+            "wait_after_ms": 1200,
+            "screenshot": true
+          },
+          "outputs": [
+            {
+              "seq": 39,
+              "label": "empty:0",
+              "selector": "fresh",
+              "atoms": [
+                7
+              ]
+            }
+          ],
+          "delivery_tap": [
+            {
+              "seq": 38,
+              "selector": "int",
+              "atoms": [
+                7
+              ]
+            }
+          ],
+          "snapshots": [
+            {
+              "target": "empty",
+              "value": null,
+              "text": null
+            }
+          ],
+          "raw_sequences": [
+            37,
+            38,
+            39,
+            40,
+            41
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,459 @@
+{
+  "status": "FAILED",
+  "work": "/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-007",
+  "prefix": "/home/venetanji/.cache/alive-max-help-roots-20261022-wine-disposable",
+  "source_prefix": "/home/venetanji/.cache/alive-max-list-20261021/wine-disposable",
+  "capture_id": "29537c957cf8be0bcad594e9c29cb8ea3ab11e7cb9e216da",
+  "host_display": ":0",
+  "display": ":200",
+  "process_ownership": "unique capture environment marker plus exact prefix/display and PID start; pidfd signals",
+  "launch_diagnostics": [
+    {
+      "role": "xvfb",
+      "pid": 213208,
+      "status": "verified",
+      "attempts": [
+        {
+          "pid": 213208,
+          "expected_start": "616172",
+          "observed_start": "616172",
+          "start_match": true,
+          "environment_readable": true,
+          "field_matches": {
+            "capture_marker": true,
+            "prefix": true,
+            "display": true
+          },
+          "executable_path_sha256": "cc2fda09e0686b85457a35aa6ff9f53f8c33f6d94fd4e60aa255efbd25301d50",
+          "matches_scope": true,
+          "elapsed_ms": 0.414
+        }
+      ],
+      "expected_start": "616172"
+    },
+    {
+      "role": "wine-launcher",
+      "pid": 213209,
+      "status": "verified",
+      "attempts": [
+        {
+          "pid": 213209,
+          "expected_start": "616177",
+          "observed_start": "616177",
+          "start_match": true,
+          "environment_readable": true,
+          "field_matches": {
+            "capture_marker": true,
+            "prefix": true,
+            "display": true
+          },
+          "executable_path_sha256": "2ecadfbc9f7bd18a32773f9385c7c0d1033a697e13e571386c990b08dc42d9b0",
+          "matches_scope": true,
+          "elapsed_ms": 0.451
+        }
+      ],
+      "expected_start": "616177"
+    }
+  ],
+  "anchor_diagnostics": [],
+  "screenshot_count": 0,
+  "clipboard_actions": 0,
+  "runtime_invocations": 1,
+  "documents": [
+    {
+      "document": "append",
+      "source_path": "/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resources/help/max/append.maxhelp",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+      "pristine_path": "/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-007/pristine/append.maxhelp",
+      "working_path": "/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-007/working/append.maxhelp",
+      "initial_working_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "document": "prepend",
+      "source_path": "/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resources/help/max/prepend.maxhelp",
+      "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+      "pristine_path": "/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-007/pristine/prepend.maxhelp",
+      "working_path": "/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-007/working/prepend.maxhelp",
+      "initial_working_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb"
+    }
+  ],
+  "score_steps": 33,
+  "input_method": "programmatic original controls; no physical entry/drag claim",
+  "max_sha256": "7a881318209a10d33c982db482297ab870327d5d2cb90aee6e4e01a13e279d8b",
+  "helpers": [
+    {
+      "name": "helpargs.js",
+      "path": "help/resources/helpargs.js",
+      "bytes": 3623,
+      "sha256": "04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469",
+      "installed_verified": true,
+      "copied_verified": true
+    },
+    {
+      "name": "helpdetails.js",
+      "path": "help/resources/helpdetails.js",
+      "bytes": 4199,
+      "sha256": "31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1",
+      "installed_verified": true,
+      "copied_verified": true
+    },
+    {
+      "name": "helpname.js",
+      "path": "help/resources/helpname.js",
+      "bytes": 905,
+      "sha256": "49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa",
+      "installed_verified": true,
+      "copied_verified": true
+    },
+    {
+      "name": "helpstarter.js",
+      "path": "help/resources/helpstarter.js",
+      "bytes": 1591,
+      "sha256": "a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8",
+      "installed_verified": true,
+      "copied_verified": true
+    }
+  ],
+  "launched_processes": [
+    {
+      "role": "xvfb",
+      "pid": 213208,
+      "start": "616172"
+    },
+    {
+      "role": "wine-launcher",
+      "pid": 213209,
+      "start": "616177"
+    }
+  ],
+  "xvfb_pid": 213208,
+  "launcher_pid": 213209,
+  "loading_diagnostics": [
+    {
+      "document": "append",
+      "tree_boxes": 19,
+      "basic_named": true,
+      "attempts": 1,
+      "filepath_sha256": "2af72090aae126fcd86c48dcd3f06632aeaf7865209ee00612a6550bb253498e",
+      "filepath": "Z:/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-007/working/append.maxhelp",
+      "top_boxes": [
+        {
+          "ordinal": 0,
+          "basic_named": false,
+          "maxclass": "patcher"
+        },
+        {
+          "ordinal": 1,
+          "basic_named": false,
+          "maxclass_sha256": "72d8f0277feb5d68008f2a0da84b0a00ccb6809ef6fb51204d59884c922f2bb8"
+        },
+        {
+          "ordinal": 2,
+          "basic_named": true,
+          "maxclass": "patcher"
+        },
+        {
+          "ordinal": 3,
+          "basic_named": false,
+          "maxclass": "js"
+        }
+      ]
+    },
+    {
+      "document": "prepend",
+      "tree_boxes": 18,
+      "basic_named": true,
+      "attempts": 1,
+      "filepath_sha256": "f4ef7a3b8f0b2a317f0e9771525c38a57615b397c2f805d4dfa75ccf42aaaefd",
+      "filepath": "Z:/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-007/working/prepend.maxhelp",
+      "top_boxes": [
+        {
+          "ordinal": 0,
+          "basic_named": false,
+          "maxclass": "patcher"
+        },
+        {
+          "ordinal": 1,
+          "basic_named": false,
+          "maxclass_sha256": "72d8f0277feb5d68008f2a0da84b0a00ccb6809ef6fb51204d59884c922f2bb8"
+        },
+        {
+          "ordinal": 2,
+          "basic_named": true,
+          "maxclass": "patcher"
+        },
+        {
+          "ordinal": 3,
+          "basic_named": false,
+          "maxclass": "js"
+        }
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "document": "append",
+      "initial_tree_boxes": 19,
+      "source_inventory_boxes": 19,
+      "resolved_basic_boxes": 15,
+      "annotation_bindings": [
+        {
+          "kind": "source-bound-helper-width",
+          "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+          "anchor": "root/obj-5/obj-4",
+          "helper_filename": "helpargs.js",
+          "helper_sha256": "04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469",
+          "source_ignoreclick": 1,
+          "source_outlets": 1,
+          "saved_incoming_routes": 0,
+          "saved_outgoing_routes": 0,
+          "saved_rect": [
+            130,
+            195,
+            257.934143,
+            39
+          ],
+          "observer_policy": "omit-disconnected-annotation-leaf",
+          "live_rect": [
+            130,
+            195,
+            257.9139709472656,
+            39
+          ]
+        }
+      ],
+      "working_path": "Z:/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-007/working/append.maxhelp",
+      "original_routes": "retained; only leaf branches added",
+      "observer_order": "callback order only; not destination-order evidence"
+    },
+    {
+      "document": "prepend",
+      "initial_tree_boxes": 18,
+      "source_inventory_boxes": 18,
+      "resolved_basic_boxes": 14,
+      "annotation_bindings": [],
+      "working_path": "Z:/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-007/working/prepend.maxhelp",
+      "original_routes": "retained; only leaf branches added",
+      "observer_order": "callback order only; not destination-order evidence"
+    }
+  ],
+  "serialization_context": [
+    {
+      "document": "append",
+      "step_id": "initial",
+      "writer_valid": true,
+      "writer_class_is_thispatcher": true,
+      "writer_owner_is_root": false,
+      "writer_owner_path_matches": true,
+      "writer_understands_write": false,
+      "root_is_top_level": true,
+      "root_locked": true,
+      "root_dirty": false
+    }
+  ],
+  "serialization_window_diagnostics": {
+    "status": "observed",
+    "truncated": false,
+    "x_errors": [],
+    "windows": [
+      {
+        "window": 4194305,
+        "parent": 719,
+        "transient_for": null,
+        "title_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "title_characters": 0,
+        "save_title_token": false,
+        "authorization_title_token": false
+      },
+      {
+        "window": 4194307,
+        "parent": 719,
+        "transient_for": null,
+        "title_sha256": "c104eb78ff3e7817dd138ea9ed95f07837e4adbbf7d90cbbd026f7b9703028e8",
+        "title_characters": 11,
+        "save_title_token": false,
+        "authorization_title_token": false
+      },
+      {
+        "window": 4194306,
+        "parent": 719,
+        "transient_for": null,
+        "title_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "title_characters": 0,
+        "save_title_token": false,
+        "authorization_title_token": false
+      },
+      {
+        "window": 4194308,
+        "parent": 719,
+        "transient_for": null,
+        "title_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "title_characters": 0,
+        "save_title_token": false,
+        "authorization_title_token": false
+      },
+      {
+        "window": 4194309,
+        "parent": 719,
+        "transient_for": null,
+        "title_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "title_characters": 0,
+        "save_title_token": false,
+        "authorization_title_token": false
+      },
+      {
+        "window": 4194310,
+        "parent": 719,
+        "transient_for": null,
+        "title_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "title_characters": 0,
+        "save_title_token": false,
+        "authorization_title_token": false
+      },
+      {
+        "window": 4194311,
+        "parent": 719,
+        "transient_for": null,
+        "title_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "title_characters": 0,
+        "save_title_token": false,
+        "authorization_title_token": false
+      },
+      {
+        "window": 6291457,
+        "parent": 719,
+        "transient_for": null,
+        "title_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "title_characters": 0,
+        "save_title_token": false,
+        "authorization_title_token": false
+      },
+      {
+        "window": 10485762,
+        "parent": 719,
+        "transient_for": null,
+        "title_sha256": "c104eb78ff3e7817dd138ea9ed95f07837e4adbbf7d90cbbd026f7b9703028e8",
+        "title_characters": 11,
+        "save_title_token": false,
+        "authorization_title_token": false
+      },
+      {
+        "window": 10485761,
+        "parent": 719,
+        "transient_for": null,
+        "title_sha256": "b5a4255cf86e46cee046b7fdbac2f1b1b15b24b4453e10460ec429ef0b8d6cf3",
+        "title_characters": 10,
+        "save_title_token": false,
+        "authorization_title_token": false
+      },
+      {
+        "window": 8388641,
+        "parent": 719,
+        "transient_for": null,
+        "title_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "title_characters": 0,
+        "save_title_token": false,
+        "authorization_title_token": false
+      },
+      {
+        "window": 10485765,
+        "parent": 719,
+        "transient_for": 10485762,
+        "title_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "title_characters": 0,
+        "save_title_token": false,
+        "authorization_title_token": false
+      },
+      {
+        "window": 10485767,
+        "parent": 719,
+        "transient_for": null,
+        "title_sha256": "fb942d1ee0bb46408c245841bc7aef20fec6e233b9992657774103f87174e86f",
+        "title_characters": 18,
+        "save_title_token": false,
+        "authorization_title_token": false
+      },
+      {
+        "window": 10485768,
+        "parent": 719,
+        "transient_for": null,
+        "title_sha256": "a7a5eb6ada560af99e52b7136e68662c71e60c0f504773b629830a42dae176dc",
+        "title_characters": 8,
+        "save_title_token": false,
+        "authorization_title_token": false
+      },
+      {
+        "window": 10485769,
+        "parent": 719,
+        "transient_for": null,
+        "title_sha256": "dcc735b3250f410bc03d19d7ddf780ba75415a59fd0d0cf50d4f7cc5371f2d4a",
+        "title_characters": 11,
+        "save_title_token": false,
+        "authorization_title_token": false
+      },
+      {
+        "window": 10485770,
+        "parent": 719,
+        "transient_for": null,
+        "title_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "title_characters": 0,
+        "save_title_token": false,
+        "authorization_title_token": false
+      },
+      {
+        "window": 4194313,
+        "parent": 719,
+        "transient_for": 4194312,
+        "title_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "title_characters": 0,
+        "save_title_token": false,
+        "authorization_title_token": false
+      },
+      {
+        "window": 10485771,
+        "parent": 719,
+        "transient_for": null,
+        "title_sha256": "621f070488f72d5faaae178dd4d256faa0537cf325ff3c7466e29248fc6e8085",
+        "title_characters": 24,
+        "save_title_token": false,
+        "authorization_title_token": false
+      },
+      {
+        "window": 10485775,
+        "parent": 719,
+        "transient_for": null,
+        "title_sha256": "5c4fafd95b36cd0e4312764586ac98128f4b144e58ef2189206083b81ca129e2",
+        "title_characters": 32,
+        "save_title_token": false,
+        "authorization_title_token": false
+      },
+      {
+        "window": 10485776,
+        "parent": 719,
+        "transient_for": null,
+        "title_sha256": "e4a2e25f8c754972e6216cffea9c8e9c6b8aa7fa8ac4d1f36cae3329aed60af7",
+        "title_characters": 33,
+        "save_title_token": false,
+        "authorization_title_token": false
+      },
+      {
+        "window": 8388685,
+        "parent": 10485767,
+        "transient_for": null,
+        "title_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "title_characters": 0,
+        "save_title_token": false,
+        "authorization_title_token": false
+      }
+    ]
+  },
+  "complete": false,
+  "failure_sha256": "1d97f5e73234f05e2074f3777298b8f91cd200a17cd4572b0c09905275e71edf",
+  "ordinary_quit_requested": false,
+  "public_rows": 2,
+  "private_journal_sha256": "ace7f6fa53bce2946a54fc17298af88362ac70c04278d5a37dbf415830193606",
+  "private_log": {
+    "sha256": "0d6b4a8e71fcaaca9f1568e8cbdd015fd2dbe96b9ec25923b50b06fb461bd160",
+    "bytes": 616
+  }
+}

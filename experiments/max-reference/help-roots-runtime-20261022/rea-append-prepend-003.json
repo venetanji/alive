@@ -1,0 +1,946 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"evidence_id\":\"ev_a1467dbe308682860881a0e8721e846b13d27d6b3298c753b87dabf0765dacde\",\"subject\":null,\"provider\":{\"id\":\"rea-process\",\"name\":\"REA process capture\",\"version\":\"3\"},\"analysis_profile\":null,\"predicate_type\":\"rea.process-capture\",\"operation\":\"capture_process_scenario\",\"parameters\":{\"executable_name\":\"python3\",\"argument_count\":8,\"event_count\":0,\"filesystem_observation_path_count\":4,\"normalization\":{\"paths\":false,\"pids\":false,\"ports\":false,\"time_bucket_ms\":10,\"patterns\":[]}},\"raw_result\":null,\"normalized_result\":{\"manifest\":{\"rea_version\":\"6.4.0\",\"provider_version\":\"3\",\"platform\":\"linux\",\"architecture\":\"x64\",\"pty_backend\":\"node-pty\",\"started_at\":\"2026-10-22T04:46:53.301Z\",\"completed_at\":\"2026-10-22T04:47:25.024Z\",\"scenario\":{\"executable\":\"/usr/bin/python3\",\"arguments\":[\"experiments/max-reference/help-roots-runtime-20261022/run-runtime.py\",\"--execute\",\"--work\",\"/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-003\",\"--capture-name\",\"append-prepend-003\",\"--host-display\",\":0\"],\"working_directory\":\"/home/venetanji/Work/alive\",\"environment\":{},\"filesystem_observation_paths\":[\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/results/append-prepend-003/receipts.jsonl\",\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/results/append-prepend-003/session.json\",\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/results/append-prepend-003/cleanup.json\",\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/results/append-prepend-003/display-states.json\"],\"terminal\":{\"columns\":100,\"rows\":30,\"scrollback\":100},\"events\":[],\"timeout_ms\":180000,\"idle_timeout_ms\":170000,\"settle_ms\":100,\"limits\":{\"output_bytes\":32768,\"files\":4,\"file_bytes\":1048576,\"processes\":128,\"filesystem_depth\":1},\"normalization\":{\"paths\":false,\"pids\":false,\"ports\":false,\"time_bucket_ms\":10,\"patterns\":[]},\"finalization_ms\":15000,\"executable_sha256\":\"375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b\"},\"comparison_contract\":{\"working_directory\":\"/home/venetanji/Work/alive\",\"environment\":{},\"ambient_environment\":\"unknown\",\"filesystem_observation_paths\":[\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/results/append-prepend-003/receipts.jsonl\",\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/results/append-prepend-003/session.json\",\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/results/append-prepend-003/cleanup.json\",\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/results/append-prepend-003/display-states.json\"],\"terminal\":{\"columns\":100,\"rows\":30,\"scrollback\":100},\"events\":[],\"timeout_ms\":180000,\"idle_timeout_ms\":170000,\"settle_ms\":100,\"finalization_ms\":15000,\"limits\":{\"output_bytes\":32768,\"files\":4,\"file_bytes\":1048576,\"processes\":128,\"filesystem_depth\":1},\"normalization\":{\"paths\":false,\"pids\":false,\"ports\":false,\"time_bucket_ms\":10,\"patterns\":[]},\"rendered_line_format\":\"trailing-spaces-trimmed-v1\"},\"full_scenario_sha256\":\"1d18cae8dc8949b49ddc1c0f05ebcb63774b929e3bdf022252fa70fc76f432aa\",\"comparison_contract_sha256\":\"248b5eea63aef90ce68b95fe973972daa4afa340cd6246d9c87bc61b92b0500f\",\"selected_executable_sha256\":\"375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b\",\"executable_sha256\":\"375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b\",\"executable_identity\":{\"state\":\"path_metadata_unchanged\",\"reason\":null},\"normalization_sha256\":\"6395b08eb2d10ec772014904c65e1f817410704b29150fe79b70f3fcb3f50808\"},\"normalization\":{\"paths\":false,\"pids\":false,\"ports\":false,\"time_bucket_ms\":10,\"patterns\":[]},\"frames\":[{\"sequence\":0,\"at_ms\":5970,\"data\":\"{\\\"stage\\\": \\\"launched\\\", \\\"display\\\": \\\":200\\\"}\\r\\n\"},{\"sequence\":1,\"at_ms\":31560,\"data\":\"{\\\"stage\\\": \\\"cleaned\\\", \\\"preferences_unchanged\\\": true, \\\"prefix_remaining\\\": 0, \\\"capture_remaining\\\": 0}\\r\\n\"},{\"sequence\":2,\"at_ms\":31570,\"data\":\"Traceback (most recent call last):\\r\\n\"},{\"sequence\":3,\"at_ms\":31570,\"data\":\"  File \\u001b[35m\\\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime.py\\\"\\u001b[0m, line \\u001b[35m421\\u001b[0m, in \\u001b[35m<module>\\u001b[0m\\r\\n    \\u001b[31mmain\\u001b[0m\\u001b[1;31m()\\u001b[0m\\r\\n    \\u001b[31m~~~~\\u001b[0m\\u001b[1;31m^^\\u001b[0m\\r\\n  File \\u001b[35m\\\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime.py\\\"\\u001b[0m, line \\u001b[35m416\\u001b[0m, in \\u001b[35mmain\\u001b[0m\\r\\n    try:\\u001b[31mexecute\\u001b[0m\\u001b[1;31m(args)\\u001b[0m\\r\\n        \\u001b[31m~~~~~~~\\u001b[0m\\u001b[1;31m^^^^^^\\u001b[0m\\r\\n\"},{\"sequence\":4,\"at_ms\":31570,\"data\":\"  File \\u001b[35m\\\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime.py\\\"\\u001b[0m, line \\u001b[35m316\\u001b[0m, in \\u001b[35mexecute\\u001b[0m\\r\\n    if not ready['ready']:\\u001b[1;31mraise RuntimeError('Private anchor/inventory capability check failed')\\u001b[0m\\r\\n                          \\u001b[1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\u001b[0m\\r\\n\\u001b[1;35mRuntimeError\\u001b[0m: \\u001b[35mPrivate anchor/inventory capability check failed\\u001b[0m\\r\\n\"}],\"rendered_frames\":[{\"sequence\":0,\"at_ms\":5970,\"columns\":100,\"rows\":30,\"cursor_x\":0,\"cursor_y\":1,\"active_buffer\":\"normal\",\"lines\":[\"{\\\"stage\\\": \\\"launched\\\", \\\"display\\\": \\\":200\\\"}\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"],\"serialized_state\":\"{\\\"stage\\\": \\\"launched\\\", \\\"display\\\": \\\":200\\\"}\\u001b[1B\\u001b[40D\"},{\"sequence\":1,\"at_ms\":31560,\"columns\":100,\"rows\":30,\"cursor_x\":0,\"cursor_y\":2,\"active_buffer\":\"normal\",\"lines\":[\"{\\\"stage\\\": \\\"launched\\\", \\\"display\\\": \\\":200\\\"}\",\"{\\\"stage\\\": \\\"cleaned\\\", \\\"preferences_unchanged\\\": true, \\\"prefix_remaining\\\": 0, \\\"capture_remaining\\\": 0}\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"],\"serialized_state\":\"{\\\"stage\\\": \\\"launched\\\", \\\"display\\\": \\\":200\\\"}\\r\\n{\\\"stage\\\": \\\"cleaned\\\", \\\"preferences_unchanged\\\": true, \\\"prefix_remaining\\\": 0, \\\"capture_remaining\\\": 0}\\u001b[1B\\u001b[98D\"},{\"sequence\":2,\"at_ms\":31570,\"columns\":100,\"rows\":30,\"cursor_x\":0,\"cursor_y\":3,\"active_buffer\":\"normal\",\"lines\":[\"{\\\"stage\\\": \\\"launched\\\", \\\"display\\\": \\\":200\\\"}\",\"{\\\"stage\\\": \\\"cleaned\\\", \\\"preferences_unchanged\\\": true, \\\"prefix_remaining\\\": 0, \\\"capture_remaining\\\": 0}\",\"Traceback (most recent call last):\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"],\"serialized_state\":\"{\\\"stage\\\": \\\"launched\\\", \\\"display\\\": \\\":200\\\"}\\r\\n{\\\"stage\\\": \\\"cleaned\\\", \\\"preferences_unchanged\\\": true, \\\"prefix_remaining\\\": 0, \\\"capture_remaining\\\": 0}\\r\\nTraceback (most recent call last):\\u001b[1B\\u001b[34D\"},{\"sequence\":3,\"at_ms\":31570,\"columns\":100,\"rows\":30,\"cursor_x\":0,\"cursor_y\":11,\"active_buffer\":\"normal\",\"lines\":[\"{\\\"stage\\\": \\\"launched\\\", \\\"display\\\": \\\":200\\\"}\",\"{\\\"stage\\\": \\\"cleaned\\\", \\\"preferences_unchanged\\\": true, \\\"prefix_remaining\\\": 0, \\\"capture_remaining\\\": 0}\",\"Traceback (most recent call last):\",\"  File \\\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime\",\".py\\\", line 421, in <module>\",\"    main()\",\"    ~~~~^^\",\"  File \\\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime\",\".py\\\", line 416, in main\",\"    try:execute(args)\",\"        ~~~~~~~^^^^^^\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"],\"serialized_state\":\"{\\\"stage\\\": \\\"launched\\\", \\\"display\\\": \\\":200\\\"}\\r\\n{\\\"stage\\\": \\\"cleaned\\\", \\\"preferences_unchanged\\\": true, \\\"prefix_remaining\\\": 0, \\\"capture_remaining\\\": 0}\\r\\nTraceback (most recent call last):\\r\\n  File \\u001b[35m\\\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime.py\\\"\\u001b[0m, line \\u001b[35m421\\u001b[0m, in \\u001b[35m<module>\\r\\n\\u001b[0m    \\u001b[31mmain\\u001b[1m()\\r\\n\\u001b[0m    \\u001b[31m~~~~\\u001b[1m^^\\r\\n\\u001b[0m  File \\u001b[35m\\\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime.py\\\"\\u001b[0m, line \\u001b[35m416\\u001b[0m, in \\u001b[35mmain\\r\\n\\u001b[0m    try:\\u001b[31mexecute\\u001b[1m(args)\\r\\n\\u001b[0m        \\u001b[31m~~~~~~~\\u001b[1m^^^^^^\\u001b[1B\\u001b[21D\\u001b[0m\"},{\"sequence\":4,\"at_ms\":31570,\"columns\":100,\"rows\":30,\"cursor_x\":0,\"cursor_y\":16,\"active_buffer\":\"normal\",\"lines\":[\"{\\\"stage\\\": \\\"launched\\\", \\\"display\\\": \\\":200\\\"}\",\"{\\\"stage\\\": \\\"cleaned\\\", \\\"preferences_unchanged\\\": true, \\\"prefix_remaining\\\": 0, \\\"capture_remaining\\\": 0}\",\"Traceback (most recent call last):\",\"  File \\\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime\",\".py\\\", line 421, in <module>\",\"    main()\",\"    ~~~~^^\",\"  File \\\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime\",\".py\\\", line 416, in main\",\"    try:execute(args)\",\"        ~~~~~~~^^^^^^\",\"  File \\\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime\",\".py\\\", line 316, in execute\",\"    if not ready['ready']:raise RuntimeError('Private anchor/inventory capability check failed')\",\"                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\",\"RuntimeError: Private anchor/inventory capability check failed\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\"],\"serialized_state\":\"{\\\"stage\\\": \\\"launched\\\", \\\"display\\\": \\\":200\\\"}\\r\\n{\\\"stage\\\": \\\"cleaned\\\", \\\"preferences_unchanged\\\": true, \\\"prefix_remaining\\\": 0, \\\"capture_remaining\\\": 0}\\r\\nTraceback (most recent call last):\\r\\n  File \\u001b[35m\\\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime.py\\\"\\u001b[0m, line \\u001b[35m421\\u001b[0m, in \\u001b[35m<module>\\r\\n\\u001b[0m    \\u001b[31mmain\\u001b[1m()\\r\\n\\u001b[0m    \\u001b[31m~~~~\\u001b[1m^^\\r\\n\\u001b[0m  File \\u001b[35m\\\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime.py\\\"\\u001b[0m, line \\u001b[35m416\\u001b[0m, in \\u001b[35mmain\\r\\n\\u001b[0m    try:\\u001b[31mexecute\\u001b[1m(args)\\r\\n\\u001b[0m        \\u001b[31m~~~~~~~\\u001b[1m^^^^^^\\r\\n\\u001b[0m  File \\u001b[35m\\\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime.py\\\"\\u001b[0m, line \\u001b[35m316\\u001b[0m, in \\u001b[35mexecute\\r\\n\\u001b[0m    if not ready['ready']:\\u001b[31;1mraise RuntimeError('Private anchor/inventory capability check failed')\\r\\n\\u001b[0m                          \\u001b[31;1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\r\\n\\u001b[35mRuntimeError\\u001b[0m: \\u001b[35mPrivate anchor/inventory capability check failed\\u001b[1B\\u001b[62D\\u001b[0m\"}],\"interaction_events\":[],\"exit\":{\"code\":1,\"signal\":0,\"reason\":\"exited\"},\"settlement\":{\"state\":\"quiesced\",\"elapsed_ms\":109,\"cleanup_outcome\":\"not_required\"},\"process_samples\":[{\"at_ms\":10,\"pid\":100163,\"parent_pid\":54876,\"command\":\"/usr/bin/python3 experiments/max-reference/help-roots-runtime-20261022/run-runtime.py --execute --work /home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-003 --capture-name append-prepend-003 --host-display :0\",\"process_group_id\":100163,\"session_id\":100163},{\"at_ms\":450,\"pid\":100167,\"parent_pid\":100163,\"command\":\"cp -a --reflink=always /home/venetanji/.cache/alive-max-list-20261021/wine-disposable /home/venetanji/.cache/alive-max-help-roots-20261022-wine-disposable\",\"process_group_id\":100163,\"session_id\":100163},{\"at_ms\":5920,\"pid\":100341,\"parent_pid\":100163,\"command\":\"Xvfb :200 -screen 0 1280x900x24 -nolisten tcp -auth /home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-003/private-xauthority\",\"process_group_id\":100163,\"session_id\":100163},{\"at_ms\":5970,\"pid\":100365,\"parent_pid\":100163,\"command\":\"/home/venetanji/.local/opt/wine-d2d1-nspa-11.13/lib/wine/x86_64-unix/wine-preloader /home/venetanji/.local/opt/wine-d2d1-nspa-11.13/lib/wine/x86_64-unix/wine C:\\\\ProgramData\\\\Ableton\\\\Live 12 Suite\\\\Resources\\\\Max\\\\Max.exe Z:/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-003/driver.maxpat\",\"process_group_id\":100163,\"session_id\":100163},{\"at_ms\":5970,\"pid\":100367,\"parent_pid\":100341,\"command\":\"sh -c \\\"/usr/bin/xkbcomp\\\" -w 1 \\\"-R/usr/share/X11/xkb\\\" -xkm \\\"-\\\" -em1 \\\"The XKEYBOARD keymap compiler (xkbcomp) reports:\\\" -emp \\\"> \\\" -eml \\\"Errors from xkbcomp are not fatal to the X server\\\" \\\"/tmp/server-200.xkm\\\"\",\"process_group_id\":100163,\"session_id\":100163},{\"at_ms\":6020,\"pid\":100365,\"parent_pid\":100163,\"command\":\"/home/venetanji/.local/opt/wine-d2d1-nspa-11.13/lib/wine/x86_64-unix/wine C:\\\\ProgramData\\\\Ableton\\\\Live 12 Suite\\\\Resources\\\\Max\\\\Max.exe Z:/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-003/driver.maxpat\",\"process_group_id\":100163,\"session_id\":100163},{\"at_ms\":7420,\"pid\":100365,\"parent_pid\":100163,\"command\":\"C:\\\\ProgramData\\\\Ableton\\\\Live 12 Suite\\\\Resources\\\\Max\\\\Max.exe Z:/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-003/driver.maxpat\",\"process_group_id\":100163,\"session_id\":100163},{\"at_ms\":28560,\"pid\":100341,\"parent_pid\":100163,\"command\":\"\",\"process_group_id\":100163,\"session_id\":100163},{\"at_ms\":28560,\"pid\":100365,\"parent_pid\":100163,\"command\":\"\",\"process_group_id\":100163,\"session_id\":100163}],\"filesystem_checkpoints\":[{\"name\":\"before\",\"at_ms\":0,\"files\":[],\"effects\":[],\"truncated\":false},{\"name\":\"after_settlement\",\"at_ms\":31723,\"files\":[{\"path\":\"root_0:.\",\"mode\":33188,\"size\":168,\"type\":\"file\",\"sha256\":\"7860fc129f20965d5e7ea0324543185db0d68970e1c1a9b94d5d66e2070413cc\",\"symlink_target\":null},{\"path\":\"root_1:.\",\"mode\":33152,\"size\":6818,\"type\":\"file\",\"sha256\":\"4fe0a484d19427da65da809140dbe921a31dbcb0af77bb66050f857653d14628\",\"symlink_target\":null},{\"path\":\"root_2:.\",\"mode\":33152,\"size\":1651,\"type\":\"file\",\"sha256\":\"917349fc844f70b0f5ebe52b6e1b1c481a39bb75b728ce1e5bc45331c1f0cb4d\",\"symlink_target\":null},{\"path\":\"root_3:.\",\"mode\":33152,\"size\":3,\"type\":\"file\",\"sha256\":\"37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570\",\"symlink_target\":null}],\"effects\":[{\"path\":\"root_0:.\",\"status\":\"created\",\"before\":null,\"after\":{\"path\":\"root_0:.\",\"mode\":33188,\"size\":168,\"type\":\"file\",\"sha256\":\"7860fc129f20965d5e7ea0324543185db0d68970e1c1a9b94d5d66e2070413cc\",\"symlink_target\":null}},{\"path\":\"root_1:.\",\"status\":\"created\",\"before\":null,\"after\":{\"path\":\"root_1:.\",\"mode\":33152,\"size\":6818,\"type\":\"file\",\"sha256\":\"4fe0a484d19427da65da809140dbe921a31dbcb0af77bb66050f857653d14628\",\"symlink_target\":null}},{\"path\":\"root_2:.\",\"status\":\"created\",\"before\":null,\"after\":{\"path\":\"root_2:.\",\"mode\":33152,\"size\":1651,\"type\":\"file\",\"sha256\":\"917349fc844f70b0f5ebe52b6e1b1c481a39bb75b728ce1e5bc45331c1f0cb4d\",\"symlink_target\":null}},{\"path\":\"root_3:.\",\"status\":\"created\",\"before\":null,\"after\":{\"path\":\"root_3:.\",\"mode\":33152,\"size\":3,\"type\":\"file\",\"sha256\":\"37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570\",\"symlink_target\":null}}],\"truncated\":false}],\"event_journal\":[{\"capture_order\":0,\"collection\":\"filesystem_checkpoints\",\"index\":0},{\"capture_order\":1,\"collection\":\"process_samples\",\"index\":0},{\"capture_order\":2,\"collection\":\"process_samples\",\"index\":1},{\"capture_order\":3,\"collection\":\"process_samples\",\"index\":2},{\"capture_order\":4,\"collection\":\"frames\",\"index\":0},{\"capture_order\":5,\"collection\":\"rendered_frames\",\"index\":0},{\"capture_order\":6,\"collection\":\"process_samples\",\"index\":3},{\"capture_order\":7,\"collection\":\"process_samples\",\"index\":4},{\"capture_order\":8,\"collection\":\"process_samples\",\"index\":5},{\"capture_order\":9,\"collection\":\"process_samples\",\"index\":6},{\"capture_order\":10,\"collection\":\"process_samples\",\"index\":7},{\"capture_order\":11,\"collection\":\"process_samples\",\"index\":8},{\"capture_order\":12,\"collection\":\"frames\",\"index\":1},{\"capture_order\":13,\"collection\":\"rendered_frames\",\"index\":1},{\"capture_order\":14,\"collection\":\"frames\",\"index\":2},{\"capture_order\":15,\"collection\":\"frames\",\"index\":3},{\"capture_order\":16,\"collection\":\"rendered_frames\",\"index\":2},{\"capture_order\":17,\"collection\":\"frames\",\"index\":4},{\"capture_order\":18,\"collection\":\"rendered_frames\",\"index\":3},{\"capture_order\":19,\"collection\":\"rendered_frames\",\"index\":4},{\"capture_order\":20,\"collection\":\"lifecycle\",\"index\":0},{\"capture_order\":21,\"collection\":\"lifecycle\",\"index\":1},{\"capture_order\":22,\"collection\":\"filesystem_checkpoints\",\"index\":1}],\"files_before\":[],\"files_after\":[{\"path\":\"root_0:.\",\"mode\":33188,\"size\":168,\"type\":\"file\",\"sha256\":\"7860fc129f20965d5e7ea0324543185db0d68970e1c1a9b94d5d66e2070413cc\",\"symlink_target\":null},{\"path\":\"root_1:.\",\"mode\":33152,\"size\":6818,\"type\":\"file\",\"sha256\":\"4fe0a484d19427da65da809140dbe921a31dbcb0af77bb66050f857653d14628\",\"symlink_target\":null},{\"path\":\"root_2:.\",\"mode\":33152,\"size\":1651,\"type\":\"file\",\"sha256\":\"917349fc844f70b0f5ebe52b6e1b1c481a39bb75b728ce1e5bc45331c1f0cb4d\",\"symlink_target\":null},{\"path\":\"root_3:.\",\"mode\":33152,\"size\":3,\"type\":\"file\",\"sha256\":\"37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570\",\"symlink_target\":null}],\"filesystem_effects\":[{\"path\":\"root_0:.\",\"status\":\"created\",\"before\":null,\"after\":{\"path\":\"root_0:.\",\"mode\":33188,\"size\":168,\"type\":\"file\",\"sha256\":\"7860fc129f20965d5e7ea0324543185db0d68970e1c1a9b94d5d66e2070413cc\",\"symlink_target\":null}},{\"path\":\"root_1:.\",\"status\":\"created\",\"before\":null,\"after\":{\"path\":\"root_1:.\",\"mode\":33152,\"size\":6818,\"type\":\"file\",\"sha256\":\"4fe0a484d19427da65da809140dbe921a31dbcb0af77bb66050f857653d14628\",\"symlink_target\":null}},{\"path\":\"root_2:.\",\"status\":\"created\",\"before\":null,\"after\":{\"path\":\"root_2:.\",\"mode\":33152,\"size\":1651,\"type\":\"file\",\"sha256\":\"917349fc844f70b0f5ebe52b6e1b1c481a39bb75b728ce1e5bc45331c1f0cb4d\",\"symlink_target\":null}},{\"path\":\"root_3:.\",\"status\":\"created\",\"before\":null,\"after\":{\"path\":\"root_3:.\",\"mode\":33152,\"size\":3,\"type\":\"file\",\"sha256\":\"37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570\",\"symlink_target\":null}}],\"truncated\":false,\"truncation_details\":{\"raw_terminal\":{\"budget_bytes\":32768,\"observed_bytes\":1093,\"retained_bytes\":1093,\"observed_frames\":5,\"retained_frames\":5},\"rendered_terminal\":{\"budget_bytes\":32768,\"observed_bytes\":3762,\"retained_bytes\":3762,\"observed_frames\":5,\"retained_frames\":5},\"filesystem_before\":{\"files_limit\":4,\"depth_limit\":1,\"enumeration_truncated\":false,\"enumeration_reasons\":[],\"hash_budget_bytes\":1048576,\"hashed_bytes\":0,\"hash_omissions\":[]},\"filesystem_after\":{\"files_limit\":4,\"depth_limit\":1,\"enumeration_truncated\":false,\"enumeration_reasons\":[],\"hash_budget_bytes\":1048576,\"hashed_bytes\":8640,\"hash_omissions\":[]},\"process\":{\"sample_limit\":128,\"sampling_partial\":false,\"retained_samples\":9,\"sample_limit_reached\":false,\"sampling_failures\":0,\"first_sampling_failure\":null,\"coverage\":\"sampled\"}},\"limitations\":[\"The executable digest is a prelaunch file sample; matching path metadata immediately after spawn does not prove an atomic operating-system image binding.\",\"Process trees are sampled and may omit short-lived descendants.\",\"Filesystem observations are before/after snapshots, not syscall traces.\",\"Inherited host environment variables are not recorded and may affect results.\"],\"residual_unknowns\":[{\"scope\":\"process\",\"reason\":\"Process trees are sampled and may omit short-lived descendants.\"},{\"scope\":\"process\",\"reason\":\"The executable digest is a prelaunch file sample; operating-system image binding is not atomically observed.\"},{\"scope\":\"environment\",\"reason\":\"Inherited host environment variables are not recorded.\"},{\"scope\":\"network\",\"reason\":\"Network activity is not observed by this capture.\"},{\"scope\":\"process\",\"reason\":\"Ownership of unrelated process 100392 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/100392/environ'\"},{\"scope\":\"process\",\"reason\":\"Ownership of unrelated process 100393 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/100393/environ'\"},{\"scope\":\"process\",\"reason\":\"Ownership of unrelated process 100394 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/100394/environ'\"},{\"scope\":\"process\",\"reason\":\"Ownership of unrelated process 100397 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/100397/environ'\"},{\"scope\":\"process\",\"reason\":\"Ownership of unrelated process 100421 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/100421/environ'\"},{\"scope\":\"process\",\"reason\":\"Ownership of unrelated process 100440 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/100440/environ'\"},{\"scope\":\"process\",\"reason\":\"Ownership of unrelated process 100802 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/100802/environ'\"},{\"scope\":\"process\",\"reason\":\"Ownership of unrelated process 100803 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/100803/environ'\"},{\"scope\":\"process\",\"reason\":\"Ownership of unrelated process 100804 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/100804/environ'\"},{\"scope\":\"process\",\"reason\":\"Ownership of unrelated process 100805 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/100805/environ'\"}],\"cleanup\":{\"owned_process_group\":\"verified\",\"temporary_root\":\"removed\",\"unverified_processes\":[{\"pid\":100392,\"reason\":\"EACCES: permission denied, open '/proc/100392/environ'\"},{\"pid\":100393,\"reason\":\"EACCES: permission denied, open '/proc/100393/environ'\"},{\"pid\":100394,\"reason\":\"EACCES: permission denied, open '/proc/100394/environ'\"},{\"pid\":100397,\"reason\":\"EACCES: permission denied, open '/proc/100397/environ'\"},{\"pid\":100421,\"reason\":\"EACCES: permission denied, open '/proc/100421/environ'\"},{\"pid\":100440,\"reason\":\"EACCES: permission denied, open '/proc/100440/environ'\"},{\"pid\":100802,\"reason\":\"EACCES: permission denied, open '/proc/100802/environ'\"},{\"pid\":100803,\"reason\":\"EACCES: permission denied, open '/proc/100803/environ'\"},{\"pid\":100804,\"reason\":\"EACCES: permission denied, open '/proc/100804/environ'\"},{\"pid\":100805,\"reason\":\"EACCES: permission denied, open '/proc/100805/environ'\"}]}},\"confidence\":\"observed\",\"authority\":\"controlled-replay\",\"environment\":{\"id\":\"linux-x64\",\"platform\":\"linux\",\"architecture\":\"x64\",\"isolation\":\"process\"},\"limitations\":[\"Artifact identity is unavailable for this observation.\",\"The executable digest is a prelaunch file sample; matching path metadata immediately after spawn does not prove an atomic operating-system image binding.\",\"Process trees are sampled and may omit short-lived descendants.\",\"Filesystem observations are before/after snapshots, not syscall traces.\",\"Inherited host environment variables are not recorded and may affect results.\"],\"locations\":[],\"evidence_links\":[]}"
+    }
+  ],
+  "structuredContent": {
+    "evidence_id": "ev_a1467dbe308682860881a0e8721e846b13d27d6b3298c753b87dabf0765dacde",
+    "subject": null,
+    "provider": {
+      "id": "rea-process",
+      "name": "REA process capture",
+      "version": "3"
+    },
+    "analysis_profile": null,
+    "predicate_type": "rea.process-capture",
+    "operation": "capture_process_scenario",
+    "parameters": {
+      "executable_name": "python3",
+      "argument_count": 8,
+      "event_count": 0,
+      "filesystem_observation_path_count": 4,
+      "normalization": {
+        "paths": false,
+        "pids": false,
+        "ports": false,
+        "time_bucket_ms": 10,
+        "patterns": []
+      }
+    },
+    "raw_result": null,
+    "normalized_result": {
+      "manifest": {
+        "rea_version": "6.4.0",
+        "provider_version": "3",
+        "platform": "linux",
+        "architecture": "x64",
+        "pty_backend": "node-pty",
+        "started_at": "2026-10-22T04:46:53.301Z",
+        "completed_at": "2026-10-22T04:47:25.024Z",
+        "scenario": {
+          "executable": "/usr/bin/python3",
+          "arguments": [
+            "experiments/max-reference/help-roots-runtime-20261022/run-runtime.py",
+            "--execute",
+            "--work",
+            "/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-003",
+            "--capture-name",
+            "append-prepend-003",
+            "--host-display",
+            ":0"
+          ],
+          "working_directory": "/home/venetanji/Work/alive",
+          "environment": {},
+          "filesystem_observation_paths": [
+            "/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/results/append-prepend-003/receipts.jsonl",
+            "/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/results/append-prepend-003/session.json",
+            "/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/results/append-prepend-003/cleanup.json",
+            "/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/results/append-prepend-003/display-states.json"
+          ],
+          "terminal": {
+            "columns": 100,
+            "rows": 30,
+            "scrollback": 100
+          },
+          "events": [],
+          "timeout_ms": 180000,
+          "idle_timeout_ms": 170000,
+          "settle_ms": 100,
+          "limits": {
+            "output_bytes": 32768,
+            "files": 4,
+            "file_bytes": 1048576,
+            "processes": 128,
+            "filesystem_depth": 1
+          },
+          "normalization": {
+            "paths": false,
+            "pids": false,
+            "ports": false,
+            "time_bucket_ms": 10,
+            "patterns": []
+          },
+          "finalization_ms": 15000,
+          "executable_sha256": "375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b"
+        },
+        "comparison_contract": {
+          "working_directory": "/home/venetanji/Work/alive",
+          "environment": {},
+          "ambient_environment": "unknown",
+          "filesystem_observation_paths": [
+            "/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/results/append-prepend-003/receipts.jsonl",
+            "/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/results/append-prepend-003/session.json",
+            "/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/results/append-prepend-003/cleanup.json",
+            "/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/results/append-prepend-003/display-states.json"
+          ],
+          "terminal": {
+            "columns": 100,
+            "rows": 30,
+            "scrollback": 100
+          },
+          "events": [],
+          "timeout_ms": 180000,
+          "idle_timeout_ms": 170000,
+          "settle_ms": 100,
+          "finalization_ms": 15000,
+          "limits": {
+            "output_bytes": 32768,
+            "files": 4,
+            "file_bytes": 1048576,
+            "processes": 128,
+            "filesystem_depth": 1
+          },
+          "normalization": {
+            "paths": false,
+            "pids": false,
+            "ports": false,
+            "time_bucket_ms": 10,
+            "patterns": []
+          },
+          "rendered_line_format": "trailing-spaces-trimmed-v1"
+        },
+        "full_scenario_sha256": "1d18cae8dc8949b49ddc1c0f05ebcb63774b929e3bdf022252fa70fc76f432aa",
+        "comparison_contract_sha256": "248b5eea63aef90ce68b95fe973972daa4afa340cd6246d9c87bc61b92b0500f",
+        "selected_executable_sha256": "375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b",
+        "executable_sha256": "375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b",
+        "executable_identity": {
+          "state": "path_metadata_unchanged",
+          "reason": null
+        },
+        "normalization_sha256": "6395b08eb2d10ec772014904c65e1f817410704b29150fe79b70f3fcb3f50808"
+      },
+      "normalization": {
+        "paths": false,
+        "pids": false,
+        "ports": false,
+        "time_bucket_ms": 10,
+        "patterns": []
+      },
+      "frames": [
+        {
+          "sequence": 0,
+          "at_ms": 5970,
+          "data": "{\"stage\": \"launched\", \"display\": \":200\"}\r\n"
+        },
+        {
+          "sequence": 1,
+          "at_ms": 31560,
+          "data": "{\"stage\": \"cleaned\", \"preferences_unchanged\": true, \"prefix_remaining\": 0, \"capture_remaining\": 0}\r\n"
+        },
+        {
+          "sequence": 2,
+          "at_ms": 31570,
+          "data": "Traceback (most recent call last):\r\n"
+        },
+        {
+          "sequence": 3,
+          "at_ms": 31570,
+          "data": "  File \u001b[35m\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime.py\"\u001b[0m, line \u001b[35m421\u001b[0m, in \u001b[35m<module>\u001b[0m\r\n    \u001b[31mmain\u001b[0m\u001b[1;31m()\u001b[0m\r\n    \u001b[31m~~~~\u001b[0m\u001b[1;31m^^\u001b[0m\r\n  File \u001b[35m\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime.py\"\u001b[0m, line \u001b[35m416\u001b[0m, in \u001b[35mmain\u001b[0m\r\n    try:\u001b[31mexecute\u001b[0m\u001b[1;31m(args)\u001b[0m\r\n        \u001b[31m~~~~~~~\u001b[0m\u001b[1;31m^^^^^^\u001b[0m\r\n"
+        },
+        {
+          "sequence": 4,
+          "at_ms": 31570,
+          "data": "  File \u001b[35m\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime.py\"\u001b[0m, line \u001b[35m316\u001b[0m, in \u001b[35mexecute\u001b[0m\r\n    if not ready['ready']:\u001b[1;31mraise RuntimeError('Private anchor/inventory capability check failed')\u001b[0m\r\n                          \u001b[1;31m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\u001b[0m\r\n\u001b[1;35mRuntimeError\u001b[0m: \u001b[35mPrivate anchor/inventory capability check failed\u001b[0m\r\n"
+        }
+      ],
+      "rendered_frames": [
+        {
+          "sequence": 0,
+          "at_ms": 5970,
+          "columns": 100,
+          "rows": 30,
+          "cursor_x": 0,
+          "cursor_y": 1,
+          "active_buffer": "normal",
+          "lines": [
+            "{\"stage\": \"launched\", \"display\": \":200\"}",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "serialized_state": "{\"stage\": \"launched\", \"display\": \":200\"}\u001b[1B\u001b[40D"
+        },
+        {
+          "sequence": 1,
+          "at_ms": 31560,
+          "columns": 100,
+          "rows": 30,
+          "cursor_x": 0,
+          "cursor_y": 2,
+          "active_buffer": "normal",
+          "lines": [
+            "{\"stage\": \"launched\", \"display\": \":200\"}",
+            "{\"stage\": \"cleaned\", \"preferences_unchanged\": true, \"prefix_remaining\": 0, \"capture_remaining\": 0}",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "serialized_state": "{\"stage\": \"launched\", \"display\": \":200\"}\r\n{\"stage\": \"cleaned\", \"preferences_unchanged\": true, \"prefix_remaining\": 0, \"capture_remaining\": 0}\u001b[1B\u001b[98D"
+        },
+        {
+          "sequence": 2,
+          "at_ms": 31570,
+          "columns": 100,
+          "rows": 30,
+          "cursor_x": 0,
+          "cursor_y": 3,
+          "active_buffer": "normal",
+          "lines": [
+            "{\"stage\": \"launched\", \"display\": \":200\"}",
+            "{\"stage\": \"cleaned\", \"preferences_unchanged\": true, \"prefix_remaining\": 0, \"capture_remaining\": 0}",
+            "Traceback (most recent call last):",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "serialized_state": "{\"stage\": \"launched\", \"display\": \":200\"}\r\n{\"stage\": \"cleaned\", \"preferences_unchanged\": true, \"prefix_remaining\": 0, \"capture_remaining\": 0}\r\nTraceback (most recent call last):\u001b[1B\u001b[34D"
+        },
+        {
+          "sequence": 3,
+          "at_ms": 31570,
+          "columns": 100,
+          "rows": 30,
+          "cursor_x": 0,
+          "cursor_y": 11,
+          "active_buffer": "normal",
+          "lines": [
+            "{\"stage\": \"launched\", \"display\": \":200\"}",
+            "{\"stage\": \"cleaned\", \"preferences_unchanged\": true, \"prefix_remaining\": 0, \"capture_remaining\": 0}",
+            "Traceback (most recent call last):",
+            "  File \"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime",
+            ".py\", line 421, in <module>",
+            "    main()",
+            "    ~~~~^^",
+            "  File \"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime",
+            ".py\", line 416, in main",
+            "    try:execute(args)",
+            "        ~~~~~~~^^^^^^",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "serialized_state": "{\"stage\": \"launched\", \"display\": \":200\"}\r\n{\"stage\": \"cleaned\", \"preferences_unchanged\": true, \"prefix_remaining\": 0, \"capture_remaining\": 0}\r\nTraceback (most recent call last):\r\n  File \u001b[35m\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime.py\"\u001b[0m, line \u001b[35m421\u001b[0m, in \u001b[35m<module>\r\n\u001b[0m    \u001b[31mmain\u001b[1m()\r\n\u001b[0m    \u001b[31m~~~~\u001b[1m^^\r\n\u001b[0m  File \u001b[35m\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime.py\"\u001b[0m, line \u001b[35m416\u001b[0m, in \u001b[35mmain\r\n\u001b[0m    try:\u001b[31mexecute\u001b[1m(args)\r\n\u001b[0m        \u001b[31m~~~~~~~\u001b[1m^^^^^^\u001b[1B\u001b[21D\u001b[0m"
+        },
+        {
+          "sequence": 4,
+          "at_ms": 31570,
+          "columns": 100,
+          "rows": 30,
+          "cursor_x": 0,
+          "cursor_y": 16,
+          "active_buffer": "normal",
+          "lines": [
+            "{\"stage\": \"launched\", \"display\": \":200\"}",
+            "{\"stage\": \"cleaned\", \"preferences_unchanged\": true, \"prefix_remaining\": 0, \"capture_remaining\": 0}",
+            "Traceback (most recent call last):",
+            "  File \"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime",
+            ".py\", line 421, in <module>",
+            "    main()",
+            "    ~~~~^^",
+            "  File \"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime",
+            ".py\", line 416, in main",
+            "    try:execute(args)",
+            "        ~~~~~~~^^^^^^",
+            "  File \"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime",
+            ".py\", line 316, in execute",
+            "    if not ready['ready']:raise RuntimeError('Private anchor/inventory capability check failed')",
+            "                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+            "RuntimeError: Private anchor/inventory capability check failed",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+          ],
+          "serialized_state": "{\"stage\": \"launched\", \"display\": \":200\"}\r\n{\"stage\": \"cleaned\", \"preferences_unchanged\": true, \"prefix_remaining\": 0, \"capture_remaining\": 0}\r\nTraceback (most recent call last):\r\n  File \u001b[35m\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime.py\"\u001b[0m, line \u001b[35m421\u001b[0m, in \u001b[35m<module>\r\n\u001b[0m    \u001b[31mmain\u001b[1m()\r\n\u001b[0m    \u001b[31m~~~~\u001b[1m^^\r\n\u001b[0m  File \u001b[35m\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime.py\"\u001b[0m, line \u001b[35m416\u001b[0m, in \u001b[35mmain\r\n\u001b[0m    try:\u001b[31mexecute\u001b[1m(args)\r\n\u001b[0m        \u001b[31m~~~~~~~\u001b[1m^^^^^^\r\n\u001b[0m  File \u001b[35m\"/home/venetanji/Work/alive/experiments/max-reference/help-roots-runtime-20261022/run-runtime.py\"\u001b[0m, line \u001b[35m316\u001b[0m, in \u001b[35mexecute\r\n\u001b[0m    if not ready['ready']:\u001b[31;1mraise RuntimeError('Private anchor/inventory capability check failed')\r\n\u001b[0m                          \u001b[31;1m^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n\u001b[35mRuntimeError\u001b[0m: \u001b[35mPrivate anchor/inventory capability check failed\u001b[1B\u001b[62D\u001b[0m"
+        }
+      ],
+      "interaction_events": [],
+      "exit": {
+        "code": 1,
+        "signal": 0,
+        "reason": "exited"
+      },
+      "settlement": {
+        "state": "quiesced",
+        "elapsed_ms": 109,
+        "cleanup_outcome": "not_required"
+      },
+      "process_samples": [
+        {
+          "at_ms": 10,
+          "pid": 100163,
+          "parent_pid": 54876,
+          "command": "/usr/bin/python3 experiments/max-reference/help-roots-runtime-20261022/run-runtime.py --execute --work /home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-003 --capture-name append-prepend-003 --host-display :0",
+          "process_group_id": 100163,
+          "session_id": 100163
+        },
+        {
+          "at_ms": 450,
+          "pid": 100167,
+          "parent_pid": 100163,
+          "command": "cp -a --reflink=always /home/venetanji/.cache/alive-max-list-20261021/wine-disposable /home/venetanji/.cache/alive-max-help-roots-20261022-wine-disposable",
+          "process_group_id": 100163,
+          "session_id": 100163
+        },
+        {
+          "at_ms": 5920,
+          "pid": 100341,
+          "parent_pid": 100163,
+          "command": "Xvfb :200 -screen 0 1280x900x24 -nolisten tcp -auth /home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-003/private-xauthority",
+          "process_group_id": 100163,
+          "session_id": 100163
+        },
+        {
+          "at_ms": 5970,
+          "pid": 100365,
+          "parent_pid": 100163,
+          "command": "/home/venetanji/.local/opt/wine-d2d1-nspa-11.13/lib/wine/x86_64-unix/wine-preloader /home/venetanji/.local/opt/wine-d2d1-nspa-11.13/lib/wine/x86_64-unix/wine C:\\ProgramData\\Ableton\\Live 12 Suite\\Resources\\Max\\Max.exe Z:/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-003/driver.maxpat",
+          "process_group_id": 100163,
+          "session_id": 100163
+        },
+        {
+          "at_ms": 5970,
+          "pid": 100367,
+          "parent_pid": 100341,
+          "command": "sh -c \"/usr/bin/xkbcomp\" -w 1 \"-R/usr/share/X11/xkb\" -xkm \"-\" -em1 \"The XKEYBOARD keymap compiler (xkbcomp) reports:\" -emp \"> \" -eml \"Errors from xkbcomp are not fatal to the X server\" \"/tmp/server-200.xkm\"",
+          "process_group_id": 100163,
+          "session_id": 100163
+        },
+        {
+          "at_ms": 6020,
+          "pid": 100365,
+          "parent_pid": 100163,
+          "command": "/home/venetanji/.local/opt/wine-d2d1-nspa-11.13/lib/wine/x86_64-unix/wine C:\\ProgramData\\Ableton\\Live 12 Suite\\Resources\\Max\\Max.exe Z:/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-003/driver.maxpat",
+          "process_group_id": 100163,
+          "session_id": 100163
+        },
+        {
+          "at_ms": 7420,
+          "pid": 100365,
+          "parent_pid": 100163,
+          "command": "C:\\ProgramData\\Ableton\\Live 12 Suite\\Resources\\Max\\Max.exe Z:/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-003/driver.maxpat",
+          "process_group_id": 100163,
+          "session_id": 100163
+        },
+        {
+          "at_ms": 28560,
+          "pid": 100341,
+          "parent_pid": 100163,
+          "command": "",
+          "process_group_id": 100163,
+          "session_id": 100163
+        },
+        {
+          "at_ms": 28560,
+          "pid": 100365,
+          "parent_pid": 100163,
+          "command": "",
+          "process_group_id": 100163,
+          "session_id": 100163
+        }
+      ],
+      "filesystem_checkpoints": [
+        {
+          "name": "before",
+          "at_ms": 0,
+          "files": [],
+          "effects": [],
+          "truncated": false
+        },
+        {
+          "name": "after_settlement",
+          "at_ms": 31723,
+          "files": [
+            {
+              "path": "root_0:.",
+              "mode": 33188,
+              "size": 168,
+              "type": "file",
+              "sha256": "7860fc129f20965d5e7ea0324543185db0d68970e1c1a9b94d5d66e2070413cc",
+              "symlink_target": null
+            },
+            {
+              "path": "root_1:.",
+              "mode": 33152,
+              "size": 6818,
+              "type": "file",
+              "sha256": "4fe0a484d19427da65da809140dbe921a31dbcb0af77bb66050f857653d14628",
+              "symlink_target": null
+            },
+            {
+              "path": "root_2:.",
+              "mode": 33152,
+              "size": 1651,
+              "type": "file",
+              "sha256": "917349fc844f70b0f5ebe52b6e1b1c481a39bb75b728ce1e5bc45331c1f0cb4d",
+              "symlink_target": null
+            },
+            {
+              "path": "root_3:.",
+              "mode": 33152,
+              "size": 3,
+              "type": "file",
+              "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+              "symlink_target": null
+            }
+          ],
+          "effects": [
+            {
+              "path": "root_0:.",
+              "status": "created",
+              "before": null,
+              "after": {
+                "path": "root_0:.",
+                "mode": 33188,
+                "size": 168,
+                "type": "file",
+                "sha256": "7860fc129f20965d5e7ea0324543185db0d68970e1c1a9b94d5d66e2070413cc",
+                "symlink_target": null
+              }
+            },
+            {
+              "path": "root_1:.",
+              "status": "created",
+              "before": null,
+              "after": {
+                "path": "root_1:.",
+                "mode": 33152,
+                "size": 6818,
+                "type": "file",
+                "sha256": "4fe0a484d19427da65da809140dbe921a31dbcb0af77bb66050f857653d14628",
+                "symlink_target": null
+              }
+            },
+            {
+              "path": "root_2:.",
+              "status": "created",
+              "before": null,
+              "after": {
+                "path": "root_2:.",
+                "mode": 33152,
+                "size": 1651,
+                "type": "file",
+                "sha256": "917349fc844f70b0f5ebe52b6e1b1c481a39bb75b728ce1e5bc45331c1f0cb4d",
+                "symlink_target": null
+              }
+            },
+            {
+              "path": "root_3:.",
+              "status": "created",
+              "before": null,
+              "after": {
+                "path": "root_3:.",
+                "mode": 33152,
+                "size": 3,
+                "type": "file",
+                "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+                "symlink_target": null
+              }
+            }
+          ],
+          "truncated": false
+        }
+      ],
+      "event_journal": [
+        {
+          "capture_order": 0,
+          "collection": "filesystem_checkpoints",
+          "index": 0
+        },
+        {
+          "capture_order": 1,
+          "collection": "process_samples",
+          "index": 0
+        },
+        {
+          "capture_order": 2,
+          "collection": "process_samples",
+          "index": 1
+        },
+        {
+          "capture_order": 3,
+          "collection": "process_samples",
+          "index": 2
+        },
+        {
+          "capture_order": 4,
+          "collection": "frames",
+          "index": 0
+        },
+        {
+          "capture_order": 5,
+          "collection": "rendered_frames",
+          "index": 0
+        },
+        {
+          "capture_order": 6,
+          "collection": "process_samples",
+          "index": 3
+        },
+        {
+          "capture_order": 7,
+          "collection": "process_samples",
+          "index": 4
+        },
+        {
+          "capture_order": 8,
+          "collection": "process_samples",
+          "index": 5
+        },
+        {
+          "capture_order": 9,
+          "collection": "process_samples",
+          "index": 6
+        },
+        {
+          "capture_order": 10,
+          "collection": "process_samples",
+          "index": 7
+        },
+        {
+          "capture_order": 11,
+          "collection": "process_samples",
+          "index": 8
+        },
+        {
+          "capture_order": 12,
+          "collection": "frames",
+          "index": 1
+        },
+        {
+          "capture_order": 13,
+          "collection": "rendered_frames",
+          "index": 1
+        },
+        {
+          "capture_order": 14,
+          "collection": "frames",
+          "index": 2
+        },
+        {
+          "capture_order": 15,
+          "collection": "frames",
+          "index": 3
+        },
+        {
+          "capture_order": 16,
+          "collection": "rendered_frames",
+          "index": 2
+        },
+        {
+          "capture_order": 17,
+          "collection": "frames",
+          "index": 4
+        },
+        {
+          "capture_order": 18,
+          "collection": "rendered_frames",
+          "index": 3
+        },
+        {
+          "capture_order": 19,
+          "collection": "rendered_frames",
+          "index": 4
+        },
+        {
+          "capture_order": 20,
+          "collection": "lifecycle",
+          "index": 0
+        },
+        {
+          "capture_order": 21,
+          "collection": "lifecycle",
+          "index": 1
+        },
+        {
+          "capture_order": 22,
+          "collection": "filesystem_checkpoints",
+          "index": 1
+        }
+      ],
+      "files_before": [],
+      "files_after": [
+        {
+          "path": "root_0:.",
+          "mode": 33188,
+          "size": 168,
+          "type": "file",
+          "sha256": "7860fc129f20965d5e7ea0324543185db0d68970e1c1a9b94d5d66e2070413cc",
+          "symlink_target": null
+        },
+        {
+          "path": "root_1:.",
+          "mode": 33152,
+          "size": 6818,
+          "type": "file",
+          "sha256": "4fe0a484d19427da65da809140dbe921a31dbcb0af77bb66050f857653d14628",
+          "symlink_target": null
+        },
+        {
+          "path": "root_2:.",
+          "mode": 33152,
+          "size": 1651,
+          "type": "file",
+          "sha256": "917349fc844f70b0f5ebe52b6e1b1c481a39bb75b728ce1e5bc45331c1f0cb4d",
+          "symlink_target": null
+        },
+        {
+          "path": "root_3:.",
+          "mode": 33152,
+          "size": 3,
+          "type": "file",
+          "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+          "symlink_target": null
+        }
+      ],
+      "filesystem_effects": [
+        {
+          "path": "root_0:.",
+          "status": "created",
+          "before": null,
+          "after": {
+            "path": "root_0:.",
+            "mode": 33188,
+            "size": 168,
+            "type": "file",
+            "sha256": "7860fc129f20965d5e7ea0324543185db0d68970e1c1a9b94d5d66e2070413cc",
+            "symlink_target": null
+          }
+        },
+        {
+          "path": "root_1:.",
+          "status": "created",
+          "before": null,
+          "after": {
+            "path": "root_1:.",
+            "mode": 33152,
+            "size": 6818,
+            "type": "file",
+            "sha256": "4fe0a484d19427da65da809140dbe921a31dbcb0af77bb66050f857653d14628",
+            "symlink_target": null
+          }
+        },
+        {
+          "path": "root_2:.",
+          "status": "created",
+          "before": null,
+          "after": {
+            "path": "root_2:.",
+            "mode": 33152,
+            "size": 1651,
+            "type": "file",
+            "sha256": "917349fc844f70b0f5ebe52b6e1b1c481a39bb75b728ce1e5bc45331c1f0cb4d",
+            "symlink_target": null
+          }
+        },
+        {
+          "path": "root_3:.",
+          "status": "created",
+          "before": null,
+          "after": {
+            "path": "root_3:.",
+            "mode": 33152,
+            "size": 3,
+            "type": "file",
+            "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+            "symlink_target": null
+          }
+        }
+      ],
+      "truncated": false,
+      "truncation_details": {
+        "raw_terminal": {
+          "budget_bytes": 32768,
+          "observed_bytes": 1093,
+          "retained_bytes": 1093,
+          "observed_frames": 5,
+          "retained_frames": 5
+        },
+        "rendered_terminal": {
+          "budget_bytes": 32768,
+          "observed_bytes": 3762,
+          "retained_bytes": 3762,
+          "observed_frames": 5,
+          "retained_frames": 5
+        },
+        "filesystem_before": {
+          "files_limit": 4,
+          "depth_limit": 1,
+          "enumeration_truncated": false,
+          "enumeration_reasons": [],
+          "hash_budget_bytes": 1048576,
+          "hashed_bytes": 0,
+          "hash_omissions": []
+        },
+        "filesystem_after": {
+          "files_limit": 4,
+          "depth_limit": 1,
+          "enumeration_truncated": false,
+          "enumeration_reasons": [],
+          "hash_budget_bytes": 1048576,
+          "hashed_bytes": 8640,
+          "hash_omissions": []
+        },
+        "process": {
+          "sample_limit": 128,
+          "sampling_partial": false,
+          "retained_samples": 9,
+          "sample_limit_reached": false,
+          "sampling_failures": 0,
+          "first_sampling_failure": null,
+          "coverage": "sampled"
+        }
+      },
+      "limitations": [
+        "The executable digest is a prelaunch file sample; matching path metadata immediately after spawn does not prove an atomic operating-system image binding.",
+        "Process trees are sampled and may omit short-lived descendants.",
+        "Filesystem observations are before/after snapshots, not syscall traces.",
+        "Inherited host environment variables are not recorded and may affect results."
+      ],
+      "residual_unknowns": [
+        {
+          "scope": "process",
+          "reason": "Process trees are sampled and may omit short-lived descendants."
+        },
+        {
+          "scope": "process",
+          "reason": "The executable digest is a prelaunch file sample; operating-system image binding is not atomically observed."
+        },
+        {
+          "scope": "environment",
+          "reason": "Inherited host environment variables are not recorded."
+        },
+        {
+          "scope": "network",
+          "reason": "Network activity is not observed by this capture."
+        },
+        {
+          "scope": "process",
+          "reason": "Ownership of unrelated process 100392 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/100392/environ'"
+        },
+        {
+          "scope": "process",
+          "reason": "Ownership of unrelated process 100393 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/100393/environ'"
+        },
+        {
+          "scope": "process",
+          "reason": "Ownership of unrelated process 100394 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/100394/environ'"
+        },
+        {
+          "scope": "process",
+          "reason": "Ownership of unrelated process 100397 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/100397/environ'"
+        },
+        {
+          "scope": "process",
+          "reason": "Ownership of unrelated process 100421 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/100421/environ'"
+        },
+        {
+          "scope": "process",
+          "reason": "Ownership of unrelated process 100440 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/100440/environ'"
+        },
+        {
+          "scope": "process",
+          "reason": "Ownership of unrelated process 100802 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/100802/environ'"
+        },
+        {
+          "scope": "process",
+          "reason": "Ownership of unrelated process 100803 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/100803/environ'"
+        },
+        {
+          "scope": "process",
+          "reason": "Ownership of unrelated process 100804 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/100804/environ'"
+        },
+        {
+          "scope": "process",
+          "reason": "Ownership of unrelated process 100805 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/100805/environ'"
+        }
+      ],
+      "cleanup": {
+        "owned_process_group": "verified",
+        "temporary_root": "removed",
+        "unverified_processes": [
+          {
+            "pid": 100392,
+            "reason": "EACCES: permission denied, open '/proc/100392/environ'"
+          },
+          {
+            "pid": 100393,
+            "reason": "EACCES: permission denied, open '/proc/100393/environ'"
+          },
+          {
+            "pid": 100394,
+            "reason": "EACCES: permission denied, open '/proc/100394/environ'"
+          },
+          {
+            "pid": 100397,
+            "reason": "EACCES: permission denied, open '/proc/100397/environ'"
+          },
+          {
+            "pid": 100421,
+            "reason": "EACCES: permission denied, open '/proc/100421/environ'"
+          },
+          {
+            "pid": 100440,
+            "reason": "EACCES: permission denied, open '/proc/100440/environ'"
+          },
+          {
+            "pid": 100802,
+            "reason": "EACCES: permission denied, open '/proc/100802/environ'"
+          },
+          {
+            "pid": 100803,
+            "reason": "EACCES: permission denied, open '/proc/100803/environ'"
+          },
+          {
+            "pid": 100804,
+            "reason": "EACCES: permission denied, open '/proc/100804/environ'"
+          },
+          {
+            "pid": 100805,
+            "reason": "EACCES: permission denied, open '/proc/100805/environ'"
+          }
+        ]
+      }
+    },
+    "confidence": "observed",
+    "authority": "controlled-replay",
+    "environment": {
+      "id": "linux-x64",
+      "platform": "linux",
+      "architecture": "x64",
+      "isolation": "process"
+    },
+    "limitations": [
+      "Artifact identity is unavailable for this observation.",
+      "The executable digest is a prelaunch file sample; matching path metadata immediately after spawn does not prove an atomic operating-system image binding.",
+      "Process trees are sampled and may omit short-lived descendants.",
+      "Filesystem observations are before/after snapshots, not syscall traces.",
+      "Inherited host environment variables are not recorded and may affect results."
+    ],
+    "locations": [],
+    "evidence_links": []
+  }
+}

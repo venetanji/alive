@@ -1,0 +1,749 @@
+{
+  "checked_at_utc": "2026-10-30T16:34:38.779895+00:00",
+  "source_dll_sha256": "66a42b09161ca7d48861e1980523e2cb44dd4f08fbd04ac9c4231a56d79b2be8",
+  "source_dll_unchanged": true,
+  "snapshot_originals_unchanged": true,
+  "passed_cases": 5,
+  "cases": {
+    "direct_note": {
+      "exit_code": 0,
+      "stderr": "",
+      "observations": [
+        {
+          "stage": "mapped",
+          "dll": "Electric_64.dll",
+          "sha256": "66a42b09161ca7d48861e1980523e2cb44dd4f08fbd04ac9c4231a56d79b2be8",
+          "exports": [
+            "CalcA",
+            "CreateInstanceU",
+            "DestroyInstanceU",
+            "GetPlugInfoU",
+            "ResetA",
+            "SetParameterA",
+            "SetSampleRateU"
+          ],
+          "imports": 115,
+          "relocations": 2514,
+          "dllmain_called": false,
+          "wine_loaded": false
+        },
+        {
+          "stage": "info",
+          "key": 1,
+          "result": 1,
+          "value": 1
+        },
+        {
+          "stage": "info",
+          "key": 2,
+          "result": 1,
+          "value": 1
+        },
+        {
+          "stage": "info",
+          "key": 3,
+          "result": 1,
+          "value": 1
+        },
+        {
+          "stage": "info",
+          "key": 4,
+          "result": 1,
+          "value": 0
+        },
+        {
+          "stage": "info",
+          "key": 5,
+          "result": 1,
+          "value": 512
+        },
+        {
+          "stage": "info",
+          "key": 6,
+          "result": 1,
+          "value": 1
+        },
+        {
+          "stage": "creating"
+        },
+        {
+          "stage": "created",
+          "nonnull": true
+        },
+        {
+          "stage": "parameter_metadata",
+          "count": 33,
+          "initialized": 33
+        },
+        {
+          "stage": "sample_rate",
+          "result": 1
+        },
+        {
+          "stage": "reset"
+        },
+        {
+          "stage": "midpoint_parameters",
+          "count": 33
+        },
+        {
+          "stage": "rendered",
+          "frames": 48128,
+          "peak": 0.010234297253191471,
+          "energy": 0.8165637035234721,
+          "silent_flag_interpreted": false,
+          "runtime_calls": 229340,
+          "note": 60,
+          "note_enabled": true,
+          "elapsed_seconds": 0.0589447870006552,
+          "right_energy": 0.8165637035234721
+        },
+        {
+          "stage": "runtime_check",
+          "wine_libraries_found": false
+        },
+        {
+          "stage": "destroyed"
+        },
+        {
+          "stage": "runtime_imports",
+          "used": {
+            "s_malloc": 17941,
+            "s_memset": 3704,
+            "s_free": 19419,
+            "s_strcmp": 40543,
+            "s_strlen": 58016,
+            "s_memmove": 4141,
+            "s_AcquireSRWLockExclusive": 66,
+            "s_ReleaseSRWLockExclusive": 66,
+            "s_WakeAllConditionVariable": 30,
+            "s___pctype_func": 1,
+            "s__create_locale": 1,
+            "s__register_onexit_function": 1,
+            "s_memcpy": 3969,
+            "s__time64": 2,
+            "s_srand": 2,
+            "s_rand": 48400,
+            "s_calloc": 6230,
+            "s___stdio_common_vsprintf": 1353,
+            "s___stdio_common_vsscanf": 530,
+            "s__strdup": 1832,
+            "s__configthreadlocale": 1650,
+            "s_setlocale": 825,
+            "s_memchr": 4404,
+            "s__errno": 3348,
+            "s__strtoui64_l": 390,
+            "s__strtoi64_l": 447,
+            "s_isspace": 10832,
+            "s_log10": 6,
+            "s_strcpy": 2,
+            "s_atof": 1101,
+            "s_memcmp": 64,
+            "s_atoi": 32
+          }
+        }
+      ]
+    },
+    "ultra_note": {
+      "exit_code": 0,
+      "stderr": "",
+      "observations": [
+        {
+          "stage": "mapped",
+          "dll": "Electric_64.dll",
+          "sha256": "66a42b09161ca7d48861e1980523e2cb44dd4f08fbd04ac9c4231a56d79b2be8",
+          "exports": [
+            "CalcA",
+            "CreateInstanceU",
+            "DestroyInstanceU",
+            "GetPlugInfoU",
+            "ResetA",
+            "SetParameterA",
+            "SetSampleRateU"
+          ],
+          "imports": 115,
+          "relocations": 2514,
+          "dllmain_called": false,
+          "wine_loaded": false
+        },
+        {
+          "stage": "info",
+          "key": 1,
+          "result": 1,
+          "value": 1
+        },
+        {
+          "stage": "info",
+          "key": 2,
+          "result": 1,
+          "value": 1
+        },
+        {
+          "stage": "info",
+          "key": 3,
+          "result": 1,
+          "value": 1
+        },
+        {
+          "stage": "info",
+          "key": 4,
+          "result": 1,
+          "value": 0
+        },
+        {
+          "stage": "info",
+          "key": 5,
+          "result": 1,
+          "value": 512
+        },
+        {
+          "stage": "info",
+          "key": 6,
+          "result": 1,
+          "value": 1
+        },
+        {
+          "stage": "creating"
+        },
+        {
+          "stage": "created",
+          "nonnull": true
+        },
+        {
+          "stage": "parameter_metadata",
+          "count": 33,
+          "initialized": 33
+        },
+        {
+          "stage": "sample_rate",
+          "result": 1
+        },
+        {
+          "stage": "reset"
+        },
+        {
+          "stage": "midpoint_parameters",
+          "count": 33
+        },
+        {
+          "stage": "ultra_graph",
+          "experimental_source_kind": 60,
+          "gain": 8.0,
+          "blocks": 188,
+          "consumed_samples": 48128,
+          "first_64_silent": true
+        },
+        {
+          "stage": "rendered",
+          "frames": 48128,
+          "peak": 0.08187437802553177,
+          "energy": 52.26007556938222,
+          "silent_flag_interpreted": false,
+          "runtime_calls": 229340,
+          "note": 60,
+          "note_enabled": true,
+          "elapsed_seconds": 0.11993359999996756,
+          "right_energy": 52.26007556938222
+        },
+        {
+          "stage": "wav",
+          "path": "/tmp/alive-live-native-TeB9PLLy/electric-ultra.wav",
+          "sha256": "a7a0d7bcda3257d9e2d3ddb2db4cde1312a13f78dcbe95ecec81135e23e10339"
+        },
+        {
+          "stage": "runtime_check",
+          "wine_libraries_found": false
+        },
+        {
+          "stage": "destroyed"
+        },
+        {
+          "stage": "runtime_imports",
+          "used": {
+            "s_malloc": 17941,
+            "s_memset": 3704,
+            "s_free": 19419,
+            "s_strcmp": 40543,
+            "s_strlen": 58016,
+            "s_memmove": 4141,
+            "s_AcquireSRWLockExclusive": 66,
+            "s_ReleaseSRWLockExclusive": 66,
+            "s_WakeAllConditionVariable": 30,
+            "s___pctype_func": 1,
+            "s__create_locale": 1,
+            "s__register_onexit_function": 1,
+            "s_memcpy": 3969,
+            "s__time64": 2,
+            "s_srand": 2,
+            "s_rand": 48400,
+            "s_calloc": 6230,
+            "s___stdio_common_vsprintf": 1353,
+            "s___stdio_common_vsscanf": 530,
+            "s__strdup": 1832,
+            "s__configthreadlocale": 1650,
+            "s_setlocale": 825,
+            "s_memchr": 4404,
+            "s__errno": 3348,
+            "s__strtoui64_l": 390,
+            "s__strtoi64_l": 447,
+            "s_isspace": 10832,
+            "s_log10": 6,
+            "s_strcpy": 2,
+            "s_atof": 1101,
+            "s_memcmp": 64,
+            "s_atoi": 32
+          }
+        }
+      ]
+    },
+    "ultra_no_note": {
+      "exit_code": 0,
+      "stderr": "",
+      "observations": [
+        {
+          "stage": "mapped",
+          "dll": "Electric_64.dll",
+          "sha256": "66a42b09161ca7d48861e1980523e2cb44dd4f08fbd04ac9c4231a56d79b2be8",
+          "exports": [
+            "CalcA",
+            "CreateInstanceU",
+            "DestroyInstanceU",
+            "GetPlugInfoU",
+            "ResetA",
+            "SetParameterA",
+            "SetSampleRateU"
+          ],
+          "imports": 115,
+          "relocations": 2514,
+          "dllmain_called": false,
+          "wine_loaded": false
+        },
+        {
+          "stage": "info",
+          "key": 1,
+          "result": 1,
+          "value": 1
+        },
+        {
+          "stage": "info",
+          "key": 2,
+          "result": 1,
+          "value": 1
+        },
+        {
+          "stage": "info",
+          "key": 3,
+          "result": 1,
+          "value": 1
+        },
+        {
+          "stage": "info",
+          "key": 4,
+          "result": 1,
+          "value": 0
+        },
+        {
+          "stage": "info",
+          "key": 5,
+          "result": 1,
+          "value": 512
+        },
+        {
+          "stage": "info",
+          "key": 6,
+          "result": 1,
+          "value": 1
+        },
+        {
+          "stage": "creating"
+        },
+        {
+          "stage": "created",
+          "nonnull": true
+        },
+        {
+          "stage": "parameter_metadata",
+          "count": 33,
+          "initialized": 33
+        },
+        {
+          "stage": "sample_rate",
+          "result": 1
+        },
+        {
+          "stage": "reset"
+        },
+        {
+          "stage": "midpoint_parameters",
+          "count": 33
+        },
+        {
+          "stage": "ultra_graph",
+          "experimental_source_kind": 60,
+          "gain": 8.0,
+          "blocks": 188,
+          "consumed_samples": 48128,
+          "first_64_silent": true
+        },
+        {
+          "stage": "rendered",
+          "frames": 48128,
+          "peak": 0.0,
+          "energy": 0.0,
+          "silent_flag_interpreted": false,
+          "runtime_calls": 180194,
+          "note": 60,
+          "note_enabled": false,
+          "elapsed_seconds": 0.11647225500018976,
+          "right_energy": 0.0
+        },
+        {
+          "stage": "runtime_check",
+          "wine_libraries_found": false
+        },
+        {
+          "stage": "destroyed"
+        },
+        {
+          "stage": "runtime_imports",
+          "used": {
+            "s_malloc": 17941,
+            "s_memset": 3704,
+            "s_free": 19419,
+            "s_strcmp": 40543,
+            "s_strlen": 58016,
+            "s_memmove": 4141,
+            "s_AcquireSRWLockExclusive": 66,
+            "s_ReleaseSRWLockExclusive": 66,
+            "s_WakeAllConditionVariable": 30,
+            "s___pctype_func": 1,
+            "s__create_locale": 1,
+            "s__register_onexit_function": 1,
+            "s_memcpy": 2967,
+            "s__time64": 2,
+            "s_srand": 2,
+            "s_rand": 256,
+            "s_calloc": 6230,
+            "s___stdio_common_vsprintf": 1353,
+            "s___stdio_common_vsscanf": 530,
+            "s__strdup": 1832,
+            "s__configthreadlocale": 1650,
+            "s_setlocale": 825,
+            "s_memchr": 4404,
+            "s__errno": 3348,
+            "s__strtoui64_l": 390,
+            "s__strtoi64_l": 447,
+            "s_isspace": 10832,
+            "s_log10": 6,
+            "s_strcpy": 2,
+            "s_atof": 1101,
+            "s_memcmp": 64,
+            "s_atoi": 32
+          }
+        }
+      ]
+    },
+    "ultra_zero_gain": {
+      "exit_code": 0,
+      "stderr": "",
+      "observations": [
+        {
+          "stage": "mapped",
+          "dll": "Electric_64.dll",
+          "sha256": "66a42b09161ca7d48861e1980523e2cb44dd4f08fbd04ac9c4231a56d79b2be8",
+          "exports": [
+            "CalcA",
+            "CreateInstanceU",
+            "DestroyInstanceU",
+            "GetPlugInfoU",
+            "ResetA",
+            "SetParameterA",
+            "SetSampleRateU"
+          ],
+          "imports": 115,
+          "relocations": 2514,
+          "dllmain_called": false,
+          "wine_loaded": false
+        },
+        {
+          "stage": "info",
+          "key": 1,
+          "result": 1,
+          "value": 1
+        },
+        {
+          "stage": "info",
+          "key": 2,
+          "result": 1,
+          "value": 1
+        },
+        {
+          "stage": "info",
+          "key": 3,
+          "result": 1,
+          "value": 1
+        },
+        {
+          "stage": "info",
+          "key": 4,
+          "result": 1,
+          "value": 0
+        },
+        {
+          "stage": "info",
+          "key": 5,
+          "result": 1,
+          "value": 512
+        },
+        {
+          "stage": "info",
+          "key": 6,
+          "result": 1,
+          "value": 1
+        },
+        {
+          "stage": "creating"
+        },
+        {
+          "stage": "created",
+          "nonnull": true
+        },
+        {
+          "stage": "parameter_metadata",
+          "count": 33,
+          "initialized": 33
+        },
+        {
+          "stage": "sample_rate",
+          "result": 1
+        },
+        {
+          "stage": "reset"
+        },
+        {
+          "stage": "midpoint_parameters",
+          "count": 33
+        },
+        {
+          "stage": "ultra_graph",
+          "experimental_source_kind": 60,
+          "gain": 0.0,
+          "blocks": 188,
+          "consumed_samples": 48128,
+          "first_64_silent": true
+        },
+        {
+          "stage": "rendered",
+          "frames": 48128,
+          "peak": 0.0,
+          "energy": 0.0,
+          "silent_flag_interpreted": false,
+          "runtime_calls": 229340,
+          "note": 60,
+          "note_enabled": true,
+          "elapsed_seconds": 0.12227207600062684,
+          "right_energy": 0.0
+        },
+        {
+          "stage": "runtime_check",
+          "wine_libraries_found": false
+        },
+        {
+          "stage": "destroyed"
+        },
+        {
+          "stage": "runtime_imports",
+          "used": {
+            "s_malloc": 17941,
+            "s_memset": 3704,
+            "s_free": 19419,
+            "s_strcmp": 40543,
+            "s_strlen": 58016,
+            "s_memmove": 4141,
+            "s_AcquireSRWLockExclusive": 66,
+            "s_ReleaseSRWLockExclusive": 66,
+            "s_WakeAllConditionVariable": 30,
+            "s___pctype_func": 1,
+            "s__create_locale": 1,
+            "s__register_onexit_function": 1,
+            "s_memcpy": 3969,
+            "s__time64": 2,
+            "s_srand": 2,
+            "s_rand": 48400,
+            "s_calloc": 6230,
+            "s___stdio_common_vsprintf": 1353,
+            "s___stdio_common_vsscanf": 530,
+            "s__strdup": 1832,
+            "s__configthreadlocale": 1650,
+            "s_setlocale": 825,
+            "s_memchr": 4404,
+            "s__errno": 3348,
+            "s__strtoui64_l": 390,
+            "s__strtoi64_l": 447,
+            "s_isspace": 10832,
+            "s_log10": 6,
+            "s_strcpy": 2,
+            "s_atof": 1101,
+            "s_memcmp": 64,
+            "s_atoi": 32
+          }
+        }
+      ]
+    },
+    "ultra_octave": {
+      "exit_code": 0,
+      "stderr": "",
+      "observations": [
+        {
+          "stage": "mapped",
+          "dll": "Electric_64.dll",
+          "sha256": "66a42b09161ca7d48861e1980523e2cb44dd4f08fbd04ac9c4231a56d79b2be8",
+          "exports": [
+            "CalcA",
+            "CreateInstanceU",
+            "DestroyInstanceU",
+            "GetPlugInfoU",
+            "ResetA",
+            "SetParameterA",
+            "SetSampleRateU"
+          ],
+          "imports": 115,
+          "relocations": 2514,
+          "dllmain_called": false,
+          "wine_loaded": false
+        },
+        {
+          "stage": "info",
+          "key": 1,
+          "result": 1,
+          "value": 1
+        },
+        {
+          "stage": "info",
+          "key": 2,
+          "result": 1,
+          "value": 1
+        },
+        {
+          "stage": "info",
+          "key": 3,
+          "result": 1,
+          "value": 1
+        },
+        {
+          "stage": "info",
+          "key": 4,
+          "result": 1,
+          "value": 0
+        },
+        {
+          "stage": "info",
+          "key": 5,
+          "result": 1,
+          "value": 512
+        },
+        {
+          "stage": "info",
+          "key": 6,
+          "result": 1,
+          "value": 1
+        },
+        {
+          "stage": "creating"
+        },
+        {
+          "stage": "created",
+          "nonnull": true
+        },
+        {
+          "stage": "parameter_metadata",
+          "count": 33,
+          "initialized": 33
+        },
+        {
+          "stage": "sample_rate",
+          "result": 1
+        },
+        {
+          "stage": "reset"
+        },
+        {
+          "stage": "midpoint_parameters",
+          "count": 33
+        },
+        {
+          "stage": "ultra_graph",
+          "experimental_source_kind": 60,
+          "gain": 8.0,
+          "blocks": 188,
+          "consumed_samples": 48128,
+          "first_64_silent": true
+        },
+        {
+          "stage": "rendered",
+          "frames": 48128,
+          "peak": 0.06535496562719345,
+          "energy": 27.37867400685739,
+          "silent_flag_interpreted": false,
+          "runtime_calls": 229340,
+          "note": 72,
+          "note_enabled": true,
+          "elapsed_seconds": 0.1209675320005772,
+          "right_energy": 27.37867400685739
+        },
+        {
+          "stage": "runtime_check",
+          "wine_libraries_found": false
+        },
+        {
+          "stage": "destroyed"
+        },
+        {
+          "stage": "runtime_imports",
+          "used": {
+            "s_malloc": 17941,
+            "s_memset": 3704,
+            "s_free": 19419,
+            "s_strcmp": 40543,
+            "s_strlen": 58016,
+            "s_memmove": 4141,
+            "s_AcquireSRWLockExclusive": 66,
+            "s_ReleaseSRWLockExclusive": 66,
+            "s_WakeAllConditionVariable": 30,
+            "s___pctype_func": 1,
+            "s__create_locale": 1,
+            "s__register_onexit_function": 1,
+            "s_memcpy": 3969,
+            "s__time64": 2,
+            "s_srand": 2,
+            "s_rand": 48400,
+            "s_calloc": 6230,
+            "s___stdio_common_vsprintf": 1353,
+            "s___stdio_common_vsscanf": 530,
+            "s__strdup": 1832,
+            "s__configthreadlocale": 1650,
+            "s_setlocale": 825,
+            "s_memchr": 4404,
+            "s__errno": 3348,
+            "s__strtoui64_l": 390,
+            "s__strtoi64_l": 447,
+            "s_isspace": 10832,
+            "s_log10": 6,
+            "s_strcpy": 2,
+            "s_atof": 1101,
+            "s_memcmp": 64,
+            "s_atoi": 32
+          }
+        }
+      ]
+    }
+  },
+  "evidence_kind": "controlled native execution; original DSP machine code with an experimental PE/CRT adapter",
+  "limits": [
+    "One Electric DLL/version on Linux x86-64 only.",
+    "Explicit midpoint parameters, not a certified Live factory preset.",
+    "Ultra runs from a temporary modified native snapshot with a new source node; the shipped app is unchanged.",
+    "No reference audio comparison, physical audio device, UI, session/project compatibility, or real-time safety validation.",
+    "DllMain/TLS callbacks and unsupported imports are not a complete Windows runtime."
+  ]
+}

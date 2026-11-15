@@ -1,0 +1,12 @@
+COMMAND ['cargo', 'test', '--manifest-path', 'apps/ultra/src-tauri/Cargo.toml', '--locked', 'arithmetic', '--', '--nocapture']
+EXIT 0
+   Compiling ultra v0.1.0 (/home/venetanji/Work/alive/apps/ultra/src-tauri)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 6.97s
+     Running unittests src/main.rs (apps/ultra/src-tauri/target/debug/deps/ultra-efa75696e3a5196e)
+
+running 2 tests
+test canvas::tests::arithmetic_numericmode_is_structural_and_rhs_live_admission_is_atomic ... ok
+test canvas::tests::arithmetic_modes_preserve_legacy_defaults_and_validate_new_descriptors ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 112 filtered out; finished in 0.00s
+

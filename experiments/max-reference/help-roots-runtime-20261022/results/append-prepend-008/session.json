@@ -1,0 +1,470 @@
+{
+  "status": "COMPLETE",
+  "work": "/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-008",
+  "prefix": "/home/venetanji/.cache/alive-max-help-roots-20261022-wine-disposable",
+  "source_prefix": "/home/venetanji/.cache/alive-max-list-20261021/wine-disposable",
+  "capture_id": "e1bf5c5ac38a6f348039b0ca97e5968cebf04c3761f8896e",
+  "host_display": ":0",
+  "display": ":200",
+  "process_ownership": "unique capture environment marker plus exact prefix/display and PID start; pidfd signals",
+  "launch_diagnostics": [
+    {
+      "role": "xvfb",
+      "pid": 275085,
+      "status": "verified",
+      "attempts": [
+        {
+          "pid": 275085,
+          "expected_start": "789711",
+          "observed_start": "789711",
+          "start_match": true,
+          "environment_readable": true,
+          "field_matches": {
+            "capture_marker": true,
+            "prefix": true,
+            "display": true
+          },
+          "executable_path_sha256": "cc2fda09e0686b85457a35aa6ff9f53f8c33f6d94fd4e60aa255efbd25301d50",
+          "matches_scope": true,
+          "elapsed_ms": 0.402
+        }
+      ],
+      "expected_start": "789711"
+    },
+    {
+      "role": "wine-launcher",
+      "pid": 275086,
+      "status": "verified",
+      "attempts": [
+        {
+          "pid": 275086,
+          "expected_start": "789716",
+          "observed_start": "789716",
+          "start_match": true,
+          "environment_readable": true,
+          "field_matches": {
+            "capture_marker": true,
+            "prefix": true,
+            "display": true
+          },
+          "executable_path_sha256": "2ecadfbc9f7bd18a32773f9385c7c0d1033a697e13e571386c990b08dc42d9b0",
+          "matches_scope": true,
+          "elapsed_ms": 0.45
+        }
+      ],
+      "expected_start": "789716"
+    }
+  ],
+  "anchor_diagnostics": [],
+  "screenshot_count": 0,
+  "clipboard_actions": 0,
+  "runtime_invocations": 1,
+  "documents": [
+    {
+      "document": "append",
+      "source_path": "/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resources/help/max/append.maxhelp",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+      "pristine_path": "/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-008/pristine/append.maxhelp",
+      "working_path": "/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-008/working/append.maxhelp",
+      "initial_working_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "document": "prepend",
+      "source_path": "/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resources/help/max/prepend.maxhelp",
+      "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+      "pristine_path": "/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-008/pristine/prepend.maxhelp",
+      "working_path": "/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-008/working/prepend.maxhelp",
+      "initial_working_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb"
+    }
+  ],
+  "score_steps": 33,
+  "readback_method": "v8-boxtext",
+  "input_method": "programmatic original controls; no physical entry/drag claim",
+  "readback_requests": [
+    {
+      "request_id": 1,
+      "step_id": "initial",
+      "document": "append",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "request_id": 2,
+      "step_id": "initial",
+      "document": "prepend",
+      "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb"
+    },
+    {
+      "request_id": 4,
+      "step_id": "a1-value-0",
+      "document": "append",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "request_id": 6,
+      "step_id": "a1-value-7",
+      "document": "append",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "request_id": 8,
+      "step_id": "a1-value--3",
+      "document": "append",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "request_id": 10,
+      "step_id": "a2-click-0",
+      "document": "append",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "request_id": 12,
+      "step_id": "a2-click-1",
+      "document": "append",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "request_id": 14,
+      "step_id": "a2-click-2",
+      "document": "append",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "request_id": 16,
+      "step_id": "a3-before-set",
+      "document": "append",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "request_id": 18,
+      "step_id": "a3-set-first",
+      "document": "append",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "request_id": 20,
+      "step_id": "a3-after-first",
+      "document": "append",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "request_id": 22,
+      "step_id": "a3-set-second",
+      "document": "append",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "request_id": 24,
+      "step_id": "a3-after-second",
+      "document": "append",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "request_id": 26,
+      "step_id": "a3-repeat-second",
+      "document": "append",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "request_id": 28,
+      "step_id": "a3-replace-again",
+      "document": "append",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "request_id": 30,
+      "step_id": "a3-after-replace",
+      "document": "append",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "request_id": 32,
+      "step_id": "a4-display-obj-9",
+      "document": "append",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "request_id": 34,
+      "step_id": "a4-upstream-obj-9",
+      "document": "append",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "request_id": 36,
+      "step_id": "a4-display-obj-10",
+      "document": "append",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "request_id": 38,
+      "step_id": "a4-upstream-obj-10",
+      "document": "append",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "request_id": 40,
+      "step_id": "a4-display-obj-20",
+      "document": "append",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "request_id": 42,
+      "step_id": "a4-upstream-obj-20",
+      "document": "append",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "request_id": 44,
+      "step_id": "p1-click-0",
+      "document": "prepend",
+      "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb"
+    },
+    {
+      "request_id": 46,
+      "step_id": "p1-click-1",
+      "document": "prepend",
+      "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb"
+    },
+    {
+      "request_id": 48,
+      "step_id": "p1-click-2",
+      "document": "prepend",
+      "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb"
+    },
+    {
+      "request_id": 50,
+      "step_id": "p1-click-3",
+      "document": "prepend",
+      "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb"
+    },
+    {
+      "request_id": 52,
+      "step_id": "p1-click-4",
+      "document": "prepend",
+      "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb"
+    },
+    {
+      "request_id": 54,
+      "step_id": "p1-click-5",
+      "document": "prepend",
+      "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb"
+    },
+    {
+      "request_id": 56,
+      "step_id": "p2-click-0",
+      "document": "prepend",
+      "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb"
+    },
+    {
+      "request_id": 58,
+      "step_id": "p2-click-1",
+      "document": "prepend",
+      "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb"
+    },
+    {
+      "request_id": 60,
+      "step_id": "p2-click-2",
+      "document": "prepend",
+      "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb"
+    },
+    {
+      "request_id": 62,
+      "step_id": "p2-click-3",
+      "document": "prepend",
+      "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb"
+    },
+    {
+      "request_id": 64,
+      "step_id": "p2-click-4",
+      "document": "prepend",
+      "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb"
+    },
+    {
+      "request_id": 66,
+      "step_id": "p2-click-5",
+      "document": "prepend",
+      "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb"
+    },
+    {
+      "request_id": 68,
+      "step_id": "p2-click-6",
+      "document": "prepend",
+      "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb"
+    }
+  ],
+  "saved_order_observed": false,
+  "max_sha256": "7a881318209a10d33c982db482297ab870327d5d2cb90aee6e4e01a13e279d8b",
+  "helpers": [
+    {
+      "name": "helpargs.js",
+      "path": "help/resources/helpargs.js",
+      "bytes": 3623,
+      "sha256": "04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469",
+      "installed_verified": true,
+      "copied_verified": true
+    },
+    {
+      "name": "helpdetails.js",
+      "path": "help/resources/helpdetails.js",
+      "bytes": 4199,
+      "sha256": "31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1",
+      "installed_verified": true,
+      "copied_verified": true
+    },
+    {
+      "name": "helpname.js",
+      "path": "help/resources/helpname.js",
+      "bytes": 905,
+      "sha256": "49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa",
+      "installed_verified": true,
+      "copied_verified": true
+    },
+    {
+      "name": "helpstarter.js",
+      "path": "help/resources/helpstarter.js",
+      "bytes": 1591,
+      "sha256": "a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8",
+      "installed_verified": true,
+      "copied_verified": true
+    }
+  ],
+  "launched_processes": [
+    {
+      "role": "xvfb",
+      "pid": 275085,
+      "start": "789711"
+    },
+    {
+      "role": "wine-launcher",
+      "pid": 275086,
+      "start": "789716"
+    }
+  ],
+  "xvfb_pid": 275085,
+  "launcher_pid": 275086,
+  "loading_diagnostics": [
+    {
+      "document": "append",
+      "tree_boxes": 19,
+      "basic_named": true,
+      "attempts": 1,
+      "filepath_sha256": "1982c28d4277d1f111a725b62a597c153cc8344da71c17bfca21b182ab7c1977",
+      "filepath": "Z:/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-008/working/append.maxhelp",
+      "top_boxes": [
+        {
+          "ordinal": 0,
+          "basic_named": false,
+          "maxclass": "patcher"
+        },
+        {
+          "ordinal": 1,
+          "basic_named": false,
+          "maxclass_sha256": "72d8f0277feb5d68008f2a0da84b0a00ccb6809ef6fb51204d59884c922f2bb8"
+        },
+        {
+          "ordinal": 2,
+          "basic_named": true,
+          "maxclass": "patcher"
+        },
+        {
+          "ordinal": 3,
+          "basic_named": false,
+          "maxclass": "js"
+        }
+      ]
+    },
+    {
+      "document": "prepend",
+      "tree_boxes": 18,
+      "basic_named": true,
+      "attempts": 1,
+      "filepath_sha256": "c92662337f5cc50b2b290aae60052de84c0df042376ca1f1e0e1a506881c0907",
+      "filepath": "Z:/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-008/working/prepend.maxhelp",
+      "top_boxes": [
+        {
+          "ordinal": 0,
+          "basic_named": false,
+          "maxclass": "patcher"
+        },
+        {
+          "ordinal": 1,
+          "basic_named": false,
+          "maxclass_sha256": "72d8f0277feb5d68008f2a0da84b0a00ccb6809ef6fb51204d59884c922f2bb8"
+        },
+        {
+          "ordinal": 2,
+          "basic_named": true,
+          "maxclass": "patcher"
+        },
+        {
+          "ordinal": 3,
+          "basic_named": false,
+          "maxclass": "js"
+        }
+      ]
+    }
+  ],
+  "capabilities": [
+    {
+      "document": "append",
+      "initial_tree_boxes": 19,
+      "source_inventory_boxes": 19,
+      "resolved_basic_boxes": 15,
+      "source_basic_cables": 9,
+      "observer_leaf_cables": 15,
+      "annotation_bindings": [
+        {
+          "kind": "source-bound-helper-width",
+          "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+          "anchor": "root/obj-5/obj-4",
+          "helper_filename": "helpargs.js",
+          "helper_sha256": "04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469",
+          "source_ignoreclick": 1,
+          "source_outlets": 1,
+          "saved_incoming_routes": 0,
+          "saved_outgoing_routes": 0,
+          "saved_rect": [
+            130,
+            195,
+            257.934143,
+            39
+          ],
+          "observer_policy": "omit-disconnected-annotation-leaf",
+          "live_rect": [
+            130,
+            195,
+            257.9139709472656,
+            39
+          ]
+        }
+      ],
+      "working_path": "Z:/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-008/working/append.maxhelp",
+      "original_routes": "retained; only leaf branches added",
+      "observer_order": "callback order only; not destination-order evidence"
+    },
+    {
+      "document": "prepend",
+      "initial_tree_boxes": 18,
+      "source_inventory_boxes": 18,
+      "resolved_basic_boxes": 14,
+      "source_basic_cables": 9,
+      "observer_leaf_cables": 11,
+      "annotation_bindings": [],
+      "working_path": "Z:/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-008/working/prepend.maxhelp",
+      "original_routes": "retained; only leaf branches added",
+      "observer_order": "callback order only; not destination-order evidence"
+    }
+  ],
+  "initial_message_readback_validated": true,
+  "runtime_endpoint_readback_validated": true,
+  "nonvisual_display_readback": "private V8 Message boxtext; no pixel or saved-order claim",
+  "cold_message_readback_validated": true,
+  "complete": true,
+  "ordinary_quit_requested": false,
+  "public_rows": 162,
+  "private_journal_sha256": "e44efddc73729013c7aa18462cb75f2ddae0f476002e21995b3ff6130d04e1f6",
+  "private_log": {
+    "sha256": "25518d59ef100c8e9681ed93f03bbb8d07131ba27fbdffb9e2f7229cf74070ac",
+    "bytes": 681
+  }
+}

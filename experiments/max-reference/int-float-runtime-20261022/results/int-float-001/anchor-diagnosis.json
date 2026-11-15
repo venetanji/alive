@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "status": "STRICT_ROOT_HELPER_GEOMETRY_REFUSED",
+  "evidence_id": "ev_08a48aad8591ed6b7e5f326dc09808a9c6c0d8da1b9698cb6433cc0251c24a6d",
+  "step_id": "install-int",
+  "request_id": 1,
+  "document": "int",
+  "revision": 1,
+  "source_sha256": "bbb8fc3b458eb168fe69b8709ba343808d23b6d55e2c59cc3086d01976c5ac61",
+  "raw_ack_sha256": "60690a6c0b84dcb254dbf739a52d0a918081c814cc742dae47fc8b7be9d499b8",
+  "raw_ack_bytes": 23269,
+  "diagnostic_observations": 70,
+  "unique_diagnostic_count": 1,
+  "anchor": "root/obj-1",
+  "saved_rect": [
+    92,
+    94,
+    110,
+    20
+  ],
+  "expected_maxclass": "newobj",
+  "expected_runtime_class": "js",
+  "full_match_count": 0,
+  "candidates": [
+    {
+      "maxclass": "patcher",
+      "rect": [
+        205,
+        205,
+        50,
+        22
+      ]
+    },
+    {
+      "maxclass": "jsui",
+      "rect": [
+        10,
+        10,
+        305,
+        55
+      ]
+    },
+    {
+      "maxclass": "patcher",
+      "rect": [
+        10,
+        85,
+        50,
+        22
+      ]
+    },
+    {
+      "maxclass": "js",
+      "rect": [
+        92,
+        94,
+        110,
+        22
+      ]
+    }
+  ],
+  "completed_operations": 0,
+  "checkpoints": 0,
+  "qualification_passes_added": 0,
+  "limitation": "Only the first strict anchor refusal was collected; other anchor/getter/lifecycle capabilities remain unobserved."
+}

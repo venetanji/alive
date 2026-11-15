@@ -1,0 +1,696 @@
+{
+  "evidence_id": "ev_d514e28b289f015b544b74dae6fc8f351f6465c755fbf455264ee664521ed3c6",
+  "subject": null,
+  "provider": {
+    "id": "rea-process",
+    "name": "REA process capture",
+    "version": "3"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.process-capture",
+  "operation": "capture_process_scenario",
+  "parameters": {
+    "executable_name": "python",
+    "argument_count": 1,
+    "event_count": 0,
+    "filesystem_observation_path_count": 0,
+    "normalization": {
+      "paths": false,
+      "pids": true,
+      "ports": true,
+      "time_bucket_ms": 10,
+      "patterns": []
+    }
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "manifest": {
+      "rea_version": "6.4.0",
+      "provider_version": "3",
+      "platform": "linux",
+      "architecture": "x64",
+      "pty_backend": "node-pty",
+      "started_at": "2026-10-21T18:55:08.977Z",
+      "completed_at": "2026-10-21T18:55:43.871Z",
+      "scenario": {
+        "executable": "/usr/bin/python",
+        "arguments": [
+          "experiments/max-reference/comment-ui-runtime-20261022/run-runtime.py"
+        ],
+        "working_directory": "/home/venetanji/Work/alive",
+        "environment": {},
+        "filesystem_observation_paths": [],
+        "terminal": {
+          "columns": 100,
+          "rows": 30,
+          "scrollback": 2000
+        },
+        "events": [],
+        "timeout_ms": 90000,
+        "idle_timeout_ms": 30000,
+        "settle_ms": 100,
+        "limits": {
+          "output_bytes": 100000,
+          "files": 10000,
+          "file_bytes": 10000000,
+          "processes": 150,
+          "filesystem_depth": 16
+        },
+        "normalization": {
+          "paths": false,
+          "pids": true,
+          "ports": true,
+          "time_bucket_ms": 10,
+          "patterns": []
+        },
+        "finalization_ms": 5000,
+        "executable_sha256": "375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b"
+      },
+      "comparison_contract": {
+        "working_directory": "/home/venetanji/Work/alive",
+        "environment": {},
+        "ambient_environment": "unknown",
+        "filesystem_observation_paths": [],
+        "terminal": {
+          "columns": 100,
+          "rows": 30,
+          "scrollback": 2000
+        },
+        "events": [],
+        "timeout_ms": 90000,
+        "idle_timeout_ms": 30000,
+        "settle_ms": 100,
+        "finalization_ms": 5000,
+        "limits": {
+          "output_bytes": 100000,
+          "files": 10000,
+          "file_bytes": 10000000,
+          "processes": 150,
+          "filesystem_depth": 16
+        },
+        "normalization": {
+          "paths": false,
+          "pids": true,
+          "ports": true,
+          "time_bucket_ms": 10,
+          "patterns": []
+        },
+        "port_normalization_version": "contextual-endpoints-v2",
+        "rendered_line_format": "trailing-spaces-trimmed-v1"
+      },
+      "full_scenario_sha256": "f82318dab0380409f07fc9786fe3f476197e0792cef7b0252b3eb31da525fbdc",
+      "comparison_contract_sha256": "0c6117eb6e77e7fc946a07810c70151a2ccad4bbf0ce6840ba650f9dfb0499ef",
+      "selected_executable_sha256": "375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b",
+      "executable_sha256": "375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b",
+      "executable_identity": {
+        "state": "path_metadata_unchanged",
+        "reason": null
+      },
+      "normalization_sha256": "5c58aa1aa890197f15f9c59ef755d01120e6e07f356fa1ef2f20787e63b6fa87"
+    },
+    "normalization": {
+      "paths": false,
+      "pids": true,
+      "ports": true,
+      "time_bucket_ms": 10,
+      "patterns": []
+    },
+    "frames": [
+      {
+        "sequence": 0,
+        "at_ms": 140,
+        "data": "{\"display\": \":0\", \"xvfb_pid\": 3246013, \"launcher_pid\": 3246028, \"prefix\": \"/home/venetanji/.cache/alive-max-comment-20261022-wine-disposable\", \"fixture\": \"/home/venetanji/Work/alive/experiments/max-reference/comment-ui-runtime-20261022/fixtures/comment-layout.maxpat\"}\r\n"
+      },
+      {
+        "sequence": 1,
+        "at_ms": 23110,
+        "data": "{\"captured\": \"initial\", \"elapsed\": 22.97}\r\n"
+      },
+      {
+        "sequence": 2,
+        "at_ms": 26540,
+        "data": "{\"captured\": \"changed\", \"elapsed\": 26.4}\r\n"
+      },
+      {
+        "sequence": 3,
+        "at_ms": 34750,
+        "data": "{\"complete\": true, \"session\": {\"display\": \":0\", \"xvfb_pid\": 3246013, \"launcher_pid\": 3246028, \"prefix\": \"/home/venetanji/.cache/alive-max-comment-20261022-wine-disposable\", \"fixture\": \"/home/venetanji/Work/alive/experiments/max-reference/comment-ui-runtime-20261022/fixtures/comment-layout.maxpat\"}, \"max_exit\": -9, \"stages\": [\"changed\", \"initial\"], \"duration_seconds\": 34.61, \"screenshots\": \"/tmp/alive-max-comment-20261022-run\"}\r\n"
+      }
+    ],
+    "rendered_frames": [
+      {
+        "sequence": 0,
+        "at_ms": 140,
+        "columns": 100,
+        "rows": 30,
+        "cursor_x": 0,
+        "cursor_y": 3,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"display\": \":0\", \"xvfb_pid\": 3246013, \"launcher_pid\": 3246028, \"prefix\": \"/home/venetanji/.cache/al",
+          "ive-max-comment-20261022-wine-disposable\", \"fixture\": \"/home/venetanji/Work/alive/experiments/max-re",
+          "ference/comment-ui-runtime-20261022/fixtures/comment-layout.maxpat\"}",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"display\": \":0\", \"xvfb_pid\": 3246013, \"launcher_pid\": 3246028, \"prefix\": \"/home/venetanji/.cache/alive-max-comment-20261022-wine-disposable\", \"fixture\": \"/home/venetanji/Work/alive/experiments/max-reference/comment-ui-runtime-20261022/fixtures/comment-layout.maxpat\"}\u001b[1B\u001b[68D"
+      },
+      {
+        "sequence": 1,
+        "at_ms": 23110,
+        "columns": 100,
+        "rows": 30,
+        "cursor_x": 0,
+        "cursor_y": 4,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"display\": \":0\", \"xvfb_pid\": 3246013, \"launcher_pid\": 3246028, \"prefix\": \"/home/venetanji/.cache/al",
+          "ive-max-comment-20261022-wine-disposable\", \"fixture\": \"/home/venetanji/Work/alive/experiments/max-re",
+          "ference/comment-ui-runtime-20261022/fixtures/comment-layout.maxpat\"}",
+          "{\"captured\": \"initial\", \"elapsed\": 22.97}",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"display\": \":0\", \"xvfb_pid\": 3246013, \"launcher_pid\": 3246028, \"prefix\": \"/home/venetanji/.cache/alive-max-comment-20261022-wine-disposable\", \"fixture\": \"/home/venetanji/Work/alive/experiments/max-reference/comment-ui-runtime-20261022/fixtures/comment-layout.maxpat\"}\r\n{\"captured\": \"initial\", \"elapsed\": 22.97}\u001b[1B\u001b[41D"
+      },
+      {
+        "sequence": 2,
+        "at_ms": 26540,
+        "columns": 100,
+        "rows": 30,
+        "cursor_x": 0,
+        "cursor_y": 5,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"display\": \":0\", \"xvfb_pid\": 3246013, \"launcher_pid\": 3246028, \"prefix\": \"/home/venetanji/.cache/al",
+          "ive-max-comment-20261022-wine-disposable\", \"fixture\": \"/home/venetanji/Work/alive/experiments/max-re",
+          "ference/comment-ui-runtime-20261022/fixtures/comment-layout.maxpat\"}",
+          "{\"captured\": \"initial\", \"elapsed\": 22.97}",
+          "{\"captured\": \"changed\", \"elapsed\": 26.4}",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"display\": \":0\", \"xvfb_pid\": 3246013, \"launcher_pid\": 3246028, \"prefix\": \"/home/venetanji/.cache/alive-max-comment-20261022-wine-disposable\", \"fixture\": \"/home/venetanji/Work/alive/experiments/max-reference/comment-ui-runtime-20261022/fixtures/comment-layout.maxpat\"}\r\n{\"captured\": \"initial\", \"elapsed\": 22.97}\r\n{\"captured\": \"changed\", \"elapsed\": 26.4}\u001b[1B\u001b[40D"
+      },
+      {
+        "sequence": 3,
+        "at_ms": 34750,
+        "columns": 100,
+        "rows": 30,
+        "cursor_x": 0,
+        "cursor_y": 10,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"display\": \":0\", \"xvfb_pid\": 3246013, \"launcher_pid\": 3246028, \"prefix\": \"/home/venetanji/.cache/al",
+          "ive-max-comment-20261022-wine-disposable\", \"fixture\": \"/home/venetanji/Work/alive/experiments/max-re",
+          "ference/comment-ui-runtime-20261022/fixtures/comment-layout.maxpat\"}",
+          "{\"captured\": \"initial\", \"elapsed\": 22.97}",
+          "{\"captured\": \"changed\", \"elapsed\": 26.4}",
+          "{\"complete\": true, \"session\": {\"display\": \":0\", \"xvfb_pid\": 3246013, \"launcher_pid\": 3246028, \"prefi",
+          "x\": \"/home/venetanji/.cache/alive-max-comment-20261022-wine-disposable\", \"fixture\": \"/home/venetanji",
+          "/Work/alive/experiments/max-reference/comment-ui-runtime-20261022/fixtures/comment-layout.maxpat\"},",
+          "\"max_exit\": -9, \"stages\": [\"changed\", \"initial\"], \"duration_seconds\": 34.61, \"screenshots\": \"/tmp/al",
+          "ive-max-comment-20261022-run\"}",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"display\": \":0\", \"xvfb_pid\": 3246013, \"launcher_pid\": 3246028, \"prefix\": \"/home/venetanji/.cache/alive-max-comment-20261022-wine-disposable\", \"fixture\": \"/home/venetanji/Work/alive/experiments/max-reference/comment-ui-runtime-20261022/fixtures/comment-layout.maxpat\"}\r\n{\"captured\": \"initial\", \"elapsed\": 22.97}\r\n{\"captured\": \"changed\", \"elapsed\": 26.4}\r\n{\"complete\": true, \"session\": {\"display\": \":0\", \"xvfb_pid\": 3246013, \"launcher_pid\": 3246028, \"prefix\": \"/home/venetanji/.cache/alive-max-comment-20261022-wine-disposable\", \"fixture\": \"/home/venetanji/Work/alive/experiments/max-reference/comment-ui-runtime-20261022/fixtures/comment-layout.maxpat\"}, \"max_exit\": -9, \"stages\": [\"changed\", \"initial\"], \"duration_seconds\": 34.61, \"screenshots\": \"/tmp/alive-max-comment-20261022-run\"}\u001b[1B\u001b[30D"
+      }
+    ],
+    "interaction_events": [],
+    "exit": {
+      "code": 0,
+      "signal": 0,
+      "reason": "exited"
+    },
+    "settlement": {
+      "state": "quiesced",
+      "elapsed_ms": 106,
+      "cleanup_outcome": "not_required"
+    },
+    "process_samples": [
+      {
+        "at_ms": 10,
+        "pid": 1,
+        "parent_pid": 2,
+        "command": "/usr/bin/python experiments/max-reference/comment-ui-runtime-20261022/run-runtime.py",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 100,
+        "pid": 3,
+        "parent_pid": 1,
+        "command": "Xvfb -displayfd 1 -screen 0 1440x1100x24 -nolisten tcp",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 150,
+        "pid": 4,
+        "parent_pid": 1,
+        "command": "/home/venetanji/.local/opt/wine-d2d1-nspa-11.13/lib/wine/x86_64-unix/wine C:\\ProgramData\\Ableton\\Live 12 Suite\\Resources\\Max\\Max.exe Z:\\home\\venetanji\\Work\\alive\\experiments\\max-reference\\comment-ui-runtime-20261022\\fixtures\\comment-layout.maxpat",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 1060,
+        "pid": 4,
+        "parent_pid": 1,
+        "command": "C:\\ProgramData\\Ableton\\Live 12 Suite\\Resources\\Max\\Max.exe Z:\\home\\venetanji\\Work\\alive\\experiments\\max-reference\\comment-ui-runtime-20261022\\fixtures\\comment-layout.maxpat",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 9810,
+        "pid": 5,
+        "parent_pid": 4,
+        "command": "",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 9810,
+        "pid": 6,
+        "parent_pid": 5,
+        "command": "",
+        "process_group_id": 6,
+        "session_id": 6
+      },
+      {
+        "at_ms": 22930,
+        "pid": 7,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /tmp/alive-max-comment-20261022-run/initial.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 26410,
+        "pid": 8,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /tmp/alive-max-comment-20261022-run/changed.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 34590,
+        "pid": 4,
+        "parent_pid": 1,
+        "command": "",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 34740,
+        "pid": 3,
+        "parent_pid": 1,
+        "command": "",
+        "process_group_id": 1,
+        "session_id": 1
+      }
+    ],
+    "filesystem_checkpoints": [
+      {
+        "name": "before",
+        "at_ms": 0,
+        "files": [],
+        "effects": [],
+        "truncated": false
+      },
+      {
+        "name": "after_settlement",
+        "at_ms": 34894,
+        "files": [],
+        "effects": [],
+        "truncated": false
+      }
+    ],
+    "event_journal": [
+      {
+        "capture_order": 0,
+        "collection": "filesystem_checkpoints",
+        "index": 0
+      },
+      {
+        "capture_order": 1,
+        "collection": "process_samples",
+        "index": 0
+      },
+      {
+        "capture_order": 2,
+        "collection": "process_samples",
+        "index": 1
+      },
+      {
+        "capture_order": 3,
+        "collection": "frames",
+        "index": 0
+      },
+      {
+        "capture_order": 4,
+        "collection": "rendered_frames",
+        "index": 0
+      },
+      {
+        "capture_order": 5,
+        "collection": "process_samples",
+        "index": 2
+      },
+      {
+        "capture_order": 6,
+        "collection": "process_samples",
+        "index": 3
+      },
+      {
+        "capture_order": 7,
+        "collection": "process_samples",
+        "index": 4
+      },
+      {
+        "capture_order": 8,
+        "collection": "process_samples",
+        "index": 5
+      },
+      {
+        "capture_order": 9,
+        "collection": "process_samples",
+        "index": 6
+      },
+      {
+        "capture_order": 10,
+        "collection": "frames",
+        "index": 1
+      },
+      {
+        "capture_order": 11,
+        "collection": "rendered_frames",
+        "index": 1
+      },
+      {
+        "capture_order": 12,
+        "collection": "process_samples",
+        "index": 7
+      },
+      {
+        "capture_order": 13,
+        "collection": "frames",
+        "index": 2
+      },
+      {
+        "capture_order": 14,
+        "collection": "rendered_frames",
+        "index": 2
+      },
+      {
+        "capture_order": 15,
+        "collection": "process_samples",
+        "index": 8
+      },
+      {
+        "capture_order": 16,
+        "collection": "process_samples",
+        "index": 9
+      },
+      {
+        "capture_order": 17,
+        "collection": "frames",
+        "index": 3
+      },
+      {
+        "capture_order": 18,
+        "collection": "rendered_frames",
+        "index": 3
+      },
+      {
+        "capture_order": 19,
+        "collection": "lifecycle",
+        "index": 0
+      },
+      {
+        "capture_order": 20,
+        "collection": "lifecycle",
+        "index": 1
+      },
+      {
+        "capture_order": 21,
+        "collection": "filesystem_checkpoints",
+        "index": 1
+      }
+    ],
+    "files_before": [],
+    "files_after": [],
+    "filesystem_effects": [],
+    "truncated": false,
+    "truncation_details": {
+      "raw_terminal": {
+        "budget_bytes": 100000,
+        "observed_bytes": 787,
+        "retained_bytes": 787,
+        "observed_frames": 4,
+        "retained_frames": 4
+      },
+      "rendered_terminal": {
+        "budget_bytes": 100000,
+        "observed_bytes": 3457,
+        "retained_bytes": 3457,
+        "observed_frames": 4,
+        "retained_frames": 4
+      },
+      "filesystem_before": {
+        "files_limit": 10000,
+        "depth_limit": 16,
+        "enumeration_truncated": false,
+        "enumeration_reasons": [],
+        "hash_budget_bytes": 10000000,
+        "hashed_bytes": 0,
+        "hash_omissions": []
+      },
+      "filesystem_after": {
+        "files_limit": 10000,
+        "depth_limit": 16,
+        "enumeration_truncated": false,
+        "enumeration_reasons": [],
+        "hash_budget_bytes": 10000000,
+        "hashed_bytes": 0,
+        "hash_omissions": []
+      },
+      "process": {
+        "sample_limit": 150,
+        "sampling_partial": false,
+        "retained_samples": 10,
+        "sample_limit_reached": false,
+        "sampling_failures": 0,
+        "first_sampling_failure": null,
+        "coverage": "sampled"
+      }
+    },
+    "limitations": [
+      "The executable digest is a prelaunch file sample; matching path metadata immediately after spawn does not prove an atomic operating-system image binding.",
+      "Process trees are sampled and may omit short-lived descendants.",
+      "Filesystem observations are before/after snapshots, not syscall traces.",
+      "Inherited host environment variables are not recorded and may affect results.",
+      "No filesystem observation paths were selected; filesystem effects remain unknown."
+    ],
+    "residual_unknowns": [
+      {
+        "scope": "process",
+        "reason": "Process trees are sampled and may omit short-lived descendants."
+      },
+      {
+        "scope": "process",
+        "reason": "The executable digest is a prelaunch file sample; operating-system image binding is not atomically observed."
+      },
+      {
+        "scope": "environment",
+        "reason": "Inherited host environment variables are not recorded."
+      },
+      {
+        "scope": "network",
+        "reason": "Network activity is not observed by this capture."
+      },
+      {
+        "scope": "filesystem",
+        "reason": "No filesystem observation paths were selected; filesystem effects remain unknown."
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 3247088 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/3247088/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 3247089 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/3247089/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 3247092 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/3247092/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 3247095 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/3247095/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 3247284 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/3247284/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 3249063 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/3249063/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 3249268 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/3249268/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 3249452 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/3249452/environ'"
+      }
+    ],
+    "cleanup": {
+      "owned_process_group": "verified",
+      "temporary_root": "removed",
+      "unverified_processes": [
+        {
+          "pid": 3247088,
+          "reason": "EACCES: permission denied, open '/proc/3247088/environ'"
+        },
+        {
+          "pid": 3247089,
+          "reason": "EACCES: permission denied, open '/proc/3247089/environ'"
+        },
+        {
+          "pid": 3247092,
+          "reason": "EACCES: permission denied, open '/proc/3247092/environ'"
+        },
+        {
+          "pid": 3247095,
+          "reason": "EACCES: permission denied, open '/proc/3247095/environ'"
+        },
+        {
+          "pid": 3247284,
+          "reason": "EACCES: permission denied, open '/proc/3247284/environ'"
+        },
+        {
+          "pid": 3249063,
+          "reason": "EACCES: permission denied, open '/proc/3249063/environ'"
+        },
+        {
+          "pid": 3249268,
+          "reason": "EACCES: permission denied, open '/proc/3249268/environ'"
+        },
+        {
+          "pid": 3249452,
+          "reason": "EACCES: permission denied, open '/proc/3249452/environ'"
+        }
+      ]
+    }
+  },
+  "confidence": "observed",
+  "authority": "controlled-replay",
+  "environment": {
+    "id": "linux-x64",
+    "platform": "linux",
+    "architecture": "x64",
+    "isolation": "process"
+  },
+  "limitations": [
+    "Artifact identity is unavailable for this observation.",
+    "The executable digest is a prelaunch file sample; matching path metadata immediately after spawn does not prove an atomic operating-system image binding.",
+    "Process trees are sampled and may omit short-lived descendants.",
+    "Filesystem observations are before/after snapshots, not syscall traces.",
+    "Inherited host environment variables are not recorded and may affect results.",
+    "No filesystem observation paths were selected; filesystem effects remain unknown."
+  ],
+  "locations": [],
+  "evidence_links": []
+}

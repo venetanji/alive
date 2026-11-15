@@ -1,0 +1,50 @@
+TAP version 13
+# Subtest: original arithmetic examples expose direct console output and explicit numeric modes
+not ok 1 - original arithmetic examples expose direct console output and explicit numeric modes
+  ---
+  duration_ms: 1.337057
+  type: 'test'
+  location: '/home/venetanji/Work/alive/apps/ultra/ui/canvas-arithmetic-examples.test.mjs:8:1'
+  failureType: 'testCodeFailure'
+  error: 'subtract original example'
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  operator: '=='
+  stack: |-
+    TestContext.<anonymous> (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-arithmetic-examples.test.mjs:10:46)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.start (node:internal/test_runner/test:944:17)
+    startSubtestAfterBootstrap (node:internal/test_runner/harness:296:17)
+  ...
+# Subtest: new addition and multiplication library demos use explicit typed arithmetic
+not ok 2 - new addition and multiplication library demos use explicit typed arithmetic
+  ---
+  duration_ms: 6.909761
+  type: 'test'
+  location: '/home/venetanji/Work/alive/apps/ultra/ui/canvas-arithmetic-examples.test.mjs:24:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    undefined !== 1
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-arithmetic-examples.test.mjs:28:12)
+    async Test.run (node:internal/test_runner/test:1054:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 0
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 80.407979

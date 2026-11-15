@@ -1,0 +1,62 @@
+{
+  "scope": "Xvfb-only launch diagnostic; no Max/Wine/source prefix",
+  "display": ":200",
+  "observations": [
+    {
+      "delay_seconds": 0,
+      "env_readable": true,
+      "scope_fields": {
+        "ALIVE_HELP_ROOTS_CAPTURE_ID": true,
+        "WINEPREFIX": true,
+        "DISPLAY": true
+      },
+      "identity_match": true,
+      "alive": true
+    },
+    {
+      "delay_seconds": 0.001,
+      "env_readable": true,
+      "scope_fields": {
+        "ALIVE_HELP_ROOTS_CAPTURE_ID": true,
+        "WINEPREFIX": true,
+        "DISPLAY": true
+      },
+      "identity_match": true,
+      "alive": true
+    },
+    {
+      "delay_seconds": 0.01,
+      "env_readable": true,
+      "scope_fields": {
+        "ALIVE_HELP_ROOTS_CAPTURE_ID": true,
+        "WINEPREFIX": true,
+        "DISPLAY": true
+      },
+      "identity_match": true,
+      "alive": true
+    },
+    {
+      "delay_seconds": 0.05,
+      "env_readable": true,
+      "scope_fields": {
+        "ALIVE_HELP_ROOTS_CAPTURE_ID": true,
+        "WINEPREFIX": true,
+        "DISPLAY": true
+      },
+      "identity_match": true,
+      "alive": true
+    },
+    {
+      "delay_seconds": 0.1,
+      "env_readable": true,
+      "scope_fields": {
+        "ALIVE_HELP_ROOTS_CAPTURE_ID": true,
+        "WINEPREFIX": true,
+        "DISPLAY": true
+      },
+      "identity_match": true,
+      "alive": true
+    }
+  ],
+  "child_reaped": true
+}

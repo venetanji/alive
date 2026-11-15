@@ -1,0 +1,5442 @@
+[
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 1,
+    "step_id": "initial",
+    "document": "append",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "states": [
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-22",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "24929a70f4d3f1842fc55604a0c5f315afe4d8598410951dedfc89e3f00790cb",
+        "text_characters": 11,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-18",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c37165850eaf3d600bcb4df0235dd622d7a7e049699c2128d3b4a22e32e6629d",
+        "text_characters": 16,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-20",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": true,
+          "message": null
+        },
+        "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text_characters": 0,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-17",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+            "atoms": []
+          }
+        },
+        "text_sha256": "24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+        "text_characters": 7,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-10",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": true,
+          "message": null
+        },
+        "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text_characters": 0,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-9",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": true,
+          "message": null
+        },
+        "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text_characters": 0,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 15,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 15,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "9fbac089e3eb79b66c1da0fe946ccddcc52260e4a721ad2181ffe707ef94edd2",
+    "observation_bytes": 8720
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 2,
+    "step_id": "initial",
+    "document": "prepend",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "states": [
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-10",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 2
+              }
+            ]
+          }
+        },
+        "text_sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-11",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "text_sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-14",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-15",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+            "atoms": []
+          }
+        },
+        "text_sha256": "2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+            "atoms": []
+          }
+        },
+        "text_sha256": "525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-27",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:913a4cb91be20332f3559f8070255d7ac3e6228bb423f4441551d3f783e7d4f4"
+              },
+              {
+                "tag": "int",
+                "value": 20
+              }
+            ]
+          }
+        },
+        "text_sha256": "298022fdf050fa14f68b5a55a3382942a33e01b5c4b38c2947789c1883fd1927",
+        "text_characters": 12,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 14,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 11,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "66d0ee533c3259608511bc2413fc7a82e77cead23a218f8f1723359057563512",
+    "observation_bytes": 7332
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 4,
+    "step_id": "a1-value-0",
+    "document": "append",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "states": [
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-22",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "24929a70f4d3f1842fc55604a0c5f315afe4d8598410951dedfc89e3f00790cb",
+        "text_characters": 11,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-18",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c37165850eaf3d600bcb4df0235dd622d7a7e049699c2128d3b4a22e32e6629d",
+        "text_characters": 16,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-20",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": true,
+          "message": null
+        },
+        "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text_characters": 0,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-17",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+            "atoms": []
+          }
+        },
+        "text_sha256": "24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+        "text_characters": 7,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-10",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": true,
+          "message": null
+        },
+        "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text_characters": 0,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-9",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 0
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:90e63d85fa1ab2c8ed65222f3ebd794b1e524b4b7cf84bec451542d0451b2985"
+              }
+            ]
+          }
+        },
+        "text_sha256": "4d9ac44a4dd206ff8bcf43afa5cac694e76f7f77e6eb3f9ad2347d2d0198d07c",
+        "text_characters": 9,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 15,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 15,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "d6276f2e68c22859e342649a5e90efc2c7535155f516c7535b093f67cdaa0707",
+    "observation_bytes": 8732
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 6,
+    "step_id": "a1-value-7",
+    "document": "append",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "states": [
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-22",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "24929a70f4d3f1842fc55604a0c5f315afe4d8598410951dedfc89e3f00790cb",
+        "text_characters": 11,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-18",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c37165850eaf3d600bcb4df0235dd622d7a7e049699c2128d3b4a22e32e6629d",
+        "text_characters": 16,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-20",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": true,
+          "message": null
+        },
+        "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text_characters": 0,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-17",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+            "atoms": []
+          }
+        },
+        "text_sha256": "24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+        "text_characters": 7,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-10",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": true,
+          "message": null
+        },
+        "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text_characters": 0,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-9",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 7
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:90e63d85fa1ab2c8ed65222f3ebd794b1e524b4b7cf84bec451542d0451b2985"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c9942616dde32048958e51aea42d9f61171e96be5a72f20fc8f5fcb0b8e92905",
+        "text_characters": 9,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 15,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 15,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "c6620ea156db985aef7c5bd5346db683a8e77bd426a7fcd3cb397360e04ae17f",
+    "observation_bytes": 8732
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 8,
+    "step_id": "a1-value--3",
+    "document": "append",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "states": [
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-22",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "24929a70f4d3f1842fc55604a0c5f315afe4d8598410951dedfc89e3f00790cb",
+        "text_characters": 11,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-18",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c37165850eaf3d600bcb4df0235dd622d7a7e049699c2128d3b4a22e32e6629d",
+        "text_characters": 16,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-20",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": true,
+          "message": null
+        },
+        "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text_characters": 0,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-17",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+            "atoms": []
+          }
+        },
+        "text_sha256": "24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+        "text_characters": 7,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-10",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": true,
+          "message": null
+        },
+        "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text_characters": 0,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-9",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": -3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:90e63d85fa1ab2c8ed65222f3ebd794b1e524b4b7cf84bec451542d0451b2985"
+              }
+            ]
+          }
+        },
+        "text_sha256": "6bd295ae99322b1a77fc9b34657fb2164bef6108a1aa3a1eb4f333d1d8393880",
+        "text_characters": 10,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 15,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 15,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "9a810c9fc5ff6f1b52c56c770c644667ae96a0149c589574b3d32bfc1a6be966",
+    "observation_bytes": 8734
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 10,
+    "step_id": "a2-click-0",
+    "document": "append",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "states": [
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-22",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "24929a70f4d3f1842fc55604a0c5f315afe4d8598410951dedfc89e3f00790cb",
+        "text_characters": 11,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-18",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c37165850eaf3d600bcb4df0235dd622d7a7e049699c2128d3b4a22e32e6629d",
+        "text_characters": 16,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-20",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": true,
+          "message": null
+        },
+        "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text_characters": 0,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-17",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+            "atoms": []
+          }
+        },
+        "text_sha256": "24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+        "text_characters": 7,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-10",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": [
+              {
+                "tag": "float",
+                "value": 0.3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:404314b1f4bd8fa2ff42a84cd851ddc011c76fb64e12dfe3748101b03ed8ce7c"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:fc2b6c264e75e681bcfe01332f5450aa1ab4a30005091c6206b31a80daff925e"
+              }
+            ]
+          }
+        },
+        "text_sha256": "2ac654f2fbb62172332aa65b579ec9a6a60da31813670984c47329b430478479",
+        "text_characters": 21,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-9",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": -3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:90e63d85fa1ab2c8ed65222f3ebd794b1e524b4b7cf84bec451542d0451b2985"
+              }
+            ]
+          }
+        },
+        "text_sha256": "6bd295ae99322b1a77fc9b34657fb2164bef6108a1aa3a1eb4f333d1d8393880",
+        "text_characters": 10,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 15,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 15,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "69d506e6451ec7527f3dfd3617fd958247fd5fa410eb0f985c8ed33a45ca6c44",
+    "observation_bytes": 8755
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 12,
+    "step_id": "a2-click-1",
+    "document": "append",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "states": [
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-22",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "24929a70f4d3f1842fc55604a0c5f315afe4d8598410951dedfc89e3f00790cb",
+        "text_characters": 11,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-18",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c37165850eaf3d600bcb4df0235dd622d7a7e049699c2128d3b4a22e32e6629d",
+        "text_characters": 16,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-20",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": true,
+          "message": null
+        },
+        "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text_characters": 0,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-17",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+            "atoms": []
+          }
+        },
+        "text_sha256": "24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+        "text_characters": 7,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-10",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+            "atoms": [
+              {
+                "tag": "float",
+                "value": 0.3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:404314b1f4bd8fa2ff42a84cd851ddc011c76fb64e12dfe3748101b03ed8ce7c"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:fc2b6c264e75e681bcfe01332f5450aa1ab4a30005091c6206b31a80daff925e"
+              }
+            ]
+          }
+        },
+        "text_sha256": "3f1ce8081a9d870bc86392dae2ca0b8807e13b02e6b9e2348d68372530f1a448",
+        "text_characters": 24,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-9",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": -3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:90e63d85fa1ab2c8ed65222f3ebd794b1e524b4b7cf84bec451542d0451b2985"
+              }
+            ]
+          }
+        },
+        "text_sha256": "6bd295ae99322b1a77fc9b34657fb2164bef6108a1aa3a1eb4f333d1d8393880",
+        "text_characters": 10,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 15,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 15,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "0ab9470750c4fd81696d7fe7676782825faf5149285296e14ae2222008de6056",
+    "observation_bytes": 8758
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 14,
+    "step_id": "a2-click-2",
+    "document": "append",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "states": [
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-22",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "24929a70f4d3f1842fc55604a0c5f315afe4d8598410951dedfc89e3f00790cb",
+        "text_characters": 11,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-18",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c37165850eaf3d600bcb4df0235dd622d7a7e049699c2128d3b4a22e32e6629d",
+        "text_characters": 16,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-20",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": true,
+          "message": null
+        },
+        "text_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "text_characters": 0,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-17",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+            "atoms": []
+          }
+        },
+        "text_sha256": "24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+        "text_characters": 7,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-10",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": [
+              {
+                "tag": "float",
+                "value": 0.3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:404314b1f4bd8fa2ff42a84cd851ddc011c76fb64e12dfe3748101b03ed8ce7c"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:fc2b6c264e75e681bcfe01332f5450aa1ab4a30005091c6206b31a80daff925e"
+              }
+            ]
+          }
+        },
+        "text_sha256": "2ac654f2fbb62172332aa65b579ec9a6a60da31813670984c47329b430478479",
+        "text_characters": 21,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-9",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": -3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:90e63d85fa1ab2c8ed65222f3ebd794b1e524b4b7cf84bec451542d0451b2985"
+              }
+            ]
+          }
+        },
+        "text_sha256": "6bd295ae99322b1a77fc9b34657fb2164bef6108a1aa3a1eb4f333d1d8393880",
+        "text_characters": 10,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 15,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 15,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "c9a3e37b6f186b89bca96ce1a8e48f89814219604541e13d2d8a4fa11c61f54a",
+    "observation_bytes": 8755
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 16,
+    "step_id": "a3-before-set",
+    "document": "append",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "states": [
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-22",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "24929a70f4d3f1842fc55604a0c5f315afe4d8598410951dedfc89e3f00790cb",
+        "text_characters": 11,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-18",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c37165850eaf3d600bcb4df0235dd622d7a7e049699c2128d3b4a22e32e6629d",
+        "text_characters": 16,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-20",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 7
+              }
+            ]
+          }
+        },
+        "text_sha256": "7902699be42c8a8e46fbbb4501726517e86b22c56a189f7625a6da49081b2451",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-17",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+            "atoms": []
+          }
+        },
+        "text_sha256": "24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+        "text_characters": 7,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-10",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": [
+              {
+                "tag": "float",
+                "value": 0.3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:404314b1f4bd8fa2ff42a84cd851ddc011c76fb64e12dfe3748101b03ed8ce7c"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:fc2b6c264e75e681bcfe01332f5450aa1ab4a30005091c6206b31a80daff925e"
+              }
+            ]
+          }
+        },
+        "text_sha256": "2ac654f2fbb62172332aa65b579ec9a6a60da31813670984c47329b430478479",
+        "text_characters": 21,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-9",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": -3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:90e63d85fa1ab2c8ed65222f3ebd794b1e524b4b7cf84bec451542d0451b2985"
+              }
+            ]
+          }
+        },
+        "text_sha256": "6bd295ae99322b1a77fc9b34657fb2164bef6108a1aa3a1eb4f333d1d8393880",
+        "text_characters": 10,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 15,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 15,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "3e5c9f65d4d541ff110d3c842e5da0a7f1d592a02831639d268a20c6e5dfc1d2",
+    "observation_bytes": 8759
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 18,
+    "step_id": "a3-set-first",
+    "document": "append",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "states": [
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-22",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "24929a70f4d3f1842fc55604a0c5f315afe4d8598410951dedfc89e3f00790cb",
+        "text_characters": 11,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-18",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c37165850eaf3d600bcb4df0235dd622d7a7e049699c2128d3b4a22e32e6629d",
+        "text_characters": 16,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-20",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 7
+              }
+            ]
+          }
+        },
+        "text_sha256": "7902699be42c8a8e46fbbb4501726517e86b22c56a189f7625a6da49081b2451",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-17",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+            "atoms": []
+          }
+        },
+        "text_sha256": "24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+        "text_characters": 7,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-10",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": [
+              {
+                "tag": "float",
+                "value": 0.3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:404314b1f4bd8fa2ff42a84cd851ddc011c76fb64e12dfe3748101b03ed8ce7c"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:fc2b6c264e75e681bcfe01332f5450aa1ab4a30005091c6206b31a80daff925e"
+              }
+            ]
+          }
+        },
+        "text_sha256": "2ac654f2fbb62172332aa65b579ec9a6a60da31813670984c47329b430478479",
+        "text_characters": 21,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-9",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": -3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:90e63d85fa1ab2c8ed65222f3ebd794b1e524b4b7cf84bec451542d0451b2985"
+              }
+            ]
+          }
+        },
+        "text_sha256": "6bd295ae99322b1a77fc9b34657fb2164bef6108a1aa3a1eb4f333d1d8393880",
+        "text_characters": 10,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 15,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 15,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "8e692765bd88179d6939762eef0ed079e446266c11e67694cbbad6b7cd956d36",
+    "observation_bytes": 8758
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 20,
+    "step_id": "a3-after-first",
+    "document": "append",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "states": [
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-22",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "24929a70f4d3f1842fc55604a0c5f315afe4d8598410951dedfc89e3f00790cb",
+        "text_characters": 11,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-18",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c37165850eaf3d600bcb4df0235dd622d7a7e049699c2128d3b4a22e32e6629d",
+        "text_characters": 16,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-20",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 7
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "433ea8d57f99b65d4db1170ea6a005a11d07d8400fd356732dba6a40cc521456",
+        "text_characters": 14,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-17",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+            "atoms": []
+          }
+        },
+        "text_sha256": "24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+        "text_characters": 7,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-10",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": [
+              {
+                "tag": "float",
+                "value": 0.3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:404314b1f4bd8fa2ff42a84cd851ddc011c76fb64e12dfe3748101b03ed8ce7c"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:fc2b6c264e75e681bcfe01332f5450aa1ab4a30005091c6206b31a80daff925e"
+              }
+            ]
+          }
+        },
+        "text_sha256": "2ac654f2fbb62172332aa65b579ec9a6a60da31813670984c47329b430478479",
+        "text_characters": 21,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-9",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": -3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:90e63d85fa1ab2c8ed65222f3ebd794b1e524b4b7cf84bec451542d0451b2985"
+              }
+            ]
+          }
+        },
+        "text_sha256": "6bd295ae99322b1a77fc9b34657fb2164bef6108a1aa3a1eb4f333d1d8393880",
+        "text_characters": 10,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 15,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 15,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "7ee5fe3711b8b13d7500dc8eb07d63ffbcf52e8e1b8187351b4f3ce61d6b8546",
+    "observation_bytes": 8773
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 22,
+    "step_id": "a3-set-second",
+    "document": "append",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "states": [
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-22",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "24929a70f4d3f1842fc55604a0c5f315afe4d8598410951dedfc89e3f00790cb",
+        "text_characters": 11,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-18",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c37165850eaf3d600bcb4df0235dd622d7a7e049699c2128d3b4a22e32e6629d",
+        "text_characters": 16,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-20",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 7
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "433ea8d57f99b65d4db1170ea6a005a11d07d8400fd356732dba6a40cc521456",
+        "text_characters": 14,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-17",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+            "atoms": []
+          }
+        },
+        "text_sha256": "24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+        "text_characters": 7,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-10",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": [
+              {
+                "tag": "float",
+                "value": 0.3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:404314b1f4bd8fa2ff42a84cd851ddc011c76fb64e12dfe3748101b03ed8ce7c"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:fc2b6c264e75e681bcfe01332f5450aa1ab4a30005091c6206b31a80daff925e"
+              }
+            ]
+          }
+        },
+        "text_sha256": "2ac654f2fbb62172332aa65b579ec9a6a60da31813670984c47329b430478479",
+        "text_characters": 21,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-9",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": -3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:90e63d85fa1ab2c8ed65222f3ebd794b1e524b4b7cf84bec451542d0451b2985"
+              }
+            ]
+          }
+        },
+        "text_sha256": "6bd295ae99322b1a77fc9b34657fb2164bef6108a1aa3a1eb4f333d1d8393880",
+        "text_characters": 10,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 15,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 15,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "2662d861a94bf29d0c87d1049819b8ea4149e57b234d2dcd0440d86b8eb5ace7",
+    "observation_bytes": 8772
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 24,
+    "step_id": "a3-after-second",
+    "document": "append",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "states": [
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-22",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "24929a70f4d3f1842fc55604a0c5f315afe4d8598410951dedfc89e3f00790cb",
+        "text_characters": 11,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-18",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c37165850eaf3d600bcb4df0235dd622d7a7e049699c2128d3b4a22e32e6629d",
+        "text_characters": 16,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-20",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": -3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "86bef45184f7117e83a13f3833a38342716109924554b380015b350700b7cdbe",
+        "text_characters": 10,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-17",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+            "atoms": []
+          }
+        },
+        "text_sha256": "24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+        "text_characters": 7,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-10",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": [
+              {
+                "tag": "float",
+                "value": 0.3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:404314b1f4bd8fa2ff42a84cd851ddc011c76fb64e12dfe3748101b03ed8ce7c"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:fc2b6c264e75e681bcfe01332f5450aa1ab4a30005091c6206b31a80daff925e"
+              }
+            ]
+          }
+        },
+        "text_sha256": "2ac654f2fbb62172332aa65b579ec9a6a60da31813670984c47329b430478479",
+        "text_characters": 21,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-9",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": -3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:90e63d85fa1ab2c8ed65222f3ebd794b1e524b4b7cf84bec451542d0451b2985"
+              }
+            ]
+          }
+        },
+        "text_sha256": "6bd295ae99322b1a77fc9b34657fb2164bef6108a1aa3a1eb4f333d1d8393880",
+        "text_characters": 10,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 15,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 15,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "f36175a5829c712e07b9d9804c489469f4c3817c56f62cb50b27a9b70469847d",
+    "observation_bytes": 8770
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 26,
+    "step_id": "a3-repeat-second",
+    "document": "append",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "states": [
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-22",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "24929a70f4d3f1842fc55604a0c5f315afe4d8598410951dedfc89e3f00790cb",
+        "text_characters": 11,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-18",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c37165850eaf3d600bcb4df0235dd622d7a7e049699c2128d3b4a22e32e6629d",
+        "text_characters": 16,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-20",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": -3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "86bef45184f7117e83a13f3833a38342716109924554b380015b350700b7cdbe",
+        "text_characters": 10,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-17",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+            "atoms": []
+          }
+        },
+        "text_sha256": "24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+        "text_characters": 7,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-10",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": [
+              {
+                "tag": "float",
+                "value": 0.3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:404314b1f4bd8fa2ff42a84cd851ddc011c76fb64e12dfe3748101b03ed8ce7c"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:fc2b6c264e75e681bcfe01332f5450aa1ab4a30005091c6206b31a80daff925e"
+              }
+            ]
+          }
+        },
+        "text_sha256": "2ac654f2fbb62172332aa65b579ec9a6a60da31813670984c47329b430478479",
+        "text_characters": 21,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-9",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": -3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:90e63d85fa1ab2c8ed65222f3ebd794b1e524b4b7cf84bec451542d0451b2985"
+              }
+            ]
+          }
+        },
+        "text_sha256": "6bd295ae99322b1a77fc9b34657fb2164bef6108a1aa3a1eb4f333d1d8393880",
+        "text_characters": 10,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 15,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 15,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "451ba92f7f1b73cad6413ab7ce51eeec4dab118cecb56c396140acf111c0a85f",
+    "observation_bytes": 8771
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 28,
+    "step_id": "a3-replace-again",
+    "document": "append",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "states": [
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-22",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "24929a70f4d3f1842fc55604a0c5f315afe4d8598410951dedfc89e3f00790cb",
+        "text_characters": 11,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-18",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c37165850eaf3d600bcb4df0235dd622d7a7e049699c2128d3b4a22e32e6629d",
+        "text_characters": 16,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-20",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": -3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "86bef45184f7117e83a13f3833a38342716109924554b380015b350700b7cdbe",
+        "text_characters": 10,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-17",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+            "atoms": []
+          }
+        },
+        "text_sha256": "24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+        "text_characters": 7,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-10",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": [
+              {
+                "tag": "float",
+                "value": 0.3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:404314b1f4bd8fa2ff42a84cd851ddc011c76fb64e12dfe3748101b03ed8ce7c"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:fc2b6c264e75e681bcfe01332f5450aa1ab4a30005091c6206b31a80daff925e"
+              }
+            ]
+          }
+        },
+        "text_sha256": "2ac654f2fbb62172332aa65b579ec9a6a60da31813670984c47329b430478479",
+        "text_characters": 21,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-9",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": -3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:90e63d85fa1ab2c8ed65222f3ebd794b1e524b4b7cf84bec451542d0451b2985"
+              }
+            ]
+          }
+        },
+        "text_sha256": "6bd295ae99322b1a77fc9b34657fb2164bef6108a1aa3a1eb4f333d1d8393880",
+        "text_characters": 10,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 15,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 15,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "8df0d5953f430c1d6f9711c56282dc7e1d55208e50a1e65c94fe4cbb83e60f1e",
+    "observation_bytes": 8771
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 30,
+    "step_id": "a3-after-replace",
+    "document": "append",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "states": [
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-22",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "24929a70f4d3f1842fc55604a0c5f315afe4d8598410951dedfc89e3f00790cb",
+        "text_characters": 11,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-18",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c37165850eaf3d600bcb4df0235dd622d7a7e049699c2128d3b4a22e32e6629d",
+        "text_characters": 16,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-20",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 0
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "0a5d4deccf05326809be809d21682967371296c2f23a03da4898ce1013685106",
+        "text_characters": 14,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-17",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+            "atoms": []
+          }
+        },
+        "text_sha256": "24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+        "text_characters": 7,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-10",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": [
+              {
+                "tag": "float",
+                "value": 0.3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:404314b1f4bd8fa2ff42a84cd851ddc011c76fb64e12dfe3748101b03ed8ce7c"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:fc2b6c264e75e681bcfe01332f5450aa1ab4a30005091c6206b31a80daff925e"
+              }
+            ]
+          }
+        },
+        "text_sha256": "2ac654f2fbb62172332aa65b579ec9a6a60da31813670984c47329b430478479",
+        "text_characters": 21,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-9",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": -3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:90e63d85fa1ab2c8ed65222f3ebd794b1e524b4b7cf84bec451542d0451b2985"
+              }
+            ]
+          }
+        },
+        "text_sha256": "6bd295ae99322b1a77fc9b34657fb2164bef6108a1aa3a1eb4f333d1d8393880",
+        "text_characters": 10,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 15,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 15,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "57136291590f331a7745ede98b3ba25c4fce0d5184719b963f9c9d7f86332cc6",
+    "observation_bytes": 8775
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 32,
+    "step_id": "a4-display-obj-9",
+    "document": "append",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "states": [
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-22",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "24929a70f4d3f1842fc55604a0c5f315afe4d8598410951dedfc89e3f00790cb",
+        "text_characters": 11,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-18",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c37165850eaf3d600bcb4df0235dd622d7a7e049699c2128d3b4a22e32e6629d",
+        "text_characters": 16,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-20",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 0
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "0a5d4deccf05326809be809d21682967371296c2f23a03da4898ce1013685106",
+        "text_characters": 14,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-17",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+            "atoms": []
+          }
+        },
+        "text_sha256": "24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+        "text_characters": 7,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-10",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": [
+              {
+                "tag": "float",
+                "value": 0.3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:404314b1f4bd8fa2ff42a84cd851ddc011c76fb64e12dfe3748101b03ed8ce7c"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:fc2b6c264e75e681bcfe01332f5450aa1ab4a30005091c6206b31a80daff925e"
+              }
+            ]
+          }
+        },
+        "text_sha256": "2ac654f2fbb62172332aa65b579ec9a6a60da31813670984c47329b430478479",
+        "text_characters": 21,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-9",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": -3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:90e63d85fa1ab2c8ed65222f3ebd794b1e524b4b7cf84bec451542d0451b2985"
+              }
+            ]
+          }
+        },
+        "text_sha256": "6bd295ae99322b1a77fc9b34657fb2164bef6108a1aa3a1eb4f333d1d8393880",
+        "text_characters": 10,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 15,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 15,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "d8c68a739cebb181efacdc34eac409bafeb1246ba8bcd554657881b766f2db49",
+    "observation_bytes": 8775
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 34,
+    "step_id": "a4-upstream-obj-9",
+    "document": "append",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "states": [
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-22",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "24929a70f4d3f1842fc55604a0c5f315afe4d8598410951dedfc89e3f00790cb",
+        "text_characters": 11,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-18",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c37165850eaf3d600bcb4df0235dd622d7a7e049699c2128d3b4a22e32e6629d",
+        "text_characters": 16,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-20",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 0
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "0a5d4deccf05326809be809d21682967371296c2f23a03da4898ce1013685106",
+        "text_characters": 14,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-17",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+            "atoms": []
+          }
+        },
+        "text_sha256": "24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+        "text_characters": 7,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-10",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": [
+              {
+                "tag": "float",
+                "value": 0.3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:404314b1f4bd8fa2ff42a84cd851ddc011c76fb64e12dfe3748101b03ed8ce7c"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:fc2b6c264e75e681bcfe01332f5450aa1ab4a30005091c6206b31a80daff925e"
+              }
+            ]
+          }
+        },
+        "text_sha256": "2ac654f2fbb62172332aa65b579ec9a6a60da31813670984c47329b430478479",
+        "text_characters": 21,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-9",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 7
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:90e63d85fa1ab2c8ed65222f3ebd794b1e524b4b7cf84bec451542d0451b2985"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c9942616dde32048958e51aea42d9f61171e96be5a72f20fc8f5fcb0b8e92905",
+        "text_characters": 9,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 15,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 15,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "3c9e2b4d9347a4f3f14fe81f5dc879db0d4bac1350e487188132274d430eb39a",
+    "observation_bytes": 8775
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 36,
+    "step_id": "a4-display-obj-10",
+    "document": "append",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "states": [
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-22",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "24929a70f4d3f1842fc55604a0c5f315afe4d8598410951dedfc89e3f00790cb",
+        "text_characters": 11,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-18",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c37165850eaf3d600bcb4df0235dd622d7a7e049699c2128d3b4a22e32e6629d",
+        "text_characters": 16,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-20",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 0
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "0a5d4deccf05326809be809d21682967371296c2f23a03da4898ce1013685106",
+        "text_characters": 14,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-17",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+            "atoms": []
+          }
+        },
+        "text_sha256": "24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+        "text_characters": 7,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-10",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": [
+              {
+                "tag": "float",
+                "value": 0.3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:404314b1f4bd8fa2ff42a84cd851ddc011c76fb64e12dfe3748101b03ed8ce7c"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:fc2b6c264e75e681bcfe01332f5450aa1ab4a30005091c6206b31a80daff925e"
+              }
+            ]
+          }
+        },
+        "text_sha256": "2ac654f2fbb62172332aa65b579ec9a6a60da31813670984c47329b430478479",
+        "text_characters": 21,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-9",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 7
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:90e63d85fa1ab2c8ed65222f3ebd794b1e524b4b7cf84bec451542d0451b2985"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c9942616dde32048958e51aea42d9f61171e96be5a72f20fc8f5fcb0b8e92905",
+        "text_characters": 9,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 15,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 15,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "dcf7a00d6fdc19d3be7cdd351c1c1572fa704833d7109338e1bc1c26f48c6112",
+    "observation_bytes": 8775
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 38,
+    "step_id": "a4-upstream-obj-10",
+    "document": "append",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "states": [
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-22",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "24929a70f4d3f1842fc55604a0c5f315afe4d8598410951dedfc89e3f00790cb",
+        "text_characters": 11,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-18",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c37165850eaf3d600bcb4df0235dd622d7a7e049699c2128d3b4a22e32e6629d",
+        "text_characters": 16,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-20",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 0
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "0a5d4deccf05326809be809d21682967371296c2f23a03da4898ce1013685106",
+        "text_characters": 14,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-17",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+            "atoms": []
+          }
+        },
+        "text_sha256": "24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+        "text_characters": 7,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-10",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": [
+              {
+                "tag": "float",
+                "value": 0.3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:404314b1f4bd8fa2ff42a84cd851ddc011c76fb64e12dfe3748101b03ed8ce7c"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:fc2b6c264e75e681bcfe01332f5450aa1ab4a30005091c6206b31a80daff925e"
+              }
+            ]
+          }
+        },
+        "text_sha256": "2ac654f2fbb62172332aa65b579ec9a6a60da31813670984c47329b430478479",
+        "text_characters": 21,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-9",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 7
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:90e63d85fa1ab2c8ed65222f3ebd794b1e524b4b7cf84bec451542d0451b2985"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c9942616dde32048958e51aea42d9f61171e96be5a72f20fc8f5fcb0b8e92905",
+        "text_characters": 9,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 15,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 15,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "d4202f50374ceae9a2d100245957f1616519c5667c43c9ac40e58ae15428df5e",
+    "observation_bytes": 8776
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 40,
+    "step_id": "a4-display-obj-20",
+    "document": "append",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "states": [
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-22",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "24929a70f4d3f1842fc55604a0c5f315afe4d8598410951dedfc89e3f00790cb",
+        "text_characters": 11,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-18",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c37165850eaf3d600bcb4df0235dd622d7a7e049699c2128d3b4a22e32e6629d",
+        "text_characters": 16,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-20",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 0
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "0a5d4deccf05326809be809d21682967371296c2f23a03da4898ce1013685106",
+        "text_characters": 14,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-17",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+            "atoms": []
+          }
+        },
+        "text_sha256": "24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+        "text_characters": 7,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-10",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": [
+              {
+                "tag": "float",
+                "value": 0.3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:404314b1f4bd8fa2ff42a84cd851ddc011c76fb64e12dfe3748101b03ed8ce7c"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:fc2b6c264e75e681bcfe01332f5450aa1ab4a30005091c6206b31a80daff925e"
+              }
+            ]
+          }
+        },
+        "text_sha256": "2ac654f2fbb62172332aa65b579ec9a6a60da31813670984c47329b430478479",
+        "text_characters": 21,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-9",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 7
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:90e63d85fa1ab2c8ed65222f3ebd794b1e524b4b7cf84bec451542d0451b2985"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c9942616dde32048958e51aea42d9f61171e96be5a72f20fc8f5fcb0b8e92905",
+        "text_characters": 9,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 15,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 15,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "2b50c83bb84b1e4822cfde5a4df6698f8215ca80f092a2965084342c832b15b3",
+    "observation_bytes": 8775
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 42,
+    "step_id": "a4-upstream-obj-20",
+    "document": "append",
+    "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+    "states": [
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-22",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:0c7aae56ebe5d422f7f0f5b97da9856b135de81ac462c9c1a85ee53850fec479"
+              }
+            ]
+          }
+        },
+        "text_sha256": "24929a70f4d3f1842fc55604a0c5f315afe4d8598410951dedfc89e3f00790cb",
+        "text_characters": 11,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-18",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c37165850eaf3d600bcb4df0235dd622d7a7e049699c2128d3b4a22e32e6629d",
+        "text_characters": 16,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-20",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 7
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:ba4788b226aa8dc2e6dc74248bb9f618cfa8c959e0c26c147be48f6839a0b088"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:f5903f51e341a783e69ffc2d9b335048716f5f040a782a2764cd4e728b0f74d9"
+              }
+            ]
+          }
+        },
+        "text_sha256": "433ea8d57f99b65d4db1170ea6a005a11d07d8400fd356732dba6a40cc521456",
+        "text_characters": 14,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-17",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+            "atoms": []
+          }
+        },
+        "text_sha256": "24065231df1b28929df88139f986d509bc2aed39f17c7566cea5d0f25e7f299f",
+        "text_characters": 7,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-10",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:f905b19542ed08c9a9c26543cca32e5711d207dcffb81b4cdb44ce0b989431c9",
+            "atoms": [
+              {
+                "tag": "float",
+                "value": 0.3
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:404314b1f4bd8fa2ff42a84cd851ddc011c76fb64e12dfe3748101b03ed8ce7c"
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:fc2b6c264e75e681bcfe01332f5450aa1ab4a30005091c6206b31a80daff925e"
+              }
+            ]
+          }
+        },
+        "text_sha256": "2ac654f2fbb62172332aa65b579ec9a6a60da31813670984c47329b430478479",
+        "text_characters": 21,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "append",
+        "anchor": "root/obj-5/obj-9",
+        "authored_empty": true,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "list",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 7
+              },
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:90e63d85fa1ab2c8ed65222f3ebd794b1e524b4b7cf84bec451542d0451b2985"
+              }
+            ]
+          }
+        },
+        "text_sha256": "c9942616dde32048958e51aea42d9f61171e96be5a72f20fc8f5fcb0b8e92905",
+        "text_characters": 9,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 15,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 15,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "73452cdf885a590c4370dcc1a80fb1c309c5b7a8c641eb5a61731d60d18590d8",
+    "observation_bytes": 8776
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 44,
+    "step_id": "p1-click-0",
+    "document": "prepend",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "states": [
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-10",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 2
+              }
+            ]
+          }
+        },
+        "text_sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-11",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "text_sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-14",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-15",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+            "atoms": []
+          }
+        },
+        "text_sha256": "2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+            "atoms": []
+          }
+        },
+        "text_sha256": "525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-27",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:913a4cb91be20332f3559f8070255d7ac3e6228bb423f4441551d3f783e7d4f4"
+              },
+              {
+                "tag": "int",
+                "value": 20
+              }
+            ]
+          }
+        },
+        "text_sha256": "298022fdf050fa14f68b5a55a3382942a33e01b5c4b38c2947789c1883fd1927",
+        "text_characters": 12,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 14,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 11,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "51bf36c1e10d8e75a5512c6120ba2f2b28fd4c7765a0aa91d011a78b7d41eec6",
+    "observation_bytes": 7336
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 46,
+    "step_id": "p1-click-1",
+    "document": "prepend",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "states": [
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-10",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 2
+              }
+            ]
+          }
+        },
+        "text_sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-11",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "text_sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-14",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-15",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+            "atoms": []
+          }
+        },
+        "text_sha256": "2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+            "atoms": []
+          }
+        },
+        "text_sha256": "525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-27",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:913a4cb91be20332f3559f8070255d7ac3e6228bb423f4441551d3f783e7d4f4"
+              },
+              {
+                "tag": "int",
+                "value": 20
+              }
+            ]
+          }
+        },
+        "text_sha256": "298022fdf050fa14f68b5a55a3382942a33e01b5c4b38c2947789c1883fd1927",
+        "text_characters": 12,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 14,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 11,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "9308d0bf0ab96f92ed6734e9e43545a71e9543602550830fb3d35cb1413a3b02",
+    "observation_bytes": 7336
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 48,
+    "step_id": "p1-click-2",
+    "document": "prepend",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "states": [
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-10",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 2
+              }
+            ]
+          }
+        },
+        "text_sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-11",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "text_sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-14",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-15",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+            "atoms": []
+          }
+        },
+        "text_sha256": "2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+            "atoms": []
+          }
+        },
+        "text_sha256": "525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-27",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:913a4cb91be20332f3559f8070255d7ac3e6228bb423f4441551d3f783e7d4f4"
+              },
+              {
+                "tag": "int",
+                "value": 20
+              }
+            ]
+          }
+        },
+        "text_sha256": "298022fdf050fa14f68b5a55a3382942a33e01b5c4b38c2947789c1883fd1927",
+        "text_characters": 12,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 14,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 11,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "de990176fcc6d770cd3ac096e626328c8fecf551392ff44db3618d650eea653e",
+    "observation_bytes": 7336
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 50,
+    "step_id": "p1-click-3",
+    "document": "prepend",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "states": [
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-10",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 2
+              }
+            ]
+          }
+        },
+        "text_sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-11",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "text_sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-14",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-15",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+            "atoms": []
+          }
+        },
+        "text_sha256": "2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+            "atoms": []
+          }
+        },
+        "text_sha256": "525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-27",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:913a4cb91be20332f3559f8070255d7ac3e6228bb423f4441551d3f783e7d4f4"
+              },
+              {
+                "tag": "int",
+                "value": 20
+              }
+            ]
+          }
+        },
+        "text_sha256": "298022fdf050fa14f68b5a55a3382942a33e01b5c4b38c2947789c1883fd1927",
+        "text_characters": 12,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 14,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 11,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "5f63f05d2970666b9110759ca51cc1e19e3b0a9943014d26a5a713becc482494",
+    "observation_bytes": 7336
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 52,
+    "step_id": "p1-click-4",
+    "document": "prepend",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "states": [
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-10",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 2
+              }
+            ]
+          }
+        },
+        "text_sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-11",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "text_sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-14",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-15",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+            "atoms": []
+          }
+        },
+        "text_sha256": "2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+            "atoms": []
+          }
+        },
+        "text_sha256": "525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-27",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:913a4cb91be20332f3559f8070255d7ac3e6228bb423f4441551d3f783e7d4f4"
+              },
+              {
+                "tag": "int",
+                "value": 20
+              }
+            ]
+          }
+        },
+        "text_sha256": "298022fdf050fa14f68b5a55a3382942a33e01b5c4b38c2947789c1883fd1927",
+        "text_characters": 12,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 14,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 11,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "eddedf1dc26a739bf47a603ab852dde555b972c6fe252cf75cf9657b2427e5b0",
+    "observation_bytes": 7336
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 54,
+    "step_id": "p1-click-5",
+    "document": "prepend",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "states": [
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-10",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 2
+              }
+            ]
+          }
+        },
+        "text_sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-11",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "text_sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-14",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-15",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+            "atoms": []
+          }
+        },
+        "text_sha256": "2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+            "atoms": []
+          }
+        },
+        "text_sha256": "525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-27",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:913a4cb91be20332f3559f8070255d7ac3e6228bb423f4441551d3f783e7d4f4"
+              },
+              {
+                "tag": "int",
+                "value": 20
+              }
+            ]
+          }
+        },
+        "text_sha256": "298022fdf050fa14f68b5a55a3382942a33e01b5c4b38c2947789c1883fd1927",
+        "text_characters": 12,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 14,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 11,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "77648896ec530f66e7dc063cf6ab8d90495c5279410c2bb293474158ff545fd6",
+    "observation_bytes": 7336
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 56,
+    "step_id": "p2-click-0",
+    "document": "prepend",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "states": [
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-10",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 2
+              }
+            ]
+          }
+        },
+        "text_sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-11",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "text_sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-14",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-15",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+            "atoms": []
+          }
+        },
+        "text_sha256": "2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+            "atoms": []
+          }
+        },
+        "text_sha256": "525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-27",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:913a4cb91be20332f3559f8070255d7ac3e6228bb423f4441551d3f783e7d4f4"
+              },
+              {
+                "tag": "int",
+                "value": 20
+              }
+            ]
+          }
+        },
+        "text_sha256": "298022fdf050fa14f68b5a55a3382942a33e01b5c4b38c2947789c1883fd1927",
+        "text_characters": 12,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 14,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 11,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "f48fb045b1a6084c71a0f7144afc0dd36ac9ee768269facfe58ecaf436252709",
+    "observation_bytes": 7336
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 58,
+    "step_id": "p2-click-1",
+    "document": "prepend",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "states": [
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-10",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 2
+              }
+            ]
+          }
+        },
+        "text_sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-11",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "text_sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-14",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-15",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+            "atoms": []
+          }
+        },
+        "text_sha256": "2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+            "atoms": []
+          }
+        },
+        "text_sha256": "525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-27",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:913a4cb91be20332f3559f8070255d7ac3e6228bb423f4441551d3f783e7d4f4"
+              },
+              {
+                "tag": "int",
+                "value": 20
+              }
+            ]
+          }
+        },
+        "text_sha256": "298022fdf050fa14f68b5a55a3382942a33e01b5c4b38c2947789c1883fd1927",
+        "text_characters": 12,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 14,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 11,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "69fbee3f5e1bcdd93eb355bc78518a02f676b6e8e134d63ca0d7029b9b370f11",
+    "observation_bytes": 7336
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 60,
+    "step_id": "p2-click-2",
+    "document": "prepend",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "states": [
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-10",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 2
+              }
+            ]
+          }
+        },
+        "text_sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-11",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "text_sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-14",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-15",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+            "atoms": []
+          }
+        },
+        "text_sha256": "2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+            "atoms": []
+          }
+        },
+        "text_sha256": "525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-27",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:913a4cb91be20332f3559f8070255d7ac3e6228bb423f4441551d3f783e7d4f4"
+              },
+              {
+                "tag": "int",
+                "value": 20
+              }
+            ]
+          }
+        },
+        "text_sha256": "298022fdf050fa14f68b5a55a3382942a33e01b5c4b38c2947789c1883fd1927",
+        "text_characters": 12,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 14,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 11,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "ea0c8d5d34bc4b4c0f035e969dcb8fdf45bd7b7be1fad4c5edcd7b977ddd03d0",
+    "observation_bytes": 7336
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 62,
+    "step_id": "p2-click-3",
+    "document": "prepend",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "states": [
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-10",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 2
+              }
+            ]
+          }
+        },
+        "text_sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-11",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "text_sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-14",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-15",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+            "atoms": []
+          }
+        },
+        "text_sha256": "2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+            "atoms": []
+          }
+        },
+        "text_sha256": "525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-27",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:913a4cb91be20332f3559f8070255d7ac3e6228bb423f4441551d3f783e7d4f4"
+              },
+              {
+                "tag": "int",
+                "value": 20
+              }
+            ]
+          }
+        },
+        "text_sha256": "298022fdf050fa14f68b5a55a3382942a33e01b5c4b38c2947789c1883fd1927",
+        "text_characters": 12,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 14,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 11,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "d93d862ad7165694f0f8fabb4f24c546e880e5f2168a15e8d5c28d986eddd983",
+    "observation_bytes": 7336
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 64,
+    "step_id": "p2-click-4",
+    "document": "prepend",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "states": [
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-10",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 2
+              }
+            ]
+          }
+        },
+        "text_sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-11",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "text_sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-14",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-15",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+            "atoms": []
+          }
+        },
+        "text_sha256": "2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+            "atoms": []
+          }
+        },
+        "text_sha256": "525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-27",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:913a4cb91be20332f3559f8070255d7ac3e6228bb423f4441551d3f783e7d4f4"
+              },
+              {
+                "tag": "int",
+                "value": 20
+              }
+            ]
+          }
+        },
+        "text_sha256": "298022fdf050fa14f68b5a55a3382942a33e01b5c4b38c2947789c1883fd1927",
+        "text_characters": 12,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 14,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 11,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "eceb124239e7fcc976a28bb3a6a5b9961e05250b4ea7d9a1e6b07627f2ac8460",
+    "observation_bytes": 7336
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 66,
+    "step_id": "p2-click-5",
+    "document": "prepend",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "states": [
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-10",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 2
+              }
+            ]
+          }
+        },
+        "text_sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-11",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "text_sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-14",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-15",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+            "atoms": []
+          }
+        },
+        "text_sha256": "2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+            "atoms": []
+          }
+        },
+        "text_sha256": "525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-27",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:913a4cb91be20332f3559f8070255d7ac3e6228bb423f4441551d3f783e7d4f4"
+              },
+              {
+                "tag": "int",
+                "value": 20
+              }
+            ]
+          }
+        },
+        "text_sha256": "298022fdf050fa14f68b5a55a3382942a33e01b5c4b38c2947789c1883fd1927",
+        "text_characters": 12,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 14,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 11,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "16d98e8b699c422d44beff16ad4c140345b811a701346e200d9c1c27588c0d8f",
+    "observation_bytes": 7336
+  },
+  {
+    "readback_method": "v8-boxtext",
+    "request_id": 68,
+    "step_id": "p2-click-6",
+    "document": "prepend",
+    "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+    "states": [
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-10",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 2
+              }
+            ]
+          }
+        },
+        "text_sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-11",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "int",
+            "atoms": [
+              {
+                "tag": "int",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "text_sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "text_characters": 1,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-14",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+            "atoms": []
+          }
+        },
+        "text_sha256": "fcde2b2edba56bf408601fb721fe9b5c338d10ee429ea04fae5511b68fbf8fb9",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-15",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+            "atoms": []
+          }
+        },
+        "text_sha256": "2b2961a431b23c9007efe270c1d7eb79c19d4192d7cd2d924176eb0b19e7d2a1",
+        "text_characters": 3,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-16",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "symbol-sha256:525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+            "atoms": []
+          }
+        },
+        "text_sha256": "525eca1d5089dbdcbb6700d910c5e0bc23fbaa23ee026c0e224c2b45490e5f29",
+        "text_characters": 4,
+        "rendering": "not observed; V8 Message boxtext only"
+      },
+      {
+        "document": "prepend",
+        "anchor": "root/obj-2/obj-27",
+        "authored_empty": false,
+        "status": "observed-private-v8-boxtext",
+        "live_content": {
+          "empty": false,
+          "message": {
+            "selector": "set",
+            "atoms": [
+              {
+                "tag": "symbol",
+                "value": "symbol-sha256:913a4cb91be20332f3559f8070255d7ac3e6228bb423f4441551d3f783e7d4f4"
+              },
+              {
+                "tag": "int",
+                "value": 20
+              }
+            ]
+          }
+        },
+        "text_sha256": "298022fdf050fa14f68b5a55a3382942a33e01b5c4b38c2947789c1883fd1927",
+        "text_characters": 12,
+        "rendering": "not observed; V8 Message boxtext only"
+      }
+    ],
+    "retention": {
+      "method": "runtime-object-and-endpoint-inventory",
+      "original_basic_boxes_retained": 14,
+      "original_basic_cables_retained": 9,
+      "observer_leaf_cables_retained": 11,
+      "unexpected_basic_cables": 0,
+      "saved_order_observed": false
+    },
+    "observation_sha256": "00f940c4f80f5c4a92dc5eedbae300ea07e7566087578e5c0fdafd95e24827dd",
+    "observation_bytes": 7336
+  }
+]

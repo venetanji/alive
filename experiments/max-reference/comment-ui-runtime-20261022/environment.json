@@ -1,0 +1,78 @@
+{
+  "observed_utc": "2026-10-21T19:03:38.582483+00:00",
+  "max_version": "9.1.5",
+  "wine": "/home/venetanji/.local/opt/wine-d2d1-nspa-11.13/bin/wine",
+  "isolation": "Btrfs reflink copied prefix, copied home symlinks replaced, owned Xvfb1440x1100x24, llvmpipe",
+  "screen_pixels_per_logical_pixel": 1.6,
+  "patch_zoom_label": "100%",
+  "sessions": [
+    {
+      "complete": true,
+      "session": {
+        "display": ":0",
+        "xvfb_pid": 3246013,
+        "launcher_pid": 3246028,
+        "prefix": "/home/venetanji/.cache/alive-max-comment-20261022-wine-disposable",
+        "fixture": "/home/venetanji/Work/alive/experiments/max-reference/comment-ui-runtime-20261022/fixtures/comment-layout.maxpat"
+      },
+      "max_exit": -9,
+      "stages": [
+        "changed",
+        "initial"
+      ],
+      "duration_seconds": 34.61,
+      "screenshots": "/tmp/alive-max-comment-20261022-run"
+    },
+    {
+      "complete": true,
+      "session": {
+        "display": ":0",
+        "xvfb_pid": 3266515,
+        "launcher_pid": 3266531,
+        "prefix": "/home/venetanji/.cache/alive-max-comment-20261022-wine-disposable",
+        "fixture": "/home/venetanji/Work/alive/experiments/max-reference/comment-ui-runtime-20261022/fixtures/comment-layout.maxpat"
+      },
+      "max_exit": -9,
+      "stages": [
+        "changed",
+        "initial"
+      ],
+      "duration_seconds": 31.71,
+      "screenshots": "/tmp/alive-max-comment-20261022-confirmation"
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "/tmp/alive-max-comment-20261022-run/changed.png",
+      "bytes": 336957,
+      "sha256": "f149bc788fe10815eb93d51928260907cc0bcd7c953c50afbd7c546434d632d5"
+    },
+    {
+      "path": "/tmp/alive-max-comment-20261022-run/initial.png",
+      "bytes": 337470,
+      "sha256": "6dd349982ca0ba86c8a3bd998ec5d0d9cc1a141e678d244bf60a50f94f141afa"
+    },
+    {
+      "path": "/tmp/alive-max-comment-20261022-confirmation/geometry.png",
+      "bytes": 94607,
+      "sha256": "6296e6f5211f4a8922a8d9a147808b6e75f0a378944e2d82b5dd81010d071213"
+    },
+    {
+      "path": "/tmp/alive-max-comment-20261022-confirmation/changed.png",
+      "bytes": 166561,
+      "sha256": "da1013a5446f9394b3b762296b47a8d8b9ad98f9d588edf6f01e1d4d070bb718"
+    },
+    {
+      "path": "/tmp/alive-max-comment-20261022-confirmation/initial.png",
+      "bytes": 163488,
+      "sha256": "78b7aa7520bc98cbba857b78dc509cecd44ee72c98c8b3dc70f635d6be267c8d"
+    }
+  ],
+  "cleanup": {
+    "remaining_exact_prefix_processes": [],
+    "owned_display_processes_remaining": [],
+    "marked_disposable_prefix_removed": true,
+    "original_prefix_launched": false,
+    "original_preferences_edited": false
+  }
+}

@@ -1,0 +1,1146 @@
+{
+  "ack_transport": {
+    "ASCII_only": true,
+    "all_samples_complete": true,
+    "complete_json": true,
+    "current_and_retained_bytes_identical": true,
+    "current_file": {
+      "bytes": 91560,
+      "sha256": "d99fe809a570a15635fc9ffe3c660ff6e3226002d70fe6be46c316712ab1ead8"
+    },
+    "json_document_bytes": 91559,
+    "other_ASCII_control_bytes_present": false,
+    "public_request_raw_binding_matches": true,
+    "retained_ack": {
+      "bytes": 91560,
+      "sha256": "d99fe809a570a15635fc9ffe3c660ff6e3226002d70fe6be46c316712ab1ead8"
+    },
+    "trailing_bytes": 1,
+    "trailing_terminator": "LF"
+  },
+  "artifact_type": "bounded-postcapture-close-audit-metadata",
+  "bindings": {
+    "historical_package_sha256": "11f641871d3800335c750c9c047940af1ec98b703b91320182c4a7288f3619be",
+    "private_config": {
+      "bytes": 222980,
+      "sha256": "e30d184933553df3432c833e3160112569b751b3e09892a71e07b2c22e712701"
+    },
+    "private_journal": {
+      "bytes": 75646,
+      "sha256": "558c3f60167613433905a469247f40ba89d320cbdbb6fe676864e35095bd21ab"
+    },
+    "private_log": {
+      "bytes": 681,
+      "sha256": "070d8ad57491cd6bc9c368a672e130a933d19c0679bb6db518580ae749aeaa87"
+    },
+    "private_observation_file_count": 371,
+    "private_observation_ledger_encoding": "filename-sorted list of name/bytes/sha256/mode; JSON sort_keys=true,separators=comma-colon,ensure_ascii=true,no newline",
+    "private_observation_ledger_sha256": "1d50fbdf094a368e5af4906e3a42faa78047fc8de9aa3962fc85b98af371a793",
+    "private_seal": {
+      "bytes": 1882,
+      "sha256": "384c875999489d3c60d6c09e3280c414be80edcca4b2ef0d37d34b648fab2aa5"
+    },
+    "public": {
+      "cleanup.json": {
+        "bytes": 2136,
+        "sha256": "1a8ee2bed2fe34bc19ec70a089a16e645073d09162e885546566a14cadcdbc50"
+      },
+      "display-states.json": {
+        "bytes": 258180,
+        "sha256": "08cddf654046edb559ab771c2ca79b0d72ab79f0422696e972f6e68aaa1d070d"
+      },
+      "preferences-after.json": {
+        "bytes": 232400,
+        "sha256": "5444dc994f5d2dcd50cc9fedd6ed2984e34308f750888b4760e2345f79ee33cd"
+      },
+      "preferences-before.json": {
+        "bytes": 232400,
+        "sha256": "5444dc994f5d2dcd50cc9fedd6ed2984e34308f750888b4760e2345f79ee33cd"
+      },
+      "receipts.jsonl": {
+        "bytes": 83011,
+        "sha256": "76eb289ddb68bf0a49cc894d1428dd36939f37fad01f1bd58a1f62d39a51a419"
+      },
+      "session.json": {
+        "bytes": 131625,
+        "sha256": "40c73d8b69d13abe206b4dc8a0d0fce99f934920e4fa4c8b05153c25fa3262b4"
+      }
+    },
+    "rea": {
+      "bytes": 39797,
+      "sha256": "49d89ad4b2e03a6f0072edec73dbade813b35a0f2baef3348432076b08257821"
+    }
+  },
+  "bounded_counts": {
+    "checkpoint_documents": {
+      "float": 40,
+      "int": 42
+    },
+    "checkpoint_geometry_dispositions": 204,
+    "checkpoint_sidecars": 82,
+    "checkpoints": 82,
+    "complete_failed_acknowledgements": 1,
+    "completed_closes": 0,
+    "completed_events": 40,
+    "completed_installs": 2,
+    "completed_operations": 42,
+    "historical_scripts": 18,
+    "journal_kinds": {
+      "harness-error": 1,
+      "receipt": 140,
+      "step-complete": 42,
+      "stimulus": 40
+    },
+    "journal_rows": 223,
+    "numeric_ui_values": 492,
+    "private_observation_files": 371,
+    "private_protection_entries_checked": 420,
+    "raw_numeric_mode_observations": 160,
+    "raw_readbacks": 82,
+    "retained_raw_copies": 82,
+    "sealed_files": 17,
+    "successful_acknowledgements": 124
+  },
+  "capabilities": {
+    "close_completion_proven": false,
+    "complete_failed_close_ack_retained_and_publicly_bound": true,
+    "freebang_observed": false,
+    "full_reference_validation_performed": false,
+    "hidden_root_absence_proven": false,
+    "lifecycle_rule_changed": false,
+    "owned_original_object_invalidation_observed": true,
+    "saved_order_observed": false,
+    "session_flags": {
+      "initial_message_prototypes_validated": false,
+      "initial_numeric_readback_validated": false,
+      "numeric_getters_silent_validated": false,
+      "numeric_readback_validated": false,
+      "runtime_endpoint_readback_validated": false,
+      "synchronous_destination_outputs_validated": false,
+      "typed_float_dispatch_validated": true
+    },
+    "top_level_root_destruction_proven": false,
+    "whole_native_comparison_performed": false
+  },
+  "capture_name": "int-float-006",
+  "cleanup": {
+    "display_only_attribution": false,
+    "ordinary_quit_requested": false,
+    "prefix_absent_at_audit": true,
+    "rea_settlement": {
+      "cleanup_outcome": "not_required",
+      "elapsed_ms": 110,
+      "state": "quiesced"
+    },
+    "rea_unverified_process_count": 10,
+    "recorded_empty_owned_prefix_marker_scans": true,
+    "unreadable_process_environments": {
+      "marker_scan": 327,
+      "owned_scan": 327,
+      "prefix_scan": 327
+    },
+    "xvfb_exited_recorded": true
+  },
+  "close_diagnostics": {
+    "action": "close",
+    "all_retained_originals_valid_before_and_invalid_at_every_poll": true,
+    "before_dispose_samples": 1,
+    "canonical_encoding": "JSON sort_keys=true,separators=comma-colon,ensure_ascii=true,no newline",
+    "dispose": {
+      "attempted": true,
+      "result": {
+        "status": "returned",
+        "type": "function"
+      }
+    },
+    "document": "float",
+    "firstobject_invalid_at_every_post_dispose_poll": true,
+    "helper_hash_bindings_match": true,
+    "original_basic_handles": 23,
+    "original_post_dispose_invalid_observations": 690,
+    "original_validity_observations": 713,
+    "poll_attempts": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30
+    ],
+    "reader_disposer_validity_observations": 62,
+    "recorded_post_dispose_polls": 30,
+    "request_id": 125,
+    "retained_wind_visible_true_in_all_samples": true,
+    "revision": 1,
+    "root_and_wind_owner_paths_match_all_samples": true,
+    "root_validity_undefined_in_all_samples": true,
+    "sample_count": 31,
+    "sample_timing_recorded": false,
+    "samples_sha256": "d2272cf666750d2949c75838605a89bb2a5b99f414e0b06fd6abfe60b10cc505",
+    "sha256": "2514a6960b760215cb3bc55cc7c21b593c6183d7380f1a43e012d37e2eca7cdf",
+    "source_sha256": "c5e9bd4e89ebc5808d2faf76400031705c35195c32b363b890787a37bbdec15c",
+    "step_id": "close-float",
+    "working_path_binding_matches": true
+  },
+  "complete": false,
+  "evidence_id": "ev_e1a2c14be3cbfa05e08772d47d97c6a401f708337e594d7bd573855d51d689cd",
+  "failed_command": {
+    "action": "close",
+    "command": {
+      "bytes": 228,
+      "sha256": "ab33b55fdabe0a6521df41df0c7f90b9c07ece4c05defb275a3db26a5a904bb3"
+    },
+    "completed": false,
+    "controller_ack_error_code": "numeric-controller-refused",
+    "controller_ack_success": false,
+    "document": "float",
+    "journal_sequence": 223,
+    "post_close_checkpoints": 0,
+    "private_error_code": "closed-owner-absence-unproven",
+    "private_error_sha256": "e8f930d8f39f3b5b90c89d9ddcc2fab0ee96315b921bf14df129bf516ba420da",
+    "raw_ack_complete": true,
+    "raw_ack_public_binding_present": true,
+    "request_id": 125,
+    "revision": 1,
+    "session_failure_sha256": "6d8bf3bb5ba4145f22c2d48cae211c17564ed8e5057fbfcb683f04272a2b2322",
+    "step_id": "close-float"
+  },
+  "integrity_checks": {
+    "all_125_public_ack_bindings_exact": true,
+    "historical_18_scripts_match_pins": true,
+    "installed_pristine_working_sources_match": true,
+    "installed_private_helpers_match": true,
+    "preferences_byte_identical": true,
+    "preparation_score_bindings_match": true,
+    "private_directories_0700_files_0600": true,
+    "public_82_state_bindings_exact": true,
+    "public_private_journal_projection_exact": true,
+    "raw_retained_bytes_exact": true,
+    "rea_four_after_artifacts_match": true,
+    "sealed_files_match_pins": true
+  },
+  "is_rea_runtime_output": false,
+  "limitations": [
+    "A complete ACK now binds the close observations through the public request and retained private ACK. This audit does not promote capture005's truncated forensic prefix to that evidence strength.",
+    "All 30 post-dispose polls are retained, but sample timestamps and elapsed poll duration are not recorded.",
+    "The dispose diagnostic is preserved literally: attempted=true and result type=function,status=returned. This is not interpreted as a top-level destruction certificate.",
+    "The 23 original Basic handles, reader, disposer, and firstobject handle are invalid after dispose. This establishes those reported handle states, not top-level root destruction or absence of hidden roots.",
+    "Patcher.valid returned undefined throughout. Retained root/Wind wrappers kept their filepath and Wind.visible=true; such wrapper observations are not an independent inventory of live roots or windows.",
+    "The existing lifecycle rule remains unchanged. No successful close, post-close checkpoint, reopen, reset, or freebang notification is retained.",
+    "The 82 checkpoint bindings and values were checked; no full native comparison or repeated source-graph semantic assessment was performed.",
+    "REA directly binds four public after-artifacts. Private raw files bind through session/config and the audit ledger, not direct REA snapshots.",
+    "Process sampling and filesystem snapshots retain their documented limits, including 327 unreadable environments per scan and ten unverified REA processes.",
+    "No preparation, launch, current verifier, current code/source/package edit, scorer, full reference validator, or qualification pass was performed."
+  ],
+  "original_basic_handle_summaries": [
+    {
+      "anchor": "root/obj-2/obj-1",
+      "before": {
+        "status": "returned",
+        "type": "number",
+        "value": 1
+      },
+      "post_dispose": {
+        "recorded_polls": 30,
+        "status": "returned",
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "anchor": "root/obj-2/obj-16",
+      "before": {
+        "status": "returned",
+        "type": "number",
+        "value": 1
+      },
+      "post_dispose": {
+        "recorded_polls": 30,
+        "status": "returned",
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "anchor": "root/obj-2/obj-17",
+      "before": {
+        "status": "returned",
+        "type": "number",
+        "value": 1
+      },
+      "post_dispose": {
+        "recorded_polls": 30,
+        "status": "returned",
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "anchor": "root/obj-2/obj-18",
+      "before": {
+        "status": "returned",
+        "type": "number",
+        "value": 1
+      },
+      "post_dispose": {
+        "recorded_polls": 30,
+        "status": "returned",
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "anchor": "root/obj-2/obj-19",
+      "before": {
+        "status": "returned",
+        "type": "number",
+        "value": 1
+      },
+      "post_dispose": {
+        "recorded_polls": 30,
+        "status": "returned",
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "anchor": "root/obj-2/obj-2",
+      "before": {
+        "status": "returned",
+        "type": "number",
+        "value": 1
+      },
+      "post_dispose": {
+        "recorded_polls": 30,
+        "status": "returned",
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "anchor": "root/obj-2/obj-20",
+      "before": {
+        "status": "returned",
+        "type": "number",
+        "value": 1
+      },
+      "post_dispose": {
+        "recorded_polls": 30,
+        "status": "returned",
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "anchor": "root/obj-2/obj-21",
+      "before": {
+        "status": "returned",
+        "type": "number",
+        "value": 1
+      },
+      "post_dispose": {
+        "recorded_polls": 30,
+        "status": "returned",
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "anchor": "root/obj-2/obj-22",
+      "before": {
+        "status": "returned",
+        "type": "number",
+        "value": 1
+      },
+      "post_dispose": {
+        "recorded_polls": 30,
+        "status": "returned",
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "anchor": "root/obj-2/obj-23",
+      "before": {
+        "status": "returned",
+        "type": "number",
+        "value": 1
+      },
+      "post_dispose": {
+        "recorded_polls": 30,
+        "status": "returned",
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "anchor": "root/obj-2/obj-24",
+      "before": {
+        "status": "returned",
+        "type": "number",
+        "value": 1
+      },
+      "post_dispose": {
+        "recorded_polls": 30,
+        "status": "returned",
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "anchor": "root/obj-2/obj-28",
+      "before": {
+        "status": "returned",
+        "type": "number",
+        "value": 1
+      },
+      "post_dispose": {
+        "recorded_polls": 30,
+        "status": "returned",
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "anchor": "root/obj-2/obj-29",
+      "before": {
+        "status": "returned",
+        "type": "number",
+        "value": 1
+      },
+      "post_dispose": {
+        "recorded_polls": 30,
+        "status": "returned",
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "anchor": "root/obj-2/obj-3",
+      "before": {
+        "status": "returned",
+        "type": "number",
+        "value": 1
+      },
+      "post_dispose": {
+        "recorded_polls": 30,
+        "status": "returned",
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "anchor": "root/obj-2/obj-30",
+      "before": {
+        "status": "returned",
+        "type": "number",
+        "value": 1
+      },
+      "post_dispose": {
+        "recorded_polls": 30,
+        "status": "returned",
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "anchor": "root/obj-2/obj-32",
+      "before": {
+        "status": "returned",
+        "type": "number",
+        "value": 1
+      },
+      "post_dispose": {
+        "recorded_polls": 30,
+        "status": "returned",
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "anchor": "root/obj-2/obj-33",
+      "before": {
+        "status": "returned",
+        "type": "number",
+        "value": 1
+      },
+      "post_dispose": {
+        "recorded_polls": 30,
+        "status": "returned",
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "anchor": "root/obj-2/obj-34",
+      "before": {
+        "status": "returned",
+        "type": "number",
+        "value": 1
+      },
+      "post_dispose": {
+        "recorded_polls": 30,
+        "status": "returned",
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "anchor": "root/obj-2/obj-35",
+      "before": {
+        "status": "returned",
+        "type": "number",
+        "value": 1
+      },
+      "post_dispose": {
+        "recorded_polls": 30,
+        "status": "returned",
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "anchor": "root/obj-2/obj-4",
+      "before": {
+        "status": "returned",
+        "type": "number",
+        "value": 1
+      },
+      "post_dispose": {
+        "recorded_polls": 30,
+        "status": "returned",
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "anchor": "root/obj-2/obj-5",
+      "before": {
+        "status": "returned",
+        "type": "number",
+        "value": 1
+      },
+      "post_dispose": {
+        "recorded_polls": 30,
+        "status": "returned",
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "anchor": "root/obj-2/obj-6",
+      "before": {
+        "status": "returned",
+        "type": "number",
+        "value": 1
+      },
+      "post_dispose": {
+        "recorded_polls": 30,
+        "status": "returned",
+        "type": "number",
+        "value": 0
+      }
+    },
+    {
+      "anchor": "root/obj-2/obj-9",
+      "before": {
+        "status": "returned",
+        "type": "number",
+        "value": 1
+      },
+      "post_dispose": {
+        "recorded_polls": 30,
+        "status": "returned",
+        "type": "number",
+        "value": 0
+      }
+    }
+  ],
+  "qualification_passes_added": 0,
+  "sample_summaries": [
+    {
+      "attempt": 0,
+      "disposer_valid": 1,
+      "firstobject_valid": 1,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "1": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "before-dispose",
+      "reader_valid": 1,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 1,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 2,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 3,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 4,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 5,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 6,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 7,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 8,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 9,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 10,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 11,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 12,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 13,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 14,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 15,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 16,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 17,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 18,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 19,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 20,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 21,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 22,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 23,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 24,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 25,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 26,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 27,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 28,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 29,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    },
+    {
+      "attempt": 30,
+      "disposer_valid": 0,
+      "firstobject_valid": 0,
+      "original_basic_object_count": 23,
+      "original_validity_counts": {
+        "0": 23
+      },
+      "owner_filepath_bindings_match": true,
+      "phase": "poll",
+      "reader_valid": 0,
+      "root_valid": {
+        "status": "returned",
+        "type": "undefined"
+      },
+      "wind_assocclass": "jpatcher",
+      "wind_visible": true
+    }
+  ],
+  "schema_version": 1,
+  "status": "FAILED"
+}

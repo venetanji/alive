@@ -1,0 +1,46 @@
+{
+  "exact_prefix_processes": [],
+  "xvfb_pid_gone": true,
+  "session": {
+    "display": ":0",
+    "xvfb_pid": 2759427,
+    "launcher_pid": 2759442,
+    "prefix": "/home/venetanji/.cache/alive-max-print-popup-20261022-attempt2-wine-disposable",
+    "max_exit": -9
+  },
+  "rea_exit": {
+    "code": 0,
+    "signal": 0,
+    "reason": "exited"
+  },
+  "rea_cleanup": {
+    "owned_process_group": "verified",
+    "temporary_root": "removed",
+    "unverified_processes": [
+      {
+        "pid": 2765727,
+        "reason": "EACCES: permission denied, open '/proc/2765727/environ'"
+      },
+      {
+        "pid": 2765775,
+        "reason": "EACCES: permission denied, open '/proc/2765775/environ'"
+      },
+      {
+        "pid": 2768740,
+        "reason": "EACCES: permission denied, open '/proc/2768740/environ'"
+      },
+      {
+        "pid": 2774384,
+        "reason": "EACCES: permission denied, open '/proc/2774384/environ'"
+      },
+      {
+        "pid": 2777137,
+        "reason": "EACCES: permission denied, open '/proc/2777137/environ'"
+      }
+    ]
+  },
+  "removed_owned_prefixes": [
+    "/home/venetanji/.cache/alive-max-print-popup-20261022-wine-disposable",
+    "/home/venetanji/.cache/alive-max-print-popup-20261022-attempt2-wine-disposable"
+  ]
+}

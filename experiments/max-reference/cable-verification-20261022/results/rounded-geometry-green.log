@@ -1,0 +1,82 @@
+TAP version 13
+# Subtest: midpoints preserve empty arrays repeated vertices fractional coordinates and exact bounds
+ok 1 - midpoints preserve empty arrays repeated vertices fractional coordinates and exact bounds
+  ---
+  duration_ms: 1.690251
+  type: 'test'
+  ...
+# Subtest: midpoints reject malformed arrays nonnumbers nonfinite coordinates and excess without coercion
+ok 2 - midpoints reject malformed arrays nonnumbers nonfinite coordinates and excess without coercion
+  ---
+  duration_ms: 0.776366
+  type: 'test'
+  ...
+# Subtest: translation carries only equally moved endpoint pairs and never mutates its inputs
+ok 3 - translation carries only equally moved endpoint pairs and never mutates its inputs
+  ---
+  duration_ms: 1.511176
+  type: 'test'
+  ...
+# Subtest: fractional group movement tolerates subtraction roundoff but preserves genuinely different endpoint moves
+ok 4 - fractional group movement tolerates subtraction roundoff but preserves genuinely different endpoint moves
+  ---
+  duration_ms: 0.281394
+  type: 'test'
+  ...
+# Subtest: translation removes only floating point boundary drift and rejects genuine overflow
+ok 5 - translation removes only floating point boundary drift and rejects genuine overflow
+  ---
+  duration_ms: 0.410253
+  type: 'test'
+  ...
+# Subtest: saved cable corners are rounded while joining actual ports vertically
+ok 6 - saved cable corners are rounded while joining actual ports vertically
+  ---
+  duration_ms: 1.069982
+  type: 'test'
+  ...
+# Subtest: stale endpoint x coordinates render against current ports without rewriting source
+ok 7 - stale endpoint x coordinates render against current ports without rewriting source
+  ---
+  duration_ms: 0.81471
+  type: 'test'
+  ...
+# Subtest: single and repeated saved points render an endpoint-aligned dogleg
+ok 8 - single and repeated saved points render an endpoint-aligned dogleg
+  ---
+  duration_ms: 1.187178
+  type: 'test'
+  ...
+# Subtest: short segments limit corner rounding without overshoot
+ok 9 - short segments limit corner rounding without overshoot
+  ---
+  duration_ms: 0.172371
+  type: 'test'
+  ...
+# Subtest: coincident ports and collinear or reversing points never produce invalid curves
+ok 10 - coincident ports and collinear or reversing points never produce invalid curves
+  ---
+  duration_ms: 0.191367
+  type: 'test'
+  ...
+# Subtest: unrouted and explicitly empty cables keep automatic curves
+ok 11 - unrouted and explicitly empty cables keep automatic curves
+  ---
+  duration_ms: 0.173628
+  type: 'test'
+  ...
+# Subtest: camera bounds include every saved bend and ignore automatic routes
+ok 12 - camera bounds include every saved bend and ignore automatic routes
+  ---
+  duration_ms: 0.233762
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 72.365392

@@ -1,0 +1,115 @@
+TAP version 13
+# Subtest: saved rhs-only arithmetic and English legacy text retain existing defaults
+ok 1 - saved rhs-only arithmetic and English legacy text retain existing defaults
+  ---
+  duration_ms: 4.342105
+  type: 'test'
+  ...
+# Subtest: typed creation retains whole float spelling and bare edits reset operand and mode
+ok 2 - typed creation retains whole float spelling and bare edits reset operand and mode
+  ---
+  duration_ms: 1.896711
+  type: 'test'
+  ...
+# Subtest: qualified decimal modulo and abs creation retain float mode without exponent aliases
+not ok 3 - qualified decimal modulo and abs creation retain float mode without exponent aliases
+  ---
+  duration_ms: 1.616224
+  type: 'test'
+  location: '/home/venetanji/Work/alive/apps/ultra/ui/canvas-arithmetic.test.mjs:38:1'
+  failureType: 'testCodeFailure'
+  error: 'Object text must be at most 160 characters.'
+  code: 'ERR_TEST_FAILURE'
+  stack: |-
+    parseObjectText (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-catalog.mjs:121:52)
+    TestContext.<anonymous> (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-arithmetic.test.mjs:45:55)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: integer saved operands validate atomically across flat and nested patches
+ok 4 - integer saved operands validate atomically across flat and nested patches
+  ---
+  duration_ms: 2.548132
+  type: 'test'
+  ...
+# Subtest: mode changes and their undo redo reapply standalone graphs while rhs stays live
+ok 5 - mode changes and their undo redo reapply standalone graphs while rhs stays live
+  ---
+  duration_ms: 3.353974
+  type: 'test'
+  ...
+# Subtest: new arithmetic reuses generic faces and exposes fixed type in help and creation hints
+ok 6 - new arithmetic reuses generic faces and exposes fixed type in help and creation hints
+  ---
+  duration_ms: 1.474654
+  type: 'test'
+  ...
+# Subtest: Max import uses typed symbols and refuses Ultra-only legacy spellings
+ok 7 - Max import uses typed symbols and refuses Ultra-only legacy spellings
+  ---
+  duration_ms: 3.888897
+  type: 'test'
+  ...
+# Subtest: qualified arithmetic set cables import and ignored reverse set is described accurately
+ok 8 - qualified arithmetic set cables import and ignored reverse set is described accurately
+  ---
+  duration_ms: 1.898387
+  type: 'test'
+  ...
+# Subtest: object completion exposes syntax and argument guidance from the validated profile
+ok 9 - object completion exposes syntax and argument guidance from the validated profile
+  ---
+  duration_ms: 2.778123
+  type: 'test'
+  ...
+# Subtest: option and value completion follows the caret and retains text after the current token
+ok 10 - option and value completion follows the caret and retains text after the current token
+  ---
+  duration_ms: 1.059789
+  type: 'test'
+  ...
+# Subtest: legacy zl names use the selected mode instead of completing to the first zl object
+ok 11 - legacy zl names use the selected mode instead of completing to the first zl object
+  ---
+  duration_ms: 0.489106
+  type: 'test'
+  ...
+# Subtest: arithmetic completion retains the authored legacy defaults and decimal semantics
+not ok 12 - arithmetic completion retains the authored legacy defaults and decimal semantics
+  ---
+  duration_ms: 0.927717
+  type: 'test'
+  location: '/home/venetanji/Work/alive/apps/ultra/ui/canvas-completion.test.mjs:46:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    0 !== 1
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 1
+  actual: 0
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///home/venetanji/Work/alive/apps/ultra/ui/canvas-completion.test.mjs:49:12)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 10
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 100.235299

@@ -1,0 +1,201 @@
+{
+  "status": "FAILED",
+  "work": "/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-003",
+  "prefix": "/home/venetanji/.cache/alive-max-help-roots-20261022-wine-disposable",
+  "source_prefix": "/home/venetanji/.cache/alive-max-list-20261021/wine-disposable",
+  "capture_id": "7abc80c8de3ff1f0d7e62a81ee67ceb0c68e23b609301132",
+  "host_display": ":0",
+  "display": ":200",
+  "process_ownership": "unique capture environment marker plus exact prefix/display and PID start; pidfd signals",
+  "launch_diagnostics": [
+    {
+      "role": "xvfb",
+      "pid": 100341,
+      "status": "verified",
+      "attempts": [
+        {
+          "pid": 100341,
+          "expected_start": "301004",
+          "observed_start": "301004",
+          "start_match": true,
+          "environment_readable": true,
+          "field_matches": {
+            "capture_marker": true,
+            "prefix": true,
+            "display": true
+          },
+          "executable_path_sha256": "cc2fda09e0686b85457a35aa6ff9f53f8c33f6d94fd4e60aa255efbd25301d50",
+          "matches_scope": true,
+          "elapsed_ms": 0.348
+        }
+      ],
+      "expected_start": "301004"
+    },
+    {
+      "role": "wine-launcher",
+      "pid": 100365,
+      "status": "verified",
+      "attempts": [
+        {
+          "pid": 100365,
+          "expected_start": "301009",
+          "observed_start": "301009",
+          "start_match": true,
+          "environment_readable": true,
+          "field_matches": {
+            "capture_marker": true,
+            "prefix": true,
+            "display": true
+          },
+          "executable_path_sha256": "2ecadfbc9f7bd18a32773f9385c7c0d1033a697e13e571386c990b08dc42d9b0",
+          "matches_scope": true,
+          "elapsed_ms": 0.443
+        }
+      ],
+      "expected_start": "301009"
+    }
+  ],
+  "screenshot_count": 0,
+  "clipboard_actions": 0,
+  "runtime_invocations": 1,
+  "documents": [
+    {
+      "document": "append",
+      "source_path": "/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resources/help/max/append.maxhelp",
+      "source_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+      "pristine_path": "/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-003/pristine/append.maxhelp",
+      "working_path": "/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-003/working/append.maxhelp",
+      "initial_working_sha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729"
+    },
+    {
+      "document": "prepend",
+      "source_path": "/home/venetanji/.wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resources/help/max/prepend.maxhelp",
+      "source_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+      "pristine_path": "/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-003/pristine/prepend.maxhelp",
+      "working_path": "/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-003/working/prepend.maxhelp",
+      "initial_working_sha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb"
+    }
+  ],
+  "score_steps": 33,
+  "input_method": "programmatic original controls; no physical entry/drag claim",
+  "max_sha256": "7a881318209a10d33c982db482297ab870327d5d2cb90aee6e4e01a13e279d8b",
+  "helpers": [
+    {
+      "name": "helpargs.js",
+      "path": "help/resources/helpargs.js",
+      "bytes": 3623,
+      "sha256": "04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469",
+      "installed_verified": true,
+      "copied_verified": true
+    },
+    {
+      "name": "helpdetails.js",
+      "path": "help/resources/helpdetails.js",
+      "bytes": 4199,
+      "sha256": "31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1",
+      "installed_verified": true,
+      "copied_verified": true
+    },
+    {
+      "name": "helpname.js",
+      "path": "help/resources/helpname.js",
+      "bytes": 905,
+      "sha256": "49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa",
+      "installed_verified": true,
+      "copied_verified": true
+    },
+    {
+      "name": "helpstarter.js",
+      "path": "help/resources/helpstarter.js",
+      "bytes": 1591,
+      "sha256": "a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8",
+      "installed_verified": true,
+      "copied_verified": true
+    }
+  ],
+  "launched_processes": [
+    {
+      "role": "xvfb",
+      "pid": 100341,
+      "start": "301004"
+    },
+    {
+      "role": "wine-launcher",
+      "pid": 100365,
+      "start": "301009"
+    }
+  ],
+  "xvfb_pid": 100341,
+  "launcher_pid": 100365,
+  "loading_diagnostics": [
+    {
+      "document": "append",
+      "tree_boxes": 19,
+      "basic_named": true,
+      "attempts": 1,
+      "filepath_sha256": "360ec2a38458fc4eaa9ca989c3332d6e04c451bd1315e24999b2b837192b5671",
+      "filepath": "Z:/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-003/working/append.maxhelp",
+      "top_boxes": [
+        {
+          "ordinal": 0,
+          "basic_named": false,
+          "maxclass": "patcher"
+        },
+        {
+          "ordinal": 1,
+          "basic_named": false,
+          "maxclass_sha256": "72d8f0277feb5d68008f2a0da84b0a00ccb6809ef6fb51204d59884c922f2bb8"
+        },
+        {
+          "ordinal": 2,
+          "basic_named": true,
+          "maxclass": "patcher"
+        },
+        {
+          "ordinal": 3,
+          "basic_named": false,
+          "maxclass": "js"
+        }
+      ]
+    },
+    {
+      "document": "prepend",
+      "tree_boxes": 18,
+      "basic_named": true,
+      "attempts": 1,
+      "filepath_sha256": "0895b813a30e9b2d14fca9ff17b30855383d8426f3088fa3c69cf89c3980bf34",
+      "filepath": "Z:/home/venetanji/.cache/alive-ultra-evidence/help-roots-max-20261022-prepared-003/working/prepend.maxhelp",
+      "top_boxes": [
+        {
+          "ordinal": 0,
+          "basic_named": false,
+          "maxclass": "patcher"
+        },
+        {
+          "ordinal": 1,
+          "basic_named": false,
+          "maxclass_sha256": "72d8f0277feb5d68008f2a0da84b0a00ccb6809ef6fb51204d59884c922f2bb8"
+        },
+        {
+          "ordinal": 2,
+          "basic_named": true,
+          "maxclass": "patcher"
+        },
+        {
+          "ordinal": 3,
+          "basic_named": false,
+          "maxclass": "js"
+        }
+      ]
+    }
+  ],
+  "complete": false,
+  "failure_sha256": "7311912b3b776396c0a0eb8be25ce18f0ef8d737440b736a368b1d3605bd6956",
+  "ordinary_quit_requested": false,
+  "public_rows": 1,
+  "private_journal_sha256": "0e1b1d3408615b0e60cb8b1f4a8d38d5d06bf35ad20f45f06d34d9b87934d638",
+  "private_log": {
+    "sha256": "5daa01f55e9839f2c226180b3f016e11f76d0273a75fe746fcc5c9ed07cba8f2",
+    "bytes": 681
+  }
+}

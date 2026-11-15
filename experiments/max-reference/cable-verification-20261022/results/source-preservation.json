@@ -1,0 +1,73 @@
+{
+  "scope": "Metadata-only import retention with injected native-provider identity; no runtime or complete-root qualification.",
+  "results": [
+    {
+      "object": "append",
+      "sourceSha256": "d4a3fe4d87f7fd7b30c747cc18cc09f7ba6dd703adadc279733df38503962729",
+      "stats": {
+        "sourceBoxes": 19,
+        "sourceEdges": 9,
+        "importedBoxes": 19,
+        "importedEdges": 9,
+        "omittedBoxes": 0,
+        "omittedEdges": 0,
+        "decorations": 0
+      },
+      "routesRetained": 9,
+      "commentsRetained": 1,
+      "diagnostics": 125,
+      "complete": false
+    },
+    {
+      "object": "prepend",
+      "sourceSha256": "281fec882e5eac1c59f74b677a2c8485701602153028e2bead9e338e1440f5fb",
+      "stats": {
+        "sourceBoxes": 18,
+        "sourceEdges": 9,
+        "importedBoxes": 18,
+        "importedEdges": 9,
+        "omittedBoxes": 0,
+        "omittedEdges": 0,
+        "decorations": 0
+      },
+      "routesRetained": 0,
+      "commentsRetained": 1,
+      "diagnostics": 123,
+      "complete": false
+    },
+    {
+      "object": "int",
+      "sourceSha256": "bbb8fc3b458eb168fe69b8709ba343808d23b6d55e2c59cc3086d01976c5ac61",
+      "stats": {
+        "sourceBoxes": 25,
+        "sourceEdges": 10,
+        "importedBoxes": 25,
+        "importedEdges": 10,
+        "omittedBoxes": 0,
+        "omittedEdges": 0,
+        "decorations": 0
+      },
+      "routesRetained": 5,
+      "commentsRetained": 5,
+      "diagnostics": 132,
+      "complete": false
+    },
+    {
+      "object": "float",
+      "sourceSha256": "c5e9bd4e89ebc5808d2faf76400031705c35195c32b363b890787a37bbdec15c",
+      "stats": {
+        "sourceBoxes": 27,
+        "sourceEdges": 12,
+        "importedBoxes": 27,
+        "importedEdges": 12,
+        "omittedBoxes": 0,
+        "omittedEdges": 0,
+        "decorations": 0
+      },
+      "routesRetained": 1,
+      "commentsRetained": 5,
+      "diagnostics": 141,
+      "complete": false
+    }
+  ]
+}

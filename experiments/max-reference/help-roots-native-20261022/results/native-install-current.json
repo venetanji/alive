@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "scope": "actual production-imported and Rust-prepared full roots installed through production C++ runtime; install-only smoke, no behavior qualification",
+  "max_executed": false,
+  "raw_output_retained_privately": true,
+  "files": [
+    {
+      "object": "append",
+      "native_nodes": 12,
+      "native_edges": 9,
+      "authoring_file_sha256": "ceee90b3565f353c1207ba49ae4db8e3762a3274370906fdaae6cedfad90e4da",
+      "native_file_sha256": "1fc65395035f94f7e73b5b11fa7ae6a78b0731537f0741fd60a4a413afabc045"
+    },
+    {
+      "object": "prepend",
+      "native_nodes": 11,
+      "native_edges": 9,
+      "authoring_file_sha256": "432b8367c249090667eb0ced9f8ab3963346e799e63a2159d9fb12b7c001b52d",
+      "native_file_sha256": "6c60fb55fad7087b3a2116c53c2d12d31cfd6b293aee080e4d8257da675e193b"
+    },
+    {
+      "object": "int",
+      "native_nodes": 14,
+      "native_edges": 10,
+      "authoring_file_sha256": "bb5852d6a5a0ee1e8bfdfa03e1d99253bcabd325a0b42082822d450788775140",
+      "native_file_sha256": "c09a317ac9d3b61f9388e788ea7d30d7593e454f3540b7ed70b58ceff54aa83b"
+    },
+    {
+      "object": "float",
+      "native_nodes": 16,
+      "native_edges": 12,
+      "authoring_file_sha256": "e8daa82c50219d35d68643a748909e1009d1eadcb7906ebdd062fabd6460972f",
+      "native_file_sha256": "d170f63cf031d07aef2c565b3c5bbdf42937d6b7cdcb7820735b6360de1cb8db"
+    }
+  ],
+  "checks": {
+    "actual_native_installs": 4,
+    "all_accepted": true,
+    "all_live_documents": 4,
+    "trace_overflows": 0,
+    "console_drops": 0,
+    "templates_unchanged": true
+  },
+  "runner_source_sha256": "36f023b9a356cad26a470fe8d59350b16e79d358b513faa5421ba5a8e2e8fb06"
+}

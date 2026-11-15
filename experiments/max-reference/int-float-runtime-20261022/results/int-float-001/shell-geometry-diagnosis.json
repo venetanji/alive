@@ -1,0 +1,164 @@
+{
+  "artifact_type": "derived-audit-metadata",
+  "bindings": {
+    "private_config_sha256": "6ffa9d3482e43825c8fd9a5906e7d135aaacd19bd19e0859d47df2a3a9405514",
+    "private_seal_sha256": "418a13939f6297fdca988024f7c999a686a37ae677a27fcffd0a786b22d5ed48",
+    "raw_ack_bytes": 23269,
+    "raw_ack_sha256": "60690a6c0b84dcb254dbf739a52d0a918081c814cc742dae47fc8b7be9d499b8",
+    "session_sha256": "314f3f9cd328639f442f7d906d87af72426f531916be66c0470ae0c2336e82b5",
+    "source_bytes": 26001,
+    "source_sha256": "bbb8fc3b458eb168fe69b8709ba343808d23b6d55e2c59cc3086d01976c5ac61"
+  },
+  "capture_name": "int-float-001",
+  "checkpoints": 0,
+  "completed_operations": 0,
+  "evidence_id": "ev_08a48aad8591ed6b7e5f326dc09808a9c6c0d8da1b9698cb6433cc0251c24a6d",
+  "failed_command": {
+    "diagnostic_observations": 70,
+    "document": "int",
+    "request_id": 1,
+    "revision": 1,
+    "step_id": "install-int",
+    "strict_full_match_count": 0,
+    "strictly_refused_anchor": "root/obj-1",
+    "success": false,
+    "unique_diagnostic_count": 1
+  },
+  "helper_sha256": {
+    "helpargs.js": "04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469",
+    "helpdetails.js": "31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1",
+    "helpname.js": "49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa",
+    "helpstarter.js": "a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8"
+  },
+  "is_rea_runtime_output": false,
+  "limitations": [
+    "Derived by read-only comparison of retained preparation source metadata and the digest-bound failed ACK candidate list; no new runtime observation.",
+    "Only root/obj-1 was the strict anchor refusal. The other two root deltas are uniquely associated candidates in that same diagnostic, not additional completed anchor checks.",
+    "Only int revision 1 was attempted. Float root geometry, Basic anchors, numeric getters, typed dispatch, lifecycle and destination ordering remain unobserved.",
+    "Class/geometry associations do not justify a global geometry tolerance or any changes to source files, helpers, numeric bounds or comparator rules."
+  ],
+  "measured_geometry_delta_count": 3,
+  "measured_geometry_deltas": [
+    {
+      "anchor": "root/obj-1",
+      "association": "unique runtime class plus exact saved x/y/width in retained ACK candidate list",
+      "observed_minus_saved_rect": [
+        0.0,
+        0.0,
+        0.0,
+        2.0
+      ],
+      "observed_rect": [
+        92,
+        94,
+        110,
+        22
+      ],
+      "saved_rect": [
+        92.0,
+        94.0,
+        110.0,
+        20.0
+      ]
+    },
+    {
+      "anchor": "root/obj-2",
+      "association": "unique runtime class plus exact saved x/y/width in retained ACK candidate list",
+      "observed_minus_saved_rect": [
+        0.0,
+        0.0,
+        0.0,
+        2.0
+      ],
+      "observed_rect": [
+        10,
+        85,
+        50,
+        22
+      ],
+      "saved_rect": [
+        10.0,
+        85.0,
+        50.0,
+        20.0
+      ]
+    },
+    {
+      "anchor": "root/obj-3",
+      "association": "unique runtime class plus exact saved x/y/width in retained ACK candidate list",
+      "observed_minus_saved_rect": [
+        0.0,
+        0.0,
+        0.0,
+        2.0
+      ],
+      "observed_rect": [
+        205,
+        205,
+        50,
+        22
+      ],
+      "saved_rect": [
+        205.0,
+        205.0,
+        50.0,
+        20.0
+      ]
+    }
+  ],
+  "qualification_passes_added": 0,
+  "root_box_roles_and_saved_route_counts": [
+    {
+      "anchor": "root/obj-1",
+      "expected_runtime_class": "js",
+      "has_saved_child": false,
+      "observed_runtime_class": "js",
+      "saved_child_box_count": 0,
+      "saved_child_role": "no-child",
+      "saved_incident_route_count": 0,
+      "saved_incoming_route_count": 0,
+      "saved_maxclass": "newobj",
+      "saved_outgoing_route_count": 0
+    },
+    {
+      "anchor": "root/obj-2",
+      "expected_runtime_class": "patcher",
+      "has_saved_child": true,
+      "observed_runtime_class": "patcher",
+      "saved_child_box_count": 21,
+      "saved_child_role": "score-basic-child",
+      "saved_incident_route_count": 0,
+      "saved_incoming_route_count": 0,
+      "saved_maxclass": "newobj",
+      "saved_outgoing_route_count": 0
+    },
+    {
+      "anchor": "root/obj-4",
+      "expected_runtime_class": "jsui",
+      "has_saved_child": false,
+      "observed_runtime_class": "jsui",
+      "saved_child_box_count": 0,
+      "saved_child_role": "no-child",
+      "saved_incident_route_count": 0,
+      "saved_incoming_route_count": 0,
+      "saved_maxclass": "jsui",
+      "saved_outgoing_route_count": 0
+    },
+    {
+      "anchor": "root/obj-3",
+      "expected_runtime_class": "patcher",
+      "has_saved_child": true,
+      "observed_runtime_class": "patcher",
+      "saved_child_box_count": 0,
+      "saved_child_role": "other-child",
+      "saved_incident_route_count": 0,
+      "saved_incoming_route_count": 0,
+      "saved_maxclass": "newobj",
+      "saved_outgoing_route_count": 0
+    }
+  ],
+  "root_saved_box_count": 4,
+  "root_saved_route_count": 0,
+  "schema_version": 1,
+  "status": "FAILED_CAPTURE_SHELL_GEOMETRY_DIAGNOSIS"
+}

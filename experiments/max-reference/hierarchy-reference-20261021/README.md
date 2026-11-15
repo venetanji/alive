@@ -9,10 +9,13 @@ the historical full-help conformance count of0/2103.
 
 ## Public checkout and optional local evidence
 
-This public checkout retains the original probe generators and JavaScript, but
-not `sources.json`, `bundle.json`, `summary.json`, generated patch files or raw
-hierarchy captures. The historical observations below describe local evidence;
-they are not newly reproduced results or public conformance passes.
+The November 15 checkpoint adds the reviewed original generated probes,
+`sources.json`, `bundle.json`, `summary.json`, and retained hierarchy captures to
+the public checkout. Source identities contain hashes and structural facts,
+not installed patch or helper bodies. The bundle manifest is refreshed for the
+current documentation and verifier files; captured bytes remain unchanged.
+The historical observations below are not newly reproduced Max executions or
+full-help conformance passes.
 
 Public CI runs original portable resource, import, graph and hierarchy tests.
 The import module loads installed-source identities only when local resource
@@ -21,7 +24,7 @@ explicit fixture hashes. Production recognition remains bound to the existing
 installed-source hashes, and resource/helper byte checks remain mandatory.
 Missing local identities produce an explicit error rather than recognition.
 
-`verify.py --allow-unavailable` reports `UNAVAILABLE` only when the entire local
+`verify.py --allow-unavailable` reports `UNAVAILABLE` only when the entire
 oracle output is absent. Partial outputs fail. If a bundle is present, exact
 whole-bundle identities and the retained-capture summary must both pass; changed
 or extra files still fail. The strict default continues to reject absent

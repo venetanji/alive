@@ -1,0 +1,367 @@
+{
+  "prefix": "/home/venetanji/.cache/alive-max-float-cable-20261022-recovery-wine-disposable",
+  "display": ":135",
+  "xvfb_pid": 20445,
+  "fixture": "/home/venetanji/Work/alive/experiments/max-reference/float-cable-runtime-20261022/fixtures/float-cable.maxpat",
+  "max_sha256": "7a881318209a10d33c982db482297ab870327d5d2cb90aee6e4e01a13e279d8b",
+  "screenshot_directory": "/home/venetanji/.cache/alive-ultra-evidence/float-cable-20261022/noncapture-final",
+  "events": [
+    {
+      "kind": "command",
+      "wall_ms": 1792629104415,
+      "request": {
+        "id": 1,
+        "op": "score",
+        "label": "scalar-score"
+      }
+    },
+    {
+      "kind": "focus",
+      "wall_ms": 1792629104716,
+      "window": {
+        "id": 14680075,
+        "name": "float-cable (unlocked | saving disabled)",
+        "rect": [
+          160,
+          126,
+          1793,
+          1146
+        ]
+      }
+    },
+    {
+      "kind": "capture-omitted",
+      "wall_ms": 1792629104916,
+      "stage": "initial",
+      "reason": "Bounded final serialization and typed-entry attempt"
+    },
+    {
+      "kind": "focus",
+      "wall_ms": 1792629104918,
+      "window": {
+        "id": 14680075,
+        "name": "float-cable (unlocked | saving disabled)",
+        "rect": [
+          160,
+          126,
+          1793,
+          1146
+        ]
+      }
+    },
+    {
+      "kind": "clipboard",
+      "wall_ms": 1792629105995,
+      "stage": "initial",
+      "returncode": 0,
+      "length": 1,
+      "stderr": ""
+    },
+    {
+      "kind": "windows-clipboard",
+      "wall_ms": 1792629106095,
+      "stage": "initial",
+      "mode": "normal",
+      "returncode": 0,
+      "formats": "",
+      "stderr": ""
+    },
+    {
+      "kind": "windows-clipboard",
+      "wall_ms": 1792629106340,
+      "stage": "initial",
+      "mode": "compressed",
+      "returncode": 0,
+      "formats": "",
+      "stderr": ""
+    },
+    {
+      "kind": "command",
+      "wall_ms": 1792629106551,
+      "request": {
+        "id": 2,
+        "op": "move",
+        "label": "one-endpoint",
+        "objects": [
+          "source0",
+          "source1",
+          "source2",
+          "source3",
+          "source4"
+        ],
+        "dx": 30,
+        "dy": 20
+      }
+    },
+    {
+      "kind": "capture-omitted",
+      "wall_ms": 1792629106852,
+      "stage": "one-endpoint",
+      "reason": "Bounded final serialization and typed-entry attempt"
+    },
+    {
+      "kind": "focus",
+      "wall_ms": 1792629106853,
+      "window": {
+        "id": 14680075,
+        "name": "float-cable (unlocked | saving disabled)",
+        "rect": [
+          160,
+          126,
+          1793,
+          1146
+        ]
+      }
+    },
+    {
+      "kind": "clipboard",
+      "wall_ms": 1792629107925,
+      "stage": "one-endpoint",
+      "returncode": 0,
+      "length": 1,
+      "stderr": ""
+    },
+    {
+      "kind": "windows-clipboard",
+      "wall_ms": 1792629108020,
+      "stage": "one-endpoint",
+      "mode": "normal",
+      "returncode": 0,
+      "formats": "",
+      "stderr": ""
+    },
+    {
+      "kind": "windows-clipboard",
+      "wall_ms": 1792629108267,
+      "stage": "one-endpoint",
+      "mode": "compressed",
+      "returncode": 0,
+      "formats": "",
+      "stderr": ""
+    },
+    {
+      "kind": "command",
+      "wall_ms": 1792629108538,
+      "request": {
+        "id": 3,
+        "op": "move",
+        "label": "both-script",
+        "objects": [
+          "source0",
+          "sink0",
+          "source1",
+          "sink1",
+          "source2",
+          "sink2",
+          "source3",
+          "sink3",
+          "source4",
+          "sink4"
+        ],
+        "dx": 30,
+        "dy": 20
+      }
+    },
+    {
+      "kind": "capture-omitted",
+      "wall_ms": 1792629108838,
+      "stage": "both-script",
+      "reason": "Bounded final serialization and typed-entry attempt"
+    },
+    {
+      "kind": "focus",
+      "wall_ms": 1792629108840,
+      "window": {
+        "id": 14680075,
+        "name": "float-cable (unlocked | saving disabled)",
+        "rect": [
+          160,
+          126,
+          1793,
+          1146
+        ]
+      }
+    },
+    {
+      "kind": "clipboard",
+      "wall_ms": 1792629109908,
+      "stage": "both-script",
+      "returncode": 0,
+      "length": 1,
+      "stderr": ""
+    },
+    {
+      "kind": "windows-clipboard",
+      "wall_ms": 1792629110008,
+      "stage": "both-script",
+      "mode": "normal",
+      "returncode": 0,
+      "formats": "",
+      "stderr": ""
+    },
+    {
+      "kind": "windows-clipboard",
+      "wall_ms": 1792629110255,
+      "stage": "both-script",
+      "mode": "compressed",
+      "returncode": 0,
+      "formats": "",
+      "stderr": ""
+    },
+    {
+      "kind": "focus",
+      "wall_ms": 1792629110407,
+      "window": {
+        "id": 14680075,
+        "name": "float-cable (unlocked | saving disabled)",
+        "rect": [
+          160,
+          126,
+          1793,
+          1146
+        ]
+      }
+    },
+    {
+      "kind": "command",
+      "wall_ms": 1792629113130,
+      "request": {
+        "id": 4,
+        "op": "snapshot",
+        "label": "physical-group"
+      }
+    },
+    {
+      "kind": "capture-omitted",
+      "wall_ms": 1792629113431,
+      "stage": "physical-group",
+      "reason": "Bounded final serialization and typed-entry attempt"
+    },
+    {
+      "kind": "focus",
+      "wall_ms": 1792629113433,
+      "window": {
+        "id": 14680075,
+        "name": "float-cable (unlocked | saving disabled)*",
+        "rect": [
+          160,
+          126,
+          1793,
+          1146
+        ]
+      }
+    },
+    {
+      "kind": "clipboard",
+      "wall_ms": 1792629114510,
+      "stage": "physical-group",
+      "returncode": 0,
+      "length": 1,
+      "stderr": ""
+    },
+    {
+      "kind": "windows-clipboard",
+      "wall_ms": 1792629114611,
+      "stage": "physical-group",
+      "mode": "normal",
+      "returncode": 0,
+      "formats": "",
+      "stderr": ""
+    },
+    {
+      "kind": "windows-clipboard",
+      "wall_ms": 1792629114860,
+      "stage": "physical-group",
+      "mode": "compressed",
+      "returncode": 0,
+      "formats": "",
+      "stderr": ""
+    },
+    {
+      "kind": "command",
+      "wall_ms": 1792629117721,
+      "request": {
+        "id": 5,
+        "op": "lock",
+        "label": "locked-for-entry",
+        "value": 1
+      }
+    },
+    {
+      "kind": "command",
+      "wall_ms": 1792629118143,
+      "request": {
+        "id": 6,
+        "op": "select-number",
+        "label": "entry-selected",
+        "target": "entry"
+      }
+    },
+    {
+      "kind": "focus",
+      "wall_ms": 1792629118444,
+      "window": {
+        "id": 14680075,
+        "name": "float-cable (saving disabled)*",
+        "rect": [
+          160,
+          126,
+          1793,
+          1146
+        ]
+      }
+    },
+    {
+      "kind": "capture-omitted",
+      "wall_ms": 1792629120596,
+      "stage": "entry-active",
+      "reason": "Bounded final serialization and typed-entry attempt"
+    },
+    {
+      "kind": "command",
+      "wall_ms": 1792629120868,
+      "request": {
+        "id": 7,
+        "op": "snapshot",
+        "label": "entry-committed"
+      }
+    },
+    {
+      "kind": "capture-omitted",
+      "wall_ms": 1792629121168,
+      "stage": "entry-committed",
+      "reason": "Bounded final serialization and typed-entry attempt"
+    },
+    {
+      "kind": "command",
+      "wall_ms": 1792629121289,
+      "request": {
+        "id": 8,
+        "op": "select-number",
+        "label": "tab-entry-selected",
+        "target": "entry"
+      }
+    },
+    {
+      "kind": "command",
+      "wall_ms": 1792629121861,
+      "request": {
+        "id": 9,
+        "op": "snapshot",
+        "label": "after-tab"
+      }
+    },
+    {
+      "kind": "capture-omitted",
+      "wall_ms": 1792629122162,
+      "stage": "after-tab",
+      "reason": "Bounded final serialization and typed-entry attempt"
+    },
+    {
+      "kind": "completed",
+      "wall_ms": 1792629122162,
+      "stages": 7
+    }
+  ],
+  "launcher_pid": 20456
+}

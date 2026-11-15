@@ -1,0 +1,161 @@
+{
+  "scope": "bounded scalar arithmetic batch; overall goal remains active",
+  "javascript": {
+    "passed": 365,
+    "failed": 0
+  },
+  "rust": {
+    "passed": 113,
+    "failed": 0,
+    "ignored": 2
+  },
+  "browser": {
+    "initial_passed": 95,
+    "initial_failed_stale_palette_counts": 2,
+    "affected_rerun_passed": 2,
+    "scenarios_covered": 97,
+    "single_final_full_green_run": false
+  },
+  "native_replay": {
+    "compared_pass": 287,
+    "explicit_local_refusal": 4,
+    "outside_qualified_creation": 9,
+    "unexpected_failures": 0
+  },
+  "release_build_exit": 0,
+  "native_desktop": {
+    "status": "passed",
+    "scope": "six original examples through native File Open, WebKitGTK and C++ execution",
+    "audio": "off",
+    "captures": 0,
+    "cases": [
+      {
+        "type": "subtract",
+        "initial_console": "5.",
+        "after_silent_cold_and_bang": "3.",
+        "authoring_retained": true
+      },
+      {
+        "type": "divide",
+        "initial_console": "3.5",
+        "after_silent_cold_and_bang": "1.75",
+        "authoring_retained": true
+      },
+      {
+        "type": "modulo",
+        "initial_console": "1",
+        "after_silent_cold_and_bang": "3",
+        "authoring_retained": true
+      },
+      {
+        "type": "reverse_subtract",
+        "initial_console": "3.",
+        "after_silent_cold_and_bang": "-3.",
+        "authoring_retained": true
+      },
+      {
+        "type": "reverse_divide",
+        "initial_console": "2.",
+        "after_silent_cold_and_bang": "0.5714285714285714",
+        "authoring_retained": true
+      },
+      {
+        "type": "abs",
+        "initial_console": "7.5",
+        "after_silent_cold_and_bang": null,
+        "authoring_retained": true
+      }
+    ],
+    "whole_help_roots_qualified": 0
+  },
+  "whole_help_qualification": {
+    "numerator": 0,
+    "denominator": 2103
+  },
+  "source_and_binary_hashes": [
+    {
+      "path": "apps/ultra/ui/canvas-arithmetic.mjs",
+      "sha256": "8133cedb909681b2e6939960a600e2c3d8859916bd325fb28ab7581a7dffe127"
+    },
+    {
+      "path": "apps/ultra/ui/canvas-arithmetic.test.mjs",
+      "sha256": "86f44f495242bb8efb4297c7307898fb49c5dc5e2f7e3b25283792338eb3eec4"
+    },
+    {
+      "path": "apps/ultra/ui/canvas-catalog.mjs",
+      "sha256": "f5b3364bad21307f5f63832a5d5a4d6100c54610f7dc6e5c115906ca06f3044f"
+    },
+    {
+      "path": "apps/ultra/ui/canvas-completion.mjs",
+      "sha256": "3ab22ec3c25ae8651a3ae8e5d73ab44ccd4ea2abfea9512061640a00c33e40b9"
+    },
+    {
+      "path": "apps/ultra/ui/canvas-completion.test.mjs",
+      "sha256": "1a8e59c4ce66e635f891dbbbdb616c804bd5697ba476e0cce7f3c3fe15ba54c7"
+    },
+    {
+      "path": "apps/ultra/ui/canvas-model.mjs",
+      "sha256": "7ecdf3cacdf3993b1a208d4760a9ab20863a5d9fb21547fb4302bd4902618b92"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/canvas_message.hpp",
+      "sha256": "7a09bcb4362aedb85a558cea90e88ed5ef104ce0cd56b762f8e0f7f1f9ab982b"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/patch_graph.hpp",
+      "sha256": "8693d38678870f2426a577dc96441b4f95da4413caee476632614a6e8d6ebe48"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/patch_graph.h",
+      "sha256": "8526002e0f0739b7842c01dec1803f354537f5b0df7508eb8272b6bab1708d74"
+    },
+    {
+      "path": "apps/ultra/src-tauri/src/canvas.rs",
+      "sha256": "1bf6856c2872b2d7655bbdf28791cfc6911787cfbefe58e450c988d290906aa7"
+    },
+    {
+      "path": "apps/ultra/src-tauri/src/document_commands_tests.rs",
+      "sha256": "f7ee9f232734d6a30fae9a8fa5ac448913a2c1176ffb7e4d595495b4c7468ae4"
+    },
+    {
+      "path": "apps/ultra/tests/canvas_arithmetic_test.cpp",
+      "sha256": "82ca40ae59cefa4930585d064cccf50f34f2288b6d05a84529f02047052177e1"
+    },
+    {
+      "path": "apps/ultra/tests/check_arithmetic_desktop.py",
+      "sha256": "7731636208b841e63f0e1c1153df8fbde2788c9749a53e51b1e475bcbd1f757c"
+    },
+    {
+      "path": "apps/ultra/tests/ci/canvas-arithmetic.spec.mjs",
+      "sha256": "d96802e9e2168045ca4452335147ab6e369a85a0d190ee7717bd87e11c56d9a7"
+    },
+    {
+      "path": "apps/ultra/tests/ci/canvas-browser.spec.mjs",
+      "sha256": "1559012842fa46b82b5b69361f6f049423c2334f74cbc9a6a20dbb09e75e0a89"
+    },
+    {
+      "path": "apps/ultra/tests/ci/playwright.config.mjs",
+      "sha256": "2312493ad815b1bb3d43e45b63177d8d89a757856672597f1dfe3df1c2e64408"
+    },
+    {
+      "path": "apps/ultra/tests/ci/check-contracts.sh",
+      "sha256": "20f099307cf3fa27b659f263268ee3b90585caeee24345f9e9691855f6dc39ef"
+    },
+    {
+      "path": "apps/ultra/ui/canvas-library-data.json",
+      "sha256": "e570c5a63b089613e781b3fecb92de1ea4c8dfe89b44f3ed005041ec72357b86"
+    },
+    {
+      "path": "apps/ultra/build/libultra_native.so",
+      "sha256": "97b994a539e46c988498490274223be513efa4511380255edc5004edf5ab5f37"
+    },
+    {
+      "path": "apps/ultra/src-tauri/target/release/libultra_native.so",
+      "sha256": "97b994a539e46c988498490274223be513efa4511380255edc5004edf5ab5f37"
+    },
+    {
+      "path": "apps/ultra/src-tauri/target/release/ultra",
+      "sha256": "4e7fc2af6b2ddffbc44c1a897c8bfc7485f06ea05086e20b360607ba6b05f286"
+    }
+  ]
+}

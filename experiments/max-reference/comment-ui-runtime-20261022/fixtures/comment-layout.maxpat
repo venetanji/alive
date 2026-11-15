@@ -1,0 +1,657 @@
+{
+  "patcher": {
+    "fileversion": 1,
+    "appversion": {
+      "major": 9,
+      "minor": 1,
+      "revision": 5,
+      "architecture": "x64",
+      "modernui": 1
+    },
+    "classnamespace": "box",
+    "rect": [
+      0,
+      0,
+      1220,
+      840
+    ],
+    "default_fontsize": 13.0,
+    "default_fontname": "Arial",
+    "bgcolor": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "locked": 1,
+    "boxes": [
+      {
+        "box": {
+          "id": "side0-point0",
+          "varname": "side0-point0",
+          "maxclass": "comment",
+          "text": "Alpha beta\ngamma delta",
+          "patching_rect": [
+            20,
+            30,
+            145,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "bubble": 1,
+          "bubbleside": 0,
+          "bubblepoint": 0.0
+        }
+      },
+      {
+        "box": {
+          "id": "side0-point1",
+          "varname": "side0-point1",
+          "maxclass": "comment",
+          "text": "Alpha beta\ngamma delta",
+          "patching_rect": [
+            20,
+            130,
+            145,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "bubble": 1,
+          "bubbleside": 0,
+          "bubblepoint": 0.5
+        }
+      },
+      {
+        "box": {
+          "id": "side0-point2",
+          "varname": "side0-point2",
+          "maxclass": "comment",
+          "text": "Alpha beta\ngamma delta",
+          "patching_rect": [
+            20,
+            230,
+            145,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "bubble": 1,
+          "bubbleside": 0,
+          "bubblepoint": 1.0
+        }
+      },
+      {
+        "box": {
+          "id": "side1-point0",
+          "varname": "side1-point0",
+          "maxclass": "comment",
+          "text": "Alpha beta\ngamma delta",
+          "patching_rect": [
+            195,
+            30,
+            145,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "bubble": 1,
+          "bubbleside": 1,
+          "bubblepoint": 0.0
+        }
+      },
+      {
+        "box": {
+          "id": "side1-point1",
+          "varname": "side1-point1",
+          "maxclass": "comment",
+          "text": "Alpha beta\ngamma delta",
+          "patching_rect": [
+            195,
+            130,
+            145,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "bubble": 1,
+          "bubbleside": 1,
+          "bubblepoint": 0.5
+        }
+      },
+      {
+        "box": {
+          "id": "side1-point2",
+          "varname": "side1-point2",
+          "maxclass": "comment",
+          "text": "Alpha beta\ngamma delta",
+          "patching_rect": [
+            195,
+            230,
+            145,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "bubble": 1,
+          "bubbleside": 1,
+          "bubblepoint": 1.0
+        }
+      },
+      {
+        "box": {
+          "id": "side2-point0",
+          "varname": "side2-point0",
+          "maxclass": "comment",
+          "text": "Alpha beta\ngamma delta",
+          "patching_rect": [
+            370,
+            30,
+            145,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "bubble": 1,
+          "bubbleside": 2,
+          "bubblepoint": 0.0
+        }
+      },
+      {
+        "box": {
+          "id": "side2-point1",
+          "varname": "side2-point1",
+          "maxclass": "comment",
+          "text": "Alpha beta\ngamma delta",
+          "patching_rect": [
+            370,
+            130,
+            145,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "bubble": 1,
+          "bubbleside": 2,
+          "bubblepoint": 0.5
+        }
+      },
+      {
+        "box": {
+          "id": "side2-point2",
+          "varname": "side2-point2",
+          "maxclass": "comment",
+          "text": "Alpha beta\ngamma delta",
+          "patching_rect": [
+            370,
+            230,
+            145,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "bubble": 1,
+          "bubbleside": 2,
+          "bubblepoint": 1.0
+        }
+      },
+      {
+        "box": {
+          "id": "side3-point0",
+          "varname": "side3-point0",
+          "maxclass": "comment",
+          "text": "Alpha beta\ngamma delta",
+          "patching_rect": [
+            545,
+            30,
+            145,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "bubble": 1,
+          "bubbleside": 3,
+          "bubblepoint": 0.0
+        }
+      },
+      {
+        "box": {
+          "id": "side3-point1",
+          "varname": "side3-point1",
+          "maxclass": "comment",
+          "text": "Alpha beta\ngamma delta",
+          "patching_rect": [
+            545,
+            130,
+            145,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "bubble": 1,
+          "bubbleside": 3,
+          "bubblepoint": 0.5
+        }
+      },
+      {
+        "box": {
+          "id": "side3-point2",
+          "varname": "side3-point2",
+          "maxclass": "comment",
+          "text": "Alpha beta\ngamma delta",
+          "patching_rect": [
+            545,
+            230,
+            145,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "bubble": 1,
+          "bubbleside": 3,
+          "bubblepoint": 1.0
+        }
+      },
+      {
+        "box": {
+          "id": "plain-count-None",
+          "varname": "plain-count-None",
+          "maxclass": "comment",
+          "text": "One two three four five six seven eight nine ten eleven twelve.",
+          "patching_rect": [
+            740,
+            30,
+            160,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0
+        }
+      },
+      {
+        "box": {
+          "id": "bubble-count-None",
+          "varname": "bubble-count-None",
+          "maxclass": "comment",
+          "text": "One two three four five six seven eight nine ten eleven twelve.",
+          "patching_rect": [
+            940,
+            30,
+            160,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "bubble": 1
+        }
+      },
+      {
+        "box": {
+          "id": "plain-count-1",
+          "varname": "plain-count-1",
+          "maxclass": "comment",
+          "text": "One two three four five six seven eight nine ten eleven twelve.",
+          "patching_rect": [
+            740,
+            130,
+            160,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "linecount": 1
+        }
+      },
+      {
+        "box": {
+          "id": "bubble-count-1",
+          "varname": "bubble-count-1",
+          "maxclass": "comment",
+          "text": "One two three four five six seven eight nine ten eleven twelve.",
+          "patching_rect": [
+            940,
+            130,
+            160,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "bubble": 1,
+          "linecount": 1
+        }
+      },
+      {
+        "box": {
+          "id": "plain-count-2",
+          "varname": "plain-count-2",
+          "maxclass": "comment",
+          "text": "One two three four five six seven eight nine ten eleven twelve.",
+          "patching_rect": [
+            740,
+            230,
+            160,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "linecount": 2
+        }
+      },
+      {
+        "box": {
+          "id": "bubble-count-2",
+          "varname": "bubble-count-2",
+          "maxclass": "comment",
+          "text": "One two three four five six seven eight nine ten eleven twelve.",
+          "patching_rect": [
+            940,
+            230,
+            160,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "bubble": 1,
+          "linecount": 2
+        }
+      },
+      {
+        "box": {
+          "id": "plain-count-7",
+          "varname": "plain-count-7",
+          "maxclass": "comment",
+          "text": "One two three four five six seven eight nine ten eleven twelve.",
+          "patching_rect": [
+            740,
+            330,
+            160,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "linecount": 7
+        }
+      },
+      {
+        "box": {
+          "id": "bubble-count-7",
+          "varname": "bubble-count-7",
+          "maxclass": "comment",
+          "text": "One two three four five six seven eight nine ten eleven twelve.",
+          "patching_rect": [
+            940,
+            330,
+            160,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "bubble": 1,
+          "linecount": 7
+        }
+      },
+      {
+        "box": {
+          "id": "margin0",
+          "varname": "margin0",
+          "maxclass": "comment",
+          "text": "Alpha beta\ngamma delta",
+          "patching_rect": [
+            20,
+            470,
+            190,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "bubble": 1,
+          "bubbletextmargin": 0
+        }
+      },
+      {
+        "box": {
+          "id": "margin5",
+          "varname": "margin5",
+          "maxclass": "comment",
+          "text": "Alpha beta\ngamma delta",
+          "patching_rect": [
+            240,
+            470,
+            190,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "bubble": 1,
+          "bubbletextmargin": 5
+        }
+      },
+      {
+        "box": {
+          "id": "margin10",
+          "varname": "margin10",
+          "maxclass": "comment",
+          "text": "Alpha beta\ngamma delta",
+          "patching_rect": [
+            460,
+            470,
+            190,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "bubble": 1,
+          "bubbletextmargin": 10
+        }
+      },
+      {
+        "box": {
+          "id": "plain-newline",
+          "varname": "plain-newline",
+          "maxclass": "comment",
+          "text": "Alpha beta\ngamma delta",
+          "patching_rect": [
+            740,
+            470,
+            160,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0
+        }
+      },
+      {
+        "box": {
+          "id": "plain-longword",
+          "varname": "plain-longword",
+          "maxclass": "comment",
+          "text": "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijk",
+          "patching_rect": [
+            940,
+            470,
+            160,
+            70
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0
+        }
+      },
+      {
+        "box": {
+          "id": "plain-smallrect",
+          "varname": "plain-smallrect",
+          "maxclass": "comment",
+          "text": "One two three four five six seven eight nine ten eleven twelve.",
+          "patching_rect": [
+            740,
+            580,
+            160,
+            21
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "linecount": 7
+        }
+      },
+      {
+        "box": {
+          "id": "bubble-smallrect",
+          "varname": "bubble-smallrect",
+          "maxclass": "comment",
+          "text": "One two three four five six seven eight nine ten eleven twelve.",
+          "patching_rect": [
+            940,
+            580,
+            160,
+            21
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0,
+          "bubble": 1,
+          "linecount": 7
+        }
+      },
+      {
+        "box": {
+          "id": "inherited",
+          "varname": "inherited",
+          "maxclass": "comment",
+          "text": "Font inheritance specimen",
+          "patching_rect": [
+            20,
+            610,
+            300,
+            40
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial"
+        }
+      },
+      {
+        "box": {
+          "id": "named-style",
+          "varname": "named-style",
+          "maxclass": "comment",
+          "text": "Named style specimen",
+          "patching_rect": [
+            350,
+            610,
+            300,
+            40
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "style": "helpfile_label"
+        }
+      },
+      {
+        "box": {
+          "id": "explicit12",
+          "varname": "explicit12",
+          "maxclass": "comment",
+          "text": "Explicit twelve specimen",
+          "patching_rect": [
+            20,
+            680,
+            300,
+            40
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 12.0
+        }
+      },
+      {
+        "box": {
+          "id": "explicit13",
+          "varname": "explicit13",
+          "maxclass": "comment",
+          "text": "Explicit thirteen specimen",
+          "patching_rect": [
+            350,
+            680,
+            300,
+            40
+          ],
+          "numinlets": 1,
+          "numoutlets": 0,
+          "fontname": "Arial",
+          "fontsize": 13.0
+        }
+      },
+      {
+        "box": {
+          "id": "probe",
+          "maxclass": "newobj",
+          "text": "js probe.js",
+          "patching_rect": [
+            20,
+            760,
+            100,
+            22
+          ],
+          "hidden": 1
+        }
+      }
+    ],
+    "lines": []
+  }
+}

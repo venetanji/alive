@@ -1,6 +1,6 @@
 # Alive / Ultra Plan
 
-Updated: 2026-10-23. Current cleanup starts from `1b5abc9` on draft PR #1. Earlier experiments below retain their historical evidence and limits; current implementation and verification are distinguished here.
+Updated: 2026-11-15. The [development checkpoint](docs/resume/2026-11-15-development-checkpoint.md) records the reviewed research artifacts, local-only inventory, current source bindings and exact resume boundary. Application implementation remains at `1f3439d`; this checkpoint adds evidence and documentation, not runtime functionality. The October 23 cleanup started from `1b5abc9` on draft PR #1. Earlier experiments below retain their historical evidence and limits.
 
 Status: architecture research, a constrained Clockwork/Faust host, and an early Rust/Tauri Ultra patch-editor test build. There is no production DAW or Live/Max compatibility implementation. Offline, actual Linux desktop and real PipeWire-JACK evidence are distinguished below from unmeasured physical audio/MIDI latency and unqualified realtime performance. This plan makes no delivery-date or broad compatibility claim.
 

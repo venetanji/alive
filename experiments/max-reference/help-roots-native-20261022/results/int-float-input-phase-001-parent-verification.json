@@ -1,0 +1,57 @@
+{
+  "status": "FINITE_NUMERIC_COMPARISON_PASS",
+  "source_sha256": {
+    "compare-int-float.py": "5ee1d61bf111aa5901707d04790d1be39956358a560f037a9356ea5592d61367",
+    "test-compare-int-float.py": "a39f456b93377a6a04ca262d668e217d6b4b4785ea8547c5f74a24129cf0e502"
+  },
+  "independent_review": {
+    "path": ".superpowers/sdd/2026-10-22-max-help-root-behavior/int-float-comparator-input-phase-review.md",
+    "sha256": "481084bac7790a0d5012ef67715cc895b744910c84f81db29db26c81766c1d3e",
+    "spec": "PASS",
+    "quality": "PASS"
+  },
+  "checks": {
+    "numeric_comparator_tests": 19,
+    "python_ast_files": 2,
+    "actual_comparator_exit": 0,
+    "input_bindings_unchanged": true,
+    "only_input_phase_gate_results_changed": true
+  },
+  "parent_tests": {
+    "path": "experiments/max-reference/help-roots-native-20261022/results/int-float-input-phase-001-parent-tests.log",
+    "sha256": "c067b7129eeb779b2d6a01eb7b7bb3ea904b23e76736329eb8fdd39a947d02d4"
+  },
+  "original_comparator_sha256": "b0e962ace212eb787f26d7aaeb1681f9f1d62c2848d8729480294dbee3c36a62",
+  "historical_failed_comparison": {
+    "path": "experiments/max-reference/help-roots-native-20261022/results/int-float-comparison-012.json",
+    "sha256": "9f19644b23ce13f30fb8f649ad53c184a86be7f6fd4790fe093f5aebb9c8fca6",
+    "exit": 1
+  },
+  "corrected_comparison": {
+    "path": "experiments/max-reference/help-roots-native-20261022/results/int-float-comparison-012-input-phase-001.json",
+    "sha256": "47d1057b961e01f160cf23d306cefb954d96555ac2dd1a90b0ec402df735842e",
+    "exit": 0
+  },
+  "input_bindings": {
+    "score_sha256": "0ea52e269e960d64f7a55f137a1925d2186119cd6d960afabc21730e3c2fad30",
+    "native_sha256": "5fc133b2909ec845150541068a16b3ec391435142eeabfb8e4cb924b63df0726",
+    "reference_files": {
+      "session.json": "b50a6afe31c422e507ac08c356f18b349bfd7b308fc09479638a5fdb1131cbde",
+      "receipts.jsonl": "86c6ecf7005ab5334a988876ac1f34892348f98ecc808fad25280d2db78275a6",
+      "display-states.json": "7012e5dbf6779c77b7e5beeab41a6d70c71426068b970470d9fcac0c25d61efa",
+      "cleanup.json": "740ebf9518f20c3364d61af1e1a04ad9310ecb6fe0660878e3e37cd3e8bc02b1"
+    }
+  },
+  "capture_evidence_id": "ev_091870590c00c4f1540ff0aa42308300c555f3a1a015ee48b4edc918d5bfc14c",
+  "capture_integrity_audit": ".superpowers/sdd/2026-10-22-max-help-root-behavior/int-float-012-audit.md",
+  "complete_installed_help_qualification_passes_added": 0,
+  "limitations": [
+    "Numeric getter semantic tags come from classes; receipt tags are measured separately.",
+    "Unknown numeric list tags remain unknown even when endpoint values match.",
+    "Direct destination output order applies only to the 21 scored immediate-control pairs.",
+    "Native destination input order is native-only; no portable interdocument named-receiver order is claimed.",
+    "Runtime endpoint inventory does not expose saved cable order; saved_order_observed=false.",
+    "Message prototype hashes establish content retention, not serialized state or rendering.",
+    "Saved authoring, physical entry/drag/Tab, shared views, fonts/layout, metadata and whole-help qualification remain unresolved."
+  ]
+}

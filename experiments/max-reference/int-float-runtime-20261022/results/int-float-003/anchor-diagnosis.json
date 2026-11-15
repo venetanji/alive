@@ -1,0 +1,340 @@
+{
+  "artifact_type": "derived-audit-metadata",
+  "bindings": {
+    "package_sha256": "ace96449f48285ab8ebc6a4bfcdc456993aebcce65dd76a8d5af7fd910ff5877",
+    "private_config_sha256": "2bb85757fd64f7813f4370c7b555d762d0c99a8ab3c6b3763dfa72c5cbda0d4f",
+    "private_seal_sha256": "6a9992cbe03586c7bd9bebd58d05a0a76a802e31e44cb8e210688562b09aa350",
+    "raw_ack_bytes": 9874,
+    "raw_ack_sha256": "7a278f9caf2b32ee2c4775ee32803bcf7d16d1a4c9a9a9b92780f26050826cb9",
+    "session_sha256": "72914bda17f4b33c3b1707fa9c1cc6deaa12ce591982952bc8fdb92d07855417",
+    "source_bytes": 28070,
+    "source_sha256": "c5e9bd4e89ebc5808d2faf76400031705c35195c32b363b890787a37bbdec15c"
+  },
+  "capture_name": "int-float-003",
+  "completed_operations": 2,
+  "diagnostic_count": 10,
+  "diagnostics": [
+    {
+      "anchor": "root/obj-1",
+      "candidate_association": "unique expected runtime class plus exact saved x/y",
+      "candidate_count": 4,
+      "expected_runtime_class": "js",
+      "mismatch_kind": "geometry-height",
+      "observed_minus_saved_rect": [
+        0,
+        0.0,
+        0,
+        2
+      ],
+      "observed_rect": [
+        374,
+        27.5,
+        120,
+        22
+      ],
+      "observed_runtime_class": "js",
+      "reported_full_match_count": 0,
+      "runtime_class_matches": true,
+      "saved_maxclass": "newobj",
+      "saved_rect": [
+        374,
+        27.5,
+        120,
+        20
+      ]
+    },
+    {
+      "anchor": "root/obj-2",
+      "candidate_association": "unique expected runtime class plus exact saved x/y",
+      "candidate_count": 4,
+      "expected_runtime_class": "patcher",
+      "mismatch_kind": "geometry-height",
+      "observed_minus_saved_rect": [
+        0,
+        0,
+        0,
+        2
+      ],
+      "observed_rect": [
+        10,
+        85,
+        50,
+        22
+      ],
+      "observed_runtime_class": "patcher",
+      "reported_full_match_count": 0,
+      "runtime_class_matches": true,
+      "saved_maxclass": "newobj",
+      "saved_rect": [
+        10,
+        85,
+        50,
+        20
+      ]
+    },
+    {
+      "anchor": "root/obj-2/obj-3",
+      "candidate_association": "unique expected runtime class plus exact saved x/y",
+      "candidate_count": 23,
+      "expected_runtime_class": "comment",
+      "mismatch_kind": "geometry-height",
+      "observed_minus_saved_rect": [
+        0,
+        0.0,
+        0,
+        1
+      ],
+      "observed_rect": [
+        411,
+        156.5,
+        133,
+        55
+      ],
+      "observed_runtime_class": "comment",
+      "reported_full_match_count": 0,
+      "runtime_class_matches": true,
+      "saved_maxclass": "comment",
+      "saved_rect": [
+        411,
+        156.5,
+        133,
+        54
+      ]
+    },
+    {
+      "anchor": "root/obj-2/obj-5",
+      "candidate_association": "unique expected runtime class plus exact saved x/y",
+      "candidate_count": 23,
+      "expected_runtime_class": "comment",
+      "mismatch_kind": "geometry-height",
+      "observed_minus_saved_rect": [
+        0,
+        0.0,
+        0,
+        1
+      ],
+      "observed_rect": [
+        14,
+        201.5,
+        143,
+        55
+      ],
+      "observed_runtime_class": "comment",
+      "reported_full_match_count": 0,
+      "runtime_class_matches": true,
+      "saved_maxclass": "comment",
+      "saved_rect": [
+        14,
+        201.5,
+        143,
+        54
+      ]
+    },
+    {
+      "anchor": "root/obj-2/obj-16",
+      "candidate_association": "unique exact rectangle; runtime class differs",
+      "candidate_count": 23,
+      "expected_runtime_class": "flonum",
+      "mismatch_kind": "runtime-class",
+      "observed_minus_saved_rect": [
+        0,
+        0.0,
+        0,
+        0
+      ],
+      "observed_rect": [
+        194,
+        230.5,
+        54,
+        23
+      ],
+      "observed_runtime_class": "number",
+      "reported_full_match_count": 1,
+      "runtime_class_matches": false,
+      "saved_maxclass": "flonum",
+      "saved_rect": [
+        194,
+        230.5,
+        54,
+        23
+      ]
+    },
+    {
+      "anchor": "root/obj-2/obj-17",
+      "candidate_association": "unique exact rectangle; runtime class differs",
+      "candidate_count": 23,
+      "expected_runtime_class": "flonum",
+      "mismatch_kind": "runtime-class",
+      "observed_minus_saved_rect": [
+        0,
+        0.0,
+        0,
+        0
+      ],
+      "observed_rect": [
+        265,
+        230.5,
+        54,
+        23
+      ],
+      "observed_runtime_class": "number",
+      "reported_full_match_count": 1,
+      "runtime_class_matches": false,
+      "saved_maxclass": "flonum",
+      "saved_rect": [
+        265,
+        230.5,
+        54,
+        23
+      ]
+    },
+    {
+      "anchor": "root/obj-2/obj-21",
+      "candidate_association": "unique exact rectangle; runtime class differs",
+      "candidate_count": 23,
+      "expected_runtime_class": "flonum",
+      "mismatch_kind": "runtime-class",
+      "observed_minus_saved_rect": [
+        0,
+        0.0,
+        0,
+        0
+      ],
+      "observed_rect": [
+        220,
+        330.5,
+        54,
+        23
+      ],
+      "observed_runtime_class": "number",
+      "reported_full_match_count": 1,
+      "runtime_class_matches": false,
+      "saved_maxclass": "flonum",
+      "saved_rect": [
+        220,
+        330.5,
+        54,
+        23
+      ]
+    },
+    {
+      "anchor": "root/obj-2/obj-33",
+      "candidate_association": "unique exact rectangle; runtime class differs",
+      "candidate_count": 23,
+      "expected_runtime_class": "flonum",
+      "mismatch_kind": "runtime-class",
+      "observed_minus_saved_rect": [
+        0,
+        0.0,
+        0,
+        0
+      ],
+      "observed_rect": [
+        117,
+        380.5,
+        54,
+        23
+      ],
+      "observed_runtime_class": "number",
+      "reported_full_match_count": 1,
+      "runtime_class_matches": false,
+      "saved_maxclass": "flonum",
+      "saved_rect": [
+        117,
+        380.5,
+        54,
+        23
+      ]
+    },
+    {
+      "anchor": "root/obj-2/obj-4",
+      "candidate_association": "unique expected runtime class plus exact saved x/y",
+      "candidate_count": 23,
+      "expected_runtime_class": "jsui",
+      "mismatch_kind": "geometry-width",
+      "observed_minus_saved_rect": [
+        0,
+        0,
+        -0.014068121093743002,
+        0
+      ],
+      "observed_rect": [
+        289,
+        274,
+        190.31402587890625,
+        39
+      ],
+      "observed_runtime_class": "jsui",
+      "reported_full_match_count": 0,
+      "runtime_class_matches": true,
+      "saved_maxclass": "jsui",
+      "saved_rect": [
+        289,
+        274,
+        190.328094,
+        39
+      ]
+    },
+    {
+      "anchor": "root/obj-3",
+      "candidate_association": "unique expected runtime class plus exact saved x/y",
+      "candidate_count": 4,
+      "expected_runtime_class": "patcher",
+      "mismatch_kind": "geometry-height",
+      "observed_minus_saved_rect": [
+        0,
+        0,
+        0,
+        2
+      ],
+      "observed_rect": [
+        205,
+        205,
+        50,
+        22
+      ],
+      "observed_runtime_class": "patcher",
+      "reported_full_match_count": 0,
+      "runtime_class_matches": true,
+      "saved_maxclass": "newobj",
+      "saved_rect": [
+        205,
+        205,
+        50,
+        20
+      ]
+    }
+  ],
+  "document": "float",
+  "evidence_id": "ev_276a95d8e4b9209ee97a8336fc3c8132e433cce2d2407e3baada856a380c0078",
+  "float_checkpoints": 0,
+  "float_numeric_mode_observed": false,
+  "helper_sha256": {
+    "helpargs.js": "04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469",
+    "helpdetails.js": "31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1",
+    "helpname.js": "49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa",
+    "helpstarter.js": "a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8"
+  },
+  "is_rea_runtime_output": false,
+  "limitations": [
+    "Derived by read-only comparison of retained failed ACK candidates with digest-bound source/config metadata; no new runtime observation.",
+    "The historical controller reported full_match_count by rectangle alone before checking runtime class. A count of 1 for the four flonum anchors therefore does not establish an accepted runtime class.",
+    "Candidate associations identify the measured geometry/class differences only. They do not prove float numeric behavior, a class alias, getter semantics, lifecycle or destination order.",
+    "Actual numeric mode of the four observed number-class float-source candidates remains unobserved: no mode query or float getter is retained.",
+    "The two successful checkpoints concern only int revision 1. Capture status remains FAILED and no whole numeric comparison or qualification was performed."
+  ],
+  "mismatch_counts": {
+    "geometry-height": 5,
+    "geometry-width": 1,
+    "runtime-class": 4
+  },
+  "qualification_passes_added": 0,
+  "request_id": 5,
+  "revision": 1,
+  "schema_version": 1,
+  "status": "FAILED_FLOAT_HIERARCHY_PREFLIGHT",
+  "step_id": "install-float",
+  "successful_checkpoints": 2,
+  "successful_numeric_getters": 12,
+  "unique_anchor_count": 10
+}

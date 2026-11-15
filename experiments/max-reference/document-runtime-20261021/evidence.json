@@ -1,0 +1,464 @@
+{
+  "schema": 1,
+  "evidence": "installed-static-documentation-and-saved-help-shapes",
+  "xml": {
+    "send": {
+      "path": "docs/refpages/max-ref/send.maxref.xml",
+      "bytes": 5127,
+      "sha256": "b4883d20eb847abcdd89c37666bb545282f1282318a0cd4da0cc29be5f954a73",
+      "citations": [
+        {
+          "selector": "./description",
+          "attributes": {},
+          "element_sha256": "07d9a6137699d4636115b9efb7c9b8c5b9938a84b0a477bb6bcf961c932673c3"
+        },
+        {
+          "selector": "./discussion",
+          "attributes": {},
+          "element_sha256": "c7eba358a41c6574e892bc3e09630a43431dc85566393cbb8f37322221151c29"
+        },
+        {
+          "selector": "./objarglist/objarg[@name=\"name\"]",
+          "attributes": {
+            "name": "name",
+            "optional": "0",
+            "type": "symbol"
+          },
+          "element_sha256": "1805a5c070f52a66a1df40bbc42258b2c990e0fed960f8856f9d03f2ab2c4356"
+        },
+        {
+          "selector": "./methodlist/method[@name=\"anything\"]",
+          "attributes": {
+            "name": "anything"
+          },
+          "element_sha256": "3dacf3eb98bbaaa1ddfcdfa5f88c80f249c00ac510c37f5dce048a5e8455022d"
+        }
+      ],
+      "method_names": [
+        "bang",
+        "int",
+        "float",
+        "list",
+        "anything",
+        "(mouse)"
+      ],
+      "arguments": [
+        {
+          "name": "name",
+          "optional": "0",
+          "type": "symbol"
+        }
+      ]
+    },
+    "receive": {
+      "path": "docs/refpages/max-ref/receive.maxref.xml",
+      "bytes": 4651,
+      "sha256": "360289408f81a609674a25a189f7567b33cd1810ad5c23169ad9ce888ad550dd",
+      "citations": [
+        {
+          "selector": "./description",
+          "attributes": {},
+          "element_sha256": "f05ac9adb6123fd97fd52ec5d1b17639b9178ca7d78f5ad1d3020bf54adb6208"
+        },
+        {
+          "selector": "./discussion",
+          "attributes": {},
+          "element_sha256": "d8e0a761074643a7e16dbb24ad19e702690c1d61e5b6ae76a42156b17bb27c21"
+        },
+        {
+          "selector": "./objarglist/objarg[@name=\"name\"]",
+          "attributes": {
+            "name": "name",
+            "optional": "1",
+            "type": "symbol"
+          },
+          "element_sha256": "af1402a64a46b3c9910513f234cf4266511569b74647329c5c700369cb53df35"
+        },
+        {
+          "selector": "./methodlist/method[@name=\"set\"]",
+          "attributes": {
+            "name": "set"
+          },
+          "element_sha256": "0ad634ee2b6068a9ad168a4a9066c43d5cab4254a24df07c45d580e49b9e7592"
+        }
+      ],
+      "method_names": [
+        "(mouse)",
+        "set"
+      ],
+      "arguments": [
+        {
+          "name": "name",
+          "optional": "1",
+          "type": "symbol"
+        }
+      ]
+    },
+    "pcontrol": {
+      "path": "docs/refpages/max-ref/pcontrol.maxref.xml",
+      "bytes": 5651,
+      "sha256": "4621ef2d19f02c7dd4abf442a24274a0feec335937275ad35cae93fc36ed5b40",
+      "citations": [
+        {
+          "selector": "./methodlist/method[@name=\"load\"]",
+          "attributes": {
+            "name": "load"
+          },
+          "element_sha256": "7c3ad96fa506ae3af9cf4f10df51ce69f742387bc15591f1495e9812f5e53c98"
+        },
+        {
+          "selector": "./methodlist/method[@name=\"open\"]",
+          "attributes": {
+            "name": "open"
+          },
+          "element_sha256": "6f1c5ba4feb5bef2258a1bb1ebba99c165a7e62dbcdb0bab57b5f59c277f4220"
+        },
+        {
+          "selector": "./methodlist/method[@name=\"close\"]",
+          "attributes": {
+            "name": "close"
+          },
+          "element_sha256": "1252f6750dda27ee0d7d650643ce676e4e44e6a286b5238703c3d37eeb7cfd18"
+        }
+      ],
+      "method_names": [
+        "close",
+        "help",
+        "load",
+        "loadunique",
+        "open",
+        "shroud",
+        "shroudunique"
+      ],
+      "arguments": [
+        {
+          "id": "0",
+          "name": "OBJARG_NAME",
+          "type": "OBJARG_TYPE",
+          "optional": "0"
+        }
+      ]
+    },
+    "thispatcher": {
+      "path": "docs/refpages/max-ref/thispatcher.maxref.xml",
+      "bytes": 22422,
+      "sha256": "9fee214fb158c465cc208afe78805eb6bc21df9aeab25c04415527a3c51cce81",
+      "citations": [
+        {
+          "selector": "./discussion",
+          "attributes": {},
+          "element_sha256": "4ad921705a62d0fc83f64ae6c0658c314f13ff2095448cc797c18aa8de240495"
+        },
+        {
+          "selector": ".//entry[@name=\"front\"]",
+          "attributes": {
+            "name": "front"
+          },
+          "element_sha256": "8f8cbeb75edfb0a34c5e93ce7643f93cf55d095a0b6b37884ddf437d34a7c30d"
+        },
+        {
+          "selector": ".//entry[@name=\"title\"]",
+          "attributes": {
+            "name": "title"
+          },
+          "element_sha256": "bcb5ca237712c432490900c0282b31efa61f2e4a7993a32676aeb78a9955f2ff"
+        },
+        {
+          "selector": ".//entry[@name=\"write\"]",
+          "attributes": {
+            "name": "write"
+          },
+          "element_sha256": "ced4fa7fa9516b40ed79f881be706ae05dcd6f46d622b5a58ed08f6a33ce457f"
+        }
+      ],
+      "method_names": [
+        "anything",
+        "end",
+        "savewindow",
+        "setactivetab"
+      ],
+      "arguments": [
+        {
+          "id": "0",
+          "name": "OBJARG_NAME",
+          "type": "OBJARG_TYPE",
+          "optional": "0"
+        }
+      ]
+    },
+    "dac~": {
+      "path": "docs/refpages/msp-ref/dac~.maxref.xml",
+      "bytes": 6741,
+      "sha256": "c79cff2fcbd9dd7dffc4dcaf2ff4896793209191cd8bafa78b1d47f53f6f571b",
+      "citations": [
+        {
+          "selector": "./methodlist/method[@name=\"int\"]",
+          "attributes": {
+            "name": "int"
+          },
+          "element_sha256": "0f41845883c93cb6c046dbee4af229b226ecf5cac3daaefe65553e505544b189"
+        },
+        {
+          "selector": "./methodlist/method[@name=\"start\"]",
+          "attributes": {
+            "name": "start"
+          },
+          "element_sha256": "6686726bb1b8c28da767dd47e5e0d199fba8d11ae114875a57cea7a7ec0b32a1"
+        },
+        {
+          "selector": "./methodlist/method[@name=\"stop\"]",
+          "attributes": {
+            "name": "stop"
+          },
+          "element_sha256": "b0c10615422c98b22de5fe6e93d6f00194b169eaa852e06568905d82cf10a2c2"
+        },
+        {
+          "selector": "./methodlist/method[@name=\"startwindow\"]",
+          "attributes": {
+            "name": "startwindow"
+          },
+          "element_sha256": "6cded76558e6d479ac3d0522b0235e2e5c0bea4cbe38ae654d9a3a3b47b9afcf"
+        }
+      ],
+      "method_names": [
+        "int",
+        "list",
+        "(mouse)",
+        "open",
+        "set",
+        "signal",
+        "start",
+        "startwindow",
+        "stop",
+        "wclose"
+      ],
+      "arguments": [
+        {
+          "name": "outputs",
+          "optional": "1",
+          "type": "int/symbol"
+        }
+      ]
+    }
+  },
+  "guides": {
+    "objects": {
+      "path": "docs/userguide/content/objects.json",
+      "bytes": 32771,
+      "sha256": "e5fb4a501659f4e21fb7e68fe6004e856af24562880ed1096318fa2a9a6aafe1",
+      "headings": [
+        {
+          "depth": 2,
+          "id": "help-files-and-reference",
+          "text": "Help Files and Reference"
+        }
+      ],
+      "content_sha256": "6c8a4e47048efecb380785f124479da29d096552146862a81fc6694e1a40332c"
+    },
+    "documentation_window": {
+      "path": "docs/userguide/content/documentation_window.json",
+      "bytes": 19021,
+      "sha256": "9c9d9adc2d9b315fa666a2f3551f318cf71142baf93415ed80adfed0f50ca22c",
+      "headings": [
+        {
+          "depth": 1,
+          "id": "documentation-window",
+          "text": "Documentation Window"
+        },
+        {
+          "depth": 2,
+          "id": "using-the-object-reference",
+          "text": "Using the Object Reference"
+        }
+      ],
+      "content_sha256": "357510d80467adc08d8a3033e72236dbeee95765a6f051e66930ac57915016bb"
+    },
+    "patcher_lifecycle": {
+      "path": "docs/userguide/content/patcher_lifecycle.json",
+      "bytes": 18052,
+      "sha256": "1ec9527db7cdd1be2f5abc462270610e8a9afae5ba6a14360e3dc8dcc84bfd1b",
+      "headings": [
+        {
+          "depth": 2,
+          "id": "opening-a-patcher",
+          "text": "Opening a Patcher"
+        },
+        {
+          "depth": 3,
+          "id": "subpatchers",
+          "text": "Subpatchers"
+        },
+        {
+          "depth": 3,
+          "id": "object-initialization",
+          "text": "Object initialization"
+        },
+        {
+          "depth": 3,
+          "id": "patchcord-connection",
+          "text": "Patchcord connection"
+        },
+        {
+          "depth": 3,
+          "id": "loadbang-and-loadmess",
+          "text": "loadbang and loadmess"
+        },
+        {
+          "depth": 3,
+          "id": "window-activity",
+          "text": "Window activity"
+        },
+        {
+          "depth": 3,
+          "id": "dspstate~-and-signal-processing",
+          "text": "dspstate~ and signal processing"
+        },
+        {
+          "depth": 2,
+          "id": "closing-a-patcher",
+          "text": "Closing a Patcher"
+        }
+      ],
+      "content_sha256": "9d723f7916677b4efd72fffd98c92711c50eb3df56442564947290f5af95c790"
+    },
+    "abstractions": {
+      "path": "docs/userguide/content/abstractions.json",
+      "bytes": 21132,
+      "sha256": "09df2c0194f1c23730924fb75f98c9e255f662baab500028bad5a80e00d10a3b",
+      "headings": [
+        {
+          "depth": 2,
+          "id": "unique-identifiers",
+          "text": "Unique Identifiers"
+        }
+      ],
+      "content_sha256": "3f2b842d3e0d8d819548178164b491c045162c7afbde9f7da7fd9d8f478ff261"
+    }
+  },
+  "help": {
+    "send": {
+      "path": "help/max/send.maxhelp",
+      "bytes": 24105,
+      "sha256": "efd288bc442ab216667976f642aaec57fe0250932546c873395eb6dcfb83936f",
+      "bus_boxes": [
+        {
+          "box_path": [
+            "obj-2",
+            "obj-20"
+          ],
+          "class": "receive",
+          "argument_count": 0,
+          "creation_sha256": "95100519be0342216c9c23348de6ab31630e6bd1c5c0b5b95e03f15c6b52a00b",
+          "numinlets": 1,
+          "numoutlets": 1
+        },
+        {
+          "box_path": [
+            "obj-2",
+            "obj-29"
+          ],
+          "class": "r",
+          "argument_count": 1,
+          "creation_sha256": "19f45bc4c49ffab5cb524f517c2f81180c4edc1bf6d5cb5f02ef8bf6daa8db52",
+          "numinlets": 0,
+          "numoutlets": 1
+        },
+        {
+          "box_path": [
+            "obj-2",
+            "obj-33"
+          ],
+          "class": "s",
+          "argument_count": 1,
+          "creation_sha256": "5b36a9650433b295eef87a6f60975e7742ff337a6200e79825ee8261bc36076c",
+          "numinlets": 1,
+          "numoutlets": 0
+        },
+        {
+          "box_path": [
+            "obj-2",
+            "obj-25"
+          ],
+          "class": "send",
+          "argument_count": 1,
+          "creation_sha256": "1091ab717cd1a38489928e8a14bd7cf9f4582e721f0398cc864c3e068539c0f2",
+          "numinlets": 1,
+          "numoutlets": 0
+        },
+        {
+          "box_path": [
+            "obj-2",
+            "obj-26"
+          ],
+          "class": "receive",
+          "argument_count": 1,
+          "creation_sha256": "8125f0ab24fdb71965f8a4287ca255787568e134bc989f30a835f7775f74e81d",
+          "numinlets": 0,
+          "numoutlets": 1
+        }
+      ]
+    },
+    "receive": {
+      "path": "help/max/receive.maxhelp",
+      "bytes": 23510,
+      "sha256": "f9dd54aa707d9436eb761e46586c3acba03e8975db499ad4228d6e99b847162d",
+      "bus_boxes": [
+        {
+          "box_path": [
+            "obj-2",
+            "obj-20"
+          ],
+          "class": "receive",
+          "argument_count": 0,
+          "creation_sha256": "95100519be0342216c9c23348de6ab31630e6bd1c5c0b5b95e03f15c6b52a00b",
+          "numinlets": 1,
+          "numoutlets": 1
+        },
+        {
+          "box_path": [
+            "obj-2",
+            "obj-29"
+          ],
+          "class": "r",
+          "argument_count": 1,
+          "creation_sha256": "19f45bc4c49ffab5cb524f517c2f81180c4edc1bf6d5cb5f02ef8bf6daa8db52",
+          "numinlets": 0,
+          "numoutlets": 1
+        },
+        {
+          "box_path": [
+            "obj-2",
+            "obj-33"
+          ],
+          "class": "s",
+          "argument_count": 1,
+          "creation_sha256": "5b36a9650433b295eef87a6f60975e7742ff337a6200e79825ee8261bc36076c",
+          "numinlets": 1,
+          "numoutlets": 0
+        },
+        {
+          "box_path": [
+            "obj-2",
+            "obj-25"
+          ],
+          "class": "send",
+          "argument_count": 1,
+          "creation_sha256": "1091ab717cd1a38489928e8a14bd7cf9f4582e721f0398cc864c3e068539c0f2",
+          "numinlets": 1,
+          "numoutlets": 0
+        },
+        {
+          "box_path": [
+            "obj-2",
+            "obj-26"
+          ],
+          "class": "receive",
+          "argument_count": 1,
+          "creation_sha256": "8125f0ab24fdb71965f8a4287ca255787568e134bc989f30a835f7775f74e81d",
+          "numinlets": 0,
+          "numoutlets": 1
+        }
+      ]
+    }
+  }
+}

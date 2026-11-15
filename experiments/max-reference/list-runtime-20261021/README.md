@@ -43,6 +43,13 @@ effect using supported named-message feedback; that test is not counted among
 the 714 replay cases. Other feedback, nested replacement and Max graph cycles
 remain outside this evidence.
 
+The November 15 checkpoint retains six pre-existing local raw captures whose
+only differences from the prior Git versions are `wall_ms` timestamps. All
+2,048 event rows match when that field is excluded. Normalized score source
+hashes, the fresh 714-case native replay report, and the bundle manifest are
+rebound to those retained bytes. This checkpoint did not launch Max or change
+any expected output, and does not establish a new timing observation.
+
 ## Observed Decisions
 
 - Bare `prepend` preserves the input's scalar/list/selector identity. `prepend

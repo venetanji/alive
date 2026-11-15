@@ -1,0 +1,2717 @@
+{
+  "version": 1,
+  "date": "2026-10-22",
+  "evidence_scope": "bounded private reads of 3 installed help roots, 3 fixed XML pages and 4 known helper files; static code reading only",
+  "identity_files": [
+    {
+      "route": "help/max/times.maxhelp",
+      "bytes": 22249,
+      "sha256": "1eea3861a1605453fb3ed4daa4660f71e175fb2cf16ce4c4098cb53c5b94d54b",
+      "contained": true,
+      "regular_nonsymlink": true,
+      "matches": true
+    },
+    {
+      "route": "help/max/plus.maxhelp",
+      "bytes": 22248,
+      "sha256": "d1443c5af7ba8874c7b1d237e3d22bbe518970ad8ae85a09ec8f10494d084895",
+      "contained": true,
+      "regular_nonsymlink": true,
+      "matches": true
+    },
+    {
+      "route": "help/max/minus.maxhelp",
+      "bytes": 22246,
+      "sha256": "7968c6cf7d348b39d8fb8044c42977bc2b71fe55c4c7db8542150e79e6a1a0b0",
+      "contained": true,
+      "regular_nonsymlink": true,
+      "matches": true
+    },
+    {
+      "route": "docs/refpages/max-ref/times.maxref.xml",
+      "bytes": 3964,
+      "sha256": "85baf43d8613f3da7fa70ff326005e0fdd07d049e0b0c2e2a7e0bf7c1623253e",
+      "contained": true,
+      "regular_nonsymlink": true,
+      "matches": true
+    },
+    {
+      "route": "docs/refpages/max-ref/plus.maxref.xml",
+      "bytes": 4393,
+      "sha256": "441f02ffe58bbc571e594398a6495430affc45240cdde79feecbadc769f91002",
+      "contained": true,
+      "regular_nonsymlink": true,
+      "matches": true
+    },
+    {
+      "route": "docs/refpages/max-ref/minus.maxref.xml",
+      "bytes": 3960,
+      "sha256": "1cace7ba26cec674dec28196c28c0fd8063b4a8e8bdfd712fd12b64ec8675bcc",
+      "contained": true,
+      "regular_nonsymlink": true,
+      "matches": true
+    },
+    {
+      "route": "help/resources/helpstarter.js",
+      "bytes": 1591,
+      "sha256": "a72853ae6e4593e9ed183e41a59f40e0454162c04ca8a9185648332baf8eeac8",
+      "contained": true,
+      "regular_nonsymlink": true,
+      "matches": true
+    },
+    {
+      "route": "help/resources/helpname.js",
+      "bytes": 905,
+      "sha256": "49d1091a240f0a2926609462bd82cc7449527a2aadfd748238a5c593aedd12aa",
+      "contained": true,
+      "regular_nonsymlink": true,
+      "matches": true
+    },
+    {
+      "route": "help/resources/helpdetails.js",
+      "bytes": 4199,
+      "sha256": "31899d95bdc2dfcb45b1e0a4922a387351131479520992d15c225a594769aea1",
+      "contained": true,
+      "regular_nonsymlink": true,
+      "matches": true
+    },
+    {
+      "route": "help/resources/helpargs.js",
+      "bytes": 3623,
+      "sha256": "04cce1cb44b358680d9c6d3ef19873fa5ccbb192614905dc909057cf22805469",
+      "contained": true,
+      "regular_nonsymlink": true,
+      "matches": true
+    }
+  ],
+  "all_tuples_match": true,
+  "second_identity_read_unchanged": true,
+  "baseline_archive_hashes_verified": {
+    "apps/ultra/ui/canvas-help-shell.mjs": "580714cbfb1ba6b8437182eb5120dd7d68dcd3b0e4cc310ab14a801cf5899218",
+    "apps/ultra/ui/canvas-max-import.mjs": "91fae525f068044ab8e2796edc6659a3ca606fb881d2d32aa66f00dea01fc615",
+    "apps/ultra/ui/canvas-help-import.test.mjs": "7e40bafa1c17c9661916e8e84fb815105c109b417698fdd0edb24a241535412c",
+    "apps/ultra/ui/canvas-help-shell.test.mjs": "0f1e5340b250837e3709fd66bbb9f8377739b7a85ffd532174bf3f63383e8932",
+    "apps/ultra/src-tauri/src/help_reference.rs": "01aa5b04a6a0eece70f79f257f8ee9b8b26473208a1cfd3d75274d1c8aadb802",
+    "apps/ultra/src-tauri/src/canvas_hierarchy.rs": "3899cb878396005b5947dc4494e6a2c18802c045fcbaca02444318325f23dcc5",
+    "apps/ultra/src-tauri/src/canvas_tests.rs": "b52142566a31e4654df9ae7912d4fa79dec2d656a5946da4010498dad1e19c1a",
+    "apps/ultra/tests/fixtures/help-shell-schema.json": "7e1b88ed2faa5453e785dbbe6fa0bbfd67e2372de43f05386cb76b2ceb155789"
+  },
+  "roots": [
+    {
+      "safe_page": "times",
+      "source_sha256": "1eea3861a1605453fb3ed4daa4660f71e175fb2cf16ce4c4098cb53c5b94d54b",
+      "scope_count": 3,
+      "box_count": 20,
+      "executable_count": 10,
+      "comment_count": 4,
+      "structural_count": 2,
+      "helper_count": 4,
+      "cable_count": 8,
+      "class_counts": {
+        "button": 1,
+        "comment": 4,
+        "flonum": 3,
+        "jsui": 3,
+        "newobj": 5,
+        "number": 4
+      },
+      "root_boxes": 4,
+      "root_cables": 0,
+      "basic_scope": "root/obj-4",
+      "basic_boxes": 16,
+      "basic_cables": 8,
+      "question_scope": "root/obj-1",
+      "question_boxes": 0,
+      "question_cables": 0,
+      "named_tab_anchors_match": true,
+      "role_routes_match": true,
+      "additional_scripts": 0,
+      "helpers": [
+        {
+          "role": "starter",
+          "anchor": "root/obj-3",
+          "attributes_match": true,
+          "ports_match": true,
+          "single_string_argument": true,
+          "argument_sha256": "684888c0ebb17f374298b65ee2807526c066094c701bcc7ebbe1c1095f494fc1",
+          "argument_matches": true,
+          "incident_saved_cables": 0,
+          "creation_text_sha256": "0ca81c69553c5299b7dc137769cb0887e0f1dc26c73bfe08c0e04891d8a99d02",
+          "creation_text_matches": true
+        },
+        {
+          "role": "name",
+          "anchor": "root/obj-6",
+          "attributes_match": true,
+          "ports_match": true,
+          "single_string_argument": true,
+          "argument_sha256": "684888c0ebb17f374298b65ee2807526c066094c701bcc7ebbe1c1095f494fc1",
+          "argument_matches": true,
+          "incident_saved_cables": 0
+        },
+        {
+          "role": "details",
+          "anchor": "root/obj-4/obj-2",
+          "attributes_match": true,
+          "ports_match": true,
+          "single_string_argument": true,
+          "argument_sha256": "684888c0ebb17f374298b65ee2807526c066094c701bcc7ebbe1c1095f494fc1",
+          "argument_matches": true,
+          "incident_saved_cables": 0
+        },
+        {
+          "role": "arguments",
+          "anchor": "root/obj-4/obj-5",
+          "attributes_match": true,
+          "ports_match": true,
+          "single_string_argument": true,
+          "argument_sha256": "684888c0ebb17f374298b65ee2807526c066094c701bcc7ebbe1c1095f494fc1",
+          "argument_matches": true,
+          "incident_saved_cables": 0
+        }
+      ],
+      "operators": [
+        {
+          "role": "integer",
+          "anchor": "root/obj-4/obj-26",
+          "creation_text_sha256": "64b5eb5de415bf479817dc8f26c6e8b663360ef0b51213a4e373e83451586c83",
+          "matches": true
+        },
+        {
+          "role": "float",
+          "anchor": "root/obj-4/obj-10",
+          "creation_text_sha256": "d9b9f4eb4114a78bacfa73eeced5fee6a87084f115f6a8874ce72735b49ef02f",
+          "matches": true
+        }
+      ],
+      "all_flonums_format_6": true,
+      "saved_numeric_bounds_absent": true,
+      "xml_root_tag": "c74object",
+      "xml_identity_matches": true,
+      "xml_identity": "*",
+      "baseline_unrecognized": {
+        "unsupported_helpers": 4,
+        "expected_imported_boxes": 16,
+        "expected_imported_edges": 8,
+        "expected_executable_nodes": 10,
+        "warning_projection": {
+          "method": "static archived-importer projection corrected against parent production diagnostic metadata: comment saved inlet count 1 versus native 0; this evidence worker did not execute production importer",
+          "warning_count": 132,
+          "by_code": {
+            "appearance-gap": 80,
+            "port-shape": 4,
+            "semantic-gap": 48
+          },
+          "by_kind_attribute": [
+            {
+              "code": "appearance-gap",
+              "kind": "box",
+              "attribute": "fontname",
+              "count": 15
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "box",
+              "attribute": "linecount",
+              "count": 1
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "box",
+              "attribute": "triscale",
+              "count": 4
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "assistshowspatchername",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "bglocked",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "boxanimatetime",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "default_fontface",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "default_fontname",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "default_fontsize",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "devicewidth",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "enablehscroll",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "enablevscroll",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "gridonopen",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "gridsize",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "gridsnaponopen",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "openinpresentation",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "showontab",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "statusbarvisible",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "style",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "subpatcher_template",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "tallnewobj",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "toolbars_unpinned_last_save",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "toolbarvisible",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "arithmetic-range",
+              "attribute": null,
+              "count": 2
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "box",
+              "attribute": "format",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "box",
+              "attribute": "saved_object_attributes",
+              "count": 2
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "autosave",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "bottomtoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "cluebar",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "dependency_cache",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "description",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "digest",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "lefttoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "objectsnaponopen",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "originid",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscprefix",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscprefixmode",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscqueryenable",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscreceivemode",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscreceiveudpport",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscsendmode",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscsendudpaddr",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscsendudpport",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "righttoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "showrootpatcherontab",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "tags",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "toptoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "attribute": "numinlets",
+              "count": 4
+            }
+          ],
+          "invalid_style_anchors": [],
+          "port_mismatch_anchors": [
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-4/obj-12",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-4/obj-11",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-4/obj-43",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-4/obj-44",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            }
+          ],
+          "previous_incorrect_projection": {
+            "warning_count": 128,
+            "by_code": {
+              "appearance-gap": 80,
+              "semantic-gap": 48
+            },
+            "port_mismatch_count": 0
+          }
+        }
+      },
+      "recognized_projection": {
+        "expected_imported_boxes": 20,
+        "expected_imported_edges": 8,
+        "expected_executable_nodes": 10,
+        "warning_projection": {
+          "method": "static archived-importer projection corrected against parent production diagnostic metadata: comment saved inlet count 1 versus native 0; this evidence worker did not execute production importer",
+          "warning_count": 133,
+          "by_code": {
+            "appearance-gap": 81,
+            "port-shape": 4,
+            "semantic-gap": 48
+          },
+          "by_kind_attribute": [
+            {
+              "code": "appearance-gap",
+              "kind": "box",
+              "attribute": "fontname",
+              "count": 16
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "box",
+              "attribute": "linecount",
+              "count": 1
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "box",
+              "attribute": "triscale",
+              "count": 4
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "assistshowspatchername",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "bglocked",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "boxanimatetime",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "default_fontface",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "default_fontname",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "default_fontsize",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "devicewidth",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "enablehscroll",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "enablevscroll",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "gridonopen",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "gridsize",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "gridsnaponopen",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "openinpresentation",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "showontab",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "statusbarvisible",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "style",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "subpatcher_template",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "tallnewobj",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "toolbars_unpinned_last_save",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "toolbarvisible",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "arithmetic-range",
+              "attribute": null,
+              "count": 2
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "box",
+              "attribute": "format",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "box",
+              "attribute": "saved_object_attributes",
+              "count": 2
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "autosave",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "bottomtoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "cluebar",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "dependency_cache",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "description",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "digest",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "lefttoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "objectsnaponopen",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "originid",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscprefix",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscprefixmode",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscqueryenable",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscreceivemode",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscreceiveudpport",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscsendmode",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscsendudpaddr",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscsendudpport",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "righttoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "showrootpatcherontab",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "tags",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "toptoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "attribute": "numinlets",
+              "count": 4
+            }
+          ],
+          "invalid_style_anchors": [],
+          "port_mismatch_anchors": [
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-4/obj-12",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-4/obj-11",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-4/obj-43",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-4/obj-44",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            }
+          ],
+          "previous_incorrect_projection": {
+            "warning_count": 129,
+            "by_code": {
+              "appearance-gap": 81,
+              "semantic-gap": 48
+            },
+            "port_mismatch_count": 0
+          }
+        }
+      },
+      "production_import_observation": {
+        "metadata_path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-help-admission-001/times/import.json",
+        "metadata_sha256": "b5ae1a7792fe18bdf166a3e7e2f659505ffdfdde0fe74bcee506f7479870c285",
+        "source_sha256_matches": true,
+        "adapter": "max-help-arithmetic-three-v1",
+        "mapped_source_anchors": 20,
+        "stats": {
+          "sourceBoxes": 20,
+          "sourceEdges": 8,
+          "importedBoxes": 20,
+          "importedEdges": 8,
+          "omittedBoxes": 0,
+          "omittedEdges": 0,
+          "decorations": 0
+        },
+        "complete": false,
+        "diagnostic_count": 137,
+        "by_code": {
+          "appearance-gap": 81,
+          "help-helper": 4,
+          "port-shape": 4,
+          "semantic-gap": 48
+        },
+        "by_severity": {
+          "info": 4,
+          "warning": 133
+        },
+        "comment_port_warnings": [
+          {
+            "anchor": "root/obj-4/obj-12",
+            "source_class": "comment",
+            "attribute": "numinlets",
+            "saved_count": 1,
+            "native_count": 0,
+            "helper": false
+          },
+          {
+            "anchor": "root/obj-4/obj-11",
+            "source_class": "comment",
+            "attribute": "numinlets",
+            "saved_count": 1,
+            "native_count": 0,
+            "helper": false
+          },
+          {
+            "anchor": "root/obj-4/obj-43",
+            "source_class": "comment",
+            "attribute": "numinlets",
+            "saved_count": 1,
+            "native_count": 0,
+            "helper": false
+          },
+          {
+            "anchor": "root/obj-4/obj-44",
+            "source_class": "comment",
+            "attribute": "numinlets",
+            "saved_count": 1,
+            "native_count": 0,
+            "helper": false
+          }
+        ]
+      }
+    },
+    {
+      "safe_page": "plus",
+      "source_sha256": "d1443c5af7ba8874c7b1d237e3d22bbe518970ad8ae85a09ec8f10494d084895",
+      "scope_count": 3,
+      "box_count": 20,
+      "executable_count": 10,
+      "comment_count": 4,
+      "structural_count": 2,
+      "helper_count": 4,
+      "cable_count": 8,
+      "class_counts": {
+        "button": 1,
+        "comment": 4,
+        "flonum": 3,
+        "jsui": 3,
+        "newobj": 5,
+        "number": 4
+      },
+      "root_boxes": 4,
+      "root_cables": 0,
+      "basic_scope": "root/obj-2",
+      "basic_boxes": 16,
+      "basic_cables": 8,
+      "question_scope": "root/obj-3",
+      "question_boxes": 0,
+      "question_cables": 0,
+      "named_tab_anchors_match": true,
+      "role_routes_match": true,
+      "additional_scripts": 0,
+      "helpers": [
+        {
+          "role": "starter",
+          "anchor": "root/obj-1",
+          "attributes_match": true,
+          "ports_match": true,
+          "single_string_argument": true,
+          "argument_sha256": "a318c24216defe206feeb73ef5be00033fa9c4a74d0b967f6532a26ca5906d3b",
+          "argument_matches": true,
+          "incident_saved_cables": 0,
+          "creation_text_sha256": "e86f190fbc376badcc5d7b14a552d4e84fad436e0789bb2c7cc221fa38bf9390",
+          "creation_text_matches": true
+        },
+        {
+          "role": "name",
+          "anchor": "root/obj-4",
+          "attributes_match": true,
+          "ports_match": true,
+          "single_string_argument": true,
+          "argument_sha256": "a318c24216defe206feeb73ef5be00033fa9c4a74d0b967f6532a26ca5906d3b",
+          "argument_matches": true,
+          "incident_saved_cables": 0
+        },
+        {
+          "role": "details",
+          "anchor": "root/obj-2/obj-2",
+          "attributes_match": true,
+          "ports_match": true,
+          "single_string_argument": true,
+          "argument_sha256": "a318c24216defe206feeb73ef5be00033fa9c4a74d0b967f6532a26ca5906d3b",
+          "argument_matches": true,
+          "incident_saved_cables": 0
+        },
+        {
+          "role": "arguments",
+          "anchor": "root/obj-2/obj-4",
+          "attributes_match": true,
+          "ports_match": true,
+          "single_string_argument": true,
+          "argument_sha256": "383ef36928344f56ffe8fe23ceed2ad8c0db8ec222c5f56c47163747dc738a0e",
+          "argument_matches": true,
+          "incident_saved_cables": 0
+        }
+      ],
+      "operators": [
+        {
+          "role": "integer",
+          "anchor": "root/obj-2/obj-26",
+          "creation_text_sha256": "946eb99b2d46c8d1b5b684f81a8d51459e44860f734fd0691d925b238886c236",
+          "matches": true
+        },
+        {
+          "role": "float",
+          "anchor": "root/obj-2/obj-10",
+          "creation_text_sha256": "6e21ff328a68f4b336f90954873c129127e2f379bccdffda94f292f26758ebb5",
+          "matches": true
+        }
+      ],
+      "all_flonums_format_6": true,
+      "saved_numeric_bounds_absent": true,
+      "xml_root_tag": "c74object",
+      "xml_identity_matches": true,
+      "xml_identity": "+",
+      "baseline_unrecognized": {
+        "unsupported_helpers": 4,
+        "expected_imported_boxes": 16,
+        "expected_imported_edges": 8,
+        "expected_executable_nodes": 10,
+        "warning_projection": {
+          "method": "static archived-importer projection corrected against parent production diagnostic metadata: comment saved inlet count 1 versus native 0; this evidence worker did not execute production importer",
+          "warning_count": 132,
+          "by_code": {
+            "appearance-gap": 80,
+            "port-shape": 4,
+            "semantic-gap": 48
+          },
+          "by_kind_attribute": [
+            {
+              "code": "appearance-gap",
+              "kind": "box",
+              "attribute": "fontname",
+              "count": 15
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "box",
+              "attribute": "linecount",
+              "count": 1
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "box",
+              "attribute": "triscale",
+              "count": 4
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "assistshowspatchername",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "bglocked",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "boxanimatetime",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "default_fontface",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "default_fontname",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "default_fontsize",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "devicewidth",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "enablehscroll",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "enablevscroll",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "gridonopen",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "gridsize",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "gridsnaponopen",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "openinpresentation",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "showontab",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "statusbarvisible",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "style",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "subpatcher_template",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "tallnewobj",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "toolbars_unpinned_last_save",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "toolbarvisible",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "arithmetic-range",
+              "attribute": null,
+              "count": 2
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "box",
+              "attribute": "format",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "box",
+              "attribute": "saved_object_attributes",
+              "count": 2
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "autosave",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "bottomtoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "cluebar",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "dependency_cache",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "description",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "digest",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "lefttoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "objectsnaponopen",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "originid",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscprefix",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscprefixmode",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscqueryenable",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscreceivemode",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscreceiveudpport",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscsendmode",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscsendudpaddr",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscsendudpport",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "righttoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "showrootpatcherontab",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "tags",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "toptoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "attribute": "numinlets",
+              "count": 4
+            }
+          ],
+          "invalid_style_anchors": [],
+          "port_mismatch_anchors": [
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-2/obj-12",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-2/obj-11",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-2/obj-43",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-2/obj-44",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            }
+          ],
+          "previous_incorrect_projection": {
+            "warning_count": 128,
+            "by_code": {
+              "appearance-gap": 80,
+              "semantic-gap": 48
+            },
+            "port_mismatch_count": 0
+          }
+        }
+      },
+      "recognized_projection": {
+        "expected_imported_boxes": 20,
+        "expected_imported_edges": 8,
+        "expected_executable_nodes": 10,
+        "warning_projection": {
+          "method": "static archived-importer projection corrected against parent production diagnostic metadata: comment saved inlet count 1 versus native 0; this evidence worker did not execute production importer",
+          "warning_count": 133,
+          "by_code": {
+            "appearance-gap": 81,
+            "port-shape": 4,
+            "semantic-gap": 48
+          },
+          "by_kind_attribute": [
+            {
+              "code": "appearance-gap",
+              "kind": "box",
+              "attribute": "fontname",
+              "count": 16
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "box",
+              "attribute": "linecount",
+              "count": 1
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "box",
+              "attribute": "triscale",
+              "count": 4
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "assistshowspatchername",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "bglocked",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "boxanimatetime",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "default_fontface",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "default_fontname",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "default_fontsize",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "devicewidth",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "enablehscroll",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "enablevscroll",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "gridonopen",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "gridsize",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "gridsnaponopen",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "openinpresentation",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "showontab",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "statusbarvisible",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "style",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "subpatcher_template",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "tallnewobj",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "toolbars_unpinned_last_save",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "toolbarvisible",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "arithmetic-range",
+              "attribute": null,
+              "count": 2
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "box",
+              "attribute": "format",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "box",
+              "attribute": "saved_object_attributes",
+              "count": 2
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "autosave",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "bottomtoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "cluebar",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "dependency_cache",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "description",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "digest",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "lefttoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "objectsnaponopen",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "originid",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscprefix",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscprefixmode",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscqueryenable",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscreceivemode",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscreceiveudpport",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscsendmode",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscsendudpaddr",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscsendudpport",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "righttoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "showrootpatcherontab",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "tags",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "toptoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "attribute": "numinlets",
+              "count": 4
+            }
+          ],
+          "invalid_style_anchors": [],
+          "port_mismatch_anchors": [
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-2/obj-12",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-2/obj-11",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-2/obj-43",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-2/obj-44",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            }
+          ],
+          "previous_incorrect_projection": {
+            "warning_count": 129,
+            "by_code": {
+              "appearance-gap": 81,
+              "semantic-gap": 48
+            },
+            "port_mismatch_count": 0
+          }
+        }
+      },
+      "production_import_observation": {
+        "metadata_path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-help-admission-001/plus/import.json",
+        "metadata_sha256": "cbaea7c6fdffbc70480540ca79ab161281bb44f676cdc4bdf4bce993b7504cea",
+        "source_sha256_matches": true,
+        "adapter": "max-help-arithmetic-three-v1",
+        "mapped_source_anchors": 20,
+        "stats": {
+          "sourceBoxes": 20,
+          "sourceEdges": 8,
+          "importedBoxes": 20,
+          "importedEdges": 8,
+          "omittedBoxes": 0,
+          "omittedEdges": 0,
+          "decorations": 0
+        },
+        "complete": false,
+        "diagnostic_count": 137,
+        "by_code": {
+          "appearance-gap": 81,
+          "help-helper": 4,
+          "port-shape": 4,
+          "semantic-gap": 48
+        },
+        "by_severity": {
+          "info": 4,
+          "warning": 133
+        },
+        "comment_port_warnings": [
+          {
+            "anchor": "root/obj-2/obj-12",
+            "source_class": "comment",
+            "attribute": "numinlets",
+            "saved_count": 1,
+            "native_count": 0,
+            "helper": false
+          },
+          {
+            "anchor": "root/obj-2/obj-11",
+            "source_class": "comment",
+            "attribute": "numinlets",
+            "saved_count": 1,
+            "native_count": 0,
+            "helper": false
+          },
+          {
+            "anchor": "root/obj-2/obj-43",
+            "source_class": "comment",
+            "attribute": "numinlets",
+            "saved_count": 1,
+            "native_count": 0,
+            "helper": false
+          },
+          {
+            "anchor": "root/obj-2/obj-44",
+            "source_class": "comment",
+            "attribute": "numinlets",
+            "saved_count": 1,
+            "native_count": 0,
+            "helper": false
+          }
+        ]
+      }
+    },
+    {
+      "safe_page": "minus",
+      "source_sha256": "7968c6cf7d348b39d8fb8044c42977bc2b71fe55c4c7db8542150e79e6a1a0b0",
+      "scope_count": 3,
+      "box_count": 20,
+      "executable_count": 10,
+      "comment_count": 4,
+      "structural_count": 2,
+      "helper_count": 4,
+      "cable_count": 8,
+      "class_counts": {
+        "button": 1,
+        "comment": 4,
+        "flonum": 3,
+        "jsui": 3,
+        "newobj": 5,
+        "number": 4
+      },
+      "root_boxes": 4,
+      "root_cables": 0,
+      "basic_scope": "root/obj-2",
+      "basic_boxes": 16,
+      "basic_cables": 8,
+      "question_scope": "root/obj-3",
+      "question_boxes": 0,
+      "question_cables": 0,
+      "named_tab_anchors_match": true,
+      "role_routes_match": true,
+      "additional_scripts": 0,
+      "helpers": [
+        {
+          "role": "starter",
+          "anchor": "root/obj-1",
+          "attributes_match": true,
+          "ports_match": true,
+          "single_string_argument": true,
+          "argument_sha256": "3973e022e93220f9212c18d0d0c543ae7c309e46640da93a4a0314de999f5112",
+          "argument_matches": true,
+          "incident_saved_cables": 0,
+          "creation_text_sha256": "490326e775bc3adc514c502064cb4b937c4122d2450e8b62c85f583077795a37",
+          "creation_text_matches": true
+        },
+        {
+          "role": "name",
+          "anchor": "root/obj-4",
+          "attributes_match": true,
+          "ports_match": true,
+          "single_string_argument": true,
+          "argument_sha256": "3973e022e93220f9212c18d0d0c543ae7c309e46640da93a4a0314de999f5112",
+          "argument_matches": true,
+          "incident_saved_cables": 0
+        },
+        {
+          "role": "details",
+          "anchor": "root/obj-2/obj-2",
+          "attributes_match": true,
+          "ports_match": true,
+          "single_string_argument": true,
+          "argument_sha256": "3973e022e93220f9212c18d0d0c543ae7c309e46640da93a4a0314de999f5112",
+          "argument_matches": true,
+          "incident_saved_cables": 0
+        },
+        {
+          "role": "arguments",
+          "anchor": "root/obj-2/obj-4",
+          "attributes_match": true,
+          "ports_match": true,
+          "single_string_argument": true,
+          "argument_sha256": "129fa7713adba71e12dca1d217e4236dad4fd946a80ea339180c243e1c7888da",
+          "argument_matches": true,
+          "incident_saved_cables": 0
+        }
+      ],
+      "operators": [
+        {
+          "role": "integer",
+          "anchor": "root/obj-2/obj-26",
+          "creation_text_sha256": "4f5450721ae52377bbd0fd626ee048bde869ec3b1b37f2d3c17fe47dd9aeb829",
+          "matches": true
+        },
+        {
+          "role": "float",
+          "anchor": "root/obj-2/obj-10",
+          "creation_text_sha256": "726777f34732977bd5ab08b0fc23ca2e1f591d9f8c17ce75670e736153cc086b",
+          "matches": true
+        }
+      ],
+      "all_flonums_format_6": true,
+      "saved_numeric_bounds_absent": true,
+      "xml_root_tag": "c74object",
+      "xml_identity_matches": true,
+      "xml_identity": "-",
+      "baseline_unrecognized": {
+        "unsupported_helpers": 4,
+        "expected_imported_boxes": 16,
+        "expected_imported_edges": 8,
+        "expected_executable_nodes": 10,
+        "warning_projection": {
+          "method": "static archived-importer projection corrected against parent production diagnostic metadata: comment saved inlet count 1 versus native 0; this evidence worker did not execute production importer",
+          "warning_count": 132,
+          "by_code": {
+            "appearance-gap": 80,
+            "port-shape": 4,
+            "semantic-gap": 48
+          },
+          "by_kind_attribute": [
+            {
+              "code": "appearance-gap",
+              "kind": "box",
+              "attribute": "fontname",
+              "count": 15
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "box",
+              "attribute": "linecount",
+              "count": 1
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "box",
+              "attribute": "triscale",
+              "count": 4
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "assistshowspatchername",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "bglocked",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "boxanimatetime",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "default_fontface",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "default_fontname",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "default_fontsize",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "devicewidth",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "enablehscroll",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "enablevscroll",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "gridonopen",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "gridsize",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "gridsnaponopen",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "openinpresentation",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "showontab",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "statusbarvisible",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "style",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "subpatcher_template",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "tallnewobj",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "toolbars_unpinned_last_save",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "toolbarvisible",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "arithmetic-range",
+              "attribute": null,
+              "count": 2
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "box",
+              "attribute": "format",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "box",
+              "attribute": "saved_object_attributes",
+              "count": 2
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "autosave",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "bottomtoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "cluebar",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "dependency_cache",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "description",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "digest",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "lefttoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "objectsnaponopen",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "originid",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscprefix",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscprefixmode",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscqueryenable",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscreceivemode",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscreceiveudpport",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscsendmode",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscsendudpaddr",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscsendudpport",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "righttoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "showrootpatcherontab",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "tags",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "toptoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "attribute": "numinlets",
+              "count": 4
+            }
+          ],
+          "invalid_style_anchors": [],
+          "port_mismatch_anchors": [
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-2/obj-12",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-2/obj-11",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-2/obj-43",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-2/obj-44",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            }
+          ],
+          "previous_incorrect_projection": {
+            "warning_count": 128,
+            "by_code": {
+              "appearance-gap": 80,
+              "semantic-gap": 48
+            },
+            "port_mismatch_count": 0
+          }
+        }
+      },
+      "recognized_projection": {
+        "expected_imported_boxes": 20,
+        "expected_imported_edges": 8,
+        "expected_executable_nodes": 10,
+        "warning_projection": {
+          "method": "static archived-importer projection corrected against parent production diagnostic metadata: comment saved inlet count 1 versus native 0; this evidence worker did not execute production importer",
+          "warning_count": 133,
+          "by_code": {
+            "appearance-gap": 81,
+            "port-shape": 4,
+            "semantic-gap": 48
+          },
+          "by_kind_attribute": [
+            {
+              "code": "appearance-gap",
+              "kind": "box",
+              "attribute": "fontname",
+              "count": 16
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "box",
+              "attribute": "linecount",
+              "count": 1
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "box",
+              "attribute": "triscale",
+              "count": 4
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "assistshowspatchername",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "bglocked",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "boxanimatetime",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "default_fontface",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "default_fontname",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "default_fontsize",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "devicewidth",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "enablehscroll",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "enablevscroll",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "gridonopen",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "gridsize",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "gridsnaponopen",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "openinpresentation",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "showontab",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "statusbarvisible",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "style",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "subpatcher_template",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "tallnewobj",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "toolbars_unpinned_last_save",
+              "count": 3
+            },
+            {
+              "code": "appearance-gap",
+              "kind": "patcher",
+              "attribute": "toolbarvisible",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "arithmetic-range",
+              "attribute": null,
+              "count": 2
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "box",
+              "attribute": "format",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "box",
+              "attribute": "saved_object_attributes",
+              "count": 2
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "autosave",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "bottomtoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "cluebar",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "dependency_cache",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "description",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "digest",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "lefttoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "objectsnaponopen",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "originid",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscprefix",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscprefixmode",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscqueryenable",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscreceivemode",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscreceiveudpport",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscsendmode",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscsendudpaddr",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "oscsendudpport",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "righttoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "showrootpatcherontab",
+              "count": 1
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "tags",
+              "count": 3
+            },
+            {
+              "code": "semantic-gap",
+              "kind": "patcher",
+              "attribute": "toptoolbarpinned",
+              "count": 3
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "attribute": "numinlets",
+              "count": 4
+            }
+          ],
+          "invalid_style_anchors": [],
+          "port_mismatch_anchors": [
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-2/obj-12",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-2/obj-11",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-2/obj-43",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            },
+            {
+              "code": "port-shape",
+              "kind": "ports",
+              "anchor": "root/obj-2/obj-44",
+              "source_class": "comment",
+              "attribute": "numinlets",
+              "saved_count": 1,
+              "native_count": 0,
+              "helper": false
+            }
+          ],
+          "previous_incorrect_projection": {
+            "warning_count": 129,
+            "by_code": {
+              "appearance-gap": 81,
+              "semantic-gap": 48
+            },
+            "port_mismatch_count": 0
+          }
+        }
+      },
+      "production_import_observation": {
+        "metadata_path": "/home/venetanji/.cache/alive-ultra-evidence/arithmetic-help-admission-001/minus/import.json",
+        "metadata_sha256": "9c039ef17bf178952983d84bc79449862db83d46248ccce5ec64ac02e9abc43c",
+        "source_sha256_matches": true,
+        "adapter": "max-help-arithmetic-three-v1",
+        "mapped_source_anchors": 20,
+        "stats": {
+          "sourceBoxes": 20,
+          "sourceEdges": 8,
+          "importedBoxes": 20,
+          "importedEdges": 8,
+          "omittedBoxes": 0,
+          "omittedEdges": 0,
+          "decorations": 0
+        },
+        "complete": false,
+        "diagnostic_count": 137,
+        "by_code": {
+          "appearance-gap": 81,
+          "help-helper": 4,
+          "port-shape": 4,
+          "semantic-gap": 48
+        },
+        "by_severity": {
+          "info": 4,
+          "warning": 133
+        },
+        "comment_port_warnings": [
+          {
+            "anchor": "root/obj-2/obj-12",
+            "source_class": "comment",
+            "attribute": "numinlets",
+            "saved_count": 1,
+            "native_count": 0,
+            "helper": false
+          },
+          {
+            "anchor": "root/obj-2/obj-11",
+            "source_class": "comment",
+            "attribute": "numinlets",
+            "saved_count": 1,
+            "native_count": 0,
+            "helper": false
+          },
+          {
+            "anchor": "root/obj-2/obj-43",
+            "source_class": "comment",
+            "attribute": "numinlets",
+            "saved_count": 1,
+            "native_count": 0,
+            "helper": false
+          },
+          {
+            "anchor": "root/obj-2/obj-44",
+            "source_class": "comment",
+            "attribute": "numinlets",
+            "saved_count": 1,
+            "native_count": 0,
+            "helper": false
+          }
+        ]
+      }
+    }
+  ],
+  "limitations": [
+    "No production importer, Max, application, browser, build, tests or capture launched for this evidence pass.",
+    "Static warning projections were corrected using parent production metadata; original incorrect projections remain recorded for audit. Production observations are limited to diagnostic and identity/count metadata.",
+    "Admission proves no runtime, visual, physical, discovery or saved-state qualification."
+  ],
+  "projection_correction": {
+    "date": "2026-10-22",
+    "trigger": "parent production import metadata contains four additional port-shape warnings per root",
+    "cause": "initial static checker incorrectly assumed native comments have one inlet; archived/current importer diagnoses comment port shapes, while helperRole skips diagnosePorts",
+    "affected_anchors": "each Basic scope: obj-12, obj-11, obj-43, obj-44",
+    "correct_counts_per_recognized_root": {
+      "warnings": 133,
+      "informational": 4,
+      "diagnostics": 137
+    },
+    "product_changes": false,
+    "suppression": false
+  }
+}

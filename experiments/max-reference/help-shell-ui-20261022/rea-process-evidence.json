@@ -1,0 +1,704 @@
+{
+  "evidence_id": "ev_5a6fcbd15082a7d3aff93ca7f40f7fa3ab612cbc0598ca8d397d5cbe2027cc77",
+  "subject": null,
+  "provider": {
+    "id": "rea-process",
+    "name": "REA process capture",
+    "version": "3"
+  },
+  "analysis_profile": null,
+  "predicate_type": "rea.process-capture",
+  "operation": "capture_process_scenario",
+  "parameters": {
+    "executable_name": "python3",
+    "argument_count": 1,
+    "event_count": 0,
+    "filesystem_observation_path_count": 0,
+    "normalization": {
+      "paths": false,
+      "pids": true,
+      "ports": true,
+      "time_bucket_ms": 10,
+      "patterns": []
+    }
+  },
+  "raw_result": null,
+  "normalized_result": {
+    "manifest": {
+      "rea_version": "6.4.0",
+      "provider_version": "3",
+      "platform": "linux",
+      "architecture": "x64",
+      "pty_backend": "node-pty",
+      "started_at": "2026-10-21T16:59:40.892Z",
+      "completed_at": "2026-10-21T17:01:21.224Z",
+      "scenario": {
+        "executable": "/usr/bin/python3",
+        "arguments": [
+          "experiments/max-reference/help-shell-ui-20261022/run-runtime.py"
+        ],
+        "working_directory": "/home/venetanji/Work/alive",
+        "environment": {},
+        "filesystem_observation_paths": [],
+        "terminal": {
+          "columns": 100,
+          "rows": 16,
+          "scrollback": 20
+        },
+        "events": [],
+        "timeout_ms": 120000,
+        "idle_timeout_ms": 110000,
+        "settle_ms": 100,
+        "limits": {
+          "output_bytes": 15000,
+          "files": 20,
+          "file_bytes": 100000,
+          "processes": 80,
+          "filesystem_depth": 1
+        },
+        "normalization": {
+          "paths": false,
+          "pids": true,
+          "ports": true,
+          "time_bucket_ms": 10,
+          "patterns": []
+        },
+        "finalization_ms": 3000,
+        "executable_sha256": "375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b"
+      },
+      "comparison_contract": {
+        "working_directory": "/home/venetanji/Work/alive",
+        "environment": {},
+        "ambient_environment": "unknown",
+        "filesystem_observation_paths": [],
+        "terminal": {
+          "columns": 100,
+          "rows": 16,
+          "scrollback": 20
+        },
+        "events": [],
+        "timeout_ms": 120000,
+        "idle_timeout_ms": 110000,
+        "settle_ms": 100,
+        "finalization_ms": 3000,
+        "limits": {
+          "output_bytes": 15000,
+          "files": 20,
+          "file_bytes": 100000,
+          "processes": 80,
+          "filesystem_depth": 1
+        },
+        "normalization": {
+          "paths": false,
+          "pids": true,
+          "ports": true,
+          "time_bucket_ms": 10,
+          "patterns": []
+        },
+        "port_normalization_version": "contextual-endpoints-v2",
+        "rendered_line_format": "trailing-spaces-trimmed-v1"
+      },
+      "full_scenario_sha256": "511a36d52f83cc9969bd2de5eeae099090b2b8c6d28cc51103cc4857dc3e91fd",
+      "comparison_contract_sha256": "8577e7c3e27f8f4f4958a60a3105af4efd44173d01a022792a1de4117fd6f7c0",
+      "selected_executable_sha256": "375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b",
+      "executable_sha256": "375532f83be620283ab780c14ca6bcc5907dc379d2b621de0c5d0a112cf5458b",
+      "executable_identity": {
+        "state": "path_metadata_unchanged",
+        "reason": null
+      },
+      "normalization_sha256": "5c58aa1aa890197f15f9c59ef755d01120e6e07f356fa1ef2f20787e63b6fa87"
+    },
+    "normalization": {
+      "paths": false,
+      "pids": true,
+      "ports": true,
+      "time_bucket_ms": 10,
+      "patterns": []
+    },
+    "frames": [
+      {
+        "sequence": 0,
+        "at_ms": 150,
+        "data": "{\"display\": \":0\", \"xvfb_pid\": 2506443, \"launcher_pid\": 2506459, \"prefix\": \"/home/venetanji/.cache/alive-max-append-shell-20261022-wine-disposable\", \"installed_help\": \"/home/venetanji/.cache/alive-max-append-shell-20261022-wine-disposable/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resources/help/max/append.maxhelp\"}\r\n"
+      },
+      {
+        "sequence": 1,
+        "at_ms": 14300,
+        "data": "{\"stage\": \"initial\", \"at_ms\": 14143}\r\n"
+      },
+      {
+        "sequence": 2,
+        "at_ms": 51440,
+        "data": "{\"stage\": \"question\", \"at_ms\": 51291}\r\n"
+      },
+      {
+        "sequence": 3,
+        "at_ms": 62360,
+        "data": "{\"stage\": \"basic-return\", \"at_ms\": 62203}\r\n"
+      },
+      {
+        "sequence": 4,
+        "at_ms": 100180,
+        "data": "{\"max_exit\": -9, \"stages\": [\"initial\", \"question\", \"basic-return\"]}\r\n"
+      }
+    ],
+    "rendered_frames": [
+      {
+        "sequence": 0,
+        "at_ms": 150,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 4,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"display\": \":0\", \"xvfb_pid\": 2506443, \"launcher_pid\": 2506459, \"prefix\": \"/home/venetanji/.cache/al",
+          "ive-max-append-shell-20261022-wine-disposable\", \"installed_help\": \"/home/venetanji/.cache/alive-max-",
+          "append-shell-20261022-wine-disposable/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resour",
+          "ces/help/max/append.maxhelp\"}",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"display\": \":0\", \"xvfb_pid\": 2506443, \"launcher_pid\": 2506459, \"prefix\": \"/home/venetanji/.cache/alive-max-append-shell-20261022-wine-disposable\", \"installed_help\": \"/home/venetanji/.cache/alive-max-append-shell-20261022-wine-disposable/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resources/help/max/append.maxhelp\"}\u001b[1B\u001b[29D"
+      },
+      {
+        "sequence": 1,
+        "at_ms": 14300,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 5,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"display\": \":0\", \"xvfb_pid\": 2506443, \"launcher_pid\": 2506459, \"prefix\": \"/home/venetanji/.cache/al",
+          "ive-max-append-shell-20261022-wine-disposable\", \"installed_help\": \"/home/venetanji/.cache/alive-max-",
+          "append-shell-20261022-wine-disposable/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resour",
+          "ces/help/max/append.maxhelp\"}",
+          "{\"stage\": \"initial\", \"at_ms\": 14143}",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"display\": \":0\", \"xvfb_pid\": 2506443, \"launcher_pid\": 2506459, \"prefix\": \"/home/venetanji/.cache/alive-max-append-shell-20261022-wine-disposable\", \"installed_help\": \"/home/venetanji/.cache/alive-max-append-shell-20261022-wine-disposable/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resources/help/max/append.maxhelp\"}\r\n{\"stage\": \"initial\", \"at_ms\": 14143}\u001b[1B\u001b[36D"
+      },
+      {
+        "sequence": 2,
+        "at_ms": 51440,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 6,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"display\": \":0\", \"xvfb_pid\": 2506443, \"launcher_pid\": 2506459, \"prefix\": \"/home/venetanji/.cache/al",
+          "ive-max-append-shell-20261022-wine-disposable\", \"installed_help\": \"/home/venetanji/.cache/alive-max-",
+          "append-shell-20261022-wine-disposable/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resour",
+          "ces/help/max/append.maxhelp\"}",
+          "{\"stage\": \"initial\", \"at_ms\": 14143}",
+          "{\"stage\": \"question\", \"at_ms\": 51291}",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"display\": \":0\", \"xvfb_pid\": 2506443, \"launcher_pid\": 2506459, \"prefix\": \"/home/venetanji/.cache/alive-max-append-shell-20261022-wine-disposable\", \"installed_help\": \"/home/venetanji/.cache/alive-max-append-shell-20261022-wine-disposable/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resources/help/max/append.maxhelp\"}\r\n{\"stage\": \"initial\", \"at_ms\": 14143}\r\n{\"stage\": \"question\", \"at_ms\": 51291}\u001b[1B\u001b[37D"
+      },
+      {
+        "sequence": 3,
+        "at_ms": 62360,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 7,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"display\": \":0\", \"xvfb_pid\": 2506443, \"launcher_pid\": 2506459, \"prefix\": \"/home/venetanji/.cache/al",
+          "ive-max-append-shell-20261022-wine-disposable\", \"installed_help\": \"/home/venetanji/.cache/alive-max-",
+          "append-shell-20261022-wine-disposable/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resour",
+          "ces/help/max/append.maxhelp\"}",
+          "{\"stage\": \"initial\", \"at_ms\": 14143}",
+          "{\"stage\": \"question\", \"at_ms\": 51291}",
+          "{\"stage\": \"basic-return\", \"at_ms\": 62203}",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"display\": \":0\", \"xvfb_pid\": 2506443, \"launcher_pid\": 2506459, \"prefix\": \"/home/venetanji/.cache/alive-max-append-shell-20261022-wine-disposable\", \"installed_help\": \"/home/venetanji/.cache/alive-max-append-shell-20261022-wine-disposable/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resources/help/max/append.maxhelp\"}\r\n{\"stage\": \"initial\", \"at_ms\": 14143}\r\n{\"stage\": \"question\", \"at_ms\": 51291}\r\n{\"stage\": \"basic-return\", \"at_ms\": 62203}\u001b[1B\u001b[41D"
+      },
+      {
+        "sequence": 4,
+        "at_ms": 100180,
+        "columns": 100,
+        "rows": 16,
+        "cursor_x": 0,
+        "cursor_y": 8,
+        "active_buffer": "normal",
+        "lines": [
+          "{\"display\": \":0\", \"xvfb_pid\": 2506443, \"launcher_pid\": 2506459, \"prefix\": \"/home/venetanji/.cache/al",
+          "ive-max-append-shell-20261022-wine-disposable\", \"installed_help\": \"/home/venetanji/.cache/alive-max-",
+          "append-shell-20261022-wine-disposable/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resour",
+          "ces/help/max/append.maxhelp\"}",
+          "{\"stage\": \"initial\", \"at_ms\": 14143}",
+          "{\"stage\": \"question\", \"at_ms\": 51291}",
+          "{\"stage\": \"basic-return\", \"at_ms\": 62203}",
+          "{\"max_exit\": -9, \"stages\": [\"initial\", \"question\", \"basic-return\"]}",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        ],
+        "serialized_state": "{\"display\": \":0\", \"xvfb_pid\": 2506443, \"launcher_pid\": 2506459, \"prefix\": \"/home/venetanji/.cache/alive-max-append-shell-20261022-wine-disposable\", \"installed_help\": \"/home/venetanji/.cache/alive-max-append-shell-20261022-wine-disposable/drive_c/ProgramData/Ableton/Live 12 Suite/Resources/Max/resources/help/max/append.maxhelp\"}\r\n{\"stage\": \"initial\", \"at_ms\": 14143}\r\n{\"stage\": \"question\", \"at_ms\": 51291}\r\n{\"stage\": \"basic-return\", \"at_ms\": 62203}\r\n{\"max_exit\": -9, \"stages\": [\"initial\", \"question\", \"basic-return\"]}\u001b[1B\u001b[67D"
+      }
+    ],
+    "interaction_events": [],
+    "exit": {
+      "code": 0,
+      "signal": 0,
+      "reason": "exited"
+    },
+    "settlement": {
+      "state": "quiesced",
+      "elapsed_ms": 108,
+      "cleanup_outcome": "not_required"
+    },
+    "process_samples": [
+      {
+        "at_ms": 10,
+        "pid": 1,
+        "parent_pid": 2,
+        "command": "/usr/bin/python3 experiments/max-reference/help-shell-ui-20261022/run-runtime.py",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 100,
+        "pid": 3,
+        "parent_pid": 1,
+        "command": "Xvfb -displayfd 1 -screen 0 1440x1000x24 -nolisten tcp",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 150,
+        "pid": 4,
+        "parent_pid": 1,
+        "command": "/home/venetanji/.local/opt/wine-d2d1-nspa-11.13/lib/wine/x86_64-unix/wine C:\\ProgramData\\Ableton\\Live 12 Suite\\Resources\\Max\\Max.exe C:\\ProgramData\\Ableton\\Live 12 Suite\\Resources\\Max\\resources\\help\\max\\append.maxhelp",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 1210,
+        "pid": 4,
+        "parent_pid": 1,
+        "command": "C:\\ProgramData\\Ableton\\Live 12 Suite\\Resources\\Max\\Max.exe C:\\ProgramData\\Ableton\\Live 12 Suite\\Resources\\Max\\resources\\help\\max\\append.maxhelp",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 7190,
+        "pid": 5,
+        "parent_pid": 4,
+        "command": "",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 7190,
+        "pid": 6,
+        "parent_pid": 5,
+        "command": "",
+        "process_group_id": 6,
+        "session_id": 6
+      },
+      {
+        "at_ms": 14150,
+        "pid": 7,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/help-shell-ui-20261022/results/initial.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 51330,
+        "pid": 8,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/help-shell-ui-20261022/results/question.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 62210,
+        "pid": 9,
+        "parent_pid": 1,
+        "command": "import -display :0 -window root /home/venetanji/Work/alive/experiments/max-reference/help-shell-ui-20261022/results/basic-return.png",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 100080,
+        "pid": 4,
+        "parent_pid": 1,
+        "command": "",
+        "process_group_id": 1,
+        "session_id": 1
+      },
+      {
+        "at_ms": 100180,
+        "pid": 3,
+        "parent_pid": 1,
+        "command": "",
+        "process_group_id": 1,
+        "session_id": 1
+      }
+    ],
+    "filesystem_checkpoints": [
+      {
+        "name": "before",
+        "at_ms": 0,
+        "files": [],
+        "effects": [],
+        "truncated": false
+      },
+      {
+        "name": "after_settlement",
+        "at_ms": 100332,
+        "files": [],
+        "effects": [],
+        "truncated": false
+      }
+    ],
+    "event_journal": [
+      {
+        "capture_order": 0,
+        "collection": "filesystem_checkpoints",
+        "index": 0
+      },
+      {
+        "capture_order": 1,
+        "collection": "process_samples",
+        "index": 0
+      },
+      {
+        "capture_order": 2,
+        "collection": "process_samples",
+        "index": 1
+      },
+      {
+        "capture_order": 3,
+        "collection": "frames",
+        "index": 0
+      },
+      {
+        "capture_order": 4,
+        "collection": "rendered_frames",
+        "index": 0
+      },
+      {
+        "capture_order": 5,
+        "collection": "process_samples",
+        "index": 2
+      },
+      {
+        "capture_order": 6,
+        "collection": "process_samples",
+        "index": 3
+      },
+      {
+        "capture_order": 7,
+        "collection": "process_samples",
+        "index": 4
+      },
+      {
+        "capture_order": 8,
+        "collection": "process_samples",
+        "index": 5
+      },
+      {
+        "capture_order": 9,
+        "collection": "process_samples",
+        "index": 6
+      },
+      {
+        "capture_order": 10,
+        "collection": "frames",
+        "index": 1
+      },
+      {
+        "capture_order": 11,
+        "collection": "rendered_frames",
+        "index": 1
+      },
+      {
+        "capture_order": 12,
+        "collection": "process_samples",
+        "index": 7
+      },
+      {
+        "capture_order": 13,
+        "collection": "frames",
+        "index": 2
+      },
+      {
+        "capture_order": 14,
+        "collection": "rendered_frames",
+        "index": 2
+      },
+      {
+        "capture_order": 15,
+        "collection": "process_samples",
+        "index": 8
+      },
+      {
+        "capture_order": 16,
+        "collection": "frames",
+        "index": 3
+      },
+      {
+        "capture_order": 17,
+        "collection": "rendered_frames",
+        "index": 3
+      },
+      {
+        "capture_order": 18,
+        "collection": "process_samples",
+        "index": 9
+      },
+      {
+        "capture_order": 19,
+        "collection": "frames",
+        "index": 4
+      },
+      {
+        "capture_order": 20,
+        "collection": "rendered_frames",
+        "index": 4
+      },
+      {
+        "capture_order": 21,
+        "collection": "process_samples",
+        "index": 10
+      },
+      {
+        "capture_order": 22,
+        "collection": "lifecycle",
+        "index": 0
+      },
+      {
+        "capture_order": 23,
+        "collection": "lifecycle",
+        "index": 1
+      },
+      {
+        "capture_order": 24,
+        "collection": "filesystem_checkpoints",
+        "index": 1
+      }
+    ],
+    "files_before": [],
+    "files_after": [],
+    "filesystem_effects": [],
+    "truncated": false,
+    "truncation_details": {
+      "raw_terminal": {
+        "budget_bytes": 15000,
+        "observed_bytes": 520,
+        "retained_bytes": 520,
+        "observed_frames": 5,
+        "retained_frames": 5
+      },
+      "rendered_terminal": {
+        "budget_bytes": 15000,
+        "observed_bytes": 4163,
+        "retained_bytes": 4163,
+        "observed_frames": 5,
+        "retained_frames": 5
+      },
+      "filesystem_before": {
+        "files_limit": 20,
+        "depth_limit": 1,
+        "enumeration_truncated": false,
+        "enumeration_reasons": [],
+        "hash_budget_bytes": 100000,
+        "hashed_bytes": 0,
+        "hash_omissions": []
+      },
+      "filesystem_after": {
+        "files_limit": 20,
+        "depth_limit": 1,
+        "enumeration_truncated": false,
+        "enumeration_reasons": [],
+        "hash_budget_bytes": 100000,
+        "hashed_bytes": 0,
+        "hash_omissions": []
+      },
+      "process": {
+        "sample_limit": 80,
+        "sampling_partial": false,
+        "retained_samples": 11,
+        "sample_limit_reached": false,
+        "sampling_failures": 0,
+        "first_sampling_failure": null,
+        "coverage": "sampled"
+      }
+    },
+    "limitations": [
+      "The executable digest is a prelaunch file sample; matching path metadata immediately after spawn does not prove an atomic operating-system image binding.",
+      "Process trees are sampled and may omit short-lived descendants.",
+      "Filesystem observations are before/after snapshots, not syscall traces.",
+      "Inherited host environment variables are not recorded and may affect results.",
+      "No filesystem observation paths were selected; filesystem effects remain unknown."
+    ],
+    "residual_unknowns": [
+      {
+        "scope": "process",
+        "reason": "Process trees are sampled and may omit short-lived descendants."
+      },
+      {
+        "scope": "process",
+        "reason": "The executable digest is a prelaunch file sample; operating-system image binding is not atomically observed."
+      },
+      {
+        "scope": "environment",
+        "reason": "Inherited host environment variables are not recorded."
+      },
+      {
+        "scope": "network",
+        "reason": "Network activity is not observed by this capture."
+      },
+      {
+        "scope": "filesystem",
+        "reason": "No filesystem observation paths were selected; filesystem effects remain unknown."
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 2507269 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/2507269/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 2507270 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/2507270/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 2508262 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/2508262/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 2508263 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/2508263/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 2512589 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/2512589/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 2512591 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/2512591/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 2512689 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/2512689/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 2512690 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/2512690/environ'"
+      },
+      {
+        "scope": "process",
+        "reason": "Ownership of unrelated process 2516261 could not be verified; it was left untouched: EACCES: permission denied, open '/proc/2516261/environ'"
+      }
+    ],
+    "cleanup": {
+      "owned_process_group": "verified",
+      "temporary_root": "removed",
+      "unverified_processes": [
+        {
+          "pid": 2507269,
+          "reason": "EACCES: permission denied, open '/proc/2507269/environ'"
+        },
+        {
+          "pid": 2507270,
+          "reason": "EACCES: permission denied, open '/proc/2507270/environ'"
+        },
+        {
+          "pid": 2508262,
+          "reason": "EACCES: permission denied, open '/proc/2508262/environ'"
+        },
+        {
+          "pid": 2508263,
+          "reason": "EACCES: permission denied, open '/proc/2508263/environ'"
+        },
+        {
+          "pid": 2512589,
+          "reason": "EACCES: permission denied, open '/proc/2512589/environ'"
+        },
+        {
+          "pid": 2512591,
+          "reason": "EACCES: permission denied, open '/proc/2512591/environ'"
+        },
+        {
+          "pid": 2512689,
+          "reason": "EACCES: permission denied, open '/proc/2512689/environ'"
+        },
+        {
+          "pid": 2512690,
+          "reason": "EACCES: permission denied, open '/proc/2512690/environ'"
+        },
+        {
+          "pid": 2516261,
+          "reason": "EACCES: permission denied, open '/proc/2516261/environ'"
+        }
+      ]
+    }
+  },
+  "confidence": "observed",
+  "authority": "controlled-replay",
+  "environment": {
+    "id": "linux-x64",
+    "platform": "linux",
+    "architecture": "x64",
+    "isolation": "process"
+  },
+  "limitations": [
+    "Artifact identity is unavailable for this observation.",
+    "The executable digest is a prelaunch file sample; matching path metadata immediately after spawn does not prove an atomic operating-system image binding.",
+    "Process trees are sampled and may omit short-lived descendants.",
+    "Filesystem observations are before/after snapshots, not syscall traces.",
+    "Inherited host environment variables are not recorded and may affect results.",
+    "No filesystem observation paths were selected; filesystem effects remain unknown."
+  ],
+  "locations": [],
+  "evidence_links": []
+}
