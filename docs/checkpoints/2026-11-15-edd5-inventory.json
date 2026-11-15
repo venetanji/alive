@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "worktree": "edd5",
+  "source_head": "56720e5e109c41dff76d2372a819c04de1c5b62b",
+  "checkpoint_branch": "checkpoint/2026-11-15-ui-capture-tools",
+  "scope": "Portable screenshot helpers for the historical session-host checkout. ALIVE_CAPTURE_DIR selects capture output; ALIVE_CAPTURE_PORT selects the fixture server port; ALIVE_CAPTURE_URL selects the already-running server for the standalone helper. The populated fixture capture runs through _shot2.config.mjs. Chromium sandboxing stays enabled; server reuse is disabled to avoid capturing another checkout.",
+  "local_only_files": 0,
+  "committed_input_files": 4,
+  "files": [
+    {
+      "path": "apps/ultra/tests/ci/_shot-tmp.mjs",
+      "bytes": 1251,
+      "sha256": "9e22b4e096e2ce8f998d434022df743d02d9b3a2ef8b902a47e2ef4d6e255099",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/ci/_shot.config.mjs",
+      "bytes": 1446,
+      "sha256": "e1984ef2e2223c70e0836bbda195daf230d27983bdbc1c72d71623f967fb1022",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/ci/_shot.spec.mjs",
+      "bytes": 11687,
+      "sha256": "3f24d731174e4f49783b335abeb3dffa363cc6d6f434dca73c2370016a3ad50c",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/ci/_shot2.config.mjs",
+      "bytes": 1156,
+      "sha256": "d6fa28f646faf12d73eea298ad30b313942316fd7dedf148afce84932aa65e4b",
+      "kind": "file",
+      "disposition": "commit"
+    }
+  ]
+}
