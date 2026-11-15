@@ -6,6 +6,7 @@ import {mergePrintPopups} from './canvas-print-ui.mjs';
 import {HELP_HELPER_SPEC} from './canvas-help-shell.mjs';
 import {validateDevice} from './canvas-device.mjs';
 import {isArithmetic} from './canvas-arithmetic.mjs';
+import {createLiveDeviceState,validateLiveDeviceState,liveDeviceProfile} from './live-device-profile.mjs';
 import {boundaryNodes, hierarchyType, HIERARCHY_LIMITS, lowerHierarchy, remapBoundaryEdges, treeNodes, validateHierarchy, visiblePatcher} from './canvas-hierarchy.mjs';
 const C = 'control', M = 'mono', S = 'stereo', V = 'voice4';
 const port = (type, label, side, accepts) => ({type, label, side,...({mono:1,stereo:2,voice4:4}[type]?{channels:{mono:1,stereo:2,voice4:4}[type]}:{}),...(accepts?{accepts}:{})});
@@ -86,8 +87,10 @@ export const REGISTRY = Object.freeze({
   mix_voice:spec('mix.voice~',{},[[V,'audio / 4 voices']],[[M,'mono mix']],'Explicitly sum the four voice lanes and divide by four for headroom. Output is one mono channel.'),
   audio_in:spec('audio.in~',{},[],[[M,'host input left'],[M,'host input right']],'Read an explicit stereo sample pair supplied by a reusable-device host. Ordinary Ultra roots receive silence; this is not physical audio input.'),
   filter_stereo:spec('lowpass.stereo~',{cutoff:number(2400,20,20000),resonance:number(0.7,0.1,20)},[[M,'left audio'],[M,'right audio'],[C,'cutoff Hz'],[C,'resonance Q']],[[M,'filtered left'],[M,'filtered right']],'Two independent channels through the shared Faust resonant low-pass kernel. Cutoff and resonance are live; Stop clears filter tails.'),
+  live_device:spec('live.device~',{device:{value:'Analog',kind:'live-device'},state:{value:createLiveDeviceState(),kind:'live-state'}},[[C,'pitch, velocity']],[[M,'left audio'],[M,'right audio']],'Run a qualified installed Live instrument with its original panel and saved native state. Native execution requires the device adapter build.'),
 });
 export const structuralParameter=(type,key)=>['text','args','label','name','channels'].includes(key)||
+  (type==='live_device'&&['device','state'].includes(key))||
   (isArithmetic(type)&&key==='numericmode')||(type==='midiin'&&key==='channel')||(type==='voice'&&key==='device')||(type==='poly_note'&&key==='voices');
 const copy = value => JSON.parse(JSON.stringify(value));
 const fail = message => { throw Error(message); };
@@ -175,7 +178,9 @@ function validateFlatPatch(input,internal=false) {
       }else if(p.kind==='name'){
         const name=node.params[key];
         if(typeof name!=='string'||(name===''?node.type!=='receive':! /^[\x21-\x7e]{1,31}$/.test(name)||/[,;$'"\\]/.test(name)))fail(`${node.type} name must be one ASCII token of 1 to 31 bytes, without quotes, substitution or separators; only receive may be unnamed.`);
-      }else numeric(node.params[key],p.min,p.max,p.integer,`${node.type}.${key}`);
+      }else if(p.kind==='live-device')liveDeviceProfile(node.params[key]);
+      else if(p.kind==='live-state')node.params[key]=validateLiveDeviceState(node.params.device,node.params[key]);
+      else numeric(node.params[key],p.min,p.max,p.integer,`${node.type}.${key}`);
     }
     if(['flonum','number_int'].includes(node.type)&&node.params.minimum>node.params.maximum)fail(`${node.type} minimum must not exceed maximum.`);
     if(isArithmetic(node.type)&&node.type!=='abs'&&node.params.numericmode===1&&!Number.isInteger(node.params.rhs))fail(`${node.type}.rhs must be an integer in integer numeric mode.`);
@@ -223,7 +228,7 @@ export function parsePatch(text) {
 export const serializePatch = patch => JSON.stringify(validatePatch(patch),null,2);
 export function makeNode(type,id,x=40,y=40,params={}) {
   if(!REGISTRY[type]) fail(`Unknown object type: ${type}.`);
-  return {id,type,x,y,params:{...Object.fromEntries(Object.entries(REGISTRY[type].params).map(([key,p])=>[key,p.value])),...params},...(type==='patcher'?{patcher:{nodes:[],edges:[]}}:{})};
+  return {id,type,x,y,params:{...Object.fromEntries(Object.entries(REGISTRY[type].params).map(([key,p])=>[key,copy(p.value)])),...copy(params)},...(type==='patcher'?{patcher:{nodes:[],edges:[]}}:{})};
 }
 export function starterPatch() {
   const nodes=[
@@ -560,7 +565,7 @@ export function createCanvasController({invoke,patch=starterPatch(),onState=()=>
     }
     const before=copy(document.document);if(!document[direction]())return;
     helpView.reconcile(document);
-    if(topology(document.document)!==topology(before)||parameterChanges.some(change=>change.node.type==='message_box'&&change.key==='text'))structural(()=>{},true);
+    if(topology(document.document)!==topology(before)||parameterChanges.some(change=>change.node.type==='message_box'&&change.key==='text'||change.node.type==='live_device'))structural(()=>{},true);
     else {
       for(const node of treeNodes(document.document).filter(node=>!['patcher','comment','help_helper'].includes(node.type))){
         const previous=treeNodes(before).find(n=>n.id===node.id);

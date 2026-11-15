@@ -3,6 +3,7 @@ import {ARITHMETIC,isArithmetic,arithmeticCreationParams,arithmeticModeChoices,a
 
 // This is Ultra's documented authoring vocabulary, not a Max class resolver.
 const definitions = {
+  live_device:{name:'live.device~',aliases:[],args:['device'],options:[],ui:'object',summary:'Load a qualified installed Live instrument with its panel and saved native state.',example:'live.device~ Analog'},
   poly_note:{name:'poly.note~',aliases:[],args:['voices'],ui:'object',summary:'Allocate up to four MIDI voices with frequency, gate and velocity lanes.',example:'poly.note~ 4'},
   saw_voice:{name:'saw.voice~',aliases:[],args:[],ui:'object',summary:'Faust saw oscillator on four voice lanes.',example:'saw.voice~'},
   filter_voice:{name:'lowpass.voice~',aliases:[],args:['cutoff','resonance'],ui:'object',summary:'Resonant Faust low-pass filter on four voice lanes.',example:'lowpass.voice~ 2400 0.7'},
@@ -177,7 +178,7 @@ export function parseObjectText(text, previous=null) {
         if(!key)throw Error(`${entry.name} accepts ${entry.args.length} argument${entry.args.length===1?'':'s'}: ${entry.args.join(', ')||'none'}.`);
       }
       if(assigned.has(key))throw Error(`${key} is already supplied.`);
-      if(['label','name'].includes(entry.params[key].kind)){
+      if(['label','name','live-device'].includes(entry.params[key].kind)){
         if(!word)throw Error(`${key} requires a ${entry.params[key].kind}.`);params[key]=word;
       }else{
         if(!word||!/^[-+]?(?:\d+\.?\d*|\.\d+)(?:e[-+]?\d+)?$/i.test(word))throw Error(`${key} must be a finite number.`);

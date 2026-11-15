@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+ <title>Ultra - Analog Native Test</title>
+ <link rel="stylesheet" href="live-controls.css"><link rel="stylesheet" href="analog-test.css"><link rel="stylesheet" href="live-device-view.css">
+ <script type="module" src="analog-test.mjs"></script>
+</head>
+<body>
+ <header><span class="app-name">Ultra</span><h1>Analog</h1><span class="test-label">Native test</span></header>
+ <main>
+  <section class="live-panel" aria-labelledby="sound-title">
+   <div class="live-panel-header"><h2 id="sound-title">Analog / Test sound</h2><span>48 kHz stereo</span></div>
+   <div class="sound-body"><div id="level"></div><div class="transport"><button id="start" class="live-button">Start audio</button><button id="stop" class="live-button" disabled>Stop / Silence</button><p id="status" role="status">Start audio to load Analog.</p></div><div class="meter"><label for="peak">Output</label><meter id="peak" min="0" max="1" value="0"></meter><output id="peak-value">0.000</output></div></div>
+  </section>
+  <section class="live-panel live-resource-panel" aria-labelledby="live-resource-title">
+   <div class="live-panel-header"><h2 id="live-resource-title">Analog / Original panel</h2></div>
+   <div class="live-resource-toolbar"><button id="live-resource-installed" class="live-button" hidden>Read installed panel</button><label>Live resource packs <input id="live-resource-files" type="file" accept=".alp" multiple></label></div>
+   <p id="live-resource-status" role="status">Read the installed panel, then start audio to use the connected controls.</p>
+   <div id="live-resource-view" class="live-resource-viewport"></div>
+   <details><summary>Import details</summary><pre id="live-resource-details">No panel loaded.</pre></details>
+  </section>
+  <section class="keyboard-section" aria-labelledby="keyboard-title">
+   <div class="keyboard-heading"><h2 id="keyboard-title">Keyboard</h2><label>Velocity <input id="velocity" class="live-value" type="number" min="1" max="127" step="1" value="100"></label><button id="release" class="live-button" disabled>Release notes</button></div>
+   <p id="keyboard-help">Click the piano, or use A W S E D F T G Y H U J K. Escape stops audio.</p>
+   <div id="keyboard" role="group" aria-label="Analog keyboard" tabindex="0"></div>
+  </section>
+  <footer><p>Original Analog DSP, running locally without Wine.</p><p id="output-detail">Start audio to connect Analog's controls.</p></footer>
+ </main>
+</body>
+</html>

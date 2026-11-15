@@ -247,4 +247,4 @@ export function createNodeView(node,{doc,select,dragStart,edit,portClick,portDow
   return{type:node.type,configuration:nodeConfiguration(node),element,header,inputs,ports:portElements,minimumWidth,update,get resizePreview(){return sizing?{width:sizing.width,height:sizing.height}:null;},cancelInteraction,dispose(){for(const input of inputs.values())drafts?.forget(input);cancelInteraction();doc.defaultView?.removeEventListener('blur',windowBlur);}};
 }
 
-export const nodeConfiguration=node=>JSON.stringify([node.params.args,node.params.name,node.params.channels,node.patcher?.nodes.filter(child=>['inlet','outlet'].includes(child.type)).map(child=>[child.id,child.type,child.x])]);
+export const nodeConfiguration=node=>JSON.stringify([node.params.args,node.params.name,node.params.channels,node.params.device,node.params.state?.profile,node.patcher?.nodes.filter(child=>['inlet','outlet'].includes(child.type)).map(child=>[child.id,child.type,child.x])]);

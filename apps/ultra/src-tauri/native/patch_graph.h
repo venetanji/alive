@@ -8,6 +8,13 @@ enum UltraCanvasSignalExtensionKind {
  ULTRA_CANVAS_AUDIO_IN=66,
  ULTRA_CANVAS_FILTER_STEREO=67
 };
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+/* Research-only injected kernels. Default builds reject these node kinds. */
+enum UltraCanvasExternalExperimentKind {
+ ULTRA_CANVAS_EXTERNAL_INSTRUMENT=68,
+ ULTRA_CANVAS_EXTERNAL_PARAMETER=69
+};
+#endif
 /* ultra-canvas-v1: POD-only C ABI. Control calls are serialized off callback.
  * kind matches PATCH_PROTOCOL.md. count is only message literal length (0=bang).
  * p0/p1/p2 hold typed values documented in PATCH_PROTOCOL.md; voice.device is

@@ -13,6 +13,7 @@ class Element {
   append(...children){this.children.push(...children);for(const c of children)if(typeof c==='object')c.parentElement=this;}
   replaceChildren(...children){this.children=[];this.append(...children);}
   setAttribute(k,v){this.attrs[k]=String(v);}
+  getAttribute(k){return this.attrs[k]??null;}
   removeAttribute(k){delete this.attrs[k];}
   addEventListener(k,f){(this.listeners[k]??=[]).push(f);}
   removeEventListener(){}

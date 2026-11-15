@@ -1,0 +1,17 @@
+@import './live-controls.css';
+@import './live-device-view.css';
+.node.live-device-canvas-node{width:max-content!important;height:auto!important;min-width:260px;max-width:none;background:var(--live-surface);border-color:var(--live-edge)}
+.node.live-device-canvas-node>.object-label{height:22px;border-bottom:1px solid var(--live-edge)}
+.live-device-canvas-node .node-body{display:block;padding:2px}
+.live-device-object-panel{min-height:44px;min-width:260px}
+.live-device-object-status{margin:0;padding:8px;font-size:11px;color:var(--live-muted)}
+.live-device-object-status:empty{display:none}
+.live-device-object-status.error{color:var(--live-warning)}
+.live-device-object-footer{display:flex;align-items:center;gap:8px;padding:6px 8px;border-top:1px solid var(--live-edge);color:var(--live-muted);font-size:10px}
+.live-device-object-keyboard{display:flex;gap:1px}
+.live-device-object-key{width:24px;height:28px;padding:0;border:1px solid var(--live-edge);border-radius:0;background:var(--live-ink);color:var(--live-surface);font:9px/1 sans-serif;touch-action:none}
+.live-device-object-key.black{height:22px;background:var(--live-well);color:var(--live-ink)}
+.live-device-object-key.held{background:var(--live-accent);color:var(--live-surface)}
+.live-device-object-key:disabled{opacity:.45}
+.live-device-object-release{margin-left:auto;padding:3px 6px;min-height:24px;font:10px/1 inherit;white-space:nowrap}
+@media(max-width:600px){.live-device-object-caption{display:none}.live-device-object-footer{gap:4px;padding:6px 2px}.live-device-object-key{width:20px}}

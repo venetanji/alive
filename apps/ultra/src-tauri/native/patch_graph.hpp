@@ -23,6 +23,9 @@ inline bool canvas_arithmetic_valid(const UltraCanvasNode& node)noexcept {
   &&!node.p2&&!node.p3&&!node.p4&&!node.p5&&!node.text[0];
 }
 inline unsigned canvas_inlets(unsigned kind) noexcept {
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+ if(kind==ExternalInstrument||kind==ExternalParameter)return 1;
+#endif
  static constexpr unsigned n[]={1,1,2,1,2,2,2,2,2,3,0,3,2,2,1,2,2,1,1,2,1,2,2,1,3,1,1,1,1,1,1,2,2,2,2,2,2,2,1,2,2,2,2,2,2,1,3,2,2,2,1,1,1,2,2,2,2,2,2,1,2,1,3,5,2,1,0,4};return kind<=FilterStereo?n[kind]:0;
 }
 // 5 is exactly four discrete voice lanes, distinct from stereo speaker feeds.
@@ -39,6 +42,10 @@ inline unsigned canvas_input(unsigned kind,unsigned inlet) noexcept {
  return 1;
 }
 inline unsigned canvas_output(unsigned kind,unsigned outlet) noexcept {
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+ if(kind==ExternalInstrument)return outlet<2?2:0;
+ if(kind==ExternalParameter)return 0;
+#endif
  if(kind==AudioIn||kind==FilterStereo)return outlet<2?2:0;
  if(canvas_voice_kind(kind))return outlet<(kind==PolyNote?3u:1u)?kind==MixVoice?2:5:0;
  if(outlet>unsigned((kind>=ZlReg&&kind<=ZlRot)||kind==LineSignal||kind==Flonum||kind==NumberInt)||kind>Abs||kind==Dac||kind==Print||kind==Send||kind==SignalDac)return 0;
@@ -48,6 +55,9 @@ inline unsigned canvas_output(unsigned kind,unsigned outlet) noexcept {
 }
 inline bool canvas_param_valid(unsigned kind,unsigned param,double value) noexcept {
  switch(kind){
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+ case ExternalParameter:return param==0&&canvas_number(value);
+#endif
  case Number:case Add:case Multiply:case Subtract:case Divide:case Modulo:case ReverseSubtract:case ReverseDivide:return param==0&&canvas_number(value);
  case Toggle:return param==0&&canvas_range(value,0,1,true);
  case Metro:return param==0&&canvas_range(value,20,2000);
@@ -87,6 +97,10 @@ inline unsigned canvas_inlets(const UltraCanvasNode& node) noexcept {
  return canvas_inlets(node.kind);
 }
 inline unsigned canvas_outlets(const UltraCanvasNode& node) noexcept {
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+ if(node.kind==ExternalInstrument)return 2;
+ if(node.kind==ExternalParameter)return 0;
+#endif
  if(node.kind==AudioIn||node.kind==FilterStereo)return 2;
  if(node.kind==PolyNote)return 3;
  CanvasMessage args{};
@@ -128,13 +142,26 @@ inline bool compile_canvas(const UltraCanvasGraph& g,CanvasPlan& out) noexcept {
  if(!g.revision||g.node_count>32||g.edge_count>64)return false;
  CanvasPlan p{};p.graph=g;p.signal_first.fill(-1);p.signal_next.fill(-1);
  unsigned devices=0,joins=0,dacs=0;
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+ constexpr unsigned maximum_kind=ExternalParameter;
+#else
+ constexpr unsigned maximum_kind=FilterStereo;
+#endif
  for(unsigned i=0;i<g.node_count;i++){
-  const auto& n=g.nodes[i];if(!n.id||n.kind>FilterStereo||!canvas_number(n.p0)||!canvas_number(n.p1)||!canvas_number(n.p2)||!canvas_number(n.p3)||!canvas_number(n.p4)||!canvas_number(n.p5)||(n.kind!=MessageBox&&!canvas_text(n.text,128)))return false;
+  const auto& n=g.nodes[i];if(!n.id||n.kind>maximum_kind||!canvas_number(n.p0)||!canvas_number(n.p1)||!canvas_number(n.p2)||!canvas_number(n.p3)||!canvas_number(n.p4)||!canvas_number(n.p5)||(n.kind!=MessageBox&&!canvas_text(n.text,128)))return false;
   for(unsigned j=0;j<i;j++)if(g.nodes[j].id==n.id)return false;
   if(n.kind!=Voice&&n.device)return false;
   if(n.kind!=Message&&n.count)return false;
   if(n.kind<Dac+1&&(n.p3||n.p4||n.p5||(n.kind!=Message&&n.text[0])))return false;
   switch(n.kind){
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+   case ExternalInstrument:
+    if(n.id>100000||n.p0||n.p1||n.p2||n.p3||n.p4||n.p5||n.text[0])return false;
+    break;
+   case ExternalParameter:
+    if(!canvas_range(n.p1,0,255,true)||!canvas_range(n.p2,1,100000,true)||n.p3||n.p4||n.p5||n.text[0])return false;
+    break;
+#endif
    case PolyNote:
     if(p.allocator>=0||!canvas_range(n.p0,1,4,true)||n.p1||n.p2||n.p3||n.p4||n.p5||n.text[0])return false;
     p.allocator=int(i);break;
@@ -209,6 +236,13 @@ inline bool compile_canvas(const UltraCanvasGraph& g,CanvasPlan& out) noexcept {
   if(n.kind==Join&&++joins>1)return false;
   if(n.kind==Dac&&++dacs>1)return false;
  }
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+ for(unsigned i=0;i<g.node_count;i++)if(g.nodes[i].kind==ExternalParameter){
+  const auto& node=g.nodes[i];const int target=p.find(uint32_t(node.p2));
+  if(target<0||g.nodes[unsigned(target)].kind!=ExternalInstrument)return false;
+  for(unsigned prior=0;prior<i;prior++)if(g.nodes[prior].kind==ExternalParameter&&g.nodes[prior].p1==node.p1&&g.nodes[prior].p2==node.p2)return false;
+ }
+#endif
  std::array<unsigned,32> control_indegree{},signal_indegree{},audio_out{};
  std::array<int,32> gain_voice{};gain_voice.fill(-1);
  int join=-1,dac=-1;std::array<int,2> join_gain{{-1,-1}};
@@ -313,6 +347,41 @@ struct CanvasDispatchContext {
 // A fixed, callback-owned control graph. All traversal, timers and messages are
 // bounded. No allocation, ownership destruction, wall clock, DSP creation or locks.
 class CanvasRuntime {
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+ public:
+ // Borrowed instances are created, bound, unbound and destroyed off audio.
+ // Every invoked callback must be allocation/lock-free; clear additionally
+ // requires explicit qualification. The runtime never owns the foreign object.
+ struct ExternalCallbacks {
+  void* owner=nullptr;
+  bool (*note)(void*,unsigned,unsigned,uint64_t)noexcept=nullptr;
+  bool (*parameter)(void*,unsigned,double,uint64_t)noexcept=nullptr;
+  bool (*sample)(void*,double*,double*,uint64_t)noexcept=nullptr;
+  bool (*clear)(void*,uint64_t)noexcept=nullptr;
+  bool realtime_clear=false;
+ };
+ private:
+ struct ExternalBinding {uint32_t node=0;ExternalCallbacks callbacks{};bool armed=false;};
+ std::array<ExternalBinding,32> external_bindings_{};
+ ExternalBinding* external_binding(uint32_t node)noexcept{
+  for(auto& binding:external_bindings_)if(binding.node==node)return &binding;
+  return nullptr;
+ }
+ bool external_parameter(const UltraCanvasNode& node,double value)noexcept{
+  auto* binding=external_binding(uint32_t(node.p2));
+  if(!binding||!binding->armed)return false;
+  if(!binding->callbacks.parameter(binding->callbacks.owner,unsigned(node.p1),value,signal_frame_)){binding->armed=false;fail();return false;}
+  return true;
+ }
+ void clear_external_state()noexcept{
+  for(auto& binding:external_bindings_)if(binding.node){
+   if(binding.callbacks.realtime_clear){if(!binding.callbacks.clear(binding.callbacks.owner,signal_frame_)){binding.armed=false;fail();}}
+   else binding.armed=false;
+   const int slot=plan_.find(binding.node);
+   if(slot<0||plan_.graph.nodes[unsigned(slot)].kind!=ExternalInstrument)binding={};
+  }
+ }
+#endif
  CanvasPlan plan_{};
  struct State {
   double value=0,hot=0,start=0,target=0;
@@ -403,8 +472,26 @@ class CanvasRuntime {
  void clear_voice_state()noexcept{
   // Hard termination also clears stereo filter tails in bounded node/lane storage.
   poly_.clear();for(unsigned i=0;i<plan_.graph.node_count;i++)if(canvas_voice_kind(plan_.graph.nodes[i].kind)||plan_.graph.nodes[i].kind==FilterStereo){voice_dsp_[i].clear();states_[i].voices={};}
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+  clear_external_state();
+#endif
  }
  public:
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+ // Off-thread only. Initial parameter state belongs to the caller; binding
+ // invokes no foreign callback, and is also the explicit rearm after unsafe clear.
+ bool bind_external(uint32_t id,const ExternalCallbacks& callbacks)noexcept{
+  const int slot=plan_.find(id);
+  if(slot<0||plan_.graph.nodes[unsigned(slot)].kind!=ExternalInstrument||!callbacks.owner||!callbacks.note||!callbacks.parameter||!callbacks.sample||(callbacks.realtime_clear&&!callbacks.clear))return false;
+  auto* binding=external_binding(id);
+  if(!binding)for(auto& candidate:external_bindings_)if(!candidate.node){binding=&candidate;break;}
+  if(!binding)return false;
+  *binding={id,callbacks,true};return true;
+ }
+ bool unbind_external(uint32_t id)noexcept{
+  auto* binding=external_binding(id);if(!binding)return false;*binding={};return true;
+ }
+#endif
  unsigned active_voice_count()const noexcept{return poly_.active();}
  bool pop_console(UltraCanvasConsoleRecord& record)noexcept {
   const auto tail=console_tail_.load(std::memory_order_relaxed);
@@ -470,6 +557,9 @@ class CanvasRuntime {
   auto& node=plan_.graph.nodes[slot];
   if(canvas_arithmetic_kind(kind)){auto candidate=node;if(param==0)candidate.p0=value;else return false;if(!canvas_arithmetic_valid(candidate))return false;}
   if((kind==Flonum||kind==NumberInt)&&((param==1&&value>node.p2)||(param==2&&value<node.p1)))return false;
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+  if(kind==ExternalParameter&&!external_parameter(node,value))return false;
+#endif
   if(kind==Print&&param==1&&node.p1!=value){auto& popup=states_[slot].print_popup;popup.has_value=false;popup.message={};popup.frame=0;++popup.generation;}
   if(param==0)node.p0=value;else if(param==1)node.p1=value;else if(param==2)node.p2=value;
   else if(param==3)node.p3=value;else if(param==4)node.p4=value;else if(param==5)node.p5=value;else return false;
@@ -495,6 +585,9 @@ class CanvasRuntime {
     push(0,canvas_sequence_message(canvas_list_range(msg,item.cursor,count)));return;
    }
    CanvasMessage list_input{},affixed{};
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+   if(!item.output&&node.kind==ExternalParameter&&!(msg.count==1&&canvas_numeric_message(msg)&&canvas_number(msg.values[0]))){reject_signal(item.slot,work);return;}
+#endif
    if(!item.output&&canvas_voice_kind(node.kind)){
     const bool scalar=msg.count==1&&canvas_numeric_message(msg);
     bool supported=false;
@@ -506,6 +599,9 @@ class CanvasRuntime {
     const bool scalar=msg.count==1&&canvas_numeric_message(msg),numbers=msg.count&&canvas_numeric_message(msg),bang=canvas_bang(msg);
     bool supported=false;
     switch(node.kind){
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+     case ExternalInstrument:supported=(!msg.count&&canvas_named(msg,"panic"))||(msg.count==2&&canvas_numeric_message(msg)&&canvas_range(msg.values[0],0,127,true)&&canvas_range(msg.values[1],0,127,true));break;
+#endif
      case FilterStereo:supported=item.inlet>=2&&scalar&&canvas_param_valid(node.kind,item.inlet-2,msg.values[0]);break;
      case Sig:supported=numbers||(canvas_named(msg,"set")&&msg.count==2&&msg.tags[0]!=2&&msg.tags[1]!=2&&canvas_range(msg.values[0],0,plan_.arguments[item.slot].count-1,true));break;
      case SignalAdd:case SignalSubtract:case SignalMultiply:case SignalDivide:case SignalClip:supported=scalar;break;
@@ -617,6 +713,21 @@ class CanvasRuntime {
       else if(canvas_named(msg,"panic"))clear_voice_state();
       else {const int voice=poly_.note(unsigned(msg.values[0]),unsigned(msg.values[1]),unsigned(node.p0),signal_frame_,voice_release_frames());if(voice>=0)clear_voice_lane(unsigned(voice));}
       state.value=poly_.active();break;
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+     case ExternalInstrument:{
+      auto* binding=external_binding(node.id);
+      if(canvas_named(msg,"panic")){
+       if(binding){if(binding->callbacks.realtime_clear){if(!binding->callbacks.clear(binding->callbacks.owner,signal_frame_)){binding->armed=false;fail();}}else binding->armed=false;}
+      }else{
+       if(!binding||!binding->armed){reject_signal(item.slot,work);return;}
+       if(!binding->callbacks.note(binding->callbacks.owner,unsigned(msg.values[0]),unsigned(msg.values[1]),signal_frame_)){binding->armed=false;fail();return;}
+      }
+      break;
+     }
+     case ExternalParameter:
+      if(!external_parameter(node,msg.values[0])){reject_signal(item.slot,work);return;}
+      node.p0=msg.values[0];state.value=node.p0;break;
+#endif
      case FilterVoice:case AdsrVoice:
       if(item.inlet==1)node.p0=msg.values[0];else if(item.inlet==2)node.p1=msg.values[0];else if(item.inlet==3)node.p2=msg.values[0];else if(item.inlet==4)node.p3=msg.values[0];
       break;
@@ -906,6 +1017,13 @@ class CanvasRuntime {
    }
    const auto& connected=plan_.signal_connected[slot];
    switch(node.kind){
+#ifdef ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL
+    case ExternalInstrument:{
+     state.signal[0]=state.signal[1]=0;auto* binding=external_binding(node.id);
+     if(binding&&binding->armed&&(!binding->callbacks.sample(binding->callbacks.owner,&state.signal[0],&state.signal[1],signal_frame_)||!std::isfinite(state.signal[0])||!std::isfinite(state.signal[1]))){fail();return {};}
+     break;
+    }
+#endif
     case AudioIn:
      state.signal[0]=canvas_safe_signal(external_input[0]);state.signal[1]=canvas_safe_signal(external_input[1]);break;
     case FilterStereo:

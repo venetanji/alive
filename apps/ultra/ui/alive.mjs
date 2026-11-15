@@ -8,6 +8,7 @@ import {mountWorkspace} from './alive-workspace.mjs';
 import {workspaceMusicEdit} from './alive-workspace-edits.mjs';
 import {mountTimeline,placementError} from './alive-timeline.mjs';
 import {createMasterProducer,nativeInteger as masterInteger} from './alive-master.mjs';
+import {decorateRange,decorateNumber} from './live-controls.mjs';
 
 export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke=win?.__TAURI__?.core?.invoke}={}){
   const $=id=>doc.getElementById(id),make=(tag,cls,text)=>{const e=doc.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e;};
@@ -498,13 +499,15 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     }
   }
   function buildParameters(snapshot){
+    for(const view of parameterViews.values())view.control.dispose();
     $('parameters').replaceChildren();parameterViews.clear();const device=instanceView(selectedInstance)?.manifest,instanceId=selectedInstance;
     $('device-title').textContent=device?.name??'Device';$('device-path').textContent=chainDevices().find(d=>d.instanceId===selectedInstance)?.path??'No device selected';$('device-path').title=$('device-path').textContent;
     for(const binding of device?.parameters??[]){
       const section=make('div','parameter'),label=make('label','',binding.label),base=make('div','base'),unit=make('span','unit',binding.unit??''),number=numeric(`${binding.label} base`,binding.base,{min:binding.min,max:binding.max,step:binding.integral?1:binding.max<=1?.01:binding.max<=20?.1:1},value=>setBase(instanceId,binding.key,value)),range=make('input'),output=make('output');
       range.type='range';range.min=binding.min;range.max=binding.max;range.step=binding.integral?'1':'any';range.value=binding.base;range.id=`base-${binding.key}`;range.setAttribute('aria-label',`${binding.label} base slider`);label.htmlFor=range.id;
       range.addEventListener('change',guard(()=>setBase(instanceId,binding.key,Number(range.value))));range.addEventListener('input',()=>{number.value=range.value;});
-      output.setAttribute('aria-label',`${binding.label} effective ownership`);base.append(number,unit);section.append(label,range,base,output);$('parameters').append(section);parameterViews.set(binding.key,{section,number,range,output});
+      const control=decorateRange(range,{doc,unit:binding.unit??''});decorateNumber(number);
+      output.setAttribute('aria-label',`${binding.label} effective ownership`);base.append(number,unit);section.append(label,control.element,base,output);$('parameters').append(section);parameterViews.set(binding.key,{section,number,range,output,control});
     }
   }
   function setBase(instanceId,key,value){const origin=generation();return enqueue(async()=>{if(generation()!==origin)throw Error('The originating device session changed.');await invoke('alive_base',{instanceId,key,value,generation:origin});await refresh();});}
@@ -622,6 +625,7 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
     for(const[bindingIndex,binding]of (instanceView(selectedInstance)?.manifest.parameters??[]).entries()){
       const view=parameterViews.get(binding.key),reading=parameterReading(binding,snapshot.state.devices[instanceView(selectedInstance).index],bindingIndex);if(!view)continue;
       if(doc.activeElement!==view.number&&!workspace.preserves(view.number))view.number.value=reading.base;if(doc.activeElement!==view.range&&!workspace.preserves(view.range))view.range.value=reading.base;
+      view.control.update();
       view.output.textContent=`${reading.owner}: ${Number(reading.effective.toFixed(3))}${binding.unit?' '+binding.unit:''}`;view.section.classList.toggle('automated',reading.owner==='Automation');
     }
     const frameBeat=value=>typeof value==='string'?Number(nativeInteger(value)*1000000n/48000n)/1000000*snapshot.document.tempo/60:value/(48000*60/snapshot.document.tempo);
@@ -684,6 +688,6 @@ export function mountAlive({doc=globalThis.document,win=globalThis.window,invoke
   }
   if(invoke)win.setTimeout(pollMeasurements,1000);
   if(invoke){enqueue(refresh,true).then(()=>notice('Ready. Select a clip to edit notes or automation.')).catch(()=>{});win.setTimeout(poll,80);}else notice('Open the native app with bash apps/alive/run.sh. This page does not synthesize audio.',true);
-  return{model,refresh,dispose(){disposed=true;browser.dispose();transportOptions.dispose();masterProducer.dispose();workspace.dispose();timeline?.dispose();pianoView.dispose();win?.removeEventListener('blur',cancelGesture);unlisten?.();doc.removeEventListener('keydown',keydown);}};
+  return{model,refresh,dispose(){disposed=true;for(const view of parameterViews.values())view.control.dispose();browser.dispose();transportOptions.dispose();masterProducer.dispose();workspace.dispose();timeline?.dispose();pianoView.dispose();win?.removeEventListener('blur',cancelGesture);unlisten?.();doc.removeEventListener('keydown',keydown);}};
 }
 if(globalThis.document)mountAlive();

@@ -3,6 +3,7 @@ import {makeNode,starterPatch,validatePatch} from './canvas-model.mjs';
 import {OBJECT_EXAMPLES} from './canvas-object-examples.mjs';
 import {subtractivePatch} from './canvas-instrument.mjs';
 import {utilityPatch,stereoLowpassPatch} from './canvas-effects.mjs';
+import {liveDevicePatch} from './live-device-patch.mjs';
 
 const copy=value=>JSON.parse(JSON.stringify(value));
 const groups={bang:'UI Controls',toggle:'UI Controls',number:'UI Controls',flonum:'UI Controls',slider:'UI Controls',message:'Messages & Numbers',int:'Messages & Numbers',float:'Messages & Numbers',add:'Messages & Numbers',multiply:'Messages & Numbers',pack:'Routing',unpack:'Routing',select:'Routing',route:'Routing',trigger:'Routing',send:'Routing',receive:'Routing',print:'Routing',metro:'Timing',counter:'Timing',line:'Timing',chord:'Notes & MIDI',makenote:'Notes & MIDI',midiin:'Notes & MIDI',voice:'Audio',gain:'Audio',join:'Audio',dac:'Audio',sig:'Audio',signal_add:'Audio',signal_subtract:'Audio',signal_multiply:'Audio',signal_divide:'Audio',cycle:'Audio',phasor:'Audio',noise:'Audio',signal_clip:'Audio',line_signal:'Audio',snapshot:'Audio',signal_dac:'Audio'};
@@ -10,8 +11,10 @@ const summaries={dac:'Send a stereo bundle to the shared native audio output.',m
 groups.number_int='UI Controls';
 groups.message_box='Messages & Numbers';
 groups.audio_in=groups.filter_stereo='Audio';
+groups.live_device='Instruments';
 
 function demo(type){
+  if(type==='live_device')return liveDevicePatch();
   if(type==='audio_in')return utilityPatch();
   if(type==='filter_stereo')return stereoLowpassPatch();
   if(['poly_note','saw_voice','filter_voice','adsr_voice','multiply_voice','mix_voice'].includes(type))return subtractivePatch();

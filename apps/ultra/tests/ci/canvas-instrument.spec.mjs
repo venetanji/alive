@@ -72,6 +72,22 @@ test('Perform remains reachable and scrollable in a 640 by 480 window',async({pa
   expect(bounds.x+bounds.width).toBeLessThanOrEqual(640);
 });
 
+test('shared Perform dial preserves gesture history flags and bound numeric drafts',async({page},testInfo)=>{
+  await page.setViewportSize({width:1280,height:800});await mount(page);
+  const dial=page.getByRole('slider',{name:'Cutoff',exact:true}),number=page.getByRole('spinbutton',{name:'Cutoff value',exact:true});
+  const initial=await dial.inputValue(),box=await dial.boundingBox(),x=box.x+box.width/2,y=box.y+box.height/2;
+  await page.mouse.move(x,y);await page.mouse.down();await page.mouse.move(x,y-30,{steps:5});await page.mouse.up();
+  await expect(number).not.toHaveValue(initial);
+  const commits=await page.evaluate(()=>window.instrumentCalls.filter(call=>call.name==='document_commit'));
+  expect(commits.length).toBeGreaterThan(1);expect(commits[0].args.history).toBe(true);expect(commits.slice(1).every(call=>call.args.history===false)).toBe(true);
+  await dial.dblclick();await expect(dial).toHaveValue(initial);
+  await number.fill('1234');await number.press('Escape');await expect(number).toHaveValue(initial);
+  await dial.focus();await dial.press('Shift+ArrowUp');
+  await expect(number).toHaveValue(String(Number(initial)+19.98));
+  await page.screenshot({path:testInfo.outputPath('perform-controls-desktop.png')});
+  await page.setViewportSize({width:640,height:480});await page.screenshot({path:testInfo.outputPath('perform-controls-narrow.png')});
+});
+
 test('Perform addresses embedded device bindings from both root and child views',async({page})=>{
   for(const child of [false,true]){
     await mount(page,{nested:true,child});

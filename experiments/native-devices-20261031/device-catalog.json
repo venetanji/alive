@@ -1,0 +1,4369 @@
+{
+  "schema": "alive-live-device-catalog-v1",
+  "date": "2026-10-31",
+  "purpose": "Authored static inventory and prior-qualification index; not a production loader admission registry",
+  "privateEvidenceBase": "~/.cache/alive-ultra-evidence/live-device-catalog-20261031",
+  "evidenceManifests": [
+    {
+      "relativePath": "binaries/inventory.json",
+      "sha256": "cbeee65a718119a50ed0a5b5f67b4c8062d4f5591030a7c21fcae940dd35ce79"
+    },
+    {
+      "relativePath": "binaries/report.md",
+      "sha256": "d0ed10dd24972a28eeb9201027d6ee9a50ff06f156aaa15ade292c932475977d"
+    },
+    {
+      "relativePath": "binaries/scan_binaries.py",
+      "sha256": "4bf7906c2b32b3c242bd65f4a18807fbe7ada1f508871904d4e089764228d2a1"
+    },
+    {
+      "relativePath": "binaries/questions.jsonl",
+      "sha256": "950f82627d90b8aac09ac0afc9de9e743f994309f3ff8b2b5d275cedf78a848c"
+    },
+    {
+      "relativePath": "presets/inventory.json",
+      "sha256": "d825ab3c973453260b629f7038e4e4d63fe4bea974571d9031dec96f191e29ae"
+    },
+    {
+      "relativePath": "presets/report.md",
+      "sha256": "bf78bc52f66d713c19b0b8864ad7484cb13dd690045a8aa974e136a25678d7e7"
+    },
+    {
+      "relativePath": "presets/scan_presets.py",
+      "sha256": "e7be5d04c505246167568ca3b1775d682e6ce62aef8ddb369db6ed90e2fb1a51"
+    },
+    {
+      "relativePath": "presets/questions.jsonl",
+      "sha256": "2464d09d94d5e55a7052e093141abf410a605954b81a7d75ce6c970daf2469c9"
+    },
+    {
+      "relativePath": "resources/inventory.json",
+      "sha256": "4d040bbbee0450a7a4e5b3dcaf7881adf23584de47f5dde12f27962e557824b5"
+    },
+    {
+      "relativePath": "resources/scan_resources.mjs",
+      "sha256": "14cb0c84628698f8b7dfe86f166b9759e60e4248f81d2af8d32b6ea8cabdd825"
+    },
+    {
+      "relativePath": "hosting/report.md",
+      "sha256": "e47c97425eeebb2c329ca85df08751a67cb436f03bac610f37566382ce137230"
+    },
+    {
+      "relativePath": "hosting/inventory.json",
+      "sha256": "747a15072e7ae5b34fca89e7d06e9a278e5d980254d238be7786a68ea686af4c"
+    },
+    {
+      "relativePath": "rea/utility-evidence.json",
+      "sha256": "c6e212d85182bcbdc179b107f1562c4b971b8902f1dbd698b4c3c376ea8d0d73"
+    }
+  ],
+  "scopeLimits": [
+    "All target artifacts were read statically; no target code was executed.",
+    "Named role or exports alone do not establish valid construction, live.device ABI compatibility, input/output routing, sound, state fidelity, or Alive admission.",
+    "Documented Max inlet/outlet signatures establish installed documentation only, not measured behavior.",
+    "Other Live devices can be embedded in the host executable/engine; inventory cannot locate all implementations or prove no additional DSP exists.",
+    "Unrelated Windows system libraries, .wine prefixes without Ableton name, unknown custom VST locations, network storage, archives and embedded installer payloads are outside scope.",
+    "A candidate without an MZ header is retained by known suffix and explicitly reported; all-files MZ screening finds DLLs with nonstandard suffixes."
+  ],
+  "binarySummary": {
+    "binary_path_count": 991,
+    "unique_sha256_count": 989,
+    "by_role": {
+      "ableton_max_device_external": 15,
+      "ableton_max_dsp_building_block": 59,
+      "browser_cache_dependency": 3,
+      "installer_or_redistributable": 5,
+      "live_auxiliary_executable": 9,
+      "live_engine_runtime_embedded_device_candidate_container": 1,
+      "live_host_executable_embedded_device_candidate_container": 1,
+      "live_support_or_platform_dependency": 16,
+      "max_external_dependency_or_building_block": 790,
+      "max_runtime_or_support_dependency": 33,
+      "qt_framework_or_plugin_dependency": 51,
+      "standalone_live_device_candidate": 7,
+      "third_party_plugin": 1
+    },
+    "by_suffix": {
+      ".dll": 95,
+      ".exe": 22,
+      ".mxe64": 864,
+      ".node": 9,
+      ".vst3": 1
+    },
+    "by_format": {
+      "ELF": 2,
+      "Mach-O": 4,
+      "PE": 985
+    },
+    "pe_dll_path_count": 963,
+    "by_architecture": {
+      "arm64": 2,
+      "x86": 5,
+      "x86_64": 984
+    },
+    "by_documented_io_role": {
+      "audio_to_audio_effect": 13,
+      "documented_signal_generator_with_untyped_control_inputs": 28,
+      "midi_to_audio_instrument": 2,
+      "other_or_unknown": 1,
+      "signal_input_to_signal_output": 29,
+      "signal_to_analysis_outputs_with_untyped_outputs": 1,
+      "unknown_or_not_applicable": 917
+    },
+    "literal_dll_by_role": {
+      "browser_cache_dependency": 3,
+      "installer_or_redistributable": 1,
+      "live_engine_runtime_embedded_device_candidate_container": 1,
+      "live_support_or_platform_dependency": 16,
+      "max_runtime_or_support_dependency": 16,
+      "qt_framework_or_plugin_dependency": 51,
+      "standalone_live_device_candidate": 7
+    },
+    "primary_installation_sections": {
+      "Program": 69,
+      "Redist": 4,
+      "Resources/Devices/Pc": 7,
+      "Resources/Extensions": 7,
+      "Resources/Max": 897,
+      "Resources/Misc": 1,
+      "installation_root": 1
+    },
+    "total_binary_bytes": 1190786904
+  },
+  "binaryRoots": [
+    {
+      "id": 0,
+      "pathHint": ".wine-ableton/drive_c/ProgramData/Ableton/Live 12 Suite",
+      "files": 49113,
+      "nativePaths": 986
+    },
+    {
+      "id": 1,
+      "pathHint": ".wine-ableton/drive_c/ProgramData/Max 9",
+      "files": 0,
+      "nativePaths": 0
+    },
+    {
+      "id": 2,
+      "pathHint": ".wine-ableton/drive_c/users/venetanji/AppData/Local/Ableton",
+      "files": 422,
+      "nativePaths": 4
+    },
+    {
+      "id": 3,
+      "pathHint": ".wine-ableton/drive_c/users/venetanji/AppData/Roaming/Ableton",
+      "files": 33,
+      "nativePaths": 0
+    },
+    {
+      "id": 4,
+      "pathHint": ".wine-ableton/drive_c/users/venetanji/AppData/Roaming/Cycling '74",
+      "files": 7,
+      "nativePaths": 0
+    },
+    {
+      "id": 5,
+      "pathHint": "Documents/Ableton",
+      "files": 2,
+      "nativePaths": 0
+    },
+    {
+      "id": 6,
+      "pathHint": "Documents/Max 9",
+      "files": 0,
+      "nativePaths": 0
+    },
+    {
+      "id": 7,
+      "pathHint": ".wine-ableton/drive_c/Program Files/Common Files/Propellerhead Software/ReWire",
+      "files": 1,
+      "nativePaths": 1
+    }
+  ],
+  "completeDeviceCandidates": [
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Devices/Pc/Amp_64.dll",
+      "sha256": "6618c6f754c9e33bfde2fb1fc02b14befee6c685552385fea2e7ba32964fcd2a",
+      "bytes": 1596928,
+      "architecture": "x86_64",
+      "role": "standalone_live_device_candidate",
+      "exports": [
+        "CalcA",
+        "CreateInstanceU",
+        "DestroyInstanceU",
+        "GetPlugInfoU",
+        "ResetA",
+        "SetParameterA",
+        "SetSampleRateU"
+      ],
+      "importModules": [
+        "KERNEL32.dll",
+        "USER32.dll",
+        "COMDLG32.dll",
+        "ADVAPI32.dll",
+        "SHELL32.dll",
+        "ole32.dll",
+        "OLEAUT32.dll",
+        "VERSION.dll",
+        "CRYPT32.dll"
+      ],
+      "ordinaryUltraObjectAdmitted": false,
+      "aliveAdmitted": false,
+      "name": "Amp",
+      "backendFamily": "standalone_seven_export",
+      "musicalClass": "audio_to_audio",
+      "ioEvidence": "Model identity and prior device investigation; this inventory performs no rendering",
+      "qualification": "Older probe faulted during construction; cause unresolved.",
+      "retainedLowLevelAdapterAdmitted": false
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Devices/Pc/Analog_64.dll",
+      "sha256": "4528afb1fbc78d49ed92161ed13ae1df50606e2e2b2c4f28caeca0cbc1476133",
+      "bytes": 816640,
+      "architecture": "x86_64",
+      "role": "standalone_live_device_candidate",
+      "exports": [
+        "CalcA",
+        "CreateInstanceU",
+        "DestroyInstanceU",
+        "GetPlugInfoU",
+        "ResetA",
+        "SetParameterA",
+        "SetSampleRateU"
+      ],
+      "importModules": [
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-private-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-utility-l1-1-0.dll",
+        "KERNEL32.dll",
+        "api-ms-win-crt-convert-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll",
+        "api-ms-win-crt-time-l1-1-0.dll",
+        "api-ms-win-crt-multibyte-l1-1-0.dll",
+        "api-ms-win-crt-environment-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll"
+      ],
+      "ordinaryUltraObjectAdmitted": true,
+      "aliveAdmitted": false,
+      "name": "Analog",
+      "backendFamily": "standalone_seven_export",
+      "musicalClass": "midi_to_audio",
+      "ioEvidence": "Model identity and prior device investigation; this inventory performs no rendering",
+      "qualification": "Ordinary saved Ultra object; 126/175 UI control instances mapped; full 203-value commanded state persisted. Alive admission pending.",
+      "retainedLowLevelAdapterAdmitted": true
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Devices/Pc/Cabinet_64.dll",
+      "sha256": "4be585af8794f579c1e3b2091b12167ff2b454f78e7e1981db4a0410e147cfe2",
+      "bytes": 1283072,
+      "architecture": "x86_64",
+      "role": "standalone_live_device_candidate",
+      "exports": [
+        "CalcA",
+        "CreateInstanceU",
+        "DestroyInstanceU",
+        "GetPlugInfoU",
+        "ResetA",
+        "SetParameterA",
+        "SetSampleRateU"
+      ],
+      "importModules": [
+        "KERNEL32.dll",
+        "USER32.dll",
+        "COMDLG32.dll",
+        "ADVAPI32.dll",
+        "SHELL32.dll",
+        "ole32.dll",
+        "OLEAUT32.dll",
+        "VERSION.dll",
+        "CRYPT32.dll"
+      ],
+      "ordinaryUltraObjectAdmitted": false,
+      "aliveAdmitted": false,
+      "name": "Cabinet",
+      "backendFamily": "standalone_seven_export",
+      "musicalClass": "audio_to_audio",
+      "ioEvidence": "Model identity and prior device investigation; this inventory performs no rendering",
+      "qualification": "Older probe faulted during construction; cause unresolved.",
+      "retainedLowLevelAdapterAdmitted": false
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Devices/Pc/Collision_64.dll",
+      "sha256": "00dc9ffe8daa2bd7663cacc8c119b06256469d6f7d50a3fecd8c317271ff0207",
+      "bytes": 671744,
+      "architecture": "x86_64",
+      "role": "standalone_live_device_candidate",
+      "exports": [
+        "CalcA",
+        "CreateInstanceU",
+        "DestroyInstanceU",
+        "GetPlugInfoU",
+        "ResetA",
+        "SetParameterA",
+        "SetSampleRateU"
+      ],
+      "importModules": [
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-private-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "KERNEL32.dll",
+        "api-ms-win-crt-convert-l1-1-0.dll",
+        "api-ms-win-crt-utility-l1-1-0.dll",
+        "api-ms-win-crt-time-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll",
+        "api-ms-win-crt-multibyte-l1-1-0.dll",
+        "api-ms-win-crt-environment-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll"
+      ],
+      "ordinaryUltraObjectAdmitted": false,
+      "aliveAdmitted": false,
+      "name": "Collision",
+      "backendFamily": "standalone_seven_export",
+      "musicalClass": "midi_to_audio",
+      "ioEvidence": "Model identity and prior device investigation; this inventory performs no rendering",
+      "qualification": "Older feasibility probe produced finite note audio; retained adapter not admitted.",
+      "retainedLowLevelAdapterAdmitted": false
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Devices/Pc/Corpus_64.dll",
+      "sha256": "082e19a54f33a7d030586dded90e280125e7c3bb50080ba0e8c92935d97b95cc",
+      "bytes": 777216,
+      "architecture": "x86_64",
+      "role": "standalone_live_device_candidate",
+      "exports": [
+        "CalcA",
+        "CreateInstanceU",
+        "DestroyInstanceU",
+        "GetPlugInfoU",
+        "ResetA",
+        "SetParameterA",
+        "SetSampleRateU"
+      ],
+      "importModules": [
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll",
+        "api-ms-win-crt-private-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "KERNEL32.dll",
+        "api-ms-win-crt-convert-l1-1-0.dll",
+        "api-ms-win-crt-utility-l1-1-0.dll",
+        "api-ms-win-crt-time-l1-1-0.dll",
+        "api-ms-win-crt-multibyte-l1-1-0.dll",
+        "api-ms-win-crt-environment-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll"
+      ],
+      "ordinaryUltraObjectAdmitted": false,
+      "aliveAdmitted": false,
+      "name": "Corpus",
+      "backendFamily": "standalone_seven_export",
+      "musicalClass": "audio_to_audio",
+      "ioEvidence": "Model identity and prior device investigation; this inventory performs no rendering",
+      "qualification": "Older feasibility probe rendered stereo input; retained host has no audio-input contract.",
+      "retainedLowLevelAdapterAdmitted": false
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Devices/Pc/Electric_64.dll",
+      "sha256": "66a42b09161ca7d48861e1980523e2cb44dd4f08fbd04ac9c4231a56d79b2be8",
+      "bytes": 581120,
+      "architecture": "x86_64",
+      "role": "standalone_live_device_candidate",
+      "exports": [
+        "CalcA",
+        "CreateInstanceU",
+        "DestroyInstanceU",
+        "GetPlugInfoU",
+        "ResetA",
+        "SetParameterA",
+        "SetSampleRateU"
+      ],
+      "importModules": [
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-private-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-utility-l1-1-0.dll",
+        "KERNEL32.dll",
+        "api-ms-win-crt-convert-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll",
+        "api-ms-win-crt-time-l1-1-0.dll",
+        "api-ms-win-crt-multibyte-l1-1-0.dll",
+        "api-ms-win-crt-environment-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll"
+      ],
+      "ordinaryUltraObjectAdmitted": false,
+      "aliveAdmitted": false,
+      "name": "Electric",
+      "backendFamily": "standalone_seven_export",
+      "musicalClass": "midi_to_audio",
+      "ioEvidence": "Model identity and prior device investigation; this inventory performs no rendering",
+      "qualification": "Exact image accepted by retained low-level adapter; no ordinary object profile.",
+      "retainedLowLevelAdapterAdmitted": true
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Devices/Pc/Tension_64.dll",
+      "sha256": "3bff8e94f7296812d0507e71c97286d0e98bb5d114e30376ab6b6a0f6a905e2a",
+      "bytes": 818688,
+      "architecture": "x86_64",
+      "role": "standalone_live_device_candidate",
+      "exports": [
+        "CalcA",
+        "CreateInstanceU",
+        "DestroyInstanceU",
+        "GetPlugInfoU",
+        "ResetA",
+        "SetParameterA",
+        "SetSampleRateU"
+      ],
+      "importModules": [
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-private-l1-1-0.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-string-l1-1-0.dll",
+        "api-ms-win-crt-utility-l1-1-0.dll",
+        "KERNEL32.dll",
+        "api-ms-win-crt-convert-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll",
+        "api-ms-win-crt-locale-l1-1-0.dll",
+        "api-ms-win-crt-time-l1-1-0.dll",
+        "api-ms-win-crt-multibyte-l1-1-0.dll",
+        "api-ms-win-crt-environment-l1-1-0.dll"
+      ],
+      "ordinaryUltraObjectAdmitted": false,
+      "aliveAdmitted": false,
+      "name": "Tension",
+      "backendFamily": "standalone_seven_export",
+      "musicalClass": "midi_to_audio",
+      "ioEvidence": "Model identity and prior device investigation; this inventory performs no rendering",
+      "qualification": "Older feasibility probe produced finite note audio; retained adapter not admitted.",
+      "retainedLowLevelAdapterAdmitted": false
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.device.autofilter~.mxe64",
+      "sha256": "7f32216175306a6536967dabfc3b4b726a85f8d70d172ef9f37855b4a06917b6",
+      "bytes": 214016,
+      "architecture": "x86_64",
+      "role": "ableton_max_device_external",
+      "exports": [
+        "ext_main"
+      ],
+      "importModules": [
+        "MaxAudio.dll",
+        "MaxAPI.dll",
+        "KERNEL32.dll",
+        "MSVCP140.dll",
+        "VCRUNTIME140.dll",
+        "VCRUNTIME140_1.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll"
+      ],
+      "ordinaryUltraObjectAdmitted": false,
+      "aliveAdmitted": false,
+      "name": "Auto Filter",
+      "backendFamily": "max_external",
+      "musicalClass": "audio_to_audio",
+      "ioEvidence": "Installed reference only; no native execution",
+      "qualification": "No Ultra Max backend or ordinary profile; construction/audio/state/editor/lifecycle unqualified",
+      "referenceSha256": "00994d4fe1e6719c52c7b2bbe39ae384b35230243ba5361e17cb493300bb3194",
+      "attributeCount": 38,
+      "documentedPorts": {
+        "inputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          },
+          {
+            "index": "2",
+            "referenceType": "signal"
+          },
+          {
+            "index": "3",
+            "referenceType": "signal"
+          },
+          {
+            "index": "4",
+            "referenceType": "INLET_TYPE"
+          },
+          {
+            "index": "5",
+            "referenceType": "INLET_TYPE"
+          },
+          {
+            "index": "6",
+            "referenceType": "INLET_TYPE"
+          }
+        ],
+        "outputs": [
+          {
+            "index": "0",
+            "referenceType": "OUTLET_TYPE"
+          },
+          {
+            "index": "1",
+            "referenceType": "OUTLET_TYPE"
+          }
+        ]
+      }
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.device.channeleq~.mxe64",
+      "sha256": "180451aeca26fadc745e636760ea6673c0c28ca8c681096a7c11814391211bae",
+      "bytes": 70144,
+      "architecture": "x86_64",
+      "role": "ableton_max_device_external",
+      "exports": [
+        "ext_main"
+      ],
+      "importModules": [
+        "MaxAudio.dll",
+        "MaxAPI.dll",
+        "KERNEL32.dll",
+        "MSVCP140.dll",
+        "VCRUNTIME140.dll",
+        "VCRUNTIME140_1.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll"
+      ],
+      "ordinaryUltraObjectAdmitted": false,
+      "aliveAdmitted": false,
+      "name": "Channel EQ",
+      "backendFamily": "max_external",
+      "musicalClass": "audio_to_audio",
+      "ioEvidence": "Installed reference only; no native execution",
+      "qualification": "No Ultra Max backend or ordinary profile; construction/audio/state/editor/lifecycle unqualified",
+      "referenceSha256": "533d73b5e345bf038d42296afb05f947edacd236e95e1f092f007a8f0bec976e",
+      "attributeCount": 7,
+      "documentedPorts": {
+        "inputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          },
+          {
+            "index": "2",
+            "referenceType": "signal"
+          },
+          {
+            "index": "3",
+            "referenceType": "signal"
+          },
+          {
+            "index": "4",
+            "referenceType": "signal"
+          },
+          {
+            "index": "5",
+            "referenceType": "signal"
+          }
+        ],
+        "outputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          }
+        ]
+      }
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.device.compressor~.mxe64",
+      "sha256": "46152583b7f5e47eb8a4834b37de3888bac2b4d922d4ee05e0dd6ad95b1b0740",
+      "bytes": 60416,
+      "architecture": "x86_64",
+      "role": "ableton_max_device_external",
+      "exports": [
+        "ext_main"
+      ],
+      "importModules": [
+        "MaxAudio.dll",
+        "MaxAPI.dll",
+        "KERNEL32.dll",
+        "MSVCP140.dll",
+        "VCRUNTIME140.dll",
+        "VCRUNTIME140_1.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll"
+      ],
+      "ordinaryUltraObjectAdmitted": false,
+      "aliveAdmitted": false,
+      "name": "Compressor",
+      "backendFamily": "max_external",
+      "musicalClass": "audio_to_audio",
+      "ioEvidence": "Installed reference only; no native execution",
+      "qualification": "No Ultra Max backend or ordinary profile; construction/audio/state/editor/lifecycle unqualified",
+      "referenceSha256": "c90638119ec318e27af65f8647ff5b0712964b53f47ef039eaacec59f6c20fb5",
+      "attributeCount": 6,
+      "documentedPorts": {
+        "inputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          },
+          {
+            "index": "2",
+            "referenceType": "signal"
+          },
+          {
+            "index": "3",
+            "referenceType": "signal"
+          },
+          {
+            "index": "4",
+            "referenceType": "signal"
+          },
+          {
+            "index": "5",
+            "referenceType": "signal"
+          }
+        ],
+        "outputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          }
+        ]
+      }
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.device.delay~.mxe64",
+      "sha256": "1ea5dc55621add113baa71f2d8e5e07fc5c4e6133fddbb1f8205a4c2c1869445",
+      "bytes": 235520,
+      "architecture": "x86_64",
+      "role": "ableton_max_device_external",
+      "exports": [
+        "ext_main"
+      ],
+      "importModules": [
+        "MaxAudio.dll",
+        "MaxAPI.dll",
+        "KERNEL32.dll",
+        "MSVCP140.dll",
+        "VCRUNTIME140.dll",
+        "VCRUNTIME140_1.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll"
+      ],
+      "ordinaryUltraObjectAdmitted": false,
+      "aliveAdmitted": false,
+      "name": "Delay",
+      "backendFamily": "max_external",
+      "musicalClass": "audio_to_audio",
+      "ioEvidence": "Installed reference only; no native execution",
+      "qualification": "No Ultra Max backend or ordinary profile; construction/audio/state/editor/lifecycle unqualified",
+      "referenceSha256": "6d36bf7b6317c11161a583db74ddfc4021aaccc218fc7271d36bf690de440123",
+      "attributeCount": 14,
+      "documentedPorts": {
+        "inputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          },
+          {
+            "index": "2",
+            "referenceType": "signal"
+          }
+        ],
+        "outputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          }
+        ]
+      }
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.device.drift~.mxe64",
+      "sha256": "b46d47915eddbcf411bab9ce4d3e4c73045f48cdb640d45ba50564e3c5ea1109",
+      "bytes": 4805120,
+      "architecture": "x86_64",
+      "role": "ableton_max_device_external",
+      "exports": [
+        "ext_main"
+      ],
+      "importModules": [
+        "MaxAudio.dll",
+        "MaxAPI.dll",
+        "KERNEL32.dll",
+        "MSVCP140.dll",
+        "VCRUNTIME140.dll",
+        "VCRUNTIME140_1.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll"
+      ],
+      "ordinaryUltraObjectAdmitted": false,
+      "aliveAdmitted": false,
+      "name": "Drift",
+      "backendFamily": "max_external",
+      "musicalClass": "midi_to_audio",
+      "ioEvidence": "Installed reference only; no native execution",
+      "qualification": "No Ultra Max backend or ordinary profile; construction/audio/state/editor/lifecycle unqualified",
+      "referenceSha256": "aad39e17424b0247267e69c350e1700d76313f2a9809cc89e4c4d35c36c893b6",
+      "attributeCount": 71,
+      "documentedPorts": {
+        "inputs": [
+          {
+            "index": "0",
+            "referenceType": "int"
+          }
+        ],
+        "outputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          }
+        ]
+      }
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.device.drumbuss~.mxe64",
+      "sha256": "d3ee603ec307277b41f30836122f183712fecac9fa8dae77a96a2ca212c65dec",
+      "bytes": 103936,
+      "architecture": "x86_64",
+      "role": "ableton_max_device_external",
+      "exports": [
+        "ext_main"
+      ],
+      "importModules": [
+        "MaxAudio.dll",
+        "MaxAPI.dll",
+        "KERNEL32.dll",
+        "MSVCP140.dll",
+        "VCRUNTIME140.dll",
+        "VCRUNTIME140_1.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll"
+      ],
+      "ordinaryUltraObjectAdmitted": false,
+      "aliveAdmitted": false,
+      "name": "Drum Buss",
+      "backendFamily": "max_external",
+      "musicalClass": "audio_to_audio",
+      "ioEvidence": "Installed reference only; no native execution",
+      "qualification": "No Ultra Max backend or ordinary profile; construction/audio/state/editor/lifecycle unqualified",
+      "referenceSha256": "b2b7f352c9808ea7de7a7eb672705a235c13da2aa3c518447574b5b65f88d8d5",
+      "attributeCount": 14,
+      "documentedPorts": {
+        "inputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          },
+          {
+            "index": "2",
+            "referenceType": "signal"
+          },
+          {
+            "index": "3",
+            "referenceType": "signal"
+          },
+          {
+            "index": "4",
+            "referenceType": "signal"
+          }
+        ],
+        "outputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          }
+        ]
+      }
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.device.drumsampler~.mxe64",
+      "sha256": "e2004e1938e2f7226ef45e385516b6716a96069962997637897aa56b8038d152",
+      "bytes": 650752,
+      "architecture": "x86_64",
+      "role": "ableton_max_device_external",
+      "exports": [
+        "ext_main"
+      ],
+      "importModules": [
+        "MaxAudio.dll",
+        "MaxAPI.dll",
+        "KERNEL32.dll",
+        "MSVCP140.dll",
+        "VCRUNTIME140.dll",
+        "VCRUNTIME140_1.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll"
+      ],
+      "ordinaryUltraObjectAdmitted": false,
+      "aliveAdmitted": false,
+      "name": "Drum Sampler",
+      "backendFamily": "max_external",
+      "musicalClass": "midi_to_audio",
+      "ioEvidence": "Installed reference only; no native execution",
+      "qualification": "No Ultra Max backend or ordinary profile; construction/audio/state/editor/lifecycle unqualified",
+      "referenceSha256": "e51d5f07f36b40f6e0a5cdb4e4e0fa883b55bdac0548c95b0641941fe9527beb",
+      "attributeCount": 41,
+      "documentedPorts": {
+        "inputs": [
+          {
+            "index": "0",
+            "referenceType": "int"
+          }
+        ],
+        "outputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          }
+        ]
+      }
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.device.echo~.mxe64",
+      "sha256": "ecef3f45fd9a8398de4b54b1ab0f3eb9d1932e9eab2d20e986ed3db87341e659",
+      "bytes": 15298560,
+      "architecture": "x86_64",
+      "role": "ableton_max_device_external",
+      "exports": [
+        "ext_main"
+      ],
+      "importModules": [
+        "MaxAudio.dll",
+        "MaxAPI.dll",
+        "KERNEL32.dll",
+        "MSVCP140.dll",
+        "VCRUNTIME140.dll",
+        "VCRUNTIME140_1.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll"
+      ],
+      "ordinaryUltraObjectAdmitted": false,
+      "aliveAdmitted": false,
+      "name": "Echo",
+      "backendFamily": "max_external",
+      "musicalClass": "audio_to_audio",
+      "ioEvidence": "Installed reference only; no native execution",
+      "qualification": "No Ultra Max backend or ordinary profile; construction/audio/state/editor/lifecycle unqualified",
+      "referenceSha256": "4bb961aebe80cf4380bf673982ddadc0f2378dee541bb6c71cd71bcf5cbca90e",
+      "attributeCount": 32,
+      "documentedPorts": {
+        "inputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          },
+          {
+            "index": "2",
+            "referenceType": "signal"
+          },
+          {
+            "index": "3",
+            "referenceType": "signal"
+          },
+          {
+            "index": "4",
+            "referenceType": "signal"
+          }
+        ],
+        "outputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          }
+        ]
+      }
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.device.limiter~.mxe64",
+      "sha256": "6d96c7f3ae35dd31729f25c5a7a4525a4b2d7c3da48eb789fabe2c293e7474f9",
+      "bytes": 227840,
+      "architecture": "x86_64",
+      "role": "ableton_max_device_external",
+      "exports": [
+        "ext_main"
+      ],
+      "importModules": [
+        "MaxAudio.dll",
+        "MaxAPI.dll",
+        "KERNEL32.dll",
+        "MSVCP140.dll",
+        "VCRUNTIME140.dll",
+        "VCRUNTIME140_1.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll"
+      ],
+      "ordinaryUltraObjectAdmitted": false,
+      "aliveAdmitted": false,
+      "name": "Limiter",
+      "backendFamily": "max_external",
+      "musicalClass": "audio_to_audio",
+      "ioEvidence": "Installed reference only; no native execution",
+      "qualification": "No Ultra Max backend or ordinary profile; construction/audio/state/editor/lifecycle unqualified",
+      "referenceSha256": "f5bde3148db6d08c3c6876dde4fc3a9f9a1b5a2cdc9051689e68030fbf47a3c8",
+      "attributeCount": 12,
+      "documentedPorts": {
+        "inputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          },
+          {
+            "index": "2",
+            "referenceType": "signal"
+          }
+        ],
+        "outputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          },
+          {
+            "index": "2",
+            "referenceType": "signal"
+          }
+        ]
+      }
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.device.redux~.mxe64",
+      "sha256": "acaa998e1cacc6252bc146b53d157b440a6c88654c7e3d9a201c079ab192d15f",
+      "bytes": 179712,
+      "architecture": "x86_64",
+      "role": "ableton_max_device_external",
+      "exports": [
+        "ext_main"
+      ],
+      "importModules": [
+        "MaxAudio.dll",
+        "MaxAPI.dll",
+        "KERNEL32.dll",
+        "MSVCP140.dll",
+        "VCRUNTIME140.dll",
+        "VCRUNTIME140_1.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll"
+      ],
+      "ordinaryUltraObjectAdmitted": false,
+      "aliveAdmitted": false,
+      "name": "Redux",
+      "backendFamily": "max_external",
+      "musicalClass": "audio_to_audio",
+      "ioEvidence": "Installed reference only; no native execution",
+      "qualification": "No Ultra Max backend or ordinary profile; construction/audio/state/editor/lifecycle unqualified",
+      "referenceSha256": "8f1eec08d14adb1b073122e1a0735b25cfcc73e3588ccc3c2096b9fa6ba0a208",
+      "attributeCount": 11,
+      "documentedPorts": {
+        "inputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          },
+          {
+            "index": "2",
+            "referenceType": "signal"
+          },
+          {
+            "index": "3",
+            "referenceType": "signal"
+          },
+          {
+            "index": "4",
+            "referenceType": "signal"
+          }
+        ],
+        "outputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          }
+        ]
+      }
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.device.reverb~.mxe64",
+      "sha256": "0ce8e742efaee738e03552c15934ef02e1f1d14c475bc22753a31d739ccc5cc4",
+      "bytes": 69632,
+      "architecture": "x86_64",
+      "role": "ableton_max_device_external",
+      "exports": [
+        "ext_main"
+      ],
+      "importModules": [
+        "MaxAudio.dll",
+        "MaxAPI.dll",
+        "KERNEL32.dll",
+        "MSVCP140.dll",
+        "VCRUNTIME140.dll",
+        "VCRUNTIME140_1.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll"
+      ],
+      "ordinaryUltraObjectAdmitted": false,
+      "aliveAdmitted": false,
+      "name": "Reverb",
+      "backendFamily": "max_external",
+      "musicalClass": "audio_to_audio",
+      "ioEvidence": "Installed reference only; no native execution",
+      "qualification": "No Ultra Max backend or ordinary profile; construction/audio/state/editor/lifecycle unqualified",
+      "referenceSha256": "d769084d700ae240c30a5bb22814807195340330a7493b9f1e493dea3c95d7f6",
+      "attributeCount": 5,
+      "documentedPorts": {
+        "inputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          },
+          {
+            "index": "2",
+            "referenceType": "signal"
+          },
+          {
+            "index": "3",
+            "referenceType": "signal"
+          }
+        ],
+        "outputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          }
+        ]
+      }
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.device.roar~.mxe64",
+      "sha256": "f52e20230434f84d0985c2103338b250ffb59623e3b52a2d4ca6cf84988bcd97",
+      "bytes": 246784,
+      "architecture": "x86_64",
+      "role": "ableton_max_device_external",
+      "exports": [
+        "ext_main"
+      ],
+      "importModules": [
+        "MaxAudio.dll",
+        "MaxAPI.dll",
+        "KERNEL32.dll",
+        "MSVCP140.dll",
+        "VCRUNTIME140.dll",
+        "VCRUNTIME140_1.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll"
+      ],
+      "ordinaryUltraObjectAdmitted": false,
+      "aliveAdmitted": false,
+      "name": "Roar",
+      "backendFamily": "max_external",
+      "musicalClass": "audio_to_audio",
+      "ioEvidence": "Installed reference only; no native execution",
+      "qualification": "No Ultra Max backend or ordinary profile; construction/audio/state/editor/lifecycle unqualified",
+      "referenceSha256": "513be1530fcb28853f639452e3ecef6e44ccc5c7c18e5451b5f77aa655219660",
+      "attributeCount": 76,
+      "documentedPorts": {
+        "inputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          }
+        ],
+        "outputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          },
+          {
+            "index": "2",
+            "referenceType": "dict"
+          }
+        ]
+      }
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.device.spectralresonator~.mxe64",
+      "sha256": "cb3ea156b24dae6b231b320697866ae6c750b33caa984aa7e1c76e0033a01dca",
+      "bytes": 7910400,
+      "architecture": "x86_64",
+      "role": "ableton_max_device_external",
+      "exports": [
+        "ext_main"
+      ],
+      "importModules": [
+        "MaxAudio.dll",
+        "MaxAPI.dll",
+        "KERNEL32.dll",
+        "MSVCP140.dll",
+        "VCRUNTIME140.dll",
+        "VCRUNTIME140_1.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll"
+      ],
+      "ordinaryUltraObjectAdmitted": false,
+      "aliveAdmitted": false,
+      "name": "Spectral Resonator",
+      "backendFamily": "max_external",
+      "musicalClass": "audio_to_audio",
+      "ioEvidence": "Installed reference only; no native execution",
+      "qualification": "No Ultra Max backend or ordinary profile; construction/audio/state/editor/lifecycle unqualified",
+      "referenceSha256": "727be891d86bdcdb239bf699314e0e5df7ca804ef788cc28d7abd96cf5b1c2a8",
+      "attributeCount": 15,
+      "documentedPorts": {
+        "inputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          }
+        ],
+        "outputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          }
+        ]
+      }
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.device.spectraltime~.mxe64",
+      "sha256": "15dee89e0038221ee3053ff74f74d7b32942d32dc472f3a5f3c86c8f96219b40",
+      "bytes": 8051200,
+      "architecture": "x86_64",
+      "role": "ableton_max_device_external",
+      "exports": [
+        "ext_main"
+      ],
+      "importModules": [
+        "MaxAudio.dll",
+        "MaxAPI.dll",
+        "KERNEL32.dll",
+        "MSVCP140.dll",
+        "VCRUNTIME140.dll",
+        "VCRUNTIME140_1.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll"
+      ],
+      "ordinaryUltraObjectAdmitted": false,
+      "aliveAdmitted": false,
+      "name": "Spectral Time",
+      "backendFamily": "max_external",
+      "musicalClass": "audio_to_audio",
+      "ioEvidence": "Installed reference only; no native execution",
+      "qualification": "No Ultra Max backend or ordinary profile; construction/audio/state/editor/lifecycle unqualified",
+      "referenceSha256": "450e5ce3014877cbf0c2974287ff18db5214d90e7e4395e285d4ac909bf8c828",
+      "attributeCount": 22,
+      "documentedPorts": {
+        "inputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          }
+        ],
+        "outputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          }
+        ]
+      }
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.device.utility~.mxe64",
+      "sha256": "8aa856df760eb217fd9e42ef47adecd9d68b1da71e83c7119a5b2ba7a546b52c",
+      "bytes": 76800,
+      "architecture": "x86_64",
+      "role": "ableton_max_device_external",
+      "exports": [
+        "ext_main"
+      ],
+      "importModules": [
+        "MaxAudio.dll",
+        "MaxAPI.dll",
+        "KERNEL32.dll",
+        "MSVCP140.dll",
+        "VCRUNTIME140.dll",
+        "VCRUNTIME140_1.dll",
+        "api-ms-win-crt-runtime-l1-1-0.dll",
+        "api-ms-win-crt-heap-l1-1-0.dll",
+        "api-ms-win-crt-stdio-l1-1-0.dll",
+        "api-ms-win-crt-math-l1-1-0.dll"
+      ],
+      "ordinaryUltraObjectAdmitted": false,
+      "aliveAdmitted": false,
+      "name": "Utility",
+      "backendFamily": "max_external",
+      "musicalClass": "audio_to_audio",
+      "ioEvidence": "Installed reference only; no native execution",
+      "qualification": "No Ultra Max backend or ordinary profile; construction/audio/state/editor/lifecycle unqualified",
+      "referenceSha256": "e1634b9615eb532028414be98e663298592bda025d951ab1062ea018e584f3f5",
+      "attributeCount": 13,
+      "documentedPorts": {
+        "inputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          },
+          {
+            "index": "2",
+            "referenceType": "signal"
+          },
+          {
+            "index": "3",
+            "referenceType": "signal"
+          }
+        ],
+        "outputs": [
+          {
+            "index": "0",
+            "referenceType": "signal"
+          },
+          {
+            "index": "1",
+            "referenceType": "signal"
+          }
+        ]
+      }
+    }
+  ],
+  "literalDlls": [
+    {
+      "rootId": 0,
+      "relativePath": "Program/Ableton Live Engine.dll",
+      "sha256": "15dfca841e8d41380e493d9f890720daab51ce32b900e44b22c25f36045ddd87",
+      "bytes": 28077512,
+      "architecture": "x86_64",
+      "role": "live_engine_runtime_embedded_device_candidate_container"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/DirectML.dll",
+      "sha256": "8addcf4953bf3682541efa2a6526e240e8e231df91a8285306b2b9725f422961",
+      "bytes": 27383832,
+      "architecture": "x86_64",
+      "role": "live_support_or_platform_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/plugins/imageformats/qsvg.dll",
+      "sha256": "7d79e2803f800c46a166e09284b91383d5cc39d79290832ef899c451b8085bec",
+      "bytes": 25088,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/plugins/platforms/qwindows.dll",
+      "sha256": "2aeae372afa4b54b5f858d492bdbd8d1853fa97499aaf9449302a460a8082dee",
+      "bytes": 1448448,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/Qt/labs/folderlistmodel/qmlfolderlistmodelplugin.dll",
+      "sha256": "fc8e77e0c32537a0a9c52f2c48c3a60fbc0e4e31ffa73bc9aab6bab2f670fa7e",
+      "bytes": 57344,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/Qt/labs/folderlistmodel/qmlfolderlistmodelplugind.dll",
+      "sha256": "c0d1ba8dacabf350e69f279654478535e4baff986c79ec263efbd4ebe0b9855f",
+      "bytes": 189952,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/Qt/labs/settings/qmlsettingsplugin.dll",
+      "sha256": "b31b8f5ea176b1fba2c42083382a9d2c7943b8659d681afa2a7a88cb1514bcec",
+      "bytes": 35840,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/Qt/labs/settings/qmlsettingsplugind.dll",
+      "sha256": "d74480f84252d677b4dc190d7970566a3b8140cd4dfe01be1c9bc399a0d6b460",
+      "bytes": 122880,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtGraphicalEffects/private/qtgraphicaleffectsprivate.dll",
+      "sha256": "d821b977a77b948858c01e50c2c2c26551e617758b1505c0797706686095ddc3",
+      "bytes": 55296,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtGraphicalEffects/private/qtgraphicaleffectsprivated.dll",
+      "sha256": "f0e68b12b448668bf10c61ada06773c7b45c89a17cd0fa7c828d609bf82d5920",
+      "bytes": 189952,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtGraphicalEffects/qtgraphicaleffectsplugin.dll",
+      "sha256": "fd213747b8451a9b1324034908c9293a8802798bf31dca801c9672be75c570a4",
+      "bytes": 59392,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtGraphicalEffects/qtgraphicaleffectsplugind.dll",
+      "sha256": "705686bd5d8122c0ef3e26540105e129a5129715404ad9da8085de40915b2331",
+      "bytes": 120320,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQml/Models.2/modelsplugin.dll",
+      "sha256": "a730ac0f8f7b234ef78895c690b5772f7395e9fc8e632c3369fb5aa121b36656",
+      "bytes": 16896,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQml/Models.2/modelsplugind.dll",
+      "sha256": "17b2f0ba13fc7c03a89e61e38b949cef7a5f3fb1ac3575ee57bd4e7cddfbbc29",
+      "bytes": 67584,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQml/StateMachine/qtqmlstatemachine.dll",
+      "sha256": "631385da0b037ab2898d053772ff018faa823d9615c13d6e81c68f6440e7c513",
+      "bytes": 68608,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQml/StateMachine/qtqmlstatemachined.dll",
+      "sha256": "9231dc3717f1a4485304f22f33febb17a1348110846b224d09e1a825e10192a7",
+      "bytes": 285696,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQml/WorkerScript.2/workerscriptplugin.dll",
+      "sha256": "6dc01235c5d459bf906caf66fe66ef41dd9163ad124e57abecd9d39372bb2c2e",
+      "bytes": 16896,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQml/WorkerScript.2/workerscriptplugind.dll",
+      "sha256": "c4fdc99c4c9e14fbf9e7e432ebaf03d9ffc1e370902c2ea91b217124d389f243",
+      "bytes": 68608,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQml/qmlplugin.dll",
+      "sha256": "c1e9b53ce973d31ff285218d76672b7b7df11492c1f0a0afb1074a29dcef39c5",
+      "bytes": 17408,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQml/qmlplugind.dll",
+      "sha256": "d928bddef26808d8e5decf572412240ed561f66ad63ba1950a5ac40a8c4d30cf",
+      "bytes": 71168,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick.2/qtquick2plugin.dll",
+      "sha256": "04e7d95cfd698129328d2353da8c9ed2481dc667c2db0466c811574839529c5f",
+      "bytes": 17920,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick.2/qtquick2plugind.dll",
+      "sha256": "25a8dc4a930ab55056d51afd2e1e25cdc6540caf4dbba6ee664454ad72b45d03",
+      "bytes": 80896,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick/Controls/Styles/Flat/qtquickextrasflatplugin.dll",
+      "sha256": "472988232e834c247e3ccf14954f39fe46a4f1bfff2d010e14fa941b04ceeb2d",
+      "bytes": 823808,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick/Controls/Styles/Flat/qtquickextrasflatplugind.dll",
+      "sha256": "e0cfc638731484e847da847f0f8bc7a51539b4a6b4f36f3e3110784f8d8d48f9",
+      "bytes": 1063936,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick/Controls/qtquickcontrolsplugin.dll",
+      "sha256": "defad2a37d421b5006c4ab148ce4da192f121c3b981dedd3e05cada5b15397fb",
+      "bytes": 330240,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick/Controls/qtquickcontrolsplugind.dll",
+      "sha256": "ae60e987994b2f91227a5675bf87197f280a9b26a70dc062d92d2c504c5056fc",
+      "bytes": 1139200,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick/Dialogs/Private/dialogsprivateplugin.dll",
+      "sha256": "b8c1176fced611ee2ae5550763336fc99f4af73da68c36792985e2ed8a6d27e6",
+      "bytes": 45568,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick/Dialogs/Private/dialogsprivateplugind.dll",
+      "sha256": "bc7b031c6cb30cacf8478fd31e95a07889767123e5588c8a1406612fe056b7bc",
+      "bytes": 150528,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick/Dialogs/dialogplugin.dll",
+      "sha256": "b2aa35196bf0ae9793337cc8ac1663a1c61d8fe60f7d513fcde17b676fc9ce31",
+      "bytes": 134656,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick/Dialogs/dialogplugind.dll",
+      "sha256": "e727c7b03b92426aa7e779f8b67568daa49764bf6695fb1c3adfbec4512756b8",
+      "bytes": 642048,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick/Extras/qtquickextrasplugin.dll",
+      "sha256": "7a1d74b9ebdad9a4a0228b440124c4e89361cfb50ceb2a41d29cfa90025c1d36",
+      "bytes": 71680,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick/Extras/qtquickextrasplugind.dll",
+      "sha256": "57b54f204dd4c6085695f52177bddcded33d0ca96bf716576f815c2badaa68ac",
+      "bytes": 247808,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick/Layouts/qquicklayoutsplugin.dll",
+      "sha256": "2a6dee5a9ee0ce4a8a383a70bbc447341be6732ea622924cf2e2681893c3c67a",
+      "bytes": 106496,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick/Layouts/qquicklayoutsplugind.dll",
+      "sha256": "92e014364e16ffa55a5332de31dcc0c21049a35ba16327b0d73ca15e794b9ab0",
+      "bytes": 479232,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick/LocalStorage/qmllocalstorageplugin.dll",
+      "sha256": "ddab8b4db8c475c9353655a6703cb85371243a6d01e20df8e89d9a664c2806ca",
+      "bytes": 47616,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick/LocalStorage/qmllocalstorageplugind.dll",
+      "sha256": "f62b34bc40bccbfb6aa014ac94940c5a1eab7896b620e1c93e5e6aceebc938e5",
+      "bytes": 181760,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick/Particles.2/particlesplugin.dll",
+      "sha256": "8ae19242821ad22a821809066fb4c69319971ead237b279f6a7de2541f2514f2",
+      "bytes": 17408,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick/Particles.2/particlesplugind.dll",
+      "sha256": "69e68c96ad7586131f99daff22060d0592949ce4556723cb1766f368b563cb25",
+      "bytes": 68096,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick/PrivateWidgets/widgetsplugin.dll",
+      "sha256": "1b35eb4264f1f979d06aa6bc42e3220623a7891a50422dec018147750b783176",
+      "bytes": 121344,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick/PrivateWidgets/widgetsplugind.dll",
+      "sha256": "9b52c92e26cdd426ecc6e674ea81420caefc08114f7b9d6ac887f38a558af4e4",
+      "bytes": 488448,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick/Shapes/qmlshapesplugin.dll",
+      "sha256": "c30ce4bb6f33cefde444af2c1cdb74813442d8766dc78b4e53ee3a247fef68fa",
+      "bytes": 17408,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick/Shapes/qmlshapesplugind.dll",
+      "sha256": "509debbf558a66a7dba04e1e0ac09fe7f58467d12c542c00357497f3fcbd5539",
+      "bytes": 83968,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick/Window.2/windowplugin.dll",
+      "sha256": "b087db5f6635d2480fd3c9ca51640925a2741544a839ec79f525bd00367902a7",
+      "bytes": 46080,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt/qml/QtQuick/Window.2/windowplugind.dll",
+      "sha256": "f690608c5da8a3e8aca4dc79c91e18c4306fb5edebf8b501e189cd3901ec740d",
+      "bytes": 194048,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt5Core.dll",
+      "sha256": "0bb8f029c4fdf9a04f580d330b55a8a6a62173f72512ad45c9b19a049186b535",
+      "bytes": 7972864,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt5Gui.dll",
+      "sha256": "227e5b6898a2ba6a79c2e97ac4c27debbcb49c35231817318d2f693e0e8c40c2",
+      "bytes": 6743552,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt5Network.dll",
+      "sha256": "bfa2dd7812b709c578edd171580139cca36440472103992392811bec7ec6e860",
+      "bytes": 1056768,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt5Qml.dll",
+      "sha256": "65e84d1e96f426fa5c21e2cd1bdd701f085571b17e50e89c04370311d87b7812",
+      "bytes": 3582976,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt5QmlModels.dll",
+      "sha256": "d587658528752fc0e9779d7e402a1f2f27b163088a6ae65068342148dd5f02e0",
+      "bytes": 431616,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt5QmlWorkerScript.dll",
+      "sha256": "a6cdc400594b2c8332c7c1889abeb574efdd4b00b34145d770229c6144c70031",
+      "bytes": 50176,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt5Quick.dll",
+      "sha256": "65aa08e53c85eb17253a3075cc50f0c0fe5a3cc069d66a972c5a3b18918bcc2d",
+      "bytes": 4137472,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt5Svg.dll",
+      "sha256": "7fb1cb737cba650fcd7dd1d583c8d41389ede207ad473488939d03b246e0e628",
+      "bytes": 323584,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/Qt5Widgets.dll",
+      "sha256": "f9ccd65bc033394f355a64e402e0ba0416221b03a869c1972c124380f957bda2",
+      "bytes": 5490688,
+      "architecture": "x86_64",
+      "role": "qt_framework_or_plugin_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/REX Shared Library.dll",
+      "sha256": "adacdc8ff4a68b0b3b814988b190295a11b7f5644575c783bd058f1d6d369181",
+      "bytes": 856576,
+      "architecture": "x86_64",
+      "role": "live_support_or_platform_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/USFLIB.dll",
+      "sha256": "2b658b7b6d6f9ba28c3c5d9b3dac4374920380cd9aaf9524210f1b1f0a723f7e",
+      "bytes": 325120,
+      "architecture": "x86_64",
+      "role": "live_support_or_platform_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/VideoExportMMF.dll",
+      "sha256": "e3dbf34e8e61fd190a8e6c63b6e4f16d4764959103e37ce7196d8a3498d30728",
+      "bytes": 394752,
+      "architecture": "x86_64",
+      "role": "live_support_or_platform_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/WebView2Loader.dll",
+      "sha256": "609c974a8cdd6a76a745b3d81b62f321d79f2dc8f4929e1eea8469d9d78baf79",
+      "bytes": 165968,
+      "architecture": "x86_64",
+      "role": "live_support_or_platform_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/d3dcompiler_47.dll",
+      "sha256": "4e3b814dd01cfb8657c35bd122c6e79867b044b1cb56d989a577d28c38b3e251",
+      "bytes": 4481984,
+      "architecture": "x86_64",
+      "role": "live_support_or_platform_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/libEGL.dll",
+      "sha256": "cc0971bdf15944082a861a91b3fbd899981e6b57df2c51f1fcec1083cfa945cf",
+      "bytes": 17920,
+      "architecture": "x86_64",
+      "role": "live_support_or_platform_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/libGLESv2.dll",
+      "sha256": "c44809b003c55a549cacf014cc1a3d1b4ba89e2829803d3ba3ae52f1d924d8ba",
+      "bytes": 3379200,
+      "architecture": "x86_64",
+      "role": "live_support_or_platform_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/libmp3lame.dll",
+      "sha256": "28af6645dc49a9a421908402928acc4822dae7147d22ad51526ed194f8cd0642",
+      "bytes": 415744,
+      "architecture": "x86_64",
+      "role": "live_support_or_platform_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/libusb-1.0.dll",
+      "sha256": "b3c40bb34f0b84cd7f3ddb7148eb6717abd516d11dd5a90203d9a44879177db5",
+      "bytes": 163840,
+      "architecture": "x86_64",
+      "role": "live_support_or_platform_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/musicai.dll",
+      "sha256": "34ed0bef4b2c30e2905304ed0e76bda655cdffcb57f0c7f7ebaeb9c3e60e7712",
+      "bytes": 3800064,
+      "architecture": "x86_64",
+      "role": "live_support_or_platform_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/onnxruntime_abl.dll",
+      "sha256": "dc43ce6746351fc1f8b90daedc99c174f68f9af41a50e873ef73269cabdc508e",
+      "bytes": 18297288,
+      "architecture": "x86_64",
+      "role": "live_support_or_platform_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Program/soxr.dll",
+      "sha256": "6d2f08c5e4bff8b8aee135f35104a3ee0fdd72aafc367740b328ac119827f5c7",
+      "bytes": 330240,
+      "architecture": "x86_64",
+      "role": "live_support_or_platform_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Redist/ReWire.dll",
+      "sha256": "93d20c00b70ba8702effbdfc131db45e923fa0c082baf4f3fbb551d0d414cc02",
+      "bytes": 2081280,
+      "architecture": "x86_64",
+      "role": "installer_or_redistributable"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Devices/Pc/Amp_64.dll",
+      "sha256": "6618c6f754c9e33bfde2fb1fc02b14befee6c685552385fea2e7ba32964fcd2a",
+      "bytes": 1596928,
+      "architecture": "x86_64",
+      "role": "standalone_live_device_candidate"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Devices/Pc/Analog_64.dll",
+      "sha256": "4528afb1fbc78d49ed92161ed13ae1df50606e2e2b2c4f28caeca0cbc1476133",
+      "bytes": 816640,
+      "architecture": "x86_64",
+      "role": "standalone_live_device_candidate"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Devices/Pc/Cabinet_64.dll",
+      "sha256": "4be585af8794f579c1e3b2091b12167ff2b454f78e7e1981db4a0410e147cfe2",
+      "bytes": 1283072,
+      "architecture": "x86_64",
+      "role": "standalone_live_device_candidate"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Devices/Pc/Collision_64.dll",
+      "sha256": "00dc9ffe8daa2bd7663cacc8c119b06256469d6f7d50a3fecd8c317271ff0207",
+      "bytes": 671744,
+      "architecture": "x86_64",
+      "role": "standalone_live_device_candidate"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Devices/Pc/Corpus_64.dll",
+      "sha256": "082e19a54f33a7d030586dded90e280125e7c3bb50080ba0e8c92935d97b95cc",
+      "bytes": 777216,
+      "architecture": "x86_64",
+      "role": "standalone_live_device_candidate"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Devices/Pc/Electric_64.dll",
+      "sha256": "66a42b09161ca7d48861e1980523e2cb44dd4f08fbd04ac9c4231a56d79b2be8",
+      "bytes": 581120,
+      "architecture": "x86_64",
+      "role": "standalone_live_device_candidate"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Devices/Pc/Tension_64.dll",
+      "sha256": "3bff8e94f7296812d0507e71c97286d0e98bb5d114e30376ab6b6a0f6a905e2a",
+      "bytes": 818688,
+      "architecture": "x86_64",
+      "role": "standalone_live_device_candidate"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Extensions/Index/onnxruntime_abl.dll",
+      "sha256": "dc43ce6746351fc1f8b90daedc99c174f68f9af41a50e873ef73269cabdc508e",
+      "bytes": 18297288,
+      "architecture": "x86_64",
+      "role": "live_support_or_platform_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/support/CEF/chrome_elf.dll",
+      "sha256": "9d7e32a31cf899ce0e347aefa32e32417dc45352fda640cf07b49da6432402e2",
+      "bytes": 1381888,
+      "architecture": "x86_64",
+      "role": "max_runtime_or_support_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/support/CEF/d3dcompiler_47.dll",
+      "sha256": "9f4e7aa83cfe86df0e3887f66f558aff11d28c0b97c2df54fa57559b355889fe",
+      "bytes": 4691536,
+      "architecture": "x86_64",
+      "role": "max_runtime_or_support_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/support/CEF/libEGL.dll",
+      "sha256": "b13e5336a0d445bc1037054438454071b018f8c8cd78e08f457adf3f33f390cf",
+      "bytes": 495104,
+      "architecture": "x86_64",
+      "role": "max_runtime_or_support_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/support/CEF/libGLESv2.dll",
+      "sha256": "0e1cf4a49761709b95d1439d539dd40cd162fdb80bd87855224591585ffba6f2",
+      "bytes": 7839232,
+      "architecture": "x86_64",
+      "role": "max_runtime_or_support_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/support/CEF/libcef.dll",
+      "sha256": "e1493b6f38a5b3d6c8219884ad2edd67de350f2c3807ede53d062a09ab54ce91",
+      "bytes": 231434752,
+      "architecture": "x86_64",
+      "role": "max_runtime_or_support_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/support/CEF/vk_swiftshader.dll",
+      "sha256": "22e9f95ff0f7e9bab49d2f9ff592b2cd43cb149f91edfd50f59a844c6b69bea3",
+      "bytes": 5396992,
+      "architecture": "x86_64",
+      "role": "max_runtime_or_support_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/support/CEF/vulkan-1.dll",
+      "sha256": "84d163901c6e7bac921e40a22f51b270e12f0b56f62a43676c888c2b1fe409bf",
+      "bytes": 886272,
+      "architecture": "x86_64",
+      "role": "max_runtime_or_support_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/support/MaxAPI.dll",
+      "sha256": "685e4bd9ce53e789be67d91c9a7e9119ecdeaf7e5b84aac4b4a50fe2609755cf",
+      "bytes": 265216,
+      "architecture": "x86_64",
+      "role": "max_runtime_or_support_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/support/MaxAudio.dll",
+      "sha256": "45b8d50382feed76f39e89c62c8b59b7d0e610231e782cacaceb3175b3aac816",
+      "bytes": 972800,
+      "architecture": "x86_64",
+      "role": "max_runtime_or_support_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/support/MaxLua.dll",
+      "sha256": "2722d7351124e06dfd38af307a4ee408610ea90afcf493e1306b4a0824854a54",
+      "bytes": 660480,
+      "architecture": "x86_64",
+      "role": "max_runtime_or_support_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/support/MaxPlug.dll",
+      "sha256": "b280f29930a2b54025d6beb0fbc75bd6b8d723446b09ab6c9ed4ff3aff2523d1",
+      "bytes": 33112576,
+      "architecture": "x86_64",
+      "role": "max_runtime_or_support_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/support/jitlib.dll",
+      "sha256": "ec93b9cd69a6bb89a38ef41f9c0ae00f5beb7720ef99c34bc678676ba90a85eb",
+      "bytes": 1349120,
+      "architecture": "x86_64",
+      "role": "max_runtime_or_support_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/support/maxcrt.dll",
+      "sha256": "0164c6280b91e9e5471cb8e71829014f69733d379c8eb1a16d4f8f57757eca4e",
+      "bytes": 604672,
+      "architecture": "x86_64",
+      "role": "max_runtime_or_support_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/support/maxcrt_p.dll",
+      "sha256": "254be7faad33267726655795d7d0d3105e7b236a39a9fe85f76d7b849549b0ef",
+      "bytes": 832512,
+      "architecture": "x86_64",
+      "role": "max_runtime_or_support_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/support/mozjs185-1.0.dll",
+      "sha256": "723d8e840d1fef954a786e82bdc1fbd33de4cab883bc6a68f4bb16d2526883fc",
+      "bytes": 2400768,
+      "architecture": "x86_64",
+      "role": "max_runtime_or_support_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/support/patcher.dll",
+      "sha256": "70f2c075a3f10cedfd39c86d08263b41da16f0849ca6e1f933e3c1ac3cbfb66f",
+      "bytes": 225792,
+      "architecture": "x86_64",
+      "role": "max_runtime_or_support_dependency"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Misc/MultiF0/Pc/multif0_64.dll",
+      "sha256": "7546c3f1f5ed31e78176a183f8df8328045f7262941be649fb206bc4017a235d",
+      "bytes": 3424712,
+      "architecture": "x86_64",
+      "role": "live_support_or_platform_dependency"
+    },
+    {
+      "rootId": 2,
+      "relativePath": "Cache/WebView2/EBWebView/Domain Actions/3.0.0.20/domain_actions.dll",
+      "sha256": "e5c9378b540360fb4ab0b16bf40ed18bd99cf4a8a5a6923f4f240d373fb441cb",
+      "bytes": 84808,
+      "architecture": "x86_64",
+      "role": "browser_cache_dependency"
+    },
+    {
+      "rootId": 2,
+      "relativePath": "Cache/WebView2/EBWebView/Speech Recognition/1.15.0.1/Microsoft.CognitiveServices.Speech.core.dll",
+      "sha256": "62a13d8459e0992c311dc3551bf3c2d1ce167ea7fa40f0ec62193f3bd760b36e",
+      "bytes": 2692424,
+      "architecture": "x86_64",
+      "role": "browser_cache_dependency"
+    },
+    {
+      "rootId": 2,
+      "relativePath": "Cache/WebView2/EBWebView/WidevineCdm/4.10.3112.0/_platform_specific/win_x64/widevinecdm.dll",
+      "sha256": "e1f9ad648017e2cb0f0cd798d815dc51012b279ba32571e7b6eb5120b0ed2c05",
+      "bytes": 22980088,
+      "architecture": "x86_64",
+      "role": "browser_cache_dependency"
+    },
+    {
+      "rootId": 7,
+      "relativePath": "ReWire.dll",
+      "sha256": "93d20c00b70ba8702effbdfc131db45e923fa0c082baf4f3fbb551d0d414cc02",
+      "bytes": 2081280,
+      "architecture": "x86_64",
+      "role": "live_support_or_platform_dependency"
+    }
+  ],
+  "lowerLevelAbletonDsp": [
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.alternate~.mxe64",
+      "sha256": "633b9969870db6fba4beb78ca83898d2549ce45012f5eacf163d60a465414808",
+      "bytes": 109568,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.alternate~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.basicshapes~.mxe64",
+      "sha256": "2f41d83dd839039cb52539327f518c69164a2eac8210711131cff53945b0c436",
+      "bytes": 58880,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.basicshapes~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.bitgrunge~.mxe64",
+      "sha256": "98b51a5d5761f2d941482ee59ea121de4598d59edd7a7617c7e9e15dfcd4446d",
+      "bytes": 58368,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.bitgrunge~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.bubble~.mxe64",
+      "sha256": "1fa41a6e75094a8f7b1d0803a99e2bf3d26cbba970d2d5ecaa0ec21682faeaf3",
+      "bytes": 65024,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.bubble~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.chip~.mxe64",
+      "sha256": "7622f02a2c991a8d89732f7f2e8c87aa05703bffbcb3c3cb640e350469b018f3",
+      "bytes": 80384,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.chip~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.chorus~.mxe64",
+      "sha256": "327a8dd7e2dc5ad18fef6901e1980356018c86fc3f58c4faee847b3719e7a715",
+      "bytes": 90624,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.chorus~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.compander~.mxe64",
+      "sha256": "3b80f230f9f199cecfe5c7086c9314fe66bea40daa043ee176d5405ebb8dec82",
+      "bytes": 52736,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.compander~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.crackle~.mxe64",
+      "sha256": "fe33fa96ee86d3a17c342f23cce521ac7da702b488cea43408e187fc49565422",
+      "bytes": 83456,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.crackle~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.darkhall~.mxe64",
+      "sha256": "d023e9880e33f13c38df36f964d7d6a89506512f22c494af48b53d94a72f63d8",
+      "bytes": 156672,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.darkhall~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.dfm~.mxe64",
+      "sha256": "58cd054377e5e05826a907aae408828dcbecd813d76da36ce2a3e3321b20f12e",
+      "bytes": 61952,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.dfm~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.distortion~.mxe64",
+      "sha256": "11fac9aa1d49e1ca4768097b6c454a09bd41a56e2ebb1b6f874fb90d91c39e56",
+      "bytes": 155136,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.distortion~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.doubler~.mxe64",
+      "sha256": "e2b9813ae31af4e8b0fd9f4f6f37bd2811615397f1609daa15d942954269ef97",
+      "bytes": 102400,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.doubler~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.dualbasicshapes~.mxe64",
+      "sha256": "15be6996e4b0124b9b75e35d26c95461f4d13f8ca380ade2609a1c6f779b4333",
+      "bytes": 80896,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.dualbasicshapes~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.ensemble~.mxe64",
+      "sha256": "05a150c63882239ed55125d721917c4b99a4a7d8c66478c5939698870bc08c74",
+      "bytes": 91648,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.ensemble~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.envfollower~.mxe64",
+      "sha256": "a07cc88ba28847c886e749770e734292e153cda93a3645e94f712954a0227b03",
+      "bytes": 47104,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.envfollower~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.euclid~.mxe64",
+      "sha256": "2afb18982ff9fccbe6893b0af20f94c5c94956e415095c49f9b95087f454a666",
+      "bytes": 111616,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.euclid~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.expshaper~.mxe64",
+      "sha256": "23bc31f774bb7a70dfbaecd376662e39b1ec049623d07933f2309ce44f858b48",
+      "bytes": 45056,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.expshaper~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.extratone~.mxe64",
+      "sha256": "33886f2e237ad30ed9c5177828903e6daab6248a96014e921cc53b3f28660f53",
+      "bytes": 59392,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.extratone~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.filterednoise~.mxe64",
+      "sha256": "ccf63b7e5cb9ffc896f9886860f0a081b3863226ab46df5d523563722f88ee48",
+      "bytes": 60416,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.filterednoise~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.filther~.mxe64",
+      "sha256": "fb7fa93c680c26e36304c9c6ecae889e6e904c2f8df1e09cd7c9bc04ad7bcc01",
+      "bytes": 65536,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.filther~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.flanger~.mxe64",
+      "sha256": "393091880d2b5bd42954fbd8ab696823a0553ad7521ebcf06747ba39c4d1e13d",
+      "bytes": 102400,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.flanger~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.fmbass~.mxe64",
+      "sha256": "f22e690ffab09eb93879f8424b32e39e0b9c7d7df0dfa3811a1c715962716f8b",
+      "bytes": 56320,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.fmbass~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.foldfm~.mxe64",
+      "sha256": "d560d25d13b3a7b3420450eb59621b95c00fe7b3e8ce0cbc33692b179979d99b",
+      "bytes": 62464,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.foldfm~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.fuzz~.mxe64",
+      "sha256": "275edf420d543a41850a2471b967330f3cfd1edcfcde3cdbea00dacfa7c8b13d",
+      "bytes": 155136,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.fuzz~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.harmonicfm~.mxe64",
+      "sha256": "cea74a5ecb6eeaf92907666d61aa44b5f7f719539f49b587aabee3189b8caee8",
+      "bytes": 60416,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.harmonicfm~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.meldfilter~.mxe64",
+      "sha256": "72c6334ea4f7de877e7a87ac16aa35b322509eb6348dde52df8f0f7528fb2005",
+      "bytes": 153088,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.meldfilter~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.meldosc~.mxe64",
+      "sha256": "0ee721d82bbab44a6e36a998ae5221075843fbd32db5b15975be64448d2aa87d",
+      "bytes": 239616,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.meldosc~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.modalresonator~.mxe64",
+      "sha256": "11740dcf64f2d84c34063f02e6b430ff57c84276b59c463acc18b14ef40c1c8f",
+      "bytes": 94208,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.modalresonator~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.modulator~.mxe64",
+      "sha256": "0937b0ca4f0d3059a69876aefa6e9c24436e1045fdbf53ff0b4c85ac4c740ee6",
+      "bytes": 109568,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.modulator~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.noiseloop~.mxe64",
+      "sha256": "688812c18829648ca530d0a2adc7ae24fc3c75634608db9bb7b61d62ff47af1a",
+      "bytes": 67072,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.noiseloop~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.noisyshapes~.mxe64",
+      "sha256": "d0aab704cc40e951107ed0a427612e8c9a581cbfc09dad4abd8ad0501a6aa90d",
+      "bytes": 68608,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.noisyshapes~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.overdrive~.mxe64",
+      "sha256": "27e9e3ebdbc0f192893db50cc606e757ff21967a3fa3347b2d1e26ba6a009375",
+      "bytes": 155136,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.overdrive~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.phaser~.mxe64",
+      "sha256": "ea5b39f3d6fa5b2dd03816341b9d02732d7e96e455e796687904a971092291d4",
+      "bytes": 104960,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.phaser~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.pitchestimator~.mxe64",
+      "sha256": "5c0402fe7456c98560efafea660a9a424b174b9067c5f69cfa56ffd0067223c8",
+      "bytes": 7895552,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.pitchestimator~.mxe64",
+      "documentedBoundary": "signal_to_analysis_outputs_with_untyped_outputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.pitchshifter~.mxe64",
+      "sha256": "c34bd098a479e1f3f16438f0a3c960f786e11cce865b38cab4d5f0e96b05af84",
+      "bytes": 99328,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.pitchshifter~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.prism~.mxe64",
+      "sha256": "79d949d6a870a35d3c7b4b9cebd6f9246ad8a51a3f7b783cefb2931c095c7ffc",
+      "bytes": 154624,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.prism~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.pulsate~.mxe64",
+      "sha256": "554586c59d9e3980bfde949d1245cba9cd32c42c9a4b0d0f11697baf17e3b26c",
+      "bytes": 109568,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.pulsate~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.quartz~.mxe64",
+      "sha256": "791542f4cd7867b563f352ede87903c1dd9a971e2110d4eb29ec52be32c71a86",
+      "bytes": 156672,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.quartz~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.rain~.mxe64",
+      "sha256": "1ccf7ec636effd56d8d0c06026eedf91c875399c064a57266b0ae101c2568855",
+      "bytes": 65024,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.rain~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.ramp~.mxe64",
+      "sha256": "d057ad8a04ab62370724107a974d1b81c15f2ba2c39775828ed6f2d5ba720847",
+      "bytes": 109568,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.ramp~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.ringmod~.mxe64",
+      "sha256": "effd97a81818f5aab1454898728f5e6a4504c2df006b0fe797dcd850b7a81d87",
+      "bytes": 99328,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.ringmod~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.saturator~.mxe64",
+      "sha256": "42a7554ef7001dd601f3b955fb9e5cbf0194a25b02c96bd8777f8e8599c1660d",
+      "bytes": 371712,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.saturator~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.shepard~.mxe64",
+      "sha256": "35481941fcb517bf12cdddae287c6cf97885f5c8fd1da4e73d33e130e2dbea25",
+      "bytes": 58368,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.shepard~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.shimmer~.mxe64",
+      "sha256": "7873492ca65dc85df3b5d7b6e227b17c61c9d2880d9909da40064d2297960451",
+      "bytes": 156672,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.shimmer~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.simplefm~.mxe64",
+      "sha256": "fa7b141fdf798a3801056050e36885e684b1785ab11c92bd9750d92293170b23",
+      "bytes": 56320,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.simplefm~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.squarefifth~.mxe64",
+      "sha256": "c7ac28fa5850effb5284d699cd85d1d104baa3ebff156ff7eb681ea6bd88ac14",
+      "bytes": 55808,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.squarefifth~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.squaresync~.mxe64",
+      "sha256": "5e205245f9e6811c093ff27fa09405c7346d8e099a1a1be603fc710c879a6024",
+      "bytes": 55296,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.squaresync~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.stereolfo~.mxe64",
+      "sha256": "aebb5095abb7e451ea825a3b74511b5ef03a478c489e9db7c0efe1dfe84b7863",
+      "bytes": 72704,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.stereolfo~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.subosc~.mxe64",
+      "sha256": "8c9ff257eaa6075dca83b6e8e7b0b28e46488bdf781322601e97a70035d44c24",
+      "bytes": 60416,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.subosc~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.swarm~.mxe64",
+      "sha256": "d9bde437bc07bee99cca5dcb07958d5084ecbfec29356cb8ae42451e14485603",
+      "bytes": 114176,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.swarm~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.tarp~.mxe64",
+      "sha256": "795a08b6cf9648e390951028db0173a72e821b5a59879fa065ab01d4a499c12f",
+      "bytes": 58880,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.tarp~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.tides~.mxe64",
+      "sha256": "57529868bda162f95597aaaa436dfe1721faa1ec7a590e80137a1352f563535b",
+      "bytes": 156672,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.tides~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.transform~.mxe64",
+      "sha256": "0b310f3ebc01a677a85ca821ef7da9e75b87756cfa55a7c7cfccf6fbde0c73b4",
+      "bytes": 85504,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.transform~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.transientdesign~.mxe64",
+      "sha256": "f6cbbf6ef45f55808b223044beb46474c42facd0bad1855cf4f8dbc9a9465170",
+      "bytes": 59392,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.transientdesign~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.velvetnoise~.mxe64",
+      "sha256": "92f2ff20f1bb06a4ae428fd8e2ab8eacdc692817f63c4e4d66ac6897d55e6f06",
+      "bytes": 48640,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.velvetnoise~.mxe64",
+      "documentedBoundary": "other_or_unknown",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.vibrato~.mxe64",
+      "sha256": "6d6cf1388018dc97b0c9af2910fd019c7252980f9e661e95d6770f9f8c2031da",
+      "bytes": 92672,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.vibrato~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.vowel~.mxe64",
+      "sha256": "15764b944f3323d677eecd88c04c230559a5a082bc130f82f1db545789325bf5",
+      "bytes": 61952,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.vowel~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.wander~.mxe64",
+      "sha256": "21d55712b9178636342b576daf58d8c2d02930924c13e17564db896e2c233147",
+      "bytes": 109568,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.wander~.mxe64",
+      "documentedBoundary": "documented_signal_generator_with_untyped_control_inputs",
+      "qualification": "Max building block; not a complete Live-device profile"
+    },
+    {
+      "rootId": 0,
+      "relativePath": "Resources/Max/resources/packages/ableton-dsp/externals/abl.dsp.waveshaper~.mxe64",
+      "sha256": "7dfe8f0ca344049d8aafb9a9f7f63ebfb105632d7596c97ddd6c3093152d9737",
+      "bytes": 377856,
+      "architecture": "x86_64",
+      "role": "ableton_max_dsp_building_block",
+      "name": "abl.dsp.waveshaper~.mxe64",
+      "documentedBoundary": "signal_input_to_signal_output",
+      "qualification": "Max building block; not a complete Live-device profile"
+    }
+  ],
+  "presetSummary": {
+    "by_extension": {
+      ".adg": 1072,
+      ".adv": 2556,
+      ".alc": 350,
+      ".als": 26
+    },
+    "by_top_level_resource_directory": {
+      "Builtin": 1,
+      "Core Library": 3633,
+      "Max": 369,
+      "Misc": 1
+    },
+    "candidate_files": 4005,
+    "compressed_source_bytes": 63168413,
+    "dependency_kind_counts": {
+      "max_patch": 83,
+      "provenance": 7840,
+      "sample_or_media": 3650
+    },
+    "dependency_resolution_counts": {
+      "candidate_filename_only": 1272,
+      "exists_by_recorded_or_anchored_path": 8389,
+      "not_resolved_in_scope": 1912
+    },
+    "device_like_schema_classes": 103,
+    "errors": 1,
+    "files_with_key_midi_mappings": 1436,
+    "files_with_parallel_racks": 628,
+    "files_with_return_branches": 265,
+    "graph_device_occurrences": 21032,
+    "key_midi_mapping_occurrences": 26807,
+    "leaf_model_kind_classification": {
+      "audio_to_audio": 50,
+      "midi_to_audio": 13,
+      "midi_to_midi": 8
+    },
+    "max_xml_bytes": 27380074,
+    "model_kinds": 78,
+    "model_occurrences": 29872,
+    "model_roles": {
+      "device_model": 71,
+      "host_mixer_utility": 3,
+      "host_rack_utility": 4
+    },
+    "nonprovenance_dependency_resolution": {
+      "candidate_filename_only": 62,
+      "exists_by_recorded_or_anchored_path": 3665,
+      "not_resolved_in_scope": 6
+    },
+    "observed_model_kind_classification": {
+      "audio_to_audio": 53,
+      "midi_to_audio": 15,
+      "midi_to_midi": 10
+    },
+    "parallel_rack_occurrences": 837,
+    "return_branch_occurrences": 477,
+    "scanned_files": 4004,
+    "schema_only_device_like_classes": 26,
+    "serialization_kinds": {
+      "device_preset_wrapper": 1072,
+      "direct_device_model": 2556,
+      "live_set_with_tracks": 376
+    },
+    "unique_references": 11573,
+    "xml_bytes": 887724550
+  },
+  "presetModels": [
+    {
+      "model": "Amp",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Amp"
+      ],
+      "occurrences": 263,
+      "sourceFileCount": 252,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "AudioBranchMixerDevice",
+      "classification": {
+        "confidence": "model-kind fact",
+        "role": "host_mixer_utility",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [],
+      "occurrences": 4700,
+      "sourceFileCount": 1053,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "AudioEffectGroupDevice",
+      "classification": {
+        "confidence": "model-kind fact",
+        "role": "host_rack_utility",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [],
+      "occurrences": 938,
+      "sourceFileCount": 575,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "AutoFilter",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Legacy/Auto Filter Legacy"
+      ],
+      "occurrences": 359,
+      "sourceFileCount": 232,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "AutoFilter2",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Auto Filter"
+      ],
+      "occurrences": 37,
+      "sourceFileCount": 33,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "AutoPan",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Legacy/Auto Pan"
+      ],
+      "occurrences": 267,
+      "sourceFileCount": 249,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "AutoPan2",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Auto Pan-Tremolo"
+      ],
+      "occurrences": 23,
+      "sourceFileCount": 23,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "AutoShift",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Auto Shift"
+      ],
+      "occurrences": 21,
+      "sourceFileCount": 21,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "BeatRepeat",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Beat Repeat"
+      ],
+      "occurrences": 33,
+      "sourceFileCount": 31,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Cabinet",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Cabinet"
+      ],
+      "occurrences": 257,
+      "sourceFileCount": 238,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "ChannelEq",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Channel EQ"
+      ],
+      "occurrences": 399,
+      "sourceFileCount": 132,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Chorus",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Legacy/Chorus"
+      ],
+      "occurrences": 110,
+      "sourceFileCount": 94,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Chorus2",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Chorus-Ensemble"
+      ],
+      "occurrences": 358,
+      "sourceFileCount": 341,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Collision",
+      "classification": {
+        "confidence": "known model identity; DSP not executed",
+        "implementation": "native device, implementation boundary not proven",
+        "role": "device_model",
+        "signal": "midi_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Collision"
+      ],
+      "occurrences": 50,
+      "sourceFileCount": 50,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Compressor2",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Compressor"
+      ],
+      "occurrences": 544,
+      "sourceFileCount": 328,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Corpus",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Corpus"
+      ],
+      "occurrences": 36,
+      "sourceFileCount": 36,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Delay",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Delay"
+      ],
+      "occurrences": 570,
+      "sourceFileCount": 478,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Drift",
+      "classification": {
+        "confidence": "known model identity; DSP not executed",
+        "implementation": "native device, implementation boundary not proven",
+        "role": "device_model",
+        "signal": "midi_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Drift"
+      ],
+      "occurrences": 376,
+      "sourceFileCount": 249,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "DrumBuss",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Drum Buss"
+      ],
+      "occurrences": 285,
+      "sourceFileCount": 244,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "DrumCell",
+      "classification": {
+        "confidence": "known model identity; DSP not executed",
+        "implementation": "native device, implementation boundary not proven",
+        "role": "device_model",
+        "signal": "midi_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Drum Sampler"
+      ],
+      "occurrences": 929,
+      "sourceFileCount": 59,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "DrumGroupDevice",
+      "classification": {
+        "confidence": "model-kind fact",
+        "role": "host_rack_utility",
+        "signal": "midi_to_audio"
+      },
+      "installedDeviceFolderNames": [],
+      "occurrences": 275,
+      "sourceFileCount": 274,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Echo",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Echo"
+      ],
+      "occurrences": 227,
+      "sourceFileCount": 219,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Eq8",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "EQ Eight"
+      ],
+      "occurrences": 868,
+      "sourceFileCount": 393,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Erosion",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Legacy/Erosion Legacy"
+      ],
+      "occurrences": 54,
+      "sourceFileCount": 46,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Erosion2",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Erosion"
+      ],
+      "occurrences": 9,
+      "sourceFileCount": 9,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "FilterDelay",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Filter Delay"
+      ],
+      "occurrences": 31,
+      "sourceFileCount": 31,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "FilterEQ3",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "EQ Three"
+      ],
+      "occurrences": 136,
+      "sourceFileCount": 102,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Flanger",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Legacy/Flanger"
+      ],
+      "occurrences": 25,
+      "sourceFileCount": 25,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "FrequencyShifter",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Legacy/Frequency Shifter"
+      ],
+      "occurrences": 19,
+      "sourceFileCount": 19,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Gate",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Gate"
+      ],
+      "occurrences": 50,
+      "sourceFileCount": 41,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "GlueCompressor",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Glue Compressor"
+      ],
+      "occurrences": 373,
+      "sourceFileCount": 195,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "GrainDelay",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Grain Delay"
+      ],
+      "occurrences": 96,
+      "sourceFileCount": 72,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Hybrid",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Hybrid Reverb"
+      ],
+      "occurrences": 446,
+      "sourceFileCount": 410,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "InstrumentGroupDevice",
+      "classification": {
+        "confidence": "model-kind fact",
+        "role": "host_rack_utility",
+        "signal": "midi_to_audio"
+      },
+      "installedDeviceFolderNames": [],
+      "occurrences": 2291,
+      "sourceFileCount": 1167,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "InstrumentImpulse",
+      "classification": {
+        "confidence": "known model identity; DSP not executed",
+        "implementation": "native device, implementation boundary not proven",
+        "role": "device_model",
+        "signal": "midi_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Impulse"
+      ],
+      "occurrences": 13,
+      "sourceFileCount": 13,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "InstrumentMeld",
+      "classification": {
+        "confidence": "known model identity; DSP not executed",
+        "implementation": "native device, implementation boundary not proven",
+        "role": "device_model",
+        "signal": "midi_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Meld"
+      ],
+      "occurrences": 152,
+      "sourceFileCount": 124,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "InstrumentVector",
+      "classification": {
+        "confidence": "known model identity; DSP not executed",
+        "implementation": "native device, implementation boundary not proven",
+        "role": "device_model",
+        "signal": "midi_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Wavetable"
+      ],
+      "occurrences": 723,
+      "sourceFileCount": 695,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Limiter",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Limiter"
+      ],
+      "occurrences": 377,
+      "sourceFileCount": 357,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Looper",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Looper"
+      ],
+      "occurrences": 6,
+      "sourceFileCount": 6,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "LoungeLizard",
+      "classification": {
+        "confidence": "known model identity; DSP not executed",
+        "implementation": "native device, implementation boundary not proven",
+        "role": "device_model",
+        "signal": "midi_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Electric"
+      ],
+      "occurrences": 214,
+      "sourceFileCount": 213,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "MidiArpeggiator",
+      "classification": {
+        "confidence": "known model identity; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "midi_to_midi"
+      },
+      "installedDeviceFolderNames": [
+        "Arpeggiator"
+      ],
+      "occurrences": 63,
+      "sourceFileCount": 57,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "MidiBranchMixerDevice",
+      "classification": {
+        "confidence": "model-kind fact",
+        "role": "host_mixer_utility",
+        "signal": "midi_to_midi"
+      },
+      "installedDeviceFolderNames": [],
+      "occurrences": 68,
+      "sourceFileCount": 26,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "MidiChord",
+      "classification": {
+        "confidence": "known model identity; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "midi_to_midi"
+      },
+      "installedDeviceFolderNames": [
+        "Chord"
+      ],
+      "occurrences": 73,
+      "sourceFileCount": 65,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "MidiEffectGroupDevice",
+      "classification": {
+        "confidence": "model-kind fact",
+        "role": "host_rack_utility",
+        "signal": "midi_to_midi"
+      },
+      "installedDeviceFolderNames": [],
+      "occurrences": 38,
+      "sourceFileCount": 35,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "MidiNoteLength",
+      "classification": {
+        "confidence": "known model identity; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "midi_to_midi"
+      },
+      "installedDeviceFolderNames": [
+        "Note Length"
+      ],
+      "occurrences": 29,
+      "sourceFileCount": 24,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "MidiPitcher",
+      "classification": {
+        "confidence": "known model identity; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "midi_to_midi"
+      },
+      "installedDeviceFolderNames": [
+        "Pitch"
+      ],
+      "occurrences": 76,
+      "sourceFileCount": 25,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "MidiRandom",
+      "classification": {
+        "confidence": "known model identity; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "midi_to_midi"
+      },
+      "installedDeviceFolderNames": [
+        "Random"
+      ],
+      "occurrences": 13,
+      "sourceFileCount": 11,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "MidiScale",
+      "classification": {
+        "confidence": "known model identity; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "midi_to_midi"
+      },
+      "installedDeviceFolderNames": [
+        "Scale"
+      ],
+      "occurrences": 76,
+      "sourceFileCount": 49,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "MidiVelocity",
+      "classification": {
+        "confidence": "known model identity; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "midi_to_midi"
+      },
+      "installedDeviceFolderNames": [
+        "Velocity"
+      ],
+      "occurrences": 79,
+      "sourceFileCount": 68,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "MixerDevice",
+      "classification": {
+        "confidence": "model-kind fact",
+        "role": "host_mixer_utility",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [],
+      "occurrences": 4072,
+      "sourceFileCount": 368,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "MultiSampler",
+      "classification": {
+        "confidence": "known model identity; DSP not executed",
+        "implementation": "native device, implementation boundary not proven",
+        "role": "device_model",
+        "signal": "midi_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Sampler"
+      ],
+      "occurrences": 172,
+      "sourceFileCount": 109,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "MultibandDynamics",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Multiband Dynamics"
+      ],
+      "occurrences": 184,
+      "sourceFileCount": 81,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "MxDeviceAudioEffect",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "Max runtime",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Envelope Follower",
+        "LFO",
+        "Shaper"
+      ],
+      "occurrences": 396,
+      "sourceFileCount": 382,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "MxDeviceInstrument",
+      "classification": {
+        "confidence": "known model identity; DSP not executed",
+        "implementation": "Max runtime",
+        "role": "device_model",
+        "signal": "midi_to_audio"
+      },
+      "installedDeviceFolderNames": [],
+      "occurrences": 70,
+      "sourceFileCount": 55,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "MxDeviceMidiEffect",
+      "classification": {
+        "confidence": "known model identity; DSP not executed",
+        "implementation": "Max runtime",
+        "role": "device_model",
+        "signal": "midi_to_midi"
+      },
+      "installedDeviceFolderNames": [
+        "Envelope MIDI",
+        "MPE Control",
+        "Note Echo"
+      ],
+      "occurrences": 424,
+      "sourceFileCount": 333,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Operator",
+      "classification": {
+        "confidence": "known model identity; DSP not executed",
+        "implementation": "native device, implementation boundary not proven",
+        "role": "device_model",
+        "signal": "midi_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Operator"
+      ],
+      "occurrences": 460,
+      "sourceFileCount": 422,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "OriginalSimpler",
+      "classification": {
+        "confidence": "known model identity; DSP not executed",
+        "implementation": "native device, implementation boundary not proven",
+        "role": "device_model",
+        "signal": "midi_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Simpler"
+      ],
+      "occurrences": 3549,
+      "sourceFileCount": 300,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Overdrive",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Overdrive"
+      ],
+      "occurrences": 123,
+      "sourceFileCount": 50,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Pedal",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Pedal"
+      ],
+      "occurrences": 104,
+      "sourceFileCount": 104,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Phaser",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Legacy/Phaser"
+      ],
+      "occurrences": 31,
+      "sourceFileCount": 29,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "PhaserNew",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Phaser-Flanger"
+      ],
+      "occurrences": 99,
+      "sourceFileCount": 99,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Redux",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Legacy/Redux Legacy"
+      ],
+      "occurrences": 12,
+      "sourceFileCount": 12,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Redux2",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Redux"
+      ],
+      "occurrences": 107,
+      "sourceFileCount": 100,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Resonator",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Resonators"
+      ],
+      "occurrences": 17,
+      "sourceFileCount": 15,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Reverb",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Reverb"
+      ],
+      "occurrences": 944,
+      "sourceFileCount": 785,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Roar",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Roar"
+      ],
+      "occurrences": 143,
+      "sourceFileCount": 96,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Saturator",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Saturator"
+      ],
+      "occurrences": 388,
+      "sourceFileCount": 347,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Shifter",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Shifter"
+      ],
+      "occurrences": 76,
+      "sourceFileCount": 74,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Spectral",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Spectral Time"
+      ],
+      "occurrences": 40,
+      "sourceFileCount": 30,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "SpectrumAnalyzer",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Spectrum"
+      ],
+      "occurrences": 13,
+      "sourceFileCount": 13,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "StereoGain",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Utility"
+      ],
+      "occurrences": 613,
+      "sourceFileCount": 412,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "StringStudio",
+      "classification": {
+        "confidence": "known model identity; DSP not executed",
+        "implementation": "native device, implementation boundary not proven",
+        "role": "device_model",
+        "signal": "midi_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Tension"
+      ],
+      "occurrences": 146,
+      "sourceFileCount": 142,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Transmute",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Spectral Resonator"
+      ],
+      "occurrences": 25,
+      "sourceFileCount": 19,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Tube",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Dynamic Tube"
+      ],
+      "occurrences": 30,
+      "sourceFileCount": 30,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Tuner",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [],
+      "occurrences": 1,
+      "sourceFileCount": 1,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "UltraAnalog",
+      "classification": {
+        "confidence": "known model identity; DSP not executed",
+        "implementation": "native device, implementation boundary not proven",
+        "role": "device_model",
+        "signal": "midi_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Analog"
+      ],
+      "occurrences": 98,
+      "sourceFileCount": 94,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Vinyl",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Vinyl Distortion"
+      ],
+      "occurrences": 43,
+      "sourceFileCount": 38,
+      "runtimeQualification": "Not established by preset parsing"
+    },
+    {
+      "model": "Vocoder",
+      "classification": {
+        "confidence": "installed category or typed audio-track context plus model root; DSP not executed",
+        "implementation": "implementation boundary not proven",
+        "role": "device_model",
+        "signal": "audio_to_audio"
+      },
+      "installedDeviceFolderNames": [
+        "Vocoder"
+      ],
+      "occurrences": 37,
+      "sourceFileCount": 29,
+      "runtimeQualification": "Not established by preset parsing"
+    }
+  ],
+  "installedSchema": {
+    "sha256": "b7c9d4c767d8ca9b346ce7d517265446bbacd6de366cc058e155613789d0f299",
+    "deviceLikeClasses": [
+      "Amp",
+      "AuPluginDevice",
+      "AudioBranchMixerDevice",
+      "AudioEffectGroupDevice",
+      "AudioLoadDevice",
+      "AudioSequencer",
+      "AutoFilter",
+      "AutoFilter2",
+      "AutoPan",
+      "AutoPan2",
+      "AutoShift",
+      "BeatRepeat",
+      "BufferAudioDevice",
+      "BufferInstrument",
+      "BufferLatencyTest",
+      "BufferMidiDevice",
+      "Cabinet",
+      "ChannelEq",
+      "Chorus",
+      "Chorus2",
+      "Collision",
+      "Compressor2",
+      "Corpus",
+      "Delay",
+      "DeviceKitFakeAudioEffect",
+      "DeviceKitFakeInstrument",
+      "DeviceKitFakeMidiEffect",
+      "Drift",
+      "DrumBuss",
+      "DrumCell",
+      "DrumGroupDevice",
+      "Echo",
+      "Eq8",
+      "Eq8SpectrumAnalyzer",
+      "Erosion",
+      "Erosion2",
+      "FilterDelay",
+      "FilterEQ3",
+      "Flanger",
+      "FrequencyShifter",
+      "Gate",
+      "GlueCompressor",
+      "GrainDelay",
+      "Hybrid",
+      "InstrumentGroupDevice",
+      "InstrumentImpulse",
+      "InstrumentMeld",
+      "InstrumentVector",
+      "LatencyTest",
+      "LatencyTestMs",
+      "Limiter",
+      "Looper",
+      "LoungeLizard",
+      "MainTrackDevice",
+      "Metronome",
+      "MidiArpeggiator",
+      "MidiBranchMixerDevice",
+      "MidiCcControl",
+      "MidiChord",
+      "MidiEffectGroupDevice",
+      "MidiLatencyTest",
+      "MidiLatencyTestMs",
+      "MidiNoteLength",
+      "MidiPitcher",
+      "MidiRandom",
+      "MidiScale",
+      "MidiSequencer",
+      "MidiVelocity",
+      "MultiSampler",
+      "MultibandDynamics",
+      "MxDeviceAudioEffect",
+      "MxDeviceInstrument",
+      "MxDeviceMidiEffect",
+      "Operator",
+      "OriginalSimpler",
+      "Overdrive",
+      "Pedal",
+      "Phaser",
+      "PhaserNew",
+      "PluginDevice",
+      "ProxyAudioEffectDevice",
+      "ProxyInstrumentDevice",
+      "Redux",
+      "Redux2",
+      "Resonator",
+      "Reverb",
+      "Roar",
+      "Saturator",
+      "Shifter",
+      "SignalAnalyzer",
+      "SignalGenerator",
+      "Spectral",
+      "SpectrumAnalyzer",
+      "StereoGain",
+      "StringStudio",
+      "TestSampler",
+      "TrackDevice",
+      "Transmute",
+      "Tube",
+      "Tuner",
+      "UltraAnalog",
+      "Vinyl",
+      "Vocoder"
+    ],
+    "schemaOnlyDeviceLikeClasses": [
+      "AuPluginDevice",
+      "AudioLoadDevice",
+      "AudioSequencer",
+      "BufferAudioDevice",
+      "BufferInstrument",
+      "BufferLatencyTest",
+      "BufferMidiDevice",
+      "DeviceKitFakeAudioEffect",
+      "DeviceKitFakeInstrument",
+      "DeviceKitFakeMidiEffect",
+      "Eq8SpectrumAnalyzer",
+      "LatencyTest",
+      "LatencyTestMs",
+      "MainTrackDevice",
+      "Metronome",
+      "MidiCcControl",
+      "MidiLatencyTest",
+      "MidiLatencyTestMs",
+      "MidiSequencer",
+      "PluginDevice",
+      "ProxyAudioEffectDevice",
+      "ProxyInstrumentDevice",
+      "SignalAnalyzer",
+      "SignalGenerator",
+      "TestSampler",
+      "TrackDevice"
+    ],
+    "limitation": "Includes test/internal classes, wrappers and utilities; not a count of playable devices"
+  },
+  "representativePresetGraphs": [
+    {
+      "graph_summary": "InstrumentGroupDevice { chain 0: UltraAnalog -> Compressor2 -> Vinyl -> Delay -> Delay -> Reverb }",
+      "key_midi_mapping_count": 13,
+      "name": "Basic Analog Bass.adg",
+      "parallel_racks": 0,
+      "return_branch_count": 0,
+      "sha256": "870c1877a07fb0c25e7a903ef0ddbaefaea724ce87a1e9c4a486ba3850ab535f"
+    },
+    {
+      "graph_summary": "InstrumentGroupDevice { chain 0: InstrumentGroupDevice { chain 0: Drift } -> ChannelEq -> Saturator }",
+      "key_midi_mapping_count": 19,
+      "name": "Analog Bass.adg",
+      "parallel_racks": 0,
+      "return_branch_count": 0,
+      "sha256": "223a14c30dd8142df6f7edfb1c78907a6b6145645237cb7c7ff6fa0606e8add9"
+    },
+    {
+      "graph_summary": "InstrumentGroupDevice { chain 0: StringStudio -> Cabinet -> Amp -> Flanger -> Chorus -> Chorus -> Eq8 -> AutoFilter -> Reverb -> GlueCompressor }",
+      "key_midi_mapping_count": 13,
+      "name": "Basic Electric Drive Bass.adg",
+      "parallel_racks": 0,
+      "return_branch_count": 0,
+      "sha256": "2aecf04eaf1586b6e539378dba40f7abf7c18d0fd8f7b0468be710a912f6f086"
+    },
+    {
+      "graph_summary": "InstrumentGroupDevice { Old School MK II: LoungeLizard -> Eq8 -> Cabinet -> Amp -> AutoPan -> Phaser -> FilterDelay | Release: MidiNoteLength -> StringStudio }",
+      "key_midi_mapping_count": 15,
+      "name": "E-Piano Old School.adg",
+      "parallel_racks": 1,
+      "return_branch_count": 0,
+      "sha256": "fc9289c3f734b3f3c57829c990820c06fde66d8aedaadb14d170490b4e4f1887"
+    },
+    {
+      "graph_summary": "InstrumentGroupDevice { Ambipattern: MidiArpeggiator -> Operator -> Hybrid -> AutoPan -> Chorus2 -> Limiter | Evolutive: InstrumentVector -> Chorus2 -> AutoPan -> Hybrid -> Limiter }",
+      "key_midi_mapping_count": 26,
+      "name": "Mindfulness.adg",
+      "parallel_racks": 1,
+      "return_branch_count": 0,
+      "sha256": "7406d0a0fbf05241419ee28fb7165e0dce77aa820537637a63076a926a63c245"
+    },
+    {
+      "graph_summary": "MidiEffectGroupDevice { chain 0: MidiArpeggiator -> MidiChord | chain 1: MidiArpeggiator }",
+      "key_midi_mapping_count": 8,
+      "name": "Arp Double.adg",
+      "parallel_racks": 1,
+      "return_branch_count": 0,
+      "sha256": "02ae0d66e75808700e0ff8c8b9cceb4adb3700c5492df6bd1d135c6caba0fb4b"
+    },
+    {
+      "graph_summary": "AudioEffectGroupDevice { Mid: StereoGain | Sides: StereoGain }",
+      "key_midi_mapping_count": 0,
+      "name": "MS Rack Template.adg",
+      "parallel_racks": 1,
+      "return_branch_count": 0,
+      "sha256": "9bd7f6a0dc56b47aee3abba8e9b1a013b05b74276d8d407b1059a4b9360e8080"
+    },
+    {
+      "graph_summary": "DrumGroupDevice { chain 0: InstrumentGroupDevice { chain 0: MxDeviceInstrument } | chain 1: InstrumentGroupDevice { chain 0: MxDeviceInstrument } | chain 2: InstrumentGroupDevice { chain 0: MxDeviceInstrument } | chain 3: InstrumentGroupDevice { chain 0: MxDeviceInstrument } | chain 4: InstrumentGroupDevice { chain 0: MxDeviceInstrument } | chain 5: InstrumentGroupDevice { chain 0: MxDeviceInstrument } | chain 6: InstrumentGroupDevice { chain 0: MxDeviceInstrument } | chain 7: InstrumentGroupDevice { chain 0: MxDeviceInstrument } | chain 8: InstrumentGroupDevice { chain 0: MxDeviceInstrument } | chain 9: InstrumentGroupDevice { chain 0: MxDeviceInstrument } | chain 10: InstrumentGroupDevice { chain 0: MxDeviceInstrument } | chain 11: InstrumentGroupDevice { chain 0: MxDeviceInstrument } | chain 12: InstrumentGroupDevice { chain 0: MxDeviceInstrument } | chain 13: InstrumentGroupDevice { chain 0: MxDeviceInstrument } | chain 14: InstrumentGroupDevice { chain 0: MxDeviceInstrument } | chain 15: InstrumentGroupDevice { chain 0: MxDeviceInstrument } }",
+      "key_midi_mapping_count": 16,
+      "name": "DS Drum Rack.adg",
+      "parallel_racks": 1,
+      "return_branch_count": 0,
+      "sha256": "6f54129c3ed9371404039fd7d429c3bd16fdb2d9702df7e75b314ca8d4171c84"
+    },
+    {
+      "graph_summary": "InstrumentGroupDevice { Operator: Operator -> Reverb -> MultibandDynamics -> GlueCompressor }",
+      "key_midi_mapping_count": 8,
+      "name": "Dark FM A Minor 104 bpm.alc",
+      "parallel_racks": 0,
+      "return_branch_count": 0,
+      "sha256": "1d0eeec5a8680718553098b60cf26e06d0f071a528138d3e09cc480746901a49"
+    }
+  ],
+  "resourceSummary": {
+    "GUI": {
+      "sha256": "5ec872d673fd5f4f5f05787e4245c56e172ff2663c2d4493e94d598b883114e6",
+      "entries": 2696,
+      "deviceDirectories": [
+        "Amp",
+        "AudioLoadDevice",
+        "AutoFilter",
+        "AutoFilter2",
+        "AutoPan",
+        "AutoPan2",
+        "AutoShift",
+        "BufferAudioDevice",
+        "BufferInstrument",
+        "BufferMidiDevice",
+        "Cabinet",
+        "ChannelEq",
+        "Chorus",
+        "Chorus2",
+        "Collision",
+        "Compressor2",
+        "Corpus",
+        "Delay",
+        "Device",
+        "DeviceKitFakeAudioEffect",
+        "DeviceKitFakeMidiEffect",
+        "DeviceKitFakeSampleRateInstrument",
+        "Drift",
+        "DrumBuss",
+        "DrumCell",
+        "DrumGroupDevice",
+        "Echo",
+        "Eq8",
+        "Erosion",
+        "Erosion2",
+        "FilterDelay",
+        "FilterEQ3",
+        "Flanger",
+        "FrequencyShifter",
+        "Gate",
+        "GlueCompressor",
+        "GrainDelay",
+        "GroupDevice",
+        "Histogram",
+        "Hybrid",
+        "InstrumentMeld",
+        "InstrumentVector",
+        "LatencyTestBase",
+        "LatencyTestMsBase",
+        "Limiter",
+        "Looper",
+        "LoungeLizard",
+        "MidiArpeggiator",
+        "MidiCcControl",
+        "MidiChord",
+        "MidiNoteLength",
+        "MidiPitcher",
+        "MidiRandom",
+        "MidiScale",
+        "MultibandDynamics",
+        "OriginalSimpler",
+        "Overdrive",
+        "Pedal",
+        "Phaser",
+        "PhaserNew",
+        "Plugin",
+        "Redux",
+        "Redux2",
+        "Resonator",
+        "Reverb",
+        "Roar",
+        "Saturator",
+        "Shifter",
+        "SignalAnalyzer",
+        "SignalGenerator",
+        "Spectral",
+        "StereoGain",
+        "StringStudio",
+        "TestSampler",
+        "Transmute",
+        "Tuner",
+        "UltraAnalog",
+        "Vinyl",
+        "Vocoder"
+      ],
+      "deviceXmlCount": 252,
+      "qualification": "Resource presence and payload identities only; no per-device rendering or DSP claim"
+    },
+    "Graphics": {
+      "sha256": "a0b8aa480aa3d21f093b416ea59b3f200d2e2466936f95d886a554bffe875cb7",
+      "entries": 2022,
+      "deviceDirectories": [
+        "Amp",
+        "Analog",
+        "Cabinet",
+        "Collision",
+        "Corpus",
+        "Electric",
+        "GlueCompressor",
+        "GroupDevice",
+        "InstrumentMeld",
+        "MidiArpeggiator",
+        "Operator",
+        "Sampler",
+        "Shared",
+        "Spectral",
+        "Tension",
+        "Vector"
+      ],
+      "deviceXmlCount": 0,
+      "qualification": "Resource presence and payload identities only; no per-device rendering or DSP claim"
+    }
+  },
+  "utilityStaticEvidence": {
+    "binarySha256": "8aa856df760eb217fd9e42ef47adecd9d68b1da71e83c7119a5b2ba7a546b52c",
+    "evidenceIds": [
+      "ev_65004680e2480ab4fec8152efbda2d751ca0f8cbe79a09bb6b9781b61ce678d2",
+      "ev_2e2f953e8d13479eeedcb1765c61946e52bc961b7441a20a88b3d2db54022477",
+      "ev_caa0ae11eabb1e286a63c168832ad5158ffdee2668e4ff80cf6c65de59fd8e04"
+    ],
+    "observations": [
+      "ext_main registers a Max class, constructor/destructor, DSP64 method and attributes",
+      "Constructor checks Max 9, uses Max object/DSP APIs, creates signal outlets",
+      "DSP64 registers an internal callback through dsp_add64"
+    ],
+    "limitations": [
+      "Static disassembly only",
+      "No external executed",
+      "No standalone internal-DSP ABI established",
+      "No Max backend admitted"
+    ],
+    "reaSessionClosedAfterExport": true
+  },
+  "hostingStatus": {
+    "savedPresentationImplemented": false,
+    "analogInAliveAdmitted": false,
+    "nativeAudioInputImplemented": false,
+    "reusableMidiEffectOutputImplemented": false,
+    "rackPresetImportImplemented": false,
+    "proposal": "alive-device-hosting.md"
+  },
+  "interpretationLimits": [
+    "22 binary candidates do not mean 22 runnable Ultra devices",
+    "78 model tags include legacy variants, three shared Max wrappers, racks and mixers",
+    "Installed reference port types include unresolved placeholders",
+    "No proprietary XML, artwork, presets, binary payloads or decompilation is included",
+    "Private manifests record bounded search scope and per-file failures"
+  ]
+}

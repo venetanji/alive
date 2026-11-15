@@ -1,0 +1,15 @@
+#include "../src-tauri/native/external_device/live_device.h"
+#include <cassert>
+#include <cstdio>
+#include <cstring>
+int main(){
+ char error[256]{};UltraCanvasGraph graph{};graph.revision=1;graph.node_count=1;graph.nodes[0].id=1;graph.nodes[0].kind=68;
+ assert(!ultra_canvas_install_document(0,&graph));
+ assert(!ultra_canvas_install_live_devices_document(0,&graph,nullptr,0,error,sizeof error));
+ assert(std::strstr(error,"does not include"));
+ assert(!ultra_canvas_live_devices_count_document(0));
+ assert(!ultra_canvas_live_devices_rearm_document(0,error,sizeof error));
+ assert(!ultra_canvas_live_devices_set_states_document(0,1,nullptr,0,error,sizeof error));
+ assert(!ultra_canvas_live_device_parameters_document(0,1,1,nullptr,0));
+ std::puts("PASS: default build exports explicit unsupported Live-device stubs and rejects external source graphs");
+}

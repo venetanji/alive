@@ -3,6 +3,7 @@ import {packageInstrument} from './canvas-instrument.mjs';
 import {createDevicePlayer} from './canvas-device-player.mjs';
 import {REGISTRY} from './canvas-model.mjs';
 import {treeNodes} from './canvas-hierarchy.mjs';
+import {decorateRange,decorateNumber} from './live-controls.mjs';
 
 export function mountDevicePanel({doc,win,controller,invoke,beforeOpen=()=>{},drafts}){
   const $=id=>doc.querySelector('#'+id),panel=$('instrument-panel');
@@ -25,6 +26,7 @@ export function mountDevicePanel({doc,win,controller,invoke,beforeOpen=()=>{},dr
     update(controller.getState());
   }
   function build(device){
+    for(const input of inputs.values())input.control.dispose();
     bindings=device?.parameters??[];midi=device?.version===2?device.midi.input:device?.midi??null;inputs.clear();
     $('instrument-controls').replaceChildren();
     for(const binding of bindings){
@@ -35,6 +37,7 @@ export function mountDevicePanel({doc,win,controller,invoke,beforeOpen=()=>{},dr
       numeric.type='number';numeric.min=range.min;numeric.max=range.max;numeric.step=integral?'1':binding.max<=1?'0.01':binding.max<=20?'0.1':'1';
       range.id=`device-${binding.key}`;label.htmlFor=range.id;
       range.setAttribute('aria-label',binding.label);numeric.setAttribute('aria-label',`${binding.label} value`);
+      range.value=String(node.params[binding.param]);
       let editing=false;
       const write=(value,history=true)=>{
         if(!Number.isFinite(value)||value<binding.min||value>binding.max)throw Error(`${binding.label} must be between ${binding.min} and ${binding.max}.`);
@@ -56,7 +59,8 @@ export function mountDevicePanel({doc,win,controller,invoke,beforeOpen=()=>{},dr
       numeric.addEventListener('change',()=>{if(!numericDirty)numericDirty=true;if(!numeric.commitDraft())numeric.focus();});
       numeric.addEventListener('blur',()=>{if(!numeric.commitDraft())numeric.focus();});
       numeric.addEventListener('keydown',e=>{if(e.key==='Escape'&&numericDirty){e.preventDefault();e.stopPropagation();numeric.cancelDraft();}else if(['Enter','Tab'].includes(e.key)&&!numeric.commitDraft())e.preventDefault();});
-      row.append(label,range,numeric,unit);$('instrument-controls').append(row);inputs.set(binding.key,{range,numeric});
+      const control=decorateRange(range,{doc,unit:binding.unit??''}),readout=make('span','live-readout');decorateNumber(numeric);
+      readout.append(numeric,unit);row.append(label,control.element,readout);$('instrument-controls').append(row);inputs.set(binding.key,{range,numeric,control});
     }
   }
   function update(state){
@@ -73,10 +77,11 @@ export function mountDevicePanel({doc,win,controller,invoke,beforeOpen=()=>{},dr
     $('instrument-package').disabled=state.closing||state.applying;
     const values=deviceValues(patch);
     for(const binding of bindings){
-      const {range,numeric}=inputs.get(binding.key),value=values[binding.key];
+      const {range,numeric,control}=inputs.get(binding.key),value=values[binding.key];
       if(range.value!==String(value))range.value=String(value);
       if(doc.activeElement!==numeric&&!numeric.hasDraft?.())numeric.value=String(Number(value.toFixed(4)));
       range.disabled=numeric.disabled=!!state.closing||state.faulted;
+      control.update();
     }
     const newPresets=JSON.stringify(device.presets.map(preset=>preset.name));
     if(presetsKey!==newPresets){
@@ -126,5 +131,5 @@ export function mountDevicePanel({doc,win,controller,invoke,beforeOpen=()=>{},dr
   }));
   $('instrument-instance').addEventListener('click',guard(async()=>{await controller.flush();await invoke('document_instantiate');}));
   $('instrument-release').addEventListener('click',guard(async()=>{await player.releaseAll();await controller.stop();}));
-  return{open,close,update,wouldRebuild:state=>identity!==deviceIdentity(state),isOpen:()=>opened,dispose(){release();win.removeEventListener?.('keyup',keyup);win.removeEventListener?.('blur',release);doc.removeEventListener?.('visibilitychange',visibility);}};
+  return{open,close,update,wouldRebuild:state=>identity!==deviceIdentity(state),isOpen:()=>opened,dispose(){for(const input of inputs.values())input.control.dispose();release();win.removeEventListener?.('keyup',keyup);win.removeEventListener?.('blur',release);doc.removeEventListener?.('visibilitychange',visibility);}};
 }

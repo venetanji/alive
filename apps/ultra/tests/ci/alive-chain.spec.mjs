@@ -127,6 +127,13 @@ async function openSession(page,longNames=false,clipBank=false,trackCount=2,work
     window.calls=[];const undo=[],redo=[];window.__TAURI__={core:{invoke:async(name,args)=>{window.calls.push({name,args});if(name==='alive_current')return structuredClone(snapshot);if(name==='alive_edit'){undo.push(structuredClone(snapshot.draft??snapshot.document));redo.length=0;snapshot.draft=args.document;snapshot.draftRevision++;snapshot.history={canUndo:true,canRedo:false};return structuredClone(snapshot);}if(name==='alive_history'){const from=args.direction==='undo'?undo:redo,to=args.direction==='undo'?redo:undo;to.push(structuredClone(snapshot.draft??snapshot.document));snapshot.draft=from.pop();snapshot.draftRevision++;snapshot.history={canUndo:!!undo.length,canRedo:!!redo.length};return structuredClone(snapshot);}}}};
     const invoke=window.__TAURI__.core.invoke;window.__TAURI__.core.invoke=(name,args)=>name==='alive_device'&&args.action==='remove'?window.removeTrack(args.trackId):invoke(name,args);
     const previous=window.__TAURI__.core.invoke;window.__TAURI__.core.invoke=async(name,args)=>{
+      if(name==='alive_base'){
+        window.calls.push({name,args});const owner=snapshot.deviceInstances[args.instanceId],index=owner.manifest.parameters.findIndex(p=>p.key===args.key),track=snapshot.document.tracks[owner.track];
+        owner.manifest.parameters[index].base=args.value;
+        [track.device??track.chain?.instrument,...track.effects].find(device=>device?.instanceId===args.instanceId).parameters[args.key]=args.value;
+        if(!snapshot.state.devices[owner.index].owned[index])snapshot.state.devices[owner.index].effective[index]=args.value;
+        snapshot.dirty=true;return;
+      }
       if(name==='alive_device'&&args.action==='load'){window.calls.push({name,args});if(window.browserLoadError)throw Error(window.browserLoadError);return structuredClone(snapshot);}
       if(name==='alive_workspace_edit'){
         window.calls.push({name,args});const op=args.operation;if(args.draftRevision!==snapshot.draftRevision)throw Error('Stale draft');const draft=structuredClone(snapshot.draft??snapshot.document),affected={trackId:op.trackId??null,sourceId:op.sourceId??null,placementId:null,slotId:null,noteId:op.noteId??null};
@@ -257,6 +264,32 @@ test('long saved device names fit the minimum desktop window',async({page})=>{
   await page.locator('#detail-devices').click();
   await expect(page.locator('.chain-select').nth(2)).toContainText('LongSavedDevice');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth&&document.querySelector('main').scrollWidth<=document.querySelector('main').clientWidth)).toBe(true);
+});
+
+test('shared Alive dial commits once while automation keeps its effective value and parked numeric draft',async({page},testInfo)=>{
+  await page.setViewportSize({width:1280,height:800});await openSession(page,false,true);
+  await page.evaluate(()=>{
+    const snapshot=window.sessionSnapshot,owner=snapshot.deviceInstances['instrument-0'],index=owner.manifest.parameters.findIndex(p=>p.key==='cutoff');
+    snapshot.state.devices[owner.index].owned[index]=1;snapshot.state.devices[owner.index].effective[index]=5600;
+  });
+  await page.locator('#detail-devices').click();
+  const dial=page.getByRole('slider',{name:'Cutoff base slider',exact:true}),number=page.getByRole('spinbutton',{name:'Cutoff base',exact:true}),effective=page.getByLabel('Cutoff effective ownership',{exact:true});
+  const initial=Number(await dial.inputValue()),box=await dial.boundingBox(),x=box.x+box.width/2,y=box.y+box.height/2;
+  await expect(effective).toHaveText('Automation: 5600 Hz');
+  await page.mouse.move(x,y);await page.mouse.down();await page.mouse.move(x,y-16,{steps:4});
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_base'))).toEqual([]);
+  await page.mouse.up();
+  await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_base').length)).toBe(1);
+  expect(await page.evaluate(()=>window.calls.find(c=>c.name==='alive_base').args)).toMatchObject({instanceId:'instrument-0',key:'cutoff',value:initial+1998,generation:1});
+  await expect(number).toHaveValue(String(initial+1998));await expect(effective).toHaveText('Automation: 5600 Hz');
+  await number.fill('1111');await page.locator('#detail-clip').click();await page.locator('#detail-devices').click();await expect(number).toHaveValue('1111');
+  expect(await page.evaluate(()=>window.calls.filter(c=>c.name==='alive_base').length)).toBe(1);
+  await number.focus();await number.press('Tab');await expect.poll(()=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_base').length)).toBe(2);
+  for(const size of [{width:1280,height:800},{width:800,height:600}]){
+    await page.setViewportSize(size);await dial.scrollIntoViewIfNeeded();await expect(dial).toBeInViewport();
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+    await page.screenshot({path:testInfo.outputPath(`alive-controls-${size.width}.png`)});
+  }
 });
 
 test('piano body, resize, velocity, cancellation and keyboard gestures are bounded transactions',async({page},testInfo)=>{

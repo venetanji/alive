@@ -18,6 +18,9 @@ import {translatedMidpoints} from './canvas-cable-geometry.mjs';
 import {canvasRenderKey,createCanvasPoller} from './canvas-poll.mjs';
 import {mountDevicePanel} from './canvas-device-panel.mjs';
 import {createFocusedDrafts} from './canvas-focused-drafts.mjs';
+import {createLiveDeviceNodeView} from './live-device-object.mjs';
+import {installedLiveDeviceState} from './live-device-profile.mjs';
+import {prepareLiveDeviceCreation} from './live-device-creation.mjs';
 
 export function mountCanvas({document:doc=globalThis.document,window:win=globalThis.window,invoke=win?.__TAURI__?.core?.invoke}={}) {
   const $=id=>doc.querySelector('#'+id),make=(tag,className,text)=>{const e=doc.createElement(tag);if(className)e.className=className;if(text!==undefined)e.textContent=text;return e;};
@@ -68,7 +71,20 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
   }
   const entry=createObjectEntry({document:doc,window:win,drafts,onClose:()=>{$('workspace').focus();},commit:(text,context)=>{
     if(locked)throw Error('Unlock the patch before editing.');
-    const parsed=parseObjectText(text,context.nodeId?getNode(context.nodeId):null);
+    const previous=context.nodeId?getNode(context.nodeId):null,parsed=parseObjectText(text,previous);
+    if(invoke&&parsed.type==='live_device'&&previous?.type!=='live_device'){
+      const owner=activeController;
+      controller.notice('Reading the installed Analog default...');
+      guard(async()=>{
+        parsed.params.state=await prepareLiveDeviceCreation(owner,async()=>{
+          try{return await installedLiveDeviceState(parsed.params.device,await invoke('live_device_default_preset',{device:parsed.params.device}),{DOMParser:win.DOMParser});}
+          catch(error){owner.notice(`Using the authored Analog fallback: ${error.message}`);return parsed.params.state;}
+        });
+        if(owner!==activeController)throw Error('Instrument creation canceled because the patcher view changed.');
+        if(context.nodeId)controller.configure(context.nodeId,parsed.type,parsed.params);
+        else{const id=controller.add(parsed.type,context.x,context.y,parsed.params);selectNode(id);}
+      })();return;
+    }
     if(context.nodeId)controller.configure(context.nodeId,parsed.type,parsed.params);
     else {
       if(parsed.type==='voice'&&text.trim()==='voice~')delete parsed.params.device;
@@ -382,10 +398,11 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
         const helper=n.type==='help_helper',spec=helper?{name:'Help annotation',summary:`${n.params.role} layout for ${helpView.object}.`,params:{}}:OBJECTS[n.type];
         area.append(make('h2','',spec.name),make('p','',selected.size>1?`${selected.size} selected. Drag or delete the group.`:spec.summary));
         for(const [key,p] of Object.entries(spec.params)){
+          if(n.type==='live_device')continue;
           const {label,input}=createParameterField({doc,node:n,key,definition:p,drafts,change:value=>parameter(n.id,key,value)});
           fields.set(key,input);area.append(label);
         }
-        area.append(make('p','panel-note',helper?'This annotation is part of the help layout. Reference text comes from the local Max installation.':n.type==='message_box'?'Text edits replace this message silently. Incoming messages change the live display; saved text stays here.':isArithmetic(n.type)?'Numeric mode is structural: unlock to change it and reset this runtime. The stored right operand updates live.':'Parameters update live. Object text and connection edits stop timers and clear notes.'));
+        area.append(make('p','panel-note',n.type==='live_device'?'Use the instrument panel to edit its saved source state. Connect pitch/velocity messages to its inlet and both audio outlets to your output.':helper?'This annotation is part of the help layout. Reference text comes from the local Max installation.':n.type==='message_box'?'Text edits replace this message silently. Incoming messages change the live display; saved text stays here.':isArithmetic(n.type)?'Numeric mode is structural: unlock to change it and reset this runtime. The stored right operand updates live.':'Parameters update live. Object text and connection edits stop timers and clear notes.'));
         appearanceInspector=mountAppearanceFields({doc,area,node:n,drafts,change:(key,value)=>{try{controller.style(n.id,key,value);return true;}catch(error){controller.notice(error);return false;}},reset:guard(()=>controller.style(n.id,null))});
         const b=make('button','panel-action',helper?'Reference':`Help for ${spec.name}`);b.addEventListener('click',guard(()=>helper?helpView.openReference(helpView.object):documents.openHelp(`help:${n.type}`)));area.append(b);
       } else if(selection?.kind==='edge') {
@@ -467,7 +484,8 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
       const configuration=node.type==='help_helper'?JSON.stringify(node.params):nodeConfiguration(node);
       if(!views.has(node.id)||views.get(node.id).type!==node.type||views.get(node.id).configuration!==configuration){
         views.get(node.id)?.dispose?.();
-        const v=node.type==='help_helper'?createHelpHelperView(node,{doc,select:selectNode,dragStart}):createNodeView(node,{doc,drafts,select:selectNode,dragStart,edit:id=>{if(getNode(id)?.type==='patcher')guard(()=>navigatePatcher(id))();else if(locked&&getNode(id)?.type==='print')consoleView.open();else editNode(id);},portClick,portDown,hover:hoverPort,unhover,context:contextMenu,operate,parameter,resize:guard((id,size)=>controller.resize(id,size)),getZoom:()=>zoom,resized:()=>drawCables(controller.getState().patch),tab:id=>guard(()=>controller.tab(id))()});
+        const createView=node.type==='live_device'?createLiveDeviceNodeView:createNodeView;
+        const v=node.type==='help_helper'?createHelpHelperView(node,{doc,select:selectNode,dragStart}):createView(node,{doc,drafts,controller,invoke,onResize:()=>drawCables(controller.getState().patch),select:selectNode,dragStart,edit:id=>{if(getNode(id)?.type==='patcher')guard(()=>navigatePatcher(id))();else if(locked&&getNode(id)?.type==='print')consoleView.open();else editNode(id);},portClick,portDown,hover:hoverPort,unhover,context:contextMenu,operate,parameter,resize:guard((id,size)=>controller.resize(id,size)),getZoom:()=>zoom,resized:()=>drawCables(controller.getState().patch),tab:id=>guard(()=>controller.tab(id))()});
         for(const target of [v.element,v.header]){target.addEventListener('pointermove',dragMove);target.addEventListener('pointerup',finishDrag);target.addEventListener('pointercancel',finishDrag);target.addEventListener('lostpointercapture',finishDrag);}views.set(node.id,v);
       }
       const view=views.get(node.id);view.update(node,state,{selected:selected.has(node.id),locked,pending,moving:!!drag&&selected.has(node.id),reference:helpView.reference,object:helpView.object});applyNodeAppearance(view,node,doc);children.push(view.element);
@@ -644,14 +662,15 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     }
     controller.adoptDescriptor(descriptor);
   }
-  function captureFocusedDraft(){
+  async function captureFocusedDraft(){
     capturingRender=true;let accepted;
     try{accepted=drafts.commitWhere();}finally{capturingRender=false;}
     render(controller.getState());
     if(!accepted)throw Error('Finish or cancel the invalid focused edit before saving or closing.');
+    await Promise.all([...views.values()].map(view=>view.settleControls?.()));
   }
-  documents=mountDocuments({doc,win,invoke,getPatch:()=>controller.getState().document,adopt:adoptDocument,beforeSave:()=>{captureFocusedDraft();return controller.flush();},
-    beforeClose:request=>{captureFocusedDraft();return controller.flushBeforeClose?.(request)??controller.flush();},onCloseCancelled:request=>controller.cancelClose?.(request),
+  documents=mountDocuments({doc,win,invoke,getPatch:()=>controller.getState().document,adopt:adoptDocument,beforeSave:async()=>{await captureFocusedDraft();return controller.flush();},
+    beforeClose:async request=>{await captureFocusedDraft();return controller.flushBeforeClose?.(request)??controller.flush();},onCloseCancelled:request=>controller.cancelClose?.(request),
     onDescriptor:descriptor=>controller.acceptDescriptor?.(descriptor),onReveal:acceptReveal,
     notice:error=>controller.notice(error),inspect:(source,name)=>{dialog('open');$('patch-json').value=source;return maxDialog.inspect(source,name);}});
   $('object-profile-note').textContent=`${Object.keys(OBJECTS).length} supported objects. Names and arguments belong to Ultra's bounded profile.`;

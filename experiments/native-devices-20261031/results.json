@@ -1,0 +1,415 @@
+{
+  "schema": "ultra-native-devices-research-v1",
+  "recorded_at": "2026-10-30T17:23:09.132508+00:00",
+  "base_commit": "4dfc7be75923d90fd2cdee9a3474a7258d912d68",
+  "host": "Linux x86-64",
+  "sample_rate": 48000,
+  "method": "Execute exact installed PE machine code through original Linux PE/import/MSABI adapter",
+  "compile_flag": "ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL",
+  "ordinary_app_build_enabled": false,
+  "saved_ultra_and_alive_admission": false,
+  "complete_analog_editor": false,
+  "portable_source_decompilation": false,
+  "devices": [
+    {
+      "name": "Analog",
+      "filename": "Analog_64.dll",
+      "bytes": 816640,
+      "sha256": "4528afb1fbc78d49ed92161ed13ae1df50606e2e2b2c4f28caeca0cbc1476133",
+      "status": "retained-adapter-and-current-graph",
+      "retained_adapter_accepts": true,
+      "descriptor_count": 203,
+      "initialized_descriptors": 203
+    },
+    {
+      "name": "Electric",
+      "filename": "Electric_64.dll",
+      "bytes": 581120,
+      "sha256": "66a42b09161ca7d48861e1980523e2cb44dd4f08fbd04ac9c4231a56d79b2be8",
+      "status": "retained-adapter",
+      "retained_adapter_accepts": true,
+      "descriptor_count": 33,
+      "initialized_descriptors": null
+    },
+    {
+      "name": "Collision",
+      "filename": "Collision_64.dll",
+      "bytes": 671744,
+      "sha256": "00dc9ffe8daa2bd7663cacc8c119b06256469d6f7d50a3fecd8c317271ff0207",
+      "status": "private-native-note-probe",
+      "retained_adapter_accepts": false,
+      "descriptor_count": 139,
+      "initialized_descriptors": 139
+    },
+    {
+      "name": "Tension",
+      "filename": "Tension_64.dll",
+      "bytes": 818688,
+      "sha256": "3bff8e94f7296812d0507e71c97286d0e98bb5d114e30376ab6b6a0f6a905e2a",
+      "status": "private-native-note-probe",
+      "retained_adapter_accepts": false,
+      "descriptor_count": 130,
+      "initialized_descriptors": 129
+    },
+    {
+      "name": "Corpus",
+      "filename": "Corpus_64.dll",
+      "bytes": 777216,
+      "sha256": "082e19a54f33a7d030586dded90e280125e7c3bb50080ba0e8c92935d97b95cc",
+      "status": "private-native-stereo-input-probe",
+      "retained_adapter_accepts": false,
+      "descriptor_count": null,
+      "initialized_descriptors": null
+    },
+    {
+      "name": "Amp",
+      "filename": "Amp_64.dll",
+      "bytes": 1596928,
+      "sha256": "6618c6f754c9e33bfde2fb1fc02b14befee6c685552385fea2e7ba32964fcd2a",
+      "status": "constructor-fault-unresolved",
+      "retained_adapter_accepts": false,
+      "descriptor_count": null,
+      "initialized_descriptors": null
+    },
+    {
+      "name": "Cabinet",
+      "filename": "Cabinet_64.dll",
+      "bytes": 1283072,
+      "sha256": "4be585af8794f579c1e3b2091b12167ff2b454f78e7e1981db4a0410e147cfe2",
+      "status": "constructor-fault-unresolved",
+      "retained_adapter_accepts": false,
+      "descriptor_count": null,
+      "initialized_descriptors": null
+    }
+  ],
+  "final_native_runner": {
+    "exit_code": 0,
+    "log": "final-delivery/logs/native.log",
+    "standalone": [
+      {
+        "device": "Analog",
+        "frames": 256,
+        "note": 0,
+        "parameters": 203,
+        "energy": 0.0,
+        "peak": 0.0,
+        "frame_field_means": "frames-per-render-call"
+      },
+      {
+        "device": "Analog",
+        "frames": 256,
+        "note": 1,
+        "parameters": 203,
+        "energy": 379.279092749,
+        "peak": 0.570014775,
+        "frame_field_means": "frames-per-render-call"
+      },
+      {
+        "device": "Analog",
+        "frames": 1,
+        "note": 0,
+        "parameters": 203,
+        "energy": 0.0,
+        "peak": 0.0,
+        "frame_field_means": "frames-per-render-call"
+      },
+      {
+        "device": "Analog",
+        "frames": 1,
+        "note": 1,
+        "parameters": 203,
+        "energy": 376.986434353,
+        "peak": 0.556028724,
+        "frame_field_means": "frames-per-render-call"
+      },
+      {
+        "device": "Electric",
+        "frames": 256,
+        "note": 0,
+        "parameters": 33,
+        "energy": 0.0,
+        "peak": 0.0,
+        "frame_field_means": "frames-per-render-call"
+      },
+      {
+        "device": "Electric",
+        "frames": 256,
+        "note": 1,
+        "parameters": 33,
+        "energy": 3.54975810541,
+        "peak": 0.0123212244,
+        "frame_field_means": "frames-per-render-call"
+      },
+      {
+        "device": "Electric",
+        "frames": 1,
+        "note": 0,
+        "parameters": 33,
+        "energy": 0.0,
+        "peak": 0.0,
+        "frame_field_means": "frames-per-render-call"
+      },
+      {
+        "device": "Electric",
+        "frames": 1,
+        "note": 1,
+        "parameters": 33,
+        "energy": 3.54975810541,
+        "peak": 0.0123212244,
+        "frame_field_means": "frames-per-render-call"
+      }
+    ],
+    "current_analog_graph": [
+      {
+        "note": 0,
+        "gain": 1.0,
+        "edit": 0,
+        "energy": 0.0,
+        "peak": 0.0,
+        "frames": 48128
+      },
+      {
+        "note": 1,
+        "gain": 0.0,
+        "edit": 0,
+        "energy": 0.0,
+        "peak": 0.0,
+        "frames": 48128
+      },
+      {
+        "note": 1,
+        "gain": 0.5,
+        "edit": 0,
+        "energy": 93.8943344979,
+        "peak": 0.263858438,
+        "frames": 48128
+      },
+      {
+        "note": 1,
+        "gain": 0.5,
+        "edit": 1,
+        "energy": 52.5974136553,
+        "peak": 0.259450495,
+        "frames": 48128
+      }
+    ]
+  },
+  "private_probes": [
+    {
+      "log": "collision-render.log",
+      "sha256": "beec37ceb306e0ce56c82c60af1b47e9059230bdcf1c9c856d56902cf3d7aedd",
+      "records": [
+        {
+          "stage": "rendered",
+          "frames": 48128,
+          "peak": 0.12247779965400696,
+          "energy": 27.060239526290925,
+          "silent_flag_interpreted": false,
+          "runtime_calls": 883484,
+          "note": 60,
+          "note_enabled": true,
+          "elapsed_seconds": 0.032457908000651514,
+          "right_energy": 27.060239526290925,
+          "first_nonzero": 0
+        },
+        {
+          "stage": "runtime_check",
+          "wine_libraries_found": false
+        }
+      ],
+      "adapter": "private-python-c-probe",
+      "locale": "C",
+      "qualifies_retained_runtime": false
+    },
+    {
+      "log": "collision-silent.log",
+      "sha256": "9a542de0ddc2aa7f834f1b3d5e386cdf2c129dcc099ad0017889d337ec0aee86",
+      "records": [
+        {
+          "stage": "rendered",
+          "frames": 48128,
+          "peak": 2.00000006274879e-22,
+          "energy": 1.9232001207078703e-39,
+          "silent_flag_interpreted": false,
+          "runtime_calls": 787190,
+          "note": 60,
+          "note_enabled": false,
+          "elapsed_seconds": 0.0228559610004595,
+          "right_energy": 1.9232001207078703e-39,
+          "first_nonzero": 0
+        },
+        {
+          "stage": "runtime_check",
+          "wine_libraries_found": false
+        }
+      ],
+      "adapter": "private-python-c-probe",
+      "locale": "C",
+      "qualifies_retained_runtime": false
+    },
+    {
+      "log": "tension-render.log",
+      "sha256": "abcfb867f55956e191577f902ee56b25ba1590089ec6b75cf21aba25bd17f054",
+      "records": [
+        {
+          "stage": "rendered",
+          "frames": 48128,
+          "peak": 0.06377392262220383,
+          "energy": 5.193336914862163,
+          "silent_flag_interpreted": false,
+          "runtime_calls": 563077,
+          "note": 60,
+          "note_enabled": true,
+          "elapsed_seconds": 0.05331304799983627,
+          "right_energy": 5.193336914862163,
+          "first_nonzero": 1
+        },
+        {
+          "stage": "runtime_check",
+          "wine_libraries_found": false
+        }
+      ],
+      "adapter": "private-python-c-probe",
+      "locale": "C",
+      "qualifies_retained_runtime": false
+    },
+    {
+      "log": "tension-silent.log",
+      "sha256": "03a7ad61bd35400066d93a79cca8d87feb0a98afcea46e2ecbe591613dcbd251",
+      "records": [
+        {
+          "stage": "rendered",
+          "frames": 48128,
+          "peak": 0.0,
+          "energy": 0.0,
+          "silent_flag_interpreted": false,
+          "runtime_calls": 560429,
+          "note": 60,
+          "note_enabled": false,
+          "elapsed_seconds": 0.03054826599873195,
+          "right_energy": 0.0,
+          "first_nonzero": null
+        },
+        {
+          "stage": "runtime_check",
+          "wine_libraries_found": false
+        }
+      ],
+      "adapter": "private-python-c-probe",
+      "locale": "C",
+      "qualifies_retained_runtime": false
+    },
+    {
+      "log": "corpus-input.log",
+      "sha256": "08ca9a80a48628e6dfe668d0698ee53c51f98bb81f0ff9f0dd70f5a778acec27",
+      "records": [
+        {
+          "stage": "rendered",
+          "frames": 48128,
+          "peak": 0.09743092209100723,
+          "energy": 227.2163807734833,
+          "silent_flag_interpreted": false,
+          "runtime_calls": 6827,
+          "note": 60,
+          "note_enabled": false,
+          "elapsed_seconds": 0.05670139799985918,
+          "right_energy": 227.2697032501027,
+          "first_nonzero": 0
+        },
+        {
+          "stage": "runtime_check",
+          "wine_libraries_found": false
+        }
+      ],
+      "adapter": "private-python-c-probe",
+      "locale": "C",
+      "qualifies_retained_runtime": false
+    },
+    {
+      "log": "corpus-silence.log",
+      "sha256": "dcd9561733db1a9d8d1503105f8a40a257b74422a17a8471e5a257f50bbfd961",
+      "records": [
+        {
+          "stage": "rendered",
+          "frames": 48128,
+          "peak": 9.398947243613409e-19,
+          "energy": 6.959601814033689e-34,
+          "silent_flag_interpreted": false,
+          "runtime_calls": 6827,
+          "note": 60,
+          "note_enabled": false,
+          "elapsed_seconds": 0.022219356000277912,
+          "right_energy": 6.959601814033689e-34,
+          "first_nonzero": 0
+        },
+        {
+          "stage": "runtime_check",
+          "wine_libraries_found": false
+        }
+      ],
+      "adapter": "private-python-c-probe",
+      "locale": "C",
+      "qualifies_retained_runtime": false
+    }
+  ],
+  "ui": {
+    "default_family": "shared-live-style",
+    "integrated_views": [
+      "Ultra Perform",
+      "Alive selected-device parameters"
+    ],
+    "existing_canvas_faces_migrated": false,
+    "node_tests": {
+      "passed": 605,
+      "failed": 0
+    },
+    "browser_tests": {
+      "passed": 77,
+      "failed": 0
+    },
+    "independent_visual_review": "no-material-findings"
+  },
+  "native_review": {
+    "realloc_bookkeeping_finding": "fixed, regression-tested, strict-GCC-compiled, independently-reviewed",
+    "enabled_callback_graph": "pass",
+    "default_build_rejection": "pass"
+  },
+  "limitations": [
+    "Full parameter/display/preset mapping is incomplete",
+    "No factory-preset or audible-fidelity qualification",
+    "No realtime capacity or complete lifecycle qualification",
+    "ResetA may leave buffered audio; bridge disarms until off-thread rebind",
+    "Cached commanded values are not native readback",
+    "Unsupported imports are recoverable adapter errors; raw native faults are uncontained",
+    "Private Collision/Tension/Corpus probes are not supported runtime devices",
+    "Whole Live application and other catalog devices remain outside the tested boundary"
+  ],
+  "evidence_directory": "~/.cache/alive-ultra-evidence/analog-native-20261031",
+  "keyboard_followup": {
+    "executable": "ultra-analog-test",
+    "build_options": {
+      "cmake": "ULTRA_EXTERNAL_DEVICE_EXPERIMENTAL=ON",
+      "cargo_feature": "native-analog-test"
+    },
+    "uses_ultra_audio_driver": true,
+    "installed_ultra_replaced": false,
+    "saved_ultra_patch": false,
+    "synthesis_controls_connected": false,
+    "exposed_controls": [
+      "piano and computer keyboard",
+      "velocity",
+      "output gain",
+      "note release",
+      "hard Stop"
+    ],
+    "browser_tests_passed": 3,
+    "native_window_observed": true,
+    "native_render_counter_advanced": true,
+    "native_process_wine_libraries_found": false,
+    "native_held_key_automation_verified": false,
+    "full_parameter_display_mapping_verified": false,
+    "notes": "Dedicated playback experiment; generic native-device object, full editor and saved Alive hosting remain pending.",
+    "native_runner_exit_code": 0,
+    "native_runner_log": "keyboard-followup/logs/native.log"
+  }
+}

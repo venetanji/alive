@@ -1,6 +1,6 @@
 ---
 name: Ultra Patcher
-description: A compact Max-inspired workspace for authoring and playing bounded patches.
+description: A compact patch workspace with shared Live-style device controls.
 colors:
   object-name: "#efbb62"
   selection: "#91b9ed"
@@ -14,6 +14,16 @@ colors:
   object: "#202020"
   text: "#eeeeec"
   muted: "#b4b4b0"
+  live-surface: "#363636"
+  live-well: "#202020"
+  live-edge: "#616161"
+  live-track: "#777"
+  live-ink: "#ededeb"
+  live-muted: "#b5b5b5"
+  live-accent: "#03c3d5"
+  live-selected: "#ffad56"
+  live-focus: "#91b9ed"
+  live-error: "#ffb0a4"
 typography:
   body:
     fontFamily: '"Liberation Sans", "Helvetica Neue", sans-serif'
@@ -30,6 +40,18 @@ typography:
     fontFamily: '"Liberation Mono", monospace'
     fontSize: "11px"
     lineHeight: 1.6
+  live-control:
+    fontFamily: '"Liberation Sans", "Helvetica Neue", sans-serif'
+    fontSize: "11px"
+    lineHeight: 1.3
+  live-unit:
+    fontFamily: '"Liberation Sans", "Helvetica Neue", sans-serif'
+    fontSize: "10px"
+  live-panel-title:
+    fontFamily: '"Liberation Sans", "Helvetica Neue", sans-serif'
+    fontSize: "12px"
+    fontWeight: 500
+    lineHeight: 1.3
 rounded:
   object: "1px"
   input: "2px"
@@ -40,6 +62,8 @@ spacing:
   control: "8px"
   inset: "12px"
   panel: "16px"
+  live-readout-gap: "3px"
+  live-panel-gap: "14px"
 components:
   toolbar-button:
     textColor: "{colors.text}"
@@ -57,6 +81,41 @@ components:
     width: "100px"
     height: "24px"
     rounded: "{rounded.object}"
+  live-dial:
+    backgroundColor: "{colors.live-well}"
+    textColor: "{colors.live-ink}"
+    width: "52px"
+    height: "52px"
+  live-slider:
+    textColor: "{colors.live-ink}"
+    height: "24px"
+  live-number:
+    textColor: "{colors.live-ink}"
+    typography: "{typography.live-control}"
+    rounded: "{rounded.object}"
+    padding: "2px 4px"
+    width: "67px"
+  live-button:
+    backgroundColor: "{colors.live-well}"
+    textColor: "{colors.live-ink}"
+    typography: "{typography.live-control}"
+    rounded: "{rounded.input}"
+    padding: "3px 7px"
+  live-toggle-selected:
+    backgroundColor: "{colors.live-selected}"
+    textColor: "{colors.live-well}"
+    rounded: "{rounded.input}"
+    padding: "3px 7px"
+  live-menu:
+    backgroundColor: "{colors.live-well}"
+    textColor: "{colors.live-ink}"
+    typography: "{typography.live-control}"
+    rounded: "{rounded.input}"
+    padding: "3px 7px"
+  live-panel:
+    backgroundColor: "{colors.live-surface}"
+    textColor: "{colors.live-ink}"
+    rounded: "{rounded.input}"
 ---
 
 # Design System: Ultra Patcher
@@ -75,12 +134,20 @@ panels open on demand. Controls respond immediately to editing and performance
 state; there is no decorative entrance motion. Icons and controls are original
 SVG/CSS, with no Max application assets in the build.
 
+The default control family for new Ultra device interfaces follows the installed
+Live device language and is shared with Alive through one original API. Open
+dial arcs, restrained value accents, neutral numeric readouts and orange section
+switches sit on flat charcoal panels. The current integration covers Ultra
+Perform and Alive device parameters; it does not establish a complete Analog
+device editor or migrate existing canvas object faces.
+
 **Key Characteristics:**
 
 - Compact, direct object editing.
 - Distinct control, mono and stereo connections.
 - Optional library, inspector and help.
 - Visible keyboard focus and explicit lock state.
+- One shared device-control family for Ultra and Alive.
 
 ## Colors
 
@@ -90,12 +157,14 @@ Warm amber identifies object names against a neutral charcoal work surface.
 
 - **Object Amber** names classes and the editing state.
 - **Selection Blue** identifies selection, keyboard focus and pending wiring.
+- **Value Cyan** identifies shared-control arcs, slider fill and value accents.
 
 ### Secondary
 
 - **Signal Yellow** identifies mono signal ports and segmented cords.
 - **Stereo Teal** identifies explicit two-channel bundles.
 - **Error Salmon** identifies errors and Panic.
+- **Section Orange** identifies enabled shared-control toggles.
 
 ### Neutral
 
@@ -104,9 +173,17 @@ Warm amber identifies object names against a neutral charcoal work surface.
 - **Chrome Charcoal** and **Raised Charcoal** distinguish fixed editor controls.
 - **Working White** carries arguments and controls; **Muted Gray** carries help.
 - **Control Gray** carries message cords.
+- **Device Charcoal** and **Control Well** separate shared panels and control faces.
+- **Control Edge** and **Dial Track Gray** define panel edges and unfilled arcs.
+- **Readout White** carries shared numeric values; **Control Muted Gray** carries
+  units and dial ticks. **Control Focus Blue** and **Control Error Salmon** expose
+  keyboard focus and invalid numeric drafts.
 
 **The Signal Type Rule.** Color accompanies cord shape and textual port types;
 it never supplies the only distinction between control, mono and stereo.
+
+**The Value Accent Rule.** Cyan belongs to arcs and value accents. Numeric
+readouts remain neutral, as in the retained Analog device reference.
 
 ## Typography
 
@@ -117,6 +194,13 @@ and literal examples use Liberation Mono. Numeric controls use tabular numerals.
 
 **The Object Text Rule.** Names and arguments share one readable baseline.
 Additional diagnostics belong in the optional inspector, not inside every box.
+
+Shared control labels and numeric readouts use the compact control size; units
+use the smaller unit size and panel headings use the shared panel-title size.
+All numeric readouts use tabular numerals. The 10px unit annotation and the local
+gallery's 22px heading are intentional roles. The Liberation Sans stack with a
+Helvetica Neue fallback is deliberate; a detector that splits the quoted family
+name and flags a default-font mismatch is a parser false positive.
 
 ## Layout
 
@@ -130,6 +214,12 @@ canvas; below 480px secondary toolbar labels recede while lock, creation, undo,
 zoom, fit, inspector and help remain reachable. The shipped native target is
 desktop. Small browser previews support document editing, without native audio.
 
+Shared control panels wrap their controls with the shared panel gap and inset.
+Dials use a compact 52px square with a label above and numeric readout below.
+Ultra Perform retains its three-column parameter grid and 310px panel; Alive
+retains its selected-device layout and separate effective-value readouts.
+The local gallery reduces its outer inset and lets control rows wrap below 500px.
+
 ## Elevation & Depth
 
 Tonal layering and defined one-pixel edges separate objects, chrome and menus.
@@ -140,12 +230,23 @@ Selection uses an offset outline; the JSON dialog dims its backdrop.
 runtime observations update. Editing actions and state changes need no entrance
 animation or ornamental movement.
 
+Shared device panels remain flat: tonal wells, fine edges and open dial arcs
+provide depth without shadows. Hover darkens a dial face to #141414 or raises a
+button to #494949. These state colors are intentional local variations, not
+additional theme primitives. Keyboard focus uses a visible two-pixel outline;
+numeric editing adds a well background and a focused border.
+
 ## Shapes
 
 Ordinary objects have nearly square corners. Message boxes are slightly rounded;
 bangs use a ring and toggles use crossed strokes. These shapes communicate their
 role. Port rails stay horizontal, with inlets above and outlets below. Control
 cords are thin gray strokes, mono cords are dashed, and stereo cords are wider.
+
+Shared device controls use nearly square panels, buttons and numeric fields.
+Open 270-degree dial arcs surround a solid center and a straight needle. Selected
+toggles remain rectangular and carry their state through `aria-pressed` as well
+as color.
 
 ## Components
 
@@ -206,6 +307,42 @@ Object Help opens the corresponding original runnable patch in its own window.
 Send and receive retain ordinary compact object faces; named receive has no
 inlet, while unnamed receive exposes its runtime-name inlet. Changing the saved
 name updates the port layout through an ordinary structural edit.
+
+### Shared device controls
+
+The Live-style family is Ultra's default for new device controls and Alive uses
+the same implementation. `apps/ultra/ui/live-controls.mjs` and its stylesheet
+provide dial, slider, numeric, button, toggle, menu and panel factories. Their
+original geometry and neutral readouts follow the retained reference at
+`experiments/alive-live-reference-20261024/05-analog-device.png`. There is no
+second Max-looking default control family or visual compatibility layer.
+
+Continuous controls use relative dragging, Shift for fine adjustment, native
+keyboard input, direct numeric entry and double-click reset. Controls retain a
+visible keyboard focus target and accessible label. Disabled controls reduce
+opacity; invalid numeric drafts use the error edge and remain editable.
+Interaction feedback is immediate, with no decorative animation.
+
+The adapters decorate the existing range and number inputs in Ultra Perform and
+Alive's selected-device parameters. They preserve input identity, draft handling,
+host calls and the current history owner. Alive commits a base value on release
+and continues to display automation's effective value separately. The API does
+not infer parameter curves, enum mappings or DSP conversions. Existing canvas
+number, toggle, slider and gain faces retain their current implementation; their
+migration and a complete Analog device editor remain outside this slice.
+
+`apps/ultra/ui/controls-gallery.html` shows the shared family and its states
+without native commands or audio. Browser interaction checks establish control
+behavior and layout; they do not qualify native DSP or desktop persistence.
+
+The Analog research window also has an original-panel preview. It reads layout,
+labels and artwork from the user's installed resource packs and renders recognized
+classes through the same shared family. Original fixed/box/grid geometry and
+card/finger navigation are retained where implemented. Its 10px dense control
+labels follow the resource geometry; normal preview text uses the existing 11px
+ramp. Unresolved synthesis bindings remain disabled with unknown values, and
+custom compiled drawing/tab classes show explicit placeholders. A successful
+layout import does not imply a functional device editor or saved canvas object.
 
 ### Inline entry
 
@@ -379,9 +516,14 @@ before file actions proceed.
 - Do place inlet and outlet descriptions beside the interaction they explain.
 - Do keep authoring state distinct from runtime observations.
 - Do use shape and text alongside signal colors.
+- Do use the shared Live-style API for new Ultra and Alive device controls.
+- Do keep shared numeric readouts neutral and reserve cyan for arcs and accents.
 
 ### Don't:
 
 - Don't replace the patch with permanent object cards and debug readouts.
 - Don't imply that a familiar name guarantees Max semantics.
 - Don't replace native execution with a simulated browser audio state.
+- Don't add a second Max-looking default control family or compatibility skin.
+- Don't treat the shared family as proof that canvas faces or a full Analog
+  device editor have been migrated.

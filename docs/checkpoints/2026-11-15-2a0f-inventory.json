@@ -1,0 +1,893 @@
+{
+  "schema": 1,
+  "worktree": "2a0f",
+  "source_head": "4dfc7be75923d90fd2cdee9a3474a7258d912d68",
+  "checkpoint_branch": "checkpoint/2026-11-15-native-device-experiments",
+  "scope": "Opt-in native Analog/device experiments, shared controls, original resource readers and their tests. Current native-library work at d212f899 is a newer integration. This checkpoint preserves the separate experimental branch, backports its accepted retained/current resource-pair admission, and fixes focused-draft and pending-edit settlement before Save/Close. Full device/preset coverage and realtime qualification remain outside this checkpoint.",
+  "local_only_files": 0,
+  "committed_input_files": 126,
+  "files": [
+    {
+      "path": ".impeccable/design.json",
+      "bytes": 26538,
+      "sha256": "e7c46b401cf7110edb9d390603300c1a7f317a73b7c84d86e545b592696f3b8b",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "DESIGN.md",
+      "bytes": 26073,
+      "sha256": "473d73b2b55f27a2676f1eb0c57dcfeedef181f4ec0e58538f473ca4336e4b33",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/.gitignore",
+      "bytes": 233,
+      "sha256": "b1d60f89e7ed36466766a4ac2712cd700b16259a519bc86365682fe558255da7",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/CMakeLists.txt",
+      "bytes": 4738,
+      "sha256": "8e9915328c30e7849d310d247f6ac25d52327b477ae9d0d302d5a4287d5b6939",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/launch-analog-test.sh",
+      "bytes": 725,
+      "sha256": "fda25323e5e87a361550eabb95fe3563f60253e4885de16c6ccbd90b71182798",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/Cargo.toml",
+      "bytes": 1039,
+      "sha256": "0cff1d3781d145d717fff08c6daf703978a443633043840b9148f21961982553",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/backend.cpp",
+      "bytes": 70111,
+      "sha256": "97a3d8ab188c16d58f996e8397aeb5cbadea860edab0035aff8cd0996fa21f69",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/canvas_signal_objects.hpp",
+      "bytes": 1956,
+      "sha256": "066eb0dd5c3c9929fc1e8d6f922b24ac43ca500fb9355d1568669157fc94e95c",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/external_device/README.md",
+      "bytes": 8080,
+      "sha256": "545e19db62448e61cd472b76535af5f8f46c3674c84b7e8d36c969dfe04e85eb",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/external_device/analog_play.cpp",
+      "bytes": 10753,
+      "sha256": "bddac9ae8d99640d0da82e21e6a06d1923e2a9f016df1da5262f257ba1086d09",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/external_device/analog_play.h",
+      "bytes": 2005,
+      "sha256": "e98453ae31fc8cc1f235e4406238e22a59d9c34f8c7a08adc9f897f64cb6e338",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/external_device/device_profile.hpp",
+      "bytes": 348,
+      "sha256": "a52c5c2d048e73faeb8bd4dba55e27e35acc4ba872bbcb240fdcf1688791a056",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/external_device/device_profiles.hpp",
+      "bytes": 615,
+      "sha256": "d8892a697f51a9ae19ca08e6689254b7a9f7ca040ee9116207283ca58751c8a6",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/external_device/external_device.cpp",
+      "bytes": 9114,
+      "sha256": "949e5fa12cd01e551ae426a75913a2b451f871ea6543763d4cc945fcb5d438ce",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/external_device/external_device.h",
+      "bytes": 2096,
+      "sha256": "03bd73eae078d65f9ebfd2c2a28e97394b9cadb0724db0c006c515b73f5ca323",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/external_device/live_device.cpp",
+      "bytes": 10912,
+      "sha256": "d3868d009ebdffc698c0962b77d7f02ce5d65e2ce84587b3452d42c5d81c8120",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/external_device/live_device.h",
+      "bytes": 2005,
+      "sha256": "05103b2b5ff2eabbab70e7a6fbf5462ac47d78d26253635cd1a79741450ab218",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/external_device/live_device.hpp",
+      "bytes": 1015,
+      "sha256": "e6219cf2939d1949c01b23ab28b9e0f39fec0c670b94ecc59aa33fef90960e70",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/external_device/pe_image.cpp",
+      "bytes": 10770,
+      "sha256": "74a0735529ab22d326aeb6c92e71cc17b9f604c71f9c6a565a97899132300954",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/external_device/pe_image.hpp",
+      "bytes": 654,
+      "sha256": "07b350fef0ecb26e70f56d1ae55d9be4fcc812b3b0893259a3f00445d6719dc2",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/external_device/profiles/analog.hpp",
+      "bytes": 416,
+      "sha256": "1fe4f22d3b2c792ed0dea0799bae3b911533b68e7b7c210659d4c99941890bdc",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/external_device/runtime_shim.c",
+      "bytes": 19341,
+      "sha256": "9be6105979eb091f54712a319edffb34256698b4e1e4241f061f7085f79a9b68",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/patch_graph.h",
+      "bytes": 5042,
+      "sha256": "32ec66e065ff2c6b97829b42ba576b06bf30eec5f3e959176cd4226e05889a5e",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/native/patch_graph.hpp",
+      "bytes": 68966,
+      "sha256": "050c674a419cdb6313fc70698e353127e4e07680e3ecbd34628a84beef0b029e",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/src/analog_test.rs",
+      "bytes": 11961,
+      "sha256": "51f3a5f493c8655c4c5a28f2b4d69964c4bd66c5d763ab3c39220db7438a1a2c",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/src/analog_test_main.rs",
+      "bytes": 174,
+      "sha256": "090529d31f2fc5819c9ba0b35007d981a07b38e1a176d36992c6474b040d5c5b",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/src/canvas.rs",
+      "bytes": 49836,
+      "sha256": "02e52a6446368a584078d85a6c0d65246344269a916d74e1d6684cc3d50d92d9",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/src/canvas_live_device.rs",
+      "bytes": 4641,
+      "sha256": "2c773b4adfc4a3403baa9e83c11b75d0d6007a490d13d8207a3791a9af325430",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/src/canvas_live_device_facts.rs",
+      "bytes": 6017,
+      "sha256": "6704476c149e81ce789fcc81146ef310a2fc251cc7dd56f3e7a2230e11789d78",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/src/canvas_tests.rs",
+      "bytes": 83060,
+      "sha256": "ffb7fcf36af6f8a495cc90af412e2f0a6559b40ae060330eebd410a2ae5c8201",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/src/document_commands.rs",
+      "bytes": 17682,
+      "sha256": "9aec109c6e2cb7594874f41a69b8008d389e927d270c44146bd5c3115207eaf9",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/src/lib.rs",
+      "bytes": 43458,
+      "sha256": "7ffb6b598eeb285201095837d0bbfb0c91cfb815d943830e9c84c3bb2478fbc0",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/src/live_device.rs",
+      "bytes": 7048,
+      "sha256": "2ef7568cf026af0ce2ead8b401c9eceb3c28fcab0283da793c67116aa8165d97",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/src-tauri/tauri.analog-test.conf.json",
+      "bytes": 589,
+      "sha256": "6711d5c216dccbfa190ef77d472cb04c9541fc875b7326775d8dc6c8b7cd0b67",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/analog_play_test.cpp",
+      "bytes": 5920,
+      "sha256": "03d88f7f9a0ee8b301f9075f6011385604dff3b84fa9aa30316ddd9e6066e24b",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/canvas_external_test.cpp",
+      "bytes": 8127,
+      "sha256": "c328808692b0a64467fdf106495b307d4e104effb8cab3c0256315388c6f00d0",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/ci/alive-chain.spec.mjs",
+      "bytes": 81566,
+      "sha256": "b05e51a9f326e25b65fe809a3662b2f68bd7d63c40ffbfa99d7792945589174f",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/ci/analog-default-preset.spec.mjs",
+      "bytes": 3027,
+      "sha256": "1da89c5091d5264f51d7868ea2e3ad4dc59c7ca67b1a2a1441edc6e23bb97418",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/ci/analog-test.spec.mjs",
+      "bytes": 6541,
+      "sha256": "f90a4dcc48e5a07d8cf9dd7b36333c0f116f9c651564a948acdeed4fad510bb3",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/ci/canvas-instrument.spec.mjs",
+      "bytes": 7130,
+      "sha256": "559db1dc419b145aad340022380191c5d2b733f8bb3023bdb34a230d13f81697",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/ci/live-central-panel.spec.mjs",
+      "bytes": 14239,
+      "sha256": "b0faa2d59db1d521aa36cca1d13ef1de3848885a2e7593f47bcc3c3c2fc5f1fe",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/ci/live-controls.spec.mjs",
+      "bytes": 6798,
+      "sha256": "0e4159dc91e9e573c1a8cbf04283d23e4889e60a8434a5d017bcf6415d8d23f9",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/ci/live-device-object.spec.mjs",
+      "bytes": 11869,
+      "sha256": "9d1b1e363f0b9f53afc6fb1cdaf29d0a1be9fcd269868faef9e505781cab99fe",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/ci/live-device-resources.spec.mjs",
+      "bytes": 21229,
+      "sha256": "30a502d21cb4d9f35a38430527f100bc79127810b419880e69b3ee8241e7e88f",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/ci/playwright.config.mjs",
+      "bytes": 1626,
+      "sha256": "598d9684e1bab6f4620187c0b5d307b27d3f82140409e4937df22982440aed09",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/external_device_disabled_test.cpp",
+      "bytes": 463,
+      "sha256": "4e0dd4cf42de7410eb83075aa9f65ba795a868cebd35cffbe15395ab870c874c",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/external_device_graph_test.cpp",
+      "bytes": 4609,
+      "sha256": "5a5a8e15793794454bab891af6c643607fdab6f9f95e6a194e605b725866efc2",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/external_device_pe_test.cpp",
+      "bytes": 4464,
+      "sha256": "d8fdd0c15495d5d4805a683faf81fadebc8963d03a35e7441c3e9594243453d7",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/external_device_run.py",
+      "bytes": 3505,
+      "sha256": "440fc559df5cdf7b1be7bd91fc420e4215bb817759019b9d282003232b673741",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/external_device_shim_test.c",
+      "bytes": 3535,
+      "sha256": "d4aed4701b69375fbaee3194132514286314a481a22fe02df96e911ae2fe326c",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/external_device_test.cpp",
+      "bytes": 2320,
+      "sha256": "1c7edf2d50cc319d8eda5703148fee9923456c619ff5eb4e72ffc5a418133b38",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/live-resource-fixture.mjs",
+      "bytes": 1944,
+      "sha256": "df335ee8e42e659043613d9fd76461fe840b35beabaa9deb7a05863ab327a053",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/live_device_backend_test.cpp",
+      "bytes": 4321,
+      "sha256": "2124cb5b109288c8d5b706c2022ad9aa2a0b213809d0ab202ecaeebe9885a589",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/live_device_bank_test.cpp",
+      "bytes": 5953,
+      "sha256": "21125e2dfb9da0a0b8db1b42f76b558cef0b4f3a084a493ae4668ce01d21485c",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/live_device_disabled_test.cpp",
+      "bytes": 857,
+      "sha256": "095c92125f0e07b7b876327b1e51b08103efe45664efca6e511db599f3da25ef",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/alive.css",
+      "bytes": 31117,
+      "sha256": "b0557d93667492d7d10c0b2c75ce2ee58111c2c42ae9afadf028433072eb330a",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/alive.mjs",
+      "bytes": 96369,
+      "sha256": "1e39ad4ac4d7fe4eee5cfe09e17565a6100e5c2957d143349ff81bd06ffd64d2",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/analog-bindings.mjs",
+      "bytes": 9258,
+      "sha256": "62b7c9425ebd13255e537c7d8867e2cdccd367cba064ca5342dbbe82dcd3df44",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/analog-bindings.test.mjs",
+      "bytes": 14251,
+      "sha256": "0f18f05fad1d238a253fb445de257fd8dba930ff210e0b6765200c080bbfdfce",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/analog-default-loader.mjs",
+      "bytes": 1113,
+      "sha256": "3dd613f7829d033af2b7e8c3e8e2c2702791e3fb5ec5cbe2060b27ea6e51f046",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/analog-default-loader.test.mjs",
+      "bytes": 1156,
+      "sha256": "797c20cda0f0f13e46017f11c60939334c73222ebf26a32c662fa98ae0ae0a08",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/analog-default-preset.mjs",
+      "bytes": 2253,
+      "sha256": "2d174ded864c467ce4cb653ddb8cd5140722ac32b2d748cbd074ab80d67f1f4a",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/analog-native-descriptors.mjs",
+      "bytes": 7645,
+      "sha256": "57e29cfad30a98afe7edc4e6cb78c9ac9bcf89d52049bacaf5dc0de47e8cf978",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/analog-parameter-display.mjs",
+      "bytes": 45887,
+      "sha256": "2beb9423a152b80a51df7f92ece07e57f224eb9886ad3b5cb781d6bf062a4082",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/analog-parameter-display.test.mjs",
+      "bytes": 6166,
+      "sha256": "efe8e4753ad4cb9099820c32c0633eb4232cb063433fd40adc71b658a8c1d547",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/analog-parameter-facts.mjs",
+      "bytes": 7403,
+      "sha256": "c7bf3937cbdc776618aa8a230d02ca8daffafe25ea8f885d2c39ba893972dcb0",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/analog-test.css",
+      "bytes": 2873,
+      "sha256": "5f0df024126c63a9968fac956d5d23ecb2d5a9c7fbd5705d2563b166c95e689f",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/analog-test.html",
+      "bytes": 2563,
+      "sha256": "f697585b0b902046b63369bdca4fa4d840ff7bffd7c66acd3e71ea9562f889e2",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/analog-test.mjs",
+      "bytes": 7585,
+      "sha256": "2040ccf26530fb73787ef4bcb200734abadb342736f167fca1bbb0e0f198219c",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/canvas-appearance.mjs",
+      "bytes": 4088,
+      "sha256": "cfd8eaab25bf7b94419d6ff4703250b3585e6e749e39815c7065c87e831ccae4",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/canvas-catalog.mjs",
+      "bytes": 29827,
+      "sha256": "faff885fe9068e7ebd10be7efe3dfb65425ea54dbb76e2abe3fa68a3d5bf0697",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/canvas-device-panel.mjs",
+      "bytes": 10928,
+      "sha256": "5590bd6a3c96a5b6c991108d158880e1cb4161d30a3a3395ad2ea95a3111c4d6",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/canvas-device.css",
+      "bytes": 1976,
+      "sha256": "af557a63f55afa28ed4ac6b00a7b39030382c6efc0e713c99968d59897606397",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/canvas-dom.test.mjs",
+      "bytes": 89899,
+      "sha256": "bf0da827b1c1065acc26c0a5f7f31f78aafad001008c270007855a5c56bc406e",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/canvas-library-data.json",
+      "bytes": 387653,
+      "sha256": "6e2ba05bb7acb97b581c0062de621703b569bedd83be196d5807aab6bb6a3478",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/canvas-library.mjs",
+      "bytes": 5802,
+      "sha256": "f5f48243237932fce464a613ed32059ae7cbb48677297105dc12d79eaf69f313",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/canvas-model.mjs",
+      "bytes": 61826,
+      "sha256": "fb6071b1dcb617dd2c5b7e112e20dc4aa8509a570c689c41131fd57fe66087d7",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/canvas-node.mjs",
+      "bytes": 19622,
+      "sha256": "0e3d255abb1c26444da49b5ff336361f69fed3dcc9b2810fd60497a856f505fb",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/canvas.html",
+      "bytes": 19447,
+      "sha256": "a22ce4a13d9c5e8d3d80b3716a2f5a56a51653a008295967d4e2d56076830392",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/canvas.mjs",
+      "bytes": 58939,
+      "sha256": "c94a6d3bc0930f448ca0eb1904eabde2059dd95790d461566561153dba2d8c4c",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/controls-gallery.html",
+      "bytes": 1215,
+      "sha256": "ecb8b67d7f141624b000bb23fefa97a7eea41b67bbfc5b369054789709ed3345",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/controls-gallery.mjs",
+      "bytes": 1670,
+      "sha256": "655669a6e000511721be361c1a2649717db2c0ebcdea4a5f256697636b2d79f2",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/live-controls.css",
+      "bytes": 5378,
+      "sha256": "0073ee881aeca2cc5afb6a6efb5c905328453da2e439ebbb2a81388852279ad1",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/live-controls.md",
+      "bytes": 5726,
+      "sha256": "1b311bd6f821159cb30c6e86f856905c55cb691c7d8f0454755c4b04b337a50d",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/live-controls.mjs",
+      "bytes": 14260,
+      "sha256": "adfdff3f331aed3393cb32637623660562f242e3b5ac99595ea0d320052a9461",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/live-device-creation.mjs",
+      "bytes": 375,
+      "sha256": "3c8757651581b1725bfa8c8b23a2dffe3adc2eb1b64ab7ff260068cae18ddb12",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/live-device-creation.test.mjs",
+      "bytes": 1629,
+      "sha256": "d48a7238982092229e5464524fec7a24966d395d3d3700a61d2b4062c0b44fbc",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/live-device-layout.mjs",
+      "bytes": 5803,
+      "sha256": "10311bfddbefde77bd9d7018179dcb6f9b133c0f70c2ccb9453232b9e40c08e9",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/live-device-object.css",
+      "bytes": 1561,
+      "sha256": "451f1e5e97791582d6d54f1c290b06619a24026b67ebb9af424e411392aa185f",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/live-device-object.mjs",
+      "bytes": 8599,
+      "sha256": "31cc75193af61f25805b6ba6da6e728f5f9cbf22367829e512f705b2178df5fd",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/live-device-object.test.mjs",
+      "bytes": 3117,
+      "sha256": "e355aedba869f236bf2071004362bfff2b0424352f74581564d8fe3fae532df5",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/live-device-patch.mjs",
+      "bytes": 600,
+      "sha256": "80a0508ca6e95cc781bbe5cf83e290ddd571e70f48bffcee348eda7cc842dc92",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/live-device-profile.mjs",
+      "bytes": 4632,
+      "sha256": "0833fd4430a2a9e2de012d09095d87531f0d70053431970e9a7ca1ece716d6b1",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/live-device-profile.test.mjs",
+      "bytes": 3247,
+      "sha256": "ea26ab79d70b3e47a0211e8a2400e8c37800a5b585cc7b2c6238041c648412b8",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/live-device-resources.md",
+      "bytes": 10393,
+      "sha256": "e0a3a5c8cd3d3baab6156478c04b3d58e6ef0a90e1b5a5473f8a145fa4f722fa",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/live-device-resources.mjs",
+      "bytes": 3643,
+      "sha256": "38940dc80fd4a804fda738cbc88539d736663d007dff142bbe28336df36b8266",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/live-device-view.css",
+      "bytes": 5151,
+      "sha256": "5ba5a7edd06a3a3d91c689c2b53d155a98716f95549436cd4d15fd2c07db8c02",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/live-device-view.mjs",
+      "bytes": 21181,
+      "sha256": "6739d27a20d3b2652f3e86f989589fcdcc12e8a7e6919c7b6a6d2d2445568eb3",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/live-envelope-editor.css",
+      "bytes": 1569,
+      "sha256": "942d27a6db7a209d85b84a78183ea6cba3da1afb75f533e77e545270bf1b51c5",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/live-envelope-editor.mjs",
+      "bytes": 13361,
+      "sha256": "1a5c98ac13898035aab5ced92ac436fe5712380f9052313a7431f5e92138ac23",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/live-envelope-editor.test.mjs",
+      "bytes": 11305,
+      "sha256": "5d4510186392bd36da84c261a946fcfd3ecd8f4f797e679de9fd96d06781e8ff",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/live-resource-pack.mjs",
+      "bytes": 7457,
+      "sha256": "bc8ac409f5bfb8fe6e0bd1992d7d7e412b599a4762ccae7970f719f6b98282ce",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/live-resource-pack.test.mjs",
+      "bytes": 5296,
+      "sha256": "70e73d3fccb8df5c9d3a921554c8da4ca5afddebb716113810cf8969eae714a5",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/live-view-expression.mjs",
+      "bytes": 2844,
+      "sha256": "7f89ec7327b23ac9fb1ddc0daef36f835f0a540f332f5d80ee8cad85c3d509bd",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/ui/live-view-expression.test.mjs",
+      "bytes": 1092,
+      "sha256": "592c83a4745661d1b95d76355ab95f504f3ed0ee9f9be884a8035fea7d5236ad",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "docs/skills/live-device-mapping/SKILL.md",
+      "bytes": 5072,
+      "sha256": "8b321dbb13c8a7623f7a3fae6c57d1c9313bd5b6341e3afe3e3e9d58367a16f2",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "docs/skills/live-device-mapping/references/coordination.md",
+      "bytes": 6977,
+      "sha256": "80fda1a621b97241d0e5fd139093e380aeb774a70c9688ea79111c18b92e0eac",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "docs/skills/live-device-mapping/references/packet.md",
+      "bytes": 6067,
+      "sha256": "6c04b935b8b214e612e61da539c202503b10676ba4c88007ea5336a7c1fbdfd0",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "docs/skills/live-device-mapping/references/qualification.md",
+      "bytes": 6581,
+      "sha256": "ef0c07c874d537800e2997f0b179face6acf5675b43879d86c36b4c88f2fabc3",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "docs/skills/live-device-mapping/scripts/test_packet.py",
+      "bytes": 4576,
+      "sha256": "3da12c24351620d3d8d6ffadb0d5fe50d526c0b6387f94d8d209d8a786a366b5",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "docs/skills/live-device-mapping/scripts/verify_packet.py",
+      "bytes": 6793,
+      "sha256": "5ac50ad89149790c5d378948f3d523c9de61f3e3341673a7a681c8e0c5277051",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-31-live-device-object.md",
+      "bytes": 5356,
+      "sha256": "7767db6b95729994049f01ecb8a314192e28b11dee4a1fc77f156e59e5a55ff0",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-31-live-device-resources.md",
+      "bytes": 2819,
+      "sha256": "79a925c254a817e7db12dbd080d3b9dc711d347fabf898bc094df673b734260a",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-10-31-native-devices-and-controls.md",
+      "bytes": 3473,
+      "sha256": "f5b470a67a4f5f3cc0c82b57443c128b3800a5082c1ab81a5a9679752731eb95",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-31-live-device-object.md",
+      "bytes": 3193,
+      "sha256": "3ce3b6c68b9fd9e1d8f3cb943ddd5b43e99e5cdba49fc69a96ae9ec3a615a6e9",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-10-31-native-devices-and-controls.md",
+      "bytes": 4282,
+      "sha256": "e5c905f87453638ae5e71cff9522a14f32d562a813ec737e06ea42b123146126",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "experiments/native-devices-20261031/README.md",
+      "bytes": 15942,
+      "sha256": "60684c7a12a38c8f85d27deac2e4f9afaf12f063c13ca9fb15c0a122ae612eb2",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "experiments/native-devices-20261031/alive-device-hosting.md",
+      "bytes": 19919,
+      "sha256": "606fc493b3df4b0791241f08e797b66f2bf35f567493afd7049ac3e767251be5",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "experiments/native-devices-20261031/analog-values.md",
+      "bytes": 4133,
+      "sha256": "2b236a8a4569bc594f0f105679618e09700c6e0c85345cb94d1b526f19c77e29",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "experiments/native-devices-20261031/device-catalog.json",
+      "bytes": 153051,
+      "sha256": "785990dfbf987fba8e97969ab63b64dc8d67c1ea5acd622e2832f71c308a0010",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "experiments/native-devices-20261031/device-catalog.md",
+      "bytes": 14035,
+      "sha256": "0427c7a8360471ebd672e6ca9b6ccc7c0a1c78ada77431cf57fd84b9f4d01fcb",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "experiments/native-devices-20261031/generalization-audit.md",
+      "bytes": 13739,
+      "sha256": "cd33dfb0434877310db34371dc12b349f39ff3665655d18f9f15c103d27ea883",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "experiments/native-devices-20261031/live-controls.md",
+      "bytes": 8946,
+      "sha256": "02fcbf17e332bb104bcad26855071311851156ef887f798b86792c65cd6ef019",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "experiments/native-devices-20261031/live-device-object.md",
+      "bytes": 11338,
+      "sha256": "5d8a94be32ab5ee3fae45cbfc8a010bcc00bf3273482c549e30deabb2763178f",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "experiments/native-devices-20261031/results.json",
+      "bytes": 12386,
+      "sha256": "b5fd11739a085ba4a803fdf3b1dbda1c98e84d47bfb1d5865ae12e78c6e65c97",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "experiments/native-devices-20261031/ui-resources.md",
+      "bytes": 5849,
+      "sha256": "e88a1caa3632efdb1d6c1ea9a0fed2440d689752bf042d696ded9a568020486f",
+      "kind": "file",
+      "disposition": "commit"
+    }
+  ]
+}

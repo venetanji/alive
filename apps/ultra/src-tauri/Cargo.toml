@@ -10,6 +10,16 @@ default-run = "ultra"
 
 [features]
 telemetry-disabled = []
+native-analog-test = []
+
+[[bin]]
+name = "ultra-analog-test"
+path = "src/analog_test_main.rs"
+required-features = ["native-analog-test"]
+
+[[bin]]
+name = "ultra"
+path = "src/main.rs"
 
 [lib]
 name = "ultra_desktop"
