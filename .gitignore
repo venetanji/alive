@@ -1,1 +1,24 @@
 /dist/
+
+# Machine-local build and dependency paths, including symlinks.
+/apps/ultra/build
+/apps/ultra/src-tauri/target
+/apps/alive/src-tauri/target
+/apps/ultra/tests/ci/node_modules
+/apps/ultra/tests/ci/test-results
+/apps/ultra/tests/ci/playwright-report
+/experiments/clockwork-faust/.deps
+/experiments/faust-reference/.deps
+
+# Raw checkpoint captures stay local; hashes are recorded in docs/checkpoints.
+/experiments/phase2-20261028/r-d/arrangement/arrangement-interaction.mp4
+/experiments/phase2-20261028/r-d/arrangement/midi-arrangement-playback.f32
+/experiments/phase2-20261028/r-d/arrangement/reopened-playback.f32
+/experiments/phase2-20261028/r-d/diagnostic/native-walkthrough.f32
+/experiments/phase2-20261028/r-d/original-green/native-walkthrough.f32
+/experiments/phase2-20261028/r-d/review-occluded/native-walkthrough.f32
+/experiments/phase2-20261028/r-d/traced-arrangement-serial/arrangement-interaction.mp4
+/experiments/phase2-20261028/r-d/traced-arrangement-serial/midi-arrangement-playback.f32
+/experiments/phase2-20261028/r-d/traced-arrangement-serial/reopened-playback.f32
+/experiments/phase2-20261028/r-d/traced-occluded-serial/native-walkthrough.f32
+/experiments/phase2-20261028/r-d/traced-original-serial/native-walkthrough.f32

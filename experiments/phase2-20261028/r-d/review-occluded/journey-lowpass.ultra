@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "profile": "ultra-canvas-v1",
+  "nodes": [
+    {
+      "id": 1,
+      "type": "audio_in",
+      "x": 75,
+      "y": 70,
+      "params": {}
+    },
+    {
+      "id": 2,
+      "type": "filter_stereo",
+      "x": 75,
+      "y": 190,
+      "params": {
+        "cutoff": 2400,
+        "resonance": 0.7
+      }
+    },
+    {
+      "id": 3,
+      "type": "signal_dac",
+      "x": 75,
+      "y": 300,
+      "params": {
+        "channels": "1 2"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": 1,
+      "outlet": 0,
+      "to": 2,
+      "inlet": 0
+    },
+    {
+      "from": 1,
+      "outlet": 1,
+      "to": 2,
+      "inlet": 1
+    },
+    {
+      "from": 2,
+      "outlet": 0,
+      "to": 3,
+      "inlet": 0
+    },
+    {
+      "from": 2,
+      "outlet": 1,
+      "to": 3,
+      "inlet": 1
+    }
+  ],
+  "device": {
+    "version": 2,
+    "kind": "audioEffect",
+    "id": "org.alive.stereo-lowpass",
+    "name": "Stereo Lowpass",
+    "midi": {
+      "input": null,
+      "output": null
+    },
+    "audio": {
+      "input": {
+        "node": 1,
+        "bundle": {
+          "channels": 2,
+          "layout": "stereo"
+        }
+      },
+      "output": {
+        "channels": 2,
+        "layout": "stereo"
+      }
+    },
+    "parameters": [
+      {
+        "key": "cutoff",
+        "label": "Cutoff",
+        "node": 2,
+        "param": "cutoff",
+        "min": 20,
+        "max": 20000,
+        "unit": "Hz"
+      },
+      {
+        "key": "resonance",
+        "label": "Resonance",
+        "node": 2,
+        "param": "resonance",
+        "min": 0.1,
+        "max": 20,
+        "unit": "Q"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Init",
+        "values": {
+          "cutoff": 2400,
+          "resonance": 0.7
+        }
+      },
+      {
+        "name": "Warm",
+        "values": {
+          "cutoff": 700,
+          "resonance": 0.8
+        }
+      },
+      {
+        "name": "Resonant",
+        "values": {
+          "cutoff": 4200,
+          "resonance": 2.5
+        }
+      }
+    ]
+  }
+}

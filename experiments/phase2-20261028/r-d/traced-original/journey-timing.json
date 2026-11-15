@@ -1,0 +1,82 @@
+{
+  "accounting": "inclusive wall seconds; query totals overlap; walk excludes yield suspension",
+  "events": [
+    {
+      "event": "journey-entry",
+      "control": "",
+      "utc": "2026-10-28T11:36:13.652882+00:00",
+      "monotonic": 33509.968939143
+    },
+    {
+      "event": "failure",
+      "control": "AssertionError",
+      "utc": "2026-10-28T11:36:33.211257+00:00",
+      "monotonic": 33529.52732052
+    },
+    {
+      "event": "periodic",
+      "control": "",
+      "utc": "2026-10-28T11:36:33.653683+00:00",
+      "monotonic": 33529.969785041,
+      "queries": {
+        "walk": {
+          "count": 89,
+          "inclusive_elapsed_seconds": 6.605344520437939,
+          "max_seconds": 0.11047290008718846,
+          "errors": 0
+        },
+        "scoped_find": {
+          "count": 87,
+          "inclusive_elapsed_seconds": 10.264566423946235,
+          "max_seconds": 0.18847157099662581,
+          "errors": 82
+        },
+        "wait_for": {
+          "count": 6,
+          "inclusive_elapsed_seconds": 18.71331551500043,
+          "max_seconds": 17.8264980870008,
+          "errors": 1
+        }
+      },
+      "active": [],
+      "active_omitted": 0,
+      "stack": "  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 1268, in <module>\n    nodes.append({'name': item.get_name(), 'role': item.get_role_name(),\n"
+    },
+    {
+      "event": "failure",
+      "control": "AssertionError",
+      "utc": "2026-10-28T11:36:33.742482+00:00",
+      "monotonic": 33530.058561011
+    },
+    {
+      "event": "observer-stop",
+      "control": "",
+      "utc": "2026-10-28T11:36:33.743716+00:00",
+      "monotonic": 33530.05977863
+    }
+  ],
+  "queries": {
+    "walk": {
+      "count": 90,
+      "inclusive_elapsed_seconds": 6.6998261993940105,
+      "max_seconds": 0.11047290008718846,
+      "errors": 0
+    },
+    "scoped_find": {
+      "count": 87,
+      "inclusive_elapsed_seconds": 10.264566423946235,
+      "max_seconds": 0.18847157099662581,
+      "errors": 82
+    },
+    "wait_for": {
+      "count": 6,
+      "inclusive_elapsed_seconds": 18.71331551500043,
+      "max_seconds": 17.8264980870008,
+      "errors": 1
+    }
+  },
+  "active": [],
+  "active_omitted": 0,
+  "snapshots_emitted": 1,
+  "events_dropped": 0
+}

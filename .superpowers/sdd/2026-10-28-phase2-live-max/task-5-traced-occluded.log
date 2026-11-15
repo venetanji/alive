@@ -1,0 +1,55 @@
+dbus-daemon[403906]: [session uid=1000 pid=403906 pidfd=5] Activating service name='org.freedesktop.portal.Desktop' requested by ':1.0' (uid=1000 pid=404021 comm="/home/venetanji/.codex/worktrees/2f1a/alive/apps/u")
+dbus-daemon[403906]: [session uid=1000 pid=403906 pidfd=5] Activating service name='org.freedesktop.impl.portal.PermissionStore' requested by ':1.1' (uid=1000 pid=404043 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[403906]: [session uid=1000 pid=403906 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.PermissionStore'
+dbus-daemon[403906]: [session uid=1000 pid=403906 pidfd=5] Activating service name='org.freedesktop.portal.Documents' requested by ':1.1' (uid=1000 pid=404043 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[403906]: [session uid=1000 pid=403906 pidfd=5] Successfully activated service 'org.freedesktop.portal.Documents'
+dbus-daemon[403906]: [session uid=1000 pid=403906 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.gtk' requested by ':1.1' (uid=1000 pid=404043 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[403906]: 
+** (xdg-desktop-portal-gtk:404106): WARNING **: 19:36:07.966: AT-SPI: Could not obtain desktop path or name
+
+[session uid=1000 pid=403906 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.gtk'
+
+** (xdg-desktop-portal-gtk:404106): WARNING **: 19:36:07.969: atk-bridge: GetRegisteredEvents returned message with unknown signature
+
+** (xdg-desktop-portal-gtk:404106): WARNING **: 19:36:07.969: atk-bridge: get_device_events_reply: unknown signature
+dbus-daemon[403906]: [session uid=1000 pid=403906 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=404043 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[403906]: [session uid=1000 pid=403906 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[403906]: [session uid=1000 pid=403906 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=404043 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[403906]: [session uid=1000 pid=403906 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[403906]: [session uid=1000 pid=403906 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=404043 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[403906]: [session uid=1000 pid=403906 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[403906]: [session uid=1000 pid=403906 pidfd=5] Activating service name='org.freedesktop.impl.portal.desktop.hyprland' requested by ':1.1' (uid=1000 pid=404043 comm="/usr/lib/xdg-desktop-portal")
+dbus-daemon[403906]: [session uid=1000 pid=403906 pidfd=5] Successfully activated service 'org.freedesktop.impl.portal.desktop.hyprland'
+[LOG] Initializing xdph...
+[CRITICAL] Couldn't connect to a wayland compositor
+dbus-daemon[403906]: [session uid=1000 pid=403906 pidfd=5] Successfully activated service 'org.freedesktop.portal.Desktop'
+PASS secondary file delivery during initialization preserves main and opens its own window
+{"event": "journey-entry", "control": "", "utc": "2026-10-28T11:36:13.672908+00:00", "monotonic": 33509.988965064}
+{"event": "failure", "control": "AssertionError", "utc": "2026-10-28T11:36:33.176503+00:00", "monotonic": 33529.492589246}
+{"event": "periodic", "control": "", "utc": "2026-10-28T11:36:33.673552+00:00", "monotonic": 33529.989642837, "queries": {"walk": {"count": 89, "inclusive_elapsed_seconds": 6.603075859740784, "max_seconds": 0.11642112998379162, "errors": 0}, "scoped_find": {"count": 87, "inclusive_elapsed_seconds": 10.204684094998811, "max_seconds": 0.19022479599516373, "errors": 82}, "wait_for": {"count": 6, "inclusive_elapsed_seconds": 18.635735140007455, "max_seconds": 17.78155888600304, "errors": 1}}, "active": [{"kind": "walk", "control": "accessibility traversal", "running_seconds": 0.0003569710024748929}], "active_omitted": 0, "stack": "  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 1266, in <module>\n    for item in ui.walk(frame):\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 146, in measured\n    return (yield from _WalkIterator(self, iterator))\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 234, in __next__\n    return self._step(self.iterator.__next__)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 219, in _step\n    return method(*args)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 38, in walk\n    children = [a.get_child_at_index(i) for i in range(a.get_child_count())]\n"}
+{"event": "failure", "control": "AssertionError", "utc": "2026-10-28T11:36:33.829371+00:00", "monotonic": 33530.145438353}
+{"event": "observer-stop", "control": "", "utc": "2026-10-28T11:36:33.830124+00:00", "monotonic": 33530.146182101}
+Traceback (most recent call last):
+  File "/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py", line 1257, in <module>
+    run()
+    ~~~^^
+  File "/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py", line 989, in run
+    audio_settings = check_audio_settings()
+  File "/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py", line 949, in check_audio_settings
+    buffer(5)  # Automatic, 32, 64, 128, 256, 512.
+    ~~~~~~^^^
+  File "/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py", line 942, in buffer
+    Atspi.Component.grab_focus(ui.wait_for('Alive buffer frames'))
+                               ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py", line 129, in measured
+    return function(*args, **kwargs)
+  File "/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py", line 81, in wait_for
+    raise AssertionError('Missing native control: ' + name)
+AssertionError: Missing native control: Alive buffer frames
+/usr/bin/xvfb-run: line 185: kill: (403939) - No such process

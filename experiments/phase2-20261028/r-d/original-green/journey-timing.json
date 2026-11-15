@@ -1,0 +1,457 @@
+{
+  "accounting": "inclusive wall seconds; query totals overlap; walk excludes yield suspension",
+  "events": [
+    {
+      "event": "journey-entry",
+      "control": "",
+      "utc": "2026-10-28T11:18:06.234892+00:00",
+      "monotonic": 32422.550949328
+    },
+    {
+      "event": "periodic",
+      "control": "",
+      "utc": "2026-10-28T11:18:26.235546+00:00",
+      "monotonic": 32442.551612028,
+      "queries": {
+        "walk": {
+          "count": 67,
+          "inclusive_elapsed_seconds": 4.494323195223842,
+          "max_seconds": 0.13051689500571229,
+          "errors": 0
+        },
+        "scoped_find": {
+          "count": 59,
+          "inclusive_elapsed_seconds": 6.7951205449789995,
+          "max_seconds": 0.2030154380008753,
+          "errors": 1
+        },
+        "wait_for": {
+          "count": 55,
+          "inclusive_elapsed_seconds": 6.681368180987192,
+          "max_seconds": 0.20303113800036954,
+          "errors": 0
+        }
+      },
+      "active": [],
+      "active_omitted": 0,
+      "stack": "  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 1193, in <module>\n    run()\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 946, in run\n    ui.click('Audio details')  # Keep the lower automation controls unobscured.\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/alive_workspace_navigation.py\", line 77, in visible_click\n    click(name)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 117, in click\n    time.sleep(.15)\n"
+    },
+    {
+      "event": "periodic",
+      "control": "",
+      "utc": "2026-10-28T11:18:46.237207+00:00",
+      "monotonic": 32462.55327368,
+      "queries": {
+        "walk": {
+          "count": 160,
+          "inclusive_elapsed_seconds": 8.539368307257973,
+          "max_seconds": 0.2230738379912509,
+          "errors": 0
+        },
+        "scoped_find": {
+          "count": 138,
+          "inclusive_elapsed_seconds": 12.304886254984012,
+          "max_seconds": 0.2030154380008753,
+          "errors": 1
+        },
+        "wait_for": {
+          "count": 110,
+          "inclusive_elapsed_seconds": 10.605248225016112,
+          "max_seconds": 0.20303113800036954,
+          "errors": 0
+        }
+      },
+      "active": [],
+      "active_omitted": 0,
+      "stack": "  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 1193, in <module>\n    run()\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 947, in run\n    chain = prepare_chain()\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 701, in prepare_chain\n    automation_target(8)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 669, in automation_target\n    ui.keys('Escape')\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 186, in keys\n    time.sleep(.2)\n"
+    },
+    {
+      "event": "periodic",
+      "control": "",
+      "utc": "2026-10-28T11:19:06.238215+00:00",
+      "monotonic": 32482.554280442,
+      "queries": {
+        "walk": {
+          "count": 240,
+          "inclusive_elapsed_seconds": 16.04871981294491,
+          "max_seconds": 0.2230738379912509,
+          "errors": 0
+        },
+        "scoped_find": {
+          "count": 202,
+          "inclusive_elapsed_seconds": 22.229023623989633,
+          "max_seconds": 0.33277783000085037,
+          "errors": 1
+        },
+        "wait_for": {
+          "count": 173,
+          "inclusive_elapsed_seconds": 20.489320362030412,
+          "max_seconds": 0.33278605599844013,
+          "errors": 0
+        }
+      },
+      "active": [],
+      "active_omitted": 0,
+      "stack": "  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 1193, in <module>\n    run()\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 956, in run\n    numeric(f'{label} point 1 value', initial)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 83, in numeric\n    ui.text(name, str(number))\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/alive_workspace_navigation.py\", line 81, in visible_text\n    text(name, value)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 154, in text\n    keys('Control_L', 'a')\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 186, in keys\n    time.sleep(.2)\n"
+    },
+    {
+      "event": "periodic",
+      "control": "",
+      "utc": "2026-10-28T11:19:26.239278+00:00",
+      "monotonic": 32502.555338682,
+      "queries": {
+        "walk": {
+          "count": 329,
+          "inclusive_elapsed_seconds": 22.47032973745081,
+          "max_seconds": 0.45159480898291804,
+          "errors": 0
+        },
+        "scoped_find": {
+          "count": 280,
+          "inclusive_elapsed_seconds": 31.219914977998997,
+          "max_seconds": 0.6773985390027519,
+          "errors": 1
+        },
+        "wait_for": {
+          "count": 243,
+          "inclusive_elapsed_seconds": 28.942026729040663,
+          "max_seconds": 0.6774075659996015,
+          "errors": 0
+        }
+      },
+      "active": [
+        {
+          "kind": "wait_for",
+          "control": "Audio details",
+          "running_seconds": 0.13647587000014028
+        },
+        {
+          "kind": "scoped_find",
+          "control": "Audio details",
+          "running_seconds": 0.13646818500274094
+        },
+        {
+          "kind": "walk",
+          "control": "accessibility traversal",
+          "running_seconds": 0.00022706500021740794
+        }
+      ],
+      "active_omitted": 0,
+      "stack": "  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 41, in walk\n    for child in children:\n"
+    },
+    {
+      "event": "periodic",
+      "control": "",
+      "utc": "2026-10-28T11:19:46.240155+00:00",
+      "monotonic": 32522.556247494,
+      "queries": {
+        "walk": {
+          "count": 412,
+          "inclusive_elapsed_seconds": 29.783649905755738,
+          "max_seconds": 0.45159480898291804,
+          "errors": 0
+        },
+        "scoped_find": {
+          "count": 361,
+          "inclusive_elapsed_seconds": 42.48089497101682,
+          "max_seconds": 0.6773985390027519,
+          "errors": 2
+        },
+        "wait_for": {
+          "count": 323,
+          "inclusive_elapsed_seconds": 40.3041507630478,
+          "max_seconds": 0.6774075659996015,
+          "errors": 0
+        }
+      },
+      "active": [
+        {
+          "kind": "wait_for",
+          "control": "Audio details",
+          "running_seconds": 0.5228615800006082
+        },
+        {
+          "kind": "scoped_find",
+          "control": "Audio details",
+          "running_seconds": 0.5228478550016007
+        },
+        {
+          "kind": "walk",
+          "control": "accessibility traversal",
+          "running_seconds": 0.0032102379991556518
+        }
+      ],
+      "active_omitted": 0,
+      "stack": "  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 1193, in <module>\n    run()\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 972, in run\n    live_chain()\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 804, in live_chain\n    piano_history_with_effect_editor()\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 774, in piano_history_with_effect_editor\n    ui.click('Audio details')\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/alive_workspace_navigation.py\", line 77, in visible_click\n    click(name)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 86, in click\n    control = wait_for(name)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 129, in measured\n    return function(*args, **kwargs)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 65, in wait_for\n    return find(name, text_content)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 129, in measured\n    return function(*args, **kwargs)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_documents_desktop.py\", line 59, in scoped_find\n    for node in ui.walk(frame):\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 146, in measured\n    return (yield from _WalkIterator(self, iterator))\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 234, in __next__\n    return self._step(self.iterator.__next__)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 219, in _step\n    return method(*args)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 38, in walk\n    children = [a.get_child_at_index(i) for i in range(a.get_child_count())]\n"
+    },
+    {
+      "event": "operation-entry",
+      "control": "piano add/keyboard/undo/redo with independent effect editor; Stop/Apply/play",
+      "utc": "2026-10-28T11:19:46.432093+00:00",
+      "monotonic": 32522.748159247
+    },
+    {
+      "event": "operation-exit",
+      "control": "piano add/keyboard/undo/redo with independent effect editor; Stop/Apply/play",
+      "utc": "2026-10-28T11:19:56.955780+00:00",
+      "monotonic": 32533.271836594
+    },
+    {
+      "event": "periodic",
+      "control": "",
+      "utc": "2026-10-28T11:20:06.243465+00:00",
+      "monotonic": 32542.559604988,
+      "queries": {
+        "walk": {
+          "count": 491,
+          "inclusive_elapsed_seconds": 40.512085977934476,
+          "max_seconds": 0.45159480898291804,
+          "errors": 0
+        },
+        "scoped_find": {
+          "count": 436,
+          "inclusive_elapsed_seconds": 58.85879904501053,
+          "max_seconds": 0.6773985390027519,
+          "errors": 2
+        },
+        "wait_for": {
+          "count": 390,
+          "inclusive_elapsed_seconds": 56.10670498303807,
+          "max_seconds": 0.6774075659996015,
+          "errors": 0
+        }
+      },
+      "active": [
+        {
+          "kind": "wait_for",
+          "control": "Audio details",
+          "running_seconds": 0.005441311001050053
+        },
+        {
+          "kind": "scoped_find",
+          "control": "Audio details",
+          "running_seconds": 0.005420983001386048
+        }
+      ],
+      "active_omitted": 0,
+      "stack": "  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 1193, in <module>\n    run()\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 977, in run\n    ui.click('Pulse solo'); time.sleep(.3); ui.click('Pulse solo')\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/alive_workspace_navigation.py\", line 71, in visible_click\n    prepare(name)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/alive_workspace_navigation.py\", line 49, in prepare\n    details = ui.wait_for('Audio details')\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 129, in measured\n    return function(*args, **kwargs)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 65, in wait_for\n    return find(name, text_content)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 129, in measured\n    return function(*args, **kwargs)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_documents_desktop.py\", line 67, in scoped_find\n    if node.get_name() == name or (text_content and 'Text' in node.get_interfaces()\n"
+    },
+    {
+      "event": "operation-entry",
+      "control": "two loaded devices, notes/automation prepared, live base/mixer, editor closed/reopened",
+      "utc": "2026-10-28T11:20:14.143673+00:00",
+      "monotonic": 32550.459740164
+    },
+    {
+      "event": "operation-exit",
+      "control": "two loaded devices, notes/automation prepared, live base/mixer, editor closed/reopened",
+      "utc": "2026-10-28T11:20:17.741439+00:00",
+      "monotonic": 32554.057495969
+    },
+    {
+      "event": "periodic",
+      "control": "",
+      "utc": "2026-10-28T11:20:26.247197+00:00",
+      "monotonic": 32562.563256823,
+      "queries": {
+        "walk": {
+          "count": 588,
+          "inclusive_elapsed_seconds": 47.0683001061916,
+          "max_seconds": 0.45159480898291804,
+          "errors": 0
+        },
+        "scoped_find": {
+          "count": 523,
+          "inclusive_elapsed_seconds": 68.4074429030261,
+          "max_seconds": 0.6773985390027519,
+          "errors": 2
+        },
+        "wait_for": {
+          "count": 475,
+          "inclusive_elapsed_seconds": 65.51174856903526,
+          "max_seconds": 0.6774075659996015,
+          "errors": 0
+        }
+      },
+      "active": [
+        {
+          "kind": "walk",
+          "control": "accessibility traversal",
+          "running_seconds": 0.00014218700016499497
+        }
+      ],
+      "active_omitted": 0,
+      "stack": "  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 1193, in <module>\n    run()\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 1017, in run\n    choose_file('Open session', 'Open Alive Session', source)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 564, in choose_file\n    ui.text('Native filename entry', str(path))\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/alive_workspace_navigation.py\", line 81, in visible_text\n    text(name, value)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 127, in text\n    for item in walk(root):\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 146, in measured\n    return (yield from _WalkIterator(self, iterator))\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 234, in __next__\n    return self._step(self.iterator.__next__)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 219, in _step\n    return method(*args)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 38, in walk\n    children = [a.get_child_at_index(i) for i in range(a.get_child_count())]\n"
+    },
+    {
+      "event": "operation-entry",
+      "control": "saved/reopened/playing; missing and changed effect source rejected preserving session",
+      "utc": "2026-10-28T11:20:46.186944+00:00",
+      "monotonic": 32582.503013632
+    },
+    {
+      "event": "periodic",
+      "control": "",
+      "utc": "2026-10-28T11:20:46.248298+00:00",
+      "monotonic": 32582.564357528,
+      "queries": {
+        "walk": {
+          "count": 678,
+          "inclusive_elapsed_seconds": 54.64318796035877,
+          "max_seconds": 0.45159480898291804,
+          "errors": 0
+        },
+        "scoped_find": {
+          "count": 606,
+          "inclusive_elapsed_seconds": 78.9385104080502,
+          "max_seconds": 0.6773985390027519,
+          "errors": 2
+        },
+        "wait_for": {
+          "count": 551,
+          "inclusive_elapsed_seconds": 75.61284026004796,
+          "max_seconds": 0.6774075659996015,
+          "errors": 0
+        }
+      },
+      "active": [
+        {
+          "kind": "wait_for",
+          "control": "Audio details",
+          "running_seconds": 0.06071679999877233
+        },
+        {
+          "kind": "scoped_find",
+          "control": "Audio details",
+          "running_seconds": 0.060714045001077466
+        },
+        {
+          "kind": "walk",
+          "control": "accessibility traversal",
+          "running_seconds": 4.955199983669445e-05
+        }
+      ],
+      "active_omitted": 0,
+      "stack": "  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 1193, in <module>\n    run()\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 1055, in run\n    log('saved/reopened/playing; missing and changed effect source rejected preserving session')\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 109, in log\n    audio = detail()\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 100, in detail\n    return {name: value(name) for name in (\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 61, in value\n    prepare_workspace_control(name)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/alive_workspace_navigation.py\", line 31, in prepare\n    expand('Audio details')\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/alive_workspace_navigation.py\", line 14, in expand\n    control = ui.wait_for(name)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 129, in measured\n    return function(*args, **kwargs)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 65, in wait_for\n    return find(name, text_content)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 129, in measured\n    return function(*args, **kwargs)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_documents_desktop.py\", line 59, in scoped_find\n    for node in ui.walk(frame):\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 146, in measured\n    return (yield from _WalkIterator(self, iterator))\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 234, in __next__\n    return self._step(self.iterator.__next__)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 219, in _step\n    return method(*args)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 42, in walk\n    yield from walk(child)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/desktop_timing.py\", line 145, in measured\n    return (yield from iterator)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 38, in walk\n    children = [a.get_child_at_index(i) for i in range(a.get_child_count())]\n"
+    },
+    {
+      "event": "operation-exit",
+      "control": "saved/reopened/playing; missing and changed effect source rejected preserving session",
+      "utc": "2026-10-28T11:20:54.057727+00:00",
+      "monotonic": 32590.373784978
+    },
+    {
+      "event": "phase-entry",
+      "control": "capture-finalize native-walkthrough.f32",
+      "utc": "2026-10-28T11:20:54.058421+00:00",
+      "monotonic": 32590.374474481
+    },
+    {
+      "event": "phase-exit",
+      "control": "capture-finalize native-walkthrough.f32",
+      "utc": "2026-10-28T11:20:55.530325+00:00",
+      "monotonic": 32591.846386671
+    },
+    {
+      "event": "phase-entry",
+      "control": "final-diagnostics",
+      "utc": "2026-10-28T11:20:55.531065+00:00",
+      "monotonic": 32591.847118023
+    },
+    {
+      "event": "phase-exit",
+      "control": "final-diagnostics",
+      "utc": "2026-10-28T11:21:02.903260+00:00",
+      "monotonic": 32599.219319643
+    },
+    {
+      "event": "periodic",
+      "control": "",
+      "utc": "2026-10-28T11:21:06.249695+00:00",
+      "monotonic": 32602.565758148,
+      "queries": {
+        "walk": {
+          "count": 750,
+          "inclusive_elapsed_seconds": 65.8798923623981,
+          "max_seconds": 0.45159480898291804,
+          "errors": 0
+        },
+        "scoped_find": {
+          "count": 678,
+          "inclusive_elapsed_seconds": 96.01580614706836,
+          "max_seconds": 0.6773985390027519,
+          "errors": 2
+        },
+        "wait_for": {
+          "count": 622,
+          "inclusive_elapsed_seconds": 92.62505900204633,
+          "max_seconds": 0.6774075659996015,
+          "errors": 0
+        }
+      },
+      "active": [],
+      "active_omitted": 0,
+      "stack": "  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 1193, in <module>\n    run()\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 1111, in run\n    choose_file('Replace Harmony device', 'Load Ultra Device', DEVICE)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_alive_desktop.py\", line 548, in choose_file\n    ui.click(button)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/alive_workspace_navigation.py\", line 71, in visible_click\n    prepare(name)\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/alive_workspace_navigation.py\", line 51, in prepare\n    click('Audio details')\n  File \"/home/venetanji/.codex/worktrees/2f1a/alive/apps/ultra/tests/check_canvas_desktop.py\", line 117, in click\n    time.sleep(.15)\n"
+    },
+    {
+      "event": "report-write",
+      "control": "before close/cancel/quit assertions",
+      "utc": "2026-10-28T11:21:10.252483+00:00",
+      "monotonic": 32606.568540126
+    },
+    {
+      "event": "final-quit-entry",
+      "control": "",
+      "utc": "2026-10-28T11:21:23.520171+00:00",
+      "monotonic": 32619.836230915
+    },
+    {
+      "event": "final-quit-exit",
+      "control": "",
+      "utc": "2026-10-28T11:21:24.042038+00:00",
+      "monotonic": 32620.358096973
+    },
+    {
+      "event": "report-write",
+      "control": "final Quit assertions passed",
+      "utc": "2026-10-28T11:21:24.043212+00:00",
+      "monotonic": 32620.359265515
+    },
+    {
+      "event": "journey-complete",
+      "control": "",
+      "utc": "2026-10-28T11:21:24.043880+00:00",
+      "monotonic": 32620.359932907
+    },
+    {
+      "event": "observer-stop",
+      "control": "",
+      "utc": "2026-10-28T11:21:24.044552+00:00",
+      "monotonic": 32620.360605308
+    }
+  ],
+  "queries": {
+    "walk": {
+      "count": 825,
+      "inclusive_elapsed_seconds": 70.14820243832946,
+      "max_seconds": 0.45159480898291804,
+      "errors": 0
+    },
+    "scoped_find": {
+      "count": 737,
+      "inclusive_elapsed_seconds": 101.7672059540746,
+      "max_seconds": 0.6773985390027519,
+      "errors": 2
+    },
+    "wait_for": {
+      "count": 680,
+      "inclusive_elapsed_seconds": 98.30778383604775,
+      "max_seconds": 0.6774075659996015,
+      "errors": 0
+    }
+  },
+  "active": [],
+  "active_omitted": 0,
+  "snapshots_emitted": 9,
+  "events_dropped": 0
+}
