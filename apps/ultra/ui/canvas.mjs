@@ -102,6 +102,10 @@ export function mountCanvas({document:doc=globalThis.document,window:win=globalT
     if(controller.getState().revision===source.revision){helpView.closeMenu();helpView.closeReference();selectRevealed(source.node);}
   }
   async function navigatePatcher(id,depth){
+    // Browser navigation replaces this view. Settle its drafts while their
+    // parameter callbacks still address the old scope; invalid input stays put.
+    // Native navigation opens another window and retains this view's controls.
+    if(!controller.acceptDescriptor)captureFocusedDraft();
     finishDrag();entry.close();closeMenus();cancelWire(false);clearSelection();
     for(const view of views.values())view.cancelInteraction?.();
     if(controller.acceptDescriptor){
