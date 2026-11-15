@@ -1,0 +1,1378 @@
+{
+  "schema": 1,
+  "worktree": "27be",
+  "source_head": "a31ecfd366858d8599659478656d4b1345fce449",
+  "checkpoint_branch": "checkpoint/2026-11-15-windows-diagnostics",
+  "scope": "Historical Windows launcher diagnostics and Chromium investigation evidence. The launcher files match accepted historical commit ece6090; current main already contains the later stdin launcher correction. This branch preserves the older diagnostic snapshot and must not replace that newer correction.",
+  "local_only_files": 2,
+  "committed_input_files": 193,
+  "files": [
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/alive-task2-corrected-red.log",
+      "bytes": 10534,
+      "sha256": "e7d0aceb3ed0b283c331c5bf3f20eb2ba413bf6cfcfb00b20e74582b56d3e40c",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/alive-task2-final-browser.log",
+      "bytes": 7281,
+      "sha256": "55b2bd82e982b5c148f503dde3185165ad15ebe2f7950c86775853d2269c48da",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/alive-task2-final-dom.log",
+      "bytes": 8608,
+      "sha256": "f8ca40b9232e4a0a50085b6ec8e9e8324390bc95bd3f3fb992e8c12f33d82edd",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/alive-task2-final-node.log",
+      "bytes": 10021,
+      "sha256": "582f45033039dbdd3f6972cc1897689f491e4115383ca2a7ccca86cd50bb9eea",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/alive-task2-note-red.log",
+      "bytes": 841,
+      "sha256": "ecc39200399c121df95e6e0c7369dfcf9e6e336d4be9a4c768a0fe68d376d590",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/alive-task2-red.log",
+      "bytes": 11815,
+      "sha256": "0af775f1f6bb184d26f1c1c1450c6870a83d587fad503c6ca3795610b53a5c0d",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/browser-49-worker/GREEN-results/.last-run.json",
+      "bytes": 45,
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/browser-49-worker/GREEN.log",
+      "bytes": 1988,
+      "sha256": "c666c01bda80c8dc5ead0425e713fc39b0a1bf77de20b639f7bdf932e1a3c468",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/browser-49-worker/RED-results/.last-run.json",
+      "bytes": 96,
+      "sha256": "027584c5bcff22c8441329a9c38c650f102d1103c0203bbc0f9fcd204fedce0f",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/browser-49-worker/RED-results/alive-chain-Arrangement-bl-a8ceb-nge-after-a-timeline-redraw/error-context.md",
+      "bytes": 10663,
+      "sha256": "128d6d2467c4bc35c74f52a90dd4e06820bbf6f292cd807f4d99c195e2dd471f",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/browser-49-worker/RED.log",
+      "bytes": 3484,
+      "sha256": "f502c21935869ec7537d3ae12a9afab33c9d611199758f022f6a9b2de285bcff",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/browser-49-worker/SCENARIO-results/.last-run.json",
+      "bytes": 45,
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/browser-49-worker/SCENARIO.log",
+      "bytes": 2032,
+      "sha256": "6aebea320821b4dcfb2a55c4af7bb6c78bbe3c906d06a477f182159660016e6c",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/browser-49-worker/control-results/.last-run.json",
+      "bytes": 45,
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/browser-49-worker/control.log",
+      "bytes": 2524,
+      "sha256": "6c48e4fc6a677427da3b2e854b687916cf69aed0389eae37726052317b779ee8",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/browser-49-worker/forced-results/.last-run.json",
+      "bytes": 96,
+      "sha256": "54ad13c8ee7ea9699331b7fa734120f702c0f7e0b7d3dcead14f1540779f4ae6",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/browser-49-worker/forced-results/alive-chain-Arrangement-cr-9524c-gestures-and-brace-previews/error-context.md",
+      "bytes": 10663,
+      "sha256": "128d6d2467c4bc35c74f52a90dd4e06820bbf6f292cd807f4d99c195e2dd471f",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/browser-49-worker/forced.log",
+      "bytes": 3959,
+      "sha256": "e9586baf81b0d77ce439c38d484c5c8d3e149308776c67a3a98046fe5e822082",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/browser-49-worker/switch.py",
+      "bytes": 841,
+      "sha256": "a63c35d91e738eaa7cc6e3ad4a9c37d4da4b6ced65fc31424f8ecff5bf4042b0",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/chooser-scroll-probe.py",
+      "bytes": 1622,
+      "sha256": "a5babebd467da3d4e2b23e1659f4cd81be5ad708b871d90b3adaa31aab69b134",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-arrangement-browser-evidence/alive-arrangement-cohort.log",
+      "bytes": 15899,
+      "sha256": "5b27b2d94678b9e3efe27b19b130efbeabeb569c7061092ad10312d2f280b6c4",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-arrangement-browser-evidence/alive-arrangement-diagnostic.log",
+      "bytes": 4064,
+      "sha256": "c98cdc18f87857d6e18fbc5db7568e751c5af6743a828077ca2a504270d8014e",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-arrangement-browser-evidence/alive-arrangement-forced-green.log",
+      "bytes": 2951,
+      "sha256": "e10a26939f625ea9665ac18d3384ae853b3b8c07a40039a62e342d16d4f9f254",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-arrangement-browser-evidence/alive-arrangement-green.log",
+      "bytes": 2960,
+      "sha256": "69a24d3a1bcf1c1cea94a59fb83a309c4f36726fcb4d2494f13d0e726ebf96fa",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-arrangement-browser-evidence/alive-arrangement-red.log",
+      "bytes": 6956,
+      "sha256": "b1cc80f8f8113420c55f5dd7d035ae86fe4a247bea284d230011009b20fd13b0",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-arrangement-browser-report.md",
+      "bytes": 3976,
+      "sha256": "af88e45cdf81d6eaf175253862177b9ce367be600f0f67b6029f04c149c7edd8",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/a11y.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/alive-audio-settings.png",
+      "bytes": 124586,
+      "sha256": "dfe7c93e9954ed807732f42aa413edf07dd0f2be9b162114f5c2cb1bbeb3dac8",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/alongside-ultra.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/alongside.ultra",
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/app.log",
+      "bytes": 1056,
+      "sha256": "e96f0fc793a7e4d6422afd99028aa776cb8715a24bc5a4b07371b9ad2c0cef8a",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/apply-receipt.json",
+      "bytes": 2748,
+      "sha256": "02ce48066550331c30f322576dd7492a6d7ae3221aabfc7a28431f09581466f5",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/automation-audit.png",
+      "bytes": 65066,
+      "sha256": "ed63612c8df70324de0e4b8a764e9b382c35799049fa416afc47550cbdac0139",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/automation-draft-audit.png",
+      "bytes": 61914,
+      "sha256": "35ead963eaeea187a3c84fd5f92c0f56a26c7208a71572e68b74d34c0c332c87",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/before-apply.png",
+      "bytes": 83390,
+      "sha256": "4b206423c136e8268409ceb2bd3822a759b273a4c5122f66d5fa006d5a8f9c0d",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/before-reorder.alive",
+      "bytes": 9407,
+      "sha256": "a528f7a839d16d7cff3f6292af1b565b01e0a4cc2a0f7c380402e9fb3754933d",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/chain-playing-audit.png",
+      "bytes": 77369,
+      "sha256": "6ab266c28e845e91b49d0c01dd81335d852cd104bb8d950433b86d97ab71ad36",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/chain-prepared-audit.png",
+      "bytes": 76746,
+      "sha256": "53722755405c55584628455fccbc90c4a28c0992b73d63c17c05ea8ed2d9a09a",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/chooser-focus.jsonl",
+      "bytes": 4059,
+      "sha256": "78e8ffcad4647319ba17291f8e78753d495c5531ee000b4a3741aab4a64fd480",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/device-selection-covering-tooltip.png",
+      "bytes": 82326,
+      "sha256": "01e9c10ec574cfd7baedf4ecece833e870d41c6868f6f10d4ad0835050cb7851",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/effect-editor-audit.png",
+      "bytes": 43468,
+      "sha256": "7c0981a60e88d5d2086a972c6485c19b756689ad7e17d3e9111b2724dcd8d99a",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/hosted-editor.png",
+      "bytes": 67605,
+      "sha256": "3333a75b0e98a4d8cc8d802622aa714462842215c4d10cc956fd5f9802d18384",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/initial.alive",
+      "bytes": 5523,
+      "sha256": "993c1050dae86cdbd66ce67b4fd5f601d930ec2b3b49fcbf1dd7a6fe0315f528",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/initial.ultra",
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/journey-lowpass.ultra",
+      "bytes": 2021,
+      "sha256": "9ca4bca2d81552577636ee062d37195fd58fda8120e4efe925fb9ad0cde0f988",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/journey-timing.json",
+      "bytes": 28711,
+      "sha256": "fc2f7cc41801ea5085e1a23a5e26f09c7f2fcf844a2a887016de9fa82e3d417e",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/journey-utility.ultra",
+      "bytes": 2149,
+      "sha256": "b800a01bf8722b60206ea491181d3461f33f175fd8f5bd7ad4cb1a5889c6f107",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/journey.alive",
+      "bytes": 9615,
+      "sha256": "fda3d1fab0884b334c1121298fc69b3164e07e9d9d6673817080a6526219eef4",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/missing-device.alive",
+      "bytes": 5507,
+      "sha256": "0fd8ce2fb7cdb14043138206c30fd700338ec397f4a1a17f5b0af50743b4a323",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/native-inputs.json",
+      "bytes": 18030,
+      "sha256": "037b3aaf6c7ce6a77b8535fc44e48cb8c89c3d49973c03b0f1959dda01a68786",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/native-session-report.json",
+      "bytes": 11518,
+      "sha256": "ce92d2823a59a9d52466a7634db3206403debe8d0ecfb133e326686d11377fc2",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/native-walkthrough.capture.json",
+      "bytes": 335,
+      "sha256": "481568a2655e2045978f7c870d0659ed3d4986cddd7ee82b7a5b794c6161c186",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/native-walkthrough.f32",
+      "bytes": 35094528,
+      "sha256": "b2156229a55198b9e7fee98251447ceaa582776c23df24ec6b7a629551f14d96",
+      "kind": "file",
+      "disposition": "local-only",
+      "reason": "Retained raw capture or transient runner state; original data stays local"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/native-walkthrough.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/operations.json",
+      "bytes": 1997,
+      "sha256": "63041f3df9ac164ca567e5775cdea9905f3651755c4429a0cba373c1550cb0fe",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/piano-history-playing.png",
+      "bytes": 60859,
+      "sha256": "c83c25bc2a21cd222ea244bf86054df4618c5c5b39a13b8243116ca25c8b0da9",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/pipewire.log",
+      "bytes": 171,
+      "sha256": "18ca4d4ceb01fe8de75d5f31d9a26e315035eaa00c314771c31e248e4382fdea",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/policy.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/registry.log",
+      "bytes": 77,
+      "sha256": "9d307ed556499f37fcb1517732638144b4ee8125619c1a443295c570b34c6bae",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/reorder-covering-tooltip.png",
+      "bytes": 84377,
+      "sha256": "205ff5195554023ff5ad778ea54cdf4f41cec5ac1c61aab1cdf906d62f6db26c",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/session-device-removed.png",
+      "bytes": 77963,
+      "sha256": "7c3e5c4045e7c69b3e2f17db3df39acf83f8332d056dbe25c022517a69fee818",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/session-endurance.png",
+      "bytes": 85936,
+      "sha256": "766d90b495339ea639ff0511c417c038ad02fe9646d1cfc09f30e3684cf4e5b8",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/session-playing.png",
+      "bytes": 79033,
+      "sha256": "040e2d5890c825ff9ee3df68682e50e49fda954a8c58b0ad41f6ef0cbff20728",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/session-ready.png",
+      "bytes": 82460,
+      "sha256": "6a64b8014f399d44426d6f6207d628220ce8b08687885f39f050a91c1633c4db",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/startup-app.log",
+      "bytes": 217,
+      "sha256": "fbddb02393e7f9cca9c30d8a460a63224f9293000f8f99a5f09fb960d851d0a4",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/startup-result.json",
+      "bytes": 375,
+      "sha256": "23152f799d41e1784825f89cbbe1584f6cff741576b250295eae4603105b1352",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-diagnostics/a11y.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-diagnostics/app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-diagnostics/chooser-failure.json",
+      "bytes": 2111,
+      "sha256": "740f18ddb279de32952e992a9126c64c07676145589b0012584a93c9b81b096d",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-diagnostics/chooser-focus.jsonl",
+      "bytes": 406,
+      "sha256": "e0c9aab8d4d2fb560bb8731788897ff647b9102cb4ab2e7a3511d391f35d988f",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-diagnostics/initial.alive",
+      "bytes": 5523,
+      "sha256": "993c1050dae86cdbd66ce67b4fd5f601d930ec2b3b49fcbf1dd7a6fe0315f528",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-diagnostics/initial.ultra",
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-diagnostics/native-inputs.json",
+      "bytes": 5344,
+      "sha256": "161978be75b6df6fa1130b806aa864f426b952db748b6a2553d88b78b6dcf8b6",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-diagnostics/pipewire.log",
+      "bytes": 171,
+      "sha256": "df4bb257c69cd40903f1210c5d2a0ae2113a83d8cc1d851af787b92fc8c52629",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-diagnostics/policy.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-diagnostics/registry.log",
+      "bytes": 77,
+      "sha256": "9d307ed556499f37fcb1517732638144b4ee8125619c1a443295c570b34c6bae",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-diagnostics/startup-app.log",
+      "bytes": 217,
+      "sha256": "ac3f3735238ff4bf8f56bd6e1ca728b14a4e89578eb3c74a93e13549b6ff6d2d",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-diagnostics/startup-result.json",
+      "bytes": 375,
+      "sha256": "23152f799d41e1784825f89cbbe1584f6cff741576b250295eae4603105b1352",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/a11y.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/alive-audio-settings.png",
+      "bytes": 124588,
+      "sha256": "2d6118256fe236b18559447d2b58757ae692fe626aee80b181ca29cd356da2e0",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/alongside-ultra.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/alongside.ultra",
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/app.log",
+      "bytes": 1056,
+      "sha256": "e96f0fc793a7e4d6422afd99028aa776cb8715a24bc5a4b07371b9ad2c0cef8a",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/apply-receipt.json",
+      "bytes": 2748,
+      "sha256": "02ce48066550331c30f322576dd7492a6d7ae3221aabfc7a28431f09581466f5",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/automation-audit.png",
+      "bytes": 65066,
+      "sha256": "ed63612c8df70324de0e4b8a764e9b382c35799049fa416afc47550cbdac0139",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/automation-draft-audit.png",
+      "bytes": 62153,
+      "sha256": "af7a24e9703317dc2813cd89477516b1471c2855597e3d0715b8b15c6aa5a8ac",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/before-apply.png",
+      "bytes": 83300,
+      "sha256": "9b51b36725dddacb7c1b6c84e38617d6602f234cbc24d981ba0e1b64a18d58a2",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/before-reorder.alive",
+      "bytes": 9407,
+      "sha256": "04e3928627661f29e0d5ce02c9c9f96c721d3d6bbafad08216173915f1e6a9a9",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/chain-playing-audit.png",
+      "bytes": 76926,
+      "sha256": "f066f25bb8fc3bb440137f0fcbdc6c02e1180b9a9fdbf734e486ec75b146e08e",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/chain-prepared-audit.png",
+      "bytes": 76744,
+      "sha256": "72b08285164984e7359298d2d2e81055c866678a95817f1ceb25904da0c1f94e",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/chooser-focus.jsonl",
+      "bytes": 4059,
+      "sha256": "a8c6bd802ed21dc29772ed6ad005b5cfe89facd73b74f83aed745132b7667547",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/device-selection-covering-tooltip.png",
+      "bytes": 82642,
+      "sha256": "3257efc617b43319bbc0f4fa3f56d7a2cac173ea0898c6af8367143a76b5a604",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/effect-editor-audit.png",
+      "bytes": 43468,
+      "sha256": "31ca588d20d2ec1ab3ad85d11f87c476e1b9fc64e04d59f8f1a186ecce720e7c",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/hosted-editor.png",
+      "bytes": 67605,
+      "sha256": "4b6e1e42d2d2bbfd90dc1dcaff7b3d1723108ad98dd9a28494556d694c499aee",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/initial.alive",
+      "bytes": 5523,
+      "sha256": "993c1050dae86cdbd66ce67b4fd5f601d930ec2b3b49fcbf1dd7a6fe0315f528",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/initial.ultra",
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/journey-lowpass.ultra",
+      "bytes": 2021,
+      "sha256": "9ca4bca2d81552577636ee062d37195fd58fda8120e4efe925fb9ad0cde0f988",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/journey-timing.json",
+      "bytes": 34843,
+      "sha256": "4d6371377f8f956a7d02c495fed2834665d1ef4faf0d1af8f39255acee86676f",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/journey-utility.ultra",
+      "bytes": 2149,
+      "sha256": "b800a01bf8722b60206ea491181d3461f33f175fd8f5bd7ad4cb1a5889c6f107",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/journey.alive",
+      "bytes": 9615,
+      "sha256": "d56a2da85dd7aab0743ca005ad57962dafa56ddd1cbe4a25a149cd2a6343e638",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/missing-device.alive",
+      "bytes": 5507,
+      "sha256": "357fa44eb98aa94dc963f28ff60ae58ffe5dc30c480ee39cf776c147ec60836b",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/native-inputs.json",
+      "bytes": 21244,
+      "sha256": "c5e9030d10fff4b28c1c2695302e12776fcf4711fb53fd9a309c6ac76a5a75ab",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/native-session-report.json",
+      "bytes": 11507,
+      "sha256": "199bb01c64529591695cdd0f81836c16498d7f562c5de2a601d19f953baa2e5b",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/native-walkthrough.capture.json",
+      "bytes": 335,
+      "sha256": "d83bbd1aadbc434897b50827af51a48f6ad1ae98242a74f1b5d622342ca1100e",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/native-walkthrough.f32",
+      "bytes": 34893824,
+      "sha256": "7b8eb6b8e1b28683ecec790190912a4890ec6149952d4236222d7bf4f8b3635b",
+      "kind": "file",
+      "disposition": "local-only",
+      "reason": "Retained raw capture or transient runner state; original data stays local"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/native-walkthrough.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/operations.json",
+      "bytes": 1995,
+      "sha256": "8bb343a19a52278efd49dc2f10f80d155abb8b5d513d36a1ec1cff534cc58fe8",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/piano-history-playing.png",
+      "bytes": 61047,
+      "sha256": "be66ac48aa8136b0838443459435ec4fc1f12a6b2e5f51fd8eed0510f5d81b79",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/pipewire.log",
+      "bytes": 171,
+      "sha256": "17442f7b0af1fd9955ab068783c4c85e88c08da5788cb8eb17f573ea2d0a7d0b",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/policy.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/registry.log",
+      "bytes": 77,
+      "sha256": "9d307ed556499f37fcb1517732638144b4ee8125619c1a443295c570b34c6bae",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/reorder-covering-tooltip.png",
+      "bytes": 84377,
+      "sha256": "205ff5195554023ff5ad778ea54cdf4f41cec5ac1c61aab1cdf906d62f6db26c",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/session-device-removed.png",
+      "bytes": 77935,
+      "sha256": "f719e0a23142bb98d1518e76f453b686ae8cbc9638aa4848c2b8acdf962ccb2b",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/session-endurance.png",
+      "bytes": 85836,
+      "sha256": "5151370236d812bd886a31b65c82e94af9f09d976af552cc0827d680f2b0fbf8",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/session-playing.png",
+      "bytes": 79205,
+      "sha256": "e8e74744c4e068e2e242f7db6369ce32ce3ec0ea6995f1d5000b57fb069d3c26",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/session-ready.png",
+      "bytes": 82900,
+      "sha256": "22cf3a3580044f201c30085bf48503a41f4c323041b0e61a599927b8767eb874",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/startup-app.log",
+      "bytes": 217,
+      "sha256": "104368a8582403c9066c1cc4108e524ad2d944ce74955f4a001a73da3804b8b3",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/startup-result.json",
+      "bytes": 375,
+      "sha256": "23152f799d41e1784825f89cbbe1584f6cff741576b250295eae4603105b1352",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-report.md",
+      "bytes": 11128,
+      "sha256": "0383a57f18afd7241bbbee76e4293c314d04da617ef3f0fe8638d05356449bfe",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-review-fix/a11y.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-review-fix/app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-review-fix/chooser-failure.json",
+      "bytes": 2111,
+      "sha256": "6c30df116cf5da04610204490d95dfd44b02038ab66654537283d6d809f8a493",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-review-fix/chooser-focus.jsonl",
+      "bytes": 406,
+      "sha256": "012d719bf924d20eb23146db7826c1bc04b7d83902454c60e7ab5d26d4e8769f",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-review-fix/initial.alive",
+      "bytes": 5523,
+      "sha256": "993c1050dae86cdbd66ce67b4fd5f601d930ec2b3b49fcbf1dd7a6fe0315f528",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-review-fix/initial.ultra",
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-review-fix/native-inputs.json",
+      "bytes": 5644,
+      "sha256": "cac61f180a5f6b06d3a6b6f95b454059f3566c11b5e7ee4db72cba3cc82c3aec",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-review-fix/pipewire.log",
+      "bytes": 171,
+      "sha256": "9d4924c8d02be7584198774ed53e17944f6688dcc84d9316291c8f43b8e5cbcc",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-review-fix/policy.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-review-fix/registry.log",
+      "bytes": 77,
+      "sha256": "9d307ed556499f37fcb1517732638144b4ee8125619c1a443295c570b34c6bae",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-review-fix/startup-app.log",
+      "bytes": 217,
+      "sha256": "07309bcc902c6581de7bb2c157a8b308f2341c3aed45ec08a7705197efc608f8",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-review-fix/startup-result.json",
+      "bytes": 375,
+      "sha256": "23152f799d41e1784825f89cbbe1584f6cff741576b250295eae4603105b1352",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-round2/a11y.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-round2/app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-round2/chooser-failure.json",
+      "bytes": 2111,
+      "sha256": "3c0b7d2880de00055db3eb8055fbcd09df952c0e651987b3d4cf624022f62113",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-round2/chooser-focus.jsonl",
+      "bytes": 406,
+      "sha256": "1559c35fcb35f35a2a7aafb98ceff0250bb518f891dd45819603ba151a23018d",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-round2/initial.alive",
+      "bytes": 5523,
+      "sha256": "993c1050dae86cdbd66ce67b4fd5f601d930ec2b3b49fcbf1dd7a6fe0315f528",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-round2/initial.ultra",
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-round2/native-inputs.json",
+      "bytes": 5646,
+      "sha256": "b9681aa241be2ffa3ba6da0ddbbedb002e4f3649ec83b0404c94281bca07256f",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-round2/pipewire.log",
+      "bytes": 171,
+      "sha256": "e6fca28897eae614d7ca3b42cdee1351b0df6f5705365ff46f6a975fcf1715ff",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-round2/policy.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-round2/registry.log",
+      "bytes": 77,
+      "sha256": "9d307ed556499f37fcb1517732638144b4ee8125619c1a443295c570b34c6bae",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-round2/startup-app.log",
+      "bytes": 217,
+      "sha256": "0d3da46063cf47d67213f03c1a0c6b3ef66476b2f6763648846336fbf5c5e8aa",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-round2/startup-result.json",
+      "bytes": 375,
+      "sha256": "23152f799d41e1784825f89cbbe1584f6cff741576b250295eae4603105b1352",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe-2/a11y.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe-2/app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe-2/before-scroll-probe.png",
+      "bytes": 67723,
+      "sha256": "2529f429b8ddda2c0b8da17b4ddd47470c9d56b30813f11e94ce9e6eb20ef542",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe-2/chooser-focus.jsonl",
+      "bytes": 136,
+      "sha256": "e46e3312e4ea3b0e8fb23a0637ce2d4a262d4a91f567bb7f8b8877b533329f0f",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe-2/initial.alive",
+      "bytes": 5523,
+      "sha256": "993c1050dae86cdbd66ce67b4fd5f601d930ec2b3b49fcbf1dd7a6fe0315f528",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe-2/initial.ultra",
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe-2/native-inputs.json",
+      "bytes": 2360,
+      "sha256": "408939cbc2da61156559341c5727a6d3210b3706231f5f9fc9494c1cc9a7267d",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe-2/pipewire.log",
+      "bytes": 171,
+      "sha256": "11988213129f447289d359edeb173ab389d2db62c658022a9aae697bfa079603",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe-2/policy.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe-2/registry.log",
+      "bytes": 77,
+      "sha256": "9d307ed556499f37fcb1517732638144b4ee8125619c1a443295c570b34c6bae",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe-2/scroll-probe.json",
+      "bytes": 3000,
+      "sha256": "f4b6ba4ffa7b43a4a33ac38df5d4e029f4c430b9334e52a24c8deddb55b383be",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe-2/startup-app.log",
+      "bytes": 217,
+      "sha256": "ec13a27c720a7e60d098c109c32337b644c6999f2434bd3d5e23b981b5b3e148",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe-2/startup-result.json",
+      "bytes": 375,
+      "sha256": "23152f799d41e1784825f89cbbe1584f6cff741576b250295eae4603105b1352",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe/a11y.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe/app.log",
+      "bytes": 140,
+      "sha256": "87d070519e61243f05d28b5e3b9ffe1bfa2646480de63df770070b1cfe4439a4",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe/before-scroll-probe.png",
+      "bytes": 67538,
+      "sha256": "18fb8daed6462f5150d8fb427c8c352ae9986a71a7a4f00af9afd6a6ed24c96a",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe/chooser-focus.jsonl",
+      "bytes": 136,
+      "sha256": "c0ca2223eb787e4594c9373d7c0c5b75d1262ad90579cce68e54ebbad3a11d57",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe/initial.alive",
+      "bytes": 5523,
+      "sha256": "993c1050dae86cdbd66ce67b4fd5f601d930ec2b3b49fcbf1dd7a6fe0315f528",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe/initial.ultra",
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe/native-inputs.json",
+      "bytes": 2358,
+      "sha256": "7be870c72e864850078953633a18a4082fcdf8b69b1c790584395444a6bab70c",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe/pipewire.log",
+      "bytes": 171,
+      "sha256": "6131d9b1f12d8bf80a2f961c97f52706287b049f0d7536f92dde94344b5916ff",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe/policy.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe/registry.log",
+      "bytes": 77,
+      "sha256": "9d307ed556499f37fcb1517732638144b4ee8125619c1a443295c570b34c6bae",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe/startup-app.log",
+      "bytes": 217,
+      "sha256": "7ac3e261b58da4e7e87fbbc4bfda20fd3147cf66772d2521ecb5a41c079e48f0",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-scroll-probe/startup-result.json",
+      "bytes": 375,
+      "sha256": "23152f799d41e1784825f89cbbe1584f6cff741576b250295eae4603105b1352",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-editor-round2-green/a11y.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-editor-round2-green/app.log",
+      "bytes": 182,
+      "sha256": "9b8c2b96871a504fe92d1626eadc2e83d9c02b8f23817561b3fa3809d77f39d9",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-editor-round2-green/editor-diagnostic-report.json",
+      "bytes": 3416,
+      "sha256": "e0fb7d3f27c67355bd94c3aafa216ca439926dbf975b0c6e46810745c2b2bc1d",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-editor-round2-green/hosted-editor.png",
+      "bytes": 64561,
+      "sha256": "6bacaca29914658fd7d1be84f2f4d9b1309439039555ca37f9e2a0afb34241fe",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-editor-round2-green/initial.alive",
+      "bytes": 5523,
+      "sha256": "993c1050dae86cdbd66ce67b4fd5f601d930ec2b3b49fcbf1dd7a6fe0315f528",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-editor-round2-green/initial.ultra",
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-editor-round2-green/native-inputs.json",
+      "bytes": 2732,
+      "sha256": "ccd052aef2d37b8e765fac7f024eb9fe17bbab89f0d0597c95e924f59a53e4b8",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-editor-round2-green/pipewire.log",
+      "bytes": 171,
+      "sha256": "2976e907e111eef37ce39911fd8af87516c0503d526d2cd267b17ffa4329520d",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-editor-round2-green/policy.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-editor-round2-green/registry.log",
+      "bytes": 77,
+      "sha256": "9d307ed556499f37fcb1517732638144b4ee8125619c1a443295c570b34c6bae",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-editor-round2-green/startup-app.log",
+      "bytes": 217,
+      "sha256": "1a0376d984e4fff38063ee80884d32499da5cbf75aea52ae7e9e556190674ee9",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-editor-round2-green/startup-result.json",
+      "bytes": 375,
+      "sha256": "23152f799d41e1784825f89cbbe1584f6cff741576b250295eae4603105b1352",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-editor-round2-red/a11y.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-editor-round2-red/app.log",
+      "bytes": 182,
+      "sha256": "9b8c2b96871a504fe92d1626eadc2e83d9c02b8f23817561b3fa3809d77f39d9",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-editor-round2-red/hosted-editor.png",
+      "bytes": 64561,
+      "sha256": "6bacaca29914658fd7d1be84f2f4d9b1309439039555ca37f9e2a0afb34241fe",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-editor-round2-red/initial.alive",
+      "bytes": 5523,
+      "sha256": "993c1050dae86cdbd66ce67b4fd5f601d930ec2b3b49fcbf1dd7a6fe0315f528",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-editor-round2-red/initial.ultra",
+      "bytes": 64,
+      "sha256": "7d611625c7bf0fdf271874ae5912baf166e65b245bfd44f9d9cee51d646b78e2",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-editor-round2-red/native-inputs.json",
+      "bytes": 2733,
+      "sha256": "8d019d9ce8bb4cecf7f260cdb0c86d9b52d166aa1f0a3b17c8ba1e54687ee800",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-editor-round2-red/pipewire.log",
+      "bytes": 171,
+      "sha256": "f5b00409d4533160819a82ec0f789a9367c5c54ce8d5bef895a2117a1f93c4a9",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-editor-round2-red/policy.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-editor-round2-red/registry.log",
+      "bytes": 77,
+      "sha256": "9d307ed556499f37fcb1517732638144b4ee8125619c1a443295c570b34c6bae",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-editor-round2-red/startup-app.log",
+      "bytes": 217,
+      "sha256": "0c7ddcc245094bf2d819d4da8876a13ffc3686763d9d6b29a9f04257258e2972",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/cloud-editor-round2-red/startup-result.json",
+      "bytes": 375,
+      "sha256": "23152f799d41e1784825f89cbbe1584f6cff741576b250295eae4603105b1352",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/task-2-brief.md",
+      "bytes": 4381,
+      "sha256": "7ffb54552a1671ddb9f167c3b69670d0b70181460234dec315d610247d82aad7",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": ".superpowers/sdd/2026-10-28-phase2-live-max/task-2-report.md",
+      "bytes": 3166,
+      "sha256": "dce7c4bd44968adc960ac5cd4d1f6ff859daf80404d2ca82e10a72fea3441ed1",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/windows/master_resolver_fixtures.ps1",
+      "bytes": 4255,
+      "sha256": "7aa0a08aa25a908e78656f0f4f73ad29546763f817846b0d7305978ec392973d",
+      "kind": "file",
+      "disposition": "commit"
+    },
+    {
+      "path": "apps/ultra/tests/windows/master_resolver_launcher_diagnostic.ps1",
+      "bytes": 3256,
+      "sha256": "e7c5cd830c4b288ce1ab407c8fdeeb5216924706886f8a763c66061c16e2437c",
+      "kind": "file",
+      "disposition": "commit"
+    }
+  ]
+}

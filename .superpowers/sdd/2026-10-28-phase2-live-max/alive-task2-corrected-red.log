@@ -1,0 +1,154 @@
+✔ plain Tab navigates workspaces while controls and modified Tab keep native focus navigation (26.027156ms)
+✔ repeated view navigation preserves playing pending receipts, draft, clip, instance and editor lifecycle (13.79067ms)
+✔ browser and Clip Devices detail toggle locally without rebuilding active controls (3.725605ms)
+✔ detail resize supports keyboard and cancels pointer preview with Escape (4.72356ms)
+✔ eight Session tracks expose four vertical slots and a mixer per column plus four scene rows (10.977261ms)
+✔ compact clip states follow native identities independently of selection and draft names (7.342105ms)
+✔ gain fader commits once, synchronizes numeric and snapshots, and preserves unfinished numeric input (9.2596ms)
+✔ empty body double-click creates once with no launch and late completion preserves newer selection (9.899707ms)
+✔ scene controls launch a prepared row once without selection or document edits (5.03897ms)
+✔ scene receipt shows separate member outcomes and never presents it as transport success (3.818358ms)
+✔ scene receipts hide through legacy fallback and refresh identities when clip-bank mode returns (7.237039ms)
+✔ queued scene captures preparation at gesture and late result preserves newer selection and focus (7.247369ms)
+✔ track addition follows explicitly advertised capacity and retains the legacy fallback (3.581666ms)
+✔ four slots separate selection, draft-only launch and prepared runtime identity (7.083212ms)
+✔ asynchronous work refusal names the requested clip and preserves actionable runtime context (2.959032ms)
+✔ v3 start reports native refusal instead of transport success (3.71811ms)
+✔ v3 seek reports native refusal instead of transport success (3.559835ms)
+✔ trackless transport receipts progress from queued to asynchronous refusal without automatic retry (7.575953ms)
+✔ immediate queued transport response cannot overwrite a matching applied publication (2.678628ms)
+✔ queued v3 note values keep originating clip and note IDs after selection changes (8.533021ms)
+✔ late focused clip creation accepts score without stealing a newer track selection (10.672863ms)
+✔ file refusal survives rejected final refresh and recovery (10.053495ms)
+✔ file refusal survives later periodic refresh failure and recovery (5.704805ms)
+✔ successful file keeps its result with failed refresh and clears only refresh health on recovery (2.849247ms)
+✔ ordinary periodic refresh retains ready status and a later explicit file action replaces an old refusal (3.505553ms)
+✔ queued Add note cannot cross successful removal into a reused track index (3.417018ms)
+✔ queued tempo cannot cross successful new (3.107089ms)
+✔ queued lengthBeats cannot cross successful open (2.814662ms)
+✔ queued loopEnabled cannot cross successful open (2.901133ms)
+✔ queued global edits cancel after apply with file outcome none (5.424271ms)
+✔ queued global edits cancel after apply with file outcome error (5.977625ms)
+✔ queued global edits cancel after discard with file outcome none (7.410224ms)
+✔ queued global edits cancel after discard with file outcome error (5.494362ms)
+✔ queued global edits cancel after relocate with file outcome snapshot (4.639834ms)
+✔ file none without an accepted boundary preserves queued same-scope edits (5.965321ms)
+✔ file error without an accepted boundary preserves queued same-scope edits (6.272887ms)
+✔ queued global edits cancel after accepted apply (6.96513ms)
+✔ queued global edits cancel after accepted discard (8.902683ms)
+✔ queued global edits cancel after accepted undo (4.387001ms)
+✔ real musical fields retain drafts across polls and rejected Apply (4.232973ms)
+✔ Alive audio settings preserve drafts and route configuration through the session owner (4.421106ms)
+✔ draft writes precede file actions and actual native metrics remain visible (4.238604ms)
+✔ automation base segments follow live controls without rebuilding unchanged poll frames (3.238124ms)
+✔ a rejected edit restores the authoritative score before a later save (2.958952ms)
+✔ hosted editor uses real patch objects and shared base command; close only releases UI (10.672512ms)
+✔ hosted zoom selection follows fitted and manually selected graph scale (2.82451ms)
+✔ an effect editor owns its own manifest patch state and instance command (9.952746ms)
+✔ chain selection uses stable instance metadata without launching and live bypass retains transport (5.243823ms)
+✔ metadata automation targets distinguish matching keys across instances and preserve original lanes (4.22584ms)
+✔ stopped reorder and editor commands retain instance identity and instrument removal names its track scope (3.389126ms)
+✔ selecting the current clip retains its separate device selection and rejected mutations preserve the chain (3.096839ms)
+✔ new automation points use the current live instance base after polling (4.021418ms)
+✔ piano selection is clean and keyboard edits use one authenticated transaction (4.630978ms)
+✔ pointer previews commit once; cancel, Escape, scope actions and new revisions commit none (14.629488ms)
+✔ velocity preview is one transaction and external live polls do not replace a drag (4.206584ms)
+✔ file cancellation after an accepted boundary refreshes authoritative revision and history (3.431375ms)
+✔ queued numeric edits retain their originating track after a selection change (4.00113ms)
+✔ Escape cancels a velocity drag including late input and change events (3.283608ms)
+✔ rejected audio configuration reaches the audio panel error handler (1.836904ms)
+✔ automation event rejection restores accepted score and the next edit recovers (7.20028ms)
+✔ a queued note index cannot target another note after a preceding deletion (3.4554ms)
+✔ automation point indices also invalidate after a queued deletion (3.115004ms)
+✔ v4 Session reads sources and real chains without compatibility instruments or embedded clips (6.900811ms)
+✔ v4 Play starts shared audio then sends Start with the original captured preparation (3.465048ms)
+✔ v4 failed audio start never submits a runtime Start (2.299549ms)
+✔ v4 note edits address the source while draft-only slots cannot launch (4.126645ms)
+✔ v4 queued automation cannot retarget a slot made independent by an earlier command (5.110854ms)
+✔ v4 unavailable audio chain has explicit optional instrument (empty) (7.094183ms)
+✔ v4 unavailable audio chain has explicit optional instrument (effect first) (2.5246ms)
+✔ v4 queued slot name edit preserves the other accepted field (6.09787ms)
+✔ v4 queued slot offset edit preserves the other accepted field (5.271896ms)
+✔ v4 queued slot name refuses an earlier rewire (4.351154ms)
+✔ v4 queued slot name refuses an earlier delete (3.419022ms)
+✔ v4 queued slot offset refuses an earlier rewire (3.590272ms)
+✔ v4 queued slot offset refuses an earlier delete (12.325101ms)
+✖ queued MIDI source length refuses a source rewired by independence (13.856544ms)
+✖ queued Arrangement source name refuses a source rewired by independence (8.854212ms)
+✖ queued base edit retains its generation across Open with a reused instance (3.472311ms)
+✔ loop-only edit updates the Arrangement brace disabled state (3.929917ms)
+✔ duplicate refuses an out-of-song destination without changing placements (3.553603ms)
+✔ Arrangement creates an accessible unplaced source then a separate placement and source note (7.816522ms)
+✔ refused Arrangement placement keeps the created source selected and discoverable (8.609105ms)
+✔ queued placement start resolves unchanged sibling fields at execution (8.075286ms)
+✔ queued placement offset resolves unchanged sibling fields at execution (5.997983ms)
+✔ queued placement offset refuses earlier delete without retargeting (4.91605ms)
+✔ queued placement offset refuses earlier independent without retargeting (4.654622ms)
+✔ placement sharing, independent copy and occurrence history preserve Session source membership (17.195105ms)
+✔ late placement creation cannot steal a newer track/source selection (4.675461ms)
+✔ Arrangement observes mixed/silent authority and Return members without optimistic updates (2.91532ms)
+✔ v4 pending Return and selected placement/source/device survive repeated view navigation (4.194862ms)
+✔ Arrangement gain uses shared mixer state and retains queued track identity (7.124018ms)
+ℹ tests 91
+ℹ suites 0
+ℹ pass 88
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 653.710047
+
+✖ failing tests:
+
+test at apps/ultra/ui/alive-dom.test.mjs:822:69
+✖ queued MIDI source length refuses a source rewired by independence (13.856544ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  16 !== 8
+  
+      at TestContext.<anonymous> (file:///home/venetanji/.codex/worktrees/27be/alive/apps/ultra/ui/alive-dom.test.mjs:828:52)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 16,
+    expected: 8,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at apps/ultra/ui/alive-dom.test.mjs:822:69
+✖ queued Arrangement source name refuses a source rewired by independence (8.854212ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'Changed'
+  - 'Clip 1'
+  
+      at TestContext.<anonymous> (file:///home/venetanji/.codex/worktrees/27be/alive/apps/ultra/ui/alive-dom.test.mjs:828:124)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Changed',
+    expected: 'Clip 1',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at apps/ultra/ui/alive-dom.test.mjs:831:1
+✖ queued base edit retains its generation across Open with a reused instance (3.472311ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  3200 !== 2400
+  
+      at TestContext.<anonymous> (file:///home/venetanji/.codex/worktrees/27be/alive/apps/ultra/ui/alive-dom.test.mjs:834:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 3200,
+    expected: 2400,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

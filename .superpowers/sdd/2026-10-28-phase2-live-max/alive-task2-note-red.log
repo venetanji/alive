@@ -1,0 +1,28 @@
+✖ queued Add note refuses a source rewired by independence (33.642461ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 125.014048
+
+✖ failing tests:
+
+test at apps/ultra/ui/alive-dom.test.mjs:822:80
+✖ queued Add note refuses a source rewired by independence (33.642461ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  13 !== 12
+  
+      at TestContext.<anonymous> (file:///home/venetanji/.codex/worktrees/27be/alive/apps/ultra/ui/alive-dom.test.mjs:829:10)
+      at async Test.run (node:internal/test_runner/test:1409:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 13,
+    expected: 12,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

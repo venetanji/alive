@@ -1,1 +1,15 @@
 /dist/
+
+# Machine-local build and dependency paths, including symlinks.
+/apps/ultra/build
+/apps/ultra/src-tauri/target
+/apps/alive/src-tauri/target
+/apps/ultra/tests/ci/node_modules
+/apps/ultra/tests/ci/test-results
+/apps/ultra/tests/ci/playwright-report
+/experiments/clockwork-faust/.deps
+/experiments/faust-reference/.deps
+
+# Raw checkpoint captures stay local; hashes are recorded in docs/checkpoints.
+/.superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-baseline/native-walkthrough.f32
+/.superpowers/sdd/2026-10-28-phase2-live-max/cloud-chooser-instrumented/native-walkthrough.f32

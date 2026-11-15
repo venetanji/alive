@@ -1,0 +1,60 @@
+(node:765988) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 01:11:38] "GET /canvas.html HTTP/1.1" 200 -
+
+
+Running 1 test using 1 worker
+
+[1A[2K(node:766004) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:766004) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+
+[1A[2K(node:766004) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[1/1] alive-chain.spec.mjs:1274:1 › Arrangement creates separate source and occurrence history and cancels stale gestures and brace previews
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 01:11:39] "GET /alive.html HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 01:11:39] "GET /alive.css HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 01:11:39] "GET /alive.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 01:11:39] "GET /audio-settings.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 01:11:39] "GET /alive-piano.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 01:11:39] "GET /alive-model.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 01:11:39] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 01:11:39] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 01:11:39] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 01:11:39] "GET /alive-master.mjs HTTP/1.1" 200 -
+
+[1A[2Kalive-chain.spec.mjs:1274:1 › Arrangement creates separate source and occurrence history and cancels stale gestures and brace previews
+B49 lane geometry {"mode":"forced","before":{"connected":true,"same":true,"old":{"x":332,"y":216,"width":768,"height":63},"current":{"x":332,"y":216,"width":768,"height":63}},"after":{"connected":false,"same":false,"old":{"x":0,"y":0,"width":0,"height":0},"current":{"x":332,"y":216,"width":768,"height":63}},"box":null}
+
+[1A[2K  1) alive-chain.spec.mjs:1274:1 › Arrangement creates separate source and occurrence history and cancels stale gestures and brace previews 
+
+    TypeError: Cannot read properties of null (reading 'x')
+
+      300 | const workspaceEdits=page=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_edit'));
+      301 | async function dragTimeline(page,locator,from,to,{cancel=false,hide=false}={}){
+    > 302 |   const box=await locator.boundingBox();await page.mouse.move(box.x+from[0],box.y+from[1]);await page.mouse.down();await page.mouse.move(box.x+to[0],box.y+to[1],{steps:6});
+          |                                                                   ^
+      303 |   if(cancel)await page.keyboard.press('Escape');if(hide)await page.locator('#view-session').click();await page.mouse.up();
+      304 | }
+      305 | for(const size of [{width:1440,height:900},{width:1280,height:800}]){
+        at dragTimeline (/home/venetanji/.codex/worktrees/27be/alive/apps/ultra/tests/ci/alive-chain.spec.mjs:302:67)
+        at /home/venetanji/.codex/worktrees/27be/alive/apps/ultra/tests/ci/alive-chain.spec.mjs:340:3
+
+    Error Context: ../../../../.superpowers/sdd/2026-10-28-phase2-live-max/browser-49-worker/forced-results/alive-chain-Arrangement-cr-9524c-gestures-and-brace-previews/error-context.md
+
+
+[1A[2K  1 failed
+    alive-chain.spec.mjs:1274:1 › Arrangement creates separate source and occurrence history and cancels stale gestures and brace previews 

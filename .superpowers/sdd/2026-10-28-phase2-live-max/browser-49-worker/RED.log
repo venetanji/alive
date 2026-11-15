@@ -1,0 +1,58 @@
+(node:768529) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 01:15:31] "GET /canvas.html HTTP/1.1" 200 -
+
+
+Running 1 test using 1 worker
+
+[1A[2K(node:768547) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K(node:768547) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+
+[1A[2K(node:768547) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1A[2K[1/1] alive-chain.spec.mjs:1324:1 › Arrangement blank-lane drag selects the range after a timeline redraw
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 01:15:34] "GET /alive.html HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 01:15:34] "GET /alive.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 01:15:34] "GET /alive.css HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 01:15:34] "GET /alive-timeline.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 01:15:34] "GET /alive-workspace-edits.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 01:15:34] "GET /alive-piano.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 01:15:34] "GET /alive-model.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 01:15:34] "GET /audio-settings.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 01:15:34] "GET /alive-workspace.mjs HTTP/1.1" 200 -
+
+[1A[2K[2m[WebServer] [22m127.0.0.1 - - [29/Oct/2026 01:15:34] "GET /alive-master.mjs HTTP/1.1" 200 -
+
+[1A[2K  1) alive-chain.spec.mjs:1324:1 › Arrangement blank-lane drag selects the range after a timeline redraw 
+
+    TypeError: Cannot read properties of null (reading 'x')
+
+      300 | const workspaceEdits=page=>page.evaluate(()=>window.calls.filter(c=>c.name==='alive_workspace_edit'));
+      301 | async function dragTimeline(page,locator,from,to,{cancel=false,hide=false,box=null}={}){
+    > 302 |   box??=await locator.boundingBox();await page.mouse.move(box.x+from[0],box.y+from[1]);await page.mouse.down();await page.mouse.move(box.x+to[0],box.y+to[1],{steps:6});
+          |                                                               ^
+      303 |   if(cancel)await page.keyboard.press('Escape');if(hide)await page.locator('#view-session').click();await page.mouse.up();
+      304 | }
+      305 | async function dragBlankLaneRange(page,lane){
+        at dragTimeline (/home/venetanji/.codex/worktrees/27be/alive/apps/ultra/tests/ci/alive-chain.spec.mjs:302:63)
+        at dragBlankLaneRange (/home/venetanji/.codex/worktrees/27be/alive/apps/ultra/tests/ci/alive-chain.spec.mjs:306:3)
+        at /home/venetanji/.codex/worktrees/27be/alive/apps/ultra/tests/ci/alive-chain.spec.mjs:345:3
+
+    Error Context: ../../../../.superpowers/sdd/2026-10-28-phase2-live-max/browser-49-worker/RED-results/alive-chain-Arrangement-bl-a8ceb-nge-after-a-timeline-redraw/error-context.md
+
+
+[1A[2K  1 failed
+    alive-chain.spec.mjs:1324:1 › Arrangement blank-lane drag selects the range after a timeline redraw 
