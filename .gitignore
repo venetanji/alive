@@ -1,1 +1,13 @@
 /dist/
+
+# Machine-local build and dependency paths, including symlinks.
+/apps/ultra/build
+/apps/ultra/src-tauri/target
+/apps/alive/src-tauri/target
+/apps/ultra/tests/ci/node_modules
+/apps/ultra/tests/ci/test-results
+/apps/ultra/tests/ci/playwright-report
+/experiments/clockwork-faust/.deps
+/experiments/faust-reference/.deps
+
+# Raw checkpoint captures stay local; hashes are recorded in docs/checkpoints.

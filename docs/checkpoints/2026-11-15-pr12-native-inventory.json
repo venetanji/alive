@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "worktree": "pr12-native",
+  "source_head": "d212f89914aab3d5cb657c532890ff695bbc3f73",
+  "checkpoint_branch": "feat/alive-native-library-20261102",
+  "scope": "Native-library source is already committed and pushed at d212f899. The remaining four untracked entries were machine-local build/dependency links. This commit adds ignore rules and records their inventory; it does not change native application source or claim a new build qualification.",
+  "local_only_files": 4,
+  "committed_input_files": 0,
+  "files": [
+    {
+      "path": "apps/ultra/build",
+      "bytes": 95,
+      "sha256": "a6643192dbf6a8238f88f60c87403765e9001718bf08a7c535630e34f3a7c25e",
+      "kind": "symlink",
+      "disposition": "local-only",
+      "reason": "Machine-specific build/dependency link"
+    },
+    {
+      "path": "apps/ultra/src-tauri/target",
+      "bytes": 56,
+      "sha256": "dddce87a45d8d43f7f75e1532f1bed617cb75540861e32e4f3f566c6ffca5f48",
+      "kind": "symlink",
+      "disposition": "local-only",
+      "reason": "Machine-specific build/dependency link"
+    },
+    {
+      "path": "experiments/clockwork-faust/.deps",
+      "bytes": 77,
+      "sha256": "4ffa7388f33990a2d933ded1a9502cc490ecb0877278514249128e1c9545830e",
+      "kind": "symlink",
+      "disposition": "local-only",
+      "reason": "Machine-specific build/dependency link"
+    },
+    {
+      "path": "experiments/faust-reference/.deps",
+      "bytes": 77,
+      "sha256": "8194d89536230f5ae407c391c175f03119b089ef42c81ba1238a2c642edceb78",
+      "kind": "symlink",
+      "disposition": "local-only",
+      "reason": "Machine-specific build/dependency link"
+    }
+  ]
+}
