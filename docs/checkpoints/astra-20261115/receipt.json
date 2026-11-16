@@ -1,0 +1,40 @@
+{
+  "baseline": "e3742282d6a53b0d4b228a7408650db32c104da0",
+  "broad_contracts": {
+    "command": "bash apps/ultra/tests/ci/check-contracts.sh",
+    "exit_code": 0,
+    "note": "Started before changes; initial Node 889 passed/34 skipped. Later native/reference phases unchanged. Licensed/optional oracles explicitly unavailable."
+  },
+  "final_node": {
+    "command": "node --test apps/ultra/ui/*.test.mjs apps/ultra/ui/components/*.test.mjs apps/ultra/ui/live-profiles/analog/*.test.mjs apps/ultra/ui/live-profiles/electric/*.test.mjs",
+    "passed": 891,
+    "skipped": 34,
+    "failed": 0,
+    "exit_code": 0
+  },
+  "dom": {
+    "passed": 98,
+    "failed": 0
+  },
+  "browser": {
+    "specs": [
+      "canvas-hierarchy",
+      "canvas-documents",
+      "canvas-source-preflight",
+      "live-resource-identity"
+    ],
+    "passed": 16,
+    "skipped": 7,
+    "failed": 0,
+    "sandbox": true,
+    "image": "mcr.microsoft.com/playwright@sha256:f1e7e01021efd65dd1a2c56064be399f3e4de00fd021ac561325f2bfbb2b837a"
+  },
+  "red": {
+    "failed": 2,
+    "reason": "valid draft remains 10 instead of 42; invalid draft changes path to [2]"
+  },
+  "source_sha256": {
+    "apps/ultra/ui/canvas.mjs": "90b223d28ea926c231250436c2fbb26d9bf3a31a0d00f0dfcfa0c7c397e81a94",
+    "apps/ultra/ui/canvas-dom.test.mjs": "6a3e90cdd594425af9f9770719f0a134cc33196ac9e3b53e942ab6db637e8522"
+  }
+}

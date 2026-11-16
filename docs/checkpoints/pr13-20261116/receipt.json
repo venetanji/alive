@@ -1,0 +1,32 @@
+{
+  "base": "6abf13b56ae5b68b5f0d81eb9e49e55cdc0a6497",
+  "test_commit": "99d82ac8ebfb04170fa0d50c1228ea5ff10f57be",
+  "node_version": "26.13.1",
+  "playwright_version": "1.56.1",
+  "dom": {
+    "passed": 99,
+    "failed": 0,
+    "skipped": 0
+  },
+  "node": {
+    "passed": 905,
+    "failed": 0,
+    "skipped": 21
+  },
+  "browser": {
+    "passed": 17,
+    "failed": 0,
+    "skipped": 26,
+    "sandbox": true
+  },
+  "baseline_negative_controls": {
+    "source": "e3742282d6a53b0d4b228a7408650db32c104da0:apps/ultra/ui/canvas.mjs",
+    "dom": "fails invalid child Root scope retention",
+    "browser": "fails return to Root after correcting invalid child input"
+  },
+  "limitations": [
+    "No new native qualification from browser slice",
+    "No private resource fixture pass credit",
+    "Hosted pinned-toolchain CI pending"
+  ]
+}
