@@ -125,6 +125,9 @@ def run():
     assert alive.value('Note 1 velocity') == '100'
     ui.click('Delete clip'); alive.settled()
     alive.history_click('Undo')
+    # Native history input returns before the deleted clip's controls are restored.
+    alive.wait_value('Note 1 velocity', lambda value: value == '100')
+    alive.settled()
     ui.click('Select Pulse slot 2')
     assert float(alive.value('Clip Start')) == 1
     assert float(alive.value('Loop Position')) == 2
