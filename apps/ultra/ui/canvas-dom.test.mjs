@@ -1188,3 +1188,26 @@ for(const value of ['42',''])test(`browser patcher navigation settles or retains
   }
   await p.dispose();
 });
+
+test('invalid child draft blocks Root and can be corrected before leaving',async()=>{
+  const p=await mount(false);
+  p.controller.load({version:2,profile:'ultra-patcher-v2',presentation:null,
+    nodes:[makeNode('number',1,0,0,{value:10}),{
+      ...makeNode('patcher',2),patcher:{presentation:null,
+        nodes:[makeNode('number',3,0,0,{value:20})],edges:[]}}],edges:[]});
+  await p.all('objects').find(e=>e.dataset.node==='2').fire('dblclick');
+  await settle();
+  const child=p.all('objects').find(e=>e.dataset.parameter==='value');
+  child.value='';await child.fire('input');
+  await p.ids.get('patcher-path').children.find(e=>e.textContent==='Root').fire('click');
+  assert.deepEqual(p.controller.getState().path,[2]);
+  assert.equal(p.all('objects').find(e=>e.dataset.parameter==='value'),child);
+  assert.equal(child.value,'');
+  assert.equal(p.controller.getState().document.nodes[0].params.value,10);
+  assert.equal(p.controller.getState().document.nodes[1].patcher.nodes[0].params.value,20);
+  child.value='73';await child.fire('input');
+  await p.ids.get('patcher-path').children.find(e=>e.textContent==='Root').fire('click');
+  assert.deepEqual(p.controller.getState().path,[]);
+  assert.equal(p.controller.getState().document.nodes[1].patcher.nodes[0].params.value,73);
+  await p.dispose();
+});
